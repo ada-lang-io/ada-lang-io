@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkadalang_dev=self.webpackChunkadalang_dev||[]).push([[6431],{7766:a=>{a.exports=JSON.parse('{"label":"hello","permalink":"/adalang-dev-prototype/blog/tags/hello","allTagsPath":"/adalang-dev-prototype/blog/tags","count":2}')}}]);

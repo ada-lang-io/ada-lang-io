@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkadalang_dev=self.webpackChunkadalang_dev||[]).push([[6263],{9522:a=>{a.exports=JSON.parse('{"label":"docusaurus","permalink":"/adalang-dev-prototype/blog/tags/docusaurus","allTagsPath":"/adalang-dev-prototype/blog/tags","count":4}')}}]);
