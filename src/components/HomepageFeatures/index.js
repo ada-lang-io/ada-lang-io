@@ -4,38 +4,56 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Readability',
+    Svg: require('@site/static/img/student-reading-svgrepo-com.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Express intent with explicitness and keywords over symbols and special structures.
       </>
     ),
+    extended_description: (
+      <>
+      Express concepts like meaning in integers.
+      Use built-in design by contract with pre/post-conditions and invariants.
+      Model problems with typechecks and range constraints.   
+      </>
+    )
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Correctness',
+    Svg: require('@site/static/img/plane-svgrepo-com.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Build with technology used in 40 years of reliability in planes, trains, and spaceships.
       </>
     ),
+    extended_description: (
+      <>
+        Use the SPARK subset to formally verify part or all of your program, and integrate existing SPARK
+        crates available in the Alire package manager.
+      </>
+    )
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Performance',
+    Svg: require('@site/static/img/chip-svgrepo-com.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Build native applications and take advantage of other libraries
+        through binding to C and C++.
       </>
     ),
+    extended_description: (
+      <>
+        Use inline assembly or compiler intrinsics when you need it.
+        Control resources with scope-based resource control (RAII) and your
+        own memory allocators.
+      </>
+    )
   },
 ];
 
-function Feature({Svg, title, description}) {
+function Feature({Svg, title, description, extended_description}) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
@@ -44,6 +62,7 @@ function Feature({Svg, title, description}) {
       <div className="text--center padding-horiz--md">
         <h3>{title}</h3>
         <p>{description}</p>
+        <p>{extended_description}</p>
       </div>
     </div>
   );

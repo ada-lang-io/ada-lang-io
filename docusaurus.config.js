@@ -6,10 +6,10 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'Ada',
+  tagline: 'Readable, correct, performance',
   url: 'https://pyjarrett.github.io',
-  baseUrl: '/adalang-dev-prototype/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
@@ -17,7 +17,7 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'pyjarrett', // Usually your GitHub org/user name.
-  projectName: 'adalang-dev-prototype', // Usually your repo name.
+  projectName: 'ada-lang-io', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -57,10 +57,10 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'My Site',
+        title: 'Ada lang dev',
         logo: {
-          alt: 'My Site Logo',
-          src: 'img/logo.svg',
+          alt: 'Ada lang dev',
+          src: 'img/ada_saw_coin.svg',
         },
         items: [
           {
@@ -71,7 +71,7 @@ const config = {
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://ada-lang.io/',
             label: 'GitHub',
             position: 'right',
           },
@@ -80,6 +80,19 @@ const config = {
       footer: {
         style: 'dark',
         links: [
+          {
+            title: 'Learning',
+            items: [
+              {
+                label: 'learn.adacore.com',
+                to: 'https://learn.adacore.com',
+              },
+              {
+                label: 'Learn Spark',
+                to: 'https://learn.adacore.com/courses/intro-to-spark/index.html'
+              }
+            ]
+          },
           {
             title: 'Docs',
             items: [
@@ -94,16 +107,16 @@ const config = {
             items: [
               {
                 label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
+                href: 'https://stackoverflow.com/questions/tagged/ada',
               },
               {
                 label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                href: 'https://twitter.com/adaprogrammers',
               },
+              {
+                label: 'Gitter',
+                href: 'https://gitter.im/ada-lang/Lobby',
+              }
             ],
           },
           {
@@ -115,16 +128,21 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/pyjarrett/adalang-io-prototype',
               },
+              {
+                label: 'News (from Ada Planet)',
+                href: 'https://www.laeran.pl/adaplanet/i/',
+              }
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Ada lang dev, Inc. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        additionalLanguages: ['ada'],
       },
     }),
 };
