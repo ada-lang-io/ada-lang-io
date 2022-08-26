@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Ada',
   tagline: 'Readable, correct, performance',
-  url: 'https://pyjarrett.github.io',
+  url: 'https://ada-lang.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
