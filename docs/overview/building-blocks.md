@@ -3,7 +3,7 @@ sidebar_position: 2
 ---
 
 
-Note on Terminology
+Building Blocks
 ==============================================================================
 
 Ada often uses different terminology than any of the languages I've used.  The
