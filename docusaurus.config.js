@@ -16,7 +16,7 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'pyjarrett', // Usually your GitHub org/user name.
+  organizationName: 'ada-lang-io', // Usually your GitHub org/user name.
   projectName: 'ada-lang-io', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
