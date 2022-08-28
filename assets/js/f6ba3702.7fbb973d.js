@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkada_lang_io=self.webpackChunkada_lang_io||[]).push([[293],{8495:a=>{a.exports=JSON.parse('{"label":"welcome","permalink":"/blog/tags/welcome","allTagsPath":"/blog/tags","count":1}')}}]);

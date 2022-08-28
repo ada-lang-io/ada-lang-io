@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkada_lang_io=self.webpackChunkada_lang_io||[]).push([[695],{8201:a=>{a.exports=JSON.parse('{"permalink":"/blog/tags/ada","page":1,"postsPerPage":10,"totalPages":1,"totalCount":2,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);
