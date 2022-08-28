@@ -6,7 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Ada',
+  title: 'Ada Programming Language',
   tagline: 'Readable, correct, performant',
   url: 'https://ada-lang.io',
   baseUrl: '/',
@@ -49,9 +49,9 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     {
       navbar: {
-        title: 'Ada programming language',
+        title: 'Ada',
         logo: {
-          alt: 'Ada programming language',
+          alt: 'Ada',
           src: 'img/ada_saw_coin.svg',
         },
         items: [
