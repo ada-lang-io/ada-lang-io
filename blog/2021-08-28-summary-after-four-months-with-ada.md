@@ -5,17 +5,11 @@ authors: [pyjarrett]
 tags: [ada, learning]
 ---
 
-
 For the last four months I've been learning and writing Ada 2012.
 I wanted to share my experiences with the language for those who aren't familiar with it.
 
 <!--truncate-->
 
-
-# Summary after Four Months with Ada
-
-For the last four months I've been learning and writing Ada 2012.
-I wanted to share my experiences with the language for those who aren't familiar with it.
 I'm neither endorsing or denouncing Ada.
 For those unfamiliar with Ada terms, I'll using the vernacular common to C family languages.
 This will make Ada programmers cringe, but will be much more clear to the general reader.
