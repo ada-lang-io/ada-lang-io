@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Ada',
-  tagline: 'Readable, correct, performance',
+  tagline: 'Readable, correct, performant',
   url: 'https://ada-lang.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
