@@ -47,7 +47,7 @@ const config = {
 
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
+    {
       navbar: {
         title: 'Ada lang dev',
         logo: {
@@ -108,6 +108,10 @@ const config = {
               {
                 label: 'Gitter',
                 href: 'https://gitter.im/ada-lang/Lobby',
+              },
+              {
+                label: 'Reddit',
+                href: 'https://www.reddit.com/r/ada/',
               }
             ],
           },
@@ -136,7 +140,7 @@ const config = {
         darkTheme: darkCodeTheme,
         additionalLanguages: ['ada'],
       },
-    }),
+    },
 };
 
 module.exports = config;

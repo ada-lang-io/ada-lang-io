@@ -1,6 +1,26 @@
 import React from 'react';
 import clsx from 'clsx';
 import styles from './styles.module.css';
+import CodeBlock from '@theme/CodeBlock';
+
+const readabilitySample = `type Console_Input_Mode is
+   array (Console_Input_Flags)
+      of Boolean
+         with Pack,
+            Size => 32;`;
+
+const correctnessSample = `type Line is private
+   with Type_Invariant =>
+      Get_Cursor_Index (Line)
+         in 1 .. Length (Line) + 1;`
+
+const performanceSample =
+`function tcgetattr (
+   File_Descriptor : FD;
+   Terminal : System.Address)
+return BOOL
+   with Import => True,
+        Convention => C;`;
 
 const FeatureList = [
   {
@@ -15,9 +35,10 @@ const FeatureList = [
       <>
       Express concepts like meaning in integers.
       Use built-in design by contract with pre/post-conditions and invariants.
-      Model problems with typechecks and range constraints.   
+      Model problems with typechecks and range constraints.
       </>
-    )
+    ),
+    sample: readabilitySample,
   },
   {
     title: 'Correctness',
@@ -32,7 +53,8 @@ const FeatureList = [
         Use the SPARK subset to formally verify part or all of your program, and integrate existing SPARK
         crates available in the Alire package manager.
       </>
-    )
+    ),
+    sample: correctnessSample,
   },
   {
     title: 'Performance',
@@ -49,11 +71,12 @@ const FeatureList = [
         Control resources with scope-based resource control (RAII) and your
         own memory allocators.
       </>
-    )
+    ),
+    sample: performanceSample,
   },
 ];
 
-function Feature({Svg, title, description, extended_description}) {
+function Feature({Svg, title, description, extended_description, sample}) {
   return (
     <div className={clsx('col col--4')}>
       <div className="text--center">
@@ -64,6 +87,7 @@ function Feature({Svg, title, description, extended_description}) {
         <p>{description}</p>
         <p>{extended_description}</p>
       </div>
+      <CodeBlock language="ada">{sample}</CodeBlock>
     </div>
   );
 }
