@@ -49,9 +49,9 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     {
       navbar: {
-        title: 'Ada lang dev',
+        title: 'Ada programming language',
         logo: {
-          alt: 'Ada lang dev',
+          alt: 'Ada programming language',
           src: 'img/ada_saw_coin.svg',
         },
         items: [
@@ -63,7 +63,7 @@ const config = {
           },
           {to: '/blog', label: 'Blog', position: 'left'},
           {
-            href: 'https://ada-lang.io/',
+            href: 'https://github.com/ada-lang-io/ada-lang-io',
             label: 'GitHub',
             position: 'right',
           },
@@ -76,11 +76,11 @@ const config = {
             title: 'Learning',
             items: [
               {
-                label: 'learn.adacore.com',
+                label: 'Learn Ada (by AdaCore)',
                 to: 'https://learn.adacore.com',
               },
               {
-                label: 'Learn Spark',
+                label: 'Learn Spark (by AdaCore)',
                 to: 'https://learn.adacore.com/courses/intro-to-spark/index.html'
               }
             ]
@@ -102,10 +102,6 @@ const config = {
                 href: 'https://stackoverflow.com/questions/tagged/ada',
               },
               {
-                label: 'Twitter',
-                href: 'https://twitter.com/adaprogrammers',
-              },
-              {
                 label: 'Gitter',
                 href: 'https://gitter.im/ada-lang/Lobby',
               },
@@ -124,7 +120,7 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/pyjarrett/adalang-io-prototype',
+                href: 'https://github.com/ada-lang-io/ada-lang-io',
               },
               {
                 label: 'News (from Ada Planet)',
@@ -133,7 +129,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Ada lang dev, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} ada-lang-io developers. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,
