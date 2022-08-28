@@ -61,7 +61,9 @@ const config = {
             position: 'left',
             label: 'Docs',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          {
+            to: '/blog', label: 'Blog', position: 'left'
+          },
           {
             href: 'https://github.com/ada-lang-io/ada-lang-io',
             label: 'GitHub',
@@ -76,6 +78,10 @@ const config = {
             title: 'Learning',
             items: [
               {
+                label: 'Tutorial',
+                to: '/docs/why-ada',
+              },
+              {
                 label: 'Learn Ada (by AdaCore)',
                 to: 'https://learn.adacore.com',
               },
@@ -89,18 +95,22 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/why-ada',
+                label: 'Wikibook',
+                href: 'https://en.wikibooks.org/wiki/Ada_Programming'
               },
+              {
+                label: 'Style Guide',
+                href: 'https://en.wikibooks.org/wiki/Ada_Style_Guide',
+              },
+              {
+                label: 'Ada 2012 Reference Manual',
+                href: 'http://ada-auth.org/standards/rm12_w_tc1/html/RM-TOC.html'
+              }
             ],
           },
           {
             title: 'Community',
             items: [
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/ada',
-              },
               {
                 label: 'Gitter',
                 href: 'https://gitter.im/ada-lang/Lobby',
@@ -112,6 +122,10 @@ const config = {
               {
                 label: 'Telegram',
                 href: 'https://t.me/ada_lang',
+              },
+              {
+                label: 'Stack Overflow',
+                href: 'https://stackoverflow.com/questions/tagged/ada',
               }
             ],
           },
@@ -119,17 +133,21 @@ const config = {
             title: 'More',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: 'Alire (Ada package manager)',
+                href: 'https://alire.ada.dev/'
+              },
+              {
+                label: 'Awesome Ada',
+                href: 'https://github.com/ohenley/awesome-ada',
+              },
+              {
+                label: 'News, by Ada Planet',
+                href: 'https://www.laeran.pl/adaplanet/i/',
               },
               {
                 label: 'GitHub',
                 href: 'https://github.com/ada-lang-io/ada-lang-io',
               },
-              {
-                label: 'News (from Ada Planet)',
-                href: 'https://www.laeran.pl/adaplanet/i/',
-              }
             ],
           },
         ],
