@@ -108,6 +108,10 @@ const config = {
               {
                 label: 'Reddit',
                 href: 'https://www.reddit.com/r/ada/',
+              },
+              {
+                label: 'Telegram',
+                href: 'https://t.me/ada_lang',
               }
             ],
           },
