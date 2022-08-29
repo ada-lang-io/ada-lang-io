@@ -7,6 +7,35 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 
 import styles from './index.module.css';
 
+// Not sure of the right way to to this.
+const platform = navigator?.userAgent?.platform || navigator?.platform || 'unknown';
+
+// TODO: This version number should come from a "latest Alire" note somewhere.
+const currentAlireVersion = '1.2.1'
+const alireReleaseDir = 'https://github.com/alire-project/alire/releases/download/v' + currentAlireVersion + '/';
+const installTargets = new Map([
+  ['Windows', alireReleaseDir + 'alr-' + currentAlireVersion + '-installer-x86_64-windows.exe'],
+  ['Mac', alireReleaseDir + 'alr-' + currentAlireVersion + '-bin-x86_64-macos.zip'],
+  ['Linux', alireReleaseDir + 'alr-' + currentAlireVersion + '-bin-x86_64-linux.zip'],
+  ['Unknown', 'https://github.com/alire-project/alire/releases'],
+]);
+
+function platformTarget() {
+  if (platform.indexOf('Win') === 0) {
+    return 'Windows';
+  }
+
+  if (platform.indexOf('Linux') === 0) {
+    return 'Linux';
+  }
+
+  if (platform.indexOf('Mac') === 0) {
+    return 'Mac';
+  }
+
+  return 'Unknown';
+}
+
 function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
   return (
@@ -18,8 +47,8 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="https://alire.ada.dev/docs/#installation">
-              Download Alire
+            to={installTargets.get(platformTarget())}>
+              Get Alire {platformTarget() !== 'Unknown' ? ' for ' + platformTarget() : ''}
           </Link>
         </div>
       </div>
