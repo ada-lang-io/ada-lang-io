@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -7,20 +7,7 @@ import HomepageFeatures from '@site/src/components/HomepageFeatures';
 
 import styles from './index.module.css';
 
-// Not sure of the right way to to this.
-const platform = navigator?.userAgent?.platform || navigator?.platform || 'unknown';
-
-// TODO: This version number should come from a "latest Alire" note somewhere.
-const currentAlireVersion = '1.2.1'
-const alireReleaseDir = 'https://github.com/alire-project/alire/releases/download/v' + currentAlireVersion + '/';
-const installTargets = new Map([
-  ['Windows', alireReleaseDir + 'alr-' + currentAlireVersion + '-installer-x86_64-windows.exe'],
-  ['Mac', alireReleaseDir + 'alr-' + currentAlireVersion + '-bin-x86_64-macos.zip'],
-  ['Linux', alireReleaseDir + 'alr-' + currentAlireVersion + '-bin-x86_64-linux.zip'],
-  ['Unknown', 'https://github.com/alire-project/alire/releases'],
-]);
-
-function platformTarget() {
+function platformTarget(platform) {
   if (platform.indexOf('Win') === 0) {
     return 'Windows';
   }
@@ -36,7 +23,24 @@ function platformTarget() {
   return 'Unknown';
 }
 
+// TODO: This version number should come from a "latest Alire" note somewhere.
+const currentAlireVersion = '1.2.1'
+const alireReleaseDir = 'https://github.com/alire-project/alire/releases/download/v' + currentAlireVersion + '/';
+const installTargets = new Map([
+  ['Windows', alireReleaseDir + 'alr-' + currentAlireVersion + '-installer-x86_64-windows.exe'],
+  ['Mac', alireReleaseDir + 'alr-' + currentAlireVersion + '-bin-x86_64-macos.zip'],
+  ['Linux', alireReleaseDir + 'alr-' + currentAlireVersion + '-bin-x86_64-linux.zip'],
+  ['Unknown', 'https://github.com/alire-project/alire/releases'],
+]);
+
 function HomepageHeader() {
+  const [platform, setPlatform] = useState('unknown');
+
+  useEffect(() => {
+    // Not sure of the right way to to this.
+    setPlatform(navigator?.userAgent?.platform || navigator?.platform || 'unknown');
+  }, []);
+
   const {siteConfig} = useDocusaurusContext();
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
@@ -47,8 +51,8 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to={installTargets.get(platformTarget())}>
-              Get Alire {platformTarget() !== 'Unknown' ? ' for ' + platformTarget() : ''}
+            to={installTargets.get(platformTarget(platform))}>
+              Get Alire {platformTarget(platform) !== 'Unknown' ? ' for ' + platformTarget(platform) : ''}
           </Link>
         </div>
       </div>
