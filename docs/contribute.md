@@ -10,22 +10,26 @@ React for more control where needed.
 
 ## Run and edit locally
 
-1. You need to install [Node](https://nodejs.org/en/download/).
+1. Install [Node][url-node] and [Yarn][url-yarn]. `yarn --version` should show version 2 or higher.
 
 2. Then install the dependencies of this package.
 
 ```bash
 cd ada-lang-io
-npm install
+yarn install
 ```
 
 3. Run the site locally.  This will open up your web browser to `http://localhost:3000.
 
 ```bash
-npm run start
+yarn start
 ```
 
 It will update as you make changes.
 
-4. When you're satisfied with your work, send a [pull request](https://github.com/ada-lang-io/ada-lang-io/pulls) to ask to
+4. When you're satisfied with your work, send a [pull request][url-ghpr] to ask to
    have your work added.
+
+  [url-node]: https://nodejs.org/en/download/
+  [url-yarn]: https://yarnpkg.com/getting-started/install
+  [url-ghpr]: https://github.com/ada-lang-io/ada-lang-io/pulls
