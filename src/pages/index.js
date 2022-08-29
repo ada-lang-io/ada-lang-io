@@ -55,6 +55,13 @@ function HomepageHeader() {
               Get Alire {platformTarget(platform) !== 'Unknown' ? ' for ' + platformTarget(platform) : ''}
           </Link>
         </div>
+        <div className="container">
+          <Link
+            className="button button--primary"
+            to="https://alire.ada.dev/docs/#installation">
+            Alire Installation Help
+          </Link>
+        </div>
       </div>
     </header>
   );
