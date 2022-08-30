@@ -2,32 +2,29 @@
 sidebar_position: 1
 ---
 
-Being More Terse
-==============================================================================
+# Being More Terse
 
 Ada is known for being more verbose than other languages because it prefers
-keywords over symbology.  These techniques can help you compact your Ada text
+keywords over symbology. These techniques can help you compact your Ada text
 where you need it.
 
-Expression Functions
---------------------
+## Expression Functions
 
-```ada     
-function "-"(V : Vec3) return Vec3 is 
-begin                                 
-    return (-V.X, -V.Y, -V.Z);        
+```ada
+function "-"(V : Vec3) return Vec3 is
+begin
+    return (-V.X, -V.Y, -V.Z);
 end "-";
 ```
 
-Functions can return expressions without using a full ``begin`` ... ``end``
-section.  Just wrap your expression in parentheses.
+Functions can return expressions without using a full `begin` ... `end`
+section. Just wrap your expression in parentheses.
 
-```ada                                     
+```ada
 function "-"(V : Vec3) return Vec3 is (-V.X, -V.Y, -V.Z);
 ```
 
-Don't repeat parameter types
-----------------------------
+## Don't repeat parameter types
 
 ```ada
 function Add (Left : Integer; Right : Integer)
@@ -36,54 +33,49 @@ function Add (Left : Integer; Right : Integer)
 
 If parameter types repeat, you can group them.
 
-```ada                                    
+```ada
 function Add (Left, Right : Integer)
     return Integer;
 ```
 
-Locally use packages
---------------------
-
+## Locally use packages
 
 ```ada
-procedure Test_Is_Quoted (Op : in out TT.Operation'Class) is                   
-begin                                                                          
-    Op.Register;                                                               
+procedure Test_Is_Quoted (Op : in out TT.Operation'Class) is
+begin
+    Op.Register;
     Op.Assert (not Is_Quoted (Ada.Characters.Latin_1.Quotation & "some text"));
 end Test_Is_Quoted;
 ```
-                                                  
-Using packages locally doesn't pollute your global namespace.                                
+
+Using packages locally doesn't pollute your global namespace.
 
 ```ada
-procedure Test_Is_Quoted (Op : in out TT.Operation'Class) is  
-    use Ada.Characters.Latin_1;                               
-begin                                                         
-    Op.Register;                                              
-    Op.Assert (not Is_Quoted (Quotation & "some text"));      
-end Test_Is_Quoted; -- Visibility of Latin_1 ends here.       
+procedure Test_Is_Quoted (Op : in out TT.Operation'Class) is
+    use Ada.Characters.Latin_1;
+begin
+    Op.Register;
+    Op.Assert (not Is_Quoted (Quotation & "some text"));
+end Test_Is_Quoted; -- Visibility of Latin_1 ends here.
 ```
 
-Abbreviate conversions functions
---------------------------------
+## Abbreviate conversions functions
 
 ```ada
-Toggles.Append(Ada.Strings.Unbounded.To_Unbounded_String("--verbose"));      
-Toggles.Append(Ada.Strings.Unbounded.To_Unbounded_String("--skip-errors"));                                                                                
+Toggles.Append(Ada.Strings.Unbounded.To_Unbounded_String("--verbose"));
+Toggles.Append(Ada.Strings.Unbounded.To_Unbounded_String("--skip-errors"));
 ```
-                                                                                
-The usage of ``"+"`` as a function to convert from ``String`` to
-``Ada.Strings.Unbounded.Unbounded_String`` is common:
 
+The usage of `"+"` as a function to convert from `String` to
+`Ada.Strings.Unbounded.Unbounded_String` is common:
 
 ```ada
 function "+"(S : String) return String renames Ada.Strings.Unbounded.To_Unbounded_String;
-Toggles.Append(+"--verbose");                                                            
+Toggles.Append(+"--verbose");
 Toggles.Append(+"--skip-errors");
 ```
 
-Use default parameters
-----------------------
+## Use default parameters
 
 ```ada
 S : Spinner := Make (In_Place, 1);
@@ -100,15 +92,13 @@ function Make (
 S : Spinner := Make;
 ```
 
-
-Rename functions with default parameters
-----------------------------------------
+## Rename functions with default parameters
 
 ```ada
 S : String := Ada.Strings.Fixed.Trim ("  this is a string   ", Ada.Strings.Both);
 ```
 
-You can ``rename`` a function with bound default parameters.
+You can `rename` a function with bound default parameters.
 
 ```ada
 function Strip(Input : String; Sides : Ada.Strings.Trim_End:= Ada.Strings.Both)
@@ -117,8 +107,7 @@ function Strip(Input : String; Sides : Ada.Strings.Trim_End:= Ada.Strings.Both)
 S : String := Strip ("  this is a string   ");
 ```
 
-Locally define helper functions
--------------------------------
+## Locally define helper functions
 
 ```ada
 procedure Test_Is_Quoted (Op : in out TT.Operation'Class) is
@@ -131,7 +120,7 @@ begin
 end Test_Is_Quoted;
 ```
 
-Using a locally defined helper function to simplify repeated local logic.  Note
+Using a locally defined helper function to simplify repeated local logic. Note
 that these local subprograms don't pollute the global namespace.
 
 ```ada
@@ -144,12 +133,11 @@ procedure Test_Is_Quoted (Op : in out TT.Operation'Class) is
 begin
     Op.Register;
     Not_Quoted ("");
-    Not_Quoted ("not quoted");        
+    Not_Quoted ("not quoted");
 end Test_Is_Quoted;
 ```
 
-Use package renames within ``package body``
--------------------------------------------
+## Use package renames within `package body`
 
 ```ada
 with Ada.Text_IO;
@@ -164,7 +152,7 @@ end Hello_World;
 ```
 
 Show indication of where subprograms come from while shortening the names used
-for them.  Names inside package bodies won't be visible.
+for them. Names inside package bodies won't be visible.
 
 ```ada
 with Ada.Text_IO;
@@ -180,9 +168,7 @@ package body Hello_World is
 end Hello_World;
 ```
 
-
-Use a package at file scope
----------------------------
+## Use a package at file scope
 
 ```ada
 with Ada.Text_IO;
@@ -197,8 +183,8 @@ end Hello_World;
 ```
 
 Some packages provide well-recognizable subprograms and hence cannot be confused
-easily.  When these symbols are used often, using the package at the file scope
-can cut down significantly on verboseness.  You're polluting the namespace
+easily. When these symbols are used often, using the package at the file scope
+can cut down significantly on verboseness. You're polluting the namespace
 heavily so this should be used judiciously.
 
 ```ada
@@ -213,12 +199,10 @@ package body Hello_World is
 end Hello_World;
 ```
 
-Provide abstraction without introducing more code
--------------------------------------------------
+## Provide abstraction without introducing more code
 
 You might not know how you want to use a subprogram, but still want to separate it
 from another one which could stand-in for it.
-
 
 ```ada
 package RT.Debug is
@@ -226,11 +210,10 @@ package RT.Debug is
 end RT.Debug;
 ```
 
-Rename complicated expressions 
-------------------------------
+## Rename complicated expressions
 
 Sometimes you might have long complicated expressions, which you can rename,
-which assigns their value when the renaming occurs.  This is not text 
+which assigns their value when the renaming occurs. This is not text
 substitution, so the initial value cannot be modified.
 
 ```ada
@@ -264,7 +247,7 @@ begin
     First := 7;
     Put_Line ("First changed to 7");
     Put_Line (First'Image);
-    Put_Line (Second'Image);   
+    Put_Line (Second'Image);
 end Sample;
 ```
 

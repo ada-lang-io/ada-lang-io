@@ -2,40 +2,35 @@
 sidebar_position: 2
 ---
 
+# Building Blocks
 
-Building Blocks
-==============================================================================
-
-Ada often uses different terminology than any of the languages I've used.  The
+Ada often uses different terminology than any of the languages I've used. The
 goal is an overview without jargon, the only Ada-specific terms necessary
 for this overview are "subprogram", which refers to functions and procedures, and
 "procedures" which in most C-like language would be a "function" which returns
 nothing (i.e. void).
 
-Packages, the Building Blocks of Ada
-==============================================================================
+# Packages, the Building Blocks of Ada
 
 Ada descends from Pascal, and yet uses many concepts already familiar to C or
-C++ programmers.  As a long time C++ programmer, I find Ada leverages the concepts
+C++ programmers. As a long time C++ programmer, I find Ada leverages the concepts
 I'm used to in more formal, and often compiler-checked ways.
 
-Types and Ada, The Elephant in the Room
-------------------------------------------------------------------------------
+## Types and Ada, The Elephant in the Room
 
 Ada emphasizes types, but their consistent use despite their complexity
-means I can ignore them for now.  Nearly every other Ada overview and tutorial
-focuses on them, but they're an incredibly deep topic in Ada.  Rather than get
+means I can ignore them for now. Nearly every other Ada overview and tutorial
+focuses on them, but they're an incredibly deep topic in Ada. Rather than get
 bogged down there, let's look at what Ada looks like and how programs are structured.
 
-Subprograms (functions and procedures)
-------------------------------------------------------------------------------
+## Subprograms (functions and procedures)
 
 Ada draws a line between functions, which return values, and procedures which
-do not return a value.  Collectively referred to as "subprograms", either of
-these may have input (``in``) and output (``out``) parameters, with parameters
-being allowed to also be both an input and output (``in out``).   ``in`` is
-optional for functions.  Note that parameters are separated by semicolons
-(``;``), not by commas (``,``).
+do not return a value. Collectively referred to as "subprograms", either of
+these may have input (`in`) and output (`out`) parameters, with parameters
+being allowed to also be both an input and output (`in out`). `in` is
+optional for functions. Note that parameters are separated by semicolons
+(`;`), not by commas (`,`).
 
 ```ada
 procedure Rectangle_Area(Width : in Float; Height : in Float; Area : out Float) is
@@ -49,7 +44,7 @@ begin
 end Rectangle_Area;
 ```
 
-Short functions may be written as expressions bounded by parentheses.  ``in`` is
+Short functions may be written as expressions bounded by parentheses. `in` is
 also optional for functions, and parameters with the same type can be grouped.
 
 ```ada
@@ -58,7 +53,7 @@ function Add (L, R : Float2) return Float2 is (L.X + R.X, L.Y + R.Y);
 ```
 
 Multiple subprograms can exist with the same name, so the one used is determined
-by the types of the parameters and also the returned type.  There are no implicit
+by the types of the parameters and also the returned type. There are no implicit
 conversions between floating point and integer types, which maximize clarity.
 
 ```ada
@@ -66,23 +61,21 @@ function Area (Width, Height : in Float) return Float is (Width * Height);
 function Area (Width, Height : in Integer) return Integer is (Width * Height);
 ```
 
-The basic operators can be overloaded as well.  Assignment (``:=``) is
+The basic operators can be overloaded as well. Assignment (`:=`) is
 not considered an operator, and therefore cannot be overloaded.
 
 ```ada
 function "+"(L, R : Float2) return Float2 is (L.X + R.X, L.Y + R.Y);
 ```
 
-
-Packages
-------------------------------------------------------------------------------
+## Packages
 
 As the fundamental building block of Ada, "packages" compose Ada programs,
 namespaces which exhibit the logical and physical interfaces in a manner
-similar to C++ header and source files.  Most languages don't have a concept
-of "physical interface"--it's things the compiler needs to know, but 
-are not part of the logical interface of the program, such as 
-size details for structs and classes.  
+similar to C++ header and source files. Most languages don't have a concept
+of "physical interface"--it's things the compiler needs to know, but
+are not part of the logical interface of the program, such as
+size details for structs and classes.
 
 Instead of a header files providing an informal spec and an associated source
 file being the translation unit, in Ada a package is roughly analogous to a
@@ -94,7 +87,7 @@ with their implementations ("bodies") in `*.adb` (Ada body) files, and only
 one top-level package specification or package body per file.
 
 Ada packages can also be nested and support visiblity rules for sharing details
-with child packages.  Child packages are given by dotted names; `A.B`
+with child packages. Child packages are given by dotted names; `A.B`
 is a child of package `A`.
 
 Packages can also contain initialization code for the package to run at program
@@ -103,26 +96,23 @@ dependencies in package start up order. This solves a specific C++ issue in
 which static initialization order is not known, while also offering the ability
 to avoid deferred first-time usage costs, such as with singletons.
 
-Ada uses "aspects" to denote additional properites of packages,  subprograms, and
-types.  Along with aspects, compiler pragmas allows description of initialization
+Ada uses "aspects" to denote additional properites of packages, subprograms, and
+types. Along with aspects, compiler pragmas allows description of initialization
 dependencies, as well as providing high level checks, such as `pragma Preelaborate`
 to ensure a package has no initialization, or the `with Pure` aspect to ensure
 that a package has no state and subprograms cannot have side effects.
 
-
-The Core Tenet of Ada
-------------------------------------------------------------------------------
+## The Core Tenet of Ada
 
 Program text must be clear without having to read ahead, referred to as:
-**"Linear elaboration of declarations"**.  A clear demarcation exists between
+**"Linear elaboration of declarations"**. A clear demarcation exists between
 declarations of things to exist and executable statements which use those things.
 
 The simplicity backing this is the ability to make any declaration, including
-types, variables, functions/procedures, and packages in any declaration block.  This means
+types, variables, functions/procedures, and packages in any declaration block. This means
 the basic rule of "declare, then use" repeats itself throughout the language,
 in `package/package body`, `task/task body`, subprograms, and executable blocks of code can have a
 `declare ... begin ... end` block.
-
 
 ```ada
 package P is
@@ -146,7 +136,7 @@ package body P is
     begin
         -- Executable statements go here.
         Ada.Text_IO.Put_Line("Hello, World!");
-        
+
         declare
             -- Declare a package here, inside the function, to show that you can.
             package Wat is
@@ -175,7 +165,7 @@ begin
 end P;
 ```
 
-This nesting of declarations very verbose.  It does however makes it straightforward to
+This nesting of declarations very verbose. It does however makes it straightforward to
 refactor out behavior while you're working on a subprogram and then you can extract
 the newly created components into more appropriate places when you're done.
 The inability to use statements in declarations causes me to sometimes rewrite
@@ -189,7 +179,6 @@ begin
     return F / L;
 end Normalize;
 ```
-
 
 ```ada
 function Evaluate
@@ -207,17 +196,17 @@ begin
 ```
 
 Ada does not provide separate syntactical units for classes, structs and
-namespaces.  Instead, packages contain types, constants and related subprograms.  
+namespaces. Instead, packages contain types, constants and related subprograms.  
 A lot of specialized syntax goes away due to
 this, for example there are no "member functions" and "class functions" and
 hence no specialized syntax for things like member function pointers or class
-function pointers exist.  Namespacing and overloading on parameters and/or the returned type determine
+function pointers exist. Namespacing and overloading on parameters and/or the returned type determine
 the subprogram called.
 
 What would be "member functions" in C++ have the "controlling type(s)" as the
-first parameter(s).  "`const` member functions" pass in the type as an `in` parameter,
-which are immutable.  "non-`const` member functions (methods)" pass in the type as an
-`in out` parameter, allowing the parameter to be modified.  This mirrors
+first parameter(s). "`const` member functions" pass in the type as an `in` parameter,
+which are immutable. "non-`const` member functions (methods)" pass in the type as an
+`in out` parameter, allowing the parameter to be modified. This mirrors
 Rust's notation wherein it reflects C++-like `const` behavior of member
 functions with `self`, `&self`, and `&mut self` as a first parameter.
 These are referred to as "primitive operations."

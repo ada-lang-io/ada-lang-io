@@ -52,6 +52,7 @@ Additional specification attached to a declaration, either related to its behavi
 Value or function attached to a type or object, which can be retrieved using the syntax Type'Attribute or Object'Attribute. For example, attributes First and Last denote the first and last indexes of a (constrained) array type, or of any array object.
 
 ### ATC
+
 "Asynchronous transfer of control"
 
 ### bounded error
@@ -63,6 +64,7 @@ The result of a violation of Ada program semantics, when the consequences of the
 An initial declaration for a type, constant, subprogram or package may be completed by a second declaration, called the completion of the initial declaration.
 
 ### component
+
 A record field or array element.
 
 ### configuration pragma
@@ -132,4 +134,3 @@ Expression to change the type of its argument, typically between different scala
 ### unchecked type conversion
 
 Blind conversion of a bit pattern from one type to another, using the predefined generic function Ada.Unchecked_Conversion which must be instantiated with the types of source and target.
-

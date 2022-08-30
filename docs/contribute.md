@@ -19,7 +19,7 @@ cd ada-lang-io
 yarn install
 ```
 
-3. Run the site locally.  This will open up your web browser to `http://localhost:3000.
+3. Run the site locally. This will open up your web browser to `http://localhost:3000.
 
 ```bash
 yarn start
@@ -30,6 +30,6 @@ It will update as you make changes.
 4. When you're satisfied with your work, send a [pull request][url-ghpr] to ask to
    have your work added.
 
-  [url-node]: https://nodejs.org/en/download/
-  [url-yarn]: https://yarnpkg.com/getting-started/install
-  [url-ghpr]: https://github.com/ada-lang-io/ada-lang-io/pulls
+[url-node]: https://nodejs.org/en/download/
+[url-yarn]: https://yarnpkg.com/getting-started/install
+[url-ghpr]: https://github.com/ada-lang-io/ada-lang-io/pulls

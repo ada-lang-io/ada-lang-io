@@ -4,8 +4,7 @@ sidebar_position: 1
 
 # Why Ada?
 
-Feature Overview
-==============================================================================
+# Feature Overview
 
 Covering every Ada feature would be dilute the conceptual overview of Ada, so
 related Ada-specific terminology is quoted in parentheses for those wanting to
@@ -34,7 +33,7 @@ Ada supports:
   "elaborate", "elaborate_body", "elaborate_all")
 - ML-style signatures ("packages", "generics")
 - Formal verification, by enabling `Spark_Mode` for parts of the program and
-  writing in SPARK, a language which is an Ada subset.  Think of this along the
+  writing in SPARK, a language which is an Ada subset. Think of this along the
   lines of using `extern "C"`, except for "provable" parts of your code base.
 
 Ada is missing:

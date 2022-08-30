@@ -19,7 +19,6 @@ which is a subset of Ada 2012 used for formal verification.
 
 ## Why?
 
-
 Ada's an obscure language.
 It's been around for decades and strong opinions about it existed in the past, but overall it seems forgotten outside its niche.
 When I mention I made things in it, I've gotten baffled responses of "That language is still around?"
@@ -29,38 +28,37 @@ I've written code in a variety of languages, but Ada by far is the most bizarre 
 My intent was to mess around with it for a few weekends and move on, but it wasn't the "dead language" I expected.
 There's been a lot of modernization in the last couple of years, which makes it a surprisingly modern language to work in.
 
-
 ## Resources
 
 These are listed in order of what I used:
 
-* [learn.adacore.com](https://learn.adacore.com/)
+- [learn.adacore.com](https://learn.adacore.com/)
 
-    * A good tutorial site.  It's enough to get you started.
+  - A good tutorial site. It's enough to get you started.
 
-* [John Barnes "Programming in Ada 2012"](https://www.amazon.com/Programming-Ada-2012-John-Barnes/dp/110742481X)
+- [John Barnes "Programming in Ada 2012"](https://www.amazon.com/Programming-Ada-2012-John-Barnes/dp/110742481X)
 
-    * Barnes works on several major Ada references, and this book walks through the language.
-      At over 700 pages, it took me abotu a month to get through.
+  - Barnes works on several major Ada references, and this book walks through the language.
+    At over 700 pages, it took me abotu a month to get through.
 
-    * This seems to be a common way Ada programmers get onboarded, and Ada programmers
-      stay updated.
+  - This seems to be a common way Ada programmers get onboarded, and Ada programmers
+    stay updated.
 
-* [Ada Language Wikibook](https://en.m.wikibooks.org/wiki/Ada_Programming)
+- [Ada Language Wikibook](https://en.m.wikibooks.org/wiki/Ada_Programming)
 
-    * This is exceptionally good and very complete.
-    
-* [Awesome-Ada](https://github.com/ohenley/awesome-ada)
+  - This is exceptionally good and very complete.
 
-    * A site with way more resources than I list here.
+- [Awesome-Ada](https://github.com/ohenley/awesome-ada)
 
-* [Ada Reference Manual](http://ada-auth.org/standards/rm12_w_tc1/RM-Final.pdf)
+  - A site with way more resources than I list here.
 
-    * Authoritative reference about how Ada **should** work.
-    
-* [Building High Integrity Applications with SPARK](https://www.amazon.com/Building-High-Integrity-Applications-SPARK/dp/1107656842/ref=sr_1_2?dchild=1&keywords=Building+High+Integrity+Applications+with+SPARK&qid=1630108759&s=books&sr=1-2)
+- [Ada Reference Manual](http://ada-auth.org/standards/rm12_w_tc1/RM-Final.pdf)
 
-    * It's ok, the first third of the book is an Ada crash couse before it gets into SPARK.
+  - Authoritative reference about how Ada **should** work.
+
+- [Building High Integrity Applications with SPARK](https://www.amazon.com/Building-High-Integrity-Applications-SPARK/dp/1107656842/ref=sr_1_2?dchild=1&keywords=Building+High+Integrity+Applications+with+SPARK&qid=1630108759&s=books&sr=1-2)
+
+  - It's ok, the first third of the book is an Ada crash couse before it gets into SPARK.
 
 ## Projects
 
@@ -92,13 +90,12 @@ alr run
 alr edit
 ```
 
-Before Alire, I had a a lot of confusion about "How do I use ______ project as a dependency?" and with Alire it's one command line and go.
+Before Alire, I had a a lot of confusion about "How do I use **\_\_** project as a dependency?" and with Alire it's one command line and go.
 
 ```bash
 # Add dir_iterators library
 alr with dir_iterators
 ```
-
 
 This tool only went to 1.0 since I've been working with Ada and it simplifies development considerably.
 Alire interfaces with the pre-existing tool [grpbuild](https://docs.adacore.com/gprbuild-docs/html/gprbuild_ug.html), which is a common interface into the GNAT ecosystem and tools.
@@ -123,25 +120,25 @@ Overall, Alire is a fantastic tool which makes working with Ada easy and I would
 
 ### GNAT
 
-The major Ada ecosystem is [GNAT](https://gcc.gnu.org/wiki/GNAT).  Yes, there supposedly are
+The major Ada ecosystem is [GNAT](https://gcc.gnu.org/wiki/GNAT). Yes, there supposedly are
 commercially supported compilers and [AdaCore offers paid support](https://www.adacore.com/gnatpro/comparison),
-but the Free Software Foundation (FSF) offers a Ada front-end to GCC.  This is usually referred to as "FSF GNAT".
+but the Free Software Foundation (FSF) offers a Ada front-end to GCC. This is usually referred to as "FSF GNAT".
 
-Can I use Ada for free?  Yes, if you can use GCC for your project, you can use Ada.
-You can grab the FSF GNAT toolchain with Alire 1.1 and ``alr toolchain --select gnat_native``.
+Can I use Ada for free? Yes, if you can use GCC for your project, you can use Ada.
+You can grab the FSF GNAT toolchain with Alire 1.1 and `alr toolchain --select gnat_native`.
 
 The entire ecosystem is designed around running tools from the command line, which allows editors
-and CI to use the same actions for behaviors.  For example, GNAT Studio just wraps many of the GNAT
-tools and it shows you the command line for the actions you want to use.  This acts as training wheels
+and CI to use the same actions for behaviors. For example, GNAT Studio just wraps many of the GNAT
+tools and it shows you the command line for the actions you want to use. This acts as training wheels
 if you want to get started quickly and then transition to using another editor,
 especially a terminal one like Emacs or Vim.
 
 There's a lot of parts to GNAT, which is a super deep dive I'm not interested in doing here.
-To give an idea, there's a formatter (``gnatpp``) and a document generator (``gnatdoc``).
+To give an idea, there's a formatter (`gnatpp`) and a document generator (`gnatdoc`).
 
-* [GNAT Reference Manual](https://gcc.gnu.org/onlinedocs/gcc-11.2.0/gnat_rm/)
+- [GNAT Reference Manual](https://gcc.gnu.org/onlinedocs/gcc-11.2.0/gnat_rm/)
 
-* [GNAT User's Guide for Native Platforms](https://gcc.gnu.org/onlinedocs/gcc-11.2.0/gnat_ugn/)
+- [GNAT User's Guide for Native Platforms](https://gcc.gnu.org/onlinedocs/gcc-11.2.0/gnat_ugn/)
 
 There is also an [LLVM frontend for Ada](https://github.com/AdaCore/gnat-llvm) in progress.
 It'd be exciting to see this integrated as a toolchain you can download with Alire.
@@ -152,11 +149,11 @@ If you believe reddit, editor usage is split roughly in thirds between GNAT Stud
 with Emacs/Vim balanced in the remaining third.
 
 The big editor is [GNAT Studio](https://github.com/AdaCore/gps),
-which used to be known as "GPS", and supports Ada, C and C++.  It comes bundled with GNAT Community
-Edition, but you can build and run it separately as well.  There's some quirky behavior,
+which used to be known as "GPS", and supports Ada, C and C++. It comes bundled with GNAT Community
+Edition, but you can build and run it separately as well. There's some quirky behavior,
 like `tab` indenting to where it thinks the indent should be and not actually inserting a tab,
-and some obscure keyboard shortcuts, but otherwise is a mature IDE experience.  You can make and
-export your own keybindings, [which I've done for Visual Studio](https://github.com/pyjarrett/gps_keybindings) 
+and some obscure keyboard shortcuts, but otherwise is a mature IDE experience. You can make and
+export your own keybindings, [which I've done for Visual Studio](https://github.com/pyjarrett/gps_keybindings)
 which I should probably contribute back at some point.
 
 There's also support for [Visual Studio code](https://www.reddit.com/r/ada/comments/p29o7r/tutorial_using_ada_in_vs_code/),
@@ -177,7 +174,7 @@ In general, I haven't had to mess with GPR configurations too much since Alire w
 
 This is the Alire side, describing the external values to set for gprbuild to do the "right thing."
 
-Just like in cargo, we have a ``.toml`` describing the build.
+Just like in cargo, we have a `.toml` describing the build.
 
 ```toml
 # alire.toml
@@ -207,7 +204,7 @@ end case;
 The online Ada community is exceptionally small.
 Online counts in [r/ada](https://www.reddit.com/r/ada/) hover in the mid twenties, compared to Rust's ~900, and seem to peak in the 50s.
 
-Despite the size, the community is extremely knowledgeable and 
+Despite the size, the community is extremely knowledgeable and
 there's a lot of folks with decades of Ada experience chomping at the bit to answer questions.
 This means Reddit and Stack Overflow answers regularly include the applicable language rule's section and paragraph from the Ada Reference Manual.
 
@@ -236,7 +233,7 @@ It's gone from "a quirky and sometimes clunky car" to feeling "modern."
 ## A Free-Function Focused C++, or a Strongly Typed C
 
 Ada focuses on creating packages of code which contain types and functions.
-There's no preprocessor, so instead of ``#include``, you ``with`` packages which contain what you need.
+There's no preprocessor, so instead of `#include`, you `with` packages which contain what you need.
 
 ```ada
 with RT.Vecs; -- depend on another package, RT.Vecs
@@ -370,7 +367,6 @@ Describing semantics goes all the way into primitive types, and the rules are co
 Creating lightweight types with domain-specific meaning, prevents mishandling of semantics on primitive types due to no implicit casting.
 Interfaces rarely use `Integer` or `Float` directly, instead you'll find semantic versions ("derived types") created such as "Meters" or "Kilometers".
 
-
 ```ada
 type Seconds is new Natural;
 type Milliseconds is new Natural;
@@ -416,7 +412,7 @@ Together, these attributes and iteration capability allow writing of generic cod
 ```ada
 with Ada.Unchecked_Conversion;
 
-type Filter_Action is (Keep, Exclude);    
+type Filter_Action is (Keep, Exclude);
 
 -- Specify internal values for the enumeration (optional).
 for Filter_Action use (
@@ -474,7 +470,6 @@ begin
 
     -- ...
 ```
-
 
 ### Pre- and Post-Conditions
 
@@ -605,7 +600,7 @@ function Shell_Split (S : Ada.Strings.Unbounded.Unbounded_String) return String_
 ## Low Level Control
 
 Accessing C functions and compiler intrinsics is straightforward.
-You create a declaration of the subprogram and then describe where it comes from using aspects or the ``Import`` pragma.
+You create a declaration of the subprogram and then describe where it comes from using aspects or the `Import` pragma.
 
 ```ada
 with Interfaces.C;
@@ -628,7 +623,7 @@ Inline assembler is also available, but due to the lack of a preprocessor, the b
 function File_Line return Natural;
 pragma Import (Intrinsic, File_Line, "__builtin_LINE");
 ```
-    
+
 Representation clauses allow you to match struct layout or binary formats such as for files.
 
 ```ada
@@ -655,7 +650,7 @@ end record;
 Ada suffers from a lack of familiarity for many programmers due to being a Pascal family language and also its peculiar, but very specific vocabulary.
 However, the usage of keywords over punctuation helps ease many problems of dealing with an unfamiliar language.
 While this helps with googling and a lot of terms appear in code, many are specific to, or have Ada-specific definitions.
-Examples are "accesses" (sort of like pointers), "accesibility" (similar to a scope for borrowing), 
+Examples are "accesses" (sort of like pointers), "accesibility" (similar to a scope for borrowing),
 "tagged types" (classes), "derived types" (unrelated to OOP), and "subprogram".
 
 ## Verboseness
