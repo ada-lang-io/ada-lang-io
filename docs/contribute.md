@@ -27,7 +27,13 @@ yarn start
 
 It will update as you make changes.
 
-4. When you're satisfied with your work, send a [pull request][url-ghpr] to ask to
+4. Install the postcommit hooks to format your code appropriately.
+
+```bash
+yarn postinstall
+```
+
+5. When you're satisfied with your work, send a [pull request][url-ghpr] to ask to
    have your work added.
 
 [url-node]: https://nodejs.org/en/download/
