@@ -1,0 +1,130 @@
+---
+sidebar_position: 1
+---
+
+# Advanced Techniques
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+## RAII
+
+Ada supports scope-based resources, also called [RAII](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization)
+by extending the `Controlled` or `LimitedControlled` types.
+
+<Tabs>
+<TabItem value="ada" label="Ada">
+
+```ada
+with Ada.Finalization;  use Ada.Finalization;
+package Sample is
+    -- "Controlled" types exhibit RAII behavior:
+    type Capricorn is new Controlled with
+    record
+        Dummy : Integer;
+    end record;
+
+    overriding procedure Initialize(C : in out Capricorn);
+        -- Initialization after creation.
+
+    overriding procedure Adjust(C : in out Capricorn);
+        -- Adjustment after assignment.
+
+    overriding procedure Finalize(C : in out Capricorn);
+        -- Different than Java's Finalize, in that it's deterministic and more
+        -- analogous to a C++ destructor.
+
+    -- If you don't want one of these do to anything, you can avoid writing a
+    -- definition in the package body and define the function as "do nothing"
+    -- by writing:
+    --
+    -- overriding procedure Finalize(C : in out Capricorn) is null;
+end Sample;
+
+package body Sample is
+    procedure Initialize(C : in out Capricorn) is
+    begin
+        -- Do something on initialize.
+    end Initialize;
+
+    procedure Adjust(C : in out Capricorn) is
+    begin
+        -- Adjustment after assignment.
+        --
+        -- If you want Adjust to do the same as Initialize and use the same object
+        -- code without generating a separate function, you can just do
+        -- procedure Adjust(C: in out Capricorn) renames Initialize;
+    end Adjust;
+
+    overriding procedure Finalize(C : in out Capricorn);
+        -- Different than Java's Finalize, in that it's deterministic and more
+        -- analogous to a C++ destructor.
+end Sample;
+```
+
+</TabItem>
+<TabItem value="cpp" label="C++">
+
+```cpp
+class Capricorn {
+public:
+// Similar for all constructors.
+Capricorn () {}
+
+// Copy constructor.
+Capricorn(const Capricorn&) {}
+
+// Move constructor.
+Capricorn(Capricorn&&) {}
+
+// Copy assignment.
+Capricorn& operator=(const Capricorn&) { return *this; }
+
+// Move assignment.
+Capricorn& operator=(Capricorn&&) { return *this; }
+
+// Destructor.
+~Capricorn () {}
+};
+```
+
+</TabItem>
+</Tabs>
+
+
+## Timing out on a Blocking Operation
+
+```ada
+task body My_Task is
+    Elem : A_Queue_Element;
+begin
+    loop -- processing loop
+        select
+            A_Queue.Blocking_Queue (Elem);
+        or
+            -- Stop processing after a 1 second timeout. Removing this delay causes
+            -- immediate exit if a block occurs.
+            delay 1.0;
+            exit;
+        end select;
+
+        -- ... process Elem ...
+    end loop
+end My_Task;
+```
+
+
+## Waiting for all tasks to complete
+
+A list of statements doesn't exit until all tasks are complete, so by using
+`declare ... begin ... end` you can wait until all your tasks are done.
+
+```ada
+declare
+    A_Task : My_Task;  -- task which needs to finish before more processing
+begin
+    null; -- Just wait until the task is done.
+end;
+
+-- Continue other operations here.
+```
