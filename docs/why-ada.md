@@ -32,7 +32,7 @@ Ada supports:
 - Deterministic and configurable static initialization order ("preelaborate",
   "elaborate", "elaborate_body", "elaborate_all")
 - ML-style signatures ("packages", "generics")
-- Formal verification, by enabling `Spark_Mode` for parts of the program and
+- Formal verification, by enabling `SPARK_Mode` for parts of the program and
   writing in SPARK, a language which is an Ada subset. Think of this along the
   lines of using `extern "C"`, except for "provable" parts of your code base.
 

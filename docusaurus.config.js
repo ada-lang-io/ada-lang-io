@@ -52,8 +52,12 @@ const config = {
         title: "Ada",
         logo: {
           alt: "Ada",
-          src: "img/ada_saw_coin.svg"
+          src: "img/ada_saw_coin.svg",
+          width: 32,
+          height: 32
         },
+        hideOnScroll: true,
+        style: "dark",
         items: [
           {
             type: "doc",
@@ -88,7 +92,7 @@ const config = {
                 to: "https://learn.adacore.com"
               },
               {
-                label: "Learn Spark (by AdaCore)",
+                label: "Learn SPARK (by AdaCore)",
                 to: "https://learn.adacore.com/courses/intro-to-spark/index.html"
               }
             ]
