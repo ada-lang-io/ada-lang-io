@@ -10,65 +10,22 @@ import Tabs from "@theme/Tabs"
 
 import HomepageFeatures from "@site/src/components/HomepageFeatures"
 
+import sampleA from "!!raw-loader!./code-basic.adb"
+import sampleC from "!!raw-loader!./code-rp2040.adb"
+import sampleB from "!!raw-loader!./code-spark.ads"
 import clsx from "clsx"
 
 import styles from "./index.module.css"
 
-const sampleA = `with Ada.Text_IO;
-
-procedure Main is
-   type GUID is new String (1 .. 32)
-     with Dynamic_Predicate => (for all C of GUID => C in '0' .. '9' | 'a' .. 'f');
-
-   ID_1 : constant GUID := "030000004c050000cc09000011810000";
-begin
-   Ada.Text_IO.Put_Line ("Reading from device " & String (ID_1) & "...");
-end Main;
-`
-
-// https://github.com/onox/xoshiro/blob/master/src/xoshiro128.ads
+// sampleB from src/xoshiro128.ads in https://github.com/onox/xoshiro
 //
 // Copyright (c) 2022 onox
 // SPDX-License-Identifier: Apache-2.0
-const sampleB = `with Interfaces;
 
-package Xoshiro128 with Pure, SPARK_Mode => On is
-   use type Interfaces.Unsigned_64;
-
-   type Generator is limited private;
-
-   procedure Next (S : in out Generator; Value : out Interfaces.Unsigned_32)
-     with Global  => null,
-          Depends => (S => S, Value => S);
-
-   procedure Reset (S : out Generator; Seed : Interfaces.Unsigned_64)
-     with Global  => null,
-          Depends => (S => Seed),
-          Pre     => Seed /= 0;
-
-private
-   type Generator is array (0 .. 3) of Interfaces.Unsigned_32;
-end Xoshiro128;`
-
-// https://github.com/JeremyGrosser/pico_examples/blob/master/ravenscar_blink/src/main.adb
+// sampleC from ravenscar_blink/src/main.adb in https://github.com/JeremyGrosser/pico_examples
 //
 // Copyright (c) 2021 Jeremy Grosser
 // SPDX-License-Identifier: BSD-3-Clause
-const sampleC = `with RP.GPIO;
-with Pico;
-
-procedure Main is
-begin
-   RP.GPIO.Enable;
-
-   Pico.LED.Configure (RP.GPIO.Output);
-   Pico.LED.Set;
-
-   loop
-      Pico.LED.Toggle;
-      delay 0.1;
-   end loop;
-end Main;`
 
 const targets = [
   ["Win", "windows"],
