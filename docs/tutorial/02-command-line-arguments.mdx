@@ -1,0 +1,350 @@
+---
+sidebar_position: 2
+---
+
+# Lesson 2: Command Line Arguments
+
+You're going to print a program that prints the words you give it.
+
+No program runs in isolation, so these inputs are going to be given as
+additional values when you start the program.  These "command line arguments"
+are a common element used when starting programs to change its behavior
+depending on what you feed it.
+
+This is the first step toward making usable programs.
+
+You've already been using command line arguments!  When you've been running
+`alr` on the terminal, you are running the Alire program and the things which
+follow are command line arguments.
+
+## Objectives
+
+1. Write a code comment.
+2. Use command line arguments.
+3. Create a `for` loop.
+
+## Start a new project
+
+Let's start another project.
+
+```bash
+$ alr init --bin command_line_arguments
+$ cd command_line_arguments
+```
+
+You'll notice this time that the name of the `gpr` file is now
+`command_line_arguments.gpr` and that the only `.adb` file is now called
+`command_line_arguments.adb`. Open up `command_line_arguments.adb` to get
+started.
+
+## Remembering from last time
+
+See if you can print a hello message with what you learned from the last
+lesson.
+
+Remember, you want to print a line of text and that capability is within Ada's
+Text Input/Output package of `Ada.Text_IO`.  Bring that package in as a
+dependency using `with` and then print a hello message.
+
+What you have should look something along the lines of this:
+
+```ada
+with Ada.Text_IO;
+
+procedure Calculate_Sum is
+begin
+   Ada.Text_IO.Put_Line ("Hello, World!");
+end Calculate_Sum;
+```
+
+## Comments in code
+
+Most programming languages have a way of writing things in your code that the
+computer will ignore.  Usually these are called "comments."  Programmers use
+them to write notes for themselves for other programmers in the code to describe
+why things are done a certain way, indicate tricky spots, or remind themselves of
+additional work to do.
+
+Ada comments start with two dashes (negative signs) and continue to the end of
+the line, and so are called "line comments".  Your text editor might highlight
+the comment a different color to show that it's a comment.
+
+I'm going to annotate the above program with comments -- none of the
+things I added change the meaning of the program, from the computer's point of
+view.
+
+```ada
+--  This is the context clause.
+--  We're describing how we depend on the Ada package, and in particular,
+--  the Text_IO package inside of the Ada package.  The period (also called a
+--  "full stop") indicates that the thing on the right is contained in the
+--  thing on the left.
+with Ada.Text_IO;
+
+--  Our program starts here.
+procedure Hello_Lucy is
+  --  This is where we'd describe places to save information, called
+  -- "variables" if they can change, and "constants" if they cannot.
+  --  There's a few other things we can put here which we won't talk about
+  --  yet.
+begin  --  The program begins executing statements here
+   Ada.Text_IO.Put_Line ("Hello, World!");  --  Say hello to the world
+end Hello_Lucy; --  end of the program
+--  This line is after the program.
+```
+
+## Making the command line available
+
+The command line elements are available in the `Command_Line` package
+within the `Ada` package.  Make that package available by adding a `with`
+in the context clause, at the start of your program.
+
+```ada
+with Ada.Command_Line;
+```
+
+There's two functions that you care about in the `Ada.Command_Line` package.
+One called `Argument_Count`, which gives the number of arguments fed to the
+program, and another called `Argument` that gives you back the argument based
+on a number you give it.
+
+## Using every argument by looping
+
+You want to loop over all of the arguments, starting at the first one, and then
+each until you've printed all of them.  To do this, you'll use a `for` loop.
+This is a type of "control flow statement" that repeats the steps inside a specific
+number of times.
+
+Roughly, something like this:
+
+```ada
+for Next in First_Value .. Last_Value loop
+   -- these steps
+   -- happen until
+   -- the count
+   -- reaches the value
+end loop;
+```
+
+This is what it breaks down to:
+
+- `for` - this loop is going to run over a bunch of individual items
+- `Next` - the name you're the next item which is changing each round the loop runs
+- `in` - you're looping over a number of values, given by a range.
+- `First_Value` - the first number in the sequence
+- `..` - this indicates a range from the value on the left, to the value on the right.
+- `Last_Value` - the last value in the sequence.
+- `loop` - what follows are the step which will happen every round the loop is run
+- `end loop;` - indicates the end of the loop
+
+You want to start at the number 1 for the first argument, with the last value
+begin the total number of arguments, `Ada.Command_Line.Argument_Count.`  The
+next value being used with be available with the identifier, `Next`.
+
+```ada
+for Next in 1 .. Ada.Command_Line.Argument_Count loop
+
+end loop;
+```
+
+This doesn't do anything yet.  You'll want to print the argument.  Instead of
+giving `Put_Line` a greeting in double quotes, you'll just pass the "index" as
+a "parameter" to the `Argument` function.
+
+```ada
+with Ada.Command_Line;
+with Ada.Text_IO;
+
+procedure Command_Line_Arguments is
+begin
+   for Next in 1 .. Ada.Command_Line.Argument_Count loop
+      Ada.Text_IO.Put_Line (Ada.Command_Line.Argument (Next));
+   end loop;
+end Command_Line_Arguments;
+```
+
+If you try to run this program, nothing seems to happen though!
+
+```bash
+$ alr run
+```
+
+```text
+alr run
+Note: Building command_line_arguments/command_line_arguments.gpr...
+Compile
+   [Ada]          command_line_arguments.adb
+Bind
+   [gprbind]      command_line_arguments.bexch
+   [Ada]          command_line_arguments.ali
+Link
+   [link]         command_line_arguments.adb
+Build finished successfully in 1.07 seconds.
+```
+
+You're running your program by telling Alire to run the program for you.
+You provided the "run" command line argument to Alire, but it used that
+and didn't tell your program anything.
+
+If you've been paying extra attention, you've noticed that a directory with
+the funny name of `bin/` appears after you run `alr build` or `alr run`.  This
+is where the executable for our program is actually hiding, it'll be called
+`command_line_arguments` on Linux or Mac, or `command_line_arguments.exe` on
+Windows.   You can try running this program directly with some extra words to
+print:
+
+```
+$ ./bin/command_line_arguments.exe will Ada print these words?
+```
+
+:::note
+The `.` at the front means "the current directory."  Terminals use this to
+indicate that the program being run is relative to your current location.
+
+If you're on Windows, you'll be using back slashes (`\`) instead of forward
+slashes (`/`).
+:::
+
+```text
+will
+Ada
+print
+these
+words?
+```
+
+## Command line arguments with Alire
+
+OK, so we know that it works, but how do you make it work when you run it via
+Alire?  It's a good bet that Alire is looking at the command line arguments
+given to it and that there's probably a way to pass along the arguments to the
+program it's running.
+
+You can ask Alire about what it can do with the `run` command , with:
+
+```bash
+$ alr help run
+```
+
+```text
+SUMMARY
+   Launch an executable built by the release
+
+USAGE
+   alr run [options] [executable] [--args=ARGS] [--skip-build] | [--list]
+
+OPTIONS
+   -a (--args=ARGS)   Arguments to pass through (quote them if more than one)
+   --list             List executables produced by current release
+   -s (--skip-build)  Skip building step
+
+GLOBAL OPTIONS
+   -c (--config=ARG)       Override configuration folder location
+   -f (--force)            Keep going after a recoverable troublesome situation
+   -h (--help)             Display general or command-specific help
+   -n (--non-interactive)  Assume default answers for all user prompts
+   --no-color              Disables colors in output
+   --no-tty                Disables control characters in output
+   --prefer-oldest         Prefer oldest versions instead of newest when resolving dependencies
+   --version               Displays version and exits
+   -q                      Limit output to errors
+   -v                      Be more verbose (use twice for extra detail)
+   -d (--debug[])          Enable debug-specific log messages
+
+DESCRIPTION
+   Compiles the crate (unless --skip-build is specified) and then executes the
+   default or given resulting executable.
+
+   With --list, a list of declared executables is produced instead of invoking
+   the compiler, and its location (if already built) is given.
+```
+
+That `ARGS` looks promising, this is how you'd use it.  You need to put your
+arguments inside double quotes so the terminal feeds all of them to your
+program as a whole.
+
+```
+$ alr run --args="will Ada print these words?"
+```
+
+```text
+Note: Building command_line_arguments/command_line_arguments.gpr...
+gprbuild: "command_line_arguments.exe" up to date
+Build finished successfully in 0.69 seconds.
+will
+Ada
+print
+these
+words?
+```
+
+Neat!
+
+As a little exercise, how would you print them backwards?
+
+You want to flip the two values at the end of the range, but the way ranges
+are written in Ada, you can't actually do it that way.  It'd be nice if you
+could just tell it to `reverse` the order... and you can!
+
+If we just add a `reverse` to that for loop...
+
+```ada
+for Next in reverse 1 .. Ada.Command_Line.Argument_Count loop
+```
+
+It prints in reverse!
+
+```text
+Note: Building command_line_arguments/command_line_arguments.gpr...
+Compile
+   [Ada]          command_line_arguments.adb
+Bind
+   [gprbind]      command_line_arguments.bexch
+   [Ada]          command_line_arguments.ali
+Link
+   [link]         command_line_arguments.adb
+Build finished successfully in 1.10 seconds.
+words?
+these
+print
+Ada
+will
+```
+
+## Recap
+
+1. Code comments lets us add notes to our programs that the computer ignores.
+In Ada, these start with two dashes and then everything until the end of the
+line is ignored:
+
+```ada
+    -- This is a code comment!  Everything after the dashes is ignored.
+```
+
+2. Command line arguments let you feed a program data when you start it.
+When you run your program directly, you'd write:
+
+```bash
+$ ./bin/my_program these are some command line arguments
+```
+
+When running with Alire, it's a little special since you're asking Alire to hand
+off those arguments, so you put them in quotes:
+
+```bash
+$ alr run --args="will Ada print these words?"
+```
+
+3. For loops can be used to do the same steps a certain number of times, given
+by a range.  You can reverse the order by adding the word `reverse`.
+
+```
+for Next in First_Value .. Last_Value loop
+   -- Do these steps.
+end loop;
+```
+
+## Need help?
+
+Go to the [Ada language gitter](https://gitter.im/ada-lang/Lobby) if you have
+questions or need help.
