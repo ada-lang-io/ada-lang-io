@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkada_lang_io=self.webpackChunkada_lang_io||[]).push([[2535],{5641:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Welcome","permalink":"/blog/welcome"},{"title":"Summary After Four Months with Ada","permalink":"/blog/summary-after-four-months-with-ada"}]}')}}]);
