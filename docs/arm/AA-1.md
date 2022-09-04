@@ -183,7 +183,7 @@ Annex P, "Syntax Summary"
 
 Discussion: The idea of the Specialized Needs Annexes is that implementations can choose to target certain application areas. For example, an implementation specifically targeted to embedded machines might support the application-specific features for Real-time Systems, but not the application-specific features for Information Systems.
 
-The Specialized Needs Annexes extend the core language only in ways that users, implementations, and standards bodies are allowed to extend the language; for example, via additional library units, attributes, representation items (see 13.1), [pragma](S0016)s, and constraints on semantic details that are left unspecified by the core language. Many implementations already provide much of the functionality defined by Specialized Needs Annexes; our goal is to increase uniformity among implementations by defining standard ways of providing the functionality.
+The Specialized Needs Annexes extend the core language only in ways that users, implementations, and standards bodies are allowed to extend the language; for example, via additional library units, attributes, representation items (see 13.1), pragmas, and constraints on semantic details that are left unspecified by the core language. Many implementations already provide much of the functionality defined by Specialized Needs Annexes; our goal is to increase uniformity among implementations by defining standard ways of providing the functionality.
 
 We recommend that the validation procedures allow implementations to validate the core language, plus any set of the Specialized Needs Annexes. We recommend that implementations not be allowed to validate a portion of one of the Specialized Needs Annexes, although implementations can, of course, provide unvalidated support for such portions. We have designed the Specialized Needs Annexes assuming that this recommendation is followed. Thus, our decisions about what to include and what not to include in those annexes are based on the assumption that each annex is validated in an "all-or-nothing" manner.
 
@@ -214,7 +214,7 @@ Compile-time rules that are used in name resolution, including overload resoluti
 
 Discussion: These rules are observed at compile time. (We say "observed" rather than "checked", because these rules are not individually checked. They are really just part of the Legality Rules in Section 8 that require exactly one interpretation of each constituent of a complete context.) The only rules used in overload resolution are the Syntax Rules and the Name Resolution Rules.
 
-When dealing with nonoverloadable declarations it sometimes makes no semantic difference whether a given rule is a Name Resolution Rule or a Legality Rule, and it is sometimes difficult to decide which it should be. We generally make a given rule a Name Resolution Rule only if it has to be. For example, "The [name](S0084), if any, in a [raise_statement](S0235) shall be the [name](S0084) of an exception." is under "Legality Rules." 
+When dealing with nonoverloadable declarations it sometimes makes no semantic difference whether a given rule is a Name Resolution Rule or a Legality Rule, and it is sometimes difficult to decide which it should be. We generally make a given rule a Name Resolution Rule only if it has to be. For example, "The name, if any, in a raise_statement shall be the name of an exception." is under "Legality Rules." 
 
 
 #### Legality Rules
@@ -237,14 +237,14 @@ Discussion: The most important compile-time effects represent the effects on the
 
 Rules that are enforced before running a partition. A partition is legal if its compilation units are legal and it obeys all of the Post-Compilation Rules. 
 
-Discussion: It is not specified exactly when these rules are checked, so long as they are checked for any given partition before that partition starts running. An implementation may choose to check some such rules at compile time, and reject [compilation_unit](S0215)s accordingly. Alternatively, an implementation may check such rules when the partition is created (usually known as "link time"), or when the partition is mapped to a particular piece of hardware (but before the partition starts running). 
+Discussion: It is not specified exactly when these rules are checked, so long as they are checked for any given partition before that partition starts running. An implementation may choose to check some such rules at compile time, and reject compilation_units accordingly. Alternatively, an implementation may check such rules when the partition is created (usually known as "link time"), or when the partition is mapped to a particular piece of hardware (but before the partition starts running). 
 
 
 #### Dynamic Semantics
 
 A definition of the run-time effect of each construct. 
 
-Discussion: This heading describes what happens at run time. runtime checks, which raise exceptions upon failure, are described here. Each item that involves a runtime check is marked with the name of the check - these are the same check names that are used in a [pragma](S0016) Suppress. Principle: Every check should have a name, usable in a [pragma](S0016) Suppress. 
+Discussion: This heading describes what happens at run time. runtime checks, which raise exceptions upon failure, are described here. Each item that involves a runtime check is marked with the name of the check - these are the same check names that are used in a pragma Suppress. Principle: Every check should have a name, usable in a pragma Suppress. 
 
 
 #### Bounded (Run-Time) Errors
@@ -365,7 +365,7 @@ Identify all programs or program units that contain errors whose detection is re
 
 Discussion: Note that we no longer use the term "rejection" of programs or program units. We require that programs or program units with errors or that exceed some capacity limit be "identified". The way in which errors or capacity problems are reported is not specified.
 
-An implementation is allowed to use standard error-recovery techniques. We do not disallow such techniques from being used across [compilation_unit](S0215) or [compilation](S0214) boundaries.
+An implementation is allowed to use standard error-recovery techniques. We do not disallow such techniques from being used across compilation_unit or compilation boundaries.
 
 See also the Implementation Requirements of 10.2, which disallow the execution of illegal partitions.
 
@@ -373,7 +373,7 @@ Supply all language-defined library units required by this Reference Manual;
 
 Implementation Note: An implementation cannot add to or modify the visible part of a language-defined library unit, except where such permission is explicitly granted, unless such modifications are semantically neutral with respect to the client compilation units of the library unit. An implementation defines the contents of the private part and body of language-defined library units.
 
-An implementation can add [with_clause](S0223)s and [use_clause](S0166)s, since these modifications are semantically neutral to clients. (The implementation might need [with_clause](S0223)s in order to implement the private part, for example.) Similarly, an implementation can add a private part even in cases where a private part is not shown in the Reference Manual. Explicit declarations can be provided implicitly or by renaming, provided the changes are semantically neutral.
+An implementation can add with_clauses and use_clauses, since these modifications are semantically neutral to clients. (The implementation might need with_clauses in order to implement the private part, for example.) Similarly, an implementation can add a private part even in cases where a private part is not shown in the Reference Manual. Explicit declarations can be provided implicitly or by renaming, provided the changes are semantically neutral.
 
 Wherever in the Reference Manual the text of a language-defined library unit contains an italicized phrase starting with "implementation-defined", the implementation's version will replace that phrase with some implementation-defined text that is syntactically legal at that place, and follows any other applicable rules.
 
@@ -391,9 +391,9 @@ The external effect of the execution of an Ada program is defined in terms of it
 
 Any interaction with an external file (see A.7);
 
-The execution of certain [code_statement](S0273)s (see 13.8); which [code_statement](S0273)s cause external interactions is implementation defined. 
+The execution of certain code_statements (see 13.8); which code_statements cause external interactions is implementation defined. 
 
-Implementation defined: Which [code_statement](S0273)s cause external interactions.
+Implementation defined: Which code_statements cause external interactions.
 
 Any call on an imported subprogram (see Annex B), including any parameters passed to it;
 
@@ -405,7 +405,7 @@ Discussion: By "result returned" we mean to include function results and values 
 
 The values of imported and exported objects (see Annex B) at the time of any other interaction with the external environment. 
 
-To be honest: Also other uses of imported and exported entities, as defined by the implementation, if the implementation supports such [pragma](S0016)s. 
+To be honest: Also other uses of imported and exported entities, as defined by the implementation, if the implementation supports such pragmas. 
 
 A conforming implementation of this Reference Manual shall produce for the execution of a given Ada program a set of interactions with the external environment whose order and timing are consistent with the definitions and requirements of this Reference Manual for the semantics of the given program. 
 
@@ -415,7 +415,7 @@ Discussion: See also 11.6 which specifies various liberties associated with opti
 
 Note also that we only require "an appropriate sequence of external interactions" rather than "the same sequence..." An optimizer may cause a different sequence of external interactions to be produced than would be produced without the optimizer, so long as the new sequence still satisfies the requirements of the standard. For example, optimization might affect the relative rate of progress of two concurrent tasks, thereby altering the order in which two external interactions occur.
 
-Note that RM83 explicitly mentions the case of an "exact effect" of a program, but since so few programs have their effects defined that exactly, we don't even mention this "special" case. In particular, almost any program that uses floating point or tasking has to have some level of inexactness in the specification of its effects. And if one includes aspects of the timing of the external interactions in the external effect of the program (as is appropriate for a real-time language), no "exact effect" can be specified. For example, if two external interactions initiated by a single task are separated by a "delay 1.0;" then the language rules imply that the two external interactions have to be separated in time by at least one second, as defined by the clock associated with the [delay_relative_statement](S0198). This in turn implies that the time at which an external interaction occurs is part of the characterization of the external interaction, at least in some cases, again making the specification of the required "exact effect" impractical. 
+Note that RM83 explicitly mentions the case of an "exact effect" of a program, but since so few programs have their effects defined that exactly, we don't even mention this "special" case. In particular, almost any program that uses floating point or tasking has to have some level of inexactness in the specification of its effects. And if one includes aspects of the timing of the external interactions in the external effect of the program (as is appropriate for a real-time language), no "exact effect" can be specified. For example, if two external interactions initiated by a single task are separated by a "delay 1.0;" then the language rules imply that the two external interactions have to be separated in time by at least one second, as defined by the clock associated with the delay_relative_statement. This in turn implies that the time at which an external interaction occurs is part of the characterization of the external interaction, at least in some cases, again making the specification of the required "exact effect" impractical. 
 
 An implementation that conforms to this Reference Manual shall support each capability required by the core language as specified. In addition, an implementation that conforms to this Reference Manual may conform to one or more Specialized Needs Annexes (or to none). Conformance to a Specialized Needs Annex means that each capability required by the Annex is provided as specified. 
 
@@ -469,7 +469,7 @@ The context-free syntax of the language is described using a simple variant of B
 
 Lower case words in a sans-serif font, some containing embedded underlines, are used to denote syntactic categories, for example: 
 
-[case_statement](S0133)
+case_statement
 
 Boldface words are used to denote reserved words, for example: 
 
@@ -477,34 +477,34 @@ array
 
 Square brackets enclose optional items. Thus the two following rules are equivalent. 
 
-[return_statement](S0160) ::= return [[expression](S0108)];
-[return_statement](S0160) ::= return; | return [expression](S0108);
+return_statement ::= return [expression];
+return_statement ::= return; | return expression;
 
 Curly brackets enclose a repeated item. The item may appear zero or more times; the repetitions occur from left to right as with an equivalent left-recursive rule. Thus the two following rules are equivalent. 
 
-[term](S0111) ::= [factor](S0112) {[multiplying_operator](S0118) [factor](S0112)}
-[term](S0111) ::= [factor](S0112) | [term](S0111) [multiplying_operator](S0118) [factor](S0112)
+term ::= factor {multiplying_operator factor}
+term ::= factor | term multiplying_operator factor
 
 A vertical line separates alternative items unless it occurs immediately after an opening curly bracket, in which case it stands for itself: 
 
-[constraint](S0026) ::= [scalar_constraint](S0027) | [composite_constraint](S0028)
-[discrete_choice_list](S0070) ::= [discrete_choice](S0071) {| [discrete_choice](S0071)}
+constraint ::= scalar_constraint | composite_constraint
+discrete_choice_list ::= discrete_choice {| discrete_choice}
 
-If the name of any syntactic category starts with an italicized part, it is equivalent to the category name without the italicized part. The italicized part is intended to convey some semantic information. For example subtype_[name](S0084) and task_[name](S0084) are both equivalent to [name](S0084) alone. 
+If the name of any syntactic category starts with an italicized part, it is equivalent to the category name without the italicized part. The italicized part is intended to convey some semantic information. For example subtype_name and task_name are both equivalent to name alone. 
 
 Discussion: The grammar given in the RM95 is not LR(1). In fact, it is ambiguous; the ambiguities are resolved by the overload resolution rules (see 8.6).
 
 We often use "if" to mean "if and only if" in definitions. For example, if we define "photogenic" by saying, "A type is photogenic if it has the following properties...", we mean that a type is photogenic if and only if it has those properties. It is usually clear from the context, and adding the "and only if" seems too cumbersome.
 
-When we say, for example, "a [declarative_item](S0080) of a [declarative_part](S0079)", we are talking about a [declarative_item](S0080) immediately within that [declarative_part](S0079). When we say "a [declarative_item](S0080) in, or within, a [declarative_part](S0079)", we are talking about a [declarative_item](S0080) anywhere in the [declarative_part](S0079), possibly deeply nested within other [declarative_part](S0079)s. (This notation doesn't work very well for [name](S0084)s, since the name "of" something also has another meaning.)
+When we say, for example, "a declarative_item of a declarative_part", we are talking about a declarative_item immediately within that declarative_part. When we say "a declarative_item in, or within, a declarative_part", we are talking about a declarative_item anywhere in the declarative_part, possibly deeply nested within other declarative_parts. (This notation doesn't work very well for names, since the name "of" something also has another meaning.)
 
-When we refer to the name of a language-defined entity (for example, Duration), we mean the language-defined entity even in programs where the declaration of the language-defined entity is hidden by another declaration. For example, when we say that the expected type for the [expression](S0108) of a [delay_relative_statement](S0198) is Duration, we mean the language-defined type Duration that is declared in Standard, not some type Duration the user might have declared. 
+When we refer to the name of a language-defined entity (for example, Duration), we mean the language-defined entity even in programs where the declaration of the language-defined entity is hidden by another declaration. For example, when we say that the expected type for the expression of a delay_relative_statement is Duration, we mean the language-defined type Duration that is declared in Standard, not some type Duration the user might have declared. 
 
 A syntactic category is a nonterminal in the grammar defined in BNF under "Syntax". Names of syntactic categories are set in a different font, like_this. 
 
 A construct is a piece of text (explicit or implicit) that is an instance of a syntactic category defined under "Syntax". Version=[5],Kind=(AddedNormal),Group=[C],Term=[construct], Def=[a piece of text (explicit or implicit) that is an instance of a syntactic category defined under Syntax] 
 
-Ramification: For example, an [expression](S0108) is a construct. A declaration is a construct, whereas the thing declared by a declaration is an "entity". 
+Ramification: For example, an expression is a construct. A declaration is a construct, whereas the thing declared by a declaration is an "entity". 
 
 Discussion: "Explicit" and "implicit" don't mean exactly what you might think they mean: The text of an instance of a generic is considered explicit, even though it does not appear explicitly (in the nontechnical sense) in the program text, and even though its meaning is not defined entirely in terms of that text. 
 
@@ -520,16 +520,16 @@ There is no requirement that the implementation always choose the same order in 
 
 Reason: The "sequential order" wording is intended to allow the programmer to rely on "benign" side effects. For example, if F is a function that returns a unique integer by incrementing some global and returning the result, a call such as P(F, F) is OK if the programmer cares only that the two results of F are unique; the two calls of F cannot be executed in parallel, unless the compiler can prove that parallel execution is equivalent to some sequential order. 
 
-NOTE 2   The syntax rules describing structured constructs are presented in a form that corresponds to the recommended paragraphing. For example, an [if_statement](S0131) is defined as: 
+NOTE 2   The syntax rules describing structured constructs are presented in a form that corresponds to the recommended paragraphing. For example, an if_statement is defined as: 
 
 ```ada
-[if_statement](S0131) ::=
-    if [condition](S0132) then
-      [sequence_of_statements](S0123)
-   {elsif [condition](S0132) then
-      [sequence_of_statements](S0123)}
+if_statement ::=
+    if condition then
+      sequence_of_statements
+   {elsif condition then
+      sequence_of_statements}
    [else
-      [sequence_of_statements](S0123)]
+      sequence_of_statements]
     end if;
 
 ```
@@ -572,7 +572,7 @@ Saying that something is erroneous is semantically equivalent to saying that the
 
 #### Implementation Permissions
 
-[ An implementation may provide nonstandard modes of operation. Typically these modes would be selected by a [pragma](S0016) or by a command line switch when the compiler is invoked. When operating in a nonstandard mode, the implementation may reject [compilation_unit](S0215)s that do not conform to additional requirements associated with the mode, such as an excessive number of warnings or violation of coding style guidelines. Similarly, in a nonstandard mode, the implementation may apply special optimizations or alternative algorithms that are only meaningful for programs that satisfy certain criteria specified by the implementation. In any case, an implementation shall support a standard mode that conforms to the requirements of this Reference Manual; in particular, in the standard mode, all legal [compilation_unit](S0215)s shall be accepted.] 
+[ An implementation may provide nonstandard modes of operation. Typically these modes would be selected by a pragma or by a command line switch when the compiler is invoked. When operating in a nonstandard mode, the implementation may reject compilation_units that do not conform to additional requirements associated with the mode, such as an excessive number of warnings or violation of coding style guidelines. Similarly, in a nonstandard mode, the implementation may apply special optimizations or alternative algorithms that are only meaningful for programs that satisfy certain criteria specified by the implementation. In any case, an implementation shall support a standard mode that conforms to the requirements of this Reference Manual; in particular, in the standard mode, all legal compilation_units shall be accepted.] 
 
 Discussion: These permissions are designed to authorize explicitly the support for alternative modes. Of course, nothing we say can prevent them anyway, but this (redundant) paragraph is designed to indicate that such alternative modes are in some sense "approved" and even encouraged where they serve the specialized needs of a given user community, so long as the standard mode, designed to foster maximum portability, is always available. 
 

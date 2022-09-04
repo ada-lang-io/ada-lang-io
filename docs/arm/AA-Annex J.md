@@ -36,7 +36,7 @@ Implementations can continue to support the above features for upward compatibil
 
 #### Static Semantics
 
-The following [library_unit_renaming_declaration](S0218)s exist: 
+The following library_unit_renaming_declarations exist: 
 
 ```ada
 with Ada.Unchecked_Conversion;
@@ -101,7 +101,7 @@ The following replacements are allowed for the vertical line, number sign, and q
 
 A vertical line character (|) can be replaced by an exclamation mark (!) where used as a delimiter.
 
-The number sign characters (#) of a [based_literal](S0008) can be replaced by colons (:) provided that the replacement is done for both occurrences. 
+The number sign characters (#) of a based_literal can be replaced by colons (:) provided that the replacement is done for both occurrences. 
 
 To be honest: The intent is that such a replacement works in the Value and Wide_Value attributes, and in the Get procedures of Text_IO}, so that things like "16:.123:" is acceptable. 
 
@@ -130,53 +130,53 @@ is not legal in Ada 83, nor will it be in Ada 95. One has to write:
 
 ## J.3  Reduced Accuracy Subtypes
 
-A [digits_constraint](S0047) may be used to define a floating point subtype with a new value for its requested decimal precision, as reflected by its Digits attribute. Similarly, a [delta_constraint](S0275) may be used to define an ordinary fixed point subtype with a new value for its delta, as reflected by its Delta attribute. 
+A digits_constraint may be used to define a floating point subtype with a new value for its requested decimal precision, as reflected by its Digits attribute. Similarly, a delta_constraint may be used to define an ordinary fixed point subtype with a new value for its delta, as reflected by its Delta attribute. 
 
-Discussion: It might be more direct to make these attributes specifiable via an [attribute_definition_clause](S0265), and eliminate the syntax for these _constraints. 
+Discussion: It might be more direct to make these attributes specifiable via an attribute_definition_clause, and eliminate the syntax for these _constraints. 
 
 
 #### Syntax
 
-delta_constraint ::= delta static_[expression](S0108) [[range_constraint](S0033)]
+delta_constraint ::= delta static_expression [range_constraint]
 
 
 #### Name Resolution Rules
 
-The [expression](S0108) of a [delta_constraint](S0275) is expected to be of any real type. 
+The expression of a delta_constraint is expected to be of any real type. 
 
 
 #### Legality Rules
 
-The [expression](S0108) of a [delta_constraint](S0275) shall be static.
+The expression of a delta_constraint shall be static.
 
-For a [subtype_indication](S0024) with a [delta_constraint](S0275), the [subtype_mark](S0025) shall denote an ordinary fixed point subtype.
+For a subtype_indication with a delta_constraint, the subtype_mark shall denote an ordinary fixed point subtype.
 
-For a [subtype_indication](S0024) with a [digits_constraint](S0047), the [subtype_mark](S0025) shall denote either a decimal fixed point subtype or a floating point subtype (notwithstanding the rule given in 3.5.9 that only allows a decimal fixed point subtype). 
+For a subtype_indication with a digits_constraint, the subtype_mark shall denote either a decimal fixed point subtype or a floating point subtype (notwithstanding the rule given in 3.5.9 that only allows a decimal fixed point subtype). 
 
 Discussion: We may need a better way to deal with obsolescent features with rules that contradict those of the nonobsolescent parts of the standard. 
 
 
 #### Static Semantics
 
-A [subtype_indication](S0024) with a [subtype_mark](S0025) that denotes an ordinary fixed point subtype and a [delta_constraint](S0275) defines an ordinary fixed point subtype with a delta given by the value of the [expression](S0108) of the [delta_constraint](S0275). If the [delta_constraint](S0275) includes a [range_constraint](S0033), then the ordinary fixed point subtype is constrained by the [range_constraint](S0033).
+A subtype_indication with a subtype_mark that denotes an ordinary fixed point subtype and a delta_constraint defines an ordinary fixed point subtype with a delta given by the value of the expression of the delta_constraint. If the delta_constraint includes a range_constraint, then the ordinary fixed point subtype is constrained by the range_constraint.
 
-A [subtype_indication](S0024) with a [subtype_mark](S0025) that denotes a floating point subtype and a [digits_constraint](S0047) defines a floating point subtype with a requested decimal precision (as reflected by its Digits attribute) given by the value of the [expression](S0108) of the [digits_constraint](S0047). If the [digits_constraint](S0047) includes a [range_constraint](S0033), then the floating point subtype is constrained by the [range_constraint](S0033). 
+A subtype_indication with a subtype_mark that denotes a floating point subtype and a digits_constraint defines a floating point subtype with a requested decimal precision (as reflected by its Digits attribute) given by the value of the expression of the digits_constraint. If the digits_constraint includes a range_constraint, then the floating point subtype is constrained by the range_constraint. 
 
 
 #### Dynamic Semantics
 
-A [delta_constraint](S0275) is compatible with an ordinary fixed point subtype if the value of the [expression](S0108) is no less than the delta of the subtype, and the [range_constraint](S0033), if any, is compatible with the subtype.
+A delta_constraint is compatible with an ordinary fixed point subtype if the value of the expression is no less than the delta of the subtype, and the range_constraint, if any, is compatible with the subtype.
 
-A [digits_constraint](S0047) is compatible with a floating point subtype if the value of the [expression](S0108) is no greater than the requested decimal precision of the subtype, and the [range_constraint](S0033), if any, is compatible with the subtype.
+A digits_constraint is compatible with a floating point subtype if the value of the expression is no greater than the requested decimal precision of the subtype, and the range_constraint, if any, is compatible with the subtype.
 
-The elaboration of a [delta_constraint](S0275) consists of the elaboration of the [range_constraint](S0033), if any. 
+The elaboration of a delta_constraint consists of the elaboration of the range_constraint, if any. 
 
-Reason: A numeric subtype is considered "constrained" only if a range constraint applies to it. The only effect of a [digits_constraint](S0047) or a [delta_constraint](S0275) without a [range_constraint](S0033) is to specify the value of the corresponding Digits or Delta attribute in the new subtype. The set of values of the subtype is not "constrained" in any way by such _constraints. 
+Reason: A numeric subtype is considered "constrained" only if a range constraint applies to it. The only effect of a digits_constraint or a delta_constraint without a range_constraint is to specify the value of the corresponding Digits or Delta attribute in the new subtype. The set of values of the subtype is not "constrained" in any way by such _constraints. 
 
 
 #### Wording Changes from Ada 83
 
-In Ada 83, a [delta_constraint](S0275) is called a fixed_point_constraint, and a [digits_constraint](S0047) is called a floating_point_constraint. We have adopted other terms because [digits_constraint](S0047)s apply primarily to decimal fixed point types now (they apply to floating point types only as an obsolescent feature). 
+In Ada 83, a delta_constraint is called a fixed_point_constraint, and a digits_constraint is called a floating_point_constraint. We have adopted other terms because digits_constraints apply primarily to decimal fixed point types now (they apply to floating point types only as an obsolescent feature). 
 
 
 ## J.4  The Constrained Attribute
@@ -190,7 +190,7 @@ Discussion: This includes generic formal private subtypes.
 
 S'ConstrainedYields the value False if S denotes an unconstrained nonformal private subtype with discriminants; also yields the value False if S denotes a generic formal private subtype, and the associated actual subtype is either an unconstrained subtype with discriminants or an unconstrained array subtype; yields the value True otherwise. The value of this attribute is of the predefined subtype Boolean. 
 
-Reason: Because Ada 95 has [unknown_discriminant_part](S0057)s, the Constrained attribute of private subtypes is obsolete. This is fortunate, since its Ada 83 definition was confusing, as explained below. Because this attribute is obsolete, we do not bother to extend its definition to private extensions.
+Reason: Because Ada 95 has unknown_discriminant_parts, the Constrained attribute of private subtypes is obsolete. This is fortunate, since its Ada 83 definition was confusing, as explained below. Because this attribute is obsolete, we do not bother to extend its definition to private extensions.
 
 The Constrained attribute of an object is not obsolete.
 
@@ -296,26 +296,26 @@ In new code, Constraint_Error should be used instead of Numeric_Error.
 
 #### Syntax
 
-at_clause ::= for [direct_name](S0085) use at [expression](S0108);
+at_clause ::= for direct_name use at expression;
 
 
 #### Static Semantics
 
-An [at_clause](S0276) of the form "for x use at y;" is equivalent to an [attribute_definition_clause](S0265) of the form "for x'Address use y;". 
+An at_clause of the form "for x use at y;" is equivalent to an attribute_definition_clause of the form "for x'Address use y;". 
 
-Reason: The preferred syntax for specifying the address of an entity is an [attribute_definition_clause](S0265) specifying the Address attribute. Therefore, the special-purpose [at_clause](S0276) syntax is now obsolete.
+Reason: The preferred syntax for specifying the address of an entity is an attribute_definition_clause specifying the Address attribute. Therefore, the special-purpose at_clause syntax is now obsolete.
 
-The above equivalence implies, for example, that only one [at_clause](S0276) is allowed for a given entity. Similarly, it is illegal to give both an [at_clause](S0276) and an [attribute_definition_clause](S0265) specifying the Address attribute. 
+The above equivalence implies, for example, that only one at_clause is allowed for a given entity. Similarly, it is illegal to give both an at_clause and an attribute_definition_clause specifying the Address attribute. 
 
 
 #### Extensions to Ada 83
 
-We now allow to define the address of an entity using an [attribute_definition_clause](S0265). This is because Ada 83's [at_clause](S0276) is so hard to remember: programmers often tend to write "for X'Address use...;". 
+We now allow to define the address of an entity using an attribute_definition_clause. This is because Ada 83's at_clause is so hard to remember: programmers often tend to write "for X'Address use...;". 
 
 
 #### Wording Changes from Ada 83
 
-Ada 83's address_clause is now called an [at_clause](S0276) to avoid confusion with the new term "Address clause" (that is, an [attribute_definition_clause](S0265) for the Address attribute). 
+Ada 83's address_clause is now called an at_clause to avoid confusion with the new term "Address clause" (that is, an attribute_definition_clause for the Address attribute). 
 
 
 ### J.7.1  Interrupt Entries
@@ -333,14 +333,14 @@ For any task entry X:
 
 X'Address For a task entry whose address is specified (an interrupt entry), the value refers to the corresponding hardware interrupt. For such an entry, as for any other task entry, the meaning of this value is implementation defined. The value of this attribute is of the type of the subtype System.Address.
 
-Address may be specified for single entries via an [attribute_definition_clause](S0265). 
+Address may be specified for single entries via an attribute_definition_clause. 
 
-Reason: Because of the equivalence of [at_clause](S0276)s and [attribute_definition_clause](S0265)s, an interrupt entry may be specified via either notation. 
+Reason: Because of the equivalence of at_clauses and attribute_definition_clauses, an interrupt entry may be specified via either notation. 
 
 
 #### Dynamic Semantics
 
-As part of the initialization of a task object, the address clause for an interrupt entry is elaborated[, which evaluates the [expression](S0108) of the address clause]. A check is made that the address specified is associated with some interrupt to which a task entry may be attached. If this check fails, Program_Error is raised. Otherwise, the interrupt entry is attached to the interrupt associated with the specified address.
+As part of the initialization of a task object, the address clause for an interrupt entry is elaborated[, which evaluates the expression of the address clause]. A check is made that the address specified is associated with some interrupt to which a task entry may be attached. If this check fails, Program_Error is raised. Otherwise, the interrupt entry is attached to the interrupt associated with the specified address.
 
 Upon finalization of the task object, the interrupt entry, if any, is detached from the corresponding interrupt and the default treatment is restored.
 
@@ -351,7 +351,7 @@ An interrupt delivered to a task entry acts as a call to the entry issued by a h
 
 #### Bounded (Run-Time) Errors
 
-It is a bounded error to evaluate E'Caller (see C.7.1) in an [accept_statement](S0188) for an interrupt entry. The possible effects are the same as for calling Current_Task from an entry body. 
+It is a bounded error to evaluate E'Caller (see C.7.1) in an accept_statement for an interrupt entry. The possible effects are the same as for calling Current_Task from an entry body. 
 
 
 #### Documentation Requirements
@@ -373,7 +373,7 @@ The implementation is allowed to impose restrictions on the specifications and b
 
 It is implementation defined whether direct calls (from the program) to interrupt entries are allowed.
 
-If a [select_statement](S0199) contains both a [terminate_alternative](S0205) and an [accept_alternative](S0203) for an interrupt entry, then an implementation is allowed to impose further requirements for the selection of the [terminate_alternative](S0205) in addition to those given in 9.3. 
+If a select_statement contains both a terminate_alternative and an accept_alternative for an interrupt entry, then an implementation is allowed to impose further requirements for the selection of the terminate_alternative in addition to those given in 9.3. 
 
 NOTE 1   Queued interrupts correspond to ordinary entry calls. Interrupts that are lost if not immediately processed correspond to conditional entry calls. It is a consequence of the priority rules that an accept body executed in response to an interrupt can be executed with the active priority at which the hardware generates the interrupt, taking precedence over lower priority tasks, without a scheduling action.
 
@@ -403,12 +403,12 @@ RM83-13.5.1 did not adequately address the problems associate with interrupts. T
 
 #### Syntax
 
-mod_clause ::= at mod static_[expression](S0108);
+mod_clause ::= at mod static_expression;
 
 
 #### Static Semantics
 
-A [record_representation_clause](S0268) of the form: 
+A record_representation_clause of the form: 
 
 ```ada
 for r use
@@ -429,14 +429,14 @@ for r use
 
 ```
 
-Reason: The preferred syntax for specifying the alignment of an entity is an [attribute_definition_clause](S0265) specifying the Alignment attribute. Therefore, the special-purpose [mod_clause](S0277) syntax is now obsolete.
+Reason: The preferred syntax for specifying the alignment of an entity is an attribute_definition_clause specifying the Alignment attribute. Therefore, the special-purpose mod_clause syntax is now obsolete.
 
-The above equivalence implies, for example, that it is illegal to give both a [mod_clause](S0277) and an [attribute_definition_clause](S0265) specifying the Alignment attribute for the same type. 
+The above equivalence implies, for example, that it is illegal to give both a mod_clause and an attribute_definition_clause specifying the Alignment attribute for the same type. 
 
 
 #### Wording Changes from Ada 83
 
-Ada 83's alignment_clause is now called a [mod_clause](S0277) to avoid confusion with the new term "Alignment clause" (that is, an [attribute_definition_clause](S0265) for the Alignment attribute). 
+Ada 83's alignment_clause is now called a mod_clause to avoid confusion with the new term "Alignment clause" (that is, an attribute_definition_clause for the Alignment attribute). 
 
 
 ## J.9  The Storage_Size Attribute
@@ -448,9 +448,9 @@ For any task subtype T, the following attribute is defined:
 
 T'Storage_Size Denotes an implementation-defined value of type universal_integer representing the number of storage elements reserved for a task of the subtype T. 
 
-To be honest: T'Storage_Size cannot be particularly meaningful in the presence of a [pragma](S0016) Storage_Size, especially when the expression is dynamic, or depends on a discriminant of the task, because the Storage_Size will be different for different objects of the type. Even without such a [pragma](S0016), the Storage_Size can be different for different objects of the type, and in any case, the value is implementation defined. Hence, it is always implementation defined. 
+To be honest: T'Storage_Size cannot be particularly meaningful in the presence of a pragma Storage_Size, especially when the expression is dynamic, or depends on a discriminant of the task, because the Storage_Size will be different for different objects of the type. Even without such a pragma, the Storage_Size can be different for different objects of the type, and in any case, the value is implementation defined. Hence, it is always implementation defined. 
 
-Storage_Size may be specified for a task first subtype via an [attribute_definition_clause](S0265). 
+Storage_Size may be specified for a task first subtype via an attribute_definition_clause. 
 
 
 #### Syntax
@@ -560,7 +560,7 @@ Storage_Size may be specified for a task first subtype via an [attribute_definit
 
 #### Static Semantics
 
-A [pragma](S0016) Remote_Call_Interface specifies that a library unit is a remote call interface, namely that the Remote_Call_Interface aspect (see E.2.3) of the library unit is True.
+A pragma Remote_Call_Interface specifies that a library unit is a remote call interface, namely that the Remote_Call_Interface aspect (see E.2.3) of the library unit is True.
 
-A [pragma](S0016) All_Calls_Remote specifies that the All_Calls_Remote aspect (see E.2.3) of the library unit is True.
+A pragma All_Calls_Remote specifies that the All_Calls_Remote aspect (see E.2.3) of the library unit is True.
 

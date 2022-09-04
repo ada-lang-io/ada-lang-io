@@ -45,25 +45,25 @@ This Annex is new to Ada 95.
 
 #### Syntax
 
-The form of a [pragma](S0016) Priority is as follows: 
+The form of a pragma Priority is as follows: 
 
-  pragma Priority([expression](S0108));
+  pragma Priority(expression);
 
-The form of a [pragma](S0016) Interrupt_Priority is as follows: 
+The form of a pragma Interrupt_Priority is as follows: 
 
-  pragma Interrupt_Priority[([expression](S0108));] 
+  pragma Interrupt_Priority[(expression);] 
 
 
 #### Name Resolution Rules
 
-The expected type for the [expression](S0108) in a Priority or Interrupt_Priority pragma is Integer. 
+The expected type for the expression in a Priority or Interrupt_Priority pragma is Integer. 
 
 
 #### Legality Rules
 
-A Priority pragma is allowed only immediately within a [task_definition](S0177), a [protected_definition](S0182), or the [declarative_part](S0079) of a [subprogram_body](S0154). An Interrupt_Priority pragma is allowed only immediately within a [task_definition](S0177) or a [protected_definition](S0182). At most one such pragma shall appear within a given construct.
+A Priority pragma is allowed only immediately within a task_definition, a protected_definition, or the declarative_part of a subprogram_body. An Interrupt_Priority pragma is allowed only immediately within a task_definition or a protected_definition. At most one such pragma shall appear within a given construct.
 
-For a Priority pragma that appears in the [declarative_part](S0079) of a [subprogram_body](S0154), the [expression](S0108) shall be static, and its value shall be in the range of System.Priority. 
+For a Priority pragma that appears in the declarative_part of a subprogram_body, the expression shall be static, and its value shall be in the range of System.Priority. 
 
 Reason: This value is needed before it gets elaborated, when the environment task starts executing. 
 
@@ -90,22 +90,22 @@ Implementation defined: The declarations of Any_Priority and Priority.
 
 The full range of priority values supported by an implementation is specified by the subtype Any_Priority. The subrange of priority values that are high enough to require the blocking of one or more interrupts is specified by the subtype Interrupt_Priority. [The subrange of priority values below System.Interrupt_Priority'First is specified by the subtype System.Priority.]
 
-The priority specified by a Priority or Interrupt_Priority pragma is the value of the [expression](S0108) in the pragma, if any. If there is no [expression](S0108) in an Interrupt_Priority pragma, the priority value is Interrupt_Priority'Last.
+The priority specified by a Priority or Interrupt_Priority pragma is the value of the expression in the pragma, if any. If there is no expression in an Interrupt_Priority pragma, the priority value is Interrupt_Priority'Last.
 
 
 #### Dynamic Semantics
 
-A Priority pragma has no effect if it it occurs in the [declarative_part](S0079) of the [subprogram_body](S0154) of a subprogram other than the main subprogram.
+A Priority pragma has no effect if it it occurs in the declarative_part of the subprogram_body of a subprogram other than the main subprogram.
 
 A task priority is an integer value that indicates a degree of urgency and is the basis for resolving competing demands of tasks for resources. Unless otherwise specified, whenever tasks compete for processors or other implementation-defined resources, the resources are allocated to the task with the highest priority value. The base priority of a task is the priority with which it was created, or to which it was later set by Dynamic_Priorities.Set_Priority (see D.5). At all times, a task also has an active priority, which generally reflects its base priority as well as any priority it inherits from other sources. Priority inheritance is the process by which the priority of a task or other entity (e.g. a protected object; see D.3) is used in the evaluation of another task's active priority. 
 
 Implementation defined: Implementation-defined execution resources.
 
-The effect of specifying such a pragma in a [protected_definition](S0182) is discussed in D.3.
+The effect of specifying such a pragma in a protected_definition is discussed in D.3.
 
-The [expression](S0108) in a Priority or Interrupt_Priority pragma that appears in a [task_definition](S0177) is evaluated for each task object (see 9.1). For a Priority pragma, the value of the [expression](S0108) is converted to the subtype Priority; for an Interrupt_Priority pragma, this value is converted to the subtype Any_Priority. The priority value is then associated with the task objectwhose [task_definition](S0177) contains the pragma. 
+The expression in a Priority or Interrupt_Priority pragma that appears in a task_definition is evaluated for each task object (see 9.1). For a Priority pragma, the value of the expression is converted to the subtype Priority; for an Interrupt_Priority pragma, this value is converted to the subtype Any_Priority. The priority value is then associated with the task objectwhose task_definition contains the pragma. 
 
-Likewise, the priority value is associated with the environment task if the pragma appears in the [declarative_part](S0079) of the main subprogram.
+Likewise, the priority value is associated with the environment task if the pragma appears in the declarative_part of the main subprogram.
 
 The initial value of a task's base priority is specified by default or by means of a Priority or Interrupt_Priority pragma. [After a task is created, its base priority can be changed only by a call to Dynamic_Priorities.Set_Priority (see D.5).] The initial base priority of a task in the absence of a pragma is the base priority of the task that creates it at the time of creation (see 9.1). If a pragma Priority does not apply to the main subprogram, the initial base priority of the environment task is System.Default_Priority. [The task's active priority is used when the task competes for processors. Similarly, the task's active priority is used to determine the task's position in any queue when Priority_Queuing is specified (see D.4).]
 
@@ -134,7 +134,7 @@ NOTE 2   It is a consequence of the active priority rules that at the point when
 
 NOTE 3   An implementation may provide a non-standard mode in which tasks inherit priorities under conditions other than those specified above. 
 
-Ramification: The use of a Priority or Interrupt_Priority pragma does not require the package System to be named in a [with_clause](S0223) for the enclosing [compilation_unit](S0215). 
+Ramification: The use of a Priority or Interrupt_Priority pragma does not require the package System to be named in a with_clause for the enclosing compilation_unit. 
 
 
 #### Extensions to Ada 83
@@ -167,7 +167,7 @@ It is implementation defined whether, on a multiprocessor, a task that is waitin
 
 Implementation defined: Whether, on a multiprocessor, a task that is waiting for access to a protected object keeps its processor busy.
 
-Task dispatching is the process by which one ready task is selected for execution on a processor. This selection is done at certain points during the execution of a task called task dispatching points. A task reaches a task dispatching point whenever it becomes blocked, and whenever it becomes ready. In addition, the completion of an [accept_statement](S0188) (see 9.5.2), and task termination are task dispatching points for the executing task. [Other task dispatching points are defined throughout this Annex.] 
+Task dispatching is the process by which one ready task is selected for execution on a processor. This selection is done at certain points during the execution of a task called task dispatching points. A task reaches a task dispatching point whenever it becomes blocked, and whenever it becomes ready. In addition, the completion of an accept_statement (see 9.5.2), and task termination are task dispatching points for the executing task. [Other task dispatching points are defined throughout this Annex.] 
 
 Ramification: On multiprocessor systems, more than one task can be chosen, at the same time, for execution on more than one processor, as explained below. 
 
@@ -216,18 +216,18 @@ NOTE 6   The priority of a task is determined by rules specified in this subclau
 
 #### Syntax
 
-The form of a [pragma](S0016) Task_Dispatching_Policy is as follows: 
+The form of a pragma Task_Dispatching_Policy is as follows: 
 
-  pragma Task_Dispatching_Policy(policy_[identifier](S0002));
+  pragma Task_Dispatching_Policy(policy_identifier);
 
 
 
 
 #### Legality Rules
 
-The policy_[identifier](S0002) shall either be FIFO_Within_Priorities or an implementation-defined [identifier](S0002). 
+The policy_identifier shall either be FIFO_Within_Priorities or an implementation-defined identifier. 
 
-This paragraph was deleted.Implementation defined: Implementation-defined policy_[identifier](S0002)s allowed in a [pragma](S0016) Task_Dispatching_Policy.
+This paragraph was deleted.Implementation defined: Implementation-defined policy_identifiers allowed in a pragma Task_Dispatching_Policy.
 
 
 #### Post-Compilation Rules
@@ -249,7 +249,7 @@ When the active priority of a ready task that is not running changes, or the set
 
 When the setting of the base priority of a running task takes effect, the task is added to the tail of the ready queue for its active priority.
 
-When a task executes a [delay_statement](S0196) that does not result in blocking, it is added to the tail of the ready queue for its active priority. 
+When a task executes a delay_statement that does not result in blocking, it is added to the tail of the ready queue for its active priority. 
 
 Ramification: If the delay does result in blocking, the task moves to the "delay queue", not to the ready queue. 
 
@@ -273,7 +273,7 @@ This paragraph was deleted.Implementation defined: Implementation-defined aspect
 
 Implementations are allowed to define other task dispatching policies, but need not support more than one such policy per partition.
 
-[For optimization purposes,] an implementation may alter the points at which task dispatching occurs, in an implementation defined manner. However, a [delay_statement](S0196) always corresponds to at least one task dispatching point.
+[For optimization purposes,] an implementation may alter the points at which task dispatching occurs, in an implementation defined manner. However, a delay_statement always corresponds to at least one task dispatching point.
 
 Implementation defined: Implementation defined task dispatching.
 
@@ -301,16 +301,16 @@ NOTE 3   Setting the base priority of a ready task causes the task to move to th
 
 #### Syntax
 
-The form of a [pragma](S0016) Locking_Policy is as follows: 
+The form of a pragma Locking_Policy is as follows: 
 
-  pragma Locking_Policy(policy_[identifier](S0002)); 
+  pragma Locking_Policy(policy_identifier); 
 
 
 #### Legality Rules
 
-The policy_[identifier](S0002) shall either be Ceiling_Locking or an implementation-defined [identifier](S0002). 
+The policy_identifier shall either be Ceiling_Locking or an implementation-defined identifier. 
 
-Implementation defined: Implementation-defined policy_[identifier](S0002)s allowed in a [pragma](S0016) Locking_Policy.
+Implementation defined: Implementation-defined policy_identifiers allowed in a pragma Locking_Policy.
 
 
 #### Post-Compilation Rules
@@ -326,13 +326,13 @@ There is one predefined locking policy, Ceiling_Locking; this policy is defined 
 
 Every protected object has a ceiling priority, which is determined by either a Priority or Interrupt_Priority pragma as defined in D.1. The ceiling priority of a protected object (or ceiling, for short) is an upper bound on the active priority a task can have when it calls protected operations of that protected object.
 
-The [expression](S0108) of a Priority or Interrupt_Priority pragma is evaluated as part of the creation of the corresponding protected object and converted to the subtype System.Any_Priority or System.Interrupt_Priority, respectively. The value of the [expression](S0108) is the ceiling priority of the corresponding protected object. 
+The expression of a Priority or Interrupt_Priority pragma is evaluated as part of the creation of the corresponding protected object and converted to the subtype System.Any_Priority or System.Interrupt_Priority, respectively. The value of the expression is the ceiling priority of the corresponding protected object. 
 
-If an Interrupt_Handler or Attach_Handler pragma (see C.3.1) appears in a [protected_definition](S0182) without an Interrupt_Priority pragma, the ceiling priority of protected objects of that type is implementation defined, but in the range of the subtype System.Interrupt_Priority. 
+If an Interrupt_Handler or Attach_Handler pragma (see C.3.1) appears in a protected_definition without an Interrupt_Priority pragma, the ceiling priority of protected objects of that type is implementation defined, but in the range of the subtype System.Interrupt_Priority. 
 
 Implementation defined: Default ceiling priorities.
 
-If no [pragma](S0016) Priority, Interrupt_Priority, Interrupt_Handler, or Attach_Handler is specified in the [protected_definition](S0182), then the ceiling priority of the corresponding protected object is System.Priority'Last.
+If no pragma Priority, Interrupt_Priority, Interrupt_Handler, or Attach_Handler is specified in the protected_definition, then the ceiling priority of the corresponding protected object is System.Priority'Last.
 
 While a task executes a protected action, it inherits the ceiling priority of the corresponding protected object.
 
@@ -355,7 +355,7 @@ Implementation defined: The ceiling of any protected object used internally by t
 
 Proof: This permission follows from the fact that the implementation can place restrictions on interrupt handlers and on any other code that runs at an interrupt-level active priority.
 
-The implementation might protect a storage pool with a protected object whose ceiling is Priority'Last, which would cause [allocator](S0122)s to fail when evaluated at interrupt priority. Note that the ceiling of such an object has to be at least Priority'Last, since there is no permission for [allocator](S0122)s to fail when evaluated at a noninterrupt priority. 
+The implementation might protect a storage pool with a protected object whose ceiling is Priority'Last, which would cause allocators to fail when evaluated at interrupt priority. Note that the ceiling of such an object has to be at least Priority'Last, since there is no permission for allocators to fail when evaluated at a noninterrupt priority. 
 
 
 #### Implementation Advice
@@ -384,14 +384,14 @@ Implementation defined: Implementation-defined queuing policies.
 
 #### Syntax
 
-The form of a [pragma](S0016) Queuing_Policy is as follows: 
+The form of a pragma Queuing_Policy is as follows: 
 
-  pragma Queuing_Policy(policy_[identifier](S0002)); 
+  pragma Queuing_Policy(policy_identifier); 
 
 
 #### Legality Rules
 
-The policy_[identifier](S0002) shall be either FIFO_Queuing, Priority_Queuing or an implementation-defined [identifier](S0002).
+The policy_identifier shall be either FIFO_Queuing, Priority_Queuing or an implementation-defined identifier.
 
 
 #### Post-Compilation Rules
@@ -403,7 +403,7 @@ A Queuing_Policy pragma is a configuration pragma.
 
 [A queuing policy governs the order in which tasks are queued for entry service, and the order in which different entry queues are considered for service.] The queuing policy is specified by a Queuing_Policy pragma. 
 
-Ramification: The queuing policy includes entry queuing order, the choice among open alternatives of a [selective_accept](S0200), and the choice among queued entry calls of a protected object when more than one [entry_barrier](S0192) [condition](S0132) is True. 
+Ramification: The queuing policy includes entry queuing order, the choice among open alternatives of a selective_accept, and the choice among queued entry calls of a protected object when more than one entry_barrier condition is True. 
 
 Two queuing policies, FIFO_Queuing and Priority_Queuing, are language defined. If no Queuing_Policy pragma appears in any of the program units comprising the partition, the queuing policy for that partition is FIFO_Queuing. The rules for this policy are specified in 9.5.3 and 9.7.1.
 
@@ -415,23 +415,23 @@ After a call is first queued, changes to the active priority of a task do not af
 
 When the base priority of a task is set (see D.5), if the task is blocked on an entry call, and the call is queued, the priority of the call is updated to the new active priority of the calling task. This causes the call to be removed from and then reinserted in the queue at the new active priority. 
 
-Reason: A task is blocked on an entry call if the entry call is simple, conditional, or timed. If the call came from the [triggering_statement](S0211) of an [asynchronous_select](S0209), or a requeue thereof, then the task is not blocked on that call; such calls do not have their priority updated. Thus, there can exist many queued calls from a given task (caused by many nested ATC's), but a task can be blocked on only one call at a time.
+Reason: A task is blocked on an entry call if the entry call is simple, conditional, or timed. If the call came from the triggering_statement of an asynchronous_select, or a requeue thereof, then the task is not blocked on that call; such calls do not have their priority updated. Thus, there can exist many queued calls from a given task (caused by many nested ATC's), but a task can be blocked on only one call at a time.
 
-A previous version of Ada 9X required queue reordering in the [asynchronous_select](S0209) case as well. If the call corresponds to a "synchronous" entry call, then the task is blocked while queued, and it makes good sense to move it up in the queue if its priority is raised.
+A previous version of Ada 9X required queue reordering in the asynchronous_select case as well. If the call corresponds to a "synchronous" entry call, then the task is blocked while queued, and it makes good sense to move it up in the queue if its priority is raised.
 
-However, if the entry call is "asynchronous", that is, it is due to an [asynchronous_select](S0209) whose [triggering_statement](S0211) is an entry call, then the task is not waiting for this entry call, so the placement of the entry call on the queue is irrelevant to the rate at which the task proceeds.
+However, if the entry call is "asynchronous", that is, it is due to an asynchronous_select whose triggering_statement is an entry call, then the task is not waiting for this entry call, so the placement of the entry call on the queue is irrelevant to the rate at which the task proceeds.
 
-Furthermore, when an entry is used for [asynchronous_select](S0209)s, it is almost certain to be a "broadcast" entry or have only one caller at a time. For example, if the entry is used to notify tasks of a mode switch, then all tasks on the entry queue would be signaled when the mode changes. Similarly, if it is indicating some interrupting event such as a control-C, all tasks sensitive to the interrupt will want to be informed that the event occurred. Hence, the order on such a queue is essentially irrelevant.
+Furthermore, when an entry is used for asynchronous_selects, it is almost certain to be a "broadcast" entry or have only one caller at a time. For example, if the entry is used to notify tasks of a mode switch, then all tasks on the entry queue would be signaled when the mode changes. Similarly, if it is indicating some interrupting event such as a control-C, all tasks sensitive to the interrupt will want to be informed that the event occurred. Hence, the order on such a queue is essentially irrelevant.
 
-Given the above, it seems an unnecessary semantic and implementation complexity to specify that asynchronous queued calls are moved in response to dynamic priority changes. Furthermore, it is somewhat inconsistent, since the call was originally queued based on the active priority of the task, but dynamic priority changes are changing the base priority of the task, and only indirectly the active priority. We say explicitly that asynchronous queued calls are not affected by normal changes in active priority during the execution of an [abortable_part](S0212). Saying that, if a change in the base priority affects the active priority, then we do want the calls reordered, would be inconsistent. It would also require the implementation to maintain a readily accessible list of all queued calls which would not otherwise be necessary.
+Given the above, it seems an unnecessary semantic and implementation complexity to specify that asynchronous queued calls are moved in response to dynamic priority changes. Furthermore, it is somewhat inconsistent, since the call was originally queued based on the active priority of the task, but dynamic priority changes are changing the base priority of the task, and only indirectly the active priority. We say explicitly that asynchronous queued calls are not affected by normal changes in active priority during the execution of an abortable_part. Saying that, if a change in the base priority affects the active priority, then we do want the calls reordered, would be inconsistent. It would also require the implementation to maintain a readily accessible list of all queued calls which would not otherwise be necessary.
 
-Several rules were removed or simplified when we changed the rules so that calls due to [asynchronous_select](S0209)s are never moved due to intervening changes in active priority, be they due to protected actions, some other priority inheritance, or changes in the base priority. 
+Several rules were removed or simplified when we changed the rules so that calls due to asynchronous_selects are never moved due to intervening changes in active priority, be they due to protected actions, some other priority inheritance, or changes in the base priority. 
 
-When more than one [condition](S0132) of an [entry_barrier](S0192) of a protected object becomes True, and more than one of the respective queues is nonempty, the call with the highest priority is selected. If more than one such call has the same priority, the call that is queued on the entry whose declaration is first in textual order in the [protected_definition](S0182) is selected. For members of the same entry family, the one with the lower family index is selected.
+When more than one condition of an entry_barrier of a protected object becomes True, and more than one of the respective queues is nonempty, the call with the highest priority is selected. If more than one such call has the same priority, the call that is queued on the entry whose declaration is first in textual order in the protected_definition is selected. For members of the same entry family, the one with the lower family index is selected.
 
-If the expiration time of two or more open [delay_alternative](S0204)s is the same and no other [accept_alternative](S0203)s are open, the [sequence_of_statements](S0123) of the [delay_alternative](S0204) that is first in textual order in the [selective_accept](S0200) is executed.
+If the expiration time of two or more open delay_alternatives is the same and no other accept_alternatives are open, the sequence_of_statements of the delay_alternative that is first in textual order in the selective_accept is executed.
 
-When more than one alternative of a [selective_accept](S0200) is open and has queued calls, an alternative whose queue has the highest-priority call at its head is selected. If two or more open alternatives have equal-priority queued calls, then a call on the entry in the [accept_alternative](S0203) that is first in textual order in the [selective_accept](S0200) is selected.
+When more than one alternative of a selective_accept is open and has queued calls, an alternative whose queue has the highest-priority call at its head is selected. If two or more open alternatives have equal-priority queued calls, then a call on the entry in the accept_alternative that is first in textual order in the selective_accept is selected.
 
 
 #### Implementation Permissions
@@ -512,7 +512,7 @@ The runtime check would tend to cause intermittent system failures - how is the 
 
 If a task is blocked on a protected entry call, and the call is queued, it is a bounded error to raise its base priority above the ceiling priority of the corresponding protected object. When an entry call is cancelled, it is a bounded error if the priority of the calling task is higher than the ceiling priority of the corresponding protected object. In either of these cases, either Program_Error is raised in the task that called the entry, or its priority is temporarily lowered, or both, or neither. 
 
-Ramification: Note that the error is "blamed" on the task that did the entry call, not the task that called Set_Priority. This seems to make sense for the case of a task blocked on a call, since if the Set_Priority had happened a little bit sooner, before the task queued a call, the entry-calling task would get the error. In the other case, there is no reason not to raise the priority of a task that is executing in an [abortable_part](S0212), so long as its priority is lowered before it gets to the end and needs to cancel the call. The priority might need to be lowered to allow it to remove the call from the entry queue, in order to avoid violating the ceiling. This seems relatively harmless, since there is an error, and the task is about to start raising an exception anyway. 
+Ramification: Note that the error is "blamed" on the task that did the entry call, not the task that called Set_Priority. This seems to make sense for the case of a task blocked on a call, since if the Set_Priority had happened a little bit sooner, before the task queued a call, the entry-calling task would get the error. In the other case, there is no reason not to raise the priority of a task that is executing in an abortable_part, so long as its priority is lowered before it gets to the end and needs to cancel the call. The priority might need to be lowered to allow it to remove the call from the entry queue, in order to avoid violating the ceiling. This seems relatively harmless, since there is an error, and the task is about to start raising an exception anyway. 
 
 
 #### Erroneous Execution
@@ -530,7 +530,7 @@ The execution time of a call to Set_Priority, for the nonpreempting case, in pro
 
 NOTE 1   Setting a task's base priority affects task dispatching. First, it can change the task's active priority. Second, under the standard task dispatching policy it always causes the task to move to the tail of the ready queue corresponding to its active priority, even if the new base priority is unchanged.
 
-NOTE 2   Under the priority queuing policy, setting a task's base priority has an effect on a queued entry call if the task is blocked waiting for the call. That is, setting the base priority of a task causes the priority of a queued entry call from that task to be updated and the call to be removed and then reinserted in the entry queue at the new priority (see D.4), unless the call originated from the [triggering_statement](S0211) of an [asynchronous_select](S0209).
+NOTE 2   Under the priority queuing policy, setting a task's base priority has an effect on a queued entry call if the task is blocked waiting for the call. That is, setting the base priority of a task causes the priority of a queued entry call from that task to be updated and the call to be removed and then reinserted in the entry queue at the new priority (see D.4), unless the call originated from the triggering_statement of an asynchronous_select.
 
 NOTE 3   The effect of two or more Set_Priority calls executed in parallel on the same task is defined as executing these calls in some serial order.
 
@@ -569,18 +569,18 @@ This paragraph was deleted.Implementation defined: On a multiprocessor, any cond
 
 The implementation shall document the following metrics: 
 
-The execution time, in processor clock cycles, that it takes for an [abort_statement](S0213) to cause the completion of the aborted task. This is measured in a situation where a task T2 preempts task T1 and aborts T1. T1 does not have any finalization code. T2 shall verify that T1 has terminated, by means of the Terminated attribute.
+The execution time, in processor clock cycles, that it takes for an abort_statement to cause the completion of the aborted task. This is measured in a situation where a task T2 preempts task T1 and aborts T1. T1 does not have any finalization code. T2 shall verify that T1 has terminated, by means of the Terminated attribute.
 
 On a multiprocessor, an upper bound in seconds, on the time that the completion of an aborted task can be delayed beyond the point that it is required for a single processor.
 
-An upper bound on the execution time of an [asynchronous_select](S0209), in processor clock cycles. This is measured between a point immediately before a task T1 executes a protected operation Pr.Set that makes the [condition](S0132) of an [entry_barrier](S0192) Pr.Wait true, and the point where task T2 resumes execution immediately after an entry call to Pr.Wait in an [asynchronous_select](S0209). T1 preempts T2 while T2 is executing the abortable part, and then blocks itself so that T2 can execute. The execution time of T1 is measured separately, and subtracted.
+An upper bound on the execution time of an asynchronous_select, in processor clock cycles. This is measured between a point immediately before a task T1 executes a protected operation Pr.Set that makes the condition of an entry_barrier Pr.Wait true, and the point where task T2 resumes execution immediately after an entry call to Pr.Wait in an asynchronous_select. T1 preempts T2 while T2 is executing the abortable part, and then blocks itself so that T2 can execute. The execution time of T1 is measured separately, and subtracted.
 
-An upper bound on the execution time of an [asynchronous_select](S0209), in the case that no asynchronous transfer of control takes place. This is measured between a point immediately before a task executes the [asynchronous_select](S0209) with a nonnull abortable part, and the point where the task continues execution immediately after it. The execution time of the abortable part is subtracted. 
+An upper bound on the execution time of an asynchronous_select, in the case that no asynchronous transfer of control takes place. This is measured between a point immediately before a task executes the asynchronous_select with a nonnull abortable part, and the point where the task continues execution immediately after it. The execution time of the abortable part is subtracted. 
 
 
 #### Implementation Advice
 
-Even though the [abort_statement](S0213) is included in the list of potentially blocking operations (see 9.5.1), it is recommended that this statement be implemented in a way that never requires the task executing the [abort_statement](S0213) to block.
+Even though the abort_statement is included in the list of potentially blocking operations (see 9.5.1), it is recommended that this statement be implemented in a way that never requires the task executing the abort_statement to block.
 
 On a multi-processor, the delay associated with aborting a task on another processor should be bounded; the implementation should use periodic polling, if necessary, to achieve this.
 
@@ -596,7 +596,7 @@ NOTE 2   Abortion cannot be more immediate than is allowed by the rules for defe
 
 #### Static Semantics
 
-The following restriction_[identifier](S0002)s are language defined: 
+The following restriction_identifiers are language defined: 
 
 No_Task_Hierarchy All (nonenvironment) tasks depend directly on the environment task of the partition.
 
@@ -604,11 +604,11 @@ No_Nested_Finalization Objects with controlled parts and access types that desig
 
 Ramification: Note that protected types with entries and interrupt-handling protected types have nontrivial finalization actions. However, this restriction does not restrict those things.
 
-No_Abort_Statements There are no [abort_statement](S0213)s, and there are no calls on Task_Identification.Abort_Task.
+No_Abort_Statements There are no abort_statements, and there are no calls on Task_Identification.Abort_Task.
 
-No_Terminate_Alternatives There are no [selective_accept](S0200)s with [terminate_alternative](S0205)s.
+No_Terminate_Alternatives There are no selective_accepts with terminate_alternatives.
 
-No_Task_Allocators There are no [allocator](S0122)s for task types or types containing task subcomponents.
+No_Task_Allocators There are no allocators for task types or types containing task subcomponents.
 
 No_Implicit_Heap_Allocations There are no operations that implicitly require heap storage allocation to be performed by the implementation. The operations that implicitly require heap storage allocation are implementation defined. 
 
@@ -618,9 +618,9 @@ No_Dynamic_Priorities There are no semantic dependences on the package Dynamic_P
 
 No_Asynchronous_Control There are no semantic dependences on the package Asynchronous_Task_Control. 
 
-The following restriction_parameter_[identifier](S0002)s are language defined: 
+The following restriction_parameter_identifiers are language defined: 
 
-Max_Select_Alternatives Specifies the maximum number of alternatives in a [selective_accept](S0200).
+Max_Select_Alternatives Specifies the maximum number of alternatives in a selective_accept.
 
 Max_Task_Entries Specifies the maximum number of entries per task. The bounds of every entry family of a task unit shall be static, or shall be defined by a discriminant of a subtype whose corresponding bound is static. [A value of zero indicates that no rendezvous are possible.]
 
@@ -631,11 +631,11 @@ Max_Protected_Entries Specifies the maximum number of entries per protected type
 
 If the following restrictions are violated, the behavior is implementation defined. If an implementation chooses to detect such a violation, Storage_Error should be raised.
 
-The following restriction_parameter_[identifier](S0002)s are language defined: 
+The following restriction_parameter_identifiers are language defined: 
 
 Max_Storage_At_Blocking Specifies the maximum portion [(in storage elements)] of a task's Storage_Size that can be retained by a blocked task. 
 
-Max_Asynchronous_Select_Nesting Specifies the maximum dynamic nesting level of [asynchronous_select](S0209)s. A value of zero prevents the use of any [asynchronous_select](S0209). 
+Max_Asynchronous_Select_Nesting Specifies the maximum dynamic nesting level of asynchronous_selects. A value of zero prevents the use of any asynchronous_select. 
 
 Max_Tasks Specifies the maximum number of task creations that may be executed over the lifetime of a partition, not counting the creation of the environment task. 
 
@@ -770,7 +770,7 @@ end Ada.Real_Time;
 
 This paragraph was deleted.Implementation defined: Implementation-defined aspects of package Real_Time.
 
-In this Annex, real time is defined to be the physical time as observed in the external environment. The type Time is a time type as defined by 9.6; [values of this type may be used in a [delay_until_statement](S0197).] Values of this type represent segments of an ideal time line. The set of values of the type Time corresponds one-to-one with an implementation-defined range of mathematical integers. 
+In this Annex, real time is defined to be the physical time as observed in the external environment. The type Time is a time type as defined by 9.6; [values of this type may be used in a delay_until_statement.] Values of this type represent segments of an ideal time line. The set of values of the type Time corresponds one-to-one with an implementation-defined range of mathematical integers. 
 
 Discussion: Informally, real time is defined to be the International Atomic Time (TAI) which is monotonic and nondecreasing. We use it here for the purpose of discussing rate of change and monotonic behavior only. It does not imply anything about the absolute value of Real_Time.Clock, or about Real_Time.Time being synchronized with TAI. It is also used for real time in the metrics, for comparison purposes. 
 
@@ -898,51 +898,51 @@ NOTE 2   Time_Unit is the granularity of the Time type. In contrast, Tick repres
 
 ## D.9  Delay Accuracy
 
-[This clause specifies performance requirements for the [delay_statement](S0196). The rules apply both to [delay_relative_statement](S0198) and to [delay_until_statement](S0197). Similarly, they apply equally to a simple [delay_statement](S0196) and to one which appears in a [delay_alternative](S0204).] 
+[This clause specifies performance requirements for the delay_statement. The rules apply both to delay_relative_statement and to delay_until_statement. Similarly, they apply equally to a simple delay_statement and to one which appears in a delay_alternative.] 
 
 
 #### Dynamic Semantics
 
-The effect of the [delay_statement](S0196) for Real_Time.Time is defined in terms of Real_Time.Clock: 
+The effect of the delay_statement for Real_Time.Time is defined in terms of Real_Time.Clock: 
 
-If C1 is a value of Clock read before a task executes a [delay_relative_statement](S0198) with duration D, and C2 is a value of Clock read after the task resumes execution following that [delay_statement](S0196), then C2  C1 &gt= D.
+If C1 is a value of Clock read before a task executes a delay_relative_statement with duration D, and C2 is a value of Clock read after the task resumes execution following that delay_statement, then C2  C1 &gt= D.
 
-If C is a value of Clock read after a task resumes execution following a [delay_until_statement](S0197) with Real_Time.Time value T, then C &gt= T. 
+If C is a value of Clock read after a task resumes execution following a delay_until_statement with Real_Time.Time value T, then C &gt= T. 
 
-A simple [delay_statement](S0196) with a negative or zero value for the expiration time does not cause the calling task to be blocked; it is nevertheless a potentially blocking operation (see 9.5.1).
+A simple delay_statement with a negative or zero value for the expiration time does not cause the calling task to be blocked; it is nevertheless a potentially blocking operation (see 9.5.1).
 
-When a [delay_statement](S0196) appears in a [delay_alternative](S0204) of a [timed_entry_call](S0206) the selection of the entry call is attempted, regardless of the specified expiration time. When a [delay_statement](S0196) appears in a selective_accept_alternative, and a call is queued on one of the open entries, the selection of that entry call proceeds, regardless of the value of the delay expression. 
+When a delay_statement appears in a delay_alternative of a timed_entry_call the selection of the entry call is attempted, regardless of the specified expiration time. When a delay_statement appears in a selective_accept_alternative, and a call is queued on one of the open entries, the selection of that entry call proceeds, regardless of the value of the delay expression. 
 
-Ramification: The effect of these requirements is that one has to always attempt a rendezvous, regardless of the value of the delay expression. This can be tested by issuing a [timed_entry_call](S0206) with an expiration time of zero, to an open entry. 
+Ramification: The effect of these requirements is that one has to always attempt a rendezvous, regardless of the value of the delay expression. This can be tested by issuing a timed_entry_call with an expiration time of zero, to an open entry. 
 
 
 #### Documentation Requirements
 
-The implementation shall document the minimum value of the delay expression of a [delay_relative_statement](S0198) that causes the task to actually be blocked. 
+The implementation shall document the minimum value of the delay expression of a delay_relative_statement that causes the task to actually be blocked. 
 
-The implementation shall document the minimum difference between the value of the delay expression of a [delay_until_statement](S0197) and the value of Real_Time.Clock, that causes the task to actually be blocked. 
+The implementation shall document the minimum difference between the value of the delay expression of a delay_until_statement and the value of Real_Time.Clock, that causes the task to actually be blocked. 
 
-This paragraph was deleted.Implementation defined: Implementation-defined aspects of [delay_statement](S0196)s.
+This paragraph was deleted.Implementation defined: Implementation-defined aspects of delay_statements.
 
 
 #### Metrics
 
 The implementation shall document the following metrics: 
 
-An upper bound on the execution time, in processor clock cycles, of a [delay_relative_statement](S0198) whose requested value of the delay expression is less than or equal to zero.
+An upper bound on the execution time, in processor clock cycles, of a delay_relative_statement whose requested value of the delay expression is less than or equal to zero.
 
-An upper bound on the execution time, in processor clock cycles, of a [delay_until_statement](S0197) whose requested value of the delay expression is less than or equal to the value of Real_Time.Clock at the time of executing the statement. Similarly, for Calendar.Clock.
+An upper bound on the execution time, in processor clock cycles, of a delay_until_statement whose requested value of the delay expression is less than or equal to the value of Real_Time.Clock at the time of executing the statement. Similarly, for Calendar.Clock.
 
-An upper bound on the lateness of a [delay_relative_statement](S0198), for a positive value of the delay expression, in a situation where the task has sufficient priority to preempt the processor as soon as it becomes ready, and does not need to wait for any other execution resources. The upper bound is expressed as a function of the value of the delay expression. The lateness is obtained by subtracting the value of the delay expression from the actual duration. The actual duration is measured from a point immediately before a task executes the [delay_statement](S0196) to a point immediately after the task resumes execution following this statement.
+An upper bound on the lateness of a delay_relative_statement, for a positive value of the delay expression, in a situation where the task has sufficient priority to preempt the processor as soon as it becomes ready, and does not need to wait for any other execution resources. The upper bound is expressed as a function of the value of the delay expression. The lateness is obtained by subtracting the value of the delay expression from the actual duration. The actual duration is measured from a point immediately before a task executes the delay_statement to a point immediately after the task resumes execution following this statement.
 
-An upper bound on the lateness of a [delay_until_statement](S0197), in a situation where the value of the requested expiration time is after the time the task begins executing the statement, the task has sufficient priority to preempt the processor as soon as it becomes ready, and it does not need to wait for any other execution resources. The upper bound is expressed as a function of the difference between the requested expiration time and the clock value at the time the statement begins execution. The lateness of a [delay_until_statement](S0197) is obtained by subtracting the requested expiration time from the real time that the task resumes execution following this statement. 
+An upper bound on the lateness of a delay_until_statement, in a situation where the value of the requested expiration time is after the time the task begins executing the statement, the task has sufficient priority to preempt the processor as soon as it becomes ready, and it does not need to wait for any other execution resources. The upper bound is expressed as a function of the difference between the requested expiration time and the clock value at the time the statement begins execution. The lateness of a delay_until_statement is obtained by subtracting the requested expiration time from the real time that the task resumes execution following this statement. 
 
-NOTE 1   The execution time of a [delay_statement](S0196) that does not cause the task to be blocked (e.g. "delay 0.0;" ) is of interest in situations where delays are used to achieve voluntary round-robin task dispatching among equal-priority tasks.
+NOTE 1   The execution time of a delay_statement that does not cause the task to be blocked (e.g. "delay 0.0;" ) is of interest in situations where delays are used to achieve voluntary round-robin task dispatching among equal-priority tasks.
 
 
 #### Wording Changes from Ada 83
 
-The rules regarding a [timed_entry_call](S0206) with a very small positive Duration value, have been tightened to always require the check whether the rendezvous is immediately possible.
+The rules regarding a timed_entry_call with a very small positive Duration value, have been tightened to always require the check whether the rendezvous is immediately possible.
 
 
 ## D.10  Synchronous Task Control
@@ -1063,7 +1063,7 @@ If a task is executing in a protected action, inside a rendezvous, or is inherit
 
 If a task becomes held while waiting (as a caller) for a rendezvous to complete, the active priority of the accepting task is not affected.
 
-If a task becomes held while waiting in a [selective_accept](S0200), and a entry call is issued to one of the open entries, the corresponding accept body executes. When the rendezvous completes, the active priority of the accepting task is lowered to the held priority (unless it is still inheriting from other sources), and the task does not execute until another Continue.
+If a task becomes held while waiting in a selective_accept, and a entry call is issued to one of the open entries, the corresponding accept body executes. When the rendezvous completes, the active priority of the accepting task is lowered to the held priority (unless it is still inheriting from other sources), and the task does not execute until another Continue.
 
 The same holds if the held task is the only task on a protected entry queue whose barrier becomes open. The corresponding entry body executes.
 
@@ -1079,7 +1079,7 @@ If the implementation blocks interrupts (see C.3) not as a result of direct user
 
 Ramification: The implementation shall not allow itself to be interrupted when it is in a state where it is unable to support all the language-defined operations permitted in the execution of interrupt handlers. (see 9.5.1). 
 
-The implementation shall recognize entry-less protected types. The overhead of acquiring the execution resource of an object of such a type (see 9.5.1) shall be minimized. In particular, there should not be any overhead due to evaluating [entry_barrier](S0192) [condition](S0132)s. 
+The implementation shall recognize entry-less protected types. The overhead of acquiring the execution resource of an object of such a type (see 9.5.1) shall be minimized. In particular, there should not be any overhead due to evaluating entry_barrier conditions. 
 
 Implementation Note: Ideally the overhead should just be a spin-lock. 
 

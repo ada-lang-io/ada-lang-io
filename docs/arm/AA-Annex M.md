@@ -25,7 +25,7 @@ Capacity limitations of the implementation. See 1.1.1(60).
 
 Variations from the standard that are impractical to avoid given the implementation's execution environment. See 1.1.1(63).
 
-Which [code_statement](S0273)s cause external interactions. See 1.1.1(67).
+Which code_statements cause external interactions. See 1.1.1(67).
 
 The coded representation for the text of an Ada program. See 2.1(4).
 
@@ -57,7 +57,7 @@ The small of an ordinary fixed point type. See 3.5.9(8).
 
 What combinations of small, range, and digits are supported for fixed point types. See 3.5.9(10).
 
-The result of Tags.Expanded_Name for types declared within an unnamed [block_statement](S0138). See 3.9(11).
+The result of Tags.Expanded_Name for types declared within an unnamed block_statement. See 3.9(11).
 
 Implementation-defined attributes. See 4.1.4(12).
 
@@ -69,13 +69,13 @@ The time base of the type Calendar.Time. See 9.6(23).
 
 The timezone used for package Calendar operations. See 9.6(24).
 
-Any limit on [delay_until_statement](S0197)s of [select_statement](S0199)s. See 9.6(29).
+Any limit on delay_until_statements of select_statements. See 9.6(29).
 
 Whether or not two nonoverlapping parts of a composite object are independently addressable, in the case where packing, record layout, or Component_Size is specified for the object. See 9.10(1).
 
-The representation for a [compilation](S0214). See 10.1(2).
+The representation for a compilation. See 10.1(2).
 
-Any restrictions on [compilation](S0214)s that contain multiple [compilation_unit](S0215)s. See 10.1(4).
+Any restrictions on compilations that contain multiple compilation_units. See 10.1(4).
 
 The mechanisms for creating an environment and for adding and replacing compilation units. See 10.1.4(3).
 
@@ -85,7 +85,7 @@ The implementation-defined means, if any, of specifying which compilation units 
 
 The manner of designating the main subprogram of a partition. See 10.2(8).
 
-The order of elaboration of [library_item](S0216)s. See 10.2(19).
+The order of elaboration of library_items. See 10.2(19).
 
 Parameter passing and function return for the main subprogram. See 10.2(22).
 
@@ -97,7 +97,7 @@ The semantics of any nonactive partitions supported by the implementation. See 1
 
 The information returned by Exception_Message. See 11.4.1(10).
 
-The result of Exceptions.Exception_Name for types declared within an unnamed [block_statement](S0138). See 11.4.1(12).
+The result of Exceptions.Exception_Name for types declared within an unnamed block_statement. See 11.4.1(12).
 
 The information returned by Exception_Information. See 11.4.1(13).
 
@@ -121,7 +121,7 @@ If Word_Size = Storage_Unit, the default bit ordering. See 13.5.3(5).
 
 The contents of the visible part of package Systemand its language-defined children. See 13.7(2).
 
-The contents of the visible part of package System.Machine_Code, and the meaning of [code_statement](S0273)s. See 13.8(7).
+The contents of the visible part of package System.Machine_Code, and the meaning of code_statements. See 13.8(7).
 
 The effect of unchecked conversion. See 13.9(11).
 
@@ -133,9 +133,9 @@ The meaning of Storage_Size. See 13.11(19).
 
 Implementation-defined aspects of storage pools. See 13.11(23).
 
-The set of restrictions allowed in a [pragma](S0016) Restrictions. See 13.12(7).
+The set of restrictions allowed in a pragma Restrictions. See 13.12(7).
 
-The consequences of violating limitations on Restrictions [pragma](S0016)s. See 13.12(9).
+The consequences of violating limitations on Restrictions pragmas. See 13.12(9).
 
 The representation used by the Read and Write attributes of elementary types in terms of stream elements. See 13.13.2(10).
 
@@ -213,13 +213,13 @@ Whether, on a multiprocessor, a task that is waiting for access to a protected o
 
 The affect of implementation defined execution resources on task dispatching. See D.2.1(9).
 
-Implementation-defined policy_[identifier](S0002)s allowed in a [pragma](S0016) Task_Dispatching_Policy. See D.2.2(4).
+Implementation-defined policy_identifiers allowed in a pragma Task_Dispatching_Policy. See D.2.2(4).
 
 Implementation-defined aspects of priority inversion. See D.2.2(17).
 
 Implementation defined task dispatching. See D.2.2(19).
 
-Implementation-defined policy_[identifier](S0002)s allowed in a [pragma](S0016) Locking_Policy. See D.3(4).
+Implementation-defined policy_identifiers allowed in a pragma Locking_Policy. See D.3(4).
 
 Default ceiling priorities. See D.3(10).
 
@@ -235,7 +235,7 @@ Implementation-defined aspects of pragma Restrictions. See D.7(20).
 
 Implementation-defined aspects of package Real_Time. See D.8(17).
 
-Implementation-defined aspects of [delay_statement](S0196)s. See D.9(8).
+Implementation-defined aspects of delay_statements. See D.9(8).
 
 The upper bound on the duration of interrupt blocking caused by the implementation. See D.12(5).
 

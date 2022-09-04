@@ -17,40 +17,40 @@ This Annex summarizes the complete syntax of the language.
 See  for a description of the notation used. 
 
 2.1:
-character ::= [graphic_character](S0001) | format_effector | other_control_function
+character ::= graphic_character | format_effector | other_control_function
 
 2.1:
 graphic_character ::= identifier_letter | digit | space_character | special_character
 
 2.3:
 identifier ::= 
-   identifier_letter {[underline] [letter_or_digit](S0003)}
+   identifier_letter {[underline] letter_or_digit}
 
 2.3:
 letter_or_digit ::= identifier_letter | digit
 
 2.4:
-numeric_literal ::= [decimal_literal](S0005) | [based_literal](S0008)
+numeric_literal ::= decimal_literal | based_literal
 
 2.4.1:
-decimal_literal ::= [numeral](S0006) [.[numeral](S0006)] [[exponent](S0007)]
+decimal_literal ::= numeral [.numeral] [exponent]
 
 2.4.1:
 numeral ::= digit {[underline] digit}
 
 2.4.1:
-exponent ::= E [+] [numeral](S0006) | E  [numeral](S0006)
+exponent ::= E [+] numeral | E  numeral
 
 2.4.2:
 based_literal ::= 
-   [base](S0009) # [based_numeral](S0010) [.[based_numeral](S0010)] # [[exponent](S0007)]
+   base # based_numeral [.based_numeral] # [exponent]
 
 2.4.2:
-base ::= [numeral](S0006)
+base ::= numeral
 
 2.4.2:
 based_numeral ::= 
-   [extended_digit](S0011) {[underline] [extended_digit](S0011)}
+   extended_digit {[underline] extended_digit}
 
 2.4.2:
 extended_digit ::= digit | A | B | C | D | E | F
@@ -59,7 +59,7 @@ extended_digit ::= digit | A | B | C | D | E | F
 character_literal ::= 'graphic_character'
 
 2.6:
-string_literal ::= "{[string_element](S0014)}"
+string_literal ::= "{string_element}"
 
 2.6:
 string_element ::= "" | non_quotation_mark_graphic_character
@@ -69,392 +69,392 @@ comment ::= --{non_end_of_line_character}
 
 2.8:
 pragma ::= 
-   pragma [identifier](S0002) [([pragma_argument_association](S0017) {, [pragma_argument_association](S0017)})];
+   pragma identifier [(pragma_argument_association {, pragma_argument_association})];
 
 2.8:
 pragma_argument_association ::= 
-     [pragma_argument_[identifier](S0002) =&gt] [name](S0084)
-   | [pragma_argument_[identifier](S0002) =&gt] [expression](S0108)
+     [pragma_argument_identifier =&gt] name
+   | [pragma_argument_identifier =&gt] expression
 
 3.1:
 basic_declaration ::= 
-     [type_declaration](S0020)	| [subtype_declaration](S0023)
-   | [object_declaration](S0029)	| [number_declaration](S0031)
-   | [subprogram_declaration](S0141)	| [abstract_subprogram_declaration](S0142)
-   | [package_declaration](S0161)	| [renaming_declaration](S0169)
-   | [exception_declaration](S0230)	| [generic_declaration](S0236)
-   | [generic_instantiation](S0241)
+     type_declaration	| subtype_declaration
+   | object_declaration	| number_declaration
+   | subprogram_declaration	| abstract_subprogram_declaration
+   | package_declaration	| renaming_declaration
+   | exception_declaration	| generic_declaration
+   | generic_instantiation
 
 3.1:
-defining_identifier ::= [identifier](S0002)
+defining_identifier ::= identifier
 
 3.2.1:
-type_declaration ::=  [full_type_declaration](S0021)
-   | [incomplete_type_declaration](S0078)
-   | [private_type_declaration](S0164)
-   | [private_extension_declaration](S0165)
+type_declaration ::=  full_type_declaration
+   | incomplete_type_declaration
+   | private_type_declaration
+   | private_extension_declaration
 
 3.2.1:
 full_type_declaration ::= 
-     type [defining_identifier](S0019) [[known_discriminant_part](S0058)] is [type_definition](S0022);
-   | [task_type_declaration](S0175)
-   | [protected_type_declaration](S0180)
+     type defining_identifier [known_discriminant_part] is type_definition;
+   | task_type_declaration
+   | protected_type_declaration
 
 3.2.1:
 type_definition ::= 
-     [enumeration_type_definition](S0035)	| [integer_type_definition](S0038)
-   | [real_type_definition](S0041)	| [array_type_definition](S0048)
-   | [record_type_definition](S0063)	| [access_type_definition](S0073)
-   | [derived_type_definition](S0032)
+     enumeration_type_definition	| integer_type_definition
+   | real_type_definition	| array_type_definition
+   | record_type_definition	| access_type_definition
+   | derived_type_definition
 
 3.2.2:
 subtype_declaration ::= 
-   subtype [defining_identifier](S0019) is [subtype_indication](S0024);
+   subtype defining_identifier is subtype_indication;
 
 3.2.2:
-subtype_indication ::=  [subtype_mark](S0025) [[constraint](S0026)]
+subtype_indication ::=  subtype_mark [constraint]
 
 3.2.2:
-subtype_mark ::= subtype_[name](S0084)
+subtype_mark ::= subtype_name
 
 3.2.2:
-constraint ::= [scalar_constraint](S0027) | [composite_constraint](S0028)
+constraint ::= scalar_constraint | composite_constraint
 
 3.2.2:
 scalar_constraint ::= 
-     [range_constraint](S0033) | [digits_constraint](S0047) | [delta_constraint](S0275)
+     range_constraint | digits_constraint | delta_constraint
 
 3.2.2:
 composite_constraint ::= 
-     [index_constraint](S0054) | [discriminant_constraint](S0061)
+     index_constraint | discriminant_constraint
 
 3.3.1:
 object_declaration ::= 
-    [defining_identifier_list](S0030) : [aliased] [constant] [subtype_indication](S0024) [:= [expression](S0108)];
-  | [defining_identifier_list](S0030) : [aliased] [constant] [array_type_definition](S0048) [:= [expression](S0108)];
-  | [single_task_declaration](S0176)
-  | [single_protected_declaration](S0181)
+    defining_identifier_list : [aliased] [constant] subtype_indication [:= expression];
+  | defining_identifier_list : [aliased] [constant] array_type_definition [:= expression];
+  | single_task_declaration
+  | single_protected_declaration
 
 3.3.1:
 defining_identifier_list ::= 
-  [defining_identifier](S0019) {, [defining_identifier](S0019)}
+  defining_identifier {, defining_identifier}
 
 3.3.2:
 number_declaration ::= 
-     [defining_identifier_list](S0030) : constant := static_[expression](S0108);
+     defining_identifier_list : constant := static_expression;
 
 3.4:
-derived_type_definition ::= [abstract] new parent_[subtype_indication](S0024) [[record_extension_part](S0072)]
+derived_type_definition ::= [abstract] new parent_subtype_indication [record_extension_part]
 
 3.5:
-range_constraint ::=  range [range](S0034)
+range_constraint ::=  range range
 
 3.5:
-range ::=  [range_attribute_reference](S0095)
-   | [simple_expression](S0110) .. [simple_expression](S0110)
+range ::=  range_attribute_reference
+   | simple_expression .. simple_expression
 
 3.5.1:
 enumeration_type_definition ::= 
-   ([enumeration_literal_specification](S0036) {, [enumeration_literal_specification](S0036)})
+   (enumeration_literal_specification {, enumeration_literal_specification})
 
 3.5.1:
-enumeration_literal_specification ::=  [defining_identifier](S0019) | [defining_character_literal](S0037)
+enumeration_literal_specification ::=  defining_identifier | defining_character_literal
 
 3.5.1:
-defining_character_literal ::= [character_literal](S0012)
+defining_character_literal ::= character_literal
 
 3.5.4:
-integer_type_definition ::= [signed_integer_type_definition](S0039) | [modular_type_definition](S0040)
+integer_type_definition ::= signed_integer_type_definition | modular_type_definition
 
 3.5.4:
-signed_integer_type_definition ::= range static_[simple_expression](S0110) .. static_[simple_expression](S0110)
+signed_integer_type_definition ::= range static_simple_expression .. static_simple_expression
 
 3.5.4:
-modular_type_definition ::= mod static_[expression](S0108)
+modular_type_definition ::= mod static_expression
 
 3.5.6:
 real_type_definition ::= 
-   [floating_point_definition](S0042) | [fixed_point_definition](S0044)
+   floating_point_definition | fixed_point_definition
 
 3.5.7:
 floating_point_definition ::= 
-  digits static_[expression](S0108) [[real_range_specification](S0043)]
+  digits static_expression [real_range_specification]
 
 3.5.7:
 real_range_specification ::= 
-  range static_[simple_expression](S0110) .. static_[simple_expression](S0110)
+  range static_simple_expression .. static_simple_expression
 
 3.5.9:
-fixed_point_definition ::= [ordinary_fixed_point_definition](S0045) | [decimal_fixed_point_definition](S0046)
+fixed_point_definition ::= ordinary_fixed_point_definition | decimal_fixed_point_definition
 
 3.5.9:
 ordinary_fixed_point_definition ::= 
-   delta static_[expression](S0108)  [real_range_specification](S0043)
+   delta static_expression  real_range_specification
 
 3.5.9:
 decimal_fixed_point_definition ::= 
-   delta static_[expression](S0108) digits static_[expression](S0108) [[real_range_specification](S0043)]
+   delta static_expression digits static_expression [real_range_specification]
 
 3.5.9:
 digits_constraint ::= 
-   digits static_[expression](S0108) [[range_constraint](S0033)]
+   digits static_expression [range_constraint]
 
 3.6:
 array_type_definition ::= 
-   [unconstrained_array_definition](S0049) | [constrained_array_definition](S0051)
+   unconstrained_array_definition | constrained_array_definition
 
 3.6:
 unconstrained_array_definition ::= 
-   array([index_subtype_definition](S0050) {, [index_subtype_definition](S0050)}) of [component_definition](S0053)
+   array(index_subtype_definition {, index_subtype_definition}) of component_definition
 
 3.6:
-index_subtype_definition ::= [subtype_mark](S0025) range &lt&gt
+index_subtype_definition ::= subtype_mark range &lt&gt
 
 3.6:
 constrained_array_definition ::= 
-   array ([discrete_subtype_definition](S0052) {, [discrete_subtype_definition](S0052)}) of [component_definition](S0053)
+   array (discrete_subtype_definition {, discrete_subtype_definition}) of component_definition
 
 3.6:
-discrete_subtype_definition ::= discrete_[subtype_indication](S0024) | [range](S0034)
+discrete_subtype_definition ::= discrete_subtype_indication | range
 
 3.6:
-component_definition ::= [aliased] [subtype_indication](S0024)
+component_definition ::= [aliased] subtype_indication
 
 3.6.1:
-index_constraint ::=  ([discrete_range](S0055) {, [discrete_range](S0055)})
+index_constraint ::=  (discrete_range {, discrete_range})
 
 3.6.1:
-discrete_range ::= discrete_[subtype_indication](S0024) | [range](S0034)
+discrete_range ::= discrete_subtype_indication | range
 
 3.7:
-discriminant_part ::= [unknown_discriminant_part](S0057) | [known_discriminant_part](S0058)
+discriminant_part ::= unknown_discriminant_part | known_discriminant_part
 
 3.7:
 unknown_discriminant_part ::= (&lt&gt)
 
 3.7:
 known_discriminant_part ::= 
-   ([discriminant_specification](S0059) {; [discriminant_specification](S0059)})
+   (discriminant_specification {; discriminant_specification})
 
 3.7:
 discriminant_specification ::= 
-   [defining_identifier_list](S0030) : [subtype_mark](S0025) [:= [default_expression](S0060)]
- | [defining_identifier_list](S0030) : [access_definition](S0077) [:= [default_expression](S0060)]
+   defining_identifier_list : subtype_mark [:= default_expression]
+ | defining_identifier_list : access_definition [:= default_expression]
 
 3.7:
-default_expression ::= [expression](S0108)
+default_expression ::= expression
 
 3.7.1:
 discriminant_constraint ::= 
-   ([discriminant_association](S0062) {, [discriminant_association](S0062)})
+   (discriminant_association {, discriminant_association})
 
 3.7.1:
 discriminant_association ::= 
-   [discriminant_[selector_name](S0092) {| discriminant_[selector_name](S0092)} =&gt] [expression](S0108)
+   [discriminant_selector_name {| discriminant_selector_name} =&gt] expression
 
 3.8:
-record_type_definition ::= [[abstract] tagged] [limited] [record_definition](S0064)
+record_type_definition ::= [[abstract] tagged] [limited] record_definition
 
 3.8:
 record_definition ::= 
     record
-       [component_list](S0065)
+       component_list
     end record
   | null record
 
 3.8:
 component_list ::= 
-      [component_item](S0066) {[component_item](S0066)}
-   | {[component_item](S0066)} [variant_part](S0068)
+      component_item {component_item}
+   | {component_item} variant_part
    |  null;
 
 3.8:
-component_item ::= [component_declaration](S0067) | [representation_clause](S0263)
+component_item ::= component_declaration | representation_clause
 
 3.8:
 component_declaration ::= 
-   [defining_identifier_list](S0030) : [component_definition](S0053) [:= [default_expression](S0060)];
+   defining_identifier_list : component_definition [:= default_expression];
 
 3.8.1:
 variant_part ::= 
-   case discriminant_[direct_name](S0085) is
-       [variant](S0069)
-      {[variant](S0069)}
+   case discriminant_direct_name is
+       variant
+      {variant}
    end case;
 
 3.8.1:
 variant ::= 
-   when [discrete_choice_list](S0070) =&gt
-      [component_list](S0065)
+   when discrete_choice_list =&gt
+      component_list
 
 3.8.1:
-discrete_choice_list ::= [discrete_choice](S0071) {| [discrete_choice](S0071)}
+discrete_choice_list ::= discrete_choice {| discrete_choice}
 
 3.8.1:
-discrete_choice ::= [expression](S0108) | [discrete_range](S0055) | others
+discrete_choice ::= expression | discrete_range | others
 
 3.9.1:
-record_extension_part ::= with [record_definition](S0064)
+record_extension_part ::= with record_definition
 
 3.9.3:
  ::= 
 
 3.10:
 access_type_definition ::= 
-    [access_to_object_definition](S0074)
-  | [access_to_subprogram_definition](S0076)
+    access_to_object_definition
+  | access_to_subprogram_definition
 
 3.10:
 access_to_object_definition ::= 
-    access [[general_access_modifier](S0075)] [subtype_indication](S0024)
+    access [general_access_modifier] subtype_indication
 
 3.10:
 general_access_modifier ::= all | constant
 
 3.10:
 access_to_subprogram_definition ::= 
-    access [protected] procedure [parameter_profile](S0149)
-  | access [protected] function  [parameter_and_result_profile](S0150)
+    access [protected] procedure parameter_profile
+  | access [protected] function  parameter_and_result_profile
 
 3.10:
-access_definition ::= access [subtype_mark](S0025)
+access_definition ::= access subtype_mark
 
 3.10.1:
-incomplete_type_declaration ::= type [defining_identifier](S0019) [[discriminant_part](S0056)];
+incomplete_type_declaration ::= type defining_identifier [discriminant_part];
 
 3.11:
-declarative_part ::= {[declarative_item](S0080)}
+declarative_part ::= {declarative_item}
 
 3.11:
 declarative_item ::= 
-    [basic_declarative_item](S0081) | [body](S0082)
+    basic_declarative_item | body
 
 3.11:
 basic_declarative_item ::= 
-    [basic_declaration](S0018) | [representation_clause](S0263) | [use_clause](S0166)
+    basic_declaration | representation_clause | use_clause
 
 3.11:
-body ::= [proper_body](S0083) | [body_stub](S0224)
+body ::= proper_body | body_stub
 
 3.11:
 proper_body ::= 
-    [subprogram_body](S0154) | [package_body](S0163) | [task_body](S0179) | [protected_body](S0185)
+    subprogram_body | package_body | task_body | protected_body
 
 4.1:
 name ::= 
-     [direct_name](S0085)	| [explicit_dereference](S0087)
-   | [indexed_component](S0089)	| [slice](S0090)
-   | [selected_component](S0091)	| [attribute_reference](S0093)
-   | [type_conversion](S0120)	| [function_call](S0156)
-   | [character_literal](S0012)
+     direct_name	| explicit_dereference
+   | indexed_component	| slice
+   | selected_component	| attribute_reference
+   | type_conversion	| function_call
+   | character_literal
 
 4.1:
-direct_name ::= [identifier](S0002) | [operator_symbol](S0147)
+direct_name ::= identifier | operator_symbol
 
 4.1:
-prefix ::= [name](S0084) | [implicit_dereference](S0088)
+prefix ::= name | implicit_dereference
 
 4.1:
-explicit_dereference ::= [name](S0084).all
+explicit_dereference ::= name.all
 
 4.1:
-implicit_dereference ::= [name](S0084)
+implicit_dereference ::= name
 
 4.1.1:
-indexed_component ::= [prefix](S0086)([expression](S0108) {, [expression](S0108)})
+indexed_component ::= prefix(expression {, expression})
 
 4.1.2:
-slice ::= [prefix](S0086)([discrete_range](S0055))
+slice ::= prefix(discrete_range)
 
 4.1.3:
-selected_component ::= [prefix](S0086) . [selector_name](S0092)
+selected_component ::= prefix . selector_name
 
 4.1.3:
-selector_name ::= [identifier](S0002) | [character_literal](S0012) | [operator_symbol](S0147)
+selector_name ::= identifier | character_literal | operator_symbol
 
 4.1.4:
-attribute_reference ::= [prefix](S0086)'[attribute_designator](S0094)
+attribute_reference ::= prefix'attribute_designator
 
 4.1.4:
 attribute_designator ::= 
-    [identifier](S0002)[(static_[expression](S0108))]
+    identifier[(static_expression)]
   | Access | Delta | Digits
 
 4.1.4:
-range_attribute_reference ::= [prefix](S0086)'[range_attribute_designator](S0096)
+range_attribute_reference ::= prefix'range_attribute_designator
 
 4.1.4:
-range_attribute_designator ::= Range[(static_[expression](S0108))]
+range_attribute_designator ::= Range[(static_expression)]
 
 4.3:
-aggregate ::= [record_aggregate](S0098) | [extension_aggregate](S0102) | [array_aggregate](S0104)
+aggregate ::= record_aggregate | extension_aggregate | array_aggregate
 
 4.3.1:
-record_aggregate ::= ([record_component_association_list](S0099))
+record_aggregate ::= (record_component_association_list)
 
 4.3.1:
 record_component_association_list ::= 
-    [record_component_association](S0100) {, [record_component_association](S0100)}
+    record_component_association {, record_component_association}
   | null record
 
 4.3.1:
 record_component_association ::= 
-    [[component_choice_list](S0101) =&gt] [expression](S0108)
+    [component_choice_list =&gt] expression
 
 4.3.1:
 component_choice_list ::= 
-     component_[selector_name](S0092) {| component_[selector_name](S0092)}
+     component_selector_name {| component_selector_name}
    | others
 
 4.3.2:
 extension_aggregate ::= 
-    ([ancestor_part](S0103) with [record_component_association_list](S0099))
+    (ancestor_part with record_component_association_list)
 
 4.3.2:
-ancestor_part ::= [expression](S0108) | [subtype_mark](S0025)
+ancestor_part ::= expression | subtype_mark
 
 4.3.3:
 array_aggregate ::= 
-    [positional_array_aggregate](S0105) | [named_array_aggregate](S0106)
+    positional_array_aggregate | named_array_aggregate
 
 4.3.3:
 positional_array_aggregate ::= 
-    ([expression](S0108), [expression](S0108) {, [expression](S0108)})
-  | ([expression](S0108) {, [expression](S0108)}, others =&gt [expression](S0108))
+    (expression, expression {, expression})
+  | (expression {, expression}, others =&gt expression)
 
 4.3.3:
 named_array_aggregate ::= 
-    [array_component_association](S0107) {, [array_component_association](S0107)})
+    array_component_association {, array_component_association})
 
 4.3.3:
 array_component_association ::= 
-    [discrete_choice_list](S0070) =&gt [expression](S0108)
+    discrete_choice_list =&gt expression
 
 4.4:
 expression ::= 
-     [relation](S0109) {and [relation](S0109)} 	| [relation](S0109) {and then [relation](S0109)}
-   | [relation](S0109) {or [relation](S0109)} 	| [relation](S0109) {or else [relation](S0109)}
-   | [relation](S0109) {xor [relation](S0109)}
+     relation {and relation} 	| relation {and then relation}
+   | relation {or relation} 	| relation {or else relation}
+   | relation {xor relation}
 
 4.4:
 relation ::= 
-     [simple_expression](S0110) [[relational_operator](S0115) [simple_expression](S0110)]
-   | [simple_expression](S0110) [not] in [range](S0034)
-   | [simple_expression](S0110) [not] in [subtype_mark](S0025)
+     simple_expression [relational_operator simple_expression]
+   | simple_expression [not] in range
+   | simple_expression [not] in subtype_mark
 
 4.4:
-simple_expression ::= [[unary_adding_operator](S0117)] [term](S0111) {[binary_adding_operator](S0116) [term](S0111)}
+simple_expression ::= [unary_adding_operator] term {binary_adding_operator term}
 
 4.4:
-term ::= [factor](S0112) {[multiplying_operator](S0118) [factor](S0112)}
+term ::= factor {multiplying_operator factor}
 
 4.4:
-factor ::= [primary](S0113) [** [primary](S0113)] | abs [primary](S0113) | not [primary](S0113)
+factor ::= primary [** primary] | abs primary | not primary
 
 4.4:
 primary ::= 
-    [numeric_literal](S0004) | null | [string_literal](S0013) | [aggregate](S0097)
-  | [name](S0084) | [qualified_expression](S0121) | [allocator](S0122) | ([expression](S0108))
+    numeric_literal | null | string_literal | aggregate
+  | name | qualified_expression | allocator | (expression)
 
 4.5:
 logical_operator ::= 	 and | or  | xor
@@ -476,389 +476,389 @@ highest_precedence_operator ::= 	 **  | abs | not
 
 4.6:
 type_conversion ::= 
-    [subtype_mark](S0025)([expression](S0108))
-  | [subtype_mark](S0025)([name](S0084))
+    subtype_mark(expression)
+  | subtype_mark(name)
 
 4.7:
 qualified_expression ::= 
-   [subtype_mark](S0025)'([expression](S0108)) | [subtype_mark](S0025)'[aggregate](S0097)
+   subtype_mark'(expression) | subtype_mark'aggregate
 
 4.8:
 allocator ::= 
-   new [subtype_indication](S0024) | new [qualified_expression](S0121)
+   new subtype_indication | new qualified_expression
 
 5.1:
-sequence_of_statements ::= [statement](S0124) {[statement](S0124)}
+sequence_of_statements ::= statement {statement}
 
 5.1:
 statement ::= 
-   {[label](S0128)} [simple_statement](S0125) | {[label](S0128)} [compound_statement](S0126)
+   {label} simple_statement | {label} compound_statement
 
 5.1:
-simple_statement ::= [null_statement](S0127)
-   | [assignment_statement](S0130)	| [exit_statement](S0139)
-   | [goto_statement](S0140)	| [procedure_call_statement](S0155)
-   | [return_statement](S0160)	| [entry_call_statement](S0194)
-   | [requeue_statement](S0195)	| [delay_statement](S0196)
-   | [abort_statement](S0213)	| [raise_statement](S0235)
-   | [code_statement](S0273)
+simple_statement ::= null_statement
+   | assignment_statement	| exit_statement
+   | goto_statement	| procedure_call_statement
+   | return_statement	| entry_call_statement
+   | requeue_statement	| delay_statement
+   | abort_statement	| raise_statement
+   | code_statement
 
 5.1:
 compound_statement ::= 
-     [if_statement](S0131)	| [case_statement](S0133)
-   | [loop_statement](S0135)	| [block_statement](S0138)
-   | [accept_statement](S0188)	| [select_statement](S0199)
+     if_statement	| case_statement
+   | loop_statement	| block_statement
+   | accept_statement	| select_statement
 
 5.1:
 null_statement ::= null;
 
 5.1:
-label ::= &lt&ltlabel_[statement_identifier](S0129)&gt&gt
+label ::= &lt&ltlabel_statement_identifier&gt&gt
 
 5.1:
-statement_identifier ::= [direct_name](S0085)
+statement_identifier ::= direct_name
 
 5.2:
 assignment_statement ::= 
-   variable_[name](S0084) := [expression](S0108);
+   variable_name := expression;
 
 5.3:
 if_statement ::= 
-    if [condition](S0132) then
-      [sequence_of_statements](S0123)
-   {elsif [condition](S0132) then
-      [sequence_of_statements](S0123)}
+    if condition then
+      sequence_of_statements
+   {elsif condition then
+      sequence_of_statements}
    [else
-      [sequence_of_statements](S0123)]
+      sequence_of_statements]
     end if;
 
 5.3:
-condition ::= boolean_[expression](S0108)
+condition ::= boolean_expression
 
 5.4:
 case_statement ::= 
-   case [expression](S0108) is
-       [case_statement_alternative](S0134)
-      {[case_statement_alternative](S0134)}
+   case expression is
+       case_statement_alternative
+      {case_statement_alternative}
    end case;
 
 5.4:
 case_statement_alternative ::= 
-   when [discrete_choice_list](S0070) =&gt
-      [sequence_of_statements](S0123)
+   when discrete_choice_list =&gt
+      sequence_of_statements
 
 5.5:
 loop_statement ::= 
-   [loop_[statement_identifier](S0129):]
-      [[iteration_scheme](S0136)] loop
-         [sequence_of_statements](S0123)
-       end loop [loop_[identifier](S0002)];
+   [loop_statement_identifier:]
+      [iteration_scheme] loop
+         sequence_of_statements
+       end loop [loop_identifier];
 
 5.5:
-iteration_scheme ::= while [condition](S0132)
-   | for [loop_parameter_specification](S0137)
+iteration_scheme ::= while condition
+   | for loop_parameter_specification
 
 5.5:
 loop_parameter_specification ::= 
-   [defining_identifier](S0019) in [reverse] [discrete_subtype_definition](S0052)
+   defining_identifier in [reverse] discrete_subtype_definition
 
 5.6:
 block_statement ::= 
-   [block_[statement_identifier](S0129):]
+   [block_statement_identifier:]
        [declare
-            [declarative_part](S0079)]
+            declarative_part]
         begin
-            [handled_sequence_of_statements](S0231)
-        end [block_[identifier](S0002)];
+            handled_sequence_of_statements
+        end [block_identifier];
 
 5.7:
 exit_statement ::= 
-   exit [loop_[name](S0084)] [when [condition](S0132)];
+   exit [loop_name] [when condition];
 
 5.8:
-goto_statement ::= goto label_[name](S0084);
+goto_statement ::= goto label_name;
 
 6.1:
-subprogram_declaration ::= [subprogram_specification](S0143);
+subprogram_declaration ::= subprogram_specification;
 
 6.1:
-abstract_subprogram_declaration ::= [subprogram_specification](S0143) is abstract;
+abstract_subprogram_declaration ::= subprogram_specification is abstract;
 
 6.1:
 subprogram_specification ::= 
-    procedure [defining_program_unit_name](S0146) [parameter_profile](S0149)
-  | function [defining_designator](S0145) [parameter_and_result_profile](S0150)
+    procedure defining_program_unit_name parameter_profile
+  | function defining_designator parameter_and_result_profile
 
 6.1:
-designator ::= [[parent_unit_name](S0220) . ][identifier](S0002) | [operator_symbol](S0147)
+designator ::= [parent_unit_name . ]identifier | operator_symbol
 
 6.1:
-defining_designator ::= [defining_program_unit_name](S0146) | [defining_operator_symbol](S0148)
+defining_designator ::= defining_program_unit_name | defining_operator_symbol
 
 6.1:
-defining_program_unit_name ::= [[parent_unit_name](S0220) . ][defining_identifier](S0019)
+defining_program_unit_name ::= [parent_unit_name . ]defining_identifier
 
 6.1:
-operator_symbol ::= [string_literal](S0013)
+operator_symbol ::= string_literal
 
 6.1:
-defining_operator_symbol ::= [operator_symbol](S0147)
+defining_operator_symbol ::= operator_symbol
 
 6.1:
-parameter_profile ::= [[formal_part](S0151)]
+parameter_profile ::= [formal_part]
 
 6.1:
-parameter_and_result_profile ::= [[formal_part](S0151)] return [subtype_mark](S0025)
+parameter_and_result_profile ::= [formal_part] return subtype_mark
 
 6.1:
 formal_part ::= 
-   ([parameter_specification](S0152) {; [parameter_specification](S0152)})
+   (parameter_specification {; parameter_specification})
 
 6.1:
 parameter_specification ::= 
-    [defining_identifier_list](S0030) : [mode](S0153)  [subtype_mark](S0025) [:= [default_expression](S0060)]
-  | [defining_identifier_list](S0030) : [access_definition](S0077) [:= [default_expression](S0060)]
+    defining_identifier_list : mode  subtype_mark [:= default_expression]
+  | defining_identifier_list : access_definition [:= default_expression]
 
 6.1:
 mode ::= [in] | in out | out
 
 6.3:
 subprogram_body ::= 
-    [subprogram_specification](S0143) is
-       [declarative_part](S0079)
+    subprogram_specification is
+       declarative_part
     begin
-        [handled_sequence_of_statements](S0231)
-    end [[designator](S0144)];
+        handled_sequence_of_statements
+    end [designator];
 
 6.4:
 procedure_call_statement ::= 
-    procedure_[name](S0084);
-  | procedure_[prefix](S0086) [actual_parameter_part](S0157);
+    procedure_name;
+  | procedure_prefix actual_parameter_part;
 
 6.4:
 function_call ::= 
-    function_[name](S0084)
-  | function_[prefix](S0086) [actual_parameter_part](S0157)
+    function_name
+  | function_prefix actual_parameter_part
 
 6.4:
 actual_parameter_part ::= 
-    ([parameter_association](S0158) {, [parameter_association](S0158)})
+    (parameter_association {, parameter_association})
 
 6.4:
 parameter_association ::= 
-   [formal_parameter_[selector_name](S0092) =&gt] [explicit_actual_parameter](S0159)
+   [formal_parameter_selector_name =&gt] explicit_actual_parameter
 
 6.4:
-explicit_actual_parameter ::= [expression](S0108) | variable_[name](S0084)
+explicit_actual_parameter ::= expression | variable_name
 
 6.5:
-return_statement ::= return [[expression](S0108)];
+return_statement ::= return [expression];
 
 7.1:
-package_declaration ::= [package_specification](S0162);
+package_declaration ::= package_specification;
 
 7.1:
 package_specification ::= 
-    package [defining_program_unit_name](S0146) is
-      {[basic_declarative_item](S0081)}
+    package defining_program_unit_name is
+      {basic_declarative_item}
    [private
-      {[basic_declarative_item](S0081)}]
-    end [[[parent_unit_name](S0220).][identifier](S0002)]
+      {basic_declarative_item}]
+    end [[parent_unit_name.]identifier]
 
 7.2:
 package_body ::= 
-    package body [defining_program_unit_name](S0146) is
-       [declarative_part](S0079)
+    package body defining_program_unit_name is
+       declarative_part
    [begin
-        [handled_sequence_of_statements](S0231)]
-    end [[[parent_unit_name](S0220).][identifier](S0002)];
+        handled_sequence_of_statements]
+    end [[parent_unit_name.]identifier];
 
 7.3:
 private_type_declaration ::= 
-   type [defining_identifier](S0019) [[discriminant_part](S0056)] is [[abstract] tagged] [limited] private;
+   type defining_identifier [discriminant_part] is [[abstract] tagged] [limited] private;
 
 7.3:
 private_extension_declaration ::= 
-   type [defining_identifier](S0019) [[discriminant_part](S0056)] is
-     [abstract]  new ancestor_[subtype_indication](S0024) with private;
+   type defining_identifier [discriminant_part] is
+     [abstract]  new ancestor_subtype_indication with private;
 
 8.4:
-use_clause ::= [use_package_clause](S0167) | [use_type_clause](S0168)
+use_clause ::= use_package_clause | use_type_clause
 
 8.4:
-use_package_clause ::= use package_[name](S0084) {, package_[name](S0084)};
+use_package_clause ::= use package_name {, package_name};
 
 8.4:
-use_type_clause ::= use type [subtype_mark](S0025) {, [subtype_mark](S0025)};
+use_type_clause ::= use type subtype_mark {, subtype_mark};
 
 8.5:
 renaming_declaration ::= 
-      [object_renaming_declaration](S0170)
-    | [exception_renaming_declaration](S0171)
-    | [package_renaming_declaration](S0172)
-    | [subprogram_renaming_declaration](S0173)
-    | [generic_renaming_declaration](S0174)
+      object_renaming_declaration
+    | exception_renaming_declaration
+    | package_renaming_declaration
+    | subprogram_renaming_declaration
+    | generic_renaming_declaration
 
 8.5.1:
-object_renaming_declaration ::= [defining_identifier](S0019) : [subtype_mark](S0025) renames object_[name](S0084);
+object_renaming_declaration ::= defining_identifier : subtype_mark renames object_name;
 
 8.5.2:
-exception_renaming_declaration ::= [defining_identifier](S0019) : exception renames exception_[name](S0084);
+exception_renaming_declaration ::= defining_identifier : exception renames exception_name;
 
 8.5.3:
-package_renaming_declaration ::= package [defining_program_unit_name](S0146) renames package_[name](S0084);
+package_renaming_declaration ::= package defining_program_unit_name renames package_name;
 
 8.5.4:
-subprogram_renaming_declaration ::= [subprogram_specification](S0143) renames callable_entity_[name](S0084);
+subprogram_renaming_declaration ::= subprogram_specification renames callable_entity_name;
 
 8.5.5:
 generic_renaming_declaration ::= 
-    generic package	[defining_program_unit_name](S0146) renames generic_package_[name](S0084);
-  | generic procedure	[defining_program_unit_name](S0146) renames generic_procedure_[name](S0084);
-  | generic function	[defining_program_unit_name](S0146) renames generic_function_[name](S0084);
+    generic package	defining_program_unit_name renames generic_package_name;
+  | generic procedure	defining_program_unit_name renames generic_procedure_name;
+  | generic function	defining_program_unit_name renames generic_function_name;
 
 9.1:
 task_type_declaration ::= 
-   task type [defining_identifier](S0019) [[known_discriminant_part](S0058)] [is [task_definition](S0177)];
+   task type defining_identifier [known_discriminant_part] [is task_definition];
 
 9.1:
 single_task_declaration ::= 
-   task [defining_identifier](S0019) [is [task_definition](S0177)];
+   task defining_identifier [is task_definition];
 
 9.1:
 task_definition ::= 
-     {[task_item](S0178)}
+     {task_item}
   [ private
-     {[task_item](S0178)}]
-  end [task_[identifier](S0002)]
+     {task_item}]
+  end [task_identifier]
 
 9.1:
-task_item ::= [entry_declaration](S0187) | [representation_clause](S0263)
+task_item ::= entry_declaration | representation_clause
 
 9.1:
 task_body ::= 
-   task body [defining_identifier](S0019) is
-     [declarative_part](S0079)
+   task body defining_identifier is
+     declarative_part
    begin
-     [handled_sequence_of_statements](S0231)
-   end [task_[identifier](S0002)];
+     handled_sequence_of_statements
+   end [task_identifier];
 
 9.4:
 protected_type_declaration ::= 
-  protected type [defining_identifier](S0019) [[known_discriminant_part](S0058)] is [protected_definition](S0182);
+  protected type defining_identifier [known_discriminant_part] is protected_definition;
 
 9.4:
 single_protected_declaration ::= 
-  protected [defining_identifier](S0019) is [protected_definition](S0182);
+  protected defining_identifier is protected_definition;
 
 9.4:
 protected_definition ::= 
-    { [protected_operation_declaration](S0183) }
+    { protected_operation_declaration }
 [ private
-    { [protected_element_declaration](S0184) } ]
-  end [protected_[identifier](S0002)]
+    { protected_element_declaration } ]
+  end [protected_identifier]
 
 9.4:
-protected_operation_declaration ::= [subprogram_declaration](S0141)
-     | [entry_declaration](S0187)
-     | [representation_clause](S0263)
+protected_operation_declaration ::= subprogram_declaration
+     | entry_declaration
+     | representation_clause
 
 9.4:
-protected_element_declaration ::= [protected_operation_declaration](S0183)
-     | [component_declaration](S0067)
+protected_element_declaration ::= protected_operation_declaration
+     | component_declaration
 
 9.4:
 protected_body ::= 
-  protected body [defining_identifier](S0019) is
-   { [protected_operation_item](S0186) }
-  end [protected_[identifier](S0002)];
+  protected body defining_identifier is
+   { protected_operation_item }
+  end [protected_identifier];
 
 9.4:
-protected_operation_item ::= [subprogram_declaration](S0141)
-     | [subprogram_body](S0154)
-     | [entry_body](S0190)
-     | [representation_clause](S0263)
+protected_operation_item ::= subprogram_declaration
+     | subprogram_body
+     | entry_body
+     | representation_clause
 
 9.5.2:
 entry_declaration ::= 
-   entry [defining_identifier](S0019) [([discrete_subtype_definition](S0052))] [parameter_profile](S0149);
+   entry defining_identifier [(discrete_subtype_definition)] parameter_profile;
 
 9.5.2:
 accept_statement ::= 
-   accept entry_[direct_name](S0085) [([entry_index](S0189))] [parameter_profile](S0149) [do
-     [handled_sequence_of_statements](S0231)
-   end [entry_[identifier](S0002)]];
+   accept entry_direct_name [(entry_index)] parameter_profile [do
+     handled_sequence_of_statements
+   end [entry_identifier]];
 
 9.5.2:
-entry_index ::= [expression](S0108)
+entry_index ::= expression
 
 9.5.2:
 entry_body ::= 
-    entry [defining_identifier](S0019) [entry_body_formal_part](S0191)[entry_barrier](S0192) is
-       [declarative_part](S0079)
+    entry defining_identifier entry_body_formal_partentry_barrier is
+       declarative_part
     begin
-       [handled_sequence_of_statements](S0231)
-    end [entry_[identifier](S0002)];
+       handled_sequence_of_statements
+    end [entry_identifier];
 
 9.5.2:
-entry_body_formal_part ::= [([entry_index_specification](S0193))] [parameter_profile](S0149)
+entry_body_formal_part ::= [(entry_index_specification)] parameter_profile
 
 9.5.2:
-entry_barrier ::= when [condition](S0132)
+entry_barrier ::= when condition
 
 9.5.2:
-entry_index_specification ::= for [defining_identifier](S0019) in [discrete_subtype_definition](S0052)
+entry_index_specification ::= for defining_identifier in discrete_subtype_definition
 
 9.5.3:
-entry_call_statement ::= entry_[name](S0084) [[actual_parameter_part](S0157)];
+entry_call_statement ::= entry_name [actual_parameter_part];
 
 9.5.4:
-requeue_statement ::= requeue entry_[name](S0084) [with abort];
+requeue_statement ::= requeue entry_name [with abort];
 
 9.6:
-delay_statement ::= [delay_until_statement](S0197) | [delay_relative_statement](S0198)
+delay_statement ::= delay_until_statement | delay_relative_statement
 
 9.6:
-delay_until_statement ::= delay until delay_[expression](S0108);
+delay_until_statement ::= delay until delay_expression;
 
 9.6:
-delay_relative_statement ::= delay delay_[expression](S0108);
+delay_relative_statement ::= delay delay_expression;
 
 9.7:
 select_statement ::= 
-   [selective_accept](S0200)
-  | [timed_entry_call](S0206)
-  | [conditional_entry_call](S0208)
-  | [asynchronous_select](S0209)
+   selective_accept
+  | timed_entry_call
+  | conditional_entry_call
+  | asynchronous_select
 
 9.7.1:
 selective_accept ::= 
   select
-   [[guard](S0201)]
-     [select_alternative](S0202)
+   [guard]
+     select_alternative
 { or
-   [[guard](S0201)]
-     [select_alternative](S0202) }
+   [guard]
+     select_alternative }
 [ else
-   [sequence_of_statements](S0123) ]
+   sequence_of_statements ]
   end select;
 
 9.7.1:
-guard ::= when [condition](S0132) =&gt
+guard ::= when condition =&gt
 
 9.7.1:
 select_alternative ::= 
-   [accept_alternative](S0203)
-  | [delay_alternative](S0204)
-  | [terminate_alternative](S0205)
+   accept_alternative
+  | delay_alternative
+  | terminate_alternative
 
 9.7.1:
 accept_alternative ::= 
-  [accept_statement](S0188) [[sequence_of_statements](S0123)]
+  accept_statement [sequence_of_statements]
 
 9.7.1:
 delay_alternative ::= 
-  [delay_statement](S0196) [[sequence_of_statements](S0123)]
+  delay_statement [sequence_of_statements]
 
 9.7.1:
 terminate_alternative ::= terminate;
@@ -866,194 +866,194 @@ terminate_alternative ::= terminate;
 9.7.2:
 timed_entry_call ::= 
   select
-   [entry_call_alternative](S0207)
+   entry_call_alternative
   or
-   [delay_alternative](S0204)
+   delay_alternative
   end select;
 
 9.7.2:
 entry_call_alternative ::= 
-  [entry_call_statement](S0194) [[sequence_of_statements](S0123)]
+  entry_call_statement [sequence_of_statements]
 
 9.7.3:
 conditional_entry_call ::= 
   select
-   [entry_call_alternative](S0207)
+   entry_call_alternative
   else
-   [sequence_of_statements](S0123)
+   sequence_of_statements
   end select;
 
 9.7.4:
 asynchronous_select ::= 
   select
-   [triggering_alternative](S0210)
+   triggering_alternative
   then abort
-   [abortable_part](S0212)
+   abortable_part
   end select;
 
 9.7.4:
-triggering_alternative ::= [triggering_statement](S0211) [[sequence_of_statements](S0123)]
+triggering_alternative ::= triggering_statement [sequence_of_statements]
 
 9.7.4:
-triggering_statement ::= [entry_call_statement](S0194) | [delay_statement](S0196)
+triggering_statement ::= entry_call_statement | delay_statement
 
 9.7.4:
-abortable_part ::= [sequence_of_statements](S0123)
+abortable_part ::= sequence_of_statements
 
 9.8:
-abort_statement ::= abort task_[name](S0084) {, task_[name](S0084)};
+abort_statement ::= abort task_name {, task_name};
 
 10.1.1:
-compilation ::= {[compilation_unit](S0215)}
+compilation ::= {compilation_unit}
 
 10.1.1:
 compilation_unit ::= 
-    [context_clause](S0221) [library_item](S0216)
-  | [context_clause](S0221) [subunit](S0229)
+    context_clause library_item
+  | context_clause subunit
 
 10.1.1:
-library_item ::= [private] [library_unit_declaration](S0217)
-  | [library_unit_body](S0219)
-  | [private] [library_unit_renaming_declaration](S0218)
+library_item ::= [private] library_unit_declaration
+  | library_unit_body
+  | [private] library_unit_renaming_declaration
 
 10.1.1:
 library_unit_declaration ::= 
-     [subprogram_declaration](S0141)	| [package_declaration](S0161)
-   | [generic_declaration](S0236)	| [generic_instantiation](S0241)
+     subprogram_declaration	| package_declaration
+   | generic_declaration	| generic_instantiation
 
 10.1.1:
 library_unit_renaming_declaration ::= 
-   [package_renaming_declaration](S0172)
- | [generic_renaming_declaration](S0174)
- | [subprogram_renaming_declaration](S0173)
+   package_renaming_declaration
+ | generic_renaming_declaration
+ | subprogram_renaming_declaration
 
 10.1.1:
-library_unit_body ::= [subprogram_body](S0154) | [package_body](S0163)
+library_unit_body ::= subprogram_body | package_body
 
 10.1.1:
-parent_unit_name ::= [name](S0084)
+parent_unit_name ::= name
 
 10.1.2:
-context_clause ::= {[context_item](S0222)}
+context_clause ::= {context_item}
 
 10.1.2:
-context_item ::= [with_clause](S0223) | [use_clause](S0166)
+context_item ::= with_clause | use_clause
 
 10.1.2:
-with_clause ::= with library_unit_[name](S0084) {, library_unit_[name](S0084)};
+with_clause ::= with library_unit_name {, library_unit_name};
 
 10.1.3:
 body_stub ::= 
-   [subprogram_body_stub](S0225) | [package_body_stub](S0226) | [task_body_stub](S0227) | [protected_body_stub](S0228)
+   subprogram_body_stub | package_body_stub | task_body_stub | protected_body_stub
 
 10.1.3:
-subprogram_body_stub ::= [subprogram_specification](S0143) is separate;
+subprogram_body_stub ::= subprogram_specification is separate;
 
 10.1.3:
-package_body_stub ::= package body [defining_identifier](S0019) is separate;
+package_body_stub ::= package body defining_identifier is separate;
 
 10.1.3:
-task_body_stub ::= task body [defining_identifier](S0019) is separate;
+task_body_stub ::= task body defining_identifier is separate;
 
 10.1.3:
-protected_body_stub ::= protected body [defining_identifier](S0019) is separate;
+protected_body_stub ::= protected body defining_identifier is separate;
 
 10.1.3:
-subunit ::= separate ([parent_unit_name](S0220)) [proper_body](S0083)
+subunit ::= separate (parent_unit_name) proper_body
 
 11.1:
-exception_declaration ::= [defining_identifier_list](S0030) : exception;
+exception_declaration ::= defining_identifier_list : exception;
 
 11.2:
 handled_sequence_of_statements ::= 
-     [sequence_of_statements](S0123)
+     sequence_of_statements
   [exception
-     [exception_handler](S0232)
-    {[exception_handler](S0232)}]
+     exception_handler
+    {exception_handler}]
 
 11.2:
 exception_handler ::= 
-  when [[choice_parameter_specification](S0233):] [exception_choice](S0234) {| [exception_choice](S0234)} =&gt
-     [sequence_of_statements](S0123)
+  when [choice_parameter_specification:] exception_choice {| exception_choice} =&gt
+     sequence_of_statements
 
 11.2:
-choice_parameter_specification ::= [defining_identifier](S0019)
+choice_parameter_specification ::= defining_identifier
 
 11.2:
-exception_choice ::= exception_[name](S0084) | others
+exception_choice ::= exception_name | others
 
 11.3:
-raise_statement ::= raise [exception_[name](S0084)];
+raise_statement ::= raise [exception_name];
 
 12.1:
-generic_declaration ::= [generic_subprogram_declaration](S0237) | [generic_package_declaration](S0238)
+generic_declaration ::= generic_subprogram_declaration | generic_package_declaration
 
 12.1:
 generic_subprogram_declaration ::= 
-     [generic_formal_part](S0239)  [subprogram_specification](S0143);
+     generic_formal_part  subprogram_specification;
 
 12.1:
 generic_package_declaration ::= 
-     [generic_formal_part](S0239)  [package_specification](S0162);
+     generic_formal_part  package_specification;
 
 12.1:
-generic_formal_part ::= generic {[generic_formal_parameter_declaration](S0240) | [use_clause](S0166)}
+generic_formal_part ::= generic {generic_formal_parameter_declaration | use_clause}
 
 12.1:
 generic_formal_parameter_declaration ::= 
-      [formal_object_declaration](S0245)
-    | [formal_type_declaration](S0246)
-    | [formal_subprogram_declaration](S0258)
-    | [formal_package_declaration](S0261)
+      formal_object_declaration
+    | formal_type_declaration
+    | formal_subprogram_declaration
+    | formal_package_declaration
 
 12.3:
 generic_instantiation ::= 
-     package [defining_program_unit_name](S0146) is
-         new generic_package_[name](S0084) [[generic_actual_part](S0242)];
-   | procedure [defining_program_unit_name](S0146) is
-         new generic_procedure_[name](S0084) [[generic_actual_part](S0242)];
-   | function [defining_designator](S0145) is
-         new generic_function_[name](S0084) [[generic_actual_part](S0242)];
+     package defining_program_unit_name is
+         new generic_package_name [generic_actual_part];
+   | procedure defining_program_unit_name is
+         new generic_procedure_name [generic_actual_part];
+   | function defining_designator is
+         new generic_function_name [generic_actual_part];
 
 12.3:
 generic_actual_part ::= 
-   ([generic_association](S0243) {, [generic_association](S0243)})
+   (generic_association {, generic_association})
 
 12.3:
 generic_association ::= 
-   [generic_formal_parameter_[selector_name](S0092) =&gt] [explicit_generic_actual_parameter](S0244)
+   [generic_formal_parameter_selector_name =&gt] explicit_generic_actual_parameter
 
 12.3:
-explicit_generic_actual_parameter ::= [expression](S0108) | variable_[name](S0084)
-   | subprogram_[name](S0084) | entry_[name](S0084) | [subtype_mark](S0025)
-   | package_instance_[name](S0084)
+explicit_generic_actual_parameter ::= expression | variable_name
+   | subprogram_name | entry_name | subtype_mark
+   | package_instance_name
 
 12.4:
 formal_object_declaration ::= 
-    [defining_identifier_list](S0030) : [mode](S0153) [subtype_mark](S0025) [:= [default_expression](S0060)];
+    defining_identifier_list : mode subtype_mark [:= default_expression];
 
 12.5:
 formal_type_declaration ::= 
-    type [defining_identifier](S0019)[[discriminant_part](S0056)] is [formal_type_definition](S0247);
+    type defining_identifier[discriminant_part] is formal_type_definition;
 
 12.5:
 formal_type_definition ::= 
-      [formal_private_type_definition](S0248)
-    | [formal_derived_type_definition](S0249)
-    | [formal_discrete_type_definition](S0250)
-    | [formal_signed_integer_type_definition](S0251)
-    | [formal_modular_type_definition](S0252)
-    | [formal_floating_point_definition](S0253)
-    | [formal_ordinary_fixed_point_definition](S0254)
-    | [formal_decimal_fixed_point_definition](S0255)
-    | [formal_array_type_definition](S0256)
-    | [formal_access_type_definition](S0257)
+      formal_private_type_definition
+    | formal_derived_type_definition
+    | formal_discrete_type_definition
+    | formal_signed_integer_type_definition
+    | formal_modular_type_definition
+    | formal_floating_point_definition
+    | formal_ordinary_fixed_point_definition
+    | formal_decimal_fixed_point_definition
+    | formal_array_type_definition
+    | formal_access_type_definition
 
 12.5.1:
 formal_private_type_definition ::= [[abstract] tagged] [limited] private
 
 12.5.1:
-formal_derived_type_definition ::= [abstract] new [subtype_mark](S0025) [with private]
+formal_derived_type_definition ::= [abstract] new subtype_mark [with private]
 
 12.5.2:
 formal_discrete_type_definition ::= (&lt&gt)
@@ -1074,1230 +1074,1230 @@ formal_ordinary_fixed_point_definition ::= delta &lt&gt
 formal_decimal_fixed_point_definition ::= delta &lt&gt digits &lt&gt
 
 12.5.3:
-formal_array_type_definition ::= [array_type_definition](S0048)
+formal_array_type_definition ::= array_type_definition
 
 12.5.4:
-formal_access_type_definition ::= [access_type_definition](S0073)
+formal_access_type_definition ::= access_type_definition
 
 12.6:
-formal_subprogram_declaration ::= with [subprogram_specification](S0143) [is [subprogram_default](S0259)];
+formal_subprogram_declaration ::= with subprogram_specification [is subprogram_default];
 
 12.6:
-subprogram_default ::= [default_name](S0260) | &lt&gt
+subprogram_default ::= default_name | &lt&gt
 
 12.6:
-default_name ::= [name](S0084)
+default_name ::= name
 
 12.7:
 formal_package_declaration ::= 
-    with package [defining_identifier](S0019) is new generic_package_[name](S0084)  [formal_package_actual_part](S0262);
+    with package defining_identifier is new generic_package_name  formal_package_actual_part;
 
 12.7:
 formal_package_actual_part ::= 
-    (&lt&gt) | [[generic_actual_part](S0242)]
+    (&lt&gt) | [generic_actual_part]
 
 13.1:
-representation_clause ::= [attribute_definition_clause](S0265)
-      | [enumeration_representation_clause](S0266)
-      | [record_representation_clause](S0268)
-      | [at_clause](S0276)
+representation_clause ::= attribute_definition_clause
+      | enumeration_representation_clause
+      | record_representation_clause
+      | at_clause
 
 13.1:
-local_name ::= [direct_name](S0085)
-      | [direct_name](S0085)'[attribute_designator](S0094)
-      | library_unit_[name](S0084)
+local_name ::= direct_name
+      | direct_name'attribute_designator
+      | library_unit_name
 
 13.3:
 attribute_definition_clause ::= 
-      for [local_name](S0264)'[attribute_designator](S0094) use [expression](S0108);
-    | for [local_name](S0264)'[attribute_designator](S0094) use [name](S0084);
+      for local_name'attribute_designator use expression;
+    | for local_name'attribute_designator use name;
 
 13.4:
 enumeration_representation_clause ::= 
-    for first_subtype_[local_name](S0264) use [enumeration_aggregate](S0267);
+    for first_subtype_local_name use enumeration_aggregate;
 
 13.4:
-enumeration_aggregate ::= [array_aggregate](S0104)
+enumeration_aggregate ::= array_aggregate
 
 13.5.1:
 record_representation_clause ::= 
-    for first_subtype_[local_name](S0264) use
-       record [[mod_clause](S0277)]
-          {[component_clause](S0269)}
+    for first_subtype_local_name use
+       record [mod_clause]
+          {component_clause}
        end record;
 
 13.5.1:
 component_clause ::= 
-    component_[local_name](S0264) at [position](S0270) range [first_bit](S0271) .. [last_bit](S0272);
+    component_local_name at position range first_bit .. last_bit;
 
 13.5.1:
-position ::= static_[expression](S0108)
+position ::= static_expression
 
 13.5.1:
-first_bit ::= static_[simple_expression](S0110)
+first_bit ::= static_simple_expression
 
 13.5.1:
-last_bit ::= static_[simple_expression](S0110)
+last_bit ::= static_simple_expression
 
 13.8:
-code_statement ::= [qualified_expression](S0121);
+code_statement ::= qualified_expression;
 
 13.12:
-restriction ::= restriction_[identifier](S0002)
-    | restriction_parameter_[identifier](S0002) =&gt [expression](S0108)
+restriction ::= restriction_identifier
+    | restriction_parameter_identifier =&gt expression
 
 J.3:
-delta_constraint ::= delta static_[expression](S0108) [[range_constraint](S0033)]
+delta_constraint ::= delta static_expression [range_constraint]
 
 J.7:
-at_clause ::= for [direct_name](S0085) use at [expression](S0108);
+at_clause ::= for direct_name use at expression;
 
 J.8:
-mod_clause ::= at mod static_[expression](S0108);
+mod_clause ::= at mod static_expression;
 
 
 ## P.2  Syntax Cross Reference
 
 
 
-[abort_statement](S0213)	9.8
-	[simple_statement](S0125)	5.1
+abort_statement	9.8
+	simple_statement	5.1
 
-[abortable_part](S0212)	9.7.4
-	[asynchronous_select](S0209)	9.7.4
+abortable_part	9.7.4
+	asynchronous_select	9.7.4
 
-[abstract_subprogram_declaration](S0142)	6.1
-	[basic_declaration](S0018)	3.1
+abstract_subprogram_declaration	6.1
+	basic_declaration	3.1
 
-[accept_alternative](S0203)	9.7.1
-	[select_alternative](S0202)	9.7.1
+accept_alternative	9.7.1
+	select_alternative	9.7.1
 
-[accept_statement](S0188)	9.5.2
-	[accept_alternative](S0203)	9.7.1
-	[compound_statement](S0126)	5.1
+accept_statement	9.5.2
+	accept_alternative	9.7.1
+	compound_statement	5.1
 
-[access_definition](S0077)	3.10
-	[discriminant_specification](S0059)	3.7
-	[parameter_specification](S0152)	6.1
+access_definition	3.10
+	discriminant_specification	3.7
+	parameter_specification	6.1
 
-[access_to_object_definition](S0074)	3.10
-	[access_type_definition](S0073)	3.10
+access_to_object_definition	3.10
+	access_type_definition	3.10
 
-[access_to_subprogram_definition](S0076)	3.10
-	[access_type_definition](S0073)	3.10
+access_to_subprogram_definition	3.10
+	access_type_definition	3.10
 
-[access_type_definition](S0073)	3.10
-	[formal_access_type_definition](S0257)	12.5.4
-	[type_definition](S0022)	3.2.1
+access_type_definition	3.10
+	formal_access_type_definition	12.5.4
+	type_definition	3.2.1
 
-[actual_parameter_part](S0157)	6.4
-	[entry_call_statement](S0194)	9.5.3
-	[function_call](S0156)	6.4
-	[procedure_call_statement](S0155)	6.4
+actual_parameter_part	6.4
+	entry_call_statement	9.5.3
+	function_call	6.4
+	procedure_call_statement	6.4
 
-[aggregate](S0097)	4.3
-	[primary](S0113)	4.4
-	[qualified_expression](S0121)	4.7
+aggregate	4.3
+	primary	4.4
+	qualified_expression	4.7
 
-[allocator](S0122)	4.8
-	[primary](S0113)	4.4
+allocator	4.8
+	primary	4.4
 
-[ancestor_part](S0103)	4.3.2
-	[extension_aggregate](S0102)	4.3.2
+ancestor_part	4.3.2
+	extension_aggregate	4.3.2
 
-[array_aggregate](S0104)	4.3.3
-	[aggregate](S0097)	4.3
-	[enumeration_aggregate](S0267)	13.4
+array_aggregate	4.3.3
+	aggregate	4.3
+	enumeration_aggregate	13.4
 
-[array_component_association](S0107)	4.3.3
-	[named_array_aggregate](S0106)	4.3.3
+array_component_association	4.3.3
+	named_array_aggregate	4.3.3
 
-[array_type_definition](S0048)	3.6
-	[formal_array_type_definition](S0256)	12.5.3
-	[object_declaration](S0029)	3.3.1
-	[type_definition](S0022)	3.2.1
+array_type_definition	3.6
+	formal_array_type_definition	12.5.3
+	object_declaration	3.3.1
+	type_definition	3.2.1
 
-[assignment_statement](S0130)	5.2
-	[simple_statement](S0125)	5.1
+assignment_statement	5.2
+	simple_statement	5.1
 
-[asynchronous_select](S0209)	9.7.4
-	[select_statement](S0199)	9.7
+asynchronous_select	9.7.4
+	select_statement	9.7
 
-[at_clause](S0276)	J.7
-	[representation_clause](S0263)	13.1
+at_clause	J.7
+	representation_clause	13.1
 
-[attribute_definition_clause](S0265)	13.3
-	[representation_clause](S0263)	13.1
+attribute_definition_clause	13.3
+	representation_clause	13.1
 
-[attribute_designator](S0094)	4.1.4
-	[attribute_definition_clause](S0265)	13.3
-	[attribute_reference](S0093)	4.1.4
-	[local_name](S0264)	13.1
+attribute_designator	4.1.4
+	attribute_definition_clause	13.3
+	attribute_reference	4.1.4
+	local_name	13.1
 
-[attribute_reference](S0093)	4.1.4
-	[name](S0084)	4.1
+attribute_reference	4.1.4
+	name	4.1
 
-[base](S0009)	2.4.2
-	[based_literal](S0008)	2.4.2
+base	2.4.2
+	based_literal	2.4.2
 
-[based_literal](S0008)	2.4.2
-	[numeric_literal](S0004)	2.4
+based_literal	2.4.2
+	numeric_literal	2.4
 
-[based_numeral](S0010)	2.4.2
-	[based_literal](S0008)	2.4.2
+based_numeral	2.4.2
+	based_literal	2.4.2
 
-[basic_declaration](S0018)	3.1
-	[basic_declarative_item](S0081)	3.11
+basic_declaration	3.1
+	basic_declarative_item	3.11
 
-[basic_declarative_item](S0081)	3.11
-	[declarative_item](S0080)	3.11
-	[package_specification](S0162)	7.1
+basic_declarative_item	3.11
+	declarative_item	3.11
+	package_specification	7.1
 
-[binary_adding_operator](S0116)	4.5
-	[simple_expression](S0110)	4.4
+binary_adding_operator	4.5
+	simple_expression	4.4
 
-[block_statement](S0138)	5.6
-	[compound_statement](S0126)	5.1
+block_statement	5.6
+	compound_statement	5.1
 
-[body](S0082)	3.11
-	[declarative_item](S0080)	3.11
+body	3.11
+	declarative_item	3.11
 
-[body_stub](S0224)	10.1.3
-	[body](S0082)	3.11
+body_stub	10.1.3
+	body	3.11
 
-[case_statement](S0133)	5.4
-	[compound_statement](S0126)	5.1
+case_statement	5.4
+	compound_statement	5.1
 
-[case_statement_alternative](S0134)	5.4
-	[case_statement](S0133)	5.4
+case_statement_alternative	5.4
+	case_statement	5.4
 
 character	2.1
-	[comment](S0015)	2.7
+	comment	2.7
 
-[character_literal](S0012)	2.5
-	[defining_character_literal](S0037)	3.5.1
-	[name](S0084)	4.1
-	[selector_name](S0092)	4.1.3
+character_literal	2.5
+	defining_character_literal	3.5.1
+	name	4.1
+	selector_name	4.1.3
 
-[choice_parameter_specification](S0233)	11.2
-	[exception_handler](S0232)	11.2
+choice_parameter_specification	11.2
+	exception_handler	11.2
 
-[code_statement](S0273)	13.8
-	[simple_statement](S0125)	5.1
+code_statement	13.8
+	simple_statement	5.1
 
-[compilation_unit](S0215)	10.1.1
-	[compilation](S0214)	10.1.1
+compilation_unit	10.1.1
+	compilation	10.1.1
 
-[component_choice_list](S0101)	4.3.1
-	[record_component_association](S0100)	4.3.1
+component_choice_list	4.3.1
+	record_component_association	4.3.1
 
-[component_clause](S0269)	13.5.1
-	[record_representation_clause](S0268)	13.5.1
+component_clause	13.5.1
+	record_representation_clause	13.5.1
 
-[component_declaration](S0067)	3.8
-	[component_item](S0066)	3.8
-	[protected_element_declaration](S0184)	9.4
+component_declaration	3.8
+	component_item	3.8
+	protected_element_declaration	9.4
 
-[component_definition](S0053)	3.6
-	[component_declaration](S0067)	3.8
-	[constrained_array_definition](S0051)	3.6
-	[unconstrained_array_definition](S0049)	3.6
+component_definition	3.6
+	component_declaration	3.8
+	constrained_array_definition	3.6
+	unconstrained_array_definition	3.6
 
-[component_item](S0066)	3.8
-	[component_list](S0065)	3.8
+component_item	3.8
+	component_list	3.8
 
-[component_list](S0065)	3.8
-	[record_definition](S0064)	3.8
-	[variant](S0069)	3.8.1
+component_list	3.8
+	record_definition	3.8
+	variant	3.8.1
 
-[composite_constraint](S0028)	3.2.2
-	[constraint](S0026)	3.2.2
+composite_constraint	3.2.2
+	constraint	3.2.2
 
-[compound_statement](S0126)	5.1
-	[statement](S0124)	5.1
+compound_statement	5.1
+	statement	5.1
 
-[condition](S0132)	5.3
-	[entry_barrier](S0192)	9.5.2
-	[exit_statement](S0139)	5.7
-	[guard](S0201)	9.7.1
-	[if_statement](S0131)	5.3
-	[iteration_scheme](S0136)	5.5
+condition	5.3
+	entry_barrier	9.5.2
+	exit_statement	5.7
+	guard	9.7.1
+	if_statement	5.3
+	iteration_scheme	5.5
 
-[conditional_entry_call](S0208)	9.7.3
-	[select_statement](S0199)	9.7
+conditional_entry_call	9.7.3
+	select_statement	9.7
 
-[constrained_array_definition](S0051)	3.6
-	[array_type_definition](S0048)	3.6
+constrained_array_definition	3.6
+	array_type_definition	3.6
 
-[constraint](S0026)	3.2.2
-	[subtype_indication](S0024)	3.2.2
+constraint	3.2.2
+	subtype_indication	3.2.2
 
-[context_clause](S0221)	10.1.2
-	[compilation_unit](S0215)	10.1.1
+context_clause	10.1.2
+	compilation_unit	10.1.1
 
-[context_item](S0222)	10.1.2
-	[context_clause](S0221)	10.1.2
+context_item	10.1.2
+	context_clause	10.1.2
 
-[decimal_fixed_point_definition](S0046)	3.5.9
-	[fixed_point_definition](S0044)	3.5.9
+decimal_fixed_point_definition	3.5.9
+	fixed_point_definition	3.5.9
 
-[decimal_literal](S0005)	2.4.1
-	[numeric_literal](S0004)	2.4
+decimal_literal	2.4.1
+	numeric_literal	2.4
 
-[declarative_item](S0080)	3.11
-	[declarative_part](S0079)	3.11
+declarative_item	3.11
+	declarative_part	3.11
 
-[declarative_part](S0079)	3.11
-	[block_statement](S0138)	5.6
-	[entry_body](S0190)	9.5.2
-	[package_body](S0163)	7.2
-	[subprogram_body](S0154)	6.3
-	[task_body](S0179)	9.1
+declarative_part	3.11
+	block_statement	5.6
+	entry_body	9.5.2
+	package_body	7.2
+	subprogram_body	6.3
+	task_body	9.1
 
-[default_expression](S0060)	3.7
-	[component_declaration](S0067)	3.8
-	[discriminant_specification](S0059)	3.7
-	[formal_object_declaration](S0245)	12.4
-	[parameter_specification](S0152)	6.1
+default_expression	3.7
+	component_declaration	3.8
+	discriminant_specification	3.7
+	formal_object_declaration	12.4
+	parameter_specification	6.1
 
-[default_name](S0260)	12.6
-	[subprogram_default](S0259)	12.6
+default_name	12.6
+	subprogram_default	12.6
 
-[defining_character_literal](S0037)	3.5.1
-	[enumeration_literal_specification](S0036)	3.5.1
+defining_character_literal	3.5.1
+	enumeration_literal_specification	3.5.1
 
-[defining_designator](S0145)	6.1
-	[generic_instantiation](S0241)	12.3
-	[subprogram_specification](S0143)	6.1
+defining_designator	6.1
+	generic_instantiation	12.3
+	subprogram_specification	6.1
 
-[defining_identifier](S0019)	3.1
-	[choice_parameter_specification](S0233)	11.2
-	[defining_identifier_list](S0030)	3.3.1
-	[defining_program_unit_name](S0146)	6.1
-	[entry_body](S0190)	9.5.2
-	[entry_declaration](S0187)	9.5.2
-	[entry_index_specification](S0193)	9.5.2
-	[enumeration_literal_specification](S0036)	3.5.1
-	[exception_renaming_declaration](S0171)	8.5.2
-	[formal_package_declaration](S0261)	12.7
-	[formal_type_declaration](S0246)	12.5
-	[full_type_declaration](S0021)	3.2.1
-	[incomplete_type_declaration](S0078)	3.10.1
-	[loop_parameter_specification](S0137)	5.5
-	[object_renaming_declaration](S0170)	8.5.1
-	[package_body_stub](S0226)	10.1.3
-	[private_extension_declaration](S0165)	7.3
-	[private_type_declaration](S0164)	7.3
-	[protected_body](S0185)	9.4
-	[protected_body_stub](S0228)	10.1.3
-	[protected_type_declaration](S0180)	9.4
-	[single_protected_declaration](S0181)	9.4
-	[single_task_declaration](S0176)	9.1
-	[subtype_declaration](S0023)	3.2.2
-	[task_body](S0179)	9.1
-	[task_body_stub](S0227)	10.1.3
-	[task_type_declaration](S0175)	9.1
+defining_identifier	3.1
+	choice_parameter_specification	11.2
+	defining_identifier_list	3.3.1
+	defining_program_unit_name	6.1
+	entry_body	9.5.2
+	entry_declaration	9.5.2
+	entry_index_specification	9.5.2
+	enumeration_literal_specification	3.5.1
+	exception_renaming_declaration	8.5.2
+	formal_package_declaration	12.7
+	formal_type_declaration	12.5
+	full_type_declaration	3.2.1
+	incomplete_type_declaration	3.10.1
+	loop_parameter_specification	5.5
+	object_renaming_declaration	8.5.1
+	package_body_stub	10.1.3
+	private_extension_declaration	7.3
+	private_type_declaration	7.3
+	protected_body	9.4
+	protected_body_stub	10.1.3
+	protected_type_declaration	9.4
+	single_protected_declaration	9.4
+	single_task_declaration	9.1
+	subtype_declaration	3.2.2
+	task_body	9.1
+	task_body_stub	10.1.3
+	task_type_declaration	9.1
 
-[defining_identifier_list](S0030)	3.3.1
-	[component_declaration](S0067)	3.8
-	[discriminant_specification](S0059)	3.7
-	[exception_declaration](S0230)	11.1
-	[formal_object_declaration](S0245)	12.4
-	[number_declaration](S0031)	3.3.2
-	[object_declaration](S0029)	3.3.1
-	[parameter_specification](S0152)	6.1
+defining_identifier_list	3.3.1
+	component_declaration	3.8
+	discriminant_specification	3.7
+	exception_declaration	11.1
+	formal_object_declaration	12.4
+	number_declaration	3.3.2
+	object_declaration	3.3.1
+	parameter_specification	6.1
 
-[defining_operator_symbol](S0148)	6.1
-	[defining_designator](S0145)	6.1
+defining_operator_symbol	6.1
+	defining_designator	6.1
 
-[defining_program_unit_name](S0146)	6.1
-	[defining_designator](S0145)	6.1
-	[generic_instantiation](S0241)	12.3
-	[generic_renaming_declaration](S0174)	8.5.5
-	[package_body](S0163)	7.2
-	[package_renaming_declaration](S0172)	8.5.3
-	[package_specification](S0162)	7.1
-	[subprogram_specification](S0143)	6.1
+defining_program_unit_name	6.1
+	defining_designator	6.1
+	generic_instantiation	12.3
+	generic_renaming_declaration	8.5.5
+	package_body	7.2
+	package_renaming_declaration	8.5.3
+	package_specification	7.1
+	subprogram_specification	6.1
 
-[delay_alternative](S0204)	9.7.1
-	[select_alternative](S0202)	9.7.1
-	[timed_entry_call](S0206)	9.7.2
+delay_alternative	9.7.1
+	select_alternative	9.7.1
+	timed_entry_call	9.7.2
 
-[delay_relative_statement](S0198)	9.6
-	[delay_statement](S0196)	9.6
+delay_relative_statement	9.6
+	delay_statement	9.6
 
-[delay_statement](S0196)	9.6
-	[delay_alternative](S0204)	9.7.1
-	[simple_statement](S0125)	5.1
-	[triggering_statement](S0211)	9.7.4
+delay_statement	9.6
+	delay_alternative	9.7.1
+	simple_statement	5.1
+	triggering_statement	9.7.4
 
-[delay_until_statement](S0197)	9.6
-	[delay_statement](S0196)	9.6
+delay_until_statement	9.6
+	delay_statement	9.6
 
-[delta_constraint](S0275)	J.3
-	[scalar_constraint](S0027)	3.2.2
+delta_constraint	J.3
+	scalar_constraint	3.2.2
 
-[derived_type_definition](S0032)	3.4
-	[type_definition](S0022)	3.2.1
+derived_type_definition	3.4
+	type_definition	3.2.1
 
-[designator](S0144)	6.1
-	[subprogram_body](S0154)	6.3
+designator	6.1
+	subprogram_body	6.3
 
 digit	...
-	[extended_digit](S0011)	2.4.2
-	[graphic_character](S0001)	2.1
-	[letter_or_digit](S0003)	2.3
-	[numeral](S0006)	2.4.1
+	extended_digit	2.4.2
+	graphic_character	2.1
+	letter_or_digit	2.3
+	numeral	2.4.1
 
-[digits_constraint](S0047)	3.5.9
-	[scalar_constraint](S0027)	3.2.2
+digits_constraint	3.5.9
+	scalar_constraint	3.2.2
 
-[direct_name](S0085)	4.1
-	[accept_statement](S0188)	9.5.2
-	[at_clause](S0276)	J.7
-	[local_name](S0264)	13.1
-	[name](S0084)	4.1
-	[statement_identifier](S0129)	5.1
-	[variant_part](S0068)	3.8.1
+direct_name	4.1
+	accept_statement	9.5.2
+	at_clause	J.7
+	local_name	13.1
+	name	4.1
+	statement_identifier	5.1
+	variant_part	3.8.1
 
-[discrete_choice](S0071)	3.8.1
-	[discrete_choice_list](S0070)	3.8.1
+discrete_choice	3.8.1
+	discrete_choice_list	3.8.1
 
-[discrete_choice_list](S0070)	3.8.1
-	[array_component_association](S0107)	4.3.3
-	[case_statement_alternative](S0134)	5.4
-	[variant](S0069)	3.8.1
+discrete_choice_list	3.8.1
+	array_component_association	4.3.3
+	case_statement_alternative	5.4
+	variant	3.8.1
 
-[discrete_range](S0055)	3.6.1
-	[discrete_choice](S0071)	3.8.1
-	[index_constraint](S0054)	3.6.1
-	[slice](S0090)	4.1.2
+discrete_range	3.6.1
+	discrete_choice	3.8.1
+	index_constraint	3.6.1
+	slice	4.1.2
 
-[discrete_subtype_definition](S0052)	3.6
-	[constrained_array_definition](S0051)	3.6
-	[entry_declaration](S0187)	9.5.2
-	[entry_index_specification](S0193)	9.5.2
-	[loop_parameter_specification](S0137)	5.5
+discrete_subtype_definition	3.6
+	constrained_array_definition	3.6
+	entry_declaration	9.5.2
+	entry_index_specification	9.5.2
+	loop_parameter_specification	5.5
 
-[discriminant_association](S0062)	3.7.1
-	[discriminant_constraint](S0061)	3.7.1
+discriminant_association	3.7.1
+	discriminant_constraint	3.7.1
 
-[discriminant_constraint](S0061)	3.7.1
-	[composite_constraint](S0028)	3.2.2
+discriminant_constraint	3.7.1
+	composite_constraint	3.2.2
 
-[discriminant_part](S0056)	3.7
-	[formal_type_declaration](S0246)	12.5
-	[incomplete_type_declaration](S0078)	3.10.1
-	[private_extension_declaration](S0165)	7.3
-	[private_type_declaration](S0164)	7.3
+discriminant_part	3.7
+	formal_type_declaration	12.5
+	incomplete_type_declaration	3.10.1
+	private_extension_declaration	7.3
+	private_type_declaration	7.3
 
-[discriminant_specification](S0059)	3.7
-	[known_discriminant_part](S0058)	3.7
+discriminant_specification	3.7
+	known_discriminant_part	3.7
 
-[entry_barrier](S0192)	9.5.2
-	[entry_body](S0190)	9.5.2
+entry_barrier	9.5.2
+	entry_body	9.5.2
 
-[entry_body](S0190)	9.5.2
-	[protected_operation_item](S0186)	9.4
+entry_body	9.5.2
+	protected_operation_item	9.4
 
-[entry_body_formal_part](S0191)	9.5.2
-	[entry_body](S0190)	9.5.2
+entry_body_formal_part	9.5.2
+	entry_body	9.5.2
 
-[entry_call_alternative](S0207)	9.7.2
-	[conditional_entry_call](S0208)	9.7.3
-	[timed_entry_call](S0206)	9.7.2
+entry_call_alternative	9.7.2
+	conditional_entry_call	9.7.3
+	timed_entry_call	9.7.2
 
-[entry_call_statement](S0194)	9.5.3
-	[entry_call_alternative](S0207)	9.7.2
-	[simple_statement](S0125)	5.1
-	[triggering_statement](S0211)	9.7.4
+entry_call_statement	9.5.3
+	entry_call_alternative	9.7.2
+	simple_statement	5.1
+	triggering_statement	9.7.4
 
-[entry_declaration](S0187)	9.5.2
-	[protected_operation_declaration](S0183)	9.4
-	[task_item](S0178)	9.1
+entry_declaration	9.5.2
+	protected_operation_declaration	9.4
+	task_item	9.1
 
-[entry_index](S0189)	9.5.2
-	[accept_statement](S0188)	9.5.2
+entry_index	9.5.2
+	accept_statement	9.5.2
 
-[entry_index_specification](S0193)	9.5.2
-	[entry_body_formal_part](S0191)	9.5.2
+entry_index_specification	9.5.2
+	entry_body_formal_part	9.5.2
 
-[enumeration_aggregate](S0267)	13.4
-	[enumeration_representation_clause](S0266)	13.4
+enumeration_aggregate	13.4
+	enumeration_representation_clause	13.4
 
-[enumeration_literal_specification](S0036)	3.5.1
-	[enumeration_type_definition](S0035)	3.5.1
+enumeration_literal_specification	3.5.1
+	enumeration_type_definition	3.5.1
 
-[enumeration_representation_clause](S0266)	13.4
-	[representation_clause](S0263)	13.1
+enumeration_representation_clause	13.4
+	representation_clause	13.1
 
-[enumeration_type_definition](S0035)	3.5.1
-	[type_definition](S0022)	3.2.1
+enumeration_type_definition	3.5.1
+	type_definition	3.2.1
 
-[exception_choice](S0234)	11.2
-	[exception_handler](S0232)	11.2
+exception_choice	11.2
+	exception_handler	11.2
 
-[exception_declaration](S0230)	11.1
-	[basic_declaration](S0018)	3.1
+exception_declaration	11.1
+	basic_declaration	3.1
 
-[exception_handler](S0232)	11.2
-	[handled_sequence_of_statements](S0231)	11.2
+exception_handler	11.2
+	handled_sequence_of_statements	11.2
 
-[exception_renaming_declaration](S0171)	8.5.2
-	[renaming_declaration](S0169)	8.5
+exception_renaming_declaration	8.5.2
+	renaming_declaration	8.5
 
-[exit_statement](S0139)	5.7
-	[simple_statement](S0125)	5.1
+exit_statement	5.7
+	simple_statement	5.1
 
-[explicit_actual_parameter](S0159)	6.4
-	[parameter_association](S0158)	6.4
+explicit_actual_parameter	6.4
+	parameter_association	6.4
 
-[explicit_dereference](S0087)	4.1
-	[name](S0084)	4.1
+explicit_dereference	4.1
+	name	4.1
 
-[explicit_generic_actual_parameter](S0244)	12.3
-	[generic_association](S0243)	12.3
+explicit_generic_actual_parameter	12.3
+	generic_association	12.3
 
-[exponent](S0007)	2.4.1
-	[based_literal](S0008)	2.4.2
-	[decimal_literal](S0005)	2.4.1
+exponent	2.4.1
+	based_literal	2.4.2
+	decimal_literal	2.4.1
 
-[expression](S0108)	4.4
-	[ancestor_part](S0103)	4.3.2
-	[array_component_association](S0107)	4.3.3
-	[assignment_statement](S0130)	5.2
-	[at_clause](S0276)	J.7
-	[attribute_definition_clause](S0265)	13.3
-	[attribute_designator](S0094)	4.1.4
-	[case_statement](S0133)	5.4
-	[condition](S0132)	5.3
-	[decimal_fixed_point_definition](S0046)	3.5.9
-	[default_expression](S0060)	3.7
-	[delay_relative_statement](S0198)	9.6
-	[delay_until_statement](S0197)	9.6
-	[delta_constraint](S0275)	J.3
-	[digits_constraint](S0047)	3.5.9
-	[discrete_choice](S0071)	3.8.1
-	[discriminant_association](S0062)	3.7.1
-	[entry_index](S0189)	9.5.2
-	[explicit_actual_parameter](S0159)	6.4
-	[explicit_generic_actual_parameter](S0244)	12.3
-	[floating_point_definition](S0042)	3.5.7
-	[indexed_component](S0089)	4.1.1
-	[mod_clause](S0277)	J.8
-	[modular_type_definition](S0040)	3.5.4
-	[number_declaration](S0031)	3.3.2
-	[object_declaration](S0029)	3.3.1
-	[ordinary_fixed_point_definition](S0045)	3.5.9
-	[position](S0270)	13.5.1
-	[positional_array_aggregate](S0105)	4.3.3
-	[pragma_argument_association](S0017)	2.8
-	[primary](S0113)	4.4
-	[qualified_expression](S0121)	4.7
-	[range_attribute_designator](S0096)	4.1.4
-	[record_component_association](S0100)	4.3.1
-	[restriction](S0274)	13.12
-	[return_statement](S0160)	6.5
-	[type_conversion](S0120)	4.6
+expression	4.4
+	ancestor_part	4.3.2
+	array_component_association	4.3.3
+	assignment_statement	5.2
+	at_clause	J.7
+	attribute_definition_clause	13.3
+	attribute_designator	4.1.4
+	case_statement	5.4
+	condition	5.3
+	decimal_fixed_point_definition	3.5.9
+	default_expression	3.7
+	delay_relative_statement	9.6
+	delay_until_statement	9.6
+	delta_constraint	J.3
+	digits_constraint	3.5.9
+	discrete_choice	3.8.1
+	discriminant_association	3.7.1
+	entry_index	9.5.2
+	explicit_actual_parameter	6.4
+	explicit_generic_actual_parameter	12.3
+	floating_point_definition	3.5.7
+	indexed_component	4.1.1
+	mod_clause	J.8
+	modular_type_definition	3.5.4
+	number_declaration	3.3.2
+	object_declaration	3.3.1
+	ordinary_fixed_point_definition	3.5.9
+	position	13.5.1
+	positional_array_aggregate	4.3.3
+	pragma_argument_association	2.8
+	primary	4.4
+	qualified_expression	4.7
+	range_attribute_designator	4.1.4
+	record_component_association	4.3.1
+	restriction	13.12
+	return_statement	6.5
+	type_conversion	4.6
 
-[extended_digit](S0011)	2.4.2
-	[based_numeral](S0010)	2.4.2
+extended_digit	2.4.2
+	based_numeral	2.4.2
 
-[extension_aggregate](S0102)	4.3.2
-	[aggregate](S0097)	4.3
+extension_aggregate	4.3.2
+	aggregate	4.3
 
-[factor](S0112)	4.4
-	[term](S0111)	4.4
+factor	4.4
+	term	4.4
 
-[first_bit](S0271)	13.5.1
-	[component_clause](S0269)	13.5.1
+first_bit	13.5.1
+	component_clause	13.5.1
 
-[fixed_point_definition](S0044)	3.5.9
-	[real_type_definition](S0041)	3.5.6
+fixed_point_definition	3.5.9
+	real_type_definition	3.5.6
 
-[floating_point_definition](S0042)	3.5.7
-	[real_type_definition](S0041)	3.5.6
+floating_point_definition	3.5.7
+	real_type_definition	3.5.6
 
-[formal_access_type_definition](S0257)	12.5.4
-	[formal_type_definition](S0247)	12.5
+formal_access_type_definition	12.5.4
+	formal_type_definition	12.5
 
-[formal_array_type_definition](S0256)	12.5.3
-	[formal_type_definition](S0247)	12.5
+formal_array_type_definition	12.5.3
+	formal_type_definition	12.5
 
-[formal_decimal_fixed_point_definition](S0255)	12.5.2
-	[formal_type_definition](S0247)	12.5
+formal_decimal_fixed_point_definition	12.5.2
+	formal_type_definition	12.5
 
-[formal_derived_type_definition](S0249)	12.5.1
-	[formal_type_definition](S0247)	12.5
+formal_derived_type_definition	12.5.1
+	formal_type_definition	12.5
 
-[formal_discrete_type_definition](S0250)	12.5.2
-	[formal_type_definition](S0247)	12.5
+formal_discrete_type_definition	12.5.2
+	formal_type_definition	12.5
 
-[formal_floating_point_definition](S0253)	12.5.2
-	[formal_type_definition](S0247)	12.5
+formal_floating_point_definition	12.5.2
+	formal_type_definition	12.5
 
-[formal_modular_type_definition](S0252)	12.5.2
-	[formal_type_definition](S0247)	12.5
+formal_modular_type_definition	12.5.2
+	formal_type_definition	12.5
 
-[formal_object_declaration](S0245)	12.4
-	[generic_formal_parameter_declaration](S0240)	12.1
+formal_object_declaration	12.4
+	generic_formal_parameter_declaration	12.1
 
-[formal_ordinary_fixed_point_definition](S0254)	12.5.2
-	[formal_type_definition](S0247)	12.5
+formal_ordinary_fixed_point_definition	12.5.2
+	formal_type_definition	12.5
 
-[formal_package_actual_part](S0262)	12.7
-	[formal_package_declaration](S0261)	12.7
+formal_package_actual_part	12.7
+	formal_package_declaration	12.7
 
-[formal_package_declaration](S0261)	12.7
-	[generic_formal_parameter_declaration](S0240)	12.1
+formal_package_declaration	12.7
+	generic_formal_parameter_declaration	12.1
 
-[formal_part](S0151)	6.1
-	[parameter_and_result_profile](S0150)	6.1
-	[parameter_profile](S0149)	6.1
+formal_part	6.1
+	parameter_and_result_profile	6.1
+	parameter_profile	6.1
 
-[formal_private_type_definition](S0248)	12.5.1
-	[formal_type_definition](S0247)	12.5
+formal_private_type_definition	12.5.1
+	formal_type_definition	12.5
 
-[formal_signed_integer_type_definition](S0251)	12.5.2
-	[formal_type_definition](S0247)	12.5
+formal_signed_integer_type_definition	12.5.2
+	formal_type_definition	12.5
 
-[formal_subprogram_declaration](S0258)	12.6
-	[generic_formal_parameter_declaration](S0240)	12.1
+formal_subprogram_declaration	12.6
+	generic_formal_parameter_declaration	12.1
 
-[formal_type_declaration](S0246)	12.5
-	[generic_formal_parameter_declaration](S0240)	12.1
+formal_type_declaration	12.5
+	generic_formal_parameter_declaration	12.1
 
-[formal_type_definition](S0247)	12.5
-	[formal_type_declaration](S0246)	12.5
+formal_type_definition	12.5
+	formal_type_declaration	12.5
 
 format_effector	...
-	[character](S0000)	2.1
+	character	2.1
 
-[full_type_declaration](S0021)	3.2.1
-	[type_declaration](S0020)	3.2.1
+full_type_declaration	3.2.1
+	type_declaration	3.2.1
 
-[function_call](S0156)	6.4
-	[name](S0084)	4.1
+function_call	6.4
+	name	4.1
 
-[general_access_modifier](S0075)	3.10
-	[access_to_object_definition](S0074)	3.10
+general_access_modifier	3.10
+	access_to_object_definition	3.10
 
-[generic_actual_part](S0242)	12.3
-	[formal_package_actual_part](S0262)	12.7
-	[generic_instantiation](S0241)	12.3
+generic_actual_part	12.3
+	formal_package_actual_part	12.7
+	generic_instantiation	12.3
 
-[generic_association](S0243)	12.3
-	[generic_actual_part](S0242)	12.3
+generic_association	12.3
+	generic_actual_part	12.3
 
-[generic_declaration](S0236)	12.1
-	[basic_declaration](S0018)	3.1
-	[library_unit_declaration](S0217)	10.1.1
+generic_declaration	12.1
+	basic_declaration	3.1
+	library_unit_declaration	10.1.1
 
-[generic_formal_parameter_declaration](S0240)	12.1
-	[generic_formal_part](S0239)	12.1
+generic_formal_parameter_declaration	12.1
+	generic_formal_part	12.1
 
-[generic_formal_part](S0239)	12.1
-	[generic_package_declaration](S0238)	12.1
-	[generic_subprogram_declaration](S0237)	12.1
+generic_formal_part	12.1
+	generic_package_declaration	12.1
+	generic_subprogram_declaration	12.1
 
-[generic_instantiation](S0241)	12.3
-	[basic_declaration](S0018)	3.1
-	[library_unit_declaration](S0217)	10.1.1
+generic_instantiation	12.3
+	basic_declaration	3.1
+	library_unit_declaration	10.1.1
 
-[generic_package_declaration](S0238)	12.1
-	[generic_declaration](S0236)	12.1
+generic_package_declaration	12.1
+	generic_declaration	12.1
 
-[generic_renaming_declaration](S0174)	8.5.5
-	[library_unit_renaming_declaration](S0218)	10.1.1
-	[renaming_declaration](S0169)	8.5
+generic_renaming_declaration	8.5.5
+	library_unit_renaming_declaration	10.1.1
+	renaming_declaration	8.5
 
-[generic_subprogram_declaration](S0237)	12.1
-	[generic_declaration](S0236)	12.1
+generic_subprogram_declaration	12.1
+	generic_declaration	12.1
 
-[goto_statement](S0140)	5.8
-	[simple_statement](S0125)	5.1
+goto_statement	5.8
+	simple_statement	5.1
 
-[graphic_character](S0001)	2.1
-	[character](S0000)	2.1
-	[character_literal](S0012)	2.5
-	[string_element](S0014)	2.6
+graphic_character	2.1
+	character	2.1
+	character_literal	2.5
+	string_element	2.6
 
-[guard](S0201)	9.7.1
-	[selective_accept](S0200)	9.7.1
+guard	9.7.1
+	selective_accept	9.7.1
 
-[handled_sequence_of_statements](S0231)	11.2
-	[accept_statement](S0188)	9.5.2
-	[block_statement](S0138)	5.6
-	[entry_body](S0190)	9.5.2
-	[package_body](S0163)	7.2
-	[subprogram_body](S0154)	6.3
-	[task_body](S0179)	9.1
+handled_sequence_of_statements	11.2
+	accept_statement	9.5.2
+	block_statement	5.6
+	entry_body	9.5.2
+	package_body	7.2
+	subprogram_body	6.3
+	task_body	9.1
 
-[identifier](S0002)	2.3
-	[accept_statement](S0188)	9.5.2
-	[attribute_designator](S0094)	4.1.4
-	[block_statement](S0138)	5.6
-	[defining_identifier](S0019)	3.1
-	[designator](S0144)	6.1
-	[direct_name](S0085)	4.1
-	[entry_body](S0190)	9.5.2
-	[loop_statement](S0135)	5.5
-	[package_body](S0163)	7.2
-	[package_specification](S0162)	7.1
-	[pragma](S0016)	2.8
-	[pragma_argument_association](S0017)	2.8
-	[protected_body](S0185)	9.4
-	[protected_definition](S0182)	9.4
-	[restriction](S0274)	13.12
-	[selector_name](S0092)	4.1.3
-	[task_body](S0179)	9.1
-	[task_definition](S0177)	9.1
+identifier	2.3
+	accept_statement	9.5.2
+	attribute_designator	4.1.4
+	block_statement	5.6
+	defining_identifier	3.1
+	designator	6.1
+	direct_name	4.1
+	entry_body	9.5.2
+	loop_statement	5.5
+	package_body	7.2
+	package_specification	7.1
+	pragma	2.8
+	pragma_argument_association	2.8
+	protected_body	9.4
+	protected_definition	9.4
+	restriction	13.12
+	selector_name	4.1.3
+	task_body	9.1
+	task_definition	9.1
 
 identifier_letter	...
-	[graphic_character](S0001)	2.1
-	[identifier](S0002)	2.3
-	[letter_or_digit](S0003)	2.3
+	graphic_character	2.1
+	identifier	2.3
+	letter_or_digit	2.3
 
-[if_statement](S0131)	5.3
-	[compound_statement](S0126)	5.1
+if_statement	5.3
+	compound_statement	5.1
 
-[implicit_dereference](S0088)	4.1
-	[prefix](S0086)	4.1
+implicit_dereference	4.1
+	prefix	4.1
 
-[incomplete_type_declaration](S0078)	3.10.1
-	[type_declaration](S0020)	3.2.1
+incomplete_type_declaration	3.10.1
+	type_declaration	3.2.1
 
-[index_constraint](S0054)	3.6.1
-	[composite_constraint](S0028)	3.2.2
+index_constraint	3.6.1
+	composite_constraint	3.2.2
 
-[index_subtype_definition](S0050)	3.6
-	[unconstrained_array_definition](S0049)	3.6
+index_subtype_definition	3.6
+	unconstrained_array_definition	3.6
 
-[indexed_component](S0089)	4.1.1
-	[name](S0084)	4.1
+indexed_component	4.1.1
+	name	4.1
 
-[integer_type_definition](S0038)	3.5.4
-	[type_definition](S0022)	3.2.1
+integer_type_definition	3.5.4
+	type_definition	3.2.1
 
-[iteration_scheme](S0136)	5.5
-	[loop_statement](S0135)	5.5
+iteration_scheme	5.5
+	loop_statement	5.5
 
-[known_discriminant_part](S0058)	3.7
-	[discriminant_part](S0056)	3.7
-	[full_type_declaration](S0021)	3.2.1
-	[protected_type_declaration](S0180)	9.4
-	[task_type_declaration](S0175)	9.1
+known_discriminant_part	3.7
+	discriminant_part	3.7
+	full_type_declaration	3.2.1
+	protected_type_declaration	9.4
+	task_type_declaration	9.1
 
-[label](S0128)	5.1
-	[statement](S0124)	5.1
+label	5.1
+	statement	5.1
 
-[last_bit](S0272)	13.5.1
-	[component_clause](S0269)	13.5.1
+last_bit	13.5.1
+	component_clause	13.5.1
 
-[letter_or_digit](S0003)	2.3
-	[identifier](S0002)	2.3
+letter_or_digit	2.3
+	identifier	2.3
 
-[library_item](S0216)	10.1.1
-	[compilation_unit](S0215)	10.1.1
+library_item	10.1.1
+	compilation_unit	10.1.1
 
-[library_unit_body](S0219)	10.1.1
-	[library_item](S0216)	10.1.1
+library_unit_body	10.1.1
+	library_item	10.1.1
 
-[library_unit_declaration](S0217)	10.1.1
-	[library_item](S0216)	10.1.1
+library_unit_declaration	10.1.1
+	library_item	10.1.1
 
-[library_unit_renaming_declaration](S0218)	10.1.1
-	[library_item](S0216)	10.1.1
+library_unit_renaming_declaration	10.1.1
+	library_item	10.1.1
 
-[local_name](S0264)	13.1
-	[attribute_definition_clause](S0265)	13.3
-	[component_clause](S0269)	13.5.1
-	[enumeration_representation_clause](S0266)	13.4
-	[record_representation_clause](S0268)	13.5.1
+local_name	13.1
+	attribute_definition_clause	13.3
+	component_clause	13.5.1
+	enumeration_representation_clause	13.4
+	record_representation_clause	13.5.1
 
-[loop_parameter_specification](S0137)	5.5
-	[iteration_scheme](S0136)	5.5
+loop_parameter_specification	5.5
+	iteration_scheme	5.5
 
-[loop_statement](S0135)	5.5
-	[compound_statement](S0126)	5.1
+loop_statement	5.5
+	compound_statement	5.1
 
-[mod_clause](S0277)	J.8
-	[record_representation_clause](S0268)	13.5.1
+mod_clause	J.8
+	record_representation_clause	13.5.1
 
-[mode](S0153)	6.1
-	[formal_object_declaration](S0245)	12.4
-	[parameter_specification](S0152)	6.1
+mode	6.1
+	formal_object_declaration	12.4
+	parameter_specification	6.1
 
-[modular_type_definition](S0040)	3.5.4
-	[integer_type_definition](S0038)	3.5.4
+modular_type_definition	3.5.4
+	integer_type_definition	3.5.4
 
-[multiplying_operator](S0118)	4.5
-	[term](S0111)	4.4
+multiplying_operator	4.5
+	term	4.4
 
-[name](S0084)	4.1
-	[abort_statement](S0213)	9.8
-	[assignment_statement](S0130)	5.2
-	[attribute_definition_clause](S0265)	13.3
-	[default_name](S0260)	12.6
-	[entry_call_statement](S0194)	9.5.3
-	[exception_choice](S0234)	11.2
-	[exception_renaming_declaration](S0171)	8.5.2
-	[exit_statement](S0139)	5.7
-	[explicit_actual_parameter](S0159)	6.4
-	[explicit_dereference](S0087)	4.1
-	[explicit_generic_actual_parameter](S0244)	12.3
-	[formal_package_declaration](S0261)	12.7
-	[function_call](S0156)	6.4
-	[generic_instantiation](S0241)	12.3
-	[generic_renaming_declaration](S0174)	8.5.5
-	[goto_statement](S0140)	5.8
-	[implicit_dereference](S0088)	4.1
-	[local_name](S0264)	13.1
-	[object_renaming_declaration](S0170)	8.5.1
-	[package_renaming_declaration](S0172)	8.5.3
-	[parent_unit_name](S0220)	10.1.1
-	[pragma_argument_association](S0017)	2.8
-	[prefix](S0086)	4.1
-	[primary](S0113)	4.4
-	[procedure_call_statement](S0155)	6.4
-	[raise_statement](S0235)	11.3
-	[requeue_statement](S0195)	9.5.4
-	[subprogram_renaming_declaration](S0173)	8.5.4
-	[subtype_mark](S0025)	3.2.2
-	[type_conversion](S0120)	4.6
-	[use_package_clause](S0167)	8.4
-	[with_clause](S0223)	10.1.2
+name	4.1
+	abort_statement	9.8
+	assignment_statement	5.2
+	attribute_definition_clause	13.3
+	default_name	12.6
+	entry_call_statement	9.5.3
+	exception_choice	11.2
+	exception_renaming_declaration	8.5.2
+	exit_statement	5.7
+	explicit_actual_parameter	6.4
+	explicit_dereference	4.1
+	explicit_generic_actual_parameter	12.3
+	formal_package_declaration	12.7
+	function_call	6.4
+	generic_instantiation	12.3
+	generic_renaming_declaration	8.5.5
+	goto_statement	5.8
+	implicit_dereference	4.1
+	local_name	13.1
+	object_renaming_declaration	8.5.1
+	package_renaming_declaration	8.5.3
+	parent_unit_name	10.1.1
+	pragma_argument_association	2.8
+	prefix	4.1
+	primary	4.4
+	procedure_call_statement	6.4
+	raise_statement	11.3
+	requeue_statement	9.5.4
+	subprogram_renaming_declaration	8.5.4
+	subtype_mark	3.2.2
+	type_conversion	4.6
+	use_package_clause	8.4
+	with_clause	10.1.2
 
-[named_array_aggregate](S0106)	4.3.3
-	[array_aggregate](S0104)	4.3.3
+named_array_aggregate	4.3.3
+	array_aggregate	4.3.3
 
-[null_statement](S0127)	5.1
-	[simple_statement](S0125)	5.1
+null_statement	5.1
+	simple_statement	5.1
 
-[number_declaration](S0031)	3.3.2
-	[basic_declaration](S0018)	3.1
+number_declaration	3.3.2
+	basic_declaration	3.1
 
-[numeral](S0006)	2.4.1
-	[base](S0009)	2.4.2
-	[decimal_literal](S0005)	2.4.1
-	[exponent](S0007)	2.4.1
+numeral	2.4.1
+	base	2.4.2
+	decimal_literal	2.4.1
+	exponent	2.4.1
 
-[numeric_literal](S0004)	2.4
-	[primary](S0113)	4.4
+numeric_literal	2.4
+	primary	4.4
 
-[object_declaration](S0029)	3.3.1
-	[basic_declaration](S0018)	3.1
+object_declaration	3.3.1
+	basic_declaration	3.1
 
-[object_renaming_declaration](S0170)	8.5.1
-	[renaming_declaration](S0169)	8.5
+object_renaming_declaration	8.5.1
+	renaming_declaration	8.5
 
-[operator_symbol](S0147)	6.1
-	[defining_operator_symbol](S0148)	6.1
-	[designator](S0144)	6.1
-	[direct_name](S0085)	4.1
-	[selector_name](S0092)	4.1.3
+operator_symbol	6.1
+	defining_operator_symbol	6.1
+	designator	6.1
+	direct_name	4.1
+	selector_name	4.1.3
 
-[ordinary_fixed_point_definition](S0045)	3.5.9
-	[fixed_point_definition](S0044)	3.5.9
+ordinary_fixed_point_definition	3.5.9
+	fixed_point_definition	3.5.9
 
 other_control_function	...
-	[character](S0000)	2.1
+	character	2.1
 
-[package_body](S0163)	7.2
-	[library_unit_body](S0219)	10.1.1
-	[proper_body](S0083)	3.11
+package_body	7.2
+	library_unit_body	10.1.1
+	proper_body	3.11
 
-[package_body_stub](S0226)	10.1.3
-	[body_stub](S0224)	10.1.3
+package_body_stub	10.1.3
+	body_stub	10.1.3
 
-[package_declaration](S0161)	7.1
-	[basic_declaration](S0018)	3.1
-	[library_unit_declaration](S0217)	10.1.1
+package_declaration	7.1
+	basic_declaration	3.1
+	library_unit_declaration	10.1.1
 
-[package_renaming_declaration](S0172)	8.5.3
-	[library_unit_renaming_declaration](S0218)	10.1.1
-	[renaming_declaration](S0169)	8.5
+package_renaming_declaration	8.5.3
+	library_unit_renaming_declaration	10.1.1
+	renaming_declaration	8.5
 
-[package_specification](S0162)	7.1
-	[generic_package_declaration](S0238)	12.1
-	[package_declaration](S0161)	7.1
+package_specification	7.1
+	generic_package_declaration	12.1
+	package_declaration	7.1
 
-[parameter_and_result_profile](S0150)	6.1
-	[access_to_subprogram_definition](S0076)	3.10
-	[subprogram_specification](S0143)	6.1
+parameter_and_result_profile	6.1
+	access_to_subprogram_definition	3.10
+	subprogram_specification	6.1
 
-[parameter_association](S0158)	6.4
-	[actual_parameter_part](S0157)	6.4
+parameter_association	6.4
+	actual_parameter_part	6.4
 
-[parameter_profile](S0149)	6.1
-	[accept_statement](S0188)	9.5.2
-	[access_to_subprogram_definition](S0076)	3.10
-	[entry_body_formal_part](S0191)	9.5.2
-	[entry_declaration](S0187)	9.5.2
-	[subprogram_specification](S0143)	6.1
+parameter_profile	6.1
+	accept_statement	9.5.2
+	access_to_subprogram_definition	3.10
+	entry_body_formal_part	9.5.2
+	entry_declaration	9.5.2
+	subprogram_specification	6.1
 
-[parameter_specification](S0152)	6.1
-	[formal_part](S0151)	6.1
+parameter_specification	6.1
+	formal_part	6.1
 
-[parent_unit_name](S0220)	10.1.1
-	[defining_program_unit_name](S0146)	6.1
-	[designator](S0144)	6.1
-	[package_body](S0163)	7.2
-	[package_specification](S0162)	7.1
-	[subunit](S0229)	10.1.3
+parent_unit_name	10.1.1
+	defining_program_unit_name	6.1
+	designator	6.1
+	package_body	7.2
+	package_specification	7.1
+	subunit	10.1.3
 
-[position](S0270)	13.5.1
-	[component_clause](S0269)	13.5.1
+position	13.5.1
+	component_clause	13.5.1
 
-[positional_array_aggregate](S0105)	4.3.3
-	[array_aggregate](S0104)	4.3.3
+positional_array_aggregate	4.3.3
+	array_aggregate	4.3.3
 
-[pragma_argument_association](S0017)	2.8
-	[pragma](S0016)	2.8
+pragma_argument_association	2.8
+	pragma	2.8
 
-[prefix](S0086)	4.1
-	[attribute_reference](S0093)	4.1.4
-	[function_call](S0156)	6.4
-	[indexed_component](S0089)	4.1.1
-	[procedure_call_statement](S0155)	6.4
-	[range_attribute_reference](S0095)	4.1.4
-	[selected_component](S0091)	4.1.3
-	[slice](S0090)	4.1.2
+prefix	4.1
+	attribute_reference	4.1.4
+	function_call	6.4
+	indexed_component	4.1.1
+	procedure_call_statement	6.4
+	range_attribute_reference	4.1.4
+	selected_component	4.1.3
+	slice	4.1.2
 
-[primary](S0113)	4.4
-	[factor](S0112)	4.4
+primary	4.4
+	factor	4.4
 
-[private_extension_declaration](S0165)	7.3
-	[type_declaration](S0020)	3.2.1
+private_extension_declaration	7.3
+	type_declaration	3.2.1
 
-[private_type_declaration](S0164)	7.3
-	[type_declaration](S0020)	3.2.1
+private_type_declaration	7.3
+	type_declaration	3.2.1
 
-[procedure_call_statement](S0155)	6.4
-	[simple_statement](S0125)	5.1
+procedure_call_statement	6.4
+	simple_statement	5.1
 
-[proper_body](S0083)	3.11
-	[body](S0082)	3.11
-	[subunit](S0229)	10.1.3
+proper_body	3.11
+	body	3.11
+	subunit	10.1.3
 
-[protected_body](S0185)	9.4
-	[proper_body](S0083)	3.11
+protected_body	9.4
+	proper_body	3.11
 
-[protected_body_stub](S0228)	10.1.3
-	[body_stub](S0224)	10.1.3
+protected_body_stub	10.1.3
+	body_stub	10.1.3
 
-[protected_definition](S0182)	9.4
-	[protected_type_declaration](S0180)	9.4
-	[single_protected_declaration](S0181)	9.4
+protected_definition	9.4
+	protected_type_declaration	9.4
+	single_protected_declaration	9.4
 
-[protected_element_declaration](S0184)	9.4
-	[protected_definition](S0182)	9.4
+protected_element_declaration	9.4
+	protected_definition	9.4
 
-[protected_operation_declaration](S0183)	9.4
-	[protected_definition](S0182)	9.4
-	[protected_element_declaration](S0184)	9.4
+protected_operation_declaration	9.4
+	protected_definition	9.4
+	protected_element_declaration	9.4
 
-[protected_operation_item](S0186)	9.4
-	[protected_body](S0185)	9.4
+protected_operation_item	9.4
+	protected_body	9.4
 
-[protected_type_declaration](S0180)	9.4
-	[full_type_declaration](S0021)	3.2.1
+protected_type_declaration	9.4
+	full_type_declaration	3.2.1
 
-[qualified_expression](S0121)	4.7
-	[allocator](S0122)	4.8
-	[code_statement](S0273)	13.8
-	[primary](S0113)	4.4
+qualified_expression	4.7
+	allocator	4.8
+	code_statement	13.8
+	primary	4.4
 
-[raise_statement](S0235)	11.3
-	[simple_statement](S0125)	5.1
+raise_statement	11.3
+	simple_statement	5.1
 
-[range](S0034)	3.5
-	[discrete_range](S0055)	3.6.1
-	[discrete_subtype_definition](S0052)	3.6
-	[range_constraint](S0033)	3.5
-	[relation](S0109)	4.4
+range	3.5
+	discrete_range	3.6.1
+	discrete_subtype_definition	3.6
+	range_constraint	3.5
+	relation	4.4
 
-[range_attribute_designator](S0096)	4.1.4
-	[range_attribute_reference](S0095)	4.1.4
+range_attribute_designator	4.1.4
+	range_attribute_reference	4.1.4
 
-[range_attribute_reference](S0095)	4.1.4
-	[range](S0034)	3.5
+range_attribute_reference	4.1.4
+	range	3.5
 
-[range_constraint](S0033)	3.5
-	[delta_constraint](S0275)	J.3
-	[digits_constraint](S0047)	3.5.9
-	[scalar_constraint](S0027)	3.2.2
+range_constraint	3.5
+	delta_constraint	J.3
+	digits_constraint	3.5.9
+	scalar_constraint	3.2.2
 
-[real_range_specification](S0043)	3.5.7
-	[decimal_fixed_point_definition](S0046)	3.5.9
-	[floating_point_definition](S0042)	3.5.7
-	[ordinary_fixed_point_definition](S0045)	3.5.9
+real_range_specification	3.5.7
+	decimal_fixed_point_definition	3.5.9
+	floating_point_definition	3.5.7
+	ordinary_fixed_point_definition	3.5.9
 
-[real_type_definition](S0041)	3.5.6
-	[type_definition](S0022)	3.2.1
+real_type_definition	3.5.6
+	type_definition	3.2.1
 
-[record_aggregate](S0098)	4.3.1
-	[aggregate](S0097)	4.3
+record_aggregate	4.3.1
+	aggregate	4.3
 
-[record_component_association](S0100)	4.3.1
-	[record_component_association_list](S0099)	4.3.1
+record_component_association	4.3.1
+	record_component_association_list	4.3.1
 
-[record_component_association_list](S0099)	4.3.1
-	[extension_aggregate](S0102)	4.3.2
-	[record_aggregate](S0098)	4.3.1
+record_component_association_list	4.3.1
+	extension_aggregate	4.3.2
+	record_aggregate	4.3.1
 
-[record_definition](S0064)	3.8
-	[record_extension_part](S0072)	3.9.1
-	[record_type_definition](S0063)	3.8
+record_definition	3.8
+	record_extension_part	3.9.1
+	record_type_definition	3.8
 
-[record_extension_part](S0072)	3.9.1
-	[derived_type_definition](S0032)	3.4
+record_extension_part	3.9.1
+	derived_type_definition	3.4
 
-[record_representation_clause](S0268)	13.5.1
-	[representation_clause](S0263)	13.1
+record_representation_clause	13.5.1
+	representation_clause	13.1
 
-[record_type_definition](S0063)	3.8
-	[type_definition](S0022)	3.2.1
+record_type_definition	3.8
+	type_definition	3.2.1
 
-[relation](S0109)	4.4
-	[expression](S0108)	4.4
+relation	4.4
+	expression	4.4
 
-[relational_operator](S0115)	4.5
-	[relation](S0109)	4.4
+relational_operator	4.5
+	relation	4.4
 
-[renaming_declaration](S0169)	8.5
-	[basic_declaration](S0018)	3.1
+renaming_declaration	8.5
+	basic_declaration	3.1
 
-[representation_clause](S0263)	13.1
-	[basic_declarative_item](S0081)	3.11
-	[component_item](S0066)	3.8
-	[protected_operation_declaration](S0183)	9.4
-	[protected_operation_item](S0186)	9.4
-	[task_item](S0178)	9.1
+representation_clause	13.1
+	basic_declarative_item	3.11
+	component_item	3.8
+	protected_operation_declaration	9.4
+	protected_operation_item	9.4
+	task_item	9.1
 
-[requeue_statement](S0195)	9.5.4
-	[simple_statement](S0125)	5.1
+requeue_statement	9.5.4
+	simple_statement	5.1
 
-[return_statement](S0160)	6.5
-	[simple_statement](S0125)	5.1
+return_statement	6.5
+	simple_statement	5.1
 
-[scalar_constraint](S0027)	3.2.2
-	[constraint](S0026)	3.2.2
+scalar_constraint	3.2.2
+	constraint	3.2.2
 
-[select_alternative](S0202)	9.7.1
-	[selective_accept](S0200)	9.7.1
+select_alternative	9.7.1
+	selective_accept	9.7.1
 
-[select_statement](S0199)	9.7
-	[compound_statement](S0126)	5.1
+select_statement	9.7
+	compound_statement	5.1
 
-[selected_component](S0091)	4.1.3
-	[name](S0084)	4.1
+selected_component	4.1.3
+	name	4.1
 
-[selective_accept](S0200)	9.7.1
-	[select_statement](S0199)	9.7
+selective_accept	9.7.1
+	select_statement	9.7
 
-[selector_name](S0092)	4.1.3
-	[component_choice_list](S0101)	4.3.1
-	[discriminant_association](S0062)	3.7.1
-	[generic_association](S0243)	12.3
-	[parameter_association](S0158)	6.4
-	[selected_component](S0091)	4.1.3
+selector_name	4.1.3
+	component_choice_list	4.3.1
+	discriminant_association	3.7.1
+	generic_association	12.3
+	parameter_association	6.4
+	selected_component	4.1.3
 
-[sequence_of_statements](S0123)	5.1
-	[abortable_part](S0212)	9.7.4
-	[accept_alternative](S0203)	9.7.1
-	[case_statement_alternative](S0134)	5.4
-	[conditional_entry_call](S0208)	9.7.3
-	[delay_alternative](S0204)	9.7.1
-	[entry_call_alternative](S0207)	9.7.2
-	[exception_handler](S0232)	11.2
-	[handled_sequence_of_statements](S0231)	11.2
-	[if_statement](S0131)	5.3
-	[loop_statement](S0135)	5.5
-	[selective_accept](S0200)	9.7.1
-	[triggering_alternative](S0210)	9.7.4
+sequence_of_statements	5.1
+	abortable_part	9.7.4
+	accept_alternative	9.7.1
+	case_statement_alternative	5.4
+	conditional_entry_call	9.7.3
+	delay_alternative	9.7.1
+	entry_call_alternative	9.7.2
+	exception_handler	11.2
+	handled_sequence_of_statements	11.2
+	if_statement	5.3
+	loop_statement	5.5
+	selective_accept	9.7.1
+	triggering_alternative	9.7.4
 
-[signed_integer_type_definition](S0039)	3.5.4
-	[integer_type_definition](S0038)	3.5.4
+signed_integer_type_definition	3.5.4
+	integer_type_definition	3.5.4
 
-[simple_expression](S0110)	4.4
-	[first_bit](S0271)	13.5.1
-	[last_bit](S0272)	13.5.1
-	[range](S0034)	3.5
-	[real_range_specification](S0043)	3.5.7
-	[relation](S0109)	4.4
-	[signed_integer_type_definition](S0039)	3.5.4
+simple_expression	4.4
+	first_bit	13.5.1
+	last_bit	13.5.1
+	range	3.5
+	real_range_specification	3.5.7
+	relation	4.4
+	signed_integer_type_definition	3.5.4
 
-[simple_statement](S0125)	5.1
-	[statement](S0124)	5.1
+simple_statement	5.1
+	statement	5.1
 
-[single_protected_declaration](S0181)	9.4
-	[object_declaration](S0029)	3.3.1
+single_protected_declaration	9.4
+	object_declaration	3.3.1
 
-[single_task_declaration](S0176)	9.1
-	[object_declaration](S0029)	3.3.1
+single_task_declaration	9.1
+	object_declaration	3.3.1
 
-[slice](S0090)	4.1.2
-	[name](S0084)	4.1
+slice	4.1.2
+	name	4.1
 
 space_character	...
-	[graphic_character](S0001)	2.1
+	graphic_character	2.1
 
 special_character	...
-	[graphic_character](S0001)	2.1
+	graphic_character	2.1
 
-[statement](S0124)	5.1
-	[sequence_of_statements](S0123)	5.1
+statement	5.1
+	sequence_of_statements	5.1
 
-[statement_identifier](S0129)	5.1
-	[block_statement](S0138)	5.6
-	[label](S0128)	5.1
-	[loop_statement](S0135)	5.5
+statement_identifier	5.1
+	block_statement	5.6
+	label	5.1
+	loop_statement	5.5
 
-[string_element](S0014)	2.6
-	[string_literal](S0013)	2.6
+string_element	2.6
+	string_literal	2.6
 
-[string_literal](S0013)	2.6
-	[operator_symbol](S0147)	6.1
-	[primary](S0113)	4.4
+string_literal	2.6
+	operator_symbol	6.1
+	primary	4.4
 
-[subprogram_body](S0154)	6.3
-	[library_unit_body](S0219)	10.1.1
-	[proper_body](S0083)	3.11
-	[protected_operation_item](S0186)	9.4
+subprogram_body	6.3
+	library_unit_body	10.1.1
+	proper_body	3.11
+	protected_operation_item	9.4
 
-[subprogram_body_stub](S0225)	10.1.3
-	[body_stub](S0224)	10.1.3
+subprogram_body_stub	10.1.3
+	body_stub	10.1.3
 
-[subprogram_declaration](S0141)	6.1
-	[basic_declaration](S0018)	3.1
-	[library_unit_declaration](S0217)	10.1.1
-	[protected_operation_declaration](S0183)	9.4
-	[protected_operation_item](S0186)	9.4
+subprogram_declaration	6.1
+	basic_declaration	3.1
+	library_unit_declaration	10.1.1
+	protected_operation_declaration	9.4
+	protected_operation_item	9.4
 
-[subprogram_default](S0259)	12.6
-	[formal_subprogram_declaration](S0258)	12.6
+subprogram_default	12.6
+	formal_subprogram_declaration	12.6
 
-[subprogram_renaming_declaration](S0173)	8.5.4
-	[library_unit_renaming_declaration](S0218)	10.1.1
-	[renaming_declaration](S0169)	8.5
+subprogram_renaming_declaration	8.5.4
+	library_unit_renaming_declaration	10.1.1
+	renaming_declaration	8.5
 
-[subprogram_specification](S0143)	6.1
-	[abstract_subprogram_declaration](S0142)	6.1
-	[formal_subprogram_declaration](S0258)	12.6
-	[generic_subprogram_declaration](S0237)	12.1
-	[subprogram_body](S0154)	6.3
-	[subprogram_body_stub](S0225)	10.1.3
-	[subprogram_declaration](S0141)	6.1
-	[subprogram_renaming_declaration](S0173)	8.5.4
+subprogram_specification	6.1
+	abstract_subprogram_declaration	6.1
+	formal_subprogram_declaration	12.6
+	generic_subprogram_declaration	12.1
+	subprogram_body	6.3
+	subprogram_body_stub	10.1.3
+	subprogram_declaration	6.1
+	subprogram_renaming_declaration	8.5.4
 
-[subtype_declaration](S0023)	3.2.2
-	[basic_declaration](S0018)	3.1
+subtype_declaration	3.2.2
+	basic_declaration	3.1
 
-[subtype_indication](S0024)	3.2.2
-	[access_to_object_definition](S0074)	3.10
-	[allocator](S0122)	4.8
-	[component_definition](S0053)	3.6
-	[derived_type_definition](S0032)	3.4
-	[discrete_range](S0055)	3.6.1
-	[discrete_subtype_definition](S0052)	3.6
-	[object_declaration](S0029)	3.3.1
-	[private_extension_declaration](S0165)	7.3
-	[subtype_declaration](S0023)	3.2.2
+subtype_indication	3.2.2
+	access_to_object_definition	3.10
+	allocator	4.8
+	component_definition	3.6
+	derived_type_definition	3.4
+	discrete_range	3.6.1
+	discrete_subtype_definition	3.6
+	object_declaration	3.3.1
+	private_extension_declaration	7.3
+	subtype_declaration	3.2.2
 
-[subtype_mark](S0025)	3.2.2
-	[access_definition](S0077)	3.10
-	[ancestor_part](S0103)	4.3.2
-	[discriminant_specification](S0059)	3.7
-	[explicit_generic_actual_parameter](S0244)	12.3
-	[formal_derived_type_definition](S0249)	12.5.1
-	[formal_object_declaration](S0245)	12.4
-	[index_subtype_definition](S0050)	3.6
-	[object_renaming_declaration](S0170)	8.5.1
-	[parameter_and_result_profile](S0150)	6.1
-	[parameter_specification](S0152)	6.1
-	[qualified_expression](S0121)	4.7
-	[relation](S0109)	4.4
-	[subtype_indication](S0024)	3.2.2
-	[type_conversion](S0120)	4.6
-	[use_type_clause](S0168)	8.4
+subtype_mark	3.2.2
+	access_definition	3.10
+	ancestor_part	4.3.2
+	discriminant_specification	3.7
+	explicit_generic_actual_parameter	12.3
+	formal_derived_type_definition	12.5.1
+	formal_object_declaration	12.4
+	index_subtype_definition	3.6
+	object_renaming_declaration	8.5.1
+	parameter_and_result_profile	6.1
+	parameter_specification	6.1
+	qualified_expression	4.7
+	relation	4.4
+	subtype_indication	3.2.2
+	type_conversion	4.6
+	use_type_clause	8.4
 
-[subunit](S0229)	10.1.3
-	[compilation_unit](S0215)	10.1.1
+subunit	10.1.3
+	compilation_unit	10.1.1
 
-[task_body](S0179)	9.1
-	[proper_body](S0083)	3.11
+task_body	9.1
+	proper_body	3.11
 
-[task_body_stub](S0227)	10.1.3
-	[body_stub](S0224)	10.1.3
+task_body_stub	10.1.3
+	body_stub	10.1.3
 
-[task_definition](S0177)	9.1
-	[single_task_declaration](S0176)	9.1
-	[task_type_declaration](S0175)	9.1
+task_definition	9.1
+	single_task_declaration	9.1
+	task_type_declaration	9.1
 
-[task_item](S0178)	9.1
-	[task_definition](S0177)	9.1
+task_item	9.1
+	task_definition	9.1
 
-[task_type_declaration](S0175)	9.1
-	[full_type_declaration](S0021)	3.2.1
+task_type_declaration	9.1
+	full_type_declaration	3.2.1
 
-[term](S0111)	4.4
-	[simple_expression](S0110)	4.4
+term	4.4
+	simple_expression	4.4
 
-[terminate_alternative](S0205)	9.7.1
-	[select_alternative](S0202)	9.7.1
+terminate_alternative	9.7.1
+	select_alternative	9.7.1
 
-[timed_entry_call](S0206)	9.7.2
-	[select_statement](S0199)	9.7
+timed_entry_call	9.7.2
+	select_statement	9.7
 
-[triggering_alternative](S0210)	9.7.4
-	[asynchronous_select](S0209)	9.7.4
+triggering_alternative	9.7.4
+	asynchronous_select	9.7.4
 
-[triggering_statement](S0211)	9.7.4
-	[triggering_alternative](S0210)	9.7.4
+triggering_statement	9.7.4
+	triggering_alternative	9.7.4
 
-[type_conversion](S0120)	4.6
-	[name](S0084)	4.1
+type_conversion	4.6
+	name	4.1
 
-[type_declaration](S0020)	3.2.1
-	[basic_declaration](S0018)	3.1
+type_declaration	3.2.1
+	basic_declaration	3.1
 
-[type_definition](S0022)	3.2.1
-	[full_type_declaration](S0021)	3.2.1
+type_definition	3.2.1
+	full_type_declaration	3.2.1
 
-[unary_adding_operator](S0117)	4.5
-	[simple_expression](S0110)	4.4
+unary_adding_operator	4.5
+	simple_expression	4.4
 
-[unconstrained_array_definition](S0049)	3.6
-	[array_type_definition](S0048)	3.6
+unconstrained_array_definition	3.6
+	array_type_definition	3.6
 
 underline	...
-	[based_numeral](S0010)	2.4.2
-	[identifier](S0002)	2.3
-	[numeral](S0006)	2.4.1
+	based_numeral	2.4.2
+	identifier	2.3
+	numeral	2.4.1
 
-[unknown_discriminant_part](S0057)	3.7
-	[discriminant_part](S0056)	3.7
+unknown_discriminant_part	3.7
+	discriminant_part	3.7
 
-[use_clause](S0166)	8.4
-	[basic_declarative_item](S0081)	3.11
-	[context_item](S0222)	10.1.2
-	[generic_formal_part](S0239)	12.1
+use_clause	8.4
+	basic_declarative_item	3.11
+	context_item	10.1.2
+	generic_formal_part	12.1
 
-[use_package_clause](S0167)	8.4
-	[use_clause](S0166)	8.4
+use_package_clause	8.4
+	use_clause	8.4
 
-[use_type_clause](S0168)	8.4
-	[use_clause](S0166)	8.4
+use_type_clause	8.4
+	use_clause	8.4
 
-[variant](S0069)	3.8.1
-	[variant_part](S0068)	3.8.1
+variant	3.8.1
+	variant_part	3.8.1
 
-[variant_part](S0068)	3.8.1
-	[component_list](S0065)	3.8
+variant_part	3.8.1
+	component_list	3.8
 
-[with_clause](S0223)	10.1.2
-	[context_item](S0222)	10.1.2
+with_clause	10.1.2
+	context_item	10.1.2
 
  
 

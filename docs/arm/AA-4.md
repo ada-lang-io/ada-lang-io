@@ -9,61 +9,61 @@ We're still working on the Reference manual output.  Internal links are broken,
 as are a bunch of other things.
 See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
-[The rules applicable to the different forms of [name](S0084) and expression, and to their evaluation, are given in this section.] 
+[The rules applicable to the different forms of name and expression, and to their evaluation, are given in this section.] 
 
 
 ## 4.1  Names
 
-[[Name](S0084)s can denote declared entities, whether declared explicitly or implicitly (see 3.1). [Name](S0084)s can also denote objects or subprograms designated by access values; the results of [type_conversion](S0120)s or [function_call](S0156)s; subcomponents and slices of objects and values; protected subprograms, single entries, entry families, and entries in families of entries. Finally, [name](S0084)s can denote attributes of any of the foregoing.] 
+[Names can denote declared entities, whether declared explicitly or implicitly (see 3.1). Names can also denote objects or subprograms designated by access values; the results of type_conversions or function_calls; subcomponents and slices of objects and values; protected subprograms, single entries, entry families, and entries in families of entries. Finally, names can denote attributes of any of the foregoing.] 
 
 
 #### Syntax
 
 name ::= 
-     [direct_name](S0085)	| [explicit_dereference](S0087)
-   | [indexed_component](S0089)	| [slice](S0090)
-   | [selected_component](S0091)	| [attribute_reference](S0093)
-   | [type_conversion](S0120)	| [function_call](S0156)
-   | [character_literal](S0012)
+     direct_name	| explicit_dereference
+   | indexed_component	| slice
+   | selected_component	| attribute_reference
+   | type_conversion	| function_call
+   | character_literal
 
-direct_name ::= [identifier](S0002) | [operator_symbol](S0147)
+direct_name ::= identifier | operator_symbol
 
-Discussion: [character_literal](S0012) is no longer a [direct_name](S0085). [character_literal](S0012)s are usable even when the corresponding enumeration_type_declaration is not visible. See 4.2. 
+Discussion: character_literal is no longer a direct_name. character_literals are usable even when the corresponding enumeration_type_declaration is not visible. See 4.2. 
 
-prefix ::= [name](S0084) | [implicit_dereference](S0088)
+prefix ::= name | implicit_dereference
 
-explicit_dereference ::= [name](S0084).all
+explicit_dereference ::= name.all
 
-implicit_dereference ::= [name](S0084)
+implicit_dereference ::= name
 
-[Certain forms of [name](S0084) ([indexed_component](S0089)s, [selected_component](S0091)s, [slice](S0090)s, and attributes) include a [prefix](S0086) that is either itself a [name](S0084) that denotes some related entity, or an [implicit_dereference](S0088) of an access value that designates some related entity.] 
+[Certain forms of name (indexed_components, selected_components, slices, and attributes) include a prefix that is either itself a name that denotes some related entity, or an implicit_dereference of an access value that designates some related entity.] 
 
 
 #### Name Resolution Rules
 
-The [name](S0084) in a dereference (either an [implicit_dereference](S0088) or an [explicit_dereference](S0087)) is expected to be of any access type. 
+The name in a dereference (either an implicit_dereference or an explicit_dereference) is expected to be of any access type. 
 
 
 #### Static Semantics
 
-If the type of the [name](S0084) in a dereference is some access-to-object type T, then the dereference denotes a view of an object, the nominal subtype of the view being the designated subtype of T. 
+If the type of the name in a dereference is some access-to-object type T, then the dereference denotes a view of an object, the nominal subtype of the view being the designated subtype of T. 
 
-Ramification: If the value of the [name](S0084) is the result of an access type conversion, the dereference denotes a view created as part of the conversion. The nominal subtype of the view is not necessarily the same as that used to create the designated object. See 4.6. 
+Ramification: If the value of the name is the result of an access type conversion, the dereference denotes a view created as part of the conversion. The nominal subtype of the view is not necessarily the same as that used to create the designated object. See 4.6. 
 
-To be honest: We sometimes refer to the nominal subtype of a particular kind of [name](S0084) rather than the nominal subtype of the view denoted by the [name](S0084) (presuming the [name](S0084) denotes a view of an object). These two uses of nominal subtype are intended to mean the same thing. 
+To be honest: We sometimes refer to the nominal subtype of a particular kind of name rather than the nominal subtype of the view denoted by the name (presuming the name denotes a view of an object). These two uses of nominal subtype are intended to mean the same thing. 
 
-If the type of the [name](S0084) in a dereference is some access-to-subprogram type S, then the dereference denotes a view of a subprogram, the profile of the view being the designated profile of S. 
+If the type of the name in a dereference is some access-to-subprogram type S, then the dereference denotes a view of a subprogram, the profile of the view being the designated profile of S. 
 
-Ramification: This means that the formal parameter names and default expressions to be used in a call whose [name](S0084) or [prefix](S0086) is a dereference are those of the designated profile, which need not be the same as those of the subprogram designated by the access value, since 'Access requires only subtype conformance, not full conformance. 
+Ramification: This means that the formal parameter names and default expressions to be used in a call whose name or prefix is a dereference are those of the designated profile, which need not be the same as those of the subprogram designated by the access value, since 'Access requires only subtype conformance, not full conformance. 
 
 
 #### Dynamic Semantics
 
-The evaluation of a [name](S0084) determines the entity denoted by the name. This evaluation has no other effect for a [name](S0084) that is a [direct_name](S0085) or a [character_literal](S0012).
+The evaluation of a name determines the entity denoted by the name. This evaluation has no other effect for a name that is a direct_name or a character_literal.
 
-[The evaluation of a [name](S0084) that has a [prefix](S0086) includes the evaluation of the [prefix](S0086).] The evaluation of a [prefix](S0086) consists of the evaluation of the [name](S0084) or the [implicit_dereference](S0088). The [prefix](S0086) denotes the entity denoted by the [name](S0084) or the [implicit_dereference](S0088).
+[The evaluation of a name that has a prefix includes the evaluation of the prefix.] The evaluation of a prefix consists of the evaluation of the name or the implicit_dereference. The prefix denotes the entity denoted by the name or the implicit_dereference.
 
-The evaluation of a dereference consists of the evaluation of the [name](S0084) and the determination of the object or subprogram that is designated by the value of the [name](S0084). A check is made that the value of the [name](S0084) is not the null access value. Constraint_Error is raised if this check fails. The dereference denotes the object or subprogram designated by the value of the [name](S0084). 
+The evaluation of a dereference consists of the evaluation of the name and the determination of the object or subprogram that is designated by the value of the name. A check is made that the value of the name is not the null access value. Constraint_Error is raised if this check fails. The dereference denotes the object or subprogram designated by the value of the name. 
 
 
 #### Examples
@@ -96,51 +96,51 @@ Next_Car.Owner 	--  selected component with implicit dereference;
 
 Type conversions and function calls are now considered names that denote the result of the operation. In the case of a type conversion used as an actual parameter or that is of a tagged type, the type conversion is considered a variable if the operand is a variable. This simplifies the description of "parameters of the form of a type conversion" as well as better supporting an important OOP paradigm that requires the combination of a conversion from a class-wide type to some specific type followed immediately by component selection. Function calls are considered names so that a type conversion of a function call and the function call itself are treated equivalently in the grammar. A function call is considered the name of a constant, and can be used anywhere such a name is permitted. See 6.5.
 
-Type conversions of a tagged type are permitted anywhere their operand is permitted. That is, if the operand is a variable, then the type conversion can appear on the left-hand side of an [assignment_statement](S0130). If the operand is an object, then the type conversion can appear in an object renaming or as a prefix. See 4.6. 
+Type conversions of a tagged type are permitted anywhere their operand is permitted. That is, if the operand is a variable, then the type conversion can appear on the left-hand side of an assignment_statement. If the operand is an object, then the type conversion can appear in an object renaming or as a prefix. See 4.6. 
 
 
 #### Wording Changes from Ada 83
 
-Everything of the general syntactic form [name](S0084)(...) is now syntactically a [name](S0084). In any realistic parser, this would be a necessity since distinguishing among the various [name](S0084)(...) constructs inevitably requires name resolution. In cases where the construct yields a value rather than an object, the name denotes the value rather than an object. Names already denote values in Ada 83 with named numbers, components of the result of a function call, etc. This is partly just a wording change, and partly an extension of functionality (see Extensions heading above).
+Everything of the general syntactic form name(...) is now syntactically a name. In any realistic parser, this would be a necessity since distinguishing among the various name(...) constructs inevitably requires name resolution. In cases where the construct yields a value rather than an object, the name denotes the value rather than an object. Names already denote values in Ada 83 with named numbers, components of the result of a function call, etc. This is partly just a wording change, and partly an extension of functionality (see Extensions heading above).
 
-The syntax rule for [direct_name](S0085) is new. It is used in places where direct visibility is required. It's kind of like Ada 83's simple_name, but simple_name applied to both direct visibility and visibility by selection, and furthermore, it didn't work right for [operator_symbol](S0147)s. The syntax rule for simple_name is removed, since its use is covered by a combination of [direct_name](S0085) and [selector_name](S0092). The syntactic categories [direct_name](S0085) and [selector_name](S0092) are similar; it's mainly the visibility rules that distinguish the two. The introduction of [direct_name](S0085) requires the insertion of one new explicit textual rule: to forbid [statement_identifier](S0129)s from being [operator_symbol](S0147)s. This is the only case where the explicit rule is needed, because this is the only case where the declaration of the entity is implicit. For example, there is no need to syntactically forbid (say) "X: "Rem";", because it is impossible to declare a type whose name is an [operator_symbol](S0147) in the first place.
+The syntax rule for direct_name is new. It is used in places where direct visibility is required. It's kind of like Ada 83's simple_name, but simple_name applied to both direct visibility and visibility by selection, and furthermore, it didn't work right for operator_symbols. The syntax rule for simple_name is removed, since its use is covered by a combination of direct_name and selector_name. The syntactic categories direct_name and selector_name are similar; it's mainly the visibility rules that distinguish the two. The introduction of direct_name requires the insertion of one new explicit textual rule: to forbid statement_identifiers from being operator_symbols. This is the only case where the explicit rule is needed, because this is the only case where the declaration of the entity is implicit. For example, there is no need to syntactically forbid (say) "X: "Rem";", because it is impossible to declare a type whose name is an operator_symbol in the first place.
 
-The syntax rules for [explicit_dereference](S0087) and [implicit_dereference](S0088) are new; this makes other rules simpler, since dereferencing an access value has substantially different semantics from [selected_component](S0091)s. We also use [name](S0084) instead of [prefix](S0086) in the [explicit_dereference](S0087) rule since that seems clearer. Note that these rules rely on the fact that function calls are now names, so we don't need to use prefix to allow functions calls in front of .all. 
+The syntax rules for explicit_dereference and implicit_dereference are new; this makes other rules simpler, since dereferencing an access value has substantially different semantics from selected_components. We also use name instead of prefix in the explicit_dereference rule since that seems clearer. Note that these rules rely on the fact that function calls are now names, so we don't need to use prefix to allow functions calls in front of .all. 
 
-Discussion: Actually, it would be reasonable to allow any [primary](S0113) in front of .all, since only the value is needed, but that would be a bit radical. 
+Discussion: Actually, it would be reasonable to allow any primary in front of .all, since only the value is needed, but that would be a bit radical. 
 
 We no longer use the term appropriate for a type since we now describe the semantics of a prefix in terms of implicit dereference. 
 
 
 ### 4.1.1  Indexed Components
 
-[An [indexed_component](S0089) denotes either a component of an array or an entry in a family of entries. ]
+[An indexed_component denotes either a component of an array or an entry in a family of entries. ]
 
 
 #### Syntax
 
-indexed_component ::= [prefix](S0086)([expression](S0108) {, [expression](S0108)})
+indexed_component ::= prefix(expression {, expression})
 
 
 #### Name Resolution Rules
 
-The [prefix](S0086) of an [indexed_component](S0089) with a given number of [expression](S0108)s shall resolve to denote an array (after any implicit dereference) with the corresponding number of index positions, or shall resolve to denote an entry family of a task or protected object (in which case there shall be only one [expression](S0108)).
+The prefix of an indexed_component with a given number of expressions shall resolve to denote an array (after any implicit dereference) with the corresponding number of index positions, or shall resolve to denote an entry family of a task or protected object (in which case there shall be only one expression).
 
-The expected type for each [expression](S0108) is the corresponding index type.
+The expected type for each expression is the corresponding index type.
 
 
 #### Static Semantics
 
-When the [prefix](S0086) denotes an array, the [indexed_component](S0089) denotes the component of the array with the specified index value(s). The nominal subtype of the [indexed_component](S0089) is the component subtype of the array type. 
+When the prefix denotes an array, the indexed_component denotes the component of the array with the specified index value(s). The nominal subtype of the indexed_component is the component subtype of the array type. 
 
 Ramification: In the case of an array whose components are aliased, and of an unconstrained discriminated subtype, the components are constrained even though their nominal subtype is unconstrained. (This is because all aliased discriminated objects are constrained. See 3.10.2.) In all other cases, an array component is constrained if and only if its nominal subtype is constrained. 
 
-When the [prefix](S0086) denotes an entry family, the [indexed_component](S0089) denotes the individual entry of the entry family with the specified index value.
+When the prefix denotes an entry family, the indexed_component denotes the individual entry of the entry family with the specified index value.
 
 
 #### Dynamic Semantics
 
-For the evaluation of an [indexed_component](S0089), the [prefix](S0086) and the [expression](S0108)s are evaluated in an arbitrary order. The value of each [expression](S0108) is converted to the corresponding index type. A check is made that each index value belongs to the corresponding index range of the array or entry family denoted by the [prefix](S0086). Constraint_Error is raised if this check fails.
+For the evaluation of an indexed_component, the prefix and the expressions are evaluated in an arbitrary order. The value of each expression is converted to the corresponding index type. A check is made that each index value belongs to the corresponding index range of the array or entry family denoted by the prefix. Constraint_Error is raised if this check fails.
 
 
 #### Examples
@@ -162,39 +162,39 @@ NOTE 1   Notes on the examples: Distinct notations are used for components of mu
 
 ### 4.1.2  Slices
 
-[ A [slice](S0090) denotes a one-dimensional array formed by a sequence of consecutive components of a one-dimensional array. A [slice](S0090) of a variable is a variable; a [slice](S0090) of a constant is a constant;] a [slice](S0090) of a value is a value. 
+[ A slice denotes a one-dimensional array formed by a sequence of consecutive components of a one-dimensional array. A slice of a variable is a variable; a slice of a constant is a constant;] a slice of a value is a value. 
 
 
 #### Syntax
 
-slice ::= [prefix](S0086)([discrete_range](S0055))
+slice ::= prefix(discrete_range)
 
 
 #### Name Resolution Rules
 
-The [prefix](S0086) of a [slice](S0090) shall resolve to denote a one-dimensional array (after any implicit dereference).
+The prefix of a slice shall resolve to denote a one-dimensional array (after any implicit dereference).
 
-The expected type for the [discrete_range](S0055) of a [slice](S0090) is the index type of the array type. 
+The expected type for the discrete_range of a slice is the index type of the array type. 
 
 
 #### Static Semantics
 
-A [slice](S0090) denotes a one-dimensional array formed by the sequence of consecutive components of the array denoted by the [prefix](S0086), corresponding to the range of values of the index given by the [discrete_range](S0055).
+A slice denotes a one-dimensional array formed by the sequence of consecutive components of the array denoted by the prefix, corresponding to the range of values of the index given by the discrete_range.
 
-The type of the [slice](S0090) is that of the [prefix](S0086). Its bounds are those defined by the [discrete_range](S0055).
+The type of the slice is that of the prefix. Its bounds are those defined by the discrete_range.
 
 
 #### Dynamic Semantics
 
-For the evaluation of a [slice](S0090), the [prefix](S0086) and the [discrete_range](S0055) are evaluated in an arbitrary order. If the [slice](S0090) is not a null slice (a [slice](S0090) where the [discrete_range](S0055) is a null range), then a check is made that the bounds of the [discrete_range](S0055) belong to the index range of the array denoted by the [prefix](S0086). Constraint_Error is raised if this check fails.
+For the evaluation of a slice, the prefix and the discrete_range are evaluated in an arbitrary order. If the slice is not a null slice (a slice where the discrete_range is a null range), then a check is made that the bounds of the discrete_range belong to the index range of the array denoted by the prefix. Constraint_Error is raised if this check fails.
 
-NOTE 1   A [slice](S0090) is not permitted as the [prefix](S0086) of an Access [attribute_reference](S0093), even if the components or the array as a whole are aliased. See 3.10.2. 
+NOTE 1   A slice is not permitted as the prefix of an Access attribute_reference, even if the components or the array as a whole are aliased. See 3.10.2. 
 
 Proof: Slices are not aliased, by 3.10, "Access Types". 
 
 Reason: This is to ease implementation of general-access-to-array. If slices were aliased, implementations would need to store array dope with the access values, which is not always desirable given access-to-incomplete types completed in a package body. 
 
-NOTE 2   For a one-dimensional array A, the [slice](S0090) A(N .. N) denotes an array that has only one component; its type is the type of A. On the other hand, A(N) denotes a component of the array A and has the corresponding component type. 
+NOTE 2   For a one-dimensional array A, the slice A(N .. N) denotes an array that has only one component; its type is the type of A. On the other hand, A(N) denotes a component of the array A and has the corresponding component type. 
 
 
 #### Examples
@@ -215,56 +215,56 @@ Examples of slices:
 
 ### 4.1.3  Selected Components
 
-[[Selected_component](S0091)s are used to denote components (including discriminants), entries, entry families, and protected subprograms; they are also used as expanded names as described below. ]
+[Selected_components are used to denote components (including discriminants), entries, entry families, and protected subprograms; they are also used as expanded names as described below. ]
 
 
 #### Syntax
 
-selected_component ::= [prefix](S0086) . [selector_name](S0092)
+selected_component ::= prefix . selector_name
 
-selector_name ::= [identifier](S0002) | [character_literal](S0012) | [operator_symbol](S0147)
+selector_name ::= identifier | character_literal | operator_symbol
 
 
 #### Name Resolution Rules
 
-A [selected_component](S0091) is called an expanded name if, according to the visibility rules, at least one possible interpretation of its [prefix](S0086) denotes a package or an enclosing named construct (directly, not through a [subprogram_renaming_declaration](S0173) or [generic_renaming_declaration](S0174)). 
+A selected_component is called an expanded name if, according to the visibility rules, at least one possible interpretation of its prefix denotes a package or an enclosing named construct (directly, not through a subprogram_renaming_declaration or generic_renaming_declaration). 
 
 Discussion: See AI83-00187. 
 
-A [selected_component](S0091) that is not an expanded name shall resolve to denote one of the following: 
+A selected_component that is not an expanded name shall resolve to denote one of the following: 
 
-Ramification: If the [prefix](S0086) of a [selected_component](S0091) denotes an enclosing named construct, then the [selected_component](S0091) is interpreted only as an expanded name, even if the named construct is a function that could be called without parameters. 
+Ramification: If the prefix of a selected_component denotes an enclosing named construct, then the selected_component is interpreted only as an expanded name, even if the named construct is a function that could be called without parameters. 
 
 A component [(including a discriminant)]:
 
-The [prefix](S0086) shall resolve to denote an object or value of some non-array composite type (after any implicit dereference). The [selector_name](S0092) shall resolve to denote a [discriminant_specification](S0059) of the type, or, unless the type is a protected type, a [component_declaration](S0067) of the type. The [selected_component](S0091) denotes the corresponding component of the object or value. 
+The prefix shall resolve to denote an object or value of some non-array composite type (after any implicit dereference). The selector_name shall resolve to denote a discriminant_specification of the type, or, unless the type is a protected type, a component_declaration of the type. The selected_component denotes the corresponding component of the object or value. 
 
-Reason: The components of a protected object cannot be named except by an expanded name, even from within the corresponding protected body. The protected body may not reference the the private components of some arbitrary object of the protected type; the protected body may reference components of the current instance only (by an expanded name or a [direct_name](S0085)). 
+Reason: The components of a protected object cannot be named except by an expanded name, even from within the corresponding protected body. The protected body may not reference the the private components of some arbitrary object of the protected type; the protected body may reference components of the current instance only (by an expanded name or a direct_name). 
 
-Ramification: Only the discriminants and components visible at the place of the [selected_component](S0091) can be selected, since a [selector_name](S0092) can only denote declarations that are visible (see 8.3). 
+Ramification: Only the discriminants and components visible at the place of the selected_component can be selected, since a selector_name can only denote declarations that are visible (see 8.3). 
 
 A single entry, an entry family, or a protected subprogram:
 
-The [prefix](S0086) shall resolve to denote an object or value of some task or protected type (after any implicit dereference). The [selector_name](S0092) shall resolve to denote an [entry_declaration](S0187) or [subprogram_declaration](S0141) occurring (implicitly or explicitly) within the visible part of that type. The [selected_component](S0091) denotes the corresponding entry, entry family, or protected subprogram. 
+The prefix shall resolve to denote an object or value of some task or protected type (after any implicit dereference). The selector_name shall resolve to denote an entry_declaration or subprogram_declaration occurring (implicitly or explicitly) within the visible part of that type. The selected_component denotes the corresponding entry, entry family, or protected subprogram. 
 
 Reason: This explicitly says "visible part" because even though the body has visibility on the private part, it cannot call the private operations of some arbitrary object of the task or protected type, only those of the current instance (and expanded name notation has to be used for that). 
 
 An expanded name shall resolve to denote a declaration that occurs immediately within a named declarative region, as follows: 
 
-The [prefix](S0086) shall resolve to denote either a package [(including the current instance of a generic package, or a rename of a package)], or an enclosing named construct.
+The prefix shall resolve to denote either a package [(including the current instance of a generic package, or a rename of a package)], or an enclosing named construct.
 
-The [selector_name](S0092) shall resolve to denote a declaration that occurs immediately within the declarative region of the package or enclosing construct [(the declaration shall be visible at the place of the expanded name - see 8.3)]. The expanded name denotes that declaration. 
+The selector_name shall resolve to denote a declaration that occurs immediately within the declarative region of the package or enclosing construct [(the declaration shall be visible at the place of the expanded name - see 8.3)]. The expanded name denotes that declaration. 
 
-Ramification: Hence, a library unit or subunit can use an expanded name to refer to the declarations within the private part of its parent unit, as well as to other children that have been mentioned in [with_clause](S0223)s. 
+Ramification: Hence, a library unit or subunit can use an expanded name to refer to the declarations within the private part of its parent unit, as well as to other children that have been mentioned in with_clauses. 
 
-If the [prefix](S0086) does not denote a package, then it shall be a [direct_name](S0085) or an expanded name, and it shall resolve to denote a program unit (other than a package), the current instance of a type, a [block_statement](S0138), a [loop_statement](S0135), or an [accept_statement](S0188) (in the case of an [accept_statement](S0188) or [entry_body](S0190), no family index is allowed); the expanded name shall occur within the declarative region of this construct. Further, if this construct is a callable construct and the [prefix](S0086) denotes more than one such enclosing callable construct, then the expanded name is ambiguous, independently of the [selector_name](S0092).
+If the prefix does not denote a package, then it shall be a direct_name or an expanded name, and it shall resolve to denote a program unit (other than a package), the current instance of a type, a block_statement, a loop_statement, or an accept_statement (in the case of an accept_statement or entry_body, no family index is allowed); the expanded name shall occur within the declarative region of this construct. Further, if this construct is a callable construct and the prefix denotes more than one such enclosing callable construct, then the expanded name is ambiguous, independently of the selector_name.
 
 
 #### Dynamic Semantics
 
-The evaluation of a [selected_component](S0091) includes the evaluation of the [prefix](S0086).
+The evaluation of a selected_component includes the evaluation of the prefix.
 
-For a [selected_component](S0091) that denotes a component of a [variant](S0069), a check is made that the values of the discriminants are such that the value or object denoted by the [prefix](S0086) has this component. The exception Constraint_Error is raised if this check fails.
+For a selected_component that denotes a component of a variant, a check is made that the values of the discriminants are such that the value or object denoted by the prefix has this component. The exception Constraint_Error is raised if this check fails.
 
 
 #### Examples
@@ -304,34 +304,34 @@ We now allow an expanded name to use a prefix that denotes a rename of a package
 
 #### Wording Changes from Ada 83
 
-The syntax rule for [selector_name](S0092) is new. It is used in places where visibility, but not necessarily direct visibility, is required. See 4.1, "Names" for more information.
+The syntax rule for selector_name is new. It is used in places where visibility, but not necessarily direct visibility, is required. See 4.1, "Names" for more information.
 
-The description of dereferencing an access type has been moved to 4.1, "Names"; [name](S0084).all is no longer considered a [selected_component](S0091).
+The description of dereferencing an access type has been moved to 4.1, "Names"; name.all is no longer considered a selected_component.
 
 The rules have been restated to be consistent with our new terminology, to accommodate class-wide types, etc. 
 
 
 ### 4.1.4  Attributes
 
-[An attribute is a characteristic of an entity that can be queried via an [attribute_reference](S0093) or a [range_attribute_reference](S0095).] Version=[5],Kind=(AddedNormal),Group=[T],Term=[attribute], Def=[a characteristic or property of an entity that can be queried, and in some cases specified] 
+[An attribute is a characteristic of an entity that can be queried via an attribute_reference or a range_attribute_reference.] Version=[5],Kind=(AddedNormal),Group=[T],Term=[attribute], Def=[a characteristic or property of an entity that can be queried, and in some cases specified] 
 
 
 #### Syntax
 
-attribute_reference ::= [prefix](S0086)'[attribute_designator](S0094)
+attribute_reference ::= prefix'attribute_designator
 
 attribute_designator ::= 
-    [identifier](S0002)[(static_[expression](S0108))]
+    identifier[(static_expression)]
   | Access | Delta | Digits
 
-range_attribute_reference ::= [prefix](S0086)'[range_attribute_designator](S0096)
+range_attribute_reference ::= prefix'range_attribute_designator
 
-range_attribute_designator ::= Range[(static_[expression](S0108))]
+range_attribute_designator ::= Range[(static_expression)]
 
 
 #### Name Resolution Rules
 
-In an [attribute_reference](S0093), if the [attribute_designator](S0094) is for an attribute defined for (at least some) objects of an access type, then the [prefix](S0086) is never interpreted as an [implicit_dereference](S0088); otherwise (and for all [range_attribute_reference](S0095)s), if the type of the [name](S0084) within the [prefix](S0086) is of an access type, the [prefix](S0086) is interpreted as an [implicit_dereference](S0088). Similarly, if the [attribute_designator](S0094) is for an attribute defined for (at least some) functions, then the [prefix](S0086) is never interpreted as a parameterless [function_call](S0156); otherwise (and for all [range_attribute_reference](S0095)s), if the [prefix](S0086) consists of a [name](S0084) that denotes a function, it is interpreted as a parameterless [function_call](S0156).
+In an attribute_reference, if the attribute_designator is for an attribute defined for (at least some) objects of an access type, then the prefix is never interpreted as an implicit_dereference; otherwise (and for all range_attribute_references), if the type of the name within the prefix is of an access type, the prefix is interpreted as an implicit_dereference. Similarly, if the attribute_designator is for an attribute defined for (at least some) functions, then the prefix is never interpreted as a parameterless function_call; otherwise (and for all range_attribute_references), if the prefix consists of a name that denotes a function, it is interpreted as a parameterless function_call.
 
 Discussion: The first part of this rule is essentially a "preference" against implicit dereference, so that it is possible to ask for, say, 'Size of an access object, without automatically getting the size of the object designated by the access object. This rule applies to 'Access, 'Unchecked_Access, 'Size, and 'Address, and any other attributes that are defined for at least some access objects.
 
@@ -339,31 +339,31 @@ The second part of this rule implies that, for a parameterless function F, F'Add
 
 We normally talk in terms of expected type or profile for name resolution rules, but we don't do this for attributes because certain attributes are legal independent of the type or the profile of the prefix.
 
-The [expression](S0108), if any, in an [attribute_designator](S0094) or [range_attribute_designator](S0096) is expected to be of any integer type. 
+The expression, if any, in an attribute_designator or range_attribute_designator is expected to be of any integer type. 
 
 
 #### Legality Rules
 
-The [expression](S0108), if any, in an [attribute_designator](S0094) or [range_attribute_designator](S0096) shall be static. 
+The expression, if any, in an attribute_designator or range_attribute_designator shall be static. 
 
 
 #### Static Semantics
 
-An [attribute_reference](S0093) denotes a value, an object, a subprogram, or some other kind of program entity. 
+An attribute_reference denotes a value, an object, a subprogram, or some other kind of program entity. 
 
 Ramification: The attributes defined by the language are summarized in . Implementations can define additional attributes. 
 
-[A [range_attribute_reference](S0095) X'Range(N) is equivalent to the [range](S0034) X'First(N) .. X'Last(N), except that the [prefix](S0086) is only evaluated once. Similarly, X'Range is equivalent to X'First .. X'Last, except that the [prefix](S0086) is only evaluated once.]
+[A range_attribute_reference X'Range(N) is equivalent to the range X'First(N) .. X'Last(N), except that the prefix is only evaluated once. Similarly, X'Range is equivalent to X'First .. X'Last, except that the prefix is only evaluated once.]
 
 
 #### Dynamic Semantics
 
-The evaluation of an [attribute_reference](S0093) (or [range_attribute_reference](S0095)) consists of the evaluation of the [prefix](S0086).[] 
+The evaluation of an attribute_reference (or range_attribute_reference) consists of the evaluation of the prefix.[] 
 
 
 #### Implementation Permissions
 
-An implementation may provide implementation-defined attributes; the [identifier](S0002) for an implementation-defined attribute shall differ from those of the language-defined attributes. 
+An implementation may provide implementation-defined attributes; the identifier for an implementation-defined attribute shall differ from those of the language-defined attributes. 
 
 Implementation defined: Implementation-defined attributes.
 
@@ -373,9 +373,9 @@ The semantics of implementation-defined attributes, and any associated rules, ar
 
 NOTE 1   Attributes are defined throughout this document, and are summarized in .
 
-NOTE 2   In general, the [name](S0084) in a [prefix](S0086) of an [attribute_reference](S0093) (or a [range_attribute_reference](S0095)) has to be resolved without using any context. However, in the case of the Access attribute, the expected type for the prefix has to be a single access type, and if it is an access-to-subprogram type (see 3.10.2) then the resolution of the [name](S0084) can use the fact that the profile of the callable entity denoted by the [prefix](S0086) has to be type conformant with the designated profile of the access type. 
+NOTE 2   In general, the name in a prefix of an attribute_reference (or a range_attribute_reference) has to be resolved without using any context. However, in the case of the Access attribute, the expected type for the prefix has to be a single access type, and if it is an access-to-subprogram type (see 3.10.2) then the resolution of the name can use the fact that the profile of the callable entity denoted by the prefix has to be type conformant with the designated profile of the access type. 
 
-Proof: In the general case, there is no "expected type" for the [prefix](S0086) of an [attribute_reference](S0093). In the special case of 'Access, there is an "expected profile" for the [prefix](S0086). 
+Proof: In the general case, there is no "expected type" for the prefix of an attribute_reference. In the special case of 'Access, there is an "expected profile" for the prefix. 
 
 Reason: 'Access is a special case, because without it, it would be very difficult to take 'Access of an overloaded subprogram. 
 
@@ -401,16 +401,16 @@ Message'Address    -- address of the record variable Message 	(see 3.7.1)
 
 We now uniformly treat X'Range as X'First..X'Last, allowing its use with scalar subtypes.
 
-We allow any integer type in the static_[expression](S0108) of an attribute designator, not just a value of universal_integer. The preference rules ensure upward compatibility. 
+We allow any integer type in the static_expression of an attribute designator, not just a value of universal_integer. The preference rules ensure upward compatibility. 
 
 
 #### Wording Changes from Ada 83
 
-We use the syntactic category [attribute_reference](S0093) rather than simply "attribute" to avoid confusing the name of something with the thing itself.
+We use the syntactic category attribute_reference rather than simply "attribute" to avoid confusing the name of something with the thing itself.
 
-The syntax rule for [attribute_reference](S0093) now uses [identifier](S0002) instead of simple_name, because attribute [identifier](S0002)s are not required to follow the normal visibility rules.
+The syntax rule for attribute_reference now uses identifier instead of simple_name, because attribute identifiers are not required to follow the normal visibility rules.
 
-We now separate [attribute_reference](S0093) from [range_attribute_reference](S0095), and enumerate the reserved words that are legal attribute or range attribute designators. We do this because [identifier](S0002) no longer includes reserved words.
+We now separate attribute_reference from range_attribute_reference, and enumerate the reserved words that are legal attribute or range attribute designators. We do this because identifier no longer includes reserved words.
 
 The Ada 95 name resolution rules are a bit more explicit than in Ada 83. The Ada 83 rule said that the "meaning of the prefix of an attribute must be determinable independently of the attribute designator and independently of the fact that it is the prefix of an attribute".  That isn't quite right since the meaning even in Ada 83 embodies whether or not the prefix is interpreted as a parameterless function call, and in Ada 95, it also embodies whether or not the prefix is interpreted as an implicit_dereference. So the attribute designator does make a difference - just not much.
 
@@ -429,9 +429,9 @@ Version=[5],Kind=(AddedNormal),Group=[T],Term=[indexable container type], Def=[a
 
 ## 4.2  Literals
 
-[ A literal represents a value literally, that is, by means of notation suited to its kind.] A literal is either a [numeric_literal](S0004), a [character_literal](S0012), the literal null, or a [string_literal](S0013). 
+[ A literal represents a value literally, that is, by means of notation suited to its kind.] A literal is either a numeric_literal, a character_literal, the literal null, or a string_literal. 
 
-Discussion: An enumeration literal that is an [identifier](S0002) rather than a [character_literal](S0012) is not considered a literal in the above sense, because it involves no special notation "suited to its kind". It might more properly be called an enumeration_identifier, except for historical reasons. 
+Discussion: An enumeration literal that is an identifier rather than a character_literal is not considered a literal in the above sense, because it involves no special notation "suited to its kind". It might more properly be called an enumeration_identifier, except for historical reasons. 
 
 
 #### Name Resolution Rules
@@ -440,18 +440,18 @@ The expected type for a literal null shall be a single access type.
 
 Discussion: This new wording ("expected type ... shall be a single ... type") replaces the old "shall be determinable" stuff. It reflects an attempt to simplify and unify the description of the rules for resolving aggregates, literals, type conversions, etc. See 8.6, "The Context of Overload Resolution" for the details. 
 
-For a [name](S0084) that consists of a [character_literal](S0012), either its expected type shall be a single character type, in which case it is interpreted as a parameterless [function_call](S0156) that yields the corresponding value of the character type, or its expected profile shall correspond to a parameterless function with a character result type, in which case it is interpreted as the name of the corresponding parameterless function declared as part of the character type's definition (see 3.5.1). In either case, the [character_literal](S0012) denotes the [enumeration_literal_specification](S0036). 
+For a name that consists of a character_literal, either its expected type shall be a single character type, in which case it is interpreted as a parameterless function_call that yields the corresponding value of the character type, or its expected profile shall correspond to a parameterless function with a character result type, in which case it is interpreted as the name of the corresponding parameterless function declared as part of the character type's definition (see 3.5.1). In either case, the character_literal denotes the enumeration_literal_specification. 
 
-Discussion: See 4.1.3 for the resolution rules for a [selector_name](S0092) that is a [character_literal](S0012). 
+Discussion: See 4.1.3 for the resolution rules for a selector_name that is a character_literal. 
 
-The expected type for a [primary](S0113) that is a [string_literal](S0013) shall be a single string type. 
+The expected type for a primary that is a string_literal shall be a single string type. 
 
 
 #### Legality Rules
 
-A [character_literal](S0012) that is a [name](S0084) shall correspond to a [defining_character_literal](S0037) of the expected type, or of the result type of the expected profile.
+A character_literal that is a name shall correspond to a defining_character_literal of the expected type, or of the result type of the expected profile.
 
-For each character of a [string_literal](S0013) with a given expected string type, there shall be a corresponding [defining_character_literal](S0037) of the component type of the expected string type.
+For each character of a string_literal with a given expected string type, there shall be a corresponding defining_character_literal of the component type of the expected string type.
 
 A literal null shall not be of an anonymous access type[, since such types do not have a null value (see 3.10)]. 
 
@@ -467,13 +467,13 @@ An integer literal is of type universal_integer. A real literal is of type unive
 
 The evaluation of a numeric literal, or the literal null, yields the represented value.
 
-The evaluation of a [string_literal](S0013) that is a [primary](S0113) yields an array value containing the value of each character of the sequence of characters of the [string_literal](S0013), as defined in 2.6. The bounds of this array value are determined according to the rules for [positional_array_aggregate](S0105)s (see 4.3.3), except that for a null string literal, the upper bound is the predecessor of the lower bound.
+The evaluation of a string_literal that is a primary yields an array value containing the value of each character of the sequence of characters of the string_literal, as defined in 2.6. The bounds of this array value are determined according to the rules for positional_array_aggregates (see 4.3.3), except that for a null string literal, the upper bound is the predecessor of the lower bound.
 
-For the evaluation of a [string_literal](S0013) of type T, a check is made that the value of each character of the [string_literal](S0013) belongs to the component subtype of T. For the evaluation of a null string literal, a check is made that its lower bound is greater than the lower bound of the base range of the index type. The exception Constraint_Error is raised if either of these checks fails. 
+For the evaluation of a string_literal of type T, a check is made that the value of each character of the string_literal belongs to the component subtype of T. For the evaluation of a null string literal, a check is made that its lower bound is greater than the lower bound of the base range of the index type. The exception Constraint_Error is raised if either of these checks fails. 
 
 Ramification: The checks on the characters need not involve more than two checks altogether, since one need only check the characters of the string with the lowest and highest position numbers against the range of the component subtype. 
 
-NOTE 1   Enumeration literals that are [identifier](S0002)s rather than [character_literal](S0012)s follow the normal rules for [identifier](S0002)s when used in a [name](S0084) (see 4.1 and 4.1.3). [Character_literal](S0012)s used as [selector_name](S0092)s follow the normal rules for expanded names (see 4.1.3). 
+NOTE 1   Enumeration literals that are identifiers rather than character_literals follow the normal rules for identifiers when used in a name (see 4.1 and 4.1.3). Character_literals used as selector_names follow the normal rules for expanded names (see 4.1.3). 
 
 
 #### Examples
@@ -491,17 +491,17 @@ Examples of literals:
 
 #### Incompatibilities With Ada 83
 
-Because [character_literal](S0012)s are now treated like other literals, in that they are resolved using context rather than depending on direct visibility, additional qualification might be necessary when passing a [character_literal](S0012) to an overloaded subprogram. 
+Because character_literals are now treated like other literals, in that they are resolved using context rather than depending on direct visibility, additional qualification might be necessary when passing a character_literal to an overloaded subprogram. 
 
 
 #### Extensions to Ada 83
 
-[Character_literal](S0012)s are now treated analogously to null and [string_literal](S0013)s, in that they are resolved using context, rather than their content; the declaration of the corresponding [defining_character_literal](S0037) need not be directly visible. 
+Character_literals are now treated analogously to null and string_literals, in that they are resolved using context, rather than their content; the declaration of the corresponding defining_character_literal need not be directly visible. 
 
 
 #### Wording Changes from Ada 83
 
-Name Resolution rules for enumeration literals that are not [character_literal](S0012)s are not included anymore, since they are neither syntactically nor semantically "literals" but are rather names of parameterless functions. 
+Name Resolution rules for enumeration literals that are not character_literals are not included anymore, since they are neither syntactically nor semantically "literals" but are rather names of parameterless functions. 
 
 
 ## 4.3  Aggregates
@@ -513,146 +513,146 @@ Version=[5],Kind=(AddedNormal),Group=[C],Term=[aggregate], Def=[a construct used
 
 #### Syntax
 
-aggregate ::= [record_aggregate](S0098) | [extension_aggregate](S0102) | [array_aggregate](S0104)
+aggregate ::= record_aggregate | extension_aggregate | array_aggregate
 
 
 #### Name Resolution Rules
 
-The expected type for an [aggregate](S0097) shall be a single nonlimited array type, record type, or record extension. 
+The expected type for an aggregate shall be a single nonlimited array type, record type, or record extension. 
 
 Discussion: See 8.6, "The Context of Overload Resolution" for the meaning of "shall be a single ... type". 
 
 
 #### Legality Rules
 
-An [aggregate](S0097) shall not be of a class-wide type. 
+An aggregate shall not be of a class-wide type. 
 
 Ramification: When the expected type in some context is class-wide, an aggregate has to be explicitly qualified by the specific type of value to be created, so that the expected type for the aggregate itself is specific. 
 
-Discussion: We used to disallow [aggregate](S0097)s of a type with unknown discriminants. However, that was unnecessarily restrictive in the case of an extension aggregate, and irrelevant to a record aggregate (since a type that is legal for a record aggregate could not possibly have unknown discriminants) and to an array aggregate (the only specific types that can have unknown discriminants are private types, private extensions, and types derived from them). 
+Discussion: We used to disallow aggregates of a type with unknown discriminants. However, that was unnecessarily restrictive in the case of an extension aggregate, and irrelevant to a record aggregate (since a type that is legal for a record aggregate could not possibly have unknown discriminants) and to an array aggregate (the only specific types that can have unknown discriminants are private types, private extensions, and types derived from them). 
 
 
 #### Dynamic Semantics
 
-For the evaluation of an [aggregate](S0097), an anonymous object is created and values for the components or ancestor part are obtained (as described in the subsequent subclause for each kind of the [aggregate](S0097)) and assigned into the corresponding components or ancestor part of the anonymous object. Obtaining the values and the assignments occur in an arbitrary order. The value of the [aggregate](S0097) is the value of this object. 
+For the evaluation of an aggregate, an anonymous object is created and values for the components or ancestor part are obtained (as described in the subsequent subclause for each kind of the aggregate) and assigned into the corresponding components or ancestor part of the anonymous object. Obtaining the values and the assignments occur in an arbitrary order. The value of the aggregate is the value of this object. 
 
-Discussion: The ancestor part is the set of components inherited from the ancestor type. The syntactic category [ancestor_part](S0103) is the [expression](S0108) or [subtype_mark](S0025) that specifies how the ancestor part of the anonymous object should be initialized. 
+Discussion: The ancestor part is the set of components inherited from the ancestor type. The syntactic category ancestor_part is the expression or subtype_mark that specifies how the ancestor part of the anonymous object should be initialized. 
 
 Ramification: The assignment operations do the necessary value adjustment, as described in 7.6. Note that the value as a whole is not adjusted - just the subcomponents (and ancestor part, if any). 7.6 also describes when this anonymous object is finalized.
 
-If the [ancestor_part](S0103) is a [subtype_mark](S0025) the Initialize procedure for the ancestor type is applied to the ancestor part after default-initializing it, unless the procedure is abstract, as described in 7.6. The Adjust procedure for the ancestor type is not called in this case, since there is no assignment to the ancestor part as a whole. 
+If the ancestor_part is a subtype_mark the Initialize procedure for the ancestor type is applied to the ancestor part after default-initializing it, unless the procedure is abstract, as described in 7.6. The Adjust procedure for the ancestor type is not called in this case, since there is no assignment to the ancestor part as a whole. 
 
-If an [aggregate](S0097) is of a tagged type, a check is made that its value belongs to the first subtype of the type. Constraint_Error is raised if this check fails. 
+If an aggregate is of a tagged type, a check is made that its value belongs to the first subtype of the type. Constraint_Error is raised if this check fails. 
 
 Ramification: This check ensures that no values of a tagged type are ever outside the first subtype, as required for inherited dispatching operations to work properly (see 3.4). This check will always succeed if the first subtype is unconstrained. This check is not extended to untagged types to preserve upward compatibility. 
 
 
 #### Extensions to Ada 83
 
-We now allow [extension_aggregate](S0102)s. 
+We now allow extension_aggregates. 
 
 
 #### Wording Changes from Ada 83
 
 We have adopted new wording for expressing the rule that the type of an aggregate shall be determinable from the outside, though using the fact that it is nonlimited record (extension) or array.
 
-An [aggregate](S0097) now creates an anonymous object. This is necessary so that controlled types will work (see 7.6). 
+An aggregate now creates an anonymous object. This is necessary so that controlled types will work (see 7.6). 
 
 
 ### 4.3.1  Record Aggregates
 
-[In a [record_aggregate](S0098), a value is specified for each component of the record or record extension value, using either a named or a positional association.] 
+[In a record_aggregate, a value is specified for each component of the record or record extension value, using either a named or a positional association.] 
 
 
 #### Syntax
 
-record_aggregate ::= ([record_component_association_list](S0099))
+record_aggregate ::= (record_component_association_list)
 
 record_component_association_list ::= 
-    [record_component_association](S0100) {, [record_component_association](S0100)}
+    record_component_association {, record_component_association}
   | null record
 
 record_component_association ::= 
-    [[component_choice_list](S0101) =&gt] [expression](S0108)
+    [component_choice_list =&gt] expression
 
 component_choice_list ::= 
-     component_[selector_name](S0092) {| component_[selector_name](S0092)}
+     component_selector_name {| component_selector_name}
    | others
 
-A [record_component_association](S0100) is a named component association if it has a [component_choice_list](S0101); otherwise, it is a positional component association. Any positional component associations shall precede any named component associations. If there is a named association with a [component_choice_list](S0101) of others, it shall come last. 
+A record_component_association is a named component association if it has a component_choice_list; otherwise, it is a positional component association. Any positional component associations shall precede any named component associations. If there is a named association with a component_choice_list of others, it shall come last. 
 
 Discussion: These rules were implied by the BNF in an early version of the RM9X, but it made the grammar harder to read, and was inconsistent with how we handle discriminant constraints. Note that for array aggregates we still express some of the rules in the grammar, but array aggregates are significantly different because an array aggregate is either all positional (with a possible others at the end), or all named. 
 
-In the [record_component_association_list](S0099) for a [record_aggregate](S0098), if there is only one association, it shall be a named association. 
+In the record_component_association_list for a record_aggregate, if there is only one association, it shall be a named association. 
 
-Reason: Otherwise the construct would be interpreted as a parenthesized expression. This is considered a syntax rule, since it is relevant to overload resolution. We choose not to express it with BNF so we can share the definition of [record_component_association_list](S0099) in both [record_aggregate](S0098) and [extension_aggregate](S0102). 
+Reason: Otherwise the construct would be interpreted as a parenthesized expression. This is considered a syntax rule, since it is relevant to overload resolution. We choose not to express it with BNF so we can share the definition of record_component_association_list in both record_aggregate and extension_aggregate. 
 
-Ramification: The [record_component_association_list](S0099) of an [extension_aggregate](S0102) does not have such a restriction. 
+Ramification: The record_component_association_list of an extension_aggregate does not have such a restriction. 
 
 
 #### Name Resolution Rules
 
-The expected type for a [record_aggregate](S0098) shall be a single nonlimited record type or record extension. 
+The expected type for a record_aggregate shall be a single nonlimited record type or record extension. 
 
-Ramification: This rule is used to resolve whether an [aggregate](S0097) is an [array_aggregate](S0104) or a [record_aggregate](S0098). The presence of a with is used to resolve between a [record_aggregate](S0098) and an [extension_aggregate](S0102). 
+Ramification: This rule is used to resolve whether an aggregate is an array_aggregate or a record_aggregate. The presence of a with is used to resolve between a record_aggregate and an extension_aggregate. 
 
-For the [record_component_association_list](S0099) of a [record_aggregate](S0098), all components of the composite value defined by the aggregate are needed[; for the association list of an [extension_aggregate](S0102), only those components not determined by the ancestor expression or subtype are needed (see 4.3.2).] Each [selector_name](S0092) in a [record_component_association](S0100) shall denote a needed component [(including possibly a discriminant)].
+For the record_component_association_list of a record_aggregate, all components of the composite value defined by the aggregate are needed[; for the association list of an extension_aggregate, only those components not determined by the ancestor expression or subtype are needed (see 4.3.2).] Each selector_name in a record_component_association shall denote a needed component [(including possibly a discriminant)].
 
-Ramification: For the association list of a [record_aggregate](S0098), "needed components" includes every component of the composite value, but does not include those in unchosen [variant](S0069)s (see AI83-309). If there are [variant](S0069)s, then the value specified for the discriminant that governs them determines which [variant](S0069) is chosen, and hence which components are needed.
+Ramification: For the association list of a record_aggregate, "needed components" includes every component of the composite value, but does not include those in unchosen variants (see AI83-309). If there are variants, then the value specified for the discriminant that governs them determines which variant is chosen, and hence which components are needed.
 
-If an extension defines a new [known_discriminant_part](S0058), then all of its discriminants are needed in the component association list of an extension aggregate for that type, even if the discriminants have the same names and types as discriminants of the type of the ancestor expression. This is necessary to ensure that the positions in the [record_component_association_list](S0099) are well defined, and that discriminants that govern [variant_part](S0068)s can be given by static expressions. 
+If an extension defines a new known_discriminant_part, then all of its discriminants are needed in the component association list of an extension aggregate for that type, even if the discriminants have the same names and types as discriminants of the type of the ancestor expression. This is necessary to ensure that the positions in the record_component_association_list are well defined, and that discriminants that govern variant_parts can be given by static expressions. 
 
 Version=[5],Kind=(AddedNormal),Group=[T],Term=[needed component], Def=[a component of a record type or record extension that is required to have its value specified within a given aggregate]
 
-The expected type for the [expression](S0108) of a [record_component_association](S0100) is the type of the associated component(s); the associated component(s) are as follows: 
+The expected type for the expression of a record_component_association is the type of the associated component(s); the associated component(s) are as follows: 
 
 For a positional association, the component [(including possibly a discriminant)] in the corresponding relative position (in the declarative region of the type), counting only the needed components; 
 
-Ramification: This means that for an association list of an [extension_aggregate](S0102), only noninherited components are counted to determine the position.
+Ramification: This means that for an association list of an extension_aggregate, only noninherited components are counted to determine the position.
 
-For a named association with one or more component_[selector_name](S0092)s, the named component(s);
+For a named association with one or more component_selector_names, the named component(s);
 
 For a named association with the reserved word others, all needed components that are not associated with some previous association. 
 
 
 #### Legality Rules
 
-If the type of a [record_aggregate](S0098) is a record extension, then it shall be a descendant of a record type, through one or more record extensions (and no private extensions).
+If the type of a record_aggregate is a record extension, then it shall be a descendant of a record type, through one or more record extensions (and no private extensions).
 
-If there are no components needed in a given [record_component_association_list](S0099), then the reserved words null record shall appear rather than a list of [record_component_association](S0100)s.
+If there are no components needed in a given record_component_association_list, then the reserved words null record shall appear rather than a list of record_component_associations.
 
-Ramification: For example, "(null record)" is a [record_aggregate](S0098) for a null record type. Similarly, "(T'(A) with null record)" is an [extension_aggregate](S0102) for a type defined as a null record extension of T.
+Ramification: For example, "(null record)" is a record_aggregate for a null record type. Similarly, "(T'(A) with null record)" is an extension_aggregate for a type defined as a null record extension of T.
 
-Each [record_component_association](S0100) shall have at least one associated component, and each needed component shall be associated with exactly one [record_component_association](S0100). If a [record_component_association](S0100) has two or more associated components, all of them shall be of the same type.
+Each record_component_association shall have at least one associated component, and each needed component shall be associated with exactly one record_component_association. If a record_component_association has two or more associated components, all of them shall be of the same type.
 
 Ramification: These rules apply to an association with an others choice. 
 
-Reason: Without these rules, there would be no way to know what was the expected type for the [expression](S0108) of the association. 
+Reason: Without these rules, there would be no way to know what was the expected type for the expression of the association. 
 
-Discussion: AI83-00244 also requires that the [expression](S0108) shall be legal for each associated component. This is because even though two components have the same type, they might have different subtypes. Therefore, the legality of the [expression](S0108), particularly if it is an array aggregate, might differ depending on the associated component's subtype. However, we have relaxed the rules on array aggregates slightly for Ada 95, so the staticness of an applicable index constraint has no effect on the legality of the array aggregate to which it applies. See 4.3.3. This was the only case (that we know of) where a subtype provided by context affected the legality of an [expression](S0108). 
+Discussion: AI83-00244 also requires that the expression shall be legal for each associated component. This is because even though two components have the same type, they might have different subtypes. Therefore, the legality of the expression, particularly if it is an array aggregate, might differ depending on the associated component's subtype. However, we have relaxed the rules on array aggregates slightly for Ada 95, so the staticness of an applicable index constraint has no effect on the legality of the array aggregate to which it applies. See 4.3.3. This was the only case (that we know of) where a subtype provided by context affected the legality of an expression. 
 
-Ramification: The rule that requires at least one associated component for each [record_component_association](S0100) implies that there can be no extra associations for components that don't exist in the composite value, or that are already determined by the ancestor expression or subtype of an [extension_aggregate](S0102).
+Ramification: The rule that requires at least one associated component for each record_component_association implies that there can be no extra associations for components that don't exist in the composite value, or that are already determined by the ancestor expression or subtype of an extension_aggregate.
 
 The second part of the first sentence ensures that no needed components are left out, nor specified twice. 
 
-If the components of a [variant_part](S0068) are needed, then the value of a discriminant that governs the [variant_part](S0068) shall be given by a static expression. 
+If the components of a variant_part are needed, then the value of a discriminant that governs the variant_part shall be given by a static expression. 
 
-Ramification: This expression might either be given within the aggregate itself, or in a constraint on the parent subtype in a [derived_type_definition](S0032) for some ancestor of the type of the aggregate.
+Ramification: This expression might either be given within the aggregate itself, or in a constraint on the parent subtype in a derived_type_definition for some ancestor of the type of the aggregate.
 
 
 #### Dynamic Semantics
 
-The evaluation of a [record_aggregate](S0098) consists of the evaluation of the [record_component_association_list](S0099).
+The evaluation of a record_aggregate consists of the evaluation of the record_component_association_list.
 
-For the evaluation of a [record_component_association_list](S0099), any per-object constraints (see 3.8) for components specified in the association list are elaborated and any [expression](S0108)s are evaluated and converted to the subtype of the associated component. Any constraint elaborations and [expression](S0108) evaluations (and conversions) occur in an arbitrary order, except that the [expression](S0108) for a discriminant is evaluated (and converted) prior to the elaboration of any per-object constraint that depends on it, which in turn occurs prior to the evaluation and conversion of the [expression](S0108) for the component with the per-object constraint.
+For the evaluation of a record_component_association_list, any per-object constraints (see 3.8) for components specified in the association list are elaborated and any expressions are evaluated and converted to the subtype of the associated component. Any constraint elaborations and expression evaluations (and conversions) occur in an arbitrary order, except that the expression for a discriminant is evaluated (and converted) prior to the elaboration of any per-object constraint that depends on it, which in turn occurs prior to the evaluation and conversion of the expression for the component with the per-object constraint.
 
 Ramification: The conversion in the first rule might raise Constraint_Error. 
 
 Discussion: This check in the first rule presumably happened as part of the dependent compatibility check in Ada 83. 
 
-The [expression](S0108) of a [record_component_association](S0100) is evaluated (and converted) once for each associated component.
+The expression of a record_component_association is evaluated (and converted) once for each associated component.
 
-NOTE 1   For a [record_aggregate](S0098) with positional associations, expressions specifying discriminant values appear first since the [known_discriminant_part](S0058) is given first in the declaration of the type; they have to be in the same order as in the [known_discriminant_part](S0058). 
+NOTE 1   For a record_aggregate with positional associations, expressions specifying discriminant values appear first since the known_discriminant_part is given first in the declaration of the type; they have to be in the same order as in the known_discriminant_part. 
 
 
 #### Examples
@@ -712,50 +712,50 @@ Various AIs have been incorporated (AI83-00189, AI83-00244, and AI83-00309). In 
 
 ### 4.3.2  Extension Aggregates
 
-[An [extension_aggregate](S0102) specifies a value for a type that is a record extension by specifying a value or subtype for an ancestor of the type, followed by associations for any components not determined by the [ancestor_part](S0103).] 
+[An extension_aggregate specifies a value for a type that is a record extension by specifying a value or subtype for an ancestor of the type, followed by associations for any components not determined by the ancestor_part.] 
 
 
 #### Language Design Principles
 
-The model underlying this syntax is that a record extension can also be viewed as a regular record type with an ancestor "prefix". The [record_component_association_list](S0099) corresponds to exactly what would be needed if there were no ancestor/prefix type. The [ancestor_part](S0103) determines the value of the ancestor/prefix. 
+The model underlying this syntax is that a record extension can also be viewed as a regular record type with an ancestor "prefix". The record_component_association_list corresponds to exactly what would be needed if there were no ancestor/prefix type. The ancestor_part determines the value of the ancestor/prefix. 
 
 
 #### Syntax
 
 extension_aggregate ::= 
-    ([ancestor_part](S0103) with [record_component_association_list](S0099))
+    (ancestor_part with record_component_association_list)
 
-ancestor_part ::= [expression](S0108) | [subtype_mark](S0025)
+ancestor_part ::= expression | subtype_mark
 
 
 #### Name Resolution Rules
 
-The expected type for an [extension_aggregate](S0102) shall be a single nonlimited type that is a record extension. If the [ancestor_part](S0103) is an [expression](S0108), it is expected to be of any nonlimited tagged type. 
+The expected type for an extension_aggregate shall be a single nonlimited type that is a record extension. If the ancestor_part is an expression, it is expected to be of any nonlimited tagged type. 
 
 Reason: We could have made the expected type T'Class where T is the ultimate ancestor of the type of the aggregate, or we could have made it even more specific than that. However, if the overload resolution rules get too complicated, the implementation gets more difficult and it becomes harder to produce good error messages. 
 
 
 #### Legality Rules
 
-If the [ancestor_part](S0103) is a [subtype_mark](S0025), it shall denote a specific tagged subtype. The type of the [extension_aggregate](S0102) shall be derived from the type of the [ancestor_part](S0103), through one or more record extensions (and no private extensions). 
+If the ancestor_part is a subtype_mark, it shall denote a specific tagged subtype. The type of the extension_aggregate shall be derived from the type of the ancestor_part, through one or more record extensions (and no private extensions). 
 
 
 #### Static Semantics
 
-For the [record_component_association_list](S0099) of an [extension_aggregate](S0102), the only components needed are those of the composite value defined by the aggregate that are not inherited from the type of the [ancestor_part](S0103), plus any inherited discriminants if the [ancestor_part](S0103) is a [subtype_mark](S0025) that denotes an unconstrained subtype. 
+For the record_component_association_list of an extension_aggregate, the only components needed are those of the composite value defined by the aggregate that are not inherited from the type of the ancestor_part, plus any inherited discriminants if the ancestor_part is a subtype_mark that denotes an unconstrained subtype. 
 
 
 #### Dynamic Semantics
 
-For the evaluation of an [extension_aggregate](S0102), the [record_component_association_list](S0099) is evaluated. If the [ancestor_part](S0103) is an [expression](S0108), it is also evaluated; if the [ancestor_part](S0103) is a [subtype_mark](S0025), the components of the value of the aggregate not given by the [record_component_association_list](S0099) are initialized by default as for an object of the ancestor type. Any implicit initializations or evaluations are performed in an arbitrary order, except that the [expression](S0108) for a discriminant is evaluated prior to any other evaluation or initialization that depends on it.
+For the evaluation of an extension_aggregate, the record_component_association_list is evaluated. If the ancestor_part is an expression, it is also evaluated; if the ancestor_part is a subtype_mark, the components of the value of the aggregate not given by the record_component_association_list are initialized by default as for an object of the ancestor type. Any implicit initializations or evaluations are performed in an arbitrary order, except that the expression for a discriminant is evaluated prior to any other evaluation or initialization that depends on it.
 
-If the type of the [ancestor_part](S0103) has discriminants that are not inherited by the type of the [extension_aggregate](S0102), then, unless the [ancestor_part](S0103) is a [subtype_mark](S0025) that denotes an unconstrained subtype, a check is made that each discriminant of the ancestor has the value specified for a corresponding discriminant, either in the [record_component_association_list](S0099), or in the [derived_type_definition](S0032) for some ancestor of the type of the [extension_aggregate](S0102). Constraint_Error is raised if this check fails. 
+If the type of the ancestor_part has discriminants that are not inherited by the type of the extension_aggregate, then, unless the ancestor_part is a subtype_mark that denotes an unconstrained subtype, a check is made that each discriminant of the ancestor has the value specified for a corresponding discriminant, either in the record_component_association_list, or in the derived_type_definition for some ancestor of the type of the extension_aggregate. Constraint_Error is raised if this check fails. 
 
 Ramification: Corresponding and specified discriminants are defined in 3.7. The rules requiring static compatibility between new discriminants of a derived type and the parent discriminant(s) they constrain ensure that at most one check is required per discriminant of the ancestor expression.
 
-NOTE 1   If all components of the value of the [extension_aggregate](S0102) are determined by the [ancestor_part](S0103), then the [record_component_association_list](S0099) is required to be simply null record.
+NOTE 1   If all components of the value of the extension_aggregate are determined by the ancestor_part, then the record_component_association_list is required to be simply null record.
 
-NOTE 2   If the [ancestor_part](S0103) is a [subtype_mark](S0025), then its type can be abstract. If its type is controlled, then as the last step of evaluating the aggregate, the Initialize procedure of the ancestor type is called, unless the Initialize procedure is abstract (see 7.6). 
+NOTE 2   If the ancestor_part is a subtype_mark, then its type can be abstract. If its type is controlled, then as the last step of evaluating the aggregate, the Initialize procedure of the ancestor type is called, unless the Initialize procedure is abstract (see 7.6). 
 
 
 #### Examples
@@ -783,122 +783,122 @@ The extension aggregate syntax is new.
 
 ### 4.3.3  Array Aggregates
 
-[In an [array_aggregate](S0104), a value is specified for each component of an array, either positionally or by its index.] For a [positional_array_aggregate](S0105), the components are given in increasing-index order, with a final others, if any, representing any remaining components. For a [named_array_aggregate](S0106), the components are identified by the values covered by the [discrete_choice](S0071)s.
+[In an array_aggregate, a value is specified for each component of an array, either positionally or by its index.] For a positional_array_aggregate, the components are given in increasing-index order, with a final others, if any, representing any remaining components. For a named_array_aggregate, the components are identified by the values covered by the discrete_choices.
 
 
 #### Language Design Principles
 
-The rules in this subclause are based on terms and rules for [discrete_choice_list](S0070)s defined in 3.8.1, "Variant Parts and Discrete Choices". 
+The rules in this subclause are based on terms and rules for discrete_choice_lists defined in 3.8.1, "Variant Parts and Discrete Choices". 
 
 
 #### Syntax
 
 array_aggregate ::= 
-    [positional_array_aggregate](S0105) | [named_array_aggregate](S0106)
+    positional_array_aggregate | named_array_aggregate
 
 positional_array_aggregate ::= 
-    ([expression](S0108), [expression](S0108) {, [expression](S0108)})
-  | ([expression](S0108) {, [expression](S0108)}, others =&gt [expression](S0108))
+    (expression, expression {, expression})
+  | (expression {, expression}, others =&gt expression)
 
 '[' ']'",Old=[]"}
 
 named_array_aggregate ::= 
-    [array_component_association](S0107) {, [array_component_association](S0107)})
+    array_component_association {, array_component_association})
 
 array_component_association ::= 
-    [discrete_choice_list](S0070) =&gt [expression](S0108)
+    discrete_choice_list =&gt expression
 
-An n-dimensional [array_aggregate](S0104) is one that is written as n levels of nested [array_aggregate](S0104)s (or at the bottom level, equivalent [string_literal](S0013)s). For the multidimensional case (n &gt= 2) the [array_aggregate](S0104)s (or equivalent [string_literal](S0013)s) at the n1 lower levels are called subaggregates of the enclosing n-dimensional [array_aggregate](S0104). The [expression](S0108)s of the bottom level subaggregates (or of the [array_aggregate](S0104) itself if one-dimensional) are called the array component expressions of the enclosing n-dimensional [array_aggregate](S0104). 
+An n-dimensional array_aggregate is one that is written as n levels of nested array_aggregates (or at the bottom level, equivalent string_literals). For the multidimensional case (n &gt= 2) the array_aggregates (or equivalent string_literals) at the n1 lower levels are called subaggregates of the enclosing n-dimensional array_aggregate. The expressions of the bottom level subaggregates (or of the array_aggregate itself if one-dimensional) are called the array component expressions of the enclosing n-dimensional array_aggregate. 
 
-Ramification: Subaggregates do not have a type. They correspond to part of an array. For example, with a matrix, a subaggregate would correspond to a single row of the matrix. The definition of "n-dimensional" [array_aggregate](S0104) applies to subaggregates as well as [aggregate](S0097)s that have a type. 
+Ramification: Subaggregates do not have a type. They correspond to part of an array. For example, with a matrix, a subaggregate would correspond to a single row of the matrix. The definition of "n-dimensional" array_aggregate applies to subaggregates as well as aggregates that have a type. 
 
-To be honest: An others choice is the reserved word others as it appears in a [positional_array_aggregate](S0105) or as the [discrete_choice](S0071) of the [discrete_choice_list](S0070) in an [array_component_association](S0107). 
+To be honest: An others choice is the reserved word others as it appears in a positional_array_aggregate or as the discrete_choice of the discrete_choice_list in an array_component_association. 
 
 
 #### Name Resolution Rules
 
-The expected type for an [array_aggregate](S0104) (that is not a subaggregate) shall be a single nonlimited array type. The component type of this array type is the expected type for each array component expression of the [array_aggregate](S0104). 
+The expected type for an array_aggregate (that is not a subaggregate) shall be a single nonlimited array type. The component type of this array type is the expected type for each array component expression of the array_aggregate. 
 
-Ramification: We already require a single array or record type or record extension for an [aggregate](S0097). The above rule requiring a single nonlimited array type (and similar ones for record and extension aggregates) resolves which kind of aggregate you have. 
+Ramification: We already require a single array or record type or record extension for an aggregate. The above rule requiring a single nonlimited array type (and similar ones for record and extension aggregates) resolves which kind of aggregate you have. 
 
-The expected type for each [discrete_choice](S0071) in any [discrete_choice_list](S0070) of a [named_array_aggregate](S0106) is the type of the corresponding index; the corresponding index for an [array_aggregate](S0104) that is not a subaggregate is the first index of its type; for an (nm)-dimensional subaggregate within an [array_aggregate](S0104) of an n-dimensional type, the corresponding index is the index in position m+1. 
+The expected type for each discrete_choice in any discrete_choice_list of a named_array_aggregate is the type of the corresponding index; the corresponding index for an array_aggregate that is not a subaggregate is the first index of its type; for an (nm)-dimensional subaggregate within an array_aggregate of an n-dimensional type, the corresponding index is the index in position m+1. 
 
 
 #### Legality Rules
 
-An [array_aggregate](S0104) of an n-dimensional array type shall be written as an n-dimensional [array_aggregate](S0104). 
+An array_aggregate of an n-dimensional array type shall be written as an n-dimensional array_aggregate. 
 
-Ramification: In an m-dimensional [array_aggregate](S0104) [(including a subaggregate)], where m &gt= 2, each of the [expression](S0108)s has to be an (m1)-dimensional subaggregate. 
+Ramification: In an m-dimensional array_aggregate [(including a subaggregate)], where m &gt= 2, each of the expressions has to be an (m1)-dimensional subaggregate. 
 
-An others choice is allowed for an [array_aggregate](S0104) only if an applicable index constraint applies to the [array_aggregate](S0104). [An applicable index constraint is a constraint provided by certain contexts where an [array_aggregate](S0104) is permitted that can be used to determine the bounds of the array value specified by the aggregate.] Each of the following contexts (and none other) defines an applicable index constraint: 
+An others choice is allowed for an array_aggregate only if an applicable index constraint applies to the array_aggregate. [An applicable index constraint is a constraint provided by certain contexts where an array_aggregate is permitted that can be used to determine the bounds of the array value specified by the aggregate.] Each of the following contexts (and none other) defines an applicable index constraint: 
 
-For an [explicit_actual_parameter](S0159), an [explicit_generic_actual_parameter](S0244), the [expression](S0108) of a [return_statement](S0160), the initialization expression in an [object_declaration](S0029), or a [default_expression](S0060) [(for a parameter or a component)], when the nominal subtype of the corresponding formal parameter, generic formal parameter, function result, object, or component is a constrained array subtype, the applicable index constraint is the constraint of the subtype;
+For an explicit_actual_parameter, an explicit_generic_actual_parameter, the expression of a return_statement, the initialization expression in an object_declaration, or a default_expression [(for a parameter or a component)], when the nominal subtype of the corresponding formal parameter, generic formal parameter, function result, object, or component is a constrained array subtype, the applicable index constraint is the constraint of the subtype;
 
-For the [expression](S0108) of an [assignment_statement](S0130) where the [name](S0084) denotes an array variable, the applicable index constraint is the constraint of the array variable; 
+For the expression of an assignment_statement where the name denotes an array variable, the applicable index constraint is the constraint of the array variable; 
 
 Reason: This case is broken out because the constraint comes from the actual subtype of the variable (which is always constrained) rather than its nominal subtype (which might be unconstrained). 
 
-For the operand of a [qualified_expression](S0121) whose [subtype_mark](S0025) denotes a constrained array subtype, the applicable index constraint is the constraint of the subtype;
+For the operand of a qualified_expression whose subtype_mark denotes a constrained array subtype, the applicable index constraint is the constraint of the subtype;
 
-For a component [expression](S0108) in an [aggregate](S0097), if the component's nominal subtype is a constrained array subtype, the applicable index constraint is the constraint of the subtype; 
+For a component expression in an aggregate, if the component's nominal subtype is a constrained array subtype, the applicable index constraint is the constraint of the subtype; 
 
-Discussion: Here, the [array_aggregate](S0104) with others is being used within a larger aggregate. 
+Discussion: Here, the array_aggregate with others is being used within a larger aggregate. 
 
-For a parenthesized [expression](S0108), the applicable index constraint is that, if any, defined for the [expression](S0108). 
+For a parenthesized expression, the applicable index constraint is that, if any, defined for the expression. 
 
-Discussion: RM83 omitted this case, presumably as an oversight. We want to minimize situations where an [expression](S0108) becomes illegal if parenthesized. 
+Discussion: RM83 omitted this case, presumably as an oversight. We want to minimize situations where an expression becomes illegal if parenthesized. 
 
-The applicable index constraint applies to an [array_aggregate](S0104) that appears in such a context, as well as to any subaggregates thereof. In the case of an [explicit_actual_parameter](S0159) (or [default_expression](S0060)) for a call on a generic formal subprogram, no applicable index constraint is defined. 
+The applicable index constraint applies to an array_aggregate that appears in such a context, as well as to any subaggregates thereof. In the case of an explicit_actual_parameter (or default_expression) for a call on a generic formal subprogram, no applicable index constraint is defined. 
 
 Reason: This avoids generic contract model problems, because only mode conformance is required when matching actual subprograms with generic formal subprograms. 
 
-The [discrete_choice_list](S0070) of an [array_component_association](S0107) is allowed to have a [discrete_choice](S0071) that is a nonstatic [expression](S0108) or that is a [discrete_range](S0055) that defines a nonstatic or null range, only if it is the single [discrete_choice](S0071) of its [discrete_choice_list](S0070), and there is only one [array_component_association](S0107) in the [array_aggregate](S0104).
+The discrete_choice_list of an array_component_association is allowed to have a discrete_choice that is a nonstatic expression or that is a discrete_range that defines a nonstatic or null range, only if it is the single discrete_choice of its discrete_choice_list, and there is only one array_component_association in the array_aggregate.
 
 Discussion: We now allow a nonstatic others choice even if there are other array component expressions as well. 
 
-In a [named_array_aggregate](S0106) with more than one [discrete_choice](S0071), no two [discrete_choice](S0071)s are allowed to cover the same value (see 3.8.1); if there is no others choice, the [discrete_choice](S0071)s taken together shall exactly cover a contiguous sequence of values of the corresponding index type. 
+In a named_array_aggregate with more than one discrete_choice, no two discrete_choices are allowed to cover the same value (see 3.8.1); if there is no others choice, the discrete_choices taken together shall exactly cover a contiguous sequence of values of the corresponding index type. 
 
 Ramification: This implies that each component must be specified exactly once. See AI83-309. 
 
-A bottom level subaggregate of a multidimensional [array_aggregate](S0104) of a given array type is allowed to be a [string_literal](S0013) only if the component type of the array type is a character type; each character of such a [string_literal](S0013) shall correspond to a [defining_character_literal](S0037) of the component type. 
+A bottom level subaggregate of a multidimensional array_aggregate of a given array type is allowed to be a string_literal only if the component type of the array type is a character type; each character of such a string_literal shall correspond to a defining_character_literal of the component type. 
 
 
 #### Static Semantics
 
-A subaggregate that is a [string_literal](S0013) is equivalent to one that is a [positional_array_aggregate](S0105) of the same length, with each [expression](S0108) being the [character_literal](S0012) for the corresponding character of the [string_literal](S0013).
+A subaggregate that is a string_literal is equivalent to one that is a positional_array_aggregate of the same length, with each expression being the character_literal for the corresponding character of the string_literal.
 
 
 #### Dynamic Semantics
 
-The evaluation of an [array_aggregate](S0104) of a given array type proceeds in two steps: 
+The evaluation of an array_aggregate of a given array type proceeds in two steps: 
 
-a)Any [discrete_choice](S0071)s of this aggregate and of its subaggregates are evaluated in an arbitrary order, and converted to the corresponding index type; 
+a)Any discrete_choices of this aggregate and of its subaggregates are evaluated in an arbitrary order, and converted to the corresponding index type; 
 
 b)The array component expressions of the aggregate are evaluated in an arbitrary order and their values are converted to the component subtype of the array type; an array component expression is evaluated once for each associated component. 
 
 Ramification: Subaggregates are not separately evaluated. The conversion of the value of the component expressions to the component subtype might raise Constraint_Error.
 
-The bounds of the index range of an [array_aggregate](S0104) [(including a subaggregate)] are determined as follows: 
+The bounds of the index range of an array_aggregate [(including a subaggregate)] are determined as follows: 
 
-For an [array_aggregate](S0104) with an others choice, the bounds are those of the corresponding index range from the applicable index constraint;
+For an array_aggregate with an others choice, the bounds are those of the corresponding index range from the applicable index constraint;
 
-For a [positional_array_aggregate](S0105) [(or equivalent [string_literal](S0013))] without an others choice, the lower bound is that of the corresponding index range in the applicable index constraint, if defined, or that of the corresponding index subtype, if not; in either case, the upper bound is determined from the lower bound and the number of [expression](S0108)s [(or the length of the [string_literal](S0013))];
+For a positional_array_aggregate [(or equivalent string_literal)] without an others choice, the lower bound is that of the corresponding index range in the applicable index constraint, if defined, or that of the corresponding index subtype, if not; in either case, the upper bound is determined from the lower bound and the number of expressions [(or the length of the string_literal)];
 
-For a [named_array_aggregate](S0106) without an others choice, the bounds are determined by the smallest and largest index values covered by any [discrete_choice_list](S0070). 
+For a named_array_aggregate without an others choice, the bounds are determined by the smallest and largest index values covered by any discrete_choice_list. 
 
-Reason: We don't need to say that each index value has to be covered exactly once, since that is a ramification of the general rule on [aggregate](S0097)s that each component's value has to be specified exactly once. 
+Reason: We don't need to say that each index value has to be covered exactly once, since that is a ramification of the general rule on aggregates that each component's value has to be specified exactly once. 
 
-For an [array_aggregate](S0104), a check is made that the index range defined by its bounds is compatible with the corresponding index subtype. 
+For an array_aggregate, a check is made that the index range defined by its bounds is compatible with the corresponding index subtype. 
 
 Discussion: In RM83, this was phrased more explicitly, but once we define "compatibility" between a range and a subtype, it seems to make sense to take advantage of that definition. 
 
 Ramification: The definition of compatibility handles the special case of a null range, which is always compatible with a subtype. See AI83-00313. 
 
-For an [array_aggregate](S0104) with an others choice, a check is made that no [expression](S0108) is specified for an index value outside the bounds determined by the applicable index constraint. 
+For an array_aggregate with an others choice, a check is made that no expression is specified for an index value outside the bounds determined by the applicable index constraint. 
 
 Discussion: RM83 omitted this case, apparently through an oversight. AI83-00309 defines this as a dynamic check, even though other Ada 83 rules ensured that this check could be performed statically. We now allow an others choice to be dynamic, even if it is not the only choice, so this check now needs to be dynamic, in some cases. Also, within a generic unit, this would be a nonstatic check in some cases. 
 
-For a multidimensional [array_aggregate](S0104), a check is made that all subaggregates that correspond to the same index have the same bounds. 
+For a multidimensional array_aggregate, a check is made that all subaggregates that correspond to the same index have the same bounds. 
 
 Ramification: No array bounds "sliding" is performed on subaggregates. 
 
@@ -906,7 +906,7 @@ Reason: If sliding were performed, it would not be obvious which subaggregate wo
 
 The exception Constraint_Error is raised if any of the above checks fail. 
 
-NOTE 1   In an [array_aggregate](S0104), positional notation may only be used with two or more [expression](S0108)s; a single [expression](S0108) in parentheses is interpreted as a parenthesized_expression. A [named_array_aggregate](S0106), such as (1 =&gt X), may be used to specify an array with a single component.
+NOTE 1   In an array_aggregate, positional notation may only be used with two or more expressions; a single expression in parentheses is interpreted as a parenthesized_expression. A named_array_aggregate, such as (1 =&gt X), may be used to specify an array with a single component.
 
 
 #### Examples
@@ -986,50 +986,50 @@ Version=[5],Kind=(AddedNormal),Group=[C],Term=[container aggregate], Def=[a cons
 
 #### Syntax
 
-key_choice_list =&gt [expression](S0108) | key_choice_list =&gt &lt&gt | iterated_element_association",Old=&lt&gt"}
+key_choice_list =&gt expression | key_choice_list =&gt &lt&gt | iterated_element_association",Old=&lt&gt"}
 
 key_choice {'|' key_choice}",Old=&lt&gt"&gt
 
-key_[expression](S0108) | [discrete_range](S0055)",Old=&lt}"&gt
+key_expression | discrete_range",Old=&lt}"&gt
 
-for [loop_parameter_specification](S0137)[ use key_[expression](S0108)] =&gt [expression](S0108) | for iterator_specification[ use key_[expression](S0108)] =&gt [expression](S0108)",Old=&lt&gt"} 
+for loop_parameter_specification[ use key_expression] =&gt expression | for iterator_specification[ use key_expression] =&gt expression",Old=&lt&gt"} 
 
 
 ## 4.4  Expressions
 
-An expression is a formula that defines the computation or retrieval of a value. In this Reference Manual, the term "expression" refers to a construct of the syntactic category [expression](S0108) or of any of the other five syntactic categories defined below. 
+An expression is a formula that defines the computation or retrieval of a value. In this Reference Manual, the term "expression" refers to a construct of the syntactic category expression or of any of the other five syntactic categories defined below. 
 
 
 #### Syntax
 
 expression ::= 
-     [relation](S0109) {and [relation](S0109)} 	| [relation](S0109) {and then [relation](S0109)}
-   | [relation](S0109) {or [relation](S0109)} 	| [relation](S0109) {or else [relation](S0109)}
-   | [relation](S0109) {xor [relation](S0109)}
+     relation {and relation} 	| relation {and then relation}
+   | relation {or relation} 	| relation {or else relation}
+   | relation {xor relation}
 
 relation ::= 
-     [simple_expression](S0110) [[relational_operator](S0115) [simple_expression](S0110)]
-   | [simple_expression](S0110) [not] in [range](S0034)
-   | [simple_expression](S0110) [not] in [subtype_mark](S0025)
+     simple_expression [relational_operator simple_expression]
+   | simple_expression [not] in range
+   | simple_expression [not] in subtype_mark
 
-simple_expression ::= [[unary_adding_operator](S0117)] [term](S0111) {[binary_adding_operator](S0116) [term](S0111)}
+simple_expression ::= [unary_adding_operator] term {binary_adding_operator term}
 
-term ::= [factor](S0112) {[multiplying_operator](S0118) [factor](S0112)}
+term ::= factor {multiplying_operator factor}
 
-factor ::= [primary](S0113) [** [primary](S0113)] | abs [primary](S0113) | not [primary](S0113)
+factor ::= primary [** primary] | abs primary | not primary
 
 primary ::= 
-    [numeric_literal](S0004) | null | [string_literal](S0013) | [aggregate](S0097)
-  | [name](S0084) | [qualified_expression](S0121) | [allocator](S0122) | ([expression](S0108))
+    numeric_literal | null | string_literal | aggregate
+  | name | qualified_expression | allocator | (expression)
 
 
 #### Name Resolution Rules
 
-A [name](S0084) used as a [primary](S0113) shall resolve to denote an object or a value. 
+A name used as a primary shall resolve to denote an object or a value. 
 
 Discussion: This replaces RM83-4.4(3). We don't need to mention named numbers explicitly, because the name of a named number denotes a value. We don't need to mention attributes explicitly, because attributes now denote (rather than yield) values in general. Also, the new wording allows attributes that denote objects, which should always have been allowed (in case the implementation chose to have such a thing). 
 
-Reason: It might seem odd that this is an overload resolution rule, but it is relevant during overload resolution. For example, it helps ensure that a [primary](S0113) that consists of only the identifier of a parameterless function is interpreted as a [function_call](S0156) rather than directly as a [direct_name](S0085). 
+Reason: It might seem odd that this is an overload resolution rule, but it is relevant during overload resolution. For example, it helps ensure that a primary that consists of only the identifier of a parameterless function is interpreted as a function_call rather than directly as a direct_name. 
 
 
 #### Static Semantics
@@ -1039,18 +1039,18 @@ Each expression has a type; it specifies the computation or retrieval of a value
 
 #### Dynamic Semantics
 
-The value of a [primary](S0113) that is a [name](S0084) denoting an object is the value of the object.
+The value of a primary that is a name denoting an object is the value of the object.
 
 
 #### Implementation Permissions
 
-For the evaluation of a [primary](S0113) that is a [name](S0084) denoting an object of an unconstrained numeric subtype, if the value of the object is outside the base range of its type, the implementation may either raise Constraint_Error or return the value of the object. 
+For the evaluation of a primary that is a name denoting an object of an unconstrained numeric subtype, if the value of the object is outside the base range of its type, the implementation may either raise Constraint_Error or return the value of the object. 
 
 Ramification: This means that if extra-range intermediates are used to hold the value of an object of an unconstrained numeric subtype, a Constraint_Error can be raised on a read of the object, rather than only on an assignment to it. Similarly, it means that computing the value of an object of such a subtype can be deferred until the first read of the object (presuming no side effects other than failing an Overflow_Check are possible). This permission is over and above that provided by clause 11.6, since this allows the Constraint_Error to move to a different handler. 
 
 Reason: This permission is intended to allow extra-range registers to be used efficiently to hold parameters and local variables, even if they might need to be transferred into smaller registers for performing certain predefined operations. 
 
-Discussion: There is no need to mention other kinds of [primary](S0113)s, since any Constraint_Error to be raised can be "charged" to the evaluation of the particular kind of [primary](S0113). 
+Discussion: There is no need to mention other kinds of primarys, since any Constraint_Error to be raised can be "charged" to the evaluation of the particular kind of primary. 
 
 
 #### Examples
@@ -1093,12 +1093,12 @@ A**(B**C)                   -- expression (parentheses are required)
 
 In Ada 83, out parameters and their nondiscriminant subcomponents are not allowed as primaries. These restrictions are eliminated in Ada 95.
 
-In various contexts throughout the language where Ada 83 syntax rules had [simple_expression](S0110), the corresponding Ada 95 syntax rule has [expression](S0108) instead. This reflects the inclusion of modular integer types, which makes the logical operators "and", "or", and "xor" more useful in expressions of an integer type. Requiring parentheses to use these operators in such contexts seemed unnecessary and potentially confusing. Note that the bounds of a [range](S0034) still have to be specified by [simple_expression](S0110)s, since otherwise [expression](S0108)s involving membership tests might be ambiguous. Essentially, the operation ".." is of higher precedence than the logical operators, and hence uses of logical operators still have to be parenthesized when used in a bound of a range. 
+In various contexts throughout the language where Ada 83 syntax rules had simple_expression, the corresponding Ada 95 syntax rule has expression instead. This reflects the inclusion of modular integer types, which makes the logical operators "and", "or", and "xor" more useful in expressions of an integer type. Requiring parentheses to use these operators in such contexts seemed unnecessary and potentially confusing. Note that the bounds of a range still have to be specified by simple_expressions, since otherwise expressions involving membership tests might be ambiguous. Essentially, the operation ".." is of higher precedence than the logical operators, and hence uses of logical operators still have to be parenthesized when used in a bound of a range. 
 
 
 ## 4.5  Operators and Expression Evaluation
 
-[ The language defines the following six categories of operators (given in order of increasing precedence). The corresponding [operator_symbol](S0147)s, and only those, can be used as [designator](S0144)s in declarations of functions for user-defined operators. See 6.6, "Overloading of Operators".] 
+[ The language defines the following six categories of operators (given in order of increasing precedence). The corresponding operator_symbols, and only those, can be used as designators in declarations of functions for user-defined operators. See 6.6, "Overloading of Operators".] 
 
 
 #### Syntax
@@ -1126,7 +1126,7 @@ Discussion: The left-associativity is not directly inherent in the grammar of 4.
 
 See the Implementation Permissions below regarding flexibility in reassociating operators of the same precedence. 
 
-For each form of type definition, certain of the above operators are predefined; that is, they are implicitly declared immediately after the type definition. For each such implicit operator declaration, the parameters are called Left and Right for binary operators; the single parameter is called Right for unary operators. [An expression of the form X op Y, where op is a binary operator, is equivalent to a [function_call](S0156) of the form "op"(X, Y). An expression of the form op Y, where op is a unary operator, is equivalent to a [function_call](S0156) of the form "op"(Y). The predefined operators and their effects are described in subclauses 4.5.1 through 4.5.6.] 
+For each form of type definition, certain of the above operators are predefined; that is, they are implicitly declared immediately after the type definition. For each such implicit operator declaration, the parameters are called Left and Right for binary operators; the single parameter is called Right for unary operators. [An expression of the form X op Y, where op is a binary operator, is equivalent to a function_call of the form "op"(X, Y). An expression of the form op Y, where op is a unary operator, is equivalent to a function_call of the form "op"(Y). The predefined operators and their effects are described in subclauses 4.5.1 through 4.5.6.] 
 
 
 #### Dynamic Semantics
@@ -1153,7 +1153,7 @@ Discussion: Note that the permission to reassociate the operands in any way subj
 
 Note that this permission does not apply to user-defined operators. 
 
-NOTE 1   The two operands of an expression of the form X op Y, where op is a binary operator, are evaluated in an arbitrary order, as for any [function_call](S0156) (see 6.4).
+NOTE 1   The two operands of an expression of the form X op Y, where op is a binary operator, are evaluated in an arbitrary order, as for any function_call (see 6.4).
 
 
 #### Examples
@@ -1188,7 +1188,7 @@ The permission to reassociate is moved here from RM83-11.6(5), so it is closer t
 
 #### Name Resolution Rules
 
-An [expression](S0108) consisting of two [relation](S0109)s connected by and then or or else (a short-circuit control form) shall resolve to be of some boolean type; the expected type for both [relation](S0109)s is that same boolean type. 
+An expression consisting of two relations connected by and then or or else (a short-circuit control form) shall resolve to be of some boolean type; the expected type for both relations is that same boolean type. 
 
 Reason: This rule is written this way so that overload resolution treats the two operands symmetrically; the resolution of overloading present in either one can benefit from the resolution of the other. Furthermore, the type expected by context can help. 
 
@@ -1252,7 +1252,7 @@ N = 0 or else A(N) = Hit_Value
 
 ### 4.5.2  Relational Operators and Membership Tests
 
-[ The equality operators = (equals) and /= (not equals) are predefined for nonlimited types. The other [relational_operator](S0115)s are the ordering operators &lt (less than), &lt= (less than or equal), &gt (greater than), and &gt= (greater than or equal). The ordering operators are predefined for scalar types, and for discrete array types, that is, one-dimensional array types whose components are of a discrete type. 
+[ The equality operators = (equals) and /= (not equals) are predefined for nonlimited types. The other relational_operators are the ordering operators &lt (less than), &lt= (less than or equal), &gt (greater than), and &gt= (greater than or equal). The ordering operators are predefined for scalar types, and for discrete array types, that is, one-dimensional array types whose components are of a discrete type. 
 
 Ramification: The equality operators are not defined for every nonlimited type - see below for the exact rule. 
 
@@ -1261,16 +1261,16 @@ A membership test, using in or not in, determines whether or not a value belongs
 
 #### Name Resolution Rules
 
-The tested type of a membership test is the type of the [range](S0034) or the type determined by the [subtype_mark](S0025). If the tested type is tagged, then the [simple_expression](S0110) shall resolve to be of a type that covers or is covered by the tested type; if untagged, the expected type for the [simple_expression](S0110) is the tested type.
+The tested type of a membership test is the type of the range or the type determined by the subtype_mark. If the tested type is tagged, then the simple_expression shall resolve to be of a type that covers or is covered by the tested type; if untagged, the expected type for the simple_expression is the tested type.
 
 Reason: The part of the rule for untagged types is stated in a way that ensures that operands like null are still legal as operands of a membership test.
 
-The significance of "covers or is covered by" is that we allow the [simple_expression](S0110) to be of any class-wide type that covers the tested type, not just the one rooted at the tested type.
+The significance of "covers or is covered by" is that we allow the simple_expression to be of any class-wide type that covers the tested type, not just the one rooted at the tested type.
 
 
 #### Legality Rules
 
-For a membership test, if the [simple_expression](S0110) is of a tagged class-wide type, then the tested type shall be (visibly) tagged. 
+For a membership test, if the simple_expression is of a tagged class-wide type, then the tested type shall be (visibly) tagged. 
 
 Ramification: Untagged types covered by the tagged class-wide type are not permitted. Such types can exist if they are descendants of a private type whose full type is tagged. This rule is intended to avoid confusion since such derivatives don't have their "own" tag, and hence are indistinguishable from one another at run time once converted to a covering class-wide type. 
 
@@ -1310,13 +1310,13 @@ Implementation Note: On a machine with signed zeros, if the generated code gener
 
 Two access-to-object values are equal if they designate the same object, or if both are equal to the null value of the access type.
 
-Two access-to-subprogram values are equal if they are the result of the same evaluation of an Access [attribute_reference](S0093), or if both are equal to the null value of the access type. Two access-to-subprogram values are unequal if they designate different subprograms. [It is unspecified whether two access values that designate the same subprogram but are the result of distinct evaluations of Access [attribute_reference](S0093)s are equal or unequal.] 
+Two access-to-subprogram values are equal if they are the result of the same evaluation of an Access attribute_reference, or if both are equal to the null value of the access type. Two access-to-subprogram values are unequal if they designate different subprograms. [It is unspecified whether two access values that designate the same subprogram but are the result of distinct evaluations of Access attribute_references are equal or unequal.] 
 
-Reason: This allows each Access [attribute_reference](S0093) for a subprogram to designate a distinct "wrapper" subprogram if necessary to support an indirect call. 
+Reason: This allows each Access attribute_reference for a subprogram to designate a distinct "wrapper" subprogram if necessary to support an indirect call. 
 
 For a type extension, predefined equality is defined in terms of the primitive [(possibly user-defined)] equals operator of the parent type and of any tagged components of the extension part, and predefined equality for any other components not inherited from the parent type. 
 
-Ramification: Two values of a type extension are not equal if there is a [variant_part](S0068) in the extension part and the two values have different [variant](S0069)s present. This is a ramification of the requirement that a discriminant governing such a [variant_part](S0068) has to be a "new" discriminant, and so has to be equal in the two values for the values to be equal. Note that [variant_part](S0068)s in the parent part need not match if the primitive equals operator for the parent type considers them equal.
+Ramification: Two values of a type extension are not equal if there is a variant_part in the extension part and the two values have different variants present. This is a ramification of the requirement that a discriminant governing such a variant_part has to be a "new" discriminant, and so has to be equal in the two values for the values to be equal. Note that variant_parts in the parent part need not match if the primitive equals operator for the parent type considers them equal.
 
 ```ada
   
@@ -1327,7 +1327,7 @@ For a private type, if its full type is tagged, predefined equality is defined i
 
 For other composite types, the predefined equality operators [(and certain other predefined operations on composite types - see 4.5.1 and 4.6)] are defined in terms of the corresponding operation on matching components, defined as follows: 
 
-For two composite objects or values of the same non-array type, matching components are those that correspond to the same [component_declaration](S0067) or [discriminant_specification](S0059);
+For two composite objects or values of the same non-array type, matching components are those that correspond to the same component_declaration or discriminant_specification;
 
 For two one-dimensional arrays of the same type, matching components are those (if any) whose index values match in the following sense: the lower bounds of the index ranges are defined to match, and the successors of matching indices are defined to match;
 
@@ -1357,19 +1357,19 @@ Ramification: Furthermore, if the user defines an "=" operator that returns Bool
 
 For a discrete array type, the predefined ordering operators correspond to lexicographic order using the predefined order relation of the component type: A null array is lexicographically less than any array having at least one component. In the case of nonnull arrays, the left operand is lexicographically less than the right operand if the first component of the left operand is less than that of the right; otherwise the left operand is lexicographically less than the right operand only if their first components are equal and the tail of the left operand is lexicographically less than that of the right (the tail consists of the remaining components beyond the first and can be null).
 
-For the evaluation of a membership test, the [simple_expression](S0110) and the [range](S0034) (if any) are evaluated in an arbitrary order.
+For the evaluation of a membership test, the simple_expression and the range (if any) are evaluated in an arbitrary order.
 
 A membership test using in yields the result True if: 
 
-The tested type is scalar, and the value of the [simple_expression](S0110) belongs to the given [range](S0034), or the range of the named subtype; or 
+The tested type is scalar, and the value of the simple_expression belongs to the given range, or the range of the named subtype; or 
 
 Ramification: The scalar membership test only does a range check. It does not perform any other check, such as whether a value falls in a "hole" of a "holey" enumeration type. The Pos attribute function can be used for that purpose.
 
 Even though Standard.Float is an unconstrained subtype, the test "X in Float" will still return False (presuming the evaluation of X does not raise Constraint_Error) when X is outside Float'Range. 
 
-The tested type is not scalar, and the value of the [simple_expression](S0110) satisfies any constraints of the named subtype, and, if the type of the [simple_expression](S0110) is class-wide, the value has a tag that identifies a type covered by the tested type. 
+The tested type is not scalar, and the value of the simple_expression satisfies any constraints of the named subtype, and, if the type of the simple_expression is class-wide, the value has a tag that identifies a type covered by the tested type. 
 
-Ramification: Note that the tag is not checked if the [simple_expression](S0110) is of a specific type. 
+Ramification: Note that the tag is not checked if the simple_expression is of a specific type. 
 
 Otherwise the test yields the result False.
 
@@ -1421,7 +1421,7 @@ Predefined equality for a composite type is defined in terms of the primitive eq
 
 #### Wording Changes from Ada 83
 
-The term "membership test" refers to the [relation](S0109) "X in S" rather to simply the reserved word in or not in.
+The term "membership test" refers to the relation "X in S" rather to simply the reserved word in or not in.
 
 We use the term "equality operator" to refer to both the = (equals) and /= (not equals) operators. Ada 83 referred to = as the equality operator, and /= as the inequality operator. The new wording is more consistent with the ISO 10646 name for "=" (equals sign) and provides a category similar to "ordering operator" to refer to both = and /=.
 
@@ -1456,11 +1456,11 @@ function "&"(Left : C; Right : C) return T
 
 For the evaluation of a concatenation with result type T, if both operands are of type T, the result of the concatenation is a one-dimensional array whose length is the sum of the lengths of its operands, and whose components comprise the components of the left operand followed by the components of the right operand. If the left operand is a null array, the result of the concatenation is the right operand. Otherwise, the lower bound of the result is determined as follows: 
 
-If the ultimate ancestor of the array type was defined by a [constrained_array_definition](S0051), then the lower bound of the result is that of the index subtype; 
+If the ultimate ancestor of the array type was defined by a constrained_array_definition, then the lower bound of the result is that of the index subtype; 
 
 Reason: This rule avoids Constraint_Error when using concatenation on an array type whose first subtype is constrained. 
 
-If the ultimate ancestor of the array type was defined by an [unconstrained_array_definition](S0049), then the lower bound of the result is that of the left operand. 
+If the ultimate ancestor of the array type was defined by an unconstrained_array_definition, then the lower bound of the result is that of the left operand. 
 
 [The upper bound is determined by the lower bound and the length.] A check is made that the upper bound of the result of the concatenation belongs to the range of the index subtype, unless the result is a null array. Constraint_Error is raised if this check fails.
 
@@ -1588,7 +1588,7 @@ function "/"(Left : T; Right : Integer) return T
 
 ```
 
-[All of the above multiplying operators are usable with an operand of an appropriate universal numeric type.] The following additional multiplying operators for root_real are predefined[, and are usable when both operands are of an appropriate universal or root numeric type, and the result is allowed to be of type root_real, as in a [number_declaration](S0031)]: 
+[All of the above multiplying operators are usable with an operand of an appropriate universal numeric type.] The following additional multiplying operators for root_real are predefined[, and are usable when both operands are of an appropriate universal or root numeric type, and the result is allowed to be of type root_real, as in a number_declaration]: 
 
 Ramification: These operators are analogous to the multiplying operators involving fixed or floating point types where root_real substitutes for the fixed or floating point type, and root_integer substitutes for Integer. Only values of the corresponding universal numeric types are implicitly convertible to these root numeric types, so these operators are really restricted to use with operands of a universal type, or the specified root numeric types. 
 
@@ -1804,29 +1804,29 @@ Version=[5],Kind=(AddedNormal),Group=[C],Term=[reduction expression], Def=[an ex
 #### Syntax
 
 type_conversion ::= 
-    [subtype_mark](S0025)([expression](S0108))
-  | [subtype_mark](S0025)([name](S0084))
+    subtype_mark(expression)
+  | subtype_mark(name)
 
-The target subtype of a [type_conversion](S0120) is the subtype denoted by the [subtype_mark](S0025). The operand of a [type_conversion](S0120) is the [expression](S0108) or [name](S0084) within the parentheses; its type is the operand type.
+The target subtype of a type_conversion is the subtype denoted by the subtype_mark. The operand of a type_conversion is the expression or name within the parentheses; its type is the operand type.
 
-One type is convertible to a second type if a [type_conversion](S0120) with the first type as operand type and the second type as target type is legal according to the rules of this clause. Two types are convertible if each is convertible to the other. 
+One type is convertible to a second type if a type_conversion with the first type as operand type and the second type as target type is legal according to the rules of this clause. Two types are convertible if each is convertible to the other. 
 
 Ramification: Note that "convertible" is defined in terms of legality of the conversion. Whether the conversion would raise an exception at run time is irrelevant to this definition. 
 
-A [type_conversion](S0120) whose operand is the [name](S0084) of an object is called a view conversion if its target type is tagged, or if it appears as an actual parameter of mode out or in out; other [type_conversion](S0120)s are called value conversions. 
+A type_conversion whose operand is the name of an object is called a view conversion if its target type is tagged, or if it appears as an actual parameter of mode out or in out; other type_conversions are called value conversions. 
 
-Ramification: A view conversion to a tagged type can appear in any context that requires an object [name](S0084), including in an object renaming, the [prefix](S0086) of a [selected_component](S0091), and if the operand is a variable, on the left side of an [assignment_statement](S0130). View conversions to other types only occur as actual parameters. Allowing view conversions of untagged types in all contexts seemed to incur an undue implementation burden.
+Ramification: A view conversion to a tagged type can appear in any context that requires an object name, including in an object renaming, the prefix of a selected_component, and if the operand is a variable, on the left side of an assignment_statement. View conversions to other types only occur as actual parameters. Allowing view conversions of untagged types in all contexts seemed to incur an undue implementation burden.
 
 
 #### Name Resolution Rules
 
-The operand of a [type_conversion](S0120) is expected to be of any type. 
+The operand of a type_conversion is expected to be of any type. 
 
-Discussion: This replaces the "must be determinable" wording of Ada 83. This is equivalent to (but hopefully more intuitive than) saying that the operand of a [type_conversion](S0120) is a "complete context". 
+Discussion: This replaces the "must be determinable" wording of Ada 83. This is equivalent to (but hopefully more intuitive than) saying that the operand of a type_conversion is a "complete context". 
 
-The operand of a view conversion is interpreted only as a [name](S0084); the operand of a value conversion is interpreted as an [expression](S0108). 
+The operand of a view conversion is interpreted only as a name; the operand of a value conversion is interpreted as an expression. 
 
-Reason: This formally resolves the syntactic ambiguity between the two forms of [type_conversion](S0120), not that it really matters. 
+Reason: This formally resolves the syntactic ambiguity between the two forms of type_conversion, not that it really matters. 
 
 
 #### Legality Rules
@@ -1843,7 +1843,7 @@ The component subtypes shall statically match.
 
 If the target type is a general access type, then the operand type shall be an access-to-object type. Further: 
 
-Discussion: The Legality Rules and Dynamic Semantics are worded so that a [type_conversion](S0120) T(X) (where T is an access type) is (almost) equivalent to the [attribute_reference](S0093) X.all'Access, where the result is of type T. The [type_conversion](S0120) accepts a null value, whereas the [attribute_reference](S0093) would raise Constraint_Error. 
+Discussion: The Legality Rules and Dynamic Semantics are worded so that a type_conversion T(X) (where T is an access type) is (almost) equivalent to the attribute_reference X.all'Access, where the result is of type T. The type_conversion accepts a null value, whereas the attribute_reference would raise Constraint_Error. 
 
 If the target type is an access-to-variable type, then the operand type shall be an access-to-variable type; 
 
@@ -1877,7 +1877,7 @@ The operand type shall be a class-wide type that covers the target type.
 
 Ramification: This is a conversion of a class-wide type toward the leaves, which requires a tag check. See Dynamic Semantics.
 
-These two rules imply that a conversion from a parent type to a type extension is not permitted, as this would require specifying the values for additional components, in general, and changing the tag. An [extension_aggregate](S0102) has to be used instead, constructing a new value, rather than converting an existing value. However, a conversion from the class-wide type rooted at the parent type is permitted; such a conversion just verifies that the operand's tag is a descendant of the target. 
+These two rules imply that a conversion from a parent type to a type extension is not permitted, as this would require specifying the values for additional components, in general, and changing the tag. An extension_aggregate has to be used instead, constructing a new value, rather than converting an existing value. However, a conversion from the class-wide type rooted at the parent type is permitted; such a conversion just verifies that the operand's tag is a descendant of the target. 
 
 In a view conversion for an untagged type, the target type shall be convertible (back) to the operand type. 
 
@@ -1886,16 +1886,16 @@ Reason: Untagged view conversions appear only as [in] out parameters. Hence, the
 
 #### Static Semantics
 
-A [type_conversion](S0120) that is a value conversion denotes the value that is the result of converting the value of the operand to the target subtype.
+A type_conversion that is a value conversion denotes the value that is the result of converting the value of the operand to the target subtype.
 
-A [type_conversion](S0120) that is a view conversion denotes a view of the object denoted by the operand. This view is a variable of the target type if the operand denotes a variable; otherwise it is a constant of the target type.
+A type_conversion that is a view conversion denotes a view of the object denoted by the operand. This view is a variable of the target type if the operand denotes a variable; otherwise it is a constant of the target type.
 
-The nominal subtype of a [type_conversion](S0120) is its target subtype. 
+The nominal subtype of a type_conversion is its target subtype. 
 
 
 #### Dynamic Semantics
 
-For the evaluation of a [type_conversion](S0120) that is a value conversion, the operand is evaluated, and then the value of the operand is converted to a corresponding value of the target type, if any. If there is no value of the target type that corresponds to the operand value, Constraint_Error is raised[; this can only happen on conversion to a modular type, and only when the operand value is outside the base range of the modular type.] Additional rules follow: 
+For the evaluation of a type_conversion that is a value conversion, the operand is evaluated, and then the value of the operand is converted to a corresponding value of the target type, if any. If there is no value of the target type that corresponds to the operand value, Constraint_Error is raised[; this can only happen on conversion to a modular type, and only when the operand value is outside the base range of the modular type.] Additional rules follow: 
 
 Numeric Type Conversion 
 
@@ -1937,15 +1937,15 @@ Ramification: This applies whether or not the component is initialized.
 
 Ramification: This check is certain to succeed if the operand type is itself covered by or descended from the target type. 
 
-Proof: The fact that a [type_conversion](S0120) preserves the tag is stated officially in 3.9, "Tagged Types and Type Extensions" 
+Proof: The fact that a type_conversion preserves the tag is stated officially in 3.9, "Tagged Types and Type Extensions" 
 
 For each discriminant of the target type that corresponds to a discriminant of the operand type, its value is that of the corresponding discriminant of the operand value; if it corresponds to more than one discriminant of the operand type, a check is made that all these discriminants are equal in the operand value.
 
-For each discriminant of the target type that corresponds to a discriminant that is specified by the [derived_type_definition](S0032) for some ancestor of the operand type (or if class-wide, some ancestor of the specific type identified by the tag of the operand), its value in the result is that specified by the [derived_type_definition](S0032). 
+For each discriminant of the target type that corresponds to a discriminant that is specified by the derived_type_definition for some ancestor of the operand type (or if class-wide, some ancestor of the specific type identified by the tag of the operand), its value in the result is that specified by the derived_type_definition. 
 
 Ramification: It is a ramification of the rules for the discriminants of derived types that each discriminant of the result is covered either by this paragraph or the previous one. See 3.7. 
 
-For each discriminant of the operand type that corresponds to a discriminant that is specified by the [derived_type_definition](S0032) for some ancestor of the target type, a check is made that in the operand value it equals the value specified for it.
+For each discriminant of the operand type that corresponds to a discriminant that is specified by the derived_type_definition for some ancestor of the target type, a check is made that in the operand value it equals the value specified for it.
 
 For each discriminant of the result, a check is made that its value belongs to its subtype. 
 
@@ -1971,7 +1971,7 @@ After conversion of the value to the target type, if the target subtype is const
 
 Ramification: The above check is a Range_Check for scalar subtypes, a Discriminant_Check or Index_Check for access subtypes, and a Discriminant_Check for discriminated subtypes. The Length_Check for an array conversion is performed as part of the conversion to the target type. 
 
-For the evaluation of a view conversion, the operand [name](S0084) is evaluated, and a new view of the object denoted by the operand is created, whose type is the target type; if the target type is composite, checks are performed as above for a value conversion.
+For the evaluation of a view conversion, the operand name is evaluated, and a new view of the object denoted by the operand is created, whose type is the target type; if the target type is composite, checks are performed as above for a value conversion.
 
 The properties of this new view are as follows: 
 
@@ -1987,17 +1987,17 @@ If an Accessibility_Check fails, Program_Error is raised. Any other check associ
 
 Conversion to a type is the same as conversion to an unconstrained subtype of the type. 
 
-Reason: This definition is needed because the semantics of various constructs involves converting to a type, whereas an explicit [type_conversion](S0120) actually converts to a subtype. For example, the evaluation of a [range](S0034) is defined to convert the values of the expressions to the type of the range. 
+Reason: This definition is needed because the semantics of various constructs involves converting to a type, whereas an explicit type_conversion actually converts to a subtype. For example, the evaluation of a range is defined to convert the values of the expressions to the type of the range. 
 
 Ramification: A conversion to a scalar type, or, equivalently, to an unconstrained scalar subtype, can raise Constraint_Error if the value is outside the base range of the type. 
 
-NOTE 1   In addition to explicit [type_conversion](S0120)s, type conversions are performed implicitly in situations where the expected type and the actual type of a construct differ, as is permitted by the type resolution rules (see 8.6). For example, an integer literal is of the type universal_integer, and is implicitly converted when assigned to a target of some specific integer type. Similarly, an actual parameter of a specific tagged type is implicitly converted when the corresponding formal parameter is of a class-wide type.
+NOTE 1   In addition to explicit type_conversions, type conversions are performed implicitly in situations where the expected type and the actual type of a construct differ, as is permitted by the type resolution rules (see 8.6). For example, an integer literal is of the type universal_integer, and is implicitly converted when assigned to a target of some specific integer type. Similarly, an actual parameter of a specific tagged type is implicitly converted when the corresponding formal parameter is of a class-wide type.
 
 Even when the expected and actual types are the same, implicit subtype conversions are performed to adjust the array bounds (if any) of an operand to match the desired target subtype, or to raise Constraint_Error if the (possibly adjusted) value does not satisfy the constraints of the target subtype.
 
-NOTE 2   A ramification of the overload resolution rules is that the operand of an (explicit) [type_conversion](S0120) cannot be the literal null, an [allocator](S0122), an [aggregate](S0097), a [string_literal](S0013), a [character_literal](S0012), or an [attribute_reference](S0093) for an Access or Unchecked_Access attribute. Similarly, such an [expression](S0108) enclosed by parentheses is not allowed. A [qualified_expression](S0121) (see 4.7) can be used instead of such a [type_conversion](S0120).
+NOTE 2   A ramification of the overload resolution rules is that the operand of an (explicit) type_conversion cannot be the literal null, an allocator, an aggregate, a string_literal, a character_literal, or an attribute_reference for an Access or Unchecked_Access attribute. Similarly, such an expression enclosed by parentheses is not allowed. A qualified_expression (see 4.7) can be used instead of such a type_conversion.
 
-NOTE 3   The constraint of the target subtype has no effect for a [type_conversion](S0120) of an elementary type passed as an out parameter. Hence, it is recommended that the first subtype be specified as the target to minimize confusion (a similar recommendation applies to renaming and generic formal in out objects). 
+NOTE 3   The constraint of the target subtype has no effect for a type_conversion of an elementary type passed as an out parameter. Hence, it is recommended that the first subtype be specified as the target to minimize confusion (a similar recommendation applies to renaming and generic formal in out objects). 
 
 
 #### Examples
@@ -2049,7 +2049,7 @@ Dozen(Ledger(31 .. 42))     --  bounds are those of Dozen
 
 #### Incompatibilities With Ada 83
 
-A [character_literal](S0012) is not allowed as the operand of a [type_conversion](S0120), since there are now two character types in package Standard.
+A character_literal is not allowed as the operand of a type_conversion, since there are now two character types in package Standard.
 
 The component subtypes have to statically match in an array conversion, rather than being checked for matching constraints at run time.
 
@@ -2058,47 +2058,47 @@ Because sliding of array bounds is now provided for operations where it was not 
 
 #### Extensions to Ada 83
 
-A [type_conversion](S0120) is considered the name of an object in certain circumstances (such a [type_conversion](S0120) is called a view conversion). In particular, as in Ada 83, a [type_conversion](S0120) can appear as an in out or out actual parameter. In addition, if the target type is tagged and the operand is the [name](S0084) of an object, then so is the [type_conversion](S0120), and it can be used as the [prefix](S0086) to a [selected_component](S0091), in an [object_renaming_declaration](S0170), etc.
+A type_conversion is considered the name of an object in certain circumstances (such a type_conversion is called a view conversion). In particular, as in Ada 83, a type_conversion can appear as an in out or out actual parameter. In addition, if the target type is tagged and the operand is the name of an object, then so is the type_conversion, and it can be used as the prefix to a selected_component, in an object_renaming_declaration, etc.
 
 We no longer require type-mark conformance between a parameter of the form of a type conversion, and the corresponding formal parameter. This had caused some problems for inherited subprograms (since there isn't really a type-mark for converted formals), as well as for renamings, formal subprograms, etc. See AI83-00245, AI83-00318, AI83-00547.
 
 We now specify "deterministic" rounding from real to integer types when the value of the operand is exactly between two integers (rounding is away from zero in this case).
 
-"Sliding" of array bounds (which is part of conversion to an array subtype) is performed in more cases in Ada 95 than in Ada 83. Sliding is not performed on the operand of a membership test, nor on the operand of a [qualified_expression](S0121). It wouldn't make sense on a membership test, and we wish to retain a connection between subtype membership and subtype qualification. In general, a subtype membership test returns True if and only if a corresponding subtype qualification succeeds without raising an exception. Other operations that take arrays perform sliding. 
+"Sliding" of array bounds (which is part of conversion to an array subtype) is performed in more cases in Ada 95 than in Ada 83. Sliding is not performed on the operand of a membership test, nor on the operand of a qualified_expression. It wouldn't make sense on a membership test, and we wish to retain a connection between subtype membership and subtype qualification. In general, a subtype membership test returns True if and only if a corresponding subtype qualification succeeds without raising an exception. Other operations that take arrays perform sliding. 
 
 
 #### Wording Changes from Ada 83
 
-We no longer explicitly list the kinds of things that are not allowed as the operand of a [type_conversion](S0120), except in a NOTE.
+We no longer explicitly list the kinds of things that are not allowed as the operand of a type_conversion, except in a NOTE.
 
-The rules in this clause subsume the rules for "parameters of the form of a type conversion", and have been generalized to cover the use of a type conversion as a [name](S0084). 
+The rules in this clause subsume the rules for "parameters of the form of a type conversion", and have been generalized to cover the use of a type conversion as a name. 
 
 
 ## 4.7  Qualified Expressions
 
-[A [qualified_expression](S0121) is used to state explicitly the type, and to verify the subtype, of an operand that is either an [expression](S0108) or an [aggregate](S0097). ]
+[A qualified_expression is used to state explicitly the type, and to verify the subtype, of an operand that is either an expression or an aggregate. ]
 
 
 #### Syntax
 
 qualified_expression ::= 
-   [subtype_mark](S0025)'([expression](S0108)) | [subtype_mark](S0025)'[aggregate](S0097)
+   subtype_mark'(expression) | subtype_mark'aggregate
 
 
 #### Name Resolution Rules
 
-The operand (the [expression](S0108) or [aggregate](S0097)) shall resolve to be of the type determined by the [subtype_mark](S0025), or a universal type that covers it. 
+The operand (the expression or aggregate) shall resolve to be of the type determined by the subtype_mark, or a universal type that covers it. 
 
 
 #### Dynamic Semantics
 
-The evaluation of a [qualified_expression](S0121) evaluates the operand (and if of a universal type, converts it to the type determined by the [subtype_mark](S0025)) and checks that its value belongs to the subtype denoted by the [subtype_mark](S0025). The exception Constraint_Error is raised if this check fails. 
+The evaluation of a qualified_expression evaluates the operand (and if of a universal type, converts it to the type determined by the subtype_mark) and checks that its value belongs to the subtype denoted by the subtype_mark. The exception Constraint_Error is raised if this check fails. 
 
 Ramification: This is one of the few contexts in Ada 95 where implicit subtype conversion is not performed prior to a constraint check, and hence no "sliding" of array bounds is provided.
 
-Reason: Implicit subtype conversion is not provided because a [qualified_expression](S0121) with a constrained target subtype is essentially an assertion about the subtype of the operand, rather than a request for conversion. An explicit [type_conversion](S0120) can be used rather than a [qualified_expression](S0121) if subtype conversion is desired.
+Reason: Implicit subtype conversion is not provided because a qualified_expression with a constrained target subtype is essentially an assertion about the subtype of the operand, rather than a request for conversion. An explicit type_conversion can be used rather than a qualified_expression if subtype conversion is desired.
 
-NOTE 1   When a given context does not uniquely identify an expected type, a [qualified_expression](S0121) can be used to do so. In particular, if an overloaded [name](S0084) or [aggregate](S0097) is passed to an overloaded subprogram, it might be necessary to qualify the operand to resolve its type. 
+NOTE 1   When a given context does not uniquely identify an expected type, a qualified_expression can be used to do so. In particular, if an overloaded name or aggregate is passed to an overloaded subprogram, it might be necessary to qualify the operand to resolve its type. 
 
 
 #### Examples
@@ -2132,36 +2132,36 @@ Dozen'(1 | 3 | 5 | 7 =&gt 2, others =&gt 0) -- see 4.6
 
 ## 4.8  Allocators
 
-[The evaluation of an [allocator](S0122) creates an object and yields an access value that designates the object. ]
+[The evaluation of an allocator creates an object and yields an access value that designates the object. ]
 
 
 #### Syntax
 
 allocator ::= 
-   new [subtype_indication](S0024) | new [qualified_expression](S0121)
+   new subtype_indication | new qualified_expression
 
 
 #### Name Resolution Rules
 
-The expected type for an [allocator](S0122) shall be a single access-to-object type whose designated type  covers the type determined by the [subtype_mark](S0025) of the [subtype_indication](S0024) or [qualified_expression](S0121). 
+The expected type for an allocator shall be a single access-to-object type whose designated type  covers the type determined by the subtype_mark of the subtype_indication or qualified_expression. 
 
 Discussion: See 8.6, "The Context of Overload Resolution" for the meaning of "shall be a single ... type whose ...". 
 
 
 #### Legality Rules
 
-An initialized allocator is an [allocator](S0122) with a [qualified_expression](S0121). An uninitialized allocator is one with a [subtype_indication](S0024). In the [subtype_indication](S0024) of an uninitialized allocator, a [constraint](S0026) is permitted only if the [subtype_mark](S0025) denotes an [unconstrained] composite subtype; if there is no [constraint](S0026), then the [subtype_mark](S0025) shall denote a definite subtype. 
+An initialized allocator is an allocator with a qualified_expression. An uninitialized allocator is one with a subtype_indication. In the subtype_indication of an uninitialized allocator, a constraint is permitted only if the subtype_mark denotes an [unconstrained] composite subtype; if there is no constraint, then the subtype_mark shall denote a definite subtype. 
 
 Ramification: For example, ... new S'Class ... (with no initialization expression) is illegal, but ... new S'Class'(X) ... is legal, and takes its tag and constraints from the initial value X. (Note that the former case cannot have a constraint.) 
 
-If the type of the [allocator](S0122) is an access-to-constant type, the [allocator](S0122) shall be an initialized allocator. If the designated type is limited, the [allocator](S0122) shall be an uninitialized allocator. 
+If the type of the allocator is an access-to-constant type, the allocator shall be an initialized allocator. If the designated type is limited, the allocator shall be an uninitialized allocator. 
 
-Ramification: For an access-to-constant type whose designated type is limited, [allocator](S0122)s are illegal. The Access attribute is legal for such a type, however. 
+Ramification: For an access-to-constant type whose designated type is limited, allocators are illegal. The Access attribute is legal for such a type, however. 
 
 
 #### Static Semantics
 
-If the designated type of the type of the [allocator](S0122) is elementary, then the subtype of the created object is the designated subtype. If the designated type is composite, then the created object is always constrained; if the designated subtype is constrained, then it provides the constraint of the created object; otherwise, the object is constrained by its initial value [(even if the designated subtype is unconstrained with defaults)]. 
+If the designated type of the type of the allocator is elementary, then the subtype of the created object is the designated subtype. If the designated type is composite, then the created object is always constrained; if the designated subtype is constrained, then it provides the constraint of the created object; otherwise, the object is constrained by its initial value [(even if the designated subtype is unconstrained with defaults)]. 
 
 Discussion: See AI83-00331. 
 
@@ -2170,7 +2170,7 @@ Reason: All objects created by an allocator are aliased, and all aliased composi
 
 #### Dynamic Semantics
 
-For the evaluation of an [allocator](S0122), the elaboration of the [subtype_indication](S0024) or the evaluation of the [qualified_expression](S0121) is performed first. For the evaluation of an initialized allocator, an object of the designated type is created and the value of the [qualified_expression](S0121) is converted to the designated subtype and assigned to the object. 
+For the evaluation of an allocator, the elaboration of the subtype_indication or the evaluation of the qualified_expression is performed first. For the evaluation of an initialized allocator, an object of the designated type is created and the value of the qualified_expression is converted to the designated subtype and assigned to the object. 
 
 Ramification: The conversion might raise Constraint_Error. 
 
@@ -2178,7 +2178,7 @@ For the evaluation of an uninitialized allocator:
 
 If the designated type is elementary, an object of the designated subtype is created and any implicit initial value is assigned;
 
-If the designated type is composite, an object of the designated type is created with tag, if any, determined by the [subtype_mark](S0025) of the [subtype_indication](S0024); any per-object constraints on subcomponents are elaborated and any implicit initial values for the subcomponents of the object are obtained as determined by the [subtype_indication](S0024) and assigned to the corresponding subcomponents. A check is made that the value of the object belongs to the designated subtype. Constraint_Error is raised if this check fails. This check and the initialization of the object are performed in an arbitrary order.
+If the designated type is composite, an object of the designated type is created with tag, if any, determined by the subtype_mark of the subtype_indication; any per-object constraints on subcomponents are elaborated and any implicit initial values for the subcomponents of the object are obtained as determined by the subtype_indication and assigned to the corresponding subcomponents. A check is made that the value of the object belongs to the designated subtype. Constraint_Error is raised if this check fails. This check and the initialization of the object are performed in an arbitrary order.
 
 Discussion: AI83-00150. 
 
@@ -2188,11 +2188,11 @@ NOTE 1   Allocators cannot create objects of an abstract type. See 3.9.3.
 
 NOTE 2   If any part of the created object is controlled, the initialization includes calls on corresponding Initialize or Adjust procedures. See 7.6.
 
-NOTE 3   As explained in 13.11, "Storage Management", the storage for an object allocated by an [allocator](S0122) comes from a storage pool (possibly user defined). The exception Storage_Error is raised by an [allocator](S0122) if there is not enough storage. Instances of Unchecked_Deallocation may be used to explicitly reclaim storage.
+NOTE 3   As explained in 13.11, "Storage Management", the storage for an object allocated by an allocator comes from a storage pool (possibly user defined). The exception Storage_Error is raised by an allocator if there is not enough storage. Instances of Unchecked_Deallocation may be used to explicitly reclaim storage.
 
 NOTE 4   Implementations are permitted, but not required, to provide garbage collection (see 13.11.3). 
 
-Ramification: Note that in an [allocator](S0122), the exception Constraint_Error can be raised by the evaluation of the [qualified_expression](S0121), by the elaboration of the [subtype_indication](S0024), or by the initialization. 
+Ramification: Note that in an allocator, the exception Constraint_Error can be raised by the evaluation of the qualified_expression, by the elaboration of the subtype_indication, or by the initialization. 
 
 Discussion: By default, the implementation provides the storage pool. The user may exercise more control over storage management by associating a user-defined pool with an access type. 
 
@@ -2229,7 +2229,7 @@ Expr_Ptr'(new Literal'(Expression with 3.5))      -- initialized explicitly
 
 #### Incompatibilities With Ada 83
 
-The [subtype_indication](S0024) of an uninitialized allocator may not have an explicit [constraint](S0026) if the designated type is an access type. In Ada 83, this was permitted even though the [constraint](S0026) had no affect on the subtype of the created object. 
+The subtype_indication of an uninitialized allocator may not have an explicit constraint if the designated type is an access type. In Ada 83, this was permitted even though the constraint had no affect on the subtype of the created object. 
 
 
 #### Extensions to Ada 83
@@ -2259,7 +2259,7 @@ For an expression to be static, it has to be calculable at compile time.
 
 Only scalar and string expressions are static.
 
-To be static, an expression cannot have any nonscalar, nonstring subexpressions (though it can have nonscalar constituent [name](S0084)s). A static scalar expression cannot have any nonscalar subexpressions. There is one exception - a membership test for a string subtype can be static, and the result is scalar, even though a subexpression is nonscalar.
+To be static, an expression cannot have any nonscalar, nonstring subexpressions (though it can have nonscalar constituent names). A static scalar expression cannot have any nonscalar subexpressions. There is one exception - a membership test for a string subtype can be static, and the result is scalar, even though a subexpression is nonscalar.
 
 The rules for evaluating static expressions are designed to maximize portability of static calculations.
 
@@ -2268,59 +2268,59 @@ The rules for evaluating static expressions are designed to maximize portability
 
 A static expression is [a scalar or string expression that is] one of the following:
 
-a [numeric_literal](S0004); 
+a numeric_literal; 
 
-Ramification: A [numeric_literal](S0004) is always a static expression, even if its expected type is not that of a static subtype. However, if its value is explicitly converted to, or qualified by, a nonstatic subtype, the resulting expression is nonstatic. 
+Ramification: A numeric_literal is always a static expression, even if its expected type is not that of a static subtype. However, if its value is explicitly converted to, or qualified by, a nonstatic subtype, the resulting expression is nonstatic. 
 
-a [string_literal](S0013) of a static string subtype; 
+a string_literal of a static string subtype; 
 
 Ramification: That is, the constrained subtype defined by the index range of the string is static. Note that elementary values don't generally have subtypes, while composite values do (since the bounds or discriminants are inherent in the value). 
 
-a [name](S0084) that denotes the declaration of a named number or a static constant;
+a name that denotes the declaration of a named number or a static constant;
 
-Ramification: Note that enumeration literals are covered by the [function_call](S0156) case. 
+Ramification: Note that enumeration literals are covered by the function_call case. 
 
-a [function_call](S0156) whose function_[name](S0084) or function_[prefix](S0086) statically denotes a static function, and whose actual parameters, if any (whether given explicitly or by default), are all static expressions; 
+a function_call whose function_name or function_prefix statically denotes a static function, and whose actual parameters, if any (whether given explicitly or by default), are all static expressions; 
 
-Ramification: This includes uses of operators that are equivalent to [function_call](S0156)s. 
+Ramification: This includes uses of operators that are equivalent to function_calls. 
 
-an [attribute_reference](S0093) that denotes a scalar value, and whose [prefix](S0086) denotes a static scalar subtype;
+an attribute_reference that denotes a scalar value, and whose prefix denotes a static scalar subtype;
 
 Ramification: Note that this does not include the case of an attribute that is a function; a reference to such an attribute is not even an expression. See above for function calls.
 
 An implementation may define the staticness and other properties of implementation-defined attributes. 
 
-an [attribute_reference](S0093) whose [prefix](S0086) statically denotes a statically constrained array object or array subtype, and whose [attribute_designator](S0094) is First, Last, or Length, with an optional dimension;
+an attribute_reference whose prefix statically denotes a statically constrained array object or array subtype, and whose attribute_designator is First, Last, or Length, with an optional dimension;
 
-a [type_conversion](S0120) whose [subtype_mark](S0025) denotes a static scalar subtype, and whose operand is a static expression;
+a type_conversion whose subtype_mark denotes a static scalar subtype, and whose operand is a static expression;
 
-a [qualified_expression](S0121) whose [subtype_mark](S0025) denotes a static [(scalar or string)] subtype, and whose operand is a static expression; 
+a qualified_expression whose subtype_mark denotes a static [(scalar or string)] subtype, and whose operand is a static expression; 
 
-Ramification: This rules out the [subtype_mark](S0025)'[aggregate](S0097) case. 
+Ramification: This rules out the subtype_mark'aggregate case. 
 
 Reason: Adding qualification to an expression shouldn't make it nonstatic, even for strings. 
 
-a membership test whose [simple_expression](S0110) is a static expression, and whose [range](S0034) is a static range or whose [subtype_mark](S0025) denotes a static [(scalar or string)] subtype; 
+a membership test whose simple_expression is a static expression, and whose range is a static range or whose subtype_mark denotes a static [(scalar or string)] subtype; 
 
-Reason: Clearly, we should allow membership tests in exactly the same cases where we allow [qualified_expression](S0121)s. 
+Reason: Clearly, we should allow membership tests in exactly the same cases where we allow qualified_expressions. 
 
-a short-circuit control form both of whose [relation](S0109)s are static expressions;
+a short-circuit control form both of whose relations are static expressions;
 
 a static expression enclosed in parentheses. 
 
 Discussion: Informally, we talk about a static value. When we do, we mean a value specified by a static expression. 
 
-Ramification: The language requires a static expression in a [number_declaration](S0031), a numeric type definition, a [discrete_choice](S0071) (sometimes), certain representation items, an [attribute_designator](S0094), and when specifying the value of a discriminant governing a [variant_part](S0068) in a [record_aggregate](S0098) or [extension_aggregate](S0102). 
+Ramification: The language requires a static expression in a number_declaration, a numeric type definition, a discrete_choice (sometimes), certain representation items, an attribute_designator, and when specifying the value of a discriminant governing a variant_part in a record_aggregate or extension_aggregate. 
 
-A [name](S0084) statically denotes an entity if it denotes the entity and: 
+A name statically denotes an entity if it denotes the entity and: 
 
-It is a [direct_name](S0085), expanded name, or [character_literal](S0012), and it denotes a declaration other than a [renaming_declaration](S0169); or
+It is a direct_name, expanded name, or character_literal, and it denotes a declaration other than a renaming_declaration; or
 
-It is an [attribute_reference](S0093) whose [prefix](S0086) statically denotes some entity; or
+It is an attribute_reference whose prefix statically denotes some entity; or
 
-It denotes a [renaming_declaration](S0169) with a [name](S0084) that statically denotes the renamed entity. 
+It denotes a renaming_declaration with a name that statically denotes the renamed entity. 
 
-Ramification: [Selected_component](S0091)s that are not expanded names and [indexed_component](S0089)s do not statically denote things. 
+Ramification: Selected_components that are not expanded names and indexed_components do not statically denote things. 
 
 A static function is one of the following: 
 
@@ -2332,19 +2332,19 @@ a predefined concatenation operator whose result type is a string type;
 
 an enumeration literal;
 
-a language-defined attribute that is a function, if the [prefix](S0086) denotes a static scalar subtype, and if the parameter and result types are scalar. 
+a language-defined attribute that is a function, if the prefix denotes a static scalar subtype, and if the parameter and result types are scalar. 
 
 In any case, a generic formal subprogram is not a static function.
 
-A static constant is a constant view declared by a full constant declaration or an [object_renaming_declaration](S0170) with a static nominal subtype, having a value defined by a static scalar expression or by a static string expression whose value has a length not exceeding the maximum length of a [string_literal](S0013) in the implementation. 
+A static constant is a constant view declared by a full constant declaration or an object_renaming_declaration with a static nominal subtype, having a value defined by a static scalar expression or by a static string expression whose value has a length not exceeding the maximum length of a string_literal in the implementation. 
 
 Ramification: A deferred constant is not static; the view introduced by the corresponding full constant declaration can be static. 
 
-Reason: The reason for restricting the length of static string constants is so that compilers don't have to store giant strings in their symbol tables. Since most string constants will be initialized from [string_literal](S0013)s, the length limit seems pretty natural. The reason for avoiding nonstring types is also to save symbol table space. We're trying to keep it cheap and simple (from the implementer's viewpoint), while still allowing, for example, the link name of a pragma Import to contain a concatenation.
+Reason: The reason for restricting the length of static string constants is so that compilers don't have to store giant strings in their symbol tables. Since most string constants will be initialized from string_literals, the length limit seems pretty natural. The reason for avoiding nonstring types is also to save symbol table space. We're trying to keep it cheap and simple (from the implementer's viewpoint), while still allowing, for example, the link name of a pragma Import to contain a concatenation.
 
-The length we're talking about is the maximum number of characters in the value represented by a [string_literal](S0013), not the number of characters in the source representation; the quotes don't count. 
+The length we're talking about is the maximum number of characters in the value represented by a string_literal, not the number of characters in the source representation; the quotes don't count. 
 
-A static range is a [range](S0034) whose bounds are static expressions, [or a [range_attribute_reference](S0095) that is equivalent to such a [range](S0034).] A static [discrete_range](S0055) is one that is a static range or is a [subtype_indication](S0024) that defines a static scalar subtype. The base range of a scalar type is a static range, unless the type is a descendant of a formal scalar type.
+A static range is a range whose bounds are static expressions, [or a range_attribute_reference that is equivalent to such a range.] A static discrete_range is one that is a static range or is a subtype_indication that defines a static scalar subtype. The base range of a scalar type is a static range, unless the type is a descendant of a formal scalar type.
 
 A static subtype is either a static scalar subtype or a static string subtype. A static scalar subtype is an unconstrained scalar subtype whose type is not a descendant of a formal scalar type, or a constrained scalar subtype formed by imposing a compatible static constraint on a static scalar subtype. A static string subtype is an unconstrained string subtype whose index subtype and component subtype are static (and whose type is not a descendant of a formal array type), or a constrained string subtype formed by imposing a compatible static constraint on a static string subtype. In any case, the subtype of a generic formal object of mode in out, and the result subtype of a generic formal function, are not static. 
 
@@ -2381,17 +2381,17 @@ procedure I is new G(F =&gt X); -- OK.
 
 ```
 
-The [case_statement](S0133) is illegal, because the subtype of F is not static, so the choices have to cover all values of Integer, not just those in the range 1..10. A similar issue arises for generic formal functions, now that function calls are object names. 
+The case_statement is illegal, because the subtype of F is not static, so the choices have to cover all values of Integer, not just those in the range 1..10. A similar issue arises for generic formal functions, now that function calls are object names. 
 
 The different kinds of static constraint are defined as follows: 
 
 A null constraint is always static;
 
-A scalar constraint is static if it has no [range_constraint](S0033), or one with a static range;
+A scalar constraint is static if it has no range_constraint, or one with a static range;
 
-An index constraint is static if each [discrete_range](S0055) is static, and each index subtype of the corresponding array type is static;
+An index constraint is static if each discrete_range is static, and each index subtype of the corresponding array type is static;
 
-A discriminant constraint is static if each [expression](S0108) of the constraint is static, and the subtype of each discriminant is static. 
+A discriminant constraint is static if each expression of the constraint is static, and the subtype of each discriminant is static. 
 
 A subtype is statically constrained if it is constrained, and its constraint is static. An object is statically constrained if its nominal subtype is statically constrained, or if it is a static string constant. 
 
@@ -2406,7 +2406,7 @@ If the expression is not part of a larger static expression, then its value shal
 
 If the expression is of type universal_real and its expected type is a decimal fixed point type, then its value shall be a multiple of the small of the decimal type. 
 
-Ramification: This means that a [numeric_literal](S0004) for a decimal type cannot have "extra" significant digits. 
+Ramification: This means that a numeric_literal for a decimal type cannot have "extra" significant digits. 
 
 The last two restrictions above do not apply if the expected type is a descendant of a formal scalar type (or a corresponding actual type in an instance).
 
@@ -2448,9 +2448,9 @@ X : Float := Float'(1.0E+400) + 1.0 - Float'(1.0E+400);
 
 The expression is static, which means that the value of X must be exactly 1.0, independent of the accuracy or range of the run-time floating point implementation.
 
-The following kinds of expressions are never static: [explicit_dereference](S0087), [indexed_component](S0089), [slice](S0090), null, [aggregate](S0097), [allocator](S0122). 
+The following kinds of expressions are never static: explicit_dereference, indexed_component, slice, null, aggregate, allocator. 
 
-NOTE 2   A static (or run-time) [type_conversion](S0120) from a real type to an integer type performs rounding. If the operand value is exactly half-way between two integers, the rounding is performed away from zero. 
+NOTE 2   A static (or run-time) type_conversion from a real type to an integer type performs rounding. If the operand value is exactly half-way between two integers, the rounding is performed away from zero. 
 
 Reason: We specify this for portability. The reason for not choosing round-to-nearest-even, for example, is that this method is easier to undo. 
 
@@ -2494,9 +2494,9 @@ The bounds and length of statically constrained array objects or subtypes are st
 
 The Range attribute of a statically constrained array subtype or object gives a static range.
 
-A [type_conversion](S0120) is static if the [subtype_mark](S0025) denotes a static scalar subtype and the operand is a static expression.
+A type_conversion is static if the subtype_mark denotes a static scalar subtype and the operand is a static expression.
 
-All numeric literals are now static, even if the expected type is a formal scalar type. This is useful in [case_statement](S0133)s and [variant_part](S0068)s, which both now allow a value of a formal scalar type to control the selection, to ease conversion of a package into a generic package. Similarly, named array aggregates are also permitted for array types with an index type that is a formal scalar type. 
+All numeric literals are now static, even if the expected type is a formal scalar type. This is useful in case_statements and variant_parts, which both now allow a value of a formal scalar type to control the selection, to ease conversion of a package into a generic package. Similarly, named array aggregates are also permitted for array types with an index type that is a formal scalar type. 
 
 The rules for the evaluation of static expressions are revised to require exact evaluation at compile time, and force a machine number result when crossing from the static realm to the dynamic realm, to enhance portability and predictability. Exact evaluation is not required for descendants of a formal scalar type, to simplify generic code sharing and to avoid generic contract model problems.
 
@@ -2541,19 +2541,19 @@ was illegal because 1/0 was not static. In Ada 95, the above example is still il
 
 #### Static Semantics
 
-A constraint statically matches another constraint if both are null constraints, both are static and have equal corresponding bounds or discriminant values, or both are nonstatic and result from the same elaboration of a [constraint](S0026) of a [subtype_indication](S0024) or the same evaluation of a [range](S0034) of a [discrete_subtype_definition](S0052). 
+A constraint statically matches another constraint if both are null constraints, both are static and have equal corresponding bounds or discriminant values, or both are nonstatic and result from the same elaboration of a constraint of a subtype_indication or the same evaluation of a range of a discrete_subtype_definition. 
 
 A subtype statically matches another subtype of the same type if they have statically matching constraints. Two anonymous access subtypes statically match if their designated subtypes statically match. 
 
 Ramification: Statically matching constraints and subtypes are the basis for subtype conformance of profiles (see 6.3.1). 
 
-Two ranges of the same type statically match if both result from the same evaluation of a [range](S0034), or if both are static and have equal corresponding bounds. 
+Two ranges of the same type statically match if both result from the same evaluation of a range, or if both are static and have equal corresponding bounds. 
 
 Ramification: The notion of static matching of ranges is used in 12.5.3, "Formal Array Types"; the index ranges of formal and actual constrained array subtypes have to statically match. 
 
 A constraint is statically compatible with a scalar subtype if it statically matches the constraint of the subtype, or if both are static and the constraint is compatible with the subtype. A constraint is statically compatible with an access or composite subtype if it statically matches the constraint of the subtype, or if the subtype is unconstrained. One subtype is statically compatible with a second subtype if the constraint of the first is statically compatible with the second subtype. 
 
-Discussion: Static compatibility is required when constraining a parent subtype with a discriminant from a new [discriminant_part](S0056). See 3.7. Static compatibility is also used in matching generic formal derived types.
+Discussion: Static compatibility is required when constraining a parent subtype with a discriminant from a new discriminant_part. See 3.7. Static compatibility is also used in matching generic formal derived types.
 
 Note that statically compatible with a subtype does not imply compatible with a type. It is OK since the terms are used in different contexts. 
 

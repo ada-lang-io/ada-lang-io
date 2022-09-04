@@ -53,7 +53,7 @@ An active partition is a partition as defined in 10.2. A passive partition is a 
 
 Discussion: In most situations, a passive partition does not execute, and does not have a "real" environment task. Any execution involved in its elaboration and initialization occurs before it comes into existence in a distributed program (like most preelaborated entities). Likewise, there is no concrete meaning to passive partition termination. 
 
-A passive partition shall include only [library_item](S0216)s that either are declared pure or are shared passive (see 10.2.1 and E.2.1).
+A passive partition shall include only library_items that either are declared pure or are shared passive (see 10.2.1 and E.2.1).
 
 An active partition shall be configured on a processing node. A passive partition shall be configured either on a storage node or on a processing node.
 
@@ -66,7 +66,7 @@ A passive partition that is accessible to an active partition should have its st
 
 #### Dynamic Semantics
 
-A [library_item](S0216) is elaborated as part of the elaboration of each partition that includes it. If a normal library unit (see E.2) has state, then a separate copy of the state exists in each active partition that elaborates it. [The state evolves independently in each such partition.]
+A library_item is elaborated as part of the elaboration of each partition that includes it. If a normal library unit (see E.2) has state, then a separate copy of the state exists in each active partition that elaborates it. [The state evolves independently in each such partition.]
 
 Ramification: Normal library units cannot be included in passive partitions. 
 
@@ -152,9 +152,9 @@ The restrictions governing a shared passive library unit are designed to ensure 
 
 #### Syntax
 
-The form of a [pragma](S0016) Shared_Passive is as follows: 
+The form of a pragma Shared_Passive is as follows: 
 
-  pragma Shared_Passive[(library_unit_[name](S0084))];
+  pragma Shared_Passive[(library_unit_name)];
 
 
 #### Legality Rules
@@ -169,7 +169,7 @@ it shall depend semantically only upon declared pure or shared passive library u
 
 Reason: Shared passive packages cannot depend semantically upon remote types packages because the values of an access type declared in a remote types package refer to the local heap of the active partition including the remote types package. 
 
-it shall not contain a library-level declaration of an access type that designates a class-wide type, task type, or protected type with [entry_declaration](S0187)s; if the shared passive library unit is generic, it shall not contain a declaration for such an access type unless the declaration is nested within a body other than a [package_body](S0163).
+it shall not contain a library-level declaration of an access type that designates a class-wide type, task type, or protected type with entry_declarations; if the shared passive library unit is generic, it shall not contain a declaration for such an access type unless the declaration is nested within a body other than a package_body.
 
 Reason: These kinds of access types are disallowed because the object designated by an access value of such a type could contain an implicit reference back to the active partition on whose behalf the designated object was created. 
 
@@ -204,9 +204,9 @@ The restrictions governing a remote types package are similar to those for a dec
 
 #### Syntax
 
-The form of a [pragma](S0016) Remote_Types is as follows: 
+The form of a pragma Remote_Types is as follows: 
 
-  pragma Remote_Types[(library_unit_[name](S0084))];
+  pragma Remote_Types[(library_unit_name)];
 
 
 #### Legality Rules
@@ -231,7 +231,7 @@ The following restrictions apply to the use of a remote access-to-subprogram typ
 
 A value of a remote access-to-subprogram type shall be converted only to another (subtype-conformant) remote access-to-subprogram type;
 
-The [prefix](S0086) of an Access [attribute_reference](S0093) that yields a value of a remote access-to-subprogram type shall statically denote a (subtype-conformant) remote subprogram. 
+The prefix of an Access attribute_reference that yields a value of a remote access-to-subprogram type shall statically denote a (subtype-conformant) remote subprogram. 
 
 The following restrictions apply to the use of a remote access-to-class-wide type: 
 
@@ -241,7 +241,7 @@ A value of a remote access-to-class-wide type shall be explicitly converted only
 
 A value of a remote access-to-class-wide type shall be dereferenced (or implicitly converted to an anonymous access type) only as part of a dispatching call where the value designates a controlling operand of the call (see E.4, "Remote Subprogram Calls"); 
 
-The Storage_Pool and Storage_Size attributes are not defined for remote access-to-class-wide types; the expected type for an [allocator](S0122) shall not be a remote access-to-class-wide type; a remote access-to-class-wide type shall not be an actual parameter for a generic formal access type; 
+The Storage_Pool and Storage_Size attributes are not defined for remote access-to-class-wide types; the expected type for an allocator shall not be a remote access-to-class-wide type; a remote access-to-class-wide type shall not be an actual parameter for a generic formal access type; 
 
 Reason: All three of these restrictions are because there is no storage pool associated with a remote access-to-class-wide type. 
 
@@ -260,15 +260,15 @@ The restrictions governing a remote call interface library unit are intended to 
 
 #### Syntax
 
-The form of a [pragma](S0016) Remote_Call_Interface is as follows: 
+The form of a pragma Remote_Call_Interface is as follows: 
 
-  pragma Remote_Call_Interface[(library_unit_[name](S0084))];
+  pragma Remote_Call_Interface[(library_unit_name)];
 
-The form of a [pragma](S0016) All_Calls_Remote is as follows: 
+The form of a pragma All_Calls_Remote is as follows: 
 
-  pragma All_Calls_Remote[(library_unit_[name](S0084))];
+  pragma All_Calls_Remote[(library_unit_name)];
 
-A [pragma](S0016) All_Calls_Remote is a library unit pragma. 
+A pragma All_Calls_Remote is a library unit pragma. 
 
 
 #### Legality Rules
@@ -287,7 +287,7 @@ it shall not contain the declaration of a limited type;
 
 Reason: We disallow the declaration of task and protected types, since calling an entry or a protected subprogram implicitly passes an object of a limited type (the target task or protected object). We disallow other limited types since we require that such types have user-defined Read and Write attributes, but we certainly don't want the Read and Write attributes themselves to involve remote calls (thereby defeating their purpose of marshalling the value for remote calls). 
 
-it shall not contain a nested [generic_declaration](S0236); 
+it shall not contain a nested generic_declaration; 
 
 Reason: This is disallowed because the body of the nested generic would presumably have access to data inside the body of the RCI package, and if instantiated in a different partition, remote data access might result, which is not supported. 
 
@@ -398,7 +398,7 @@ For the execution of a remote subprogram call, subprogram parameters (and later 
 
 A calling stub is the sequence of code that replaces the subprogram body of a remotely called subprogram in the calling partition. A receiving stub is the sequence of code (the "wrapper") that receives a remote subprogram call on the called partition and invokes the appropriate subprogram body. 
 
-Discussion: The use of the term stub in this annex should not be confused with [body_stub](S0224) as defined in 10.1.3. The term stub is used here because it is a commonly understood term when talking about the RPC paradigm. 
+Discussion: The use of the term stub in this annex should not be confused with body_stub as defined in 10.1.3. The term stub is used here because it is a commonly understood term when talking about the RPC paradigm. 
 
 Remote subprogram calls are executed at most once, that is, if the subprogram call returns normally, then the called subprogram's body was executed exactly once.
 
@@ -426,9 +426,9 @@ This is considered an accessibility_check since only the types declared in "safe
 
 This rule replaces a rule from an early version of Ada 9X which was given in the subclause on Remote Types Library Units (now E.2.2, "Remote Types Library Units"). That rule tried to prevent "bad" types from being sent by arranging for their tags to mismatch between partitions. However, that interfered with other uses of tags. The new rule allows tags to agree in all partitions, even for those types which are not "safe" to pass in an RPC. 
 
-In a dispatching call with two or more controlling operands that are designated by values of a remote access-to-class-wide type, a check is made [(in addition to the normal Tag_Check - see 11.5)] that all the remote access-to-class-wide values originated from Access [attribute_reference](S0093)s that were evaluated by tasks of the same active partition. Constraint_Error is raised if this check fails. 
+In a dispatching call with two or more controlling operands that are designated by values of a remote access-to-class-wide type, a check is made [(in addition to the normal Tag_Check - see 11.5)] that all the remote access-to-class-wide values originated from Access attribute_references that were evaluated by tasks of the same active partition. Constraint_Error is raised if this check fails. 
 
-Implementation Note: When a remote access-to-class-wide value is created by an Access [attribute_reference](S0093), the identity of the active partition that evaluated the [attribute_reference](S0093) should be recorded in the representation of the remote access value. 
+Implementation Note: When a remote access-to-class-wide value is created by an Access attribute_reference, the identity of the active partition that evaluated the attribute_reference should be recorded in the representation of the remote access value. 
 
 
 #### Implementation Requirements
@@ -469,7 +469,7 @@ A value of a remote access-to-subprogram type can be represented by the followin
 
 For remote access-to-class-wide types:
 
-For each remote access-to-class-wide type, a calling stub is generated for each dispatching operation of the designated type. In addition, receiving stubs are generated to perform the remote dispatching operations in the called partition. The appropriate [subprogram_body](S0154) is determined as for a local dispatching call once the receiving stub has been reached.
+For each remote access-to-class-wide type, a calling stub is generated for each dispatching operation of the designated type. In addition, receiving stubs are generated to perform the remote dispatching operations in the called partition. The appropriate subprogram_body is determined as for a local dispatching call once the receiving stub has been reached.
 
 A value of a remote access-to-class-wide type can be represented with the following components: a reference to the remote partition, an index to a table (created one per each such access type) containing addresses of all the dispatching operations of the designated type, and an access value designating the actual remote object.
 
@@ -493,14 +493,14 @@ Discussion: This situation can happen in a case of dynamically nested remote sub
 
 #### Syntax
 
-The form of a [pragma](S0016) Asynchronous is as follows: 
+The form of a pragma Asynchronous is as follows: 
 
-  pragma Asynchronous([local_name](S0264)); 
+  pragma Asynchronous(local_name); 
 
 
 #### Legality Rules
 
-The [local_name](S0264) of a pragma Asynchronous shall denote either: 
+The local_name of a pragma Asynchronous shall denote either: 
 
 One or more remote procedures; the formal parameters of the procedure(s) shall all be of mode in;
 
@@ -598,7 +598,7 @@ end Tape_Driver;
 
 ```ada
 with Tapes, Name_Server;
--- Tape_Driver is not needed and thus not mentioned in the [with_clause](S0223)
+-- Tape_Driver is not needed and thus not mentioned in the with_clause
 procedure Tape_Client is
    T1, T2 : Name_Server.Tape_Ptr;
 begin
@@ -783,7 +783,7 @@ Whenever possible, the PCS on the called partition should allow for multiple tas
 
 The Write operation on a stream of type Params_Stream_Type should raise Storage_Error if it runs out of space trying to write the Item into the stream. 
 
-Implementation Note: An implementation could also dynamically allocate more space as needed, only propagating Storage_Error if the [allocator](S0122) it calls raises Storage_Error. This storage could be managed through a controlled component of the stream object, to ensure that it is reclaimed when the stream object is finalized. 
+Implementation Note: An implementation could also dynamically allocate more space as needed, only propagating Storage_Error if the allocator it calls raises Storage_Error. This storage could be managed through a controlled component of the stream object, to ensure that it is reclaimed when the stream object is finalized. 
 
 NOTE 1   The package System.RPC is not designed for direct calls by user programs. It is instead designed for use in the implementation of remote subprograms calls, being called by the calling stubs generated for a remote call interface library unit to initiate a remote call, and in turn calling back to an RPC-receiver that dispatches to the receiving stubs generated for the body of a remote call interface, to handle a remote call received from elsewhere. 
 

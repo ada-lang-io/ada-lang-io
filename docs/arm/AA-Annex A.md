@@ -505,7 +505,7 @@ In each of the types Character and Wide_Character, the character literals for th
 
 Elaboration of the body of Standard has no effect. 
 
-Discussion: Note that the language does not define where this body appears in the environment [declarative_part](S0079) - see 10, "Program Structure and Compilation Issues". 
+Discussion: Note that the language does not define where this body appears in the environment declarative_part - see 10, "Program Structure and Compilation Issues". 
 
 
 #### Implementation Permissions
@@ -521,9 +521,9 @@ If an implementation provides additional named predefined integer types, then th
 
 NOTE 1   Certain aspects of the predefined entities cannot be completely described in the language itself. For example, although the enumeration type Boolean can be written showing the two enumeration literals False and True, the short-circuit control forms cannot be expressed in the language.
 
-NOTE 2   As explained in 8.1, "Declarative Region" and 10.1.4, "The Compilation Process", the declarative region of the package Standard encloses every library unit and consequently the main subprogram; the declaration of every library unit is assumed to occur within this declarative region. [Library_item](S0216)s are assumed to be ordered in such a way that there are no forward semantic dependences. However, as explained in 8.3, "Visibility", the only library units that are visible within a given compilation unit are the library units named by all [with_clause](S0223)s that apply to the given unit, and moreover, within the declarative region of a given library unit, that library unit itself.
+NOTE 2   As explained in 8.1, "Declarative Region" and 10.1.4, "The Compilation Process", the declarative region of the package Standard encloses every library unit and consequently the main subprogram; the declaration of every library unit is assumed to occur within this declarative region. Library_items are assumed to be ordered in such a way that there are no forward semantic dependences. However, as explained in 8.3, "Visibility", the only library units that are visible within a given compilation unit are the library units named by all with_clauses that apply to the given unit, and moreover, within the declarative region of a given library unit, that library unit itself.
 
-NOTE 3   If all [block_statement](S0138)s of a program are named, then the name of each program unit can always be written as an expanded name starting with Standard (unless Standard is itself hidden). The name of a library unit cannot be a homograph of a name (such as Integer) that is already declared in Standard.
+NOTE 3   If all block_statements of a program are named, then the name of each program unit can always be written as an expanded name starting with Standard (unless Standard is itself hidden). The name of a library unit cannot be a homograph of a name (such as Integer) that is already declared in Standard.
 
 NOTE 4   The exception Standard.Numeric_Error is defined in J.6. 
 
@@ -562,14 +562,14 @@ end Ada;
 
 ```
 
-Ada serves as the parent of most of the other language-defined library units; its declaration is empty (except for the [pragma](S0016) Pure). 
+Ada serves as the parent of most of the other language-defined library units; its declaration is empty (except for the pragma Pure). 
 
 
 #### Legality Rules
 
 In the standard mode, it is illegal to compile a child of package Ada. 
 
-Reason: The intention is that mentioning, say, Ada.Text_IO in a [with_clause](S0223) is guaranteed (at least in the standard mode) to refer to the standard version of Ada.Text_IO. The user can compile a root library unit Text_IO that has no relation to the standard version of Text_IO. 
+Reason: The intention is that mentioning, say, Ada.Text_IO in a with_clause is guaranteed (at least in the standard mode) to refer to the standard version of Ada.Text_IO. The user can compile a root library unit Text_IO that has no relation to the standard version of Text_IO. 
 
 Ramification: Note that Ada can have non-language-defined grandchildren, assuming the implementation allows it. Also, packages System and Interfaces can have children, assuming the implementation allows it. 
 
@@ -4976,7 +4976,7 @@ end Ada.Direct_IO;
 
 ```
 
-Reason: The Element_Type formal of Direct_IO does not have an [unknown_discriminant_part](S0057) (unlike Sequential_IO) so that the implementation can make use of the ability to declare uninitialized variables of the type. 
+Reason: The Element_Type formal of Direct_IO does not have an unknown_discriminant_part (unlike Sequential_IO) so that the implementation can make use of the ability to declare uninitialized variables of the type. 
 
 
 ### A.8.5  Direct Input-Output Operations
@@ -5098,7 +5098,7 @@ end Ada.Storage_IO;
 
 In each instance, the constant Buffer_Size has a value that is the size (in storage elements) of the buffer required to represent the content of an object of subtype Element_Type, including any implicit levels of indirection used by the implementation. The Read and Write procedures of Storage_IO correspond to the Read and Write procedures of Direct_IO (see A.8.4), but with the content of the Item parameter being read from or written into the specified Buffer, rather than an external file.
 
-Reason: As with Direct_IO, the Element_Type formal of Storage_IO does not have an [unknown_discriminant_part](S0057) so that there is a well-defined upper bound on the size of the buffer needed to hold the content of an object of the formal subtype (i.e. Buffer_Size). If there are no implicit levels of indirection, Buffer_Size will typically equal: 
+Reason: As with Direct_IO, the Element_Type formal of Storage_IO does not have an unknown_discriminant_part so that there is a well-defined upper bound on the size of the buffer needed to hold the content of an object of the formal subtype (i.e. Buffer_Size). If there are no implicit levels of indirection, Buffer_Size will typically equal: 
 
 ```ada
 (Element_Type'Size + System.Storage_Unit - 1) / System.Storage_Unit
@@ -6433,15 +6433,15 @@ procedure Get(Item : out Num; Width : in Field := 0);
 
 If the value of the parameter Width is zero, skips any leading blanks, line terminators, or page terminators, then reads the longest possible sequence of characters matching the syntax of any of the following (see 2.4): 
 
-[+|][numeric_literal](S0004)
+[+|]numeric_literal
 
-[+|][numeral](S0006).[[exponent](S0007)]
+[+|]numeral.[exponent]
 
-[+|].[numeral](S0006)[[exponent](S0007)]
+[+|].numeral[exponent]
 
-[+|][base](S0009)#[based_numeral](S0010).#[[exponent](S0007)]
+[+|]base#based_numeral.#[exponent]
 
-[+|][base](S0009)#.[based_numeral](S0010)#[[exponent](S0007)] 
+[+|]base#.based_numeral#[exponent] 
 
 If a nonzero value of Width is supplied, then exactly Width characters are input, or the characters (possibly none) up to a line terminator, whichever comes first; any skipped leading blanks are included in the count.
 
@@ -6602,7 +6602,7 @@ Reads an enumeration value from the beginning of the given string, following the
 
 The exception Data_Error is propagated if the sequence input does not have the required syntax, or if the identifier or character literal does not correspond to a value of the subtype Enum. 
 
-To be honest: For a character type, it is permissible for the implementation to make Get do the inverse of what Put does, in the case of wide [character_literal](S0012)s and control characters. 
+To be honest: For a character type, it is permissible for the implementation to make Get do the inverse of what Put does, in the case of wide character_literals and control characters. 
 
 ```ada
 procedure Put(To   : out String;

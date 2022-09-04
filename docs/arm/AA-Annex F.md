@@ -24,7 +24,7 @@ The character and string handling packages in Annex A, "Predefined Language Envi
 
 #### Implementation Advice
 
-If COBOL (respectively, C) is widely supported in the target environment, implementations supporting the Information Systems Annex should provide the child package Interfaces.COBOL (respectively, Interfaces.C) specified in Annex B and should support a convention_[identifier](S0002) of COBOL (respectively, C) in the interfacing pragmas (see Annex B), thus allowing Ada programs to interface with programs written in that language. 
+If COBOL (respectively, C) is widely supported in the target environment, implementations supporting the Information Systems Annex should provide the child package Interfaces.COBOL (respectively, Interfaces.C) specified in Annex B and should support a convention_identifier of COBOL (respectively, C) in the interfacing pragmas (see Annex B), thus allowing Ada programs to interface with programs written in that language. 
 
 
 #### Extensions to Ada 83
@@ -37,7 +37,7 @@ This Annex is new to Ada 95.
 
 #### Static Semantics
 
-Machine_Radix may be specified for a decimal first subtype (see 3.5.9) via an [attribute_definition_clause](S0265); the expression of such a clause shall be static, and its value shall be 2 or 10. A value of 2 implies a binary base range; a value of 10 implies a decimal base range. 
+Machine_Radix may be specified for a decimal first subtype (see 3.5.9) via an attribute_definition_clause; the expression of such a clause shall be static, and its value shall be 2 or 10. A value of 2 implies a binary base range; a value of 10 implies a decimal base range. 
 
 Ramification: In the absence of a Machine_Radix clause, the choice of 2 versus 10 for S'Machine_Radix is not specified. 
 
@@ -46,7 +46,7 @@ Ramification: In the absence of a Machine_Radix clause, the choice of 2 versus 1
 
 Packed decimal should be used as the internal representation for objects of subtype S when S'Machine_Radix = 10. 
 
-Discussion: The intent of a decimal Machine_Radix attribute definition clause is to allow the programmer to declare an Ada decimal data object whose representation matches a particular COBOL implementation's representation of packed decimal items. The Ada object may then be passed to an interfaced COBOL program that takes a packed decimal data item as a parameter, assuming that convention COBOL has been specified for the Ada object's type in a [pragma](S0016) Convention.
+Discussion: The intent of a decimal Machine_Radix attribute definition clause is to allow the programmer to declare an Ada decimal data object whose representation matches a particular COBOL implementation's representation of packed decimal items. The Ada object may then be passed to an interfaced COBOL program that takes a packed decimal data item as a parameter, assuming that convention COBOL has been specified for the Ada object's type in a pragma Convention.
 
 Additionally, the Ada compiler may choose to generate arithmetic instructions that exploit the packed decimal representation.
 
@@ -117,11 +117,11 @@ Max_Scale is the largest N such that 10.0**(N) is allowed as a decimal type's de
 
 Min_Scale is the smallest N such that 10.0**(N) is allowed as a decimal type's delta. Its type is universal_integer.
 
-Min_Delta is the smallest value allowed for delta in a [decimal_fixed_point_definition](S0046). Its type is universal_real.
+Min_Delta is the smallest value allowed for delta in a decimal_fixed_point_definition. Its type is universal_real.
 
-Max_Delta is the largest value allowed for delta in a [decimal_fixed_point_definition](S0046). Its type is universal_real.
+Max_Delta is the largest value allowed for delta in a decimal_fixed_point_definition. Its type is universal_real.
 
-Max_Decimal_Digits is the largest value allowed for digits in a [decimal_fixed_point_definition](S0046). Its type is universal_integer. 
+Max_Decimal_Digits is the largest value allowed for digits in a decimal_fixed_point_definition. Its type is universal_integer. 
 
 Reason: The name is Max_Decimal_Digits versus Max_Digits, in order to avoid confusion with the named number System.Max_Digits relevant to floating point. 
 

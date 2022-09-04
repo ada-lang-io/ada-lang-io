@@ -177,38 +177,38 @@ NOTE 3   The rule that an exception propagated from an interrupt handler has no 
 
 #### Syntax
 
-The form of a [pragma](S0016) Interrupt_Handler is as follows: 
+The form of a pragma Interrupt_Handler is as follows: 
 
-  pragma Interrupt_Handler(handler_[name](S0084));
+  pragma Interrupt_Handler(handler_name);
 
-The form of a [pragma](S0016) Attach_Handler is as follows: 
+The form of a pragma Attach_Handler is as follows: 
 
-  pragma Attach_Handler(handler_[name](S0084), [expression](S0108)); 
+  pragma Attach_Handler(handler_name, expression); 
 
 
 #### Name Resolution Rules
 
-For the Interrupt_Handler and Attach_Handler pragmas, the handler_[name](S0084) shall resolve to denote a protected procedure with a parameterless profile.
+For the Interrupt_Handler and Attach_Handler pragmas, the handler_name shall resolve to denote a protected procedure with a parameterless profile.
 
-For the Attach_Handler pragma, the expected type for the [expression](S0108) is Interrupts.Interrupt_Id (see C.3.2). 
+For the Attach_Handler pragma, the expected type for the expression is Interrupts.Interrupt_Id (see C.3.2). 
 
 
 #### Legality Rules
 
-The Attach_Handler pragma is only allowed immediately within the [protected_definition](S0182) where the corresponding subprogram is declared. The corresponding [protected_type_declaration](S0180) or [single_protected_declaration](S0181) shall be a librarylevel declaration.
+The Attach_Handler pragma is only allowed immediately within the protected_definition where the corresponding subprogram is declared. The corresponding protected_type_declaration or single_protected_declaration shall be a librarylevel declaration.
 
-Discussion: In the case of a [protected_type_declaration](S0180), an [object_declaration](S0029) of an object of that type need not be at library level.
+Discussion: In the case of a protected_type_declaration, an object_declaration of an object of that type need not be at library level.
 
-The Interrupt_Handler pragma is only allowed immediately within a [protected_definition](S0182). The corresponding [protected_type_declaration](S0180) shall be a librarylevel declaration. In addition, any [object_declaration](S0029) of such a type shall be a library level declaration. 
+The Interrupt_Handler pragma is only allowed immediately within a protected_definition. The corresponding protected_type_declaration shall be a librarylevel declaration. In addition, any object_declaration of such a type shall be a library level declaration. 
 
 
 #### Dynamic Semantics
 
-If the pragma Interrupt_Handler appears in a [protected_definition](S0182), then the corresponding procedure can be attached dynamically, as a handler, to interrupts (see C.3.2). [Such procedures are allowed to be attached to multiple interrupts.]
+If the pragma Interrupt_Handler appears in a protected_definition, then the corresponding procedure can be attached dynamically, as a handler, to interrupts (see C.3.2). [Such procedures are allowed to be attached to multiple interrupts.]
 
-The [expression](S0108) in the Attach_Handler pragma [as evaluated at object creation time] specifies an interrupt. As part of the initialization of that object, if the Attach_Handler pragma is specified, the handler procedure is attached to the specified interrupt. A check is made that the corresponding interrupt is not reserved. Program_Error is raised if the check fails, and the existing treatment for the interrupt is not affected.
+The expression in the Attach_Handler pragma [as evaluated at object creation time] specifies an interrupt. As part of the initialization of that object, if the Attach_Handler pragma is specified, the handler procedure is attached to the specified interrupt. A check is made that the corresponding interrupt is not reserved. Program_Error is raised if the check fails, and the existing treatment for the interrupt is not affected.
 
-If the Ceiling_Locking policy (see D.3) is in effect then upon the initialization of a protected object that either an Attach_Handler or  Interrupt_Handler pragma applies to one of its procedures, a check is made that the ceiling priority defined in the [protected_definition](S0182) is in the range of System.Interrupt_Priority. If the check fails, Program_Error is raised.
+If the Ceiling_Locking policy (see D.3) is in effect then upon the initialization of a protected object that either an Attach_Handler or  Interrupt_Handler pragma applies to one of its procedures, a check is made that the ceiling priority defined in the protected_definition is in the range of System.Interrupt_Priority. If the check fails, Program_Error is raised.
 
 When a protected object is finalized, for any of its procedures that are attached to interrupts, the handler is detached. If the handler was attached by a procedure in the Interrupts package or if no user handler was previously attached to the interrupt, the default treatment is restored. Otherwise, [that is, if an Attach_Handler pragma was specified], the previous handler is restored. 
 
@@ -233,7 +233,7 @@ Implementation Note: The instruction sequence and interrupt handler used to meas
 
 #### Implementation Permissions
 
-When the pragmas Attach_Handler or Interrupt_Handler apply to a protected procedure, the implementation is allowed to impose implementation-defined restrictions on the corresponding [protected_type_declaration](S0180) and [protected_body](S0185). 
+When the pragmas Attach_Handler or Interrupt_Handler apply to a protected procedure, the implementation is allowed to impose implementation-defined restrictions on the corresponding protected_type_declaration and protected_body. 
 
 Ramification: The restrictions may be on the constructs that are allowed within them, and on ordinary calls (i.e. not via interrupts) on protected operations in these protected objects. 
 
@@ -426,29 +426,29 @@ Device_5_Driver : Device_Interface(5);
 
 The implementation shall not incur any run-time overhead for the elaboration checks of subprograms and protected_bodies declared in preelaborated library units. 
 
-The implementation shall not execute any memory write operations after load time for the elaboration of constant objects declared immediately within the declarative region of a preelaborated library package, so long as the subtype and initial expression (or default initial expressions if initialized by default) of the [object_declaration](S0029) satisfy the following restrictions. The meaning of load time is implementation defined. 
+The implementation shall not execute any memory write operations after load time for the elaboration of constant objects declared immediately within the declarative region of a preelaborated library package, so long as the subtype and initial expression (or default initial expressions if initialized by default) of the object_declaration satisfy the following restrictions. The meaning of load time is implementation defined. 
 
 Discussion: On systems where the image of the partition is initially copied from disk to RAM, or from ROM to RAM, prior to starting execution of the partition, the intention is that "load time" consist of this initial copying step. On other systems, load time and run time might actually be interspersed. 
 
-Any [subtype_mark](S0025) denotes a statically constrained subtype, with statically constrained subcomponents, if any;
+Any subtype_mark denotes a statically constrained subtype, with statically constrained subcomponents, if any;
 
-any [constraint](S0026) is a static constraint;
+any constraint is a static constraint;
 
-any [allocator](S0122) is for an access-to-constant type;
+any allocator is for an access-to-constant type;
 
 any uses of predefined operators appear only within static expressions;
 
-any primaries that are [name](S0084)s, other than [attribute_reference](S0093)s for the Access or Address attributes, appear only within static expressions; 
+any primaries that are names, other than attribute_references for the Access or Address attributes, appear only within static expressions; 
 
-Ramification: This cuts out [attribute_reference](S0093)s that are not static, except for Access and Address. 
+Ramification: This cuts out attribute_references that are not static, except for Access and Address. 
 
-any [name](S0084) that is not part of a static expression is an expanded name or [direct_name](S0085) that statically denotes some entity; 
+any name that is not part of a static expression is an expanded name or direct_name that statically denotes some entity; 
 
-Ramification: This cuts out [function_call](S0156)s and [type_conversion](S0120)s that are not static, including calls on attribute functions like 'Image and 'Value. 
+Ramification: This cuts out function_calls and type_conversions that are not static, including calls on attribute functions like 'Image and 'Value. 
 
-any [discrete_choice](S0071) of an [array_aggregate](S0104) is static;
+any discrete_choice of an array_aggregate is static;
 
-no language-defined check associated with the elaboration of the [object_declaration](S0029) can fail. 
+no language-defined check associated with the elaboration of the object_declaration can fail. 
 
 Reason: The intent is that aggregates all of whose scalar subcomponents are static, and all of whose access subcomponents are null, allocators for access-to-constant types, or X'Access, will be supported with no run-time code generated. 
 
@@ -471,26 +471,26 @@ It is recommended that preelaborated packages be implemented in such a way that 
 
 ## C.5  Pragma Discard_Names
 
-[A [pragma](S0016) Discard_Names may be used to request a reduction in storage used for the names of certain entities.] 
+[A pragma Discard_Names may be used to request a reduction in storage used for the names of certain entities.] 
 
 
 #### Syntax
 
-The form of a [pragma](S0016) Discard_Names is as follows: 
+The form of a pragma Discard_Names is as follows: 
 
-  pragma Discard_Names[([On =&gt ] [local_name](S0264))];
+  pragma Discard_Names[([On =&gt ] local_name)];
 
-A [pragma](S0016) Discard_Names is allowed only immediately within a [declarative_part](S0079), immediately within a [package_specification](S0162), or as a configuration pragma. 
+A pragma Discard_Names is allowed only immediately within a declarative_part, immediately within a package_specification, or as a configuration pragma. 
 
 
 #### Legality Rules
 
-The [local_name](S0264) (if present) shall denote a nonderived enumeration [first] subtype, a tagged [first] subtype, or an exception. The pragma applies to the type or exception. Without a [local_name](S0264), the pragma applies to all such entities declared after the pragma, within the same declarative region. Alternatively, the pragma can be used as a configuration pragma. If the pragma applies to a type, then it applies also to all descendants of the type.
+The local_name (if present) shall denote a nonderived enumeration [first] subtype, a tagged [first] subtype, or an exception. The pragma applies to the type or exception. Without a local_name, the pragma applies to all such entities declared after the pragma, within the same declarative region. Alternatively, the pragma can be used as a configuration pragma. If the pragma applies to a type, then it applies also to all descendants of the type.
 
 
 #### Static Semantics
 
-If a [local_name](S0264) is given, then a [pragma](S0016) Discard_Names is a representation pragma.
+If a local_name is given, then a pragma Discard_Names is a representation pragma.
 
 If the pragma applies to an enumeration type, then the semantics of the Wide_Image and Wide_Value attributes are implementation defined for that type[; the semantics of Image and Value are still defined in terms of Wide_Image and Wide_Value]. In addition, the semantics of Text_IO.Enumeration_IO are implementation defined. If the pragma applies to a tagged type, then the semantics of the Tags.Expanded_Name function are implementation defined for that type. If the pragma applies to an exception, then the semantics of the Exceptions.Exception_Name function are implementation defined for that exception.
 
@@ -523,13 +523,13 @@ The same applies to the Tags.Expanded_Name and Exceptions.Exception_Name functio
 
 The form for pragmas Atomic, Volatile, Atomic_Components, and Volatile_Components is as follows: 
 
-  pragma Atomic([local_name](S0264));
+  pragma Atomic(local_name);
 
-  pragma Volatile([local_name](S0264));
+  pragma Volatile(local_name);
 
-  pragma Atomic_Components(array_[local_name](S0264));
+  pragma Atomic_Components(array_local_name);
 
-  pragma Volatile_Components(array_[local_name](S0264));
+  pragma Volatile_Components(array_local_name);
 
 
 #### Static Semantics
@@ -541,7 +541,7 @@ A volatile type is one to which a pragma Volatile applies. A volatile object (in
 
 #### Name Resolution Rules
 
-The [local_name](S0264) in an Atomic or Volatile pragma shall resolve to denote either an [object_declaration](S0029), a noninherited [component_declaration](S0067), or a [full_type_declaration](S0021). The array_[local_name](S0264) in an Atomic_Components or Volatile_Components pragma shall resolve to denote the declaration of an array type or an array object of an anonymous type. 
+The local_name in an Atomic or Volatile pragma shall resolve to denote either an object_declaration, a noninherited component_declaration, or a full_type_declaration. The array_local_name in an Atomic_Components or Volatile_Components pragma shall resolve to denote the declaration of an array type or an array object of an anonymous type. 
 
 
 #### Legality Rules
@@ -550,7 +550,7 @@ It is illegal to apply either an Atomic or Atomic_Components pragma to an object
 
 It is illegal to specify the Size attribute of an atomic object, the Component_Size attribute for an array type with atomic components, or the layout attributes of an atomic component, in a way that prevents the implementation from performing the required indivisible reads and updates.
 
-If an atomic object is passed as a parameter, then the type of the formal parameter shall either be atomic or allow pass by copy [(that is, not be a nonatomic by-reference type)]. If an atomic object is used as an actual for a generic formal object of mode in out, then the type of the generic formal object shall be atomic. If the [prefix](S0086) of an [attribute_reference](S0093) for an Access attribute denotes an atomic object [(including a component)], then the designated type of the resulting access type shall be atomic. If an atomic type is used as an actual for a generic formal derived type, then the ancestor of the formal type shall be atomic or allow pass by copy. Corresponding rules apply to volatile objects and types.
+If an atomic object is passed as a parameter, then the type of the formal parameter shall either be atomic or allow pass by copy [(that is, not be a nonatomic by-reference type)]. If an atomic object is used as an actual for a generic formal object of mode in out, then the type of the generic formal object shall be atomic. If the prefix of an attribute_reference for an Access attribute denotes an atomic object [(including a component)], then the designated type of the resulting access type shall be atomic. If an atomic type is used as an actual for a generic formal derived type, then the ancestor of the formal type shall be atomic or allow pass by copy. Corresponding rules apply to volatile objects and types.
 
 If a pragma Volatile, Volatile_Components, Atomic, or Atomic_Components applies to a stand-alone constant object, then a pragma Import shall also apply to it. 
 
@@ -561,7 +561,7 @@ Reason: Stand-alone constants that are explicitly specified as Atomic or Volatil
 
 #### Static Semantics
 
-These [pragma](S0016)s are representation pragmas (see 13.1). 
+These pragmas are representation pragmas (see 13.1). 
 
 
 #### Dynamic Semantics
@@ -668,17 +668,17 @@ Implementation defined: The result of the Task_Identification.Image attribute.
 
 The function Current_Task returns a value that identifies the calling task.
 
-The effect of Abort_Task is the same as the [abort_statement](S0213) for the task identified by T. [In addition, if T identifies the environment task, the entire partition is aborted, See E.1.]
+The effect of Abort_Task is the same as the abort_statement for the task identified by T. [In addition, if T identifies the environment task, the entire partition is aborted, See E.1.]
 
 The functions Is_Terminated and Is_Callable return the value of the corresponding attribute of the task identified by T. 
 
-For a [prefix](S0086) T that is of a task type [(after any implicit dereference)], the following attribute is defined: 
+For a prefix T that is of a task type [(after any implicit dereference)], the following attribute is defined: 
 
 T'IdentityYields a value of the type Task_Id that identifies the task denoted by T.
 
-For a [prefix](S0086) E that denotes an [entry_declaration](S0187), the following attribute is defined: 
+For a prefix E that denotes an entry_declaration, the following attribute is defined: 
 
-E'CallerYields a value of the type Task_Id that identifies the task whose call is now being serviced. Use of this attribute is allowed only inside an [entry_body](S0190) or [accept_statement](S0188)corresponding to the [entry_declaration](S0187) denoted by E. 
+E'CallerYields a value of the type Task_Id that identifies the task whose call is now being serviced. Use of this attribute is allowed only inside an entry_body or accept_statementcorresponding to the entry_declaration denoted by E. 
 
 Program_Error is raised if a value of Null_Task_Id is passed as a parameter to Abort_Task, Is_Terminated, and Is_Callable.
 

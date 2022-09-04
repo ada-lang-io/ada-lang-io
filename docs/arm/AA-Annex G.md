@@ -24,7 +24,7 @@ the definitions of the model-oriented attributes of floating point types that ap
 
 #### Implementation Advice
 
-If Fortran (respectively, C) is widely supported in the target environment, implementations supporting the Numerics Annex should provide the child package Interfaces.Fortran (respectively, Interfaces.C) specified in Annex B and should support a convention_[identifier](S0002) of Fortran (respectively, C) in the interfacing pragmas (see Annex B), thus allowing Ada programs to interface with programs written in that language. 
+If Fortran (respectively, C) is widely supported in the target environment, implementations supporting the Numerics Annex should provide the child package Interfaces.Fortran (respectively, Interfaces.C) specified in Annex B and should support a convention_identifier of Fortran (respectively, C) in the interfacing pragmas (see Annex B), thus allowing Ada programs to interface with programs written in that language. 
 
 
 #### Extensions to Ada 83
@@ -847,9 +847,9 @@ S'Model_Emin Yields the minimum exponent of the canonical form of the model numb
 
 Ramification: S'Model_Small, which is defined in terms of S'Model_Emin (see A.5.3), yields the smallest positive (nonzero) model number of the type T. 
 
-S'Safe_First Yields the lower bound of the safe range of T. The value of this attribute shall be a model number of T and greater than or equal to the lower bound of the base range of T. In addition, if T is declared by a [floating_point_definition](S0042) or is derived from such a type, and the [floating_point_definition](S0042) includes a [real_range_specification](S0043) specifying a lower bound of lb, then the value of this attribute shall be less than or equal to lb; otherwise, it shall be less than or equal to 10.0 4 · d, where d is the requested decimal precision of T. This attribute yields a value of the type universal_real.
+S'Safe_First Yields the lower bound of the safe range of T. The value of this attribute shall be a model number of T and greater than or equal to the lower bound of the base range of T. In addition, if T is declared by a floating_point_definition or is derived from such a type, and the floating_point_definition includes a real_range_specification specifying a lower bound of lb, then the value of this attribute shall be less than or equal to lb; otherwise, it shall be less than or equal to 10.0 4 · d, where d is the requested decimal precision of T. This attribute yields a value of the type universal_real.
 
-S'Safe_Last Yields the upper bound of the safe range of T. The value of this attribute shall be a model number of T and less than or equal to the upper bound of the base range of T. In addition, if T is declared by a [floating_point_definition](S0042) or is derived from such a type, and the [floating_point_definition](S0042) includes a [real_range_specification](S0043) specifying an upper bound of ub, then the value of this attribute shall be greater than or equal to ub; otherwise, it shall be greater than or equal to 10.0 4 · d, where d is the requested decimal precision of T. This attribute yields a value of the type universal_real.
+S'Safe_Last Yields the upper bound of the safe range of T. The value of this attribute shall be a model number of T and less than or equal to the upper bound of the base range of T. In addition, if T is declared by a floating_point_definition or is derived from such a type, and the floating_point_definition includes a real_range_specification specifying an upper bound of ub, then the value of this attribute shall be greater than or equal to ub; otherwise, it shall be greater than or equal to 10.0 4 · d, where d is the requested decimal precision of T. This attribute yields a value of the type universal_real.
 
 S'Model Denotes a function (of a parameter X) whose specification is given in A.5.3. If X is a model number of T, the function yields X; otherwise, it yields the value obtained by rounding or truncating X to either one of the adjacent model numbers of T. Constraint_Error is raised if the resulting model number is outside the safe range of S. A zero result has the sign of X when S'Signed_Zeros is True. 
 

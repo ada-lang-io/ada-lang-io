@@ -14,22 +14,22 @@ This section describes the types in the language and the rules for declaring con
 
 ## 3.1  Declarations
 
-The language defines several kinds of named entities that are declared by declarations. The entity's name is defined by the declaration, usually by a [defining_identifier](S0019), but sometimes by a [defining_character_literal](S0037) or [defining_operator_symbol](S0148).
+The language defines several kinds of named entities that are declared by declarations. The entity's name is defined by the declaration, usually by a defining_identifier, but sometimes by a defining_character_literal or defining_operator_symbol.
 
-There are several forms of declaration. A [basic_declaration](S0018) is a form of declaration defined as follows. 
+There are several forms of declaration. A basic_declaration is a form of declaration defined as follows. 
 
 
 #### Syntax
 
 basic_declaration ::= 
-     [type_declaration](S0020)	| [subtype_declaration](S0023)
-   | [object_declaration](S0029)	| [number_declaration](S0031)
-   | [subprogram_declaration](S0141)	| [abstract_subprogram_declaration](S0142)
-   | [package_declaration](S0161)	| [renaming_declaration](S0169)
-   | [exception_declaration](S0230)	| [generic_declaration](S0236)
-   | [generic_instantiation](S0241)
+     type_declaration	| subtype_declaration
+   | object_declaration	| number_declaration
+   | subprogram_declaration	| abstract_subprogram_declaration
+   | package_declaration	| renaming_declaration
+   | exception_declaration	| generic_declaration
+   | generic_instantiation
 
-defining_identifier ::= [identifier](S0002)
+defining_identifier ::= identifier
 
 
 #### Static Semantics
@@ -40,11 +40,11 @@ Discussion: An implicit declaration generally declares a predefined or inherited
 
 Version=[5],Kind=(AddedNormal),Group=[C],Term=[declaration], Def=[a language construct that associates a name with (a view of) an entity], Note1=[A declaration can appear explicitly in the program text (an explicit declaration), or can be supposed to occur at a given place in the text as a consequence of the semantics of another construct (an implicit declaration).]
 
-Each of the following is defined to be a declaration: any [basic_declaration](S0018); an [enumeration_literal_specification](S0036); a [discriminant_specification](S0059); a [component_declaration](S0067); a [loop_parameter_specification](S0137); a [parameter_specification](S0152); a [subprogram_body](S0154); an [entry_declaration](S0187); an [entry_index_specification](S0193); a [choice_parameter_specification](S0233); a [generic_formal_parameter_declaration](S0240). 
+Each of the following is defined to be a declaration: any basic_declaration; an enumeration_literal_specification; a discriminant_specification; a component_declaration; a loop_parameter_specification; a parameter_specification; a subprogram_body; an entry_declaration; an entry_index_specification; a choice_parameter_specification; a generic_formal_parameter_declaration. 
 
-Discussion: This list (when [basic_declaration](S0018) is expanded out) contains all syntactic categories that end in "_declaration" or "_specification", except for program unit _specifications. Moreover, it contains [subprogram_body](S0154). A [subprogram_body](S0154) is a declaration, whether or not it completes a previous declaration. This is a bit strange, [subprogram_body](S0154) is not part of the syntax of [basic_declaration](S0018) or [library_unit_declaration](S0217). A renaming-as-body is considered a declaration. An [accept_statement](S0188) is not considered a declaration. Completions are sometimes declarations, and sometimes not. 
+Discussion: This list (when basic_declaration is expanded out) contains all syntactic categories that end in "_declaration" or "_specification", except for program unit _specifications. Moreover, it contains subprogram_body. A subprogram_body is a declaration, whether or not it completes a previous declaration. This is a bit strange, subprogram_body is not part of the syntax of basic_declaration or library_unit_declaration. A renaming-as-body is considered a declaration. An accept_statement is not considered a declaration. Completions are sometimes declarations, and sometimes not. 
 
-All declarations contain a definition for a view of an entity. A view consists of an identification of the entity (the entity of the view), plus view-specific characteristics that affect the use of the entity through that view (such as mode of access to an object, formal parameter names and defaults for a subprogram, or visibility to components of a type). In most cases, a declaration also contains the definition for the entity itself (a [renaming_declaration](S0169) is an example of a declaration that does not define a new entity, but instead defines a view of an existing entity (see 8.5)).
+All declarations contain a definition for a view of an entity. A view consists of an identification of the entity (the entity of the view), plus view-specific characteristics that affect the use of the entity through that view (such as mode of access to an object, formal parameter names and defaults for a subprogram, or visibility to components of a type). In most cases, a declaration also contains the definition for the entity itself (a renaming_declaration is an example of a declaration that does not define a new entity, but instead defines a view of an existing entity (see 8.5)).
 
 Glossary entry: (See Definition.)
 
@@ -52,15 +52,15 @@ Version=[5],Kind=(Added),Group=[T],Term=[view of an entity], Def=[a representati
 
 Discussion: Most declarations define a view (of some entity) whose view-specific characteristics are unchanging for the life of the view. However, subtypes are somewhat unusual in that they inherit characteristics from whatever view of their type is currently visible. Hence, a subtype is not a view of a type; it is more of an indirect reference. By contrast, a private type provides a single, unchanging (partial) view of its full type. 
 
-This paragraph was deleted.All declarations contain a definition for a view of an entity. A view consists of an identification of the entity (the entity of the view), plus view-specific characteristics that affect the use of the entity through that view (such as mode of access to an object, formal parameter names and defaults for a subprogram, or visibility to components of a type). In most cases, a declaration also contains the definition for the entity itself (a [renaming_declaration](S0169) is an example of a declaration that does not define a new entity, but instead defines a view of an existing entity (see 8.5)).
+This paragraph was deleted.All declarations contain a definition for a view of an entity. A view consists of an identification of the entity (the entity of the view), plus view-specific characteristics that affect the use of the entity through that view (such as mode of access to an object, formal parameter names and defaults for a subprogram, or visibility to components of a type). In most cases, a declaration also contains the definition for the entity itself (a renaming_declaration is an example of a declaration that does not define a new entity, but instead defines a view of an existing entity (see 8.5)).
 
-For each declaration, the language rules define a certain region of text called the scope of the declaration (see 8.2). Most declarations associate an [identifier](S0002) with a declared entity. Within its scope, and only there, there are places where it is possible to use the [identifier](S0002) to refer to the declaration, the view it defines, and the associated entity; these places are defined by the visibility rules (see 8.3). At such places the [identifier](S0002) is said to be a name of the entity (the [direct_name](S0085) or [selector_name](S0092)); the name is said to denote the declaration, the view, and the associated entity (see 8.6). The declaration is said to declare the name, the view, and in most cases, the entity itself.
+For each declaration, the language rules define a certain region of text called the scope of the declaration (see 8.2). Most declarations associate an identifier with a declared entity. Within its scope, and only there, there are places where it is possible to use the identifier to refer to the declaration, the view it defines, and the associated entity; these places are defined by the visibility rules (see 8.3). At such places the identifier is said to be a name of the entity (the direct_name or selector_name); the name is said to denote the declaration, the view, and the associated entity (see 8.6). The declaration is said to declare the name, the view, and in most cases, the entity itself.
 
-As an alternative to an [identifier](S0002), an enumeration literal can be declared with a [character_literal](S0012) as its name (see 3.5.1), and a function can be declared with an [operator_symbol](S0147) as its name (see 6.1).
+As an alternative to an identifier, an enumeration literal can be declared with a character_literal as its name (see 3.5.1), and a function can be declared with an operator_symbol as its name (see 6.1).
 
-The syntax rules use the terms [defining_identifier](S0019), [defining_character_literal](S0037), and [defining_operator_symbol](S0148) for the defining occurrence of a name; these are collectively called defining names. The terms [direct_name](S0085) and [selector_name](S0092) are used for usage occurrences of [identifier](S0002)s, [character_literal](S0012)s, and [operator_symbol](S0147)s. These are collectively called usage names. 
+The syntax rules use the terms defining_identifier, defining_character_literal, and defining_operator_symbol for the defining occurrence of a name; these are collectively called defining names. The terms direct_name and selector_name are used for usage occurrences of identifiers, character_literals, and operator_symbols. These are collectively called usage names. 
 
-To be honest: The terms [identifier](S0002), [character_literal](S0012), and [operator_symbol](S0147) are used directly in contexts where the normal visibility rules do not apply (such as the [identifier](S0002) that appears after the end of a [task_body](S0179)). Analogous conventions apply to the use of [designator](S0144), which is the collective term for [identifier](S0002) and [operator_symbol](S0147). 
+To be honest: The terms identifier, character_literal, and operator_symbol are used directly in contexts where the normal visibility rules do not apply (such as the identifier that appears after the end of a task_body). Analogous conventions apply to the use of designator, which is the collective term for identifier and operator_symbol. 
 
 
 #### Dynamic Semantics
@@ -71,7 +71,7 @@ Glossary entry: The process by which a construct achieves its run-time effect is
 
 Version=[5],Kind=(Added),Group=[R],Term=[execution], Def=[the process by which a construct achieves its run-time effect], Note1=[Execution of a declaration is also called elaboration. Execution of an expression is also called evaluation.] 
 
-To be honest: The term elaboration is also used for the execution of certain constructs that are not declarations, and the term evaluation is used for the execution of certain constructs that are not expressions. For example, [subtype_indication](S0024)s are elaborated, and [range](S0034)s are evaluated.
+To be honest: The term elaboration is also used for the execution of certain constructs that are not declarations, and the term evaluation is used for the execution of certain constructs that are not expressions. For example, subtype_indications are elaborated, and ranges are evaluated.
 
 For bodies, execution and elaboration are both explicitly defined. When we refer specifically to the execution of a body, we mean the explicit definition of execution for that kind of body, not its elaboration. 
 
@@ -79,7 +79,7 @@ Discussion: Technically, "the execution of a declaration" and "the elaboration o
 
 When we explicitly define evaluation or elaboration for a construct, we are implicitly defining execution of that construct.
 
-We also use the term "execution" for things like [statement](S0124)s, which are executable, but neither elaborable nor evaluable. We considered using the term "execution" only for nonelaborable, nonevaluable constructs, and defining the term "action" to mean what we have defined "execution" to mean. We rejected this idea because we thought three terms that mean the same thing was enough - four would be overkill. Thus, the term "action" is used only informally in the standard (except where it is defined as part of a larger term, such as "protected action"). 
+We also use the term "execution" for things like statements, which are executable, but neither elaborable nor evaluable. We considered using the term "execution" only for nonelaborable, nonevaluable constructs, and defining the term "action" to mean what we have defined "execution" to mean. We rejected this idea because we thought three terms that mean the same thing was enough - four would be overkill. Thus, the term "action" is used only informally in the standard (except where it is defined as part of a larger term, such as "protected action"). 
 
 Version=[5],Kind=(Added),Group=[R],Term=[elaboration], Def=[the process by which a declaration achieves its run-time effect], Note1=[Elaboration is one of the forms of execution.] Version=[5],Kind=(Added),Group=[R],Term=[evaluation], Def=[the process by which an expression achieves its run-time effect], Note1=[Evaluation is one of the forms of execution.] 
 
@@ -87,7 +87,7 @@ To be honest: A construct is elaborable if elaboration is defined for it. A cons
 
 Discussion: Don't confuse "elaborable" with "preelaborable" (defined in 10.2.1).
 
-Evaluation of an evaluable construct produces a result that is either a value, a denotation, or a range. The following are evaluable: expression; [name](S0084) [prefix](S0086); [range](S0034); entry_list_iterator; and possibly [discrete_range](S0055). The last one is curious - RM83 uses the term "evaluation of a [discrete_range](S0055)", but never defines it. One might presume that the evaluation of a [discrete_range](S0055) consists of the evaluation of the [range](S0034) or the [subtype_indication](S0024), depending on what it is. But [subtype_indication](S0024)s are not evaluated; they are elaborated.
+Evaluation of an evaluable construct produces a result that is either a value, a denotation, or a range. The following are evaluable: expression; name prefix; range; entry_list_iterator; and possibly discrete_range. The last one is curious - RM83 uses the term "evaluation of a discrete_range", but never defines it. One might presume that the evaluation of a discrete_range consists of the evaluation of the range or the subtype_indication, depending on what it is. But subtype_indications are not evaluated; they are elaborated.
 
 Intuitively, an executable construct is one that has a defined run-time effect (which may be null). Since execution includes elaboration and evaluation as special cases, all elaborable and all evaluable constructs are also executable. Hence, most constructs in Ada are executable. An important exception is that the constructs inside a generic unit are not executable directly, but rather are used as a template for (generally) executable constructs in instances of the generic. 
 
@@ -102,31 +102,31 @@ Identifiers are also associated with names of pragmas, arguments to pragmas, and
 
 #### Wording Changes from Ada 83
 
-The syntax rule for [defining_identifier](S0019) is new. It is used for the defining occurrence of an [identifier](S0002). Usage occurrences use the [direct_name](S0085) or [selector_name](S0092) syntactic categories. Each occurrence of an [identifier](S0002) (or simple_name), [character_literal](S0012), or [operator_symbol](S0147) in the Ada 83 syntax rules is handled as follows in Ada 95: 
+The syntax rule for defining_identifier is new. It is used for the defining occurrence of an identifier. Usage occurrences use the direct_name or selector_name syntactic categories. Each occurrence of an identifier (or simple_name), character_literal, or operator_symbol in the Ada 83 syntax rules is handled as follows in Ada 95: 
 
-It becomes a [defining_identifier](S0019), [defining_character_literal](S0037), or [defining_operator_symbol](S0148) (or some syntactic category composed of these), to indicate a defining occurrence;
+It becomes a defining_identifier, defining_character_literal, or defining_operator_symbol (or some syntactic category composed of these), to indicate a defining occurrence;
 
-It becomes a [direct_name](S0085), in usage occurrences where the usage is required (in Section 8) to be directly visible;
+It becomes a direct_name, in usage occurrences where the usage is required (in Section 8) to be directly visible;
 
-It becomes a [selector_name](S0092), in usage occurrences where the usage is required (in Section 8) to be visible but not necessarily directly visible;
+It becomes a selector_name, in usage occurrences where the usage is required (in Section 8) to be visible but not necessarily directly visible;
 
-It remains an [identifier](S0002), [character_literal](S0012), or [operator_symbol](S0147), in cases where the visibility rules do not apply (such as the [designator](S0144) that appears after the end of a [subprogram_body](S0154)). 
+It remains an identifier, character_literal, or operator_symbol, in cases where the visibility rules do not apply (such as the designator that appears after the end of a subprogram_body). 
 
-For declarations that come in "two parts" (program unit declaration plus body, private or incomplete type plus full type, deferred constant plus full constant), we consider both to be defining occurrences. Thus, for example, the syntax for [package_body](S0163) uses [defining_identifier](S0019) after the reserved word body, as opposed to [direct_name](S0085).
+For declarations that come in "two parts" (program unit declaration plus body, private or incomplete type plus full type, deferred constant plus full constant), we consider both to be defining occurrences. Thus, for example, the syntax for package_body uses defining_identifier after the reserved word body, as opposed to direct_name.
 
 The defining occurrence of a statement name is in its implicit declaration, not where it appears in the program text. Considering the statement name itself to be the defining occurrence would complicate the visibility rules.
 
-The phrase "visible by selection" is not used in Ada 95. It is subsumed by simply "visible" and the Name Resolution Rules for [selector_name](S0092)s.
+The phrase "visible by selection" is not used in Ada 95. It is subsumed by simply "visible" and the Name Resolution Rules for selector_names.
 
-(Note that in Ada 95, a declaration is visible at all places where one could have used a [selector_name](S0092), not just at places where a [selector_name](S0092) was actually used. Thus, the places where a declaration is directly visible are a subset of the places where it is visible. See Section 8 for details.)
+(Note that in Ada 95, a declaration is visible at all places where one could have used a selector_name, not just at places where a selector_name was actually used. Thus, the places where a declaration is directly visible are a subset of the places where it is visible. See Section 8 for details.)
 
-We use the term "declaration" to cover _specifications that declare (views of) objects, such as [parameter_specification](S0152)s. In Ada 83, these are referred to as a "form of declaration", but it is not entirely clear that they are considered simply "declarations".
+We use the term "declaration" to cover _specifications that declare (views of) objects, such as parameter_specifications. In Ada 83, these are referred to as a "form of declaration", but it is not entirely clear that they are considered simply "declarations".
 
-RM83 contains an incomplete definition of "elaborated" in this clause: it defines "elaborated" for declarations, [declarative_part](S0079)s, [declarative_item](S0080)s and [compilation_unit](S0215)s, but "elaboration" is defined elsewhere for various other constructs. To make matters worse, Ada 95 has a different set of elaborable constructs. Instead of correcting the list, it is more maintainable to refer to the term "elaborable," which is defined in a distributed manner.
+RM83 contains an incomplete definition of "elaborated" in this clause: it defines "elaborated" for declarations, declarative_parts, declarative_items and compilation_units, but "elaboration" is defined elsewhere for various other constructs. To make matters worse, Ada 95 has a different set of elaborable constructs. Instead of correcting the list, it is more maintainable to refer to the term "elaborable," which is defined in a distributed manner.
 
 RM83 uses the term "has no other effect" to describe an elaboration that doesn't do anything except change the state from not-yet-elaborated to elaborated. This was a confusing wording, because the answer to "other than what?" was to be found many pages away. In Ada 95, we change this wording to "has no effect" (for things that truly do nothing at run time), and "has no effect other than to establish that so-and-so can happen without failing the Elaboration_Check" (for things where it matters).
 
-We make it clearer that the term "execution" covers elaboration and evaluation as special cases. This was implied in RM83. For example, "erroneous execution" can include any execution, and RM83-9.4(3) has, "The task designated by any other task object depends on the master whose execution creates the task object;" the elaboration of the master's [declarative_part](S0079) is doing the task creation. 
+We make it clearer that the term "execution" covers elaboration and evaluation as special cases. This was implied in RM83. For example, "erroneous execution" can include any execution, and RM83-9.4(3) has, "The task designated by any other task object depends on the master whose execution creates the task object;" the elaboration of the master's declarative_part is doing the task creation. 
 
 
 ## 3.2  Types and Subtypes
@@ -154,7 +154,7 @@ Glossary entry: A scalar type is either a discrete type or a real type.
 
 Glossary entry: An access type has values that designate aliased objects. Access types correspond to "pointer types" or "reference types" in some other languages.
 
-Glossary entry: A discrete type is either an integer type or an enumeration type. Discrete types may be used, for example, in [case_statement](S0133)s and as array indices.
+Glossary entry: A discrete type is either an integer type or an enumeration type. Discrete types may be used, for example, in case_statements and as array indices.
 
 Glossary entry: A real type has values that are approximations of the real numbers. Floating point and fixed point types are real types.
 
@@ -194,7 +194,7 @@ Discussion: The definition of "part" here is designed to simplify rules elsewher
 
 We use the term "part" when talking about the parent part, ancestor part, or extension part of a type extension. In contexts such as these, the part might represent an empty set of subcomponents (e.g. in a null record extension, or a nonnull extension of a null record). We also use "part" when specifying rules such as those that apply to an object with a "controlled part" meaning that it applies if the object as a whole is controlled, or any subcomponent is. 
 
-The set of possible values for an object of a given type can be subjected to a condition that is called a constraint (the case of a null constraint that specifies no restriction is also included)[; the rules for which values satisfy a given kind of constraint are given in 3.5 for [range_constraint](S0033)s, 3.6.1 for [index_constraint](S0054)s, and 3.7.1 for [discriminant_constraint](S0061)s].
+The set of possible values for an object of a given type can be subjected to a condition that is called a constraint (the case of a null constraint that specifies no restriction is also included)[; the rules for which values satisfy a given kind of constraint are given in 3.5 for range_constraints, 3.6.1 for index_constraints, and 3.7.1 for discriminant_constraints].
 
 A subtype of a given type is a combination of the type, a constraint on values of the type, and certain attributes specific to the subtype. The given type is called the type of the subtype. Similarly, the associated constraint is called the constraint of the subtype. The set of values of a subtype consists of the values of its type that satisfy its constraint. Such values belong to the subtype. 
 
@@ -268,26 +268,26 @@ We have dropped the term "base type" in favor of simply "type" (all types in Ada
 
 ### 3.2.1  Type Declarations
 
-A [type_declaration](S0020) declares a type and its first subtype. 
+A type_declaration declares a type and its first subtype. 
 
 
 #### Syntax
 
-type_declaration ::=  [full_type_declaration](S0021)
-   | [incomplete_type_declaration](S0078)
-   | [private_type_declaration](S0164)
-   | [private_extension_declaration](S0165)
+type_declaration ::=  full_type_declaration
+   | incomplete_type_declaration
+   | private_type_declaration
+   | private_extension_declaration
 
 full_type_declaration ::= 
-     type [defining_identifier](S0019) [[known_discriminant_part](S0058)] is [type_definition](S0022);
-   | [task_type_declaration](S0175)
-   | [protected_type_declaration](S0180)
+     type defining_identifier [known_discriminant_part] is type_definition;
+   | task_type_declaration
+   | protected_type_declaration
 
 type_definition ::= 
-     [enumeration_type_definition](S0035)	| [integer_type_definition](S0038)
-   | [real_type_definition](S0041)	| [array_type_definition](S0048)
-   | [record_type_definition](S0063)	| [access_type_definition](S0073)
-   | [derived_type_definition](S0032)
+     enumeration_type_definition	| integer_type_definition
+   | real_type_definition	| array_type_definition
+   | record_type_definition	| access_type_definition
+   | derived_type_definition
 
 
 #### Legality Rules
@@ -297,19 +297,19 @@ A given type shall not have a subcomponent whose type is the given type itself.
 
 #### Static Semantics
 
-The [defining_identifier](S0019) of a [type_declaration](S0020) denotes the first subtype of the type. The [known_discriminant_part](S0058), if any, defines the discriminants of the type (see 3.7, "Discriminants"). The remainder of the [type_declaration](S0020) defines the remaining characteristics of (the view of) the type.
+The defining_identifier of a type_declaration denotes the first subtype of the type. The known_discriminant_part, if any, defines the discriminants of the type (see 3.7, "Discriminants"). The remainder of the type_declaration defines the remaining characteristics of (the view of) the type.
 
-A type defined by a [type_declaration](S0020) is a named type; such a type has one or more nameable subtypes. Certain other forms of declaration also include type definitions as part of the declaration for an object (including a parameter or a discriminant). The type defined by such a declaration is anonymous - it has no nameable subtypes. For explanatory purposes, this document sometimes refers to an anonymous type by a pseudo-name, written in italics, and uses such pseudo-names at places where the syntax normally requires an [identifier](S0002). For a named type whose first subtype is T, this document sometimes refers to the type of T as simply "the type T". 
+A type defined by a type_declaration is a named type; such a type has one or more nameable subtypes. Certain other forms of declaration also include type definitions as part of the declaration for an object (including a parameter or a discriminant). The type defined by such a declaration is anonymous - it has no nameable subtypes. For explanatory purposes, this document sometimes refers to an anonymous type by a pseudo-name, written in italics, and uses such pseudo-names at places where the syntax normally requires an identifier. For a named type whose first subtype is T, this document sometimes refers to the type of T as simply "the type T". 
 
-Ramification: The only user-defined types that can be anonymous in the above sense are array, access, task, and protected types. An anonymous array, task, or protected type can be defined as part of an [object_declaration](S0029). An anonymous access type can be defined as part of a parameter or discriminant specification. 
+Ramification: The only user-defined types that can be anonymous in the above sense are array, access, task, and protected types. An anonymous array, task, or protected type can be defined as part of an object_declaration. An anonymous access type can be defined as part of a parameter or discriminant specification. 
 
-A named type that is declared by a [full_type_declaration](S0021), or an anonymous type that is defined as part of declaring an object of the type, is called a full type. The [type_definition](S0022), [task_definition](S0177), [protected_definition](S0182), or [access_definition](S0077) that defines a full type is called a full type definition. [Types declared by other forms of [type_declaration](S0020) are not separate types; they are partial or incomplete views of some full type.] 
+A named type that is declared by a full_type_declaration, or an anonymous type that is defined as part of declaring an object of the type, is called a full type. The type_definition, task_definition, protected_definition, or access_definition that defines a full type is called a full type definition. [Types declared by other forms of type_declaration are not separate types; they are partial or incomplete views of some full type.] 
 
 To be honest: Class-wide, universal, and root numeric types are full types. 
 
 The definition of a type implicitly declares certain predefined operators that operate on the type, according to what classes the type belongs, as specified in 4.5, "Operators and Expression Evaluation". 
 
-Discussion: We no longer talk about the implicit declaration of basic operations. These are treated like an [if_statement](S0131) - they don't need to be declared, but are still applicable to only certain classes of types.
+Discussion: We no longer talk about the implicit declaration of basic operations. These are treated like an if_statement - they don't need to be declared, but are still applicable to only certain classes of types.
 
 The predefined types [(for example the types Boolean, Wide_Character, Integer, root_integer, and universal_integer)] are the types that are defined in [a predefined library package called] Standard[; this package also includes the [(implicit)] declarations of their predefined operators]. [The package Standard is described in A.1.] 
 
@@ -318,7 +318,7 @@ Ramification: We use the term "predefined" to refer to entities declared in the 
 
 #### Dynamic Semantics
 
-The elaboration of a [full_type_declaration](S0021) consists of the elaboration of the full type definition. Each elaboration of a full type definition creates a distinct type and its first subtype. 
+The elaboration of a full_type_declaration consists of the elaboration of the full type definition. Each elaboration of a full type definition creates a distinct type and its first subtype. 
 
 Reason: The creation is associated with the type definition, rather than the type declaration, because there are types that are created by full type definitions that are not immediately contained within a type declaration (e.g. an array object declaration, a singleton task declaration, etc.). 
 
@@ -345,69 +345,69 @@ type Table  is array(1 .. 10) of Integer;
 
 ```
 
-NOTE 1   Each of the above examples declares a named type. The identifier given denotes the first subtype of the type. Other named subtypes of the type can be declared with [subtype_declaration](S0023)s (see 3.2.2). Although names do not directly denote types, a phrase like "the type Column" is sometimes used in this document to refer to the type of Column, where Column denotes the first subtype of the type. For an example of the definition of an anonymous type, see the declaration of the array Color_Table in 3.3.1; its type is anonymous - it has no nameable subtypes. 
+NOTE 1   Each of the above examples declares a named type. The identifier given denotes the first subtype of the type. Other named subtypes of the type can be declared with subtype_declarations (see 3.2.2). Although names do not directly denote types, a phrase like "the type Column" is sometimes used in this document to refer to the type of Column, where Column denotes the first subtype of the type. For an example of the definition of an anonymous type, see the declaration of the array Color_Table in 3.3.1; its type is anonymous - it has no nameable subtypes. 
 
 
 #### Wording Changes from Ada 83
 
-The syntactic category [full_type_declaration](S0021) now includes task and protected type declarations.
+The syntactic category full_type_declaration now includes task and protected type declarations.
 
 We have generalized the concept of first-named subtype (now called simply "first subtype") to cover all kinds of types, for uniformity of description elsewhere. RM83 defined first-named subtype in Section 13. We define first subtype here, because it is now a more fundamental concept. We renamed the term, because in Ada 95 some first subtypes have no name.
 
-We no longer elaborate [discriminant_part](S0056)s, because there is nothing to do, and it was complex to say that you only wanted to elaborate it once for a private or incomplete type. This is also consistent with the fact that subprogram specifications are not elaborated (neither in Ada 83 nor in Ada 95). Note, however, that an [access_definition](S0077) appearing in a [discriminant_part](S0056) is elaborated when an object with such a discriminant is created. 
+We no longer elaborate discriminant_parts, because there is nothing to do, and it was complex to say that you only wanted to elaborate it once for a private or incomplete type. This is also consistent with the fact that subprogram specifications are not elaborated (neither in Ada 83 nor in Ada 95). Note, however, that an access_definition appearing in a discriminant_part is elaborated when an object with such a discriminant is created. 
 
 
 ### 3.2.2  Subtype Declarations
 
-A [subtype_declaration](S0023) declares a subtype of some previously declared type, as defined by a [subtype_indication](S0024). 
+A subtype_declaration declares a subtype of some previously declared type, as defined by a subtype_indication. 
 
 
 #### Syntax
 
 subtype_declaration ::= 
-   subtype [defining_identifier](S0019) is [subtype_indication](S0024);
+   subtype defining_identifier is subtype_indication;
 
-subtype_indication ::=  [subtype_mark](S0025) [[constraint](S0026)]
+subtype_indication ::=  subtype_mark [constraint]
 
-subtype_mark ::= subtype_[name](S0084)
+subtype_mark ::= subtype_name
 
-Ramification: Note that [name](S0084) includes [attribute_reference](S0093); thus, S'Base can be used as a [subtype_mark](S0025). 
+Ramification: Note that name includes attribute_reference; thus, S'Base can be used as a subtype_mark. 
 
-Reason: We considered changing [subtype_mark](S0025) to subtype_name. However, existing users are used to the word "mark," so we're keeping it. 
+Reason: We considered changing subtype_mark to subtype_name. However, existing users are used to the word "mark," so we're keeping it. 
 
-constraint ::= [scalar_constraint](S0027) | [composite_constraint](S0028)
+constraint ::= scalar_constraint | composite_constraint
 
 scalar_constraint ::= 
-     [range_constraint](S0033) | [digits_constraint](S0047) | [delta_constraint](S0275)
+     range_constraint | digits_constraint | delta_constraint
 
 composite_constraint ::= 
-     [index_constraint](S0054) | [discriminant_constraint](S0061)
+     index_constraint | discriminant_constraint
 
 
 #### Name Resolution Rules
 
-A [subtype_mark](S0025) shall resolve to denote a subtype. The type determined by a [subtype_mark](S0025) is the type of the subtype denoted by the [subtype_mark](S0025). 
+A subtype_mark shall resolve to denote a subtype. The type determined by a subtype_mark is the type of the subtype denoted by the subtype_mark. 
 
-Ramification: Types are never directly named; all [subtype_mark](S0025)s denote subtypes - possibly an unconstrained (base) subtype, but never the type. When we use the term anonymous type we really mean a type with no namable subtypes. 
+Ramification: Types are never directly named; all subtype_marks denote subtypes - possibly an unconstrained (base) subtype, but never the type. When we use the term anonymous type we really mean a type with no namable subtypes. 
 
 
 #### Dynamic Semantics
 
-The elaboration of a [subtype_declaration](S0023) consists of the elaboration of the [subtype_indication](S0024). The elaboration of a [subtype_indication](S0024) creates a new subtype. If the [subtype_indication](S0024) does not include a [constraint](S0026), the new subtype has the same (possibly null) constraint as that denoted by the [subtype_mark](S0025). The elaboration of a [subtype_indication](S0024) that includes a [constraint](S0026) proceeds as follows: 
+The elaboration of a subtype_declaration consists of the elaboration of the subtype_indication. The elaboration of a subtype_indication creates a new subtype. If the subtype_indication does not include a constraint, the new subtype has the same (possibly null) constraint as that denoted by the subtype_mark. The elaboration of a subtype_indication that includes a constraint proceeds as follows: 
 
-The [constraint](S0026) is first elaborated.
+The constraint is first elaborated.
 
-A check is then made that the [constraint](S0026) is compatible with the subtype denoted by the [subtype_mark](S0025). 
+A check is then made that the constraint is compatible with the subtype denoted by the subtype_mark. 
 
 Ramification: The checks associated with constraint compatibility are all Range_Checks. Discriminant_Checks and Index_Checks are associated only with checks that a value satisfies a constraint. 
 
-The condition imposed by a [constraint](S0026) is the condition obtained after elaboration of the [constraint](S0026). The rules defining compatibility are given for each form of [constraint](S0026) in the appropriate subclause. These rules are such that if a [constraint](S0026) is compatible with a subtype, then the condition imposed by the [constraint](S0026) cannot contradict any condition already imposed by the subtype on its values. The exception Constraint_Error is raised if any check of compatibility fails. 
+The condition imposed by a constraint is the condition obtained after elaboration of the constraint. The rules defining compatibility are given for each form of constraint in the appropriate subclause. These rules are such that if a constraint is compatible with a subtype, then the condition imposed by the constraint cannot contradict any condition already imposed by the subtype on its values. The exception Constraint_Error is raised if any check of compatibility fails. 
 
-To be honest: The condition imposed by a [constraint](S0026) is named after it - a [range_constraint](S0033) imposes a range constraint, etc. 
+To be honest: The condition imposed by a constraint is named after it - a range_constraint imposes a range constraint, etc. 
 
-Ramification: A [range_constraint](S0033) causes freezing of its type. Other [constraint](S0026)s do not. 
+Ramification: A range_constraint causes freezing of its type. Other constraints do not. 
 
-NOTE 1   A [scalar_constraint](S0027) may be applied to a subtype of an appropriate scalar type (see 3.5, 3.5.9, and J.3), even if the subtype is already constrained. On the other hand, a [composite_constraint](S0028) may be applied to a composite subtype (or an access-to-composite subtype) only if the composite subtype is unconstrained (see 3.6.1 and 3.7.1). 
+NOTE 1   A scalar_constraint may be applied to a subtype of an appropriate scalar type (see 3.5, 3.5.9, and J.3), even if the subtype is already constrained. On the other hand, a composite_constraint may be applied to a composite subtype (or an access-to-composite subtype) only if the composite subtype is unconstrained (see 3.6.1 and 3.7.1). 
 
 
 #### Examples
@@ -428,14 +428,14 @@ subtype Male      is Person(Sex =&gt M);               --  see 3.10.1
 
 #### Incompatibilities With Ada 83
 
-In Ada 95, all [range_constraint](S0033)s cause freezing of their type. Hence, a type-related representation item for a scalar type has to precede any [range_constraint](S0033)s whose type is the scalar type. 
+In Ada 95, all range_constraints cause freezing of their type. Hence, a type-related representation item for a scalar type has to precede any range_constraints whose type is the scalar type. 
 
 
 #### Wording Changes from Ada 83
 
-[Subtype_mark](S0025)s allow only subtype names now, since types are never directly named. There is no need for RM83-3.3.2(3), which says a [subtype_mark](S0025) can denote both the type and the subtype; in Ada 95, you denote an unconstrained (base) subtype if you want, but never the type.
+Subtype_marks allow only subtype names now, since types are never directly named. There is no need for RM83-3.3.2(3), which says a subtype_mark can denote both the type and the subtype; in Ada 95, you denote an unconstrained (base) subtype if you want, but never the type.
 
-The syntactic category type_mark is now called [subtype_mark](S0025), since it always denotes a subtype. 
+The syntactic category type_mark is now called subtype_mark, since it always denotes a subtype. 
 
 
 ### 3.2.3  Classification of Operations
@@ -461,7 +461,7 @@ For a derived type, the inherited (see 3.4) user-defined subprograms;
 
 For an enumeration type, the enumeration literals (which are considered parameterless functions - see 3.5.1);
 
-For a specific type declared immediately within a [package_specification](S0162), any subprograms (in addition to the enumeration literals) that are explicitly declared immediately within the same [package_specification](S0162) and that operate on the type;
+For a specific type declared immediately within a package_specification, any subprograms (in addition to the enumeration literals) that are explicitly declared immediately within the same package_specification and that operate on the type;
 
 Any subprograms not covered above [that are explicitly declared immediately within the same declarative region as the type] and that override (see 8.3) other implicitly declared primitive subprograms of the type. 
 
@@ -471,7 +471,7 @@ Ramification: It is possible for a subprogram to be primitive for more than one 
 
 Discussion: The order of the implicit declarations when there are both predefined operators and inherited subprograms is described in 3.4, "Derived Types and Classes". 
 
-A primitive subprogram whose designator is an [operator_symbol](S0147) is called a primitive operator.
+A primitive subprogram whose designator is an operator_symbol is called a primitive operator.
 
 
 #### Incompatibilities With Ada 83
@@ -493,18 +493,18 @@ The description of S'Base has been moved to 3.5, "Scalar Types" because it is no
 
 ## 3.3  Objects and Named Numbers
 
-[Objects are created at run time and contain a value of a given type. An object can be created and initialized as part of elaborating a declaration, evaluating an [allocator](S0122), [aggregate](S0097), or [function_call](S0156), or passing a parameter by copy. Prior to reclaiming the storage for an object, it is finalized if necessary (see 7.6.1).] 
+[Objects are created at run time and contain a value of a given type. An object can be created and initialized as part of elaborating a declaration, evaluating an allocator, aggregate, or function_call, or passing a parameter by copy. Prior to reclaiming the storage for an object, it is finalized if necessary (see 7.6.1).] 
 
 
 #### Static Semantics
 
 All of the following are objects: 
 
-Glossary entry: An object is either a constant or a variable. An object contains a value. An object is created by an [object_declaration](S0029) or by an [allocator](S0122). A formal parameter is (a view of) an object. A subcomponent of an object is an object.
+Glossary entry: An object is either a constant or a variable. An object contains a value. An object is created by an object_declaration or by an allocator. A formal parameter is (a view of) an object. A subcomponent of an object is an object.
 
-Version=[5],Kind=(AddedNormal),Group=[T],Term=[object], Def=[an entity that contains a value, and is either a constant or a variable], Note1=[An object is created by an [object_declaration](S0029) or by an [allocator](S0122). A formal parameter is (a view of) an object. A subcomponent of an object is an object.]
+Version=[5],Kind=(AddedNormal),Group=[T],Term=[object], Def=[an entity that contains a value, and is either a constant or a variable], Note1=[An object is created by an object_declaration or by an allocator. A formal parameter is (a view of) an object. A subcomponent of an object is an object.]
 
-the entity declared by an [object_declaration](S0029);
+the entity declared by an object_declaration;
 
 a formal parameter of a subprogram, entry, or generic subprogram;
 
@@ -512,15 +512,15 @@ a generic formal object;
 
 a loop parameter;
 
-a choice parameter of an [exception_handler](S0232);
+a choice parameter of an exception_handler;
 
-an entry index of an [entry_body](S0190);
+an entry index of an entry_body;
 
 the result of dereferencing an access-to-object value (see 4.1);
 
-the result of evaluating a [function_call](S0156) (or the equivalent operator invocation - see 6.6);
+the result of evaluating a function_call (or the equivalent operator invocation - see 6.6);
 
-the result of evaluating an [aggregate](S0097);
+the result of evaluating an aggregate;
 
 a component, slice, or view conversion of another object. 
 
@@ -532,7 +532,7 @@ Ramification: Reading and updating are intended to include read/write references
 
 Whether a view of an object is constant or variable is determined by the definition of the view. The following (and no others) represent constants: 
 
-an object declared by an [object_declaration](S0029) with the reserved word constant;
+an object declared by an object_declaration with the reserved word constant;
 
 a formal parameter or generic formal object of mode in;
 
@@ -542,17 +542,17 @@ a loop parameter, choice parameter, or entry index;
 
 the dereference of an access-to-constant value;
 
-the result of evaluating a [function_call](S0156) or an [aggregate](S0097);
+the result of evaluating a function_call or an aggregate;
 
-a [selected_component](S0091), [indexed_component](S0089), [slice](S0090), or view conversion of a constant.
+a selected_component, indexed_component, slice, or view conversion of a constant.
 
 To be honest: A noninvertible view conversion to a general access type is also defined to be a constant - see 4.6. 
 
-At the place where a view of an object is defined, a nominal subtype is associated with the view. The object's actual subtype (that is, its subtype) can be more restrictive than the nominal subtype of the view; it always is if the nominal subtype is an indefinite subtype. A subtype is an indefinite subtype if it is an unconstrained array subtype, or if it has unknown discriminants or unconstrained discriminants without defaults (see 3.7); otherwise the subtype is a definite subtype [(all elementary subtypes are definite subtypes)]. [A class-wide subtype is defined to have unknown discriminants, and is therefore an indefinite subtype. An indefinite subtype does not by itself provide enough information to create an object; an additional [constraint](S0026) or explicit initialization [expression](S0108) is necessary (see 3.3.1). A component cannot have an indefinite nominal subtype.]
+At the place where a view of an object is defined, a nominal subtype is associated with the view. The object's actual subtype (that is, its subtype) can be more restrictive than the nominal subtype of the view; it always is if the nominal subtype is an indefinite subtype. A subtype is an indefinite subtype if it is an unconstrained array subtype, or if it has unknown discriminants or unconstrained discriminants without defaults (see 3.7); otherwise the subtype is a definite subtype [(all elementary subtypes are definite subtypes)]. [A class-wide subtype is defined to have unknown discriminants, and is therefore an indefinite subtype. An indefinite subtype does not by itself provide enough information to create an object; an additional constraint or explicit initialization expression is necessary (see 3.3.1). A component cannot have an indefinite nominal subtype.]
 
 Version=[5],Kind=(AddedNormal),Group=[T], Term=[nominal subtype of a view of an object], Def=[the subtype specified when the view is defined]
 
-A named number provides a name for a numeric value known at compile time. It is declared by a [number_declaration](S0031). 
+A named number provides a name for a numeric value known at compile time. It is declared by a number_declaration. 
 
 NOTE 1   A constant cannot be the target of an assignment operation, nor be passed as an in out or out parameter, between its initialization and finalization, if any.
 
@@ -563,7 +563,7 @@ NOTE 2   The nominal and actual subtypes of an elementary object are always the 
 
 There are additional kinds of objects (choice parameters and entry indices of entry bodies).
 
-The result of a function and of evaluating an aggregate are considered (constant) objects. This is necessary to explain the action of finalization on such things. Because a [function_call](S0156) is also syntactically a [name](S0084) (see 4.1), the result of a [function_call](S0156) can be renamed, thereby allowing repeated use of the result without calling the function again. 
+The result of a function and of evaluating an aggregate are considered (constant) objects. This is necessary to explain the action of finalization on such things. Because a function_call is also syntactically a name (see 4.1), the result of a function_call can be renamed, thereby allowing repeated use of the result without calling the function again. 
 
 
 #### Wording Changes from Ada 83
@@ -572,80 +572,80 @@ This clause and its subclauses now follow the clause and subclauses on types and
 
 The term nominal subtype is new. It is used to distinguish what is known at compile time about an object's constraint, versus what its "true" run-time constraint is.
 
-The terms definite and indefinite (which apply to subtypes) are new. They are used to aid in the description of generic formal type matching, and to specify when an explicit initial value is required in an [object_declaration](S0029).
+The terms definite and indefinite (which apply to subtypes) are new. They are used to aid in the description of generic formal type matching, and to specify when an explicit initial value is required in an object_declaration.
 
-We have moved the syntax for [object_declaration](S0029) and [number_declaration](S0031) down into their respective subclauses, to keep the syntax close to the description of the associated semantics.
+We have moved the syntax for object_declaration and number_declaration down into their respective subclauses, to keep the syntax close to the description of the associated semantics.
 
-We talk about variables and constants here, since the discussion is not specific to [object_declaration](S0029)s, and it seems better to have the list of the kinds of constants juxtaposed with the kinds of objects.
+We talk about variables and constants here, since the discussion is not specific to object_declarations, and it seems better to have the list of the kinds of constants juxtaposed with the kinds of objects.
 
 We no longer talk about indirect updating due to parameter passing. Parameter passing is handled in 6.2 and 6.4.1 in a way that there is no need to mention it here in the definition of read and update. Reading and updating now includes the case of evaluating or assigning to an enclosing object. 
 
 
 ### 3.3.1  Object Declarations
 
-An [object_declaration](S0029) declares a stand-alone object with a given nominal subtype and, optionally, an explicit initial value given by an initialization expression. For an array, task, or protected object, the [object_declaration](S0029) may include the definition of the (anonymous) type of the object. 
+An object_declaration declares a stand-alone object with a given nominal subtype and, optionally, an explicit initial value given by an initialization expression. For an array, task, or protected object, the object_declaration may include the definition of the (anonymous) type of the object. 
 
 
 #### Syntax
 
 object_declaration ::= 
-    [defining_identifier_list](S0030) : [aliased] [constant] [subtype_indication](S0024) [:= [expression](S0108)];
-  | [defining_identifier_list](S0030) : [aliased] [constant] [array_type_definition](S0048) [:= [expression](S0108)];
-  | [single_task_declaration](S0176)
-  | [single_protected_declaration](S0181)
+    defining_identifier_list : [aliased] [constant] subtype_indication [:= expression];
+  | defining_identifier_list : [aliased] [constant] array_type_definition [:= expression];
+  | single_task_declaration
+  | single_protected_declaration
 
 defining_identifier_list ::= 
-  [defining_identifier](S0019) {, [defining_identifier](S0019)}
+  defining_identifier {, defining_identifier}
 
 
 #### Name Resolution Rules
 
-For an [object_declaration](S0029) with an [expression](S0108) following the compound delimiter :=, the type expected for the [expression](S0108) is that of the object. This [expression](S0108) is called the initialization expression. 
+For an object_declaration with an expression following the compound delimiter :=, the type expected for the expression is that of the object. This expression is called the initialization expression. 
 
 
 #### Legality Rules
 
-An [object_declaration](S0029) without the reserved word constant declares a variable object. If it has a [subtype_indication](S0024) or an [array_type_definition](S0048) that defines an indefinite subtype, then there shall be an initialization expression. An initialization expression shall not be given if the object is of a limited type. 
+An object_declaration without the reserved word constant declares a variable object. If it has a subtype_indication or an array_type_definition that defines an indefinite subtype, then there shall be an initialization expression. An initialization expression shall not be given if the object is of a limited type. 
 
 
 #### Static Semantics
 
-An [object_declaration](S0029) with the reserved word constant declares a constant object. If it has an initialization expression, then it is called a full constant declaration. Otherwise it is called a deferred constant declaration. The rules for deferred constant declarations are given in clause 7.4. The rules for full constant declarations are given in this subclause.
+An object_declaration with the reserved word constant declares a constant object. If it has an initialization expression, then it is called a full constant declaration. Otherwise it is called a deferred constant declaration. The rules for deferred constant declarations are given in clause 7.4. The rules for full constant declarations are given in this subclause.
 
-Any declaration that includes a [defining_identifier_list](S0030) with more than one [defining_identifier](S0019) is equivalent to a series of declarations each containing one [defining_identifier](S0019) from the list, with the rest of the text of the declaration copied for each declaration in the series, in the same order as the list. The remainder of this Reference Manual relies on this equivalence; explanations are given for declarations with a single [defining_identifier](S0019).
+Any declaration that includes a defining_identifier_list with more than one defining_identifier is equivalent to a series of declarations each containing one defining_identifier from the list, with the rest of the text of the declaration copied for each declaration in the series, in the same order as the list. The remainder of this Reference Manual relies on this equivalence; explanations are given for declarations with a single defining_identifier.
 
-The [subtype_indication](S0024) or full type definition of an [object_declaration](S0029) defines the nominal subtype of the object. The [object_declaration](S0029) declares an object of the type of the nominal subtype. 
+The subtype_indication or full type definition of an object_declaration defines the nominal subtype of the object. The object_declaration declares an object of the type of the nominal subtype. 
 
 Discussion: The phrase "full type definition" here includes the case of an anonymous array, task, or protected type. 
 
 
 #### Dynamic Semantics
 
-If a composite object declared by an [object_declaration](S0029) has an unconstrained nominal subtype, then if this subtype is indefinite or the object is constant or aliased (see 3.10) the actual subtype of this object is constrained. The constraint is determined by the bounds or discriminants (if any) of its initial value; the object is said to be constrained by its initial value. [In the case of an aliased object, this initial value may be either explicit or implicit; in the other cases, an explicit initial value is required.] When not constrained by its initial value, the actual and nominal subtypes of the object are the same. If its actual subtype is constrained, the object is called a constrained object.
+If a composite object declared by an object_declaration has an unconstrained nominal subtype, then if this subtype is indefinite or the object is constant or aliased (see 3.10) the actual subtype of this object is constrained. The constraint is determined by the bounds or discriminants (if any) of its initial value; the object is said to be constrained by its initial value. [In the case of an aliased object, this initial value may be either explicit or implicit; in the other cases, an explicit initial value is required.] When not constrained by its initial value, the actual and nominal subtypes of the object are the same. If its actual subtype is constrained, the object is called a constrained object.
 
-For an [object_declaration](S0029) without an initialization expression, any initial values for the object or its subcomponents are determined by the implicit initial values defined for its nominal subtype, as follows: 
+For an object_declaration without an initialization expression, any initial values for the object or its subcomponents are determined by the implicit initial values defined for its nominal subtype, as follows: 
 
 The implicit initial value for an access subtype is the null value of the access type.
 
 The implicit initial (and only) value for each discriminant of a constrained discriminated subtype is defined by the subtype.
 
-For a (definite) composite subtype, the implicit initial value of each component with a [default_expression](S0060) is obtained by evaluation of this expression and conversion to the component's nominal subtype (which might raise Constraint_Error - see 4.6, "Type Conversions"), unless the component is a discriminant of a constrained subtype (the previous case), or is in an excluded [variant](S0069) (see 3.8.1). For each component that does not have a [default_expression](S0060), any implicit initial values are those determined by the component's nominal subtype.
+For a (definite) composite subtype, the implicit initial value of each component with a default_expression is obtained by evaluation of this expression and conversion to the component's nominal subtype (which might raise Constraint_Error - see 4.6, "Type Conversions"), unless the component is a discriminant of a constrained subtype (the previous case), or is in an excluded variant (see 3.8.1). For each component that does not have a default_expression, any implicit initial values are those determined by the component's nominal subtype.
 
 For a protected or task subtype, there is an implicit component (an entry queue) corresponding to each entry, with its implicit initial value being an empty queue. 
 
 Implementation Note: The implementation may add implicit components for its own use, which might have implicit initial values. For a task subtype, such components might represent the state of the associated thread of control. For a type with dynamic-sized components, such implicit components might be used to hold the offset to some explicit component. 
 
-The elaboration of an [object_declaration](S0029) proceeds in the following sequence of steps: 
+The elaboration of an object_declaration proceeds in the following sequence of steps: 
 
-a)The [subtype_indication](S0024), [array_type_definition](S0048), [single_task_declaration](S0176), or [single_protected_declaration](S0181) is first elaborated. This creates the nominal subtype (and the anonymous type in the latter three cases).
+a)The subtype_indication, array_type_definition, single_task_declaration, or single_protected_declaration is first elaborated. This creates the nominal subtype (and the anonymous type in the latter three cases).
 
-b)If the [object_declaration](S0029) includes an initialization expression, the (explicit) initial value is obtained by evaluating the expression and converting it to the nominal subtype (which might raise Constraint_Error - see 4.6). 
+b)If the object_declaration includes an initialization expression, the (explicit) initial value is obtained by evaluating the expression and converting it to the nominal subtype (which might raise Constraint_Error - see 4.6). 
 
 c)The object is created, and, if there is not an initialization expression, any per-object expressions (see 3.8) are evaluated and any implicit initial values for the object or for its subcomponents are obtained as determined by the nominal subtype. 
 
-Discussion: For a per-object constraint that contains some per-object expressions and some non-per-object expressions, the values used for the constraint consist of the values of the non-per-object expressions evaluated at the point of the [type_declaration](S0020), and the values of the per-object expressions evaluated at the point of the creation of the object.
+Discussion: For a per-object constraint that contains some per-object expressions and some non-per-object expressions, the values used for the constraint consist of the values of the non-per-object expressions evaluated at the point of the type_declaration, and the values of the per-object expressions evaluated at the point of the creation of the object.
 
-The elaboration of per-object constraints was presumably performed as part of the dependent compatibility check in Ada 83. If the object is of a limited type with an access discriminant, the [access_definition](S0077) is elaborated at this time (see 3.7). 
+The elaboration of per-object constraints was presumably performed as part of the dependent compatibility check in Ada 83. If the object is of a limited type with an access discriminant, the access_definition is elaborated at this time (see 3.7). 
 
 Reason: The reason we say that evaluating an explicit initialization expression happens before creating the object is that in some cases it is impossible to know the size of the object being created until its initial value is known, as in "X: String := Func_Call(...);". The implementation can create the object early in the common case where the size can be known early, since this optimization is semantically neutral. 
 
@@ -653,7 +653,7 @@ d)Any initial values (whether explicit or implicit) are assigned to the object o
 
 Ramification: Since the initial values have already been converted to the appropriate nominal subtype, the only Constraint_Errors that might occur as part of these assignments are for values outside their base range that are used to initialize unconstrained numeric subcomponents. See 3.5. 
 
-For the third step above, the object creation and any elaborations and evaluations are performed in an arbitrary order, except that if the [default_expression](S0060) for a discriminant is evaluated to obtain its initial value, then this evaluation is performed before that of the [default_expression](S0060) for any component that depends on the discriminant, and also before that of any [default_expression](S0060) that includes the name of the discriminant. The evaluations of the third step and the assignments of the fourth step are performed in an arbitrary order, except that each evaluation is performed before the resulting value is assigned. 
+For the third step above, the object creation and any elaborations and evaluations are performed in an arbitrary order, except that if the default_expression for a discriminant is evaluated to obtain its initial value, then this evaluation is performed before that of the default_expression for any component that depends on the discriminant, and also before that of any default_expression that includes the name of the discriminant. The evaluations of the third step and the assignments of the fourth step are performed in an arbitrary order, except that each evaluation is performed before the resulting value is assigned. 
 
 Reason: For example: 
 
@@ -676,11 +676,11 @@ For the elaboration of the declaration of X, it is important that F be evaluated
 
 To be honest: It could even be represented by a bit pattern that doesn't actually represent any value of the type at all, such as an invalid internal code for an enumeration type, or a NaN for a floating point type. It is a generally a bounded error to reference scalar objects with such "invalid representations", as explained in 13.9.1, "Data Validity". 
 
-Ramification: There is no requirement that two objects of the same scalar subtype have the same implicit initial "value" (or representation). It might even be the case that two elaborations of the same [object_declaration](S0029) produce two different initial values. However, any particular uninitialized object is default-initialized to a single value (or invalid representation). Thus, multiple reads of such an uninitialized object will produce the same value each time (if the implementation chooses not to detect the error). 
+Ramification: There is no requirement that two objects of the same scalar subtype have the same implicit initial "value" (or representation). It might even be the case that two elaborations of the same object_declaration produce two different initial values. However, any particular uninitialized object is default-initialized to a single value (or invalid representation). Thus, multiple reads of such an uninitialized object will produce the same value each time (if the implementation chooses not to detect the error). 
 
 NOTE 1   Implicit initial values are not defined for an indefinite subtype, because if an object's nominal subtype is indefinite, an explicit initial value is required.
 
-NOTE 2   As indicated above, a stand-alone object is an object declared by an [object_declaration](S0029). Similar definitions apply to "stand-alone constant" and "stand-alone variable". A subcomponent of an object is not a stand-alone object, nor is an object that is created by an [allocator](S0122). An object declared by a [loop_parameter_specification](S0137), [parameter_specification](S0152), [entry_index_specification](S0193), [choice_parameter_specification](S0233), or a [formal_object_declaration](S0245) is not called a stand-alone object.
+NOTE 2   As indicated above, a stand-alone object is an object declared by an object_declaration. Similar definitions apply to "stand-alone constant" and "stand-alone variable". A subcomponent of an object is not a stand-alone object, nor is an object that is created by an allocator. An object declared by a loop_parameter_specification, parameter_specification, entry_index_specification, choice_parameter_specification, or a formal_object_declaration is not called a stand-alone object.
 
 NOTE 3   The type of a stand-alone object cannot be abstract (see 3.9.3). 
 
@@ -734,23 +734,23 @@ Tolerance : constant Real := Dispersion(1.15);
 
 #### Extensions to Ada 83
 
-The syntax rule for [object_declaration](S0029) is modified to allow the aliased reserved word.
+The syntax rule for object_declaration is modified to allow the aliased reserved word.
 
-A variable declared by an [object_declaration](S0029) can be constrained by its initial value; that is, a variable of a nominally unconstrained array subtype, or discriminated type without defaults, can be declared so long as it has an explicit initial value. In Ada 83, this was permitted for constants, and for variables created by allocators, but not for variables declared by [object_declaration](S0029)s. This is particularly important for tagged class-wide types, since there is no way to constrain them explicitly, and so an initial value is the only way to provide a constraint. It is also important for generic formal private types with unknown discriminants.
+A variable declared by an object_declaration can be constrained by its initial value; that is, a variable of a nominally unconstrained array subtype, or discriminated type without defaults, can be declared so long as it has an explicit initial value. In Ada 83, this was permitted for constants, and for variables created by allocators, but not for variables declared by object_declarations. This is particularly important for tagged class-wide types, since there is no way to constrain them explicitly, and so an initial value is the only way to provide a constraint. It is also important for generic formal private types with unknown discriminants.
 
-We now allow an [unconstrained_array_definition](S0049) in an [object_declaration](S0029). This allows an object of an anonymous array type to have its bounds determined by its initial value. This is for uniformity: If one can write "X: constant array(Integer range 1..10) of Integer := ...;" then it makes sense to also allow "X: constant array(Integer range &lt&gt) of Integer := ...;". (Note that if anonymous array types are ever sensible, a common situation is for a table implemented as an array. Tables are often constant, and for constants, there's usually no point in forcing the user to count the number of elements in the value.) 
+We now allow an unconstrained_array_definition in an object_declaration. This allows an object of an anonymous array type to have its bounds determined by its initial value. This is for uniformity: If one can write "X: constant array(Integer range 1..10) of Integer := ...;" then it makes sense to also allow "X: constant array(Integer range &lt&gt) of Integer := ...;". (Note that if anonymous array types are ever sensible, a common situation is for a table implemented as an array. Tables are often constant, and for constants, there's usually no point in forcing the user to count the number of elements in the value.) 
 
 
 #### Wording Changes from Ada 83
 
-We have moved the syntax for [object_declaration](S0029)s into this subclause.
+We have moved the syntax for object_declarations into this subclause.
 
-Deferred constants no longer have a separate syntax rule, but rather are incorporated in [object_declaration](S0029) as constants declared without an initialization expression. 
+Deferred constants no longer have a separate syntax rule, but rather are incorporated in object_declaration as constants declared without an initialization expression. 
 
 
 ### 3.3.2  Number Declarations
 
-A [number_declaration](S0031) declares a named number. 
+A number_declaration declares a named number. 
 
 Discussion: If a value or other property of a construct is required to be static that means it is required to be determined prior to execution. A static expression is an expression whose value is computed at compile time and is usable in contexts where the actual value might affect the legality of the construct. This is fully defined in clause 4.9. 
 
@@ -758,31 +758,31 @@ Discussion: If a value or other property of a construct is required to be static
 #### Syntax
 
 number_declaration ::= 
-     [defining_identifier_list](S0030) : constant := static_[expression](S0108);
+     defining_identifier_list : constant := static_expression;
 
 
 #### Name Resolution Rules
 
-The static_[expression](S0108) given for a [number_declaration](S0031) is expected to be of any numeric type.
+The static_expression given for a number_declaration is expected to be of any numeric type.
 
 
 #### Legality Rules
 
-The static_[expression](S0108) given for a number declaration shall be a static expression, as defined by clause 4.9. 
+The static_expression given for a number declaration shall be a static expression, as defined by clause 4.9. 
 
 
 #### Static Semantics
 
-The named number denotes a value of type universal_integer if the type of the static_[expression](S0108) is an integer type. The named number denotes a value of type universal_real if the type of the static_[expression](S0108) is a real type.
+The named number denotes a value of type universal_integer if the type of the static_expression is an integer type. The named number denotes a value of type universal_real if the type of the static_expression is a real type.
 
-The value denoted by the named number is the value of the static_[expression](S0108), converted to the corresponding universal type. 
+The value denoted by the named number is the value of the static_expression, converted to the corresponding universal type. 
 
 
 #### Dynamic Semantics
 
-The elaboration of a [number_declaration](S0031) has no effect. 
+The elaboration of a number_declaration has no effect. 
 
-Proof: Since the static_[expression](S0108) was evaluated at compile time. 
+Proof: Since the static_expression was evaluated at compile time. 
 
 
 #### Examples
@@ -812,12 +812,12 @@ We now allow a static expression of any numeric type to initialize a named numbe
 
 We have moved the syntax rule into this subclause.
 
-AI83-00263 describes the elaboration of a number declaration in words similar to that of an [object_declaration](S0029). However, since there is no expression to be evaluated and no object to be created, it seems simpler to say that the elaboration has no effect. 
+AI83-00263 describes the elaboration of a number declaration in words similar to that of an object_declaration. However, since there is no expression to be evaluated and no object to be created, it seems simpler to say that the elaboration has no effect. 
 
 
 ## 3.4  Derived Types and Classes
 
-A [derived_type_definition](S0032) defines a new type (and its first subtype) whose characteristics are derived from those of a parent type. 
+A derived_type_definition defines a new type (and its first subtype) whose characteristics are derived from those of a parent type. 
 
 Glossary entry: A derived type is a type defined in terms of another type, which is the parent type of the derived type. Each class containing the parent type also contains the derived type. The derived type inherits properties such as components and primitive operations from the parent. A type together with the types derived from it (directly or indirectly) form a derivation class.
 
@@ -826,33 +826,33 @@ Version=[5],Kind=(AddedNormal),Group=[T],Term=[derived type], Def=[a type define
 
 #### Syntax
 
-derived_type_definition ::= [abstract] new parent_[subtype_indication](S0024) [[record_extension_part](S0072)]
+derived_type_definition ::= [abstract] new parent_subtype_indication [record_extension_part]
 
 
 #### Legality Rules
 
-The parent_[subtype_indication](S0024) defines the parent subtype; its type is the parent type. 
+The parent_subtype_indication defines the parent subtype; its type is the parent type. 
 
 Version=[5],Kind=(AddedNormal),Group=[T],Term=[parent of a derived type], Def=[the first ancestor type given in the definition of the derived type], Note1=[The parent can be almost any kind of type, including an interface type.]
 
-A type shall be completely defined (see 3.11.1) prior to being specified as the parent type in a [derived_type_definition](S0032) - [the [full_type_declaration](S0021)s for the parent type and any of its subcomponents have to precede the [derived_type_definition](S0032).] 
+A type shall be completely defined (see 3.11.1) prior to being specified as the parent type in a derived_type_definition - [the full_type_declarations for the parent type and any of its subcomponents have to precede the derived_type_definition.] 
 
-Discussion: This restriction does not apply to the ancestor type of a private extension - see 7.3; such a type need not be completely defined prior to the [private_extension_declaration](S0165). However, the restriction does apply to record extensions, so the ancestor type will have to be completely defined prior to the [full_type_declaration](S0021) corresponding to the [private_extension_declaration](S0165). 
+Discussion: This restriction does not apply to the ancestor type of a private extension - see 7.3; such a type need not be completely defined prior to the private_extension_declaration. However, the restriction does apply to record extensions, so the ancestor type will have to be completely defined prior to the full_type_declaration corresponding to the private_extension_declaration. 
 
 Reason: We originally hoped we could relax this restriction. However, we found it too complex to specify the rules for a type derived from an incompletely defined limited type that subsequently became nonlimited. 
 
-If there is a [record_extension_part](S0072), the derived type is called a record extension of the parent type. A [record_extension_part](S0072) shall be provided if and only if the parent type is a tagged type. 
+If there is a record_extension_part, the derived type is called a record extension of the parent type. A record_extension_part shall be provided if and only if the parent type is a tagged type. 
 
-Implementation Note: We allow a record extension to inherit discriminants; an early version of Ada 9X did not. If the parent subtype is unconstrained, it can be implemented as though its discriminants were repeated in a new [known_discriminant_part](S0058) and then used to constrain the old ones one-for-one. However, in an extension aggregate, the discriminants in this case do not appear in the component association list. 
+Implementation Note: We allow a record extension to inherit discriminants; an early version of Ada 9X did not. If the parent subtype is unconstrained, it can be implemented as though its discriminants were repeated in a new known_discriminant_part and then used to constrain the old ones one-for-one. However, in an extension aggregate, the discriminants in this case do not appear in the component association list. 
 
 Ramification: This rule needs to be rechecked in the visible part of an instance of a generic unit 
 
 
 #### Static Semantics
 
-The first subtype of the derived type is unconstrained if a [known_discriminant_part](S0058) is provided in the declaration of the derived type, or if the parent subtype is unconstrained. Otherwise, the constraint of the first subtype corresponds to that of the parent subtype in the following sense: it is the same as that of the parent subtype except that for a range constraint (implicit or explicit), the value of each bound of its range is replaced by the corresponding value of the derived type. 
+The first subtype of the derived type is unconstrained if a known_discriminant_part is provided in the declaration of the derived type, or if the parent subtype is unconstrained. Otherwise, the constraint of the first subtype corresponds to that of the parent subtype in the following sense: it is the same as that of the parent subtype except that for a range constraint (implicit or explicit), the value of each bound of its range is replaced by the corresponding value of the derived type. 
 
-Discussion: A [digits_constraint](S0047) in a [subtype_indication](S0024) for a decimal fixed point subtype always imposes a range constraint, implicitly if there is no explicit one given. See 3.5.9, "Fixed Point Types". 
+Discussion: A digits_constraint in a subtype_indication for a decimal fixed point subtype always imposes a range constraint, implicitly if there is no explicit one given. See 3.5.9, "Fixed Point Types". 
 
 The characteristics of the derived type are defined as follows: 
 
@@ -862,27 +862,27 @@ Discussion: This is inherent in our notion of a "class" of types. It is not ment
 
 If the parent type is an elementary type or an array type, then the set of possible values of the derived type is a copy of the set of possible values of the parent type. For a scalar type, the base range of the derived type is the same as that of the parent type. 
 
-Discussion: The base range of a type defined by an [integer_type_definition](S0038) or a [real_type_definition](S0041) is determined by the _definition, and is not necessarily the same as that of the corresponding root numeric type from which the newly defined type is implicitly derived. Treating numerics types as implicitly derived from one of the two root numeric types is simply to link them into a type hierarchy; such an implicit derivation does not follow all the rules given here for an explicit [derived_type_definition](S0032). 
+Discussion: The base range of a type defined by an integer_type_definition or a real_type_definition is determined by the _definition, and is not necessarily the same as that of the corresponding root numeric type from which the newly defined type is implicitly derived. Treating numerics types as implicitly derived from one of the two root numeric types is simply to link them into a type hierarchy; such an implicit derivation does not follow all the rules given here for an explicit derived_type_definition. 
 
 If the parent type is a composite type other than an array type, then the components, protected subprograms, and entries that are declared for the derived type are as follows: 
 
-The discriminants specified by a new [known_discriminant_part](S0058), if there is one; otherwise, each discriminant of the parent type (implicitly declared in the same order with the same specifications) - in the latter case, the discriminants are said to be inherited, or if unknown in the parent, are also unknown in the derived type;
+The discriminants specified by a new known_discriminant_part, if there is one; otherwise, each discriminant of the parent type (implicitly declared in the same order with the same specifications) - in the latter case, the discriminants are said to be inherited, or if unknown in the parent, are also unknown in the derived type;
 
 Each nondiscriminant component, entry, and protected subprogram of the parent type, implicitly declared in the same order with the same declarations; these components, entries, and protected subprograms are said to be inherited; 
 
-Ramification: The profiles of entries and protected subprograms do not change upon type derivation, although the type of the "implicit" parameter identified by the [prefix](S0086) of the [name](S0084) in a call does.
+Ramification: The profiles of entries and protected subprograms do not change upon type derivation, although the type of the "implicit" parameter identified by the prefix of the name in a call does.
 
-To be honest: Any name in the parent [type_declaration](S0020) that denotes the current instance of the type is replaced with a name denoting the current instance of the derived type, converted to the parent type.
+To be honest: Any name in the parent type_declaration that denotes the current instance of the type is replaced with a name denoting the current instance of the derived type, converted to the parent type.
 
-Each component declared in a [record_extension_part](S0072), if any. 
+Each component declared in a record_extension_part, if any. 
 
-Declarations of components, protected subprograms, and entries, whether implicit or explicit, occur immediately within the declarative region of the type, in the order indicated above, following the parent [subtype_indication](S0024). 
+Declarations of components, protected subprograms, and entries, whether implicit or explicit, occur immediately within the declarative region of the type, in the order indicated above, following the parent subtype_indication. 
 
-Discussion: The order of declarations within the region matters for [record_aggregate](S0098)s and [extension_aggregate](S0102)s. 
+Discussion: The order of declarations within the region matters for record_aggregates and extension_aggregates. 
 
-Ramification: In most cases, these things are implicitly declared immediately following the parent [subtype_indication](S0024). However, 7.3.1, "Private Operations" defines some cases in which they are implicitly declared later, and some cases in which the are not declared at all. 
+Ramification: In most cases, these things are implicitly declared immediately following the parent subtype_indication. However, 7.3.1, "Private Operations" defines some cases in which they are implicitly declared later, and some cases in which the are not declared at all. 
 
-Discussion: The place of the implicit declarations of inherited components matters for visibility - they are not visible in the [known_discriminant_part](S0058) nor in the parent [subtype_indication](S0024), but are usually visible within the [record_extension_part](S0072), if any (although there are restrictions on their use). Note that a discriminant specified in a new [known_discriminant_part](S0058) is not considered "inherited" even if it has the same name and subtype as a discriminant of the parent type. 
+Discussion: The place of the implicit declarations of inherited components matters for visibility - they are not visible in the known_discriminant_part nor in the parent subtype_indication, but are usually visible within the record_extension_part, if any (although there are restrictions on their use). Note that a discriminant specified in a new known_discriminant_part is not considered "inherited" even if it has the same name and subtype as a discriminant of the parent type. 
 
 The derived type is limited if and only if the parent type is limited. 
 
@@ -894,9 +894,9 @@ Proof: This is a ramification of the fact that each class that includes the pare
 
 Reason: Predefined operators are handled separately because they follow a slightly different rule than user-defined primitive subprograms. In particular the systematic replacement described below does not apply fully to the relational operators for Boolean and the exponentiation operator for Integer. The relational operators for a type derived from Boolean still return Standard.Boolean. The exponentiation operator for a type derived from Integer still expects Standard.Integer for the right operand. In addition, predefined operators "reemerge" when a type is the actual type corresponding to a generic formal type, so they need to be well defined even if hidden by user-defined primitive subprograms. 
 
-For each user-defined primitive subprogram (other than a user-defined equality operator - see below) of the parent type that already exists at the place of the [derived_type_definition](S0032), there exists a corresponding inherited primitive subprogram of the derived type with the same defining name. Primitive user-defined equality operators of the parent type are also inherited by the derived type, except when the derived type is a nonlimited record extension, and the inherited operator would have a profile that is type conformant with the profile of the corresponding predefined equality operator; in this case, the user-defined equality operator is not inherited, but is rather incorporated into the implementation of the predefined equality operator of the record extension (see 4.5.2). 
+For each user-defined primitive subprogram (other than a user-defined equality operator - see below) of the parent type that already exists at the place of the derived_type_definition, there exists a corresponding inherited primitive subprogram of the derived type with the same defining name. Primitive user-defined equality operators of the parent type are also inherited by the derived type, except when the derived type is a nonlimited record extension, and the inherited operator would have a profile that is type conformant with the profile of the corresponding predefined equality operator; in this case, the user-defined equality operator is not inherited, but is rather incorporated into the implementation of the predefined equality operator of the record extension (see 4.5.2). 
 
-Ramification: We say "...already exists..." rather than "is visible" or "has been declared" because there are certain operations that are declared later, but still exist at the place of the [derived_type_definition](S0032), and there are operations that are never declared, but still exist. These cases are explained in 7.3.1.
+Ramification: We say "...already exists..." rather than "is visible" or "has been declared" because there are certain operations that are declared later, but still exist at the place of the derived_type_definition, and there are operations that are never declared, but still exist. These cases are explained in 7.3.1.
 
 Note that nonprivate extensions can appear only after the last primitive subprogram of the parent - the freezing rules ensure this. 
 
@@ -906,28 +906,28 @@ Ramification: Because user-defined equality operators are not inherited by recor
 
 The profile of an inherited subprogram (including an inherited enumeration literal) is obtained from the profile of the corresponding (user-defined) primitive subprogram of the parent type, after systematic replacement of each subtype of its profile (see 6.1) that is of the parent type with a corresponding subtype of the derived type. For a given subtype of the parent type, the corresponding subtype of the derived type is defined as follows: 
 
-If the declaration of the derived type has neither a [known_discriminant_part](S0058) nor a [record_extension_part](S0072), then the corresponding subtype has a constraint that corresponds (as defined above for the first subtype of the derived type) to that of the given subtype.
+If the declaration of the derived type has neither a known_discriminant_part nor a record_extension_part, then the corresponding subtype has a constraint that corresponds (as defined above for the first subtype of the derived type) to that of the given subtype.
 
 If the derived type is a record extension, then the corresponding subtype is the first subtype of the derived type.
 
-If the derived type has a new [known_discriminant_part](S0058) but is not a record extension, then the corresponding subtype is constrained to those values that when converted to the parent type belong to the given subtype (see 4.6). 
+If the derived type has a new known_discriminant_part but is not a record extension, then the corresponding subtype is constrained to those values that when converted to the parent type belong to the given subtype (see 4.6). 
 
 Reason: An inherited subprogram of an untagged type has an Intrinsic calling convention, which precludes the use of the Access attribute. We preclude 'Access because correctly performing all required constraint checks on an indirect call to such an inherited subprogram was felt to impose an undesirable implementation burden.
 
-The same formal parameters have [default_expression](S0060)s in the profile of the inherited subprogram. [Any type mismatch due to the systematic replacement of the parent type by the derived type is handled as part of the normal type conversion associated with parameter passing - see 6.4.1.] 
+The same formal parameters have default_expressions in the profile of the inherited subprogram. [Any type mismatch due to the systematic replacement of the parent type by the derived type is handled as part of the normal type conversion associated with parameter passing - see 6.4.1.] 
 
 Reason: We don't introduce the type conversion explicitly here since conversions to record extensions or on access parameters are not generally legal. Furthermore, any type conversion would just be "undone" since the parent's subprogram is ultimately being called anyway. 
 
-If a primitive subprogram of the parent type is visible at the place of the [derived_type_definition](S0032), then the corresponding inherited subprogram is implicitly declared immediately after the [derived_type_definition](S0032). Otherwise, the inherited subprogram is implicitly declared later or not at all, as explained in 7.3.1.
+If a primitive subprogram of the parent type is visible at the place of the derived_type_definition, then the corresponding inherited subprogram is implicitly declared immediately after the derived_type_definition. Otherwise, the inherited subprogram is implicitly declared later or not at all, as explained in 7.3.1.
 
-A derived type can also be defined by a [private_extension_declaration](S0165) (see 7.3) or a [formal_derived_type_definition](S0249) (see 12.5.1). Such a derived type is a partial view of the corresponding full or actual type.
+A derived type can also be defined by a private_extension_declaration (see 7.3) or a formal_derived_type_definition (see 12.5.1). Such a derived type is a partial view of the corresponding full or actual type.
 
 All numeric types are derived types, in that they are implicitly derived from a corresponding root numeric type (see 3.5.4 and 3.5.6).
 
 
 #### Dynamic Semantics
 
-The elaboration of a [derived_type_definition](S0032) creates the derived type and its first subtype, and consists of the elaboration of the [subtype_indication](S0024) and the [record_extension_part](S0072), if any. If the [subtype_indication](S0024) depends on a discriminant, then only those expressions that do not depend on a discriminant are evaluated. 
+The elaboration of a derived_type_definition creates the derived type and its first subtype, and consists of the elaboration of the subtype_indication and the record_extension_part, if any. If the subtype_indication depends on a discriminant, then only those expressions that do not depend on a discriminant are evaluated. 
 
 For the execution of a call on an inherited subprogram, a call on the corresponding primitive subprogram of the parent type is performed; the normal conversion of each actual parameter to the subtype of the corresponding formal parameter (see 6.4.1) performs any necessary type conversion as well. If the result type of the inherited subprogram is the derived type, the result of calling the parent's subprogram is converted to the derived type. 
 
@@ -1015,11 +1015,11 @@ begin
 
 #### Extensions to Ada 83
 
-The syntax for a [derived_type_definition](S0032) is amended to include an optional [record_extension_part](S0072) (see 3.9.1).
+The syntax for a derived_type_definition is amended to include an optional record_extension_part (see 3.9.1).
 
-A derived type may override the discriminants of the parent by giving a new [discriminant_part](S0056).
+A derived type may override the discriminants of the parent by giving a new discriminant_part.
 
-The parent type in a [derived_type_definition](S0032) may be a derived type defined in the same visible part.
+The parent type in a derived_type_definition may be a derived type defined in the same visible part.
 
 When deriving from a type in the same visible part in which it is defined, the primitive subprograms declared prior to the derivation are inherited as primitive subprograms of the derived type. See 3.2.3. 
 
@@ -1044,17 +1044,17 @@ Discussion: Note that the definition of "derived from" is a recursive definition
 
 To be honest: By the class-wide type "associated" with a type T, we mean the type T'Class. Similarly, the universal type associated with root_integer, root_real, and root_fixed are universal_integer, universal_real, and universal_fixed, respectively. 
 
-Every type is either a specific type, a class-wide type, or a universal type. A specific type is one defined by a [type_declaration](S0020), a [formal_type_declaration](S0246), or a full type definition embedded in a declaration for an object. Class-wide and universal types are implicitly defined, to act as representatives for an entire class of types, as follows: 
+Every type is either a specific type, a class-wide type, or a universal type. A specific type is one defined by a type_declaration, a formal_type_declaration, or a full type definition embedded in a declaration for an object. Class-wide and universal types are implicitly defined, to act as representatives for an entire class of types, as follows: 
 
 To be honest: The root types root_integer, root_real, and root_fixed are also specific types. They are declared in the specification of package Standard. 
 
-Class-wide types Class-wide types are defined for [(and belong to)] each derivation class rooted at a tagged type (see 3.9). Given a subtype S of a tagged type T, S'Class is the [subtype_mark](S0025) for a corresponding subtype of the tagged class-wide type T'Class. Such types are called "class-wide" because when a formal parameter is defined to be of a class-wide type T'Class, an actual parameter of any type in the derivation class rooted at T is acceptable (see 8.6).
+Class-wide types Class-wide types are defined for [(and belong to)] each derivation class rooted at a tagged type (see 3.9). Given a subtype S of a tagged type T, S'Class is the subtype_mark for a corresponding subtype of the tagged class-wide type T'Class. Such types are called "class-wide" because when a formal parameter is defined to be of a class-wide type T'Class, an actual parameter of any type in the derivation class rooted at T is acceptable (see 8.6).
 
 The set of values for a class-wide type T'Class is the discriminated union of the set of values of each specific type in the derivation class rooted at T (the tag acts as the implicit discriminant - see 3.9). Class-wide types have no primitive subprograms of their own. However, as explained in 3.9.2, operands of a class-wide type T'Class can be used as part of a dispatching call on a primitive subprogram of the type T. The only components [(including discriminants)] of T'Class that are visible are those of T. If S is a first subtype, then S'Class is a first subtype. 
 
-Reason: We want S'Class to be a first subtype when S is, so that an [attribute_definition_clause](S0265) like "for S'Class'Output use ...;" will be legal. 
+Reason: We want S'Class to be a first subtype when S is, so that an attribute_definition_clause like "for S'Class'Output use ...;" will be legal. 
 
-Universal types Universal types are defined for [(and belong to)] the integer, real, and fixed point classes, and are referred to in this standard as respectively, universal_integer, universal_real, and universal_fixed. These are analogous to class-wide types for these language-defined numeric classes. As with class-wide types, if a formal parameter is of a universal type, then an actual parameter of any type in the corresponding class is acceptable. In addition, a value of a universal type (including an integer or real [numeric_literal](S0004)) is "universal" in that it is acceptable where some particular type in the class is expected (see 8.6).
+Universal types Universal types are defined for [(and belong to)] the integer, real, and fixed point classes, and are referred to in this standard as respectively, universal_integer, universal_real, and universal_fixed. These are analogous to class-wide types for these language-defined numeric classes. As with class-wide types, if a formal parameter is of a universal type, then an actual parameter of any type in the corresponding class is acceptable. In addition, a value of a universal type (including an integer or real numeric_literal) is "universal" in that it is acceptable where some particular type in the class is expected (see 8.6).
 
 The set of values of a universal type is the undiscriminated union of the set of values possible for any definable type in the associated class. Like class-wide types, universal types have no primitive subprograms of their own. However, their "universality" allows them to be used as operands with the primitive subprograms of any type in the corresponding class. 
 
@@ -1108,25 +1108,25 @@ Scalar types comprise enumeration types, integer types, and real types. Enumerat
 
 #### Syntax
 
-range_constraint ::=  range [range](S0034)
+range_constraint ::=  range range
 
-range ::=  [range_attribute_reference](S0095)
-   | [simple_expression](S0110) .. [simple_expression](S0110)
+range ::=  range_attribute_reference
+   | simple_expression .. simple_expression
 
-Discussion: These need to be [simple_expression](S0110)s rather than more general [expression](S0108)s because ranges appear in membership tests and other contexts where [expression](S0108) .. [expression](S0108) would be ambiguous. 
+Discussion: These need to be simple_expressions rather than more general expressions because ranges appear in membership tests and other contexts where expression .. expression would be ambiguous. 
 
 A range has a lower bound and an upper bound and specifies a subset of the values of some scalar type (the type of the range). A range with lower bound L and upper bound R is described by "L .. R". If R is less than L, then the range is a null range, and specifies an empty set of values. Otherwise, the range specifies the values of the type from the lower bound to the upper bound, inclusive. A value belongs to a range if it is of the type of the range, and is in the subset of values specified by the range. A value satisfies a range constraint if it belongs to the associated range. One range is included in another if all values that belong to the first range also belong to the second. 
 
 
 #### Name Resolution Rules
 
-For a [subtype_indication](S0024) containing a [range_constraint](S0033), either directly or as part of some other [scalar_constraint](S0027), the type of the [range](S0034) shall resolve to that of the type determined by the [subtype_mark](S0025) of the [subtype_indication](S0024). For a [range](S0034) of a given type, the [simple_expression](S0110)s of the [range](S0034) (likewise, the [simple_expression](S0110)s of the equivalent [range](S0034) for a [range_attribute_reference](S0095)) are expected to be of the type of the [range](S0034). 
+For a subtype_indication containing a range_constraint, either directly or as part of some other scalar_constraint, the type of the range shall resolve to that of the type determined by the subtype_mark of the subtype_indication. For a range of a given type, the simple_expressions of the range (likewise, the simple_expressions of the equivalent range for a range_attribute_reference) are expected to be of the type of the range. 
 
-Discussion: In Ada 95, [constraint](S0026)s only appear within [subtype_indication](S0024)s; things that look like constraints that appear in type declarations are called something else like [real_range_specification](S0043)s.
+Discussion: In Ada 95, constraints only appear within subtype_indications; things that look like constraints that appear in type declarations are called something else like real_range_specifications.
 
 We say "the expected type is ..." or "the type is expected to be ..." depending on which reads better. They are fundamentally equivalent, and both feed into the type resolution rules of clause 8.6.
 
-In some cases, it doesn't work to use expected types. For example, in the above rule, we say that the "type of the [range](S0034) shall resolve to ..." rather than "the expected type for the [range](S0034) is ..." We then use "expected type" for the bounds. If we used "expected" at both points, there would be an ambiguity, since one could apply the rules of 8.6 either on determining the type of the range, or on determining the types of the individual bounds. It is clearly important to allow one bound to be of a universal type, and the other of a specific type, so we need to use "expected type" for the bounds. Hence, we used "shall resolve to" for the type of the range as a whole. There are other situations where "expected type" is not quite right, and we use "shall resolve to" instead. 
+In some cases, it doesn't work to use expected types. For example, in the above rule, we say that the "type of the range shall resolve to ..." rather than "the expected type for the range is ..." We then use "expected type" for the bounds. If we used "expected" at both points, there would be an ambiguity, since one could apply the rules of 8.6 either on determining the type of the range, or on determining the types of the individual bounds. It is clearly important to allow one bound to be of a universal type, and the other of a specific type, so we need to use "expected type" for the bounds. Hence, we used "shall resolve to" for the type of the range as a whole. There are other situations where "expected type" is not quite right, and we use "shall resolve to" instead. 
 
 
 #### Static Semantics
@@ -1146,11 +1146,11 @@ To be honest: By a "value that can be assigned without overflow" we don't mean t
 
 #### Dynamic Semantics
 
-A range is compatible with a scalar subtype if and only if it is either a null range or each bound of the range belongs to the range of the subtype. A [range_constraint](S0033) is compatible with a scalar subtype if and only if its range is compatible with the subtype. 
+A range is compatible with a scalar subtype if and only if it is either a null range or each bound of the range belongs to the range of the subtype. A range_constraint is compatible with a scalar subtype if and only if its range is compatible with the subtype. 
 
-Ramification: Only [range_constraint](S0033)s (explicit or implicit) impose conditions on the values of a scalar subtype. The other [scalar_constraint](S0027)s, [digits_constraint](S0047)s and [delta_constraint](S0275)s impose conditions on the subtype denoted by the [subtype_mark](S0025) in a [subtype_indication](S0024), but don't impose a condition on the values of the subtype being defined. Therefore, a scalar subtype is not called constrained if all that applies to it is a [digits_constraint](S0047). Decimal subtypes are subtle, because a [digits_constraint](S0047) without a [range_constraint](S0033) nevertheless includes an implicit [range_constraint](S0033). 
+Ramification: Only range_constraints (explicit or implicit) impose conditions on the values of a scalar subtype. The other scalar_constraints, digits_constraints and delta_constraints impose conditions on the subtype denoted by the subtype_mark in a subtype_indication, but don't impose a condition on the values of the subtype being defined. Therefore, a scalar subtype is not called constrained if all that applies to it is a digits_constraint. Decimal subtypes are subtle, because a digits_constraint without a range_constraint nevertheless includes an implicit range_constraint. 
 
-The elaboration of a [range_constraint](S0033) consists of the evaluation of the [range](S0034). The evaluation of a [range](S0034) determines a lower bound and an upper bound. If [simple_expression](S0110)s are given to specify bounds, the evaluation of the [range](S0034) evaluates these [simple_expression](S0110)s in an arbitrary order, and converts them to the type of the [range](S0034). If a [range_attribute_reference](S0095) is given, the evaluation of the [range](S0034) consists of the evaluation of the [range_attribute_reference](S0095).
+The elaboration of a range_constraint consists of the evaluation of the range. The evaluation of a range determines a lower bound and an upper bound. If simple_expressions are given to specify bounds, the evaluation of the range evaluates these simple_expressions in an arbitrary order, and converts them to the type of the range. If a range_attribute_reference is given, the evaluation of the range consists of the evaluation of the range_attribute_reference.
 
 Attributes
 
@@ -1164,7 +1164,7 @@ S'LastS'Last denotes the upper bound of the range of S. The value of this attrib
 
 Ramification: Evaluating S'Last never raises Constraint_Error.
 
-S'RangeS'Range is equivalent to the [range](S0034) S'First .. S'Last.
+S'RangeS'Range is equivalent to the range S'First .. S'Last.
 
 S'BaseS'Base denotes an unconstrained subtype of the type of S. This unconstrained subtype is called the base subtype of the type. 
 
@@ -1178,7 +1178,7 @@ function S'Min(Left, Right : S'Base)
 
 The function returns the lesser of the values of the two parameters. 
 
-Discussion: The formal parameter names are italicized because they cannot be used in calls - see 6.4. Such a specification cannot be written by the user because an [attribute_reference](S0093) is not permitted as the designator of a user-defined function, nor can its formal parameters be anonymous. 
+Discussion: The formal parameter names are italicized because they cannot be used in calls - see 6.4. Such a specification cannot be written by the user because an attribute_reference is not permitted as the designator of a user-defined function, nor can its formal parameters be anonymous. 
 
 S'MaxS'Max denotes a function with the following specification: 
 
@@ -1234,7 +1234,7 @@ Implementation Note: If the machine supports negative zeros for signed integer t
 
 The image of an enumeration value is either the corresponding identifier in upper case or the corresponding character literal (including the two apostrophes); neither leading nor trailing spaces are included. For a nongraphic character (a value of a character type that has no enumeration literal associated with it), the result is a corresponding language-defined or implementation-defined name in upper case (for example, the image of the nongraphic character identified as nul is "NUL" - the quotes are not part of the image). 
 
-Implementation Note: For an enumeration type T that has "holes" (caused by an [enumeration_representation_clause](S0266)), T'Wide_Image should raise Program_Error if the value is one of the holes (which is a bounded error anyway, since holes can be generated only via uninitialized variables and similar things). 
+Implementation Note: For an enumeration type T that has "holes" (caused by an enumeration_representation_clause), T'Wide_Image should raise Program_Error if the value is one of the holes (which is a bounded error anyway, since holes can be generated only via uninitialized variables and similar things). 
 
 The image of a floating point value is a decimal real literal best approximating the value (rounded away from zero if halfway between) with a single leading character that is either a minus sign or a space, a single digit (that is nonzero unless the value is zero), a decimal point, S'Digits1 (see 3.5.8) digits after the decimal point (but one if S'Digits is one), an upper case E, the sign of the exponent (either + or ), and two or more digits (with leading zeros if necessary) representing the exponent. If S'Signed_Zeros is True, then the leading character is a minus sign for a negatively signed zero. 
 
@@ -1288,19 +1288,19 @@ Discussion: It's not crystal clear that Range_Check is appropriate here, but it 
 
 For the evaluation of a call on S'Wide_Value (or S'Value) for an integer subtype S, if the sequence of characters of the parameter (ignoring leading and trailing spaces) has the syntax of an integer literal, with an optional leading sign character (plus or minus for a signed type; only plus for a modular type), and the corresponding numeric value belongs to the base range of the type of S, then that value is the result; otherwise Constraint_Error is raised.
 
-Discussion: We considered allowing 'Value to return a representable but out-of-range value without a Constraint_Error. However, we currently require (see 4.9) in an [assignment_statement](S0130) like "X := &ltnumeric_literal&gt;" that the value of the numeric-literal be in X's base range (at compile time), so it seems unfriendly and confusing to have a different range allowed for 'Value. Furthermore, for modular types, without the requirement for being in the base range, 'Value would have to handle arbitrarily long literals (since overflow never occurs for modular types). 
+Discussion: We considered allowing 'Value to return a representable but out-of-range value without a Constraint_Error. However, we currently require (see 4.9) in an assignment_statement like "X := &ltnumeric_literal&gt;" that the value of the numeric-literal be in X's base range (at compile time), so it seems unfriendly and confusing to have a different range allowed for 'Value. Furthermore, for modular types, without the requirement for being in the base range, 'Value would have to handle arbitrarily long literals (since overflow never occurs for modular types). 
 
 For the evaluation of a call on S'Wide_Value (or S'Value) for a real subtype S, if the sequence of characters of the parameter (ignoring leading and trailing spaces) has the syntax of one of the following: 
 
-[numeric_literal](S0004)
+numeric_literal
 
-[numeral](S0006).[[exponent](S0007)]
+numeral.[exponent]
 
-.[numeral](S0006)[[exponent](S0007)]
+.numeral[exponent]
 
-[base](S0009)#[based_numeral](S0010).#[[exponent](S0007)]
+base#based_numeral.#[exponent]
 
-[base](S0009)#.[based_numeral](S0010)#[[exponent](S0007)] 
+base#.based_numeral#[exponent] 
 
 with an optional leading sign character (plus or minus), and if the corresponding numeric value belongs to the base range of the type of S, then that value is the result; otherwise Constraint_Error is raised. The sign of a zero value is preserved (positive if none has been specified) if S'Signed_Zeros is True.
 
@@ -1372,7 +1372,7 @@ S'Base is no longer defined for nonscalar types. One conceivable existing use of
 
 #### Extensions to Ada 83
 
-The attribute S'Base for a scalar subtype is now permitted anywhere a [subtype_mark](S0025) is permitted. S'Base'First .. S'Base'Last is the base range of the type. Using an [attribute_definition_clause](S0265), one cannot specify any subtype-specific attributes for the subtype denoted by S'Base (the base subtype).
+The attribute S'Base for a scalar subtype is now permitted anywhere a subtype_mark is permitted. S'Base'First .. S'Base'Last is the base range of the type. Using an attribute_definition_clause, one cannot specify any subtype-specific attributes for the subtype denoted by S'Base (the base subtype).
 
 The attribute S'Range is now allowed for scalar subtypes.
 
@@ -1385,7 +1385,7 @@ Wide_String versions of S'Image and S'Value are defined. These are called S'Wide
 
 #### Wording Changes from Ada 83
 
-We now use the syntactic category [range_attribute_reference](S0095) since it is now syntactically distinguished from other attribute references.
+We now use the syntactic category range_attribute_reference since it is now syntactically distinguished from other attribute references.
 
 The definition of S'Base has been moved here from 3.3.3 since it now applies only to scalar types.
 
@@ -1394,44 +1394,44 @@ More explicit rules are provided for nongraphic characters.
 
 ### 3.5.1  Enumeration Types
 
-[ An [enumeration_type_definition](S0035) defines an enumeration type.] 
+[ An enumeration_type_definition defines an enumeration type.] 
 
 
 #### Syntax
 
 enumeration_type_definition ::= 
-   ([enumeration_literal_specification](S0036) {, [enumeration_literal_specification](S0036)})
+   (enumeration_literal_specification {, enumeration_literal_specification})
 
-enumeration_literal_specification ::=  [defining_identifier](S0019) | [defining_character_literal](S0037)
+enumeration_literal_specification ::=  defining_identifier | defining_character_literal
 
-defining_character_literal ::= [character_literal](S0012)
+defining_character_literal ::= character_literal
 
 
 #### Legality Rules
 
-The [defining_identifier](S0019)s [and [defining_character_literal](S0037)s] listed in an [enumeration_type_definition](S0035) shall be distinct. 
+The defining_identifiers [and defining_character_literals] listed in an enumeration_type_definition shall be distinct. 
 
 Proof: This is a ramification of the normal disallowance of homographs explicitly declared immediately in the same declarative region. 
 
 
 #### Static Semantics
 
-Each [enumeration_literal_specification](S0036) is the explicit declaration of the corresponding enumeration literal: it declares a parameterless function, whose defining name is the [defining_identifier](S0019) or [defining_character_literal](S0037), and whose result type is the enumeration type. 
+Each enumeration_literal_specification is the explicit declaration of the corresponding enumeration literal: it declares a parameterless function, whose defining name is the defining_identifier or defining_character_literal, and whose result type is the enumeration type. 
 
 Reason: This rule defines the profile of the enumeration literal, which is used in the various types of conformance. 
 
-Ramification: The parameterless function associated with an enumeration literal is fully defined by the [enumeration_type_definition](S0035); a body is not permitted for it, and it never fails the Elaboration_Check when called. 
+Ramification: The parameterless function associated with an enumeration literal is fully defined by the enumeration_type_definition; a body is not permitted for it, and it never fails the Elaboration_Check when called. 
 
 Each enumeration literal corresponds to a distinct value of the enumeration type, and to a distinct position number. The position number of the value of the first listed enumeration literal is zero; the position number of the value of each subsequent enumeration literal is one more than that of its predecessor in the list.
 
 [The predefined order relations between values of the enumeration type follow the order of corresponding position numbers.]
 
-[ If the same [defining_identifier](S0019) or [defining_character_literal](S0037) is specified in more than one [enumeration_type_definition](S0035), the corresponding enumeration literals are said to be overloaded. At any place where an overloaded enumeration literal occurs in the text of a program, the type of the enumeration literal has to be determinable from the context (see 8.6).] 
+[ If the same defining_identifier or defining_character_literal is specified in more than one enumeration_type_definition, the corresponding enumeration literals are said to be overloaded. At any place where an overloaded enumeration literal occurs in the text of a program, the type of the enumeration literal has to be determinable from the context (see 8.6).] 
 
 
 #### Dynamic Semantics
 
-The elaboration of an [enumeration_type_definition](S0035) creates the enumeration type and its first subtype, which is constrained to the base range of the type. 
+The elaboration of an enumeration_type_definition creates the enumeration type and its first subtype, which is constrained to the base range of the type. 
 
 Ramification: The first subtype of a discrete type is always constrained, except in the case of a derived type whose parent subtype is Whatever'Base. 
 
@@ -1470,7 +1470,7 @@ subtype Rainbow is Color range Red .. Blue;  --  the Color Red, not the Light
 
 #### Wording Changes from Ada 83
 
-The syntax rule for [defining_character_literal](S0037) is new. It is used for the defining occurrence of a [character_literal](S0012), analogously to [defining_identifier](S0019). Usage occurrences use the [name](S0084) or [selector_name](S0092) syntactic categories.
+The syntax rule for defining_character_literal is new. It is used for the defining occurrence of a character_literal, analogously to defining_identifier. Usage occurrences use the name or selector_name syntactic categories.
 
 We emphasize the fact that an enumeration literal denotes a function, which is called to produce a value. 
 
@@ -1480,11 +1480,11 @@ We emphasize the fact that an enumeration literal denotes a function, which is c
 
 #### Static Semantics
 
-An enumeration type is said to be a character type if at least one of its enumeration literals is a [character_literal](S0012).
+An enumeration type is said to be a character type if at least one of its enumeration literals is a character_literal.
 
-The predefined type Character is a character type whose values correspond to the 256 code positions of Row 00 (also known as Latin-1) of the ISO 10646 Basic Multilingual Plane (BMP). Each of the graphic characters of Row 00 of the BMP has a corresponding [character_literal](S0012) in Character. Each of the nongraphic positions of Row 00 (0000-001F and 007F-009F) has a corresponding language-defined name, which is not usable as an enumeration literal, but which is usable with the attributes (Wide_)Image and (Wide_)Value; these names are given in the definition of type Character in A.1, "The Package Standard", but are set in italics. 
+The predefined type Character is a character type whose values correspond to the 256 code positions of Row 00 (also known as Latin-1) of the ISO 10646 Basic Multilingual Plane (BMP). Each of the graphic characters of Row 00 of the BMP has a corresponding character_literal in Character. Each of the nongraphic positions of Row 00 (0000-001F and 007F-009F) has a corresponding language-defined name, which is not usable as an enumeration literal, but which is usable with the attributes (Wide_)Image and (Wide_)Value; these names are given in the definition of type Character in A.1, "The Package Standard", but are set in italics. 
 
-The predefined type Wide_Character is a character type whose values correspond to the 65536 code positions of the ISO 10646 Basic Multilingual Plane (BMP). Each of the graphic characters of the BMP has a corresponding [character_literal](S0012) in Wide_Character. The first 256 values of Wide_Character have the same [character_literal](S0012) or language-defined name as defined for Character. The last 2 values of Wide_Character correspond to the nongraphic positions FFFE and FFFF of the BMP, and are assigned the language-defined names FFFE and FFFF. As with the other language-defined names for nongraphic characters, the names FFFE and FFFF are usable only with the attributes (Wide_)Image and (Wide_)Value; they are not usable as enumeration literals. All other values of Wide_Character are considered graphic characters, and have a corresponding [character_literal](S0012).
+The predefined type Wide_Character is a character type whose values correspond to the 65536 code positions of the ISO 10646 Basic Multilingual Plane (BMP). Each of the graphic characters of the BMP has a corresponding character_literal in Wide_Character. The first 256 values of Wide_Character have the same character_literal or language-defined name as defined for Character. The last 2 values of Wide_Character correspond to the nongraphic positions FFFE and FFFF of the BMP, and are assigned the language-defined names FFFE and FFFF. As with the other language-defined names for nongraphic characters, the names FFFE and FFFF are usable only with the attributes (Wide_)Image and (Wide_)Value; they are not usable as enumeration literals. All other values of Wide_Character are considered graphic characters, and have a corresponding character_literal.
 
 Reason: The language-defined names are not usable as enumeration literals to avoid "polluting" the name space. Since Wide_Character are defined in Standard, if the names FFFE and FFFF were usable as enumeration literals, they would hide other nonoverloadable declarations with the same names in use-d packages.
 
@@ -1504,7 +1504,7 @@ NOTE 1   The language-defined library package Characters.Latin_1 (see A.3.3) inc
 
 To be honest: The package ASCII does the same, but only for the first 128 characters of Character. Hence, it is an obsolescent package, and we no longer mention it here. 
 
-NOTE 2   A conventional character set such as EBCDIC can be declared as a character type; the internal codes of the characters can be specified by an [enumeration_representation_clause](S0266) as explained in clause 13.4. 
+NOTE 2   A conventional character set such as EBCDIC can be declared as a character type; the internal codes of the characters can be specified by an enumeration_representation_clause as explained in clause 13.4. 
 
 
 #### Examples
@@ -1555,30 +1555,30 @@ Implementation Note: An implementation is not required to support enumeration re
 
 ### 3.5.4  Integer Types
 
-An [integer_type_definition](S0038) defines an integer type; it defines either a signed integer type, or a modular integer type. The base range of a signed integer type includes at least the values of the specified range. A modular type is an integer type with all arithmetic modulo a specified positive modulus; such a type corresponds to an unsigned type with wrap-around semantics. 
+An integer_type_definition defines an integer type; it defines either a signed integer type, or a modular integer type. The base range of a signed integer type includes at least the values of the specified range. A modular type is an integer type with all arithmetic modulo a specified positive modulus; such a type corresponds to an unsigned type with wrap-around semantics. 
 
 
 #### Syntax
 
-integer_type_definition ::= [signed_integer_type_definition](S0039) | [modular_type_definition](S0040)
+integer_type_definition ::= signed_integer_type_definition | modular_type_definition
 
-signed_integer_type_definition ::= range static_[simple_expression](S0110) .. static_[simple_expression](S0110)
+signed_integer_type_definition ::= range static_simple_expression .. static_simple_expression
 
-Discussion: We don't call this a [range_constraint](S0033), because it is rather different - not only is it required to be static, but the associated overload resolution rules are different than for normal range constraints. A similar comment applies to [real_range_specification](S0043). This used to be integer_range_specification but when we added support for modular types, it seemed overkill to have three levels of syntax rules, and just calling these signed_integer_range_specification and modular_range_specification loses the fact that they are defining different classes of types, which is important for the generic type matching rules. 
+Discussion: We don't call this a range_constraint, because it is rather different - not only is it required to be static, but the associated overload resolution rules are different than for normal range constraints. A similar comment applies to real_range_specification. This used to be integer_range_specification but when we added support for modular types, it seemed overkill to have three levels of syntax rules, and just calling these signed_integer_range_specification and modular_range_specification loses the fact that they are defining different classes of types, which is important for the generic type matching rules. 
 
-modular_type_definition ::= mod static_[expression](S0108)
+modular_type_definition ::= mod static_expression
 
 
 #### Name Resolution Rules
 
-Each [simple_expression](S0110) in a [signed_integer_type_definition](S0039) is expected to be of any integer type; they need not be of the same type. The [expression](S0108) in a [modular_type_definition](S0040) is likewise expected to be of any integer type. 
+Each simple_expression in a signed_integer_type_definition is expected to be of any integer type; they need not be of the same type. The expression in a modular_type_definition is likewise expected to be of any integer type. 
 
 
 #### Legality Rules
 
-The [simple_expression](S0110)s of a [signed_integer_type_definition](S0039) shall be static, and their values shall be in the range System.Min_Int .. System.Max_Int.
+The simple_expressions of a signed_integer_type_definition shall be static, and their values shall be in the range System.Min_Int .. System.Max_Int.
 
-The [expression](S0108) of a [modular_type_definition](S0040) shall be static, and its value (the modulus) shall be positive, and shall be no greater than System.Max_Binary_Modulus if a power of 2, or no greater than System.Max_Nonbinary_Modulus if not. 
+The expression of a modular_type_definition shall be static, and its value (the modulus) shall be positive, and shall be no greater than System.Max_Binary_Modulus if a power of 2, or no greater than System.Max_Nonbinary_Modulus if not. 
 
 Reason: For a 2's-complement machine, supporting nonbinary moduli greater than System.Max_Int can be quite difficult, whereas essentially any binary moduli are straightforward to support, up to 2*System.Max_Int+2, so this justifies having two separate limits. 
 
@@ -1587,11 +1587,11 @@ Reason: For a 2's-complement machine, supporting nonbinary moduli greater than S
 
 The set of values for a signed integer type is the (infinite) set of mathematical integers[, though only values of the base range of the type are fully supported for run-time operations]. The set of values for a modular integer type are the values from 0 to one less than the modulus, inclusive.
 
-A [signed_integer_type_definition](S0039) defines an integer type whose base range includes at least the values of the [simple_expression](S0110)s and is symmetric about zero, excepting possibly an extra negative value. A [signed_integer_type_definition](S0039) also defines a constrained first subtype of the type, with a range whose bounds are given by the values of the [simple_expression](S0110)s, converted to the type being defined. 
+A signed_integer_type_definition defines an integer type whose base range includes at least the values of the simple_expressions and is symmetric about zero, excepting possibly an extra negative value. A signed_integer_type_definition also defines a constrained first subtype of the type, with a range whose bounds are given by the values of the simple_expressions, converted to the type being defined. 
 
 Implementation Note: The base range of a signed integer type might be much larger than is necessary to satisfy the aboved requirements. 
 
-A [modular_type_definition](S0040) defines a modular type whose base range is from zero to one less than the given modulus. A [modular_type_definition](S0040) also defines a constrained first subtype of the type with a range that is the same as the base range of the type.
+A modular_type_definition defines a modular type whose base range is from zero to one less than the given modulus. A modular_type_definition also defines a constrained first subtype of the type with a range that is the same as the base range of the type.
 
 There is a predefined signed integer subtype named Integer[, declared in the visible part of package Standard]. It is constrained to the base range of its type. 
 
@@ -1605,9 +1605,9 @@ subtype Positive is Integer range 1 .. Integer'Last;
 
 ```
 
-A type defined by an [integer_type_definition](S0038) is implicitly derived from root_integer, an anonymous predefined (specific) integer type, whose base range is System.Min_Int .. System.Max_Int. However, the base range of the new type is not inherited from root_integer, but is instead determined by the range or modulus specified by the [integer_type_definition](S0038). [Integer literals are all of the type universal_integer, the universal type (see 3.4.1) for the class rooted at root_integer, allowing their use with the operations of any integer type.] 
+A type defined by an integer_type_definition is implicitly derived from root_integer, an anonymous predefined (specific) integer type, whose base range is System.Min_Int .. System.Max_Int. However, the base range of the new type is not inherited from root_integer, but is instead determined by the range or modulus specified by the integer_type_definition. [Integer literals are all of the type universal_integer, the universal type (see 3.4.1) for the class rooted at root_integer, allowing their use with the operations of any integer type.] 
 
-Discussion: This implicit derivation is not considered exactly equivalent to explicit derivation via a [derived_type_definition](S0032). In particular, integer types defined via a [derived_type_definition](S0032) inherit their base range from their parent type. A type defined by an [integer_type_definition](S0038) does not necessarily inherit its base range from root_integer. It is not specified whether the implicit derivation from root_integer is direct or indirect, not that it really matters. All we want is for all integer types to be descendants of root_integer.
+Discussion: This implicit derivation is not considered exactly equivalent to explicit derivation via a derived_type_definition. In particular, integer types defined via a derived_type_definition inherit their base range from their parent type. A type defined by an integer_type_definition does not necessarily inherit its base range from root_integer. It is not specified whether the implicit derivation from root_integer is direct or indirect, not that it really matters. All we want is for all integer types to be descendants of root_integer.
 
 Implementation Note: It is the intent that even nonstandard integer types (see below) will be descendants of root_integer, even though they might have a base range that exceeds that of root_integer. This causes no problem for static calculations, which are performed without range restrictions (see 4.9). However for run-time calculations, it is possible that Constraint_Error might be raised when using an operator of root_integer on the result of 'Val applied to a value of a nonstandard integer type. 
 
@@ -1622,7 +1622,7 @@ S'ModulusS'Modulus yields the modulus of the type of S, as a value of the type u
 
 #### Dynamic Semantics
 
-The elaboration of an [integer_type_definition](S0038) creates the integer type and its first subtype.
+The elaboration of an integer_type_definition creates the integer type and its first subtype.
 
 For a modular type, if the result of the execution of a predefined operator (see 4.5) is outside the base range of the type, the result is reduced modulo the modulus of the type to a value that is within the base range of the type.
 
@@ -1648,7 +1648,7 @@ An implementation may provide additional predefined signed integer types[, decla
 
 Implementation defined: The predefined integer types declared in Standard.
 
-An implementation may provide nonstandard integer types, descendants of root_integer that are declared outside of the specification of package Standard, which need not have all the standard characteristics of a type defined by an [integer_type_definition](S0038). For example, a nonstandard integer type might have an asymmetric base range or it might not be allowed as an array or loop index (a very long integer). Any type descended from a nonstandard integer type is also nonstandard. An implementation may place arbitrary restrictions on the use of such types; it is implementation defined whether operators that are predefined for "any integer type" are defined for a particular nonstandard integer type. [In any case, such types are not permitted as [explicit_generic_actual_parameter](S0244)s for formal scalar types - see 12.5.2.] 
+An implementation may provide nonstandard integer types, descendants of root_integer that are declared outside of the specification of package Standard, which need not have all the standard characteristics of a type defined by an integer_type_definition. For example, a nonstandard integer type might have an asymmetric base range or it might not be allowed as an array or loop index (a very long integer). Any type descended from a nonstandard integer type is also nonstandard. An implementation may place arbitrary restrictions on the use of such types; it is implementation defined whether operators that are predefined for "any integer type" are defined for a particular nonstandard integer type. [In any case, such types are not permitted as explicit_generic_actual_parameters for formal scalar types - see 12.5.2.] 
 
 Implementation defined: Any nonstandard integer types and the operators defined for them.
 
@@ -1671,9 +1671,9 @@ Implementation Note: Supporting a nonbinary modulus greater than Integer'Last ca
 
 NOTE 1   Integer literals are of the anonymous predefined integer type universal_integer. Other integer types have no literals. However, the overload resolution rules (see 8.6, "The Context of Overload Resolution") allow expressions of the type universal_integer whenever an integer type is expected.
 
-NOTE 2   The same arithmetic operators are predefined for all signed integer types defined by a [signed_integer_type_definition](S0039) (see 4.5, "Operators and Expression Evaluation"). For modular types, these same operators are predefined, plus bit-wise logical operators (and, or, xor, and not). In addition, for the unsigned types declared in the language-defined package Interfaces (see B.2), functions are defined that provide bit-wise shifting and rotating.
+NOTE 2   The same arithmetic operators are predefined for all signed integer types defined by a signed_integer_type_definition (see 4.5, "Operators and Expression Evaluation"). For modular types, these same operators are predefined, plus bit-wise logical operators (and, or, xor, and not). In addition, for the unsigned types declared in the language-defined package Interfaces (see B.2), functions are defined that provide bit-wise shifting and rotating.
 
-NOTE 3   Modular types match a [generic_formal_parameter_declaration](S0240) of the form "type T is mod &lt&gt;"; signed integer types match "type T is range &lt&gt;" (see 12.5.2). 
+NOTE 3   Modular types match a generic_formal_parameter_declaration of the form "type T is mod &lt&gt;"; signed integer types match "type T is range &lt&gt;" (see 12.5.2). 
 
 
 #### Examples
@@ -1764,7 +1764,7 @@ Reason: We considered allowing S'Val for a signed integer subtype S to return an
 
 #### Implementation Advice
 
-For the evaluation of a call on S'Pos for an enumeration subtype, if the value of the operand does not correspond to the internal code for any enumeration literal of its type [(perhaps due to an uninitialized variable)], then the implementation should raise Program_Error. This is particularly important for enumeration types with noncontiguous internal codes specified by an [enumeration_representation_clause](S0266). 
+For the evaluation of a call on S'Pos for an enumeration subtype, if the value of the operand does not correspond to the internal code for any enumeration literal of its type [(perhaps due to an uninitialized variable)], then the implementation should raise Program_Error. This is particularly important for enumeration types with noncontiguous internal codes specified by an enumeration_representation_clause. 
 
 Reason: We say Program_Error here, rather than Constraint_Error, because the main reason for such values is uninitialized variables, and the normal way to indicate such a use (if detected) is to raise Program_Error. (Other reasons would involve the misuse of low-level features such as Unchecked_Conversion.) 
 
@@ -1819,12 +1819,12 @@ Real types provide approximations to the real numbers, with relative bounds on e
 #### Syntax
 
 real_type_definition ::= 
-   [floating_point_definition](S0042) | [fixed_point_definition](S0044)
+   floating_point_definition | fixed_point_definition
 
 
 #### Static Semantics
 
-A type defined by a [real_type_definition](S0041) is implicitly derived from root_real, an anonymous predefined (specific) real type. [Hence, all real types, whether floating point or fixed point, are in the derivation class rooted at root_real.] 
+A type defined by a real_type_definition is implicitly derived from root_real, an anonymous predefined (specific) real type. [Hence, all real types, whether floating point or fixed point, are in the derivation class rooted at root_real.] 
 
 Ramification: It is not specified whether the derivation from root_real is direct or indirect, not that it really matters. All we want is for all real types to be descendants of root_real.
 
@@ -1833,23 +1833,23 @@ Ramification: It is not specified whether the derivation from root_real is direc
 
 #### Dynamic Semantics
 
-The elaboration of a [real_type_definition](S0041) consists of the elaboration of the [floating_point_definition](S0042) or the [fixed_point_definition](S0044). 
+The elaboration of a real_type_definition consists of the elaboration of the floating_point_definition or the fixed_point_definition. 
 
 
 #### Implementation Requirements
 
-An implementation shall perform the run-time evaluation of a use of a predefined operator of root_real with an accuracy at least as great as that of any floating point type definable by a [floating_point_definition](S0042). 
+An implementation shall perform the run-time evaluation of a use of a predefined operator of root_real with an accuracy at least as great as that of any floating point type definable by a floating_point_definition. 
 
 Ramification: Static calculations using the operators of root_real are exact, as for all static calculations. See 4.9. 
 
-Implementation Note: The Digits attribute of the type used to represent root_real at run time is at least as great as that of any other floating point type defined by a [floating_point_definition](S0042), and its safe range includes that of any such floating point type with the same Digits attribute. On some machines, there might be real types with less accuracy but a wider range, and hence run-time calculations with root_real might not be able to accommodate all values that can be represented at run time in such floating point or fixed point types. 
+Implementation Note: The Digits attribute of the type used to represent root_real at run time is at least as great as that of any other floating point type defined by a floating_point_definition, and its safe range includes that of any such floating point type with the same Digits attribute. On some machines, there might be real types with less accuracy but a wider range, and hence run-time calculations with root_real might not be able to accommodate all values that can be represented at run time in such floating point or fixed point types. 
 
 
 #### Implementation Permissions
 
 [For the execution of a predefined operation of a real type, the implementation need not raise Constraint_Error if the result is outside the base range of the type, so long as the correct result is produced, or the Machine_Overflows attribute of the type is false (see G.2).]
 
-An implementation may provide nonstandard real types, descendants of root_real that are declared outside of the specification of package Standard, which need not have all the standard characteristics of a type defined by a [real_type_definition](S0041). For example, a nonstandard real type might have an asymmetric or unsigned base range, or its predefined operations might wrap around or "saturate" rather than overflow (modular or saturating arithmetic), or it might not conform to the accuracy model (see G.2). Any type descended from a nonstandard real type is also nonstandard. An implementation may place arbitrary restrictions on the use of such types; it is implementation defined whether operators that are predefined for "any real type" are defined for a particular nonstandard real type. [In any case, such types are not permitted as [explicit_generic_actual_parameter](S0244)s for formal scalar types - see 12.5.2.] 
+An implementation may provide nonstandard real types, descendants of root_real that are declared outside of the specification of package Standard, which need not have all the standard characteristics of a type defined by a real_type_definition. For example, a nonstandard real type might have an asymmetric or unsigned base range, or its predefined operations might wrap around or "saturate" rather than overflow (modular or saturating arithmetic), or it might not conform to the accuracy model (see G.2). Any type descended from a nonstandard real type is also nonstandard. An implementation may place arbitrary restrictions on the use of such types; it is implementation defined whether operators that are predefined for "any real type" are defined for a particular nonstandard real type. [In any case, such types are not permitted as explicit_generic_actual_parameters for formal scalar types - see 12.5.2.] 
 
 Implementation defined: Any nonstandard real types and the operators defined for them.
 
@@ -1858,7 +1858,7 @@ NOTE 1   As stated, real literals are of the anonymous predefined real type univ
 
 #### Wording Changes from Ada 83
 
-The syntax rule for [real_type_definition](S0041) is modified to use the new syntactic categories [floating_point_definition](S0042) and [fixed_point_definition](S0044), instead of floating_point_constraint and fixed_point_constraint, because the semantics of a type definition are significantly different than the semantics of a constraint.
+The syntax rule for real_type_definition is modified to use the new syntactic categories floating_point_definition and fixed_point_definition, instead of floating_point_constraint and fixed_point_constraint, because the semantics of a type definition are significantly different than the semantics of a constraint.
 
 All discussion of model numbers, safe ranges, and machine numbers is moved to 3.5.7, 3.5.8, and G.2. Values of a fixed point type are now described as being multiples of the small of the fixed point type, and we have no need for model numbers, safe ranges, etc. for fixed point types.
 
@@ -1871,26 +1871,26 @@ For floating point types, the error bound is specified as a relative precision b
 #### Syntax
 
 floating_point_definition ::= 
-  digits static_[expression](S0108) [[real_range_specification](S0043)]
+  digits static_expression [real_range_specification]
 
 real_range_specification ::= 
-  range static_[simple_expression](S0110) .. static_[simple_expression](S0110)
+  range static_simple_expression .. static_simple_expression
 
 
 #### Name Resolution Rules
 
-The requested decimal precision, which is the minimum number of significant decimal digits required for the floating point type, is specified by the value of the [expression](S0108) given after the reserved word digits. This [expression](S0108) is expected to be of any integer type.
+The requested decimal precision, which is the minimum number of significant decimal digits required for the floating point type, is specified by the value of the expression given after the reserved word digits. This expression is expected to be of any integer type.
 
-Each [simple_expression](S0110) of a [real_range_specification](S0043) is expected to be of any real type[; the types need not be the same]. 
+Each simple_expression of a real_range_specification is expected to be of any real type[; the types need not be the same]. 
 
 
 #### Legality Rules
 
-The requested decimal precision shall be specified by a static [expression](S0108) whose value is positive and no greater than System.Max_Base_Digits. Each [simple_expression](S0110) of a [real_range_specification](S0043) shall also be static. If the [real_range_specification](S0043) is omitted, the requested decimal precision shall be no greater than System.Max_Digits. 
+The requested decimal precision shall be specified by a static expression whose value is positive and no greater than System.Max_Base_Digits. Each simple_expression of a real_range_specification shall also be static. If the real_range_specification is omitted, the requested decimal precision shall be no greater than System.Max_Digits. 
 
-Reason: We have added Max_Base_Digits to package System. It corresponds to the requested decimal precision of root_real. System.Max_Digits corresponds to the maximum value for Digits that may be specified in the absence of a [real_range_specification](S0043), for upward compatibility. These might not be the same if root_real has a base range that does not include ± 10.0**(4*Max_Base_Digits). 
+Reason: We have added Max_Base_Digits to package System. It corresponds to the requested decimal precision of root_real. System.Max_Digits corresponds to the maximum value for Digits that may be specified in the absence of a real_range_specification, for upward compatibility. These might not be the same if root_real has a base range that does not include ± 10.0**(4*Max_Base_Digits). 
 
-A [floating_point_definition](S0042) is illegal if the implementation does not support a floating point type that satisfies the requested decimal precision and range. 
+A floating_point_definition is illegal if the implementation does not support a floating point type that satisfies the requested decimal precision and range. 
 
 Implementation defined: What combinations of requested decimal precision and range are supported for floating point types.
 
@@ -1907,16 +1907,16 @@ The base decimal precision of a floating point type is the number of decimal dig
 
 Implementation Note: In most cases, the safe range and base range are the same. However, for some hardware, values near the boundaries of the base range might result in excessive inaccuracies or spurious overflows when used with certain predefined operations. For such hardware, the safe range would omit such values.
 
-A [floating_point_definition](S0042) defines a floating point type whose base decimal precision is no less than the requested decimal precision. If a [real_range_specification](S0043) is given, the safe range of the floating point type (and hence, also its base range) includes at least the values of the simple expressions given in the [real_range_specification](S0043). If a [real_range_specification](S0043) is not given, the safe (and base) range of the type includes at least the values of the range 10.0**(4*D) .. +10.0**(4*D) where D is the requested decimal precision. [The safe range might include other values as well. The attributes Safe_First and Safe_Last give the actual bounds of the safe range.]
+A floating_point_definition defines a floating point type whose base decimal precision is no less than the requested decimal precision. If a real_range_specification is given, the safe range of the floating point type (and hence, also its base range) includes at least the values of the simple expressions given in the real_range_specification. If a real_range_specification is not given, the safe (and base) range of the type includes at least the values of the range 10.0**(4*D) .. +10.0**(4*D) where D is the requested decimal precision. [The safe range might include other values as well. The attributes Safe_First and Safe_Last give the actual bounds of the safe range.]
 
-A [floating_point_definition](S0042) also defines a first subtype of the type. If a [real_range_specification](S0043) is given, then the subtype is constrained to a range whose bounds are given by a conversion of the values of the [simple_expression](S0110)s of the [real_range_specification](S0043) to the type being defined. Otherwise, the subtype is unconstrained.
+A floating_point_definition also defines a first subtype of the type. If a real_range_specification is given, then the subtype is constrained to a range whose bounds are given by a conversion of the values of the simple_expressions of the real_range_specification to the type being defined. Otherwise, the subtype is unconstrained.
 
 There is a predefined, unconstrained, floating point subtype named Float[, declared in the visible part of package Standard]. 
 
 
 #### Dynamic Semantics
 
-[The elaboration of a [floating_point_definition](S0042) creates the floating point type and its first subtype.] 
+[The elaboration of a floating_point_definition creates the floating point type and its first subtype.] 
 
 
 #### Implementation Requirements
@@ -1972,9 +1972,9 @@ Reason: This change was felt to be justified by the possibility of improved perf
 
 #### Wording Changes from Ada 83
 
-The syntax rules for floating_point_constraint and floating_accuracy_definition are removed. The syntax rules for [floating_point_definition](S0042) and [real_range_specification](S0043) are new.
+The syntax rules for floating_point_constraint and floating_accuracy_definition are removed. The syntax rules for floating_point_definition and real_range_specification are new.
 
-A syntax rule for [digits_constraint](S0047) is given in 3.5.9, "Fixed Point Types". In J.3 we indicate that a [digits_constraint](S0047) may be applied to a floating point [subtype_mark](S0025) as well (to be compatible with Ada 83's floating_point_constraint).
+A syntax rule for digits_constraint is given in 3.5.9, "Fixed Point Types". In J.3 we indicate that a digits_constraint may be applied to a floating point subtype_mark as well (to be compatible with Ada 83's floating_point_constraint).
 
 Discussion of model numbers is postponed to 3.5.8 and G.2. The concept of safe numbers has been replaced by the concept of the safe range of values. The bounds of the safe range are given by T'Safe_First .. T'Safe_Last, rather than -T'Safe_Large .. T'Safe_Large, since on some machines the safe range is not perfectly symmetric. The concept of machine numbers is new, and is relevant to the definition of Succ and Pred for floating point numbers. 
 
@@ -2000,38 +2000,38 @@ A fixed point type is either an ordinary fixed point type, or a decimal fixed po
 
 #### Syntax
 
-fixed_point_definition ::= [ordinary_fixed_point_definition](S0045) | [decimal_fixed_point_definition](S0046)
+fixed_point_definition ::= ordinary_fixed_point_definition | decimal_fixed_point_definition
 
 ordinary_fixed_point_definition ::= 
-   delta static_[expression](S0108)  [real_range_specification](S0043)
+   delta static_expression  real_range_specification
 
 decimal_fixed_point_definition ::= 
-   delta static_[expression](S0108) digits static_[expression](S0108) [[real_range_specification](S0043)]
+   delta static_expression digits static_expression [real_range_specification]
 
 digits_constraint ::= 
-   digits static_[expression](S0108) [[range_constraint](S0033)]
+   digits static_expression [range_constraint]
 
 
 #### Name Resolution Rules
 
-For a type defined by a [fixed_point_definition](S0044), the delta of the type is specified by the value of the [expression](S0108) given after the reserved word delta; this [expression](S0108) is expected to be of any real type. For a type defined by a [decimal_fixed_point_definition](S0046) (a decimal fixed point type), the number of significant decimal digits for its first subtype (the digits of the first subtype) is specified by the [expression](S0108) given after the reserved word digits; this [expression](S0108) is expected to be of any integer type.
+For a type defined by a fixed_point_definition, the delta of the type is specified by the value of the expression given after the reserved word delta; this expression is expected to be of any real type. For a type defined by a decimal_fixed_point_definition (a decimal fixed point type), the number of significant decimal digits for its first subtype (the digits of the first subtype) is specified by the expression given after the reserved word digits; this expression is expected to be of any integer type.
 
 
 #### Legality Rules
 
-In a [fixed_point_definition](S0044) or [digits_constraint](S0047), the [expression](S0108)s given after the reserved words delta and digits shall be static; their values shall be positive.
+In a fixed_point_definition or digits_constraint, the expressions given after the reserved words delta and digits shall be static; their values shall be positive.
 
-The set of values of a fixed point type comprise the integral multiples of a number called the small of the type. For a type defined by an [ordinary_fixed_point_definition](S0045) (an ordinary fixed point type), the small may be specified by an [attribute_definition_clause](S0265) (see 13.3); if so specified, it shall be no greater than the delta of the type. If not specified, the small of an ordinary fixed point type is an implementation-defined power of two less than or equal to the delta. 
+The set of values of a fixed point type comprise the integral multiples of a number called the small of the type. For a type defined by an ordinary_fixed_point_definition (an ordinary fixed point type), the small may be specified by an attribute_definition_clause (see 13.3); if so specified, it shall be no greater than the delta of the type. If not specified, the small of an ordinary fixed point type is an implementation-defined power of two less than or equal to the delta. 
 
 Implementation defined: The small of an ordinary fixed point type.
 
-For a decimal fixed point type, the small equals the delta; the delta shall be a power of 10. If a [real_range_specification](S0043) is given, both bounds of the range shall be in the range (10**digits1)*delta .. +(10**digits1)*delta.
+For a decimal fixed point type, the small equals the delta; the delta shall be a power of 10. If a real_range_specification is given, both bounds of the range shall be in the range (10**digits1)*delta .. +(10**digits1)*delta.
 
-A [fixed_point_definition](S0044) is illegal if the implementation does not support a fixed point type with the given small and specified range or digits. 
+A fixed_point_definition is illegal if the implementation does not support a fixed point type with the given small and specified range or digits. 
 
 Implementation defined: What combinations of small, range, and digits are supported for fixed point types.
 
-For a [subtype_indication](S0024) with a [digits_constraint](S0047), the [subtype_mark](S0025) shall denote a decimal fixed point subtype. 
+For a subtype_indication with a digits_constraint, the subtype_mark shall denote a decimal fixed point subtype. 
 
 To be honest: Or, as an obsolescent feature, a floating point subtype is permitted - see J.3. 
 
@@ -2040,22 +2040,22 @@ To be honest: Or, as an obsolescent feature, a floating point subtype is permitt
 
 The base range (see 3.5) of a fixed point type is symmetric around zero, except possibly for an extra negative value in some implementations.
 
-An [ordinary_fixed_point_definition](S0045) defines an ordinary fixed point type whose base range includes at least all multiples of small that are between the bounds specified in the [real_range_specification](S0043). The base range of the type does not necessarily include the specified bounds themselves. An [ordinary_fixed_point_definition](S0045) also defines a constrained first subtype of the type, with each bound of its range given by the closer to zero of: 
+An ordinary_fixed_point_definition defines an ordinary fixed point type whose base range includes at least all multiples of small that are between the bounds specified in the real_range_specification. The base range of the type does not necessarily include the specified bounds themselves. An ordinary_fixed_point_definition also defines a constrained first subtype of the type, with each bound of its range given by the closer to zero of: 
 
-the value of the conversion to the fixed point type of the corresponding [expression](S0108) of the [real_range_specification](S0043); 
+the value of the conversion to the fixed point type of the corresponding expression of the real_range_specification; 
 
 the corresponding bound of the base range. 
 
-A [decimal_fixed_point_definition](S0046) defines a decimal fixed point type whose base range includes at least the range (10**digits1)*delta .. +(10**digits1)*delta. A [decimal_fixed_point_definition](S0046) also defines a constrained first subtype of the type. If a [real_range_specification](S0043) is given, the bounds of the first subtype are given by a conversion of the values of the [expression](S0108)s of the [real_range_specification](S0043). Otherwise, the range of the first subtype is (10**digits1)*delta .. +(10**digits1)*delta.
+A decimal_fixed_point_definition defines a decimal fixed point type whose base range includes at least the range (10**digits1)*delta .. +(10**digits1)*delta. A decimal_fixed_point_definition also defines a constrained first subtype of the type. If a real_range_specification is given, the bounds of the first subtype are given by a conversion of the values of the expressions of the real_range_specification. Otherwise, the range of the first subtype is (10**digits1)*delta .. +(10**digits1)*delta.
 
 
 #### Dynamic Semantics
 
-The elaboration of a [fixed_point_definition](S0044) creates the fixed point type and its first subtype.
+The elaboration of a fixed_point_definition creates the fixed point type and its first subtype.
 
-For a [digits_constraint](S0047) on a decimal fixed point subtype with a given delta, if it does not have a [range_constraint](S0033), then it specifies an implicit range (10**D1)*delta .. +(10**D1)*delta, where D is the value of the [expression](S0108). A [digits_constraint](S0047) is compatible with a decimal fixed point subtype if the value of the [expression](S0108) is no greater than the digits of the subtype, and if it specifies (explicitly or implicitly) a range that is compatible with the subtype. 
+For a digits_constraint on a decimal fixed point subtype with a given delta, if it does not have a range_constraint, then it specifies an implicit range (10**D1)*delta .. +(10**D1)*delta, where D is the value of the expression. A digits_constraint is compatible with a decimal fixed point subtype if the value of the expression is no greater than the digits of the subtype, and if it specifies (explicitly or implicitly) a range that is compatible with the subtype. 
 
-Discussion: Except for the requirement that the digits specified be no greater than the digits of the subtype being constrained, a [digits_constraint](S0047) is essentially equivalent to a [range_constraint](S0033).
+Discussion: Except for the requirement that the digits specified be no greater than the digits of the subtype being constrained, a digits_constraint is essentially equivalent to a range_constraint.
 
 Consider the following example: 
 
@@ -2064,13 +2064,13 @@ type D is delta 0.01 digits 7 range -0.00 .. 9999.99;
 
 ```
 
-The compatibility rule implies that the [digits_constraint](S0047) "digits 6" specifies an implicit range of "99.9999 .. 99.9999". Thus, "digits 6" is not compatible with the constraint of D, but "digits 6 range 0.00 .. 9999.99" is compatible.
+The compatibility rule implies that the digits_constraint "digits 6" specifies an implicit range of "99.9999 .. 99.9999". Thus, "digits 6" is not compatible with the constraint of D, but "digits 6 range 0.00 .. 9999.99" is compatible.
 
-A value of a scalar type belongs to a constrained subtype of the type if it belongs to the range of the subtype. Attributes like Digits and Delta have no affect on this fundamental rule. So the obsolescent forms of [digits_constraint](S0047)s and [delta_constraint](S0275)s that are called "accuracy constraints" in RM83 don't really represent constraints on the values of the subtype, but rather primarily affect compatibility of the "constraint" with the subtype being "constrained". In this sense, they might better be called "subtype assertions" rather than "constraints".
+A value of a scalar type belongs to a constrained subtype of the type if it belongs to the range of the subtype. Attributes like Digits and Delta have no affect on this fundamental rule. So the obsolescent forms of digits_constraints and delta_constraints that are called "accuracy constraints" in RM83 don't really represent constraints on the values of the subtype, but rather primarily affect compatibility of the "constraint" with the subtype being "constrained". In this sense, they might better be called "subtype assertions" rather than "constraints".
 
-Note that the [digits_constraint](S0047) on a decimal fixed point subtype is a combination of an assertion about the digits of the subtype being further constrained, and a constraint on the range of the subtype being defined, either explicit or implicit. 
+Note that the digits_constraint on a decimal fixed point subtype is a combination of an assertion about the digits of the subtype being further constrained, and a constraint on the range of the subtype being defined, either explicit or implicit. 
 
-The elaboration of a [digits_constraint](S0047) consists of the elaboration of the [range_constraint](S0033), if any. If a [range_constraint](S0033) is given, a check is made that the bounds of the range are both in the range (10**D1)*delta .. +(10**D1)*delta, where D is the value of the (static) [expression](S0108) given after the reserved word digits. If this check fails, Constraint_Error is raised. 
+The elaboration of a digits_constraint consists of the elaboration of the range_constraint, if any. If a range_constraint is given, a check is made that the bounds of the range are both in the range (10**D1)*delta .. +(10**D1)*delta, where D is the value of the (static) expression given after the reserved word digits. If this check fails, Constraint_Error is raised. 
 
 
 #### Implementation Requirements
@@ -2134,7 +2134,7 @@ Decimal fixed point types are new, though their capabilities are essentially sim
 
 #### Wording Changes from Ada 83
 
-The syntax rules for fixed_point_constraint and fixed_accuracy_definition are removed. The syntax rule for [fixed_point_definition](S0044) is new. A syntax rule for [delta_constraint](S0275) is included in the Obsolescent features (to be compatible with Ada 83's fixed_point_constraint). 
+The syntax rules for fixed_point_constraint and fixed_accuracy_definition are removed. The syntax rule for fixed_point_definition is new. A syntax rule for delta_constraint is included in the Obsolescent features (to be compatible with Ada 83's fixed_point_constraint). 
 
 
 ### 3.5.10  Operations of Fixed Point Types
@@ -2144,11 +2144,11 @@ The syntax rules for fixed_point_constraint and fixed_accuracy_definition are re
 
 The following attributes are defined for every fixed point subtype S: 
 
-Small may be specified for nonderived fixed point types via an [attribute_definition_clause](S0265) (see 13.3); the expression of such a clause shall be static.
+Small may be specified for nonderived fixed point types via an attribute_definition_clause (see 13.3); the expression of such a clause shall be static.
 
 S'DeltaS'Delta denotes the delta of the fixed point subtype S. The value of this attribute is of the type universal_real. 
 
-Reason: The delta is associated with the subtype as opposed to the type, because of the possibility of an (obsolescent) [delta_constraint](S0275).
+Reason: The delta is associated with the subtype as opposed to the type, because of the possibility of an (obsolescent) delta_constraint.
 
 S'ForeS'Fore yields the minimum number of characters needed before the decimal point for the decimal representation of any value of the subtype S, assuming that the representation does not include an exponent, but includes a one-character prefix that is either a minus sign or a space. (This minimum number does not include superfluous zeros or underlines, and is at least 2.) The value of this attribute is of the type universal_integer.
 
@@ -2158,9 +2158,9 @@ The following additional attributes are defined for every decimal fixed point su
 
 S'DigitsS'Digits denotes the digits of the decimal fixed point subtype S, which corresponds to the number of decimal digits that are representable in objects of the subtype. The value of this attribute is of the type universal_integer. Its value is determined as follows: 
 
-For a first subtype or a subtype defined by a [subtype_indication](S0024) with a [digits_constraint](S0047), the digits is the value of the expression given after the reserved word digits;
+For a first subtype or a subtype defined by a subtype_indication with a digits_constraint, the digits is the value of the expression given after the reserved word digits;
 
-For a subtype defined by a [subtype_indication](S0024) without a [digits_constraint](S0047), the digits of the subtype is the same as that of the subtype denoted by the [subtype_mark](S0025) in the [subtype_indication](S0024). 
+For a subtype defined by a subtype_indication without a digits_constraint, the digits of the subtype is the same as that of the subtype denoted by the subtype_mark in the subtype_indication. 
 
 Implementation Note: Although a decimal subtype can be both range-constrained and digits-constrained, the digits constraint is intended to control the Size attribute of the subtype. For decimal types, Size can be important because input/output of decimal types is so common. 
 
@@ -2180,7 +2180,7 @@ function S'Round(X : universal_real)
 
 The function returns the value obtained by rounding X (away from 0, if X is midway between two values of the type of S). 
 
-NOTE 1   All subtypes of a fixed point type will have the same value for the Delta attribute, in the absence of [delta_constraint](S0275)s (see J.3).
+NOTE 1   All subtypes of a fixed point type will have the same value for the Delta attribute, in the absence of delta_constraints (see J.3).
 
 NOTE 2   S'Scale is not always the same as S'Aft for a decimal subtype; for example, if S'Delta = 1.0 then S'Aft is 1 while S'Scale is 0.
 
@@ -2197,37 +2197,37 @@ An array object is a composite object consisting of components which all have th
 #### Syntax
 
 array_type_definition ::= 
-   [unconstrained_array_definition](S0049) | [constrained_array_definition](S0051)
+   unconstrained_array_definition | constrained_array_definition
 
 unconstrained_array_definition ::= 
-   array([index_subtype_definition](S0050) {, [index_subtype_definition](S0050)}) of [component_definition](S0053)
+   array(index_subtype_definition {, index_subtype_definition}) of component_definition
 
-index_subtype_definition ::= [subtype_mark](S0025) range &lt&gt
+index_subtype_definition ::= subtype_mark range &lt&gt
 
 constrained_array_definition ::= 
-   array ([discrete_subtype_definition](S0052) {, [discrete_subtype_definition](S0052)}) of [component_definition](S0053)
+   array (discrete_subtype_definition {, discrete_subtype_definition}) of component_definition
 
-discrete_subtype_definition ::= discrete_[subtype_indication](S0024) | [range](S0034)
+discrete_subtype_definition ::= discrete_subtype_indication | range
 
-component_definition ::= [aliased] [subtype_indication](S0024)
+component_definition ::= [aliased] subtype_indication
 
 
 #### Name Resolution Rules
 
-For a [discrete_subtype_definition](S0052) that is a [range](S0034), the [range](S0034) shall resolve to be of some specific discrete type[; which discrete type shall be determined without using any context other than the bounds of the [range](S0034) itself (plus the preference for root_integer - see 8.6).] 
+For a discrete_subtype_definition that is a range, the range shall resolve to be of some specific discrete type[; which discrete type shall be determined without using any context other than the bounds of the range itself (plus the preference for root_integer - see 8.6).] 
 
 
 #### Legality Rules
 
-Each [index_subtype_definition](S0050) or [discrete_subtype_definition](S0052) in an [array_type_definition](S0048) defines an index subtype; its type (the index type) shall be discrete. 
+Each index_subtype_definition or discrete_subtype_definition in an array_type_definition defines an index subtype; its type (the index type) shall be discrete. 
 
 Discussion: An index is a discrete quantity used to select along a given dimension of an array. A component is selected by specifying corresponding values for each of the indices. 
 
-The subtype defined by the [subtype_indication](S0024) of a [component_definition](S0053) (the component subtype) shall be a definite subtype. 
+The subtype defined by the subtype_indication of a component_definition (the component subtype) shall be a definite subtype. 
 
-Ramification: This applies to all uses of [component_definition](S0053), including in [record_type_definition](S0063)s and [protected_definition](S0182)s.
+Ramification: This applies to all uses of component_definition, including in record_type_definitions and protected_definitions.
 
-Within the definition of a nonlimited composite type (or a limited composite type that later in its immediate scope becomes nonlimited - see 7.3.1 and 7.5), if a [component_definition](S0053) contains the reserved word aliased and the type of the component is discriminated, then the nominal subtype of the component shall be constrained. 
+Within the definition of a nonlimited composite type (or a limited composite type that later in its immediate scope becomes nonlimited - see 7.3.1 and 7.5), if a component_definition contains the reserved word aliased and the type of the component is discriminated, then the nominal subtype of the component shall be constrained. 
 
 Reason: If we allowed the subtype to be unconstrained, then the discriminants might change because of an assignment to the containing (nonlimited) object, thus causing a potential violation of an access subtype constraint of an access value designating the aliased component.
 
@@ -2283,38 +2283,38 @@ An array is characterized by the number of indices (the dimensionality of the ar
 
 A one-dimensional array has a distinct component for each possible index value. A multidimensional array has a distinct component for each possible sequence of index values that can be formed by selecting one value for each index position (in the given order). The possible values for a given index are all the values between the lower and upper bounds, inclusive; this range of values is called the index range. The bounds of an array are the bounds of its index ranges. The length of a dimension of an array is the number of values of the index range of the dimension (zero for a null range). The length of a one-dimensional array is the length of its only dimension.
 
-An [array_type_definition](S0048) defines an array type and its first subtype. For each object of this array type, the number of indices, the type and position of each index, and the subtype of the components are as in the type definition[; the values of the lower and upper bounds for each index belong to the corresponding index subtype of its type, except for null arrays (see 3.6.1)].
+An array_type_definition defines an array type and its first subtype. For each object of this array type, the number of indices, the type and position of each index, and the subtype of the components are as in the type definition[; the values of the lower and upper bounds for each index belong to the corresponding index subtype of its type, except for null arrays (see 3.6.1)].
 
-An [unconstrained_array_definition](S0049) defines an array type with an unconstrained first subtype. Each [index_subtype_definition](S0050) defines the corresponding index subtype to be the subtype denoted by the [subtype_mark](S0025). [ The compound delimiter &lt&gt (called a box) of an [index_subtype_definition](S0050) stands for an undefined range (different objects of the type need not have the same bounds).]
+An unconstrained_array_definition defines an array type with an unconstrained first subtype. Each index_subtype_definition defines the corresponding index subtype to be the subtype denoted by the subtype_mark. [ The compound delimiter &lt&gt (called a box) of an index_subtype_definition stands for an undefined range (different objects of the type need not have the same bounds).]
 
-A [constrained_array_definition](S0051) defines an array type with a constrained first subtype. Each [discrete_subtype_definition](S0052) defines the corresponding index subtype, as well as the corresponding index range for the constrained first subtype. The constraint of the first subtype consists of the bounds of the index ranges. 
+A constrained_array_definition defines an array type with a constrained first subtype. Each discrete_subtype_definition defines the corresponding index subtype, as well as the corresponding index range for the constrained first subtype. The constraint of the first subtype consists of the bounds of the index ranges. 
 
 Discussion: Although there is no namable unconstrained array subtype in this case, the predefined slicing and concatenation operations can operate on and yield values that do not necessarily belong to the first array subtype. This is also true for Ada 83. 
 
-The discrete subtype defined by a [discrete_subtype_definition](S0052) is either that defined by the [subtype_indication](S0024), or a subtype determined by the [range](S0034) as follows: 
+The discrete subtype defined by a discrete_subtype_definition is either that defined by the subtype_indication, or a subtype determined by the range as follows: 
 
-If the type of the [range](S0034) resolves to root_integer, then the [discrete_subtype_definition](S0052) defines a subtype of the predefined type Integer with bounds given by a conversion to Integer of the bounds of the [range](S0034); 
+If the type of the range resolves to root_integer, then the discrete_subtype_definition defines a subtype of the predefined type Integer with bounds given by a conversion to Integer of the bounds of the range; 
 
 Reason: This ensures that indexing over the discrete subtype can be performed with regular Integers, rather than only universal_integers. 
 
-Discussion: We considered doing this by simply creating a "preference" for Integer when resolving the [range](S0034). However, this can introduce Beaujolais effects when the [simple_expression](S0110)s involve calls on functions visible due to use clauses. 
+Discussion: We considered doing this by simply creating a "preference" for Integer when resolving the range. However, this can introduce Beaujolais effects when the simple_expressions involve calls on functions visible due to use clauses. 
 
-Otherwise, the [discrete_subtype_definition](S0052) defines a subtype of the type of the [range](S0034), with the bounds given by the [range](S0034). 
+Otherwise, the discrete_subtype_definition defines a subtype of the type of the range, with the bounds given by the range. 
 
-The [component_definition](S0053) of an [array_type_definition](S0048) defines the nominal subtype of the components. If the reserved word aliased appears in the [component_definition](S0053), then each component of the array is aliased (see 3.10). 
+The component_definition of an array_type_definition defines the nominal subtype of the components. If the reserved word aliased appears in the component_definition, then each component of the array is aliased (see 3.10). 
 
 Ramification: In this case, the nominal subtype cannot be an unconstrained discriminated subtype. See 3.8. 
 
 
 #### Dynamic Semantics
 
-The elaboration of an [array_type_definition](S0048) creates the array type and its first subtype, and consists of the elaboration of any [discrete_subtype_definition](S0052)s and the [component_definition](S0053).
+The elaboration of an array_type_definition creates the array type and its first subtype, and consists of the elaboration of any discrete_subtype_definitions and the component_definition.
 
-The elaboration of a [discrete_subtype_definition](S0052) creates the discrete subtype, and consists of the elaboration of the [subtype_indication](S0024) or the evaluation of the [range](S0034). The elaboration of a [component_definition](S0053) in an [array_type_definition](S0048) consists of the elaboration of the [subtype_indication](S0024). The elaboration of any [discrete_subtype_definition](S0052)s and the elaboration of the [component_definition](S0053) are performed in an arbitrary order. 
+The elaboration of a discrete_subtype_definition creates the discrete subtype, and consists of the elaboration of the subtype_indication or the evaluation of the range. The elaboration of a component_definition in an array_type_definition consists of the elaboration of the subtype_indication. The elaboration of any discrete_subtype_definitions and the elaboration of the component_definition are performed in an arbitrary order. 
 
 NOTE 1   All components of an array have the same subtype. In particular, for an array of components that are one-dimensional arrays, this means that all components have the same bounds and hence the same length.
 
-NOTE 2   Each elaboration of an [array_type_definition](S0048) creates a distinct array type. A consequence of this is that each object whose [object_declaration](S0029) contains an [array_type_definition](S0048) is of its own unique type. 
+NOTE 2   Each elaboration of an array_type_definition creates a distinct array type. A consequence of this is that each object whose object_declaration contains an array_type_definition is of its own unique type. 
 
 
 #### Examples
@@ -2353,60 +2353,60 @@ Page : array(Positive range &lt&gt) of Line :=  --  an array of arrays
 
 #### Extensions to Ada 83
 
-The syntax rule for [component_definition](S0053) is modified to allow the reserved word aliased.
+The syntax rule for component_definition is modified to allow the reserved word aliased.
 
-The syntax rules for [unconstrained_array_definition](S0049) and [constrained_array_definition](S0051) are modified to use [component_definition](S0053) (instead of component_[subtype_indication](S0024)). The effect of this change is to allow the reserved word aliased before the component [subtype_indication](S0024).
+The syntax rules for unconstrained_array_definition and constrained_array_definition are modified to use component_definition (instead of component_subtype_indication). The effect of this change is to allow the reserved word aliased before the component subtype_indication.
 
-A [range](S0034) in a [discrete_subtype_definition](S0052) may use arbitrary universal expressions for each bound (e.g. 1 .. 3+5), rather than strictly "implicitly convertible" operands. The subtype defined will still be a subtype of Integer. 
+A range in a discrete_subtype_definition may use arbitrary universal expressions for each bound (e.g. 1 .. 3+5), rather than strictly "implicitly convertible" operands. The subtype defined will still be a subtype of Integer. 
 
 
 #### Wording Changes from Ada 83
 
-We introduce a new syntactic category, [discrete_subtype_definition](S0052), as distinct from [discrete_range](S0055). These two constructs have the same syntax, but their semantics are quite different (one defines a subtype, with a preference for Integer subtypes, while the other just selects a subrange of an existing subtype). We use this new syntactic category in for loops and entry families.
+We introduce a new syntactic category, discrete_subtype_definition, as distinct from discrete_range. These two constructs have the same syntax, but their semantics are quite different (one defines a subtype, with a preference for Integer subtypes, while the other just selects a subrange of an existing subtype). We use this new syntactic category in for loops and entry families.
 
-The syntax for [index_constraint](S0054) and [discrete_range](S0055) have been moved to their own subclause, since they are no longer used here.
+The syntax for index_constraint and discrete_range have been moved to their own subclause, since they are no longer used here.
 
-The syntax rule for [component_definition](S0053) (formerly component_subtype_definition) is moved here from RM83-3.7. 
+The syntax rule for component_definition (formerly component_subtype_definition) is moved here from RM83-3.7. 
 
 
 ### 3.6.1  Index Constraints and Discrete Ranges
 
-An [index_constraint](S0054) determines the range of possible values for every index of an array subtype, and thereby the corresponding array bounds. 
+An index_constraint determines the range of possible values for every index of an array subtype, and thereby the corresponding array bounds. 
 
 
 #### Syntax
 
-index_constraint ::=  ([discrete_range](S0055) {, [discrete_range](S0055)})
+index_constraint ::=  (discrete_range {, discrete_range})
 
-discrete_range ::= discrete_[subtype_indication](S0024) | [range](S0034)
+discrete_range ::= discrete_subtype_indication | range
 
 
 #### Name Resolution Rules
 
-The type of a [discrete_range](S0055) is the type of the subtype defined by the [subtype_indication](S0024), or the type of the [range](S0034). For an [index_constraint](S0054), each [discrete_range](S0055) shall resolve to be of the type of the corresponding index. 
+The type of a discrete_range is the type of the subtype defined by the subtype_indication, or the type of the range. For an index_constraint, each discrete_range shall resolve to be of the type of the corresponding index. 
 
-Discussion: In Ada 95, [index_constraint](S0054)s only appear in a [subtype_indication](S0024); they no longer appear in [constrained_array_definition](S0051)s. 
+Discussion: In Ada 95, index_constraints only appear in a subtype_indication; they no longer appear in constrained_array_definitions. 
 
 
 #### Legality Rules
 
-An [index_constraint](S0054) shall appear only in a [subtype_indication](S0024) whose [subtype_mark](S0025) denotes either an unconstrained array subtype, or an unconstrained access subtype whose designated subtype is an unconstrained array subtype; in either case, the [index_constraint](S0054) shall provide a [discrete_range](S0055) for each index of the array type. 
+An index_constraint shall appear only in a subtype_indication whose subtype_mark denotes either an unconstrained array subtype, or an unconstrained access subtype whose designated subtype is an unconstrained array subtype; in either case, the index_constraint shall provide a discrete_range for each index of the array type. 
 
 
 #### Static Semantics
 
-A [discrete_range](S0055) defines a range whose bounds are given by the [range](S0034), or by the range of the subtype defined by the [subtype_indication](S0024). 
+A discrete_range defines a range whose bounds are given by the range, or by the range of the subtype defined by the subtype_indication. 
 
 
 #### Dynamic Semantics
 
-An [index_constraint](S0054) is compatible with an unconstrained array subtype if and only if the index range defined by each [discrete_range](S0055) is compatible (see 3.5) with the corresponding index subtype. If any of the [discrete_range](S0055)s defines a null range, any array thus constrained is a null array, having no components. An array value satisfies an [index_constraint](S0054) if at each index position the array value and the [index_constraint](S0054) have the same index bounds. 
+An index_constraint is compatible with an unconstrained array subtype if and only if the index range defined by each discrete_range is compatible (see 3.5) with the corresponding index subtype. If any of the discrete_ranges defines a null range, any array thus constrained is a null array, having no components. An array value satisfies an index_constraint if at each index position the array value and the index_constraint have the same index bounds. 
 
 Ramification: There is no need to define compatibility with a constrained array subtype, because one is not allowed to constrain it again.
 
-The elaboration of an [index_constraint](S0054) consists of the evaluation of the [discrete_range](S0055)(s), in an arbitrary order. The evaluation of a [discrete_range](S0055) consists of the elaboration of the [subtype_indication](S0024) or the evaluation of the [range](S0034). 
+The elaboration of an index_constraint consists of the evaluation of the discrete_range(s), in an arbitrary order. The evaluation of a discrete_range consists of the elaboration of the subtype_indication or the evaluation of the range. 
 
-NOTE 1   The elaboration of a [subtype_indication](S0024) consisting of a [subtype_mark](S0025) followed by an [index_constraint](S0054) checks the compatibility of the [index_constraint](S0054) with the [subtype_mark](S0025) (see 3.2.2).
+NOTE 1   The elaboration of a subtype_indication consisting of a subtype_mark followed by an index_constraint checks the compatibility of the index_constraint with the subtype_mark (see 3.2.2).
 
 NOTE 2   Even if an array value does not satisfy the index constraint of an array subtype, Constraint_Error is not raised on conversion to the array subtype, so long as the length of each dimension of the array value and the array subtype match. See 4.6. 
 
@@ -2457,7 +2457,7 @@ We allow the declaration of a variable with a nominally unconstrained array subt
 
 #### Wording Changes from Ada 83
 
-We have moved the syntax for [index_constraint](S0054) and [discrete_range](S0055) here since they are no longer used in [constrained_array_definition](S0051)s. We therefore also no longer have to describe the (special) semantics of [index_constraint](S0054)s and [discrete_range](S0055)s that appear in [constrained_array_definition](S0051)s.
+We have moved the syntax for index_constraint and discrete_range here since they are no longer used in constrained_array_definitions. We therefore also no longer have to describe the (special) semantics of index_constraints and discrete_ranges that appear in constrained_array_definitions.
 
 The rules given in RM83-3.6.1(5,7-10), which define the bounds of an array object, are redundant with rules given elsewhere, and so are not repeated here. RM83-3.6.1(6), which requires that the (nominal) subtype of an array variable be constrained, no longer applies, so long as the variable is explicitly initialized. 
 
@@ -2467,7 +2467,7 @@ The rules given in RM83-3.6.1(5,7-10), which define the bounds of an array objec
 
 #### Legality Rules
 
-[The argument N used in the [attribute_designator](S0094)s for the N-th dimension of an array shall be a static [expression](S0108) of some integer type.] The value of N shall be positive (nonzero) and no greater than the dimensionality of the array. 
+[The argument N used in the attribute_designators for the N-th dimension of an array shall be a static expression of some integer type.] The value of N shall be positive (nonzero) and no greater than the dimensionality of the array. 
 
 
 #### Static Semantics
@@ -2484,9 +2484,9 @@ A'LastA'Last denotes the upper bound of the first index range; its type is the c
 
 A'Last(N)A'Last(N) denotes the upper bound of the N-th index range; its type is the corresponding index type.
 
-A'RangeA'Range is equivalent to the range A'First .. A'Last, except that the [prefix](S0086) A is only evaluated once.
+A'RangeA'Range is equivalent to the range A'First .. A'Last, except that the prefix A is only evaluated once.
 
-A'Range(N)A'Range(N) is equivalent to the range A'First(N) .. A'Last(N), except that the [prefix](S0086) A is only evaluated once.
+A'Range(N)A'Range(N) is equivalent to the range A'First(N) .. A'Last(N), except that the prefix A is only evaluated once.
 
 A'LengthA'Length denotes the number of values of the first index range (zero for a null range); its type is universal_integer.
 
@@ -2497,7 +2497,7 @@ A'Length(N)A'Length(N) denotes the number of values of the N-th index range (zer
 
 An implementation should normally represent multidimensional arrays in row-major order, consistent with the notation used for multidimensional array aggregates (see 4.3.3). However, if a pragma Convention(Fortran, ...) applies to a multidimensional array type, then column-major order should be used instead (see B.5, "Interfacing with Fortran"). 
 
-NOTE 1   The [attribute_reference](S0093)s A'First and A'First(1) denote the same value. A similar relation exists for the [attribute_reference](S0093)s A'Last, A'Range, and A'Length. The following relation is satisfied (except for a null array) by the above attributes if the index type is an integer type: 
+NOTE 1   The attribute_references A'First and A'First(1) denote the same value. A similar relation exists for the attribute_references A'Last, A'Range, and A'Length. The following relation is satisfied (except for a null array) by the above attributes if the index type is an integer type: 
 
 ```ada
    A'Length(N) = A'Last(N) - A'First(N) + 1
@@ -2508,7 +2508,7 @@ NOTE 2   An array type is limited if its component type is limited (see 7.5).
 
 NOTE 3   The predefined operations of an array type include the membership tests, qualification, and explicit conversion. If the array type is not limited, they also include assignment and the predefined equality operators. For a one-dimensional array type, they include the predefined concatenation operators (if nonlimited) and, if the component type is discrete, the predefined relational operators; if the component type is boolean, the predefined logical operators are also included.
 
-NOTE 4   A component of an array can be named with an [indexed_component](S0089). A value of an array type can be specified with an [array_aggregate](S0104), unless the array type is limited. For a one-dimensional array type, a slice of the array can be named; also, string literals are defined if the component type is a character type. 
+NOTE 4   A component of an array can be named with an indexed_component. A value of an array type can be specified with an array_aggregate, unless the array type is limited. For a one-dimensional array type, a slice of the array can be named; also, string literals are defined if the component type is a character type. 
 
 
 #### Examples
@@ -2568,7 +2568,7 @@ Ninety_Six : constant Roman   := "XCVI";	-- see 3.5.2 and 3.6
 
 #### Inconsistencies With Ada 83
 
-The declaration of Wide_String in Standard hides a use-visible declaration with the same [defining_identifier](S0019). In rare cases, this might result in an inconsistency between Ada 83 and Ada 95. 
+The declaration of Wide_String in Standard hides a use-visible declaration with the same defining_identifier. In rare cases, this might result in an inconsistency between Ada 83 and Ada 95. 
 
 
 #### Incompatibilities With Ada 83
@@ -2595,51 +2595,51 @@ We define the term string type as a natural analogy to the term character type.
 
 ## 3.7  Discriminants
 
-[ A composite type (other than an array type) can have discriminants, which parameterize the type. A [known_discriminant_part](S0058) specifies the discriminants of a composite type. A discriminant of an object is a component of the object, and is either of a discrete type or an access type. An [unknown_discriminant_part](S0057) in the declaration of a partial view of a type specifies that the discriminants of the type are unknown for the given view; all subtypes of such a partial view are indefinite subtypes.] 
+[ A composite type (other than an array type) can have discriminants, which parameterize the type. A known_discriminant_part specifies the discriminants of a composite type. A discriminant of an object is a component of the object, and is either of a discrete type or an access type. An unknown_discriminant_part in the declaration of a partial view of a type specifies that the discriminants of the type are unknown for the given view; all subtypes of such a partial view are indefinite subtypes.] 
 
 Glossary entry: A discriminant is a parameter of a composite type. It can control, for example, the bounds of a component of the type if that type is an array type. A discriminant of a task type can be used to pass data to a task of the type upon creation.
 
 Version=[5],Kind=(AddedNormal),Group=[T],Term=[discriminant], Def=[a parameter for a composite type, which can control, for example, the bounds of a component that is an array], Note1=[A discriminant for a task type can be used to pass data to a task of the type upon its creation.] 
 
-Discussion: A type, and all of its subtypes, have unknown discriminants when the number or names of the discriminants, if any, are unknown at the point of the type declaration. A [discriminant_part](S0056) of (&lt&gt) is used to indicate unknown discriminants. 
+Discussion: A type, and all of its subtypes, have unknown discriminants when the number or names of the discriminants, if any, are unknown at the point of the type declaration. A discriminant_part of (&lt&gt) is used to indicate unknown discriminants. 
 
 
 #### Syntax
 
-discriminant_part ::= [unknown_discriminant_part](S0057) | [known_discriminant_part](S0058)
+discriminant_part ::= unknown_discriminant_part | known_discriminant_part
 
 unknown_discriminant_part ::= (&lt&gt)
 
 known_discriminant_part ::= 
-   ([discriminant_specification](S0059) {; [discriminant_specification](S0059)})
+   (discriminant_specification {; discriminant_specification})
 
 discriminant_specification ::= 
-   [defining_identifier_list](S0030) : [subtype_mark](S0025) [:= [default_expression](S0060)]
- | [defining_identifier_list](S0030) : [access_definition](S0077) [:= [default_expression](S0060)]
+   defining_identifier_list : subtype_mark [:= default_expression]
+ | defining_identifier_list : access_definition [:= default_expression]
 
-default_expression ::= [expression](S0108)
+default_expression ::= expression
 
 
 #### Name Resolution Rules
 
-The expected type for the [default_expression](S0060) of a [discriminant_specification](S0059) is that of the corresponding discriminant. 
+The expected type for the default_expression of a discriminant_specification is that of the corresponding discriminant. 
 
 
 #### Legality Rules
 
-A [known_discriminant_part](S0058) is only permitted in a declaration for a composite type that is not an array type [(this includes generic formal types)]; a type declared with a [known_discriminant_part](S0058) is called a discriminated type, as is a type that inherits (known) discriminants. 
+A known_discriminant_part is only permitted in a declaration for a composite type that is not an array type [(this includes generic formal types)]; a type declared with a known_discriminant_part is called a discriminated type, as is a type that inherits (known) discriminants. 
 
 Implementation Note: Discriminants on array types were considered, but were omitted to ease (existing) implementations. 
 
-Discussion: Note that the above definition for "discriminated type" does not include types declared with an [unknown_discriminant_part](S0057). This seems consistent with Ada 83, where such types (in a generic formal part) would not be considered discriminated types. Furthermore, the full type for a type with unknown discriminants need not even be composite, much less have any discriminants.
+Discussion: Note that the above definition for "discriminated type" does not include types declared with an unknown_discriminant_part. This seems consistent with Ada 83, where such types (in a generic formal part) would not be considered discriminated types. Furthermore, the full type for a type with unknown discriminants need not even be composite, much less have any discriminants.
 
-The subtype of a discriminant may be defined by a [subtype_mark](S0025), in which case the [subtype_mark](S0025) shall denote a discrete or access subtype, or it may be defined by an [access_definition](S0077) [(in which case the [subtype_mark](S0025) of the [access_definition](S0077) may denote any kind of subtype)]. A discriminant that is defined by an [access_definition](S0077) is called an access discriminant and is of an anonymous general access-to-variable type whose designated subtype is denoted by the [subtype_mark](S0025) of the [access_definition](S0077). 
+The subtype of a discriminant may be defined by a subtype_mark, in which case the subtype_mark shall denote a discrete or access subtype, or it may be defined by an access_definition [(in which case the subtype_mark of the access_definition may denote any kind of subtype)]. A discriminant that is defined by an access_definition is called an access discriminant and is of an anonymous general access-to-variable type whose designated subtype is denoted by the subtype_mark of the access_definition. 
 
 Reason: In an early version of Ada 9X, we allowed access discriminants on nonlimited types, but this created unpleasant complexities. It turned out to be simpler and more uniform to allow discriminants of a named access type on any discriminated type, and keep access discriminants just for limited types.
 
-Note that discriminants of a named access type are not considered "access discriminants". Similarly, "access parameter" only refers to a formal parameter defined by an [access_definition](S0077). 
+Note that discriminants of a named access type are not considered "access discriminants". Similarly, "access parameter" only refers to a formal parameter defined by an access_definition. 
 
-A [discriminant_specification](S0059) for an access discriminant shall appear only in the declaration for a task or protected type, or for a type with the reserved word limited in its [(full)] definition or in that of one of its ancestors. In addition to the places where Legality Rules normally apply (see 12.3), this rule applies also in the private part of an instance of a generic unit. 
+A discriminant_specification for an access discriminant shall appear only in the declaration for a task or protected type, or for a type with the reserved word limited in its [(full)] definition or in that of one of its ancestors. In addition to the places where Legality Rules normally apply (see 12.3), this rule applies also in the private part of an instance of a generic unit. 
 
 Discussion: This rule implies that a type can have an access discriminant if the type is limited, but not if the only reason it's limited is because of a limited component. Compare with the definition of limited type in 7.5. 
 
@@ -2651,13 +2651,13 @@ If a type has an access discriminant, this automatically makes it limited, just 
 
 A type with an access discriminant shall be limited. This is equivalent to the rule we actually chose, except that it allows a type to have an access discriminant if it is limited just because of a limited component. For example, any record containing a task would be allowed to have an access discriminant, whereas the actual rule requires "limited record". This rule was also rejected due to readability concerns, and because would interact badly with the rules for limited types that "become nonlimited".
 
-[Default_expression](S0060)s shall be provided either for all or for none of the discriminants of a [known_discriminant_part](S0058). No [default_expression](S0060)s are permitted in a [known_discriminant_part](S0058) in a declaration of a tagged type [or a generic formal type]. 
+Default_expressions shall be provided either for all or for none of the discriminants of a known_discriminant_part. No default_expressions are permitted in a known_discriminant_part in a declaration of a tagged type [or a generic formal type]. 
 
 Reason: The all-or-none rule is related to the rule that a discriminant constraint shall specify values for all discriminants. One could imagine a different rule that allowed a constraint to specify only some of the discriminants, with the others provided by default. Having defaults for discriminants has a special significance - it allows objects of the type to be unconstrained, with the discriminants alterable as part of assigning to the object.
 
 Defaults for discriminants of tagged types are disallowed so that every object of a tagged type is constrained, either by an explicit constraint, or by its initial discriminant values. This substantially simplifies the semantic rules and the implementation of inherited dispatching operations. For generic formal types, the restriction simplifies the type matching rules. If one simply wants a "default" value for the discriminants, a constrained subtype can be declared for future use. 
 
-For a type defined by a [derived_type_definition](S0032), if a [known_discriminant_part](S0058) is provided in its declaration, then: 
+For a type defined by a derived_type_definition, if a known_discriminant_part is provided in its declaration, then: 
 
 The parent subtype shall be constrained;
 
@@ -2669,38 +2669,38 @@ If a discriminant is used in the constraint defining the parent subtype, the sub
 
 Reason: This ensures that on conversion (or extension via an extension aggregate) to a distantly related type, if the discriminants satisfy the target type's requirements they satisfy all the intermediate types' requirements as well. 
 
-Ramification: There is no requirement that the new discriminant have the same (or any) [default_expression](S0060) as the parent's discriminant. 
+Ramification: There is no requirement that the new discriminant have the same (or any) default_expression as the parent's discriminant. 
 
-The type of the [default_expression](S0060), if any, for an access discriminant shall be convertible to the anonymous access type of the discriminant (see 4.6). 
+The type of the default_expression, if any, for an access discriminant shall be convertible to the anonymous access type of the discriminant (see 4.6). 
 
 Ramification: This requires convertibility of the designated subtypes. 
 
 
 #### Static Semantics
 
-A [discriminant_specification](S0059) declares a discriminant; the [subtype_mark](S0025) denotes its subtype unless it is an access discriminant, in which case the discriminant's subtype is the anonymous access-to-variable subtype defined by the [access_definition](S0077).
+A discriminant_specification declares a discriminant; the subtype_mark denotes its subtype unless it is an access discriminant, in which case the discriminant's subtype is the anonymous access-to-variable subtype defined by the access_definition.
 
-[For a type defined by a [derived_type_definition](S0032), each discriminant of the parent type is either inherited, constrained to equal some new discriminant of the derived type, or constrained to the value of an expression.] When inherited or constrained to equal some new discriminant, the parent discriminant and the discriminant of the derived type are said to correspond. Two discriminants also correspond if there is some common discriminant to which they both correspond. A discriminant corresponds to itself as well. If a discriminant of a parent type is constrained to a specific value by a [derived_type_definition](S0032), then that discriminant is said to be specified by that [derived_type_definition](S0032). 
+[For a type defined by a derived_type_definition, each discriminant of the parent type is either inherited, constrained to equal some new discriminant of the derived type, or constrained to the value of an expression.] When inherited or constrained to equal some new discriminant, the parent discriminant and the discriminant of the derived type are said to correspond. Two discriminants also correspond if there is some common discriminant to which they both correspond. A discriminant corresponds to itself as well. If a discriminant of a parent type is constrained to a specific value by a derived_type_definition, then that discriminant is said to be specified by that derived_type_definition. 
 
 Ramification: The correspondence relationship is transitive, symmetric, and reflexive. That is, if A corresponds to B, and B corresponds to C, then A, B, and C each corresponds to A, B, and C in all combinations.
 
-A [constraint](S0026) that appears within the definition of a discriminated type depends on a discriminant of the type if it names the discriminant as a bound or discriminant value. A [component_definition](S0053) depends on a discriminant if its [constraint](S0026) depends on the discriminant, or on a discriminant that corresponds to it. 
+A constraint that appears within the definition of a discriminated type depends on a discriminant of the type if it names the discriminant as a bound or discriminant value. A component_definition depends on a discriminant if its constraint depends on the discriminant, or on a discriminant that corresponds to it. 
 
-Ramification: A [constraint](S0026) in a [task_body](S0179) is not considered to depend on a discriminant of the task type, even if it names it. It is only the [constraint](S0026)s in the type definition itself that are considered dependents. Similarly for protected types. 
+Ramification: A constraint in a task_body is not considered to depend on a discriminant of the task type, even if it names it. It is only the constraints in the type definition itself that are considered dependents. Similarly for protected types. 
 
 A component depends on a discriminant if: 
 
-Its [component_definition](S0053) depends on the discriminant; or 
+Its component_definition depends on the discriminant; or 
 
-Ramification: A component does not depend on a discriminant just because its [default_expression](S0060) refers to the discriminant.
+Ramification: A component does not depend on a discriminant just because its default_expression refers to the discriminant.
 
-It is declared in a [variant_part](S0068) that is governed by the discriminant; or
+It is declared in a variant_part that is governed by the discriminant; or
 
-It is a component inherited as part of a [derived_type_definition](S0032), and the [constraint](S0026) of the parent_[subtype_indication](S0024) depends on the discriminant; or 
+It is a component inherited as part of a derived_type_definition, and the constraint of the parent_subtype_indication depends on the discriminant; or 
 
 Reason: When the parent subtype depends on a discriminant, the parent part of the derived type is treated like a discriminant-dependent component. 
 
-Ramification: Because of this rule, we don't really need to worry about "corresponding" discriminants, since all the inherited components will be discriminant-dependent if there is a new [known_discriminant_part](S0058) whose discriminants are used to constrain the old discriminants. 
+Ramification: Because of this rule, we don't really need to worry about "corresponding" discriminants, since all the inherited components will be discriminant-dependent if there is a new known_discriminant_part whose discriminants are used to constrain the old discriminants. 
 
 It is a subcomponent of a component that depends on the discriminant. 
 
@@ -2708,11 +2708,11 @@ Reason: The concept of discriminant-dependent (sub)components is primarily used 
 
 Each value of a discriminated type includes a value for each component of the type that does not depend on a discriminant[; this includes the discriminants themselves]. The values of discriminants determine which other component values are present in the value of the discriminated type. 
 
-To be honest: Which values are present might depend on discriminants of some ancestor type that are constrained in an intervening [derived_type_definition](S0032). That's why we say "values of discriminants" instead of "values of the discriminants" - a subtle point.
+To be honest: Which values are present might depend on discriminants of some ancestor type that are constrained in an intervening derived_type_definition. That's why we say "values of discriminants" instead of "values of the discriminants" - a subtle point.
 
-A type declared with a [known_discriminant_part](S0058) is said to have known discriminants; its first subtype is unconstrained. A type declared with an [unknown_discriminant_part](S0057) is said to have unknown discriminants. A type declared without a [discriminant_part](S0056) has no discriminants, unless it is a derived type; if derived, such a type has the same sort of discriminants (known, unknown, or none) as its parent (or ancestor) type. A tagged class-wide type also has unknown discriminants. [Any subtype of a type with unknown discriminants is an unconstrained and indefinite subtype (see 3.2 and 3.3).] 
+A type declared with a known_discriminant_part is said to have known discriminants; its first subtype is unconstrained. A type declared with an unknown_discriminant_part is said to have unknown discriminants. A type declared without a discriminant_part has no discriminants, unless it is a derived type; if derived, such a type has the same sort of discriminants (known, unknown, or none) as its parent (or ancestor) type. A tagged class-wide type also has unknown discriminants. [Any subtype of a type with unknown discriminants is an unconstrained and indefinite subtype (see 3.2 and 3.3).] 
 
-Discussion: An [unknown_discriminant_part](S0057) "(&lt&gt)" is only permitted in the declaration of a (generic or nongeneric) private type, private extension, or formal derived type. Hence, only such types, descendants thereof, and class-wide types can have unknown discriminants. An [unknown_discriminant_part](S0057) is used to indicate that the corresponding actual or full type might have discriminants without defaults, or be an unconstrained array subtype. Tagged class-wide types are also considered to have unknown discriminants because discriminants can be added by type extensions, so the total number of discriminants of any given value of a tagged class-wide type is not known at compile time.
+Discussion: An unknown_discriminant_part "(&lt&gt)" is only permitted in the declaration of a (generic or nongeneric) private type, private extension, or formal derived type. Hence, only such types, descendants thereof, and class-wide types can have unknown discriminants. An unknown_discriminant_part is used to indicate that the corresponding actual or full type might have discriminants without defaults, or be an unconstrained array subtype. Tagged class-wide types are also considered to have unknown discriminants because discriminants can be added by type extensions, so the total number of discriminants of any given value of a tagged class-wide type is not known at compile time.
 
 A subtype with unknown discriminants is indefinite, and hence an object of such a subtype needs explicit initialization. If the subtype is limited, no (stand-alone) objects can be declared since initialization is not permitted (though formal parameters are permitted, and objects of the actual/full type will generally be declarable). A limited private type with unknown discriminants is "extremely" limited; such a type  is useful for keeping complete control over object creation within the package declaring the type.
 
@@ -2721,25 +2721,25 @@ A partial view of a type might have unknown discriminants, while the full view o
 
 #### Dynamic Semantics
 
-An [access_definition](S0077) is elaborated when the value of a corresponding access discriminant is defined, either by evaluation of its [default_expression](S0060) or by elaboration of a [discriminant_constraint](S0061). [The elaboration of an [access_definition](S0077) creates the anonymous access type. When the expression defining the access discriminant is evaluated, it is converted to this anonymous access type (see 4.6).] 
+An access_definition is elaborated when the value of a corresponding access discriminant is defined, either by evaluation of its default_expression or by elaboration of a discriminant_constraint. [The elaboration of an access_definition creates the anonymous access type. When the expression defining the access discriminant is evaluated, it is converted to this anonymous access type (see 4.6).] 
 
 Ramification: This conversion raises Constraint_Error if the initial value is null, or, for an object created by an allocator of an access type T, if the initial value is an access parameter that designates a view whose accessibility level is deeper than that of T. 
 
-NOTE 1   If a discriminated type has [default_expression](S0060)s for its discriminants, then unconstrained variables of the type are permitted, and the values of the discriminants can be changed by an assignment to such a variable. If defaults are not provided for the discriminants, then all variables of the type are constrained, either by explicit constraint or by their initial value; the values of the discriminants of such a variable cannot be changed after initialization. 
+NOTE 1   If a discriminated type has default_expressions for its discriminants, then unconstrained variables of the type are permitted, and the values of the discriminants can be changed by an assignment to such a variable. If defaults are not provided for the discriminants, then all variables of the type are constrained, either by explicit constraint or by their initial value; the values of the discriminants of such a variable cannot be changed after initialization. 
 
 Discussion: This connection between discriminant defaults and unconstrained variables can be a source of confusion. For Ada 95, we considered various ways to break the connection between defaults and unconstrainedness, but ultimately gave up for lack of a sufficiently simple and intuitive alternative.
 
 An unconstrained discriminated subtype with defaults is called a mutable subtype, and a variable of such a subtype is called a mutable variable, because the discriminants of such a variable can change. There are no mutable arrays (that is, the bounds of an array object can never change), because there is no way in the language to define default values for the bounds. Similarly, there are no mutable class-wide subtypes, because there is no way to define the default tag, and defaults for discriminants are not allowed in the tagged case. Mutable tags would also require a way for the maximum possible size of such a class-wide subtype to be known. (In some implementations, all mutable variables are allocated with the maximum possible size. This approach is appropriate for real-time applications where implicit use of the heap is inappropriate.)
 
-NOTE 2   The [default_expression](S0060) for a discriminant of a type is evaluated when an object of an unconstrained subtype of the type is created.
+NOTE 2   The default_expression for a discriminant of a type is evaluated when an object of an unconstrained subtype of the type is created.
 
-NOTE 3   Assignment to a discriminant of an object (after its initialization) is not allowed, since the name of a discriminant is a constant; neither [assignment_statement](S0130)s nor assignments inherent in passing as an in out or out parameter are allowed. Note however that the value of a discriminant can be changed by assigning to the enclosing object, presuming it is an unconstrained variable. 
+NOTE 3   Assignment to a discriminant of an object (after its initialization) is not allowed, since the name of a discriminant is a constant; neither assignment_statements nor assignments inherent in passing as an in out or out parameter are allowed. Note however that the value of a discriminant can be changed by assigning to the enclosing object, presuming it is an unconstrained variable. 
 
-Discussion: An [unknown_discriminant_part](S0057) is permitted only in the declaration of a private type (including generic formal private), private extension, or generic formal derived type. These are the things that will have a corresponding completion or generic actual, which will either define the discriminants, or say there are none. The (&lt&gt) indicates that the actual/full subtype might be an indefinite subtype. An [unknown_discriminant_part](S0057) is not permitted in a normal untagged derived type declaration, because there is no separate full type declaration for such a type. Note that (&lt&gt) allows unconstrained array bounds; those are somewhat like undefaulted discriminants.
+Discussion: An unknown_discriminant_part is permitted only in the declaration of a private type (including generic formal private), private extension, or generic formal derived type. These are the things that will have a corresponding completion or generic actual, which will either define the discriminants, or say there are none. The (&lt&gt) indicates that the actual/full subtype might be an indefinite subtype. An unknown_discriminant_part is not permitted in a normal untagged derived type declaration, because there is no separate full type declaration for such a type. Note that (&lt&gt) allows unconstrained array bounds; those are somewhat like undefaulted discriminants.
 
-For a derived type, either the discriminants are inherited as is, or completely respecified in a new [discriminant_part](S0056). In this latter case, each discriminant of the parent type shall be constrained, either to a specific value, or to equal one of the new discriminants. Constraining a parent type's discriminant to equal one of the new discriminants is like a renaming of the discriminant, except that the subtype of the new discriminant can be more restrictive than that of the parent's one. In any case, the new discriminant can share storage with the parent's discriminant. 
+For a derived type, either the discriminants are inherited as is, or completely respecified in a new discriminant_part. In this latter case, each discriminant of the parent type shall be constrained, either to a specific value, or to equal one of the new discriminants. Constraining a parent type's discriminant to equal one of the new discriminants is like a renaming of the discriminant, except that the subtype of the new discriminant can be more restrictive than that of the parent's one. In any case, the new discriminant can share storage with the parent's discriminant. 
 
-NOTE 4   A discriminant that is of a named access type is not called an access discriminant; that term is used only for discriminants defined by an [access_definition](S0077). 
+NOTE 4   A discriminant that is of a named access type is not called an access discriminant; that term is used only for discriminants defined by an access_definition. 
 
 
 #### Examples
@@ -2790,7 +2790,7 @@ type Item(Number : Positive) is
 
 #### Extensions to Ada 83
 
-The syntax for a [discriminant_specification](S0059) is modified to allow an access discriminant, with a type specified by an [access_definition](S0077) (see 3.10).
+The syntax for a discriminant_specification is modified to allow an access discriminant, with a type specified by an access_definition (see 3.10).
 
 Discriminants are allowed on all composite types other than array types.
 
@@ -2799,12 +2799,12 @@ Discriminants may be of an access type.
 
 #### Wording Changes from Ada 83
 
-[Discriminant_part](S0056)s are not elaborated, though an [access_definition](S0077) is elaborated when the discriminant is initialized.
+Discriminant_parts are not elaborated, though an access_definition is elaborated when the discriminant is initialized.
 
 
 ### 3.7.1  Discriminant Constraints
 
-A [discriminant_constraint](S0061) specifies the values of the discriminants for a given discriminated type. 
+A discriminant_constraint specifies the values of the discriminants for a given discriminated type. 
 
 
 #### Language Design Principles
@@ -2815,35 +2815,35 @@ The rules in this clause are intentionally parallel to those given in 4.3.1, "Re
 #### Syntax
 
 discriminant_constraint ::= 
-   ([discriminant_association](S0062) {, [discriminant_association](S0062)})
+   (discriminant_association {, discriminant_association})
 
 discriminant_association ::= 
-   [discriminant_[selector_name](S0092) {| discriminant_[selector_name](S0092)} =&gt] [expression](S0108)
+   [discriminant_selector_name {| discriminant_selector_name} =&gt] expression
 
-A [discriminant_association](S0062) is said to be named if it has one or more discriminant_[selector_name](S0092)s; it is otherwise said to be positional. In a [discriminant_constraint](S0061), any positional associations shall precede any named associations. 
+A discriminant_association is said to be named if it has one or more discriminant_selector_names; it is otherwise said to be positional. In a discriminant_constraint, any positional associations shall precede any named associations. 
 
 
 #### Name Resolution Rules
 
-Each [selector_name](S0092) of a named [discriminant_association](S0062) shall resolve to denote a discriminant of the subtype being constrained; the discriminants so named are the associated discriminants of the named association. For a positional association, the associated discriminant is the one whose [discriminant_specification](S0059) occurred in the corresponding position in the [known_discriminant_part](S0058) that defined the discriminants of the subtype being constrained.
+Each selector_name of a named discriminant_association shall resolve to denote a discriminant of the subtype being constrained; the discriminants so named are the associated discriminants of the named association. For a positional association, the associated discriminant is the one whose discriminant_specification occurred in the corresponding position in the known_discriminant_part that defined the discriminants of the subtype being constrained.
 
-The expected type for the [expression](S0108) in a [discriminant_association](S0062) is that of the associated discriminant(s). 
+The expected type for the expression in a discriminant_association is that of the associated discriminant(s). 
 
 
 #### Legality Rules
 
-A [discriminant_constraint](S0061) is only allowed in a [subtype_indication](S0024) whose [subtype_mark](S0025) denotes either an unconstrained discriminated subtype, or an unconstrained access subtype whose designated subtype is an unconstrained discriminated subtype. there is a place within the immediate scope of the designated subtype where the designated subtype's view is constrained. 
+A discriminant_constraint is only allowed in a subtype_indication whose subtype_mark denotes either an unconstrained discriminated subtype, or an unconstrained access subtype whose designated subtype is an unconstrained discriminated subtype. there is a place within the immediate scope of the designated subtype where the designated subtype's view is constrained. 
 
-A named [discriminant_association](S0062) with more than one [selector_name](S0092) is allowed only if the named discriminants are all of the same type. A [discriminant_constraint](S0061) shall provide exactly one value for each discriminant of the subtype being constrained.
+A named discriminant_association with more than one selector_name is allowed only if the named discriminants are all of the same type. A discriminant_constraint shall provide exactly one value for each discriminant of the subtype being constrained.
 
-The [expression](S0108) associated with an access discriminant shall be of a type convertible to the anonymous access type. 
+The expression associated with an access discriminant shall be of a type convertible to the anonymous access type. 
 
-Ramification: This implies both convertibility of designated types, and static accessibility. This implies that if an object of type T with an access discriminant is created by an allocator for an access type A, then it requires that the type of the [expression](S0108) associated with the access discriminant have an accessibility level that is not statically deeper than that of A. This is to avoid dangling references.
+Ramification: This implies both convertibility of designated types, and static accessibility. This implies that if an object of type T with an access discriminant is created by an allocator for an access type A, then it requires that the type of the expression associated with the access discriminant have an accessibility level that is not statically deeper than that of A. This is to avoid dangling references.
 
 
 #### Dynamic Semantics
 
-A [discriminant_constraint](S0061) is compatible with an unconstrained discriminated subtype if each discriminant value belongs to the subtype of the corresponding discriminant. 
+A discriminant_constraint is compatible with an unconstrained discriminated subtype if each discriminant value belongs to the subtype of the corresponding discriminant. 
 
 Ramification: The "dependent compatibility check" has been eliminated in Ada 95. Any checking on subcomponents is performed when (and if) an object is created.
 
@@ -2851,7 +2851,7 @@ Discussion: There is no need to define compatibility with a constrained discrimi
 
 A composite value satisfies a discriminant constraint if and only if each discriminant of the composite value has the value imposed by the discriminant constraint.
 
-For the elaboration of a [discriminant_constraint](S0061), the [expression](S0108)s in the [discriminant_association](S0062)s are evaluated in an arbitrary order and converted to the type of the associated discriminant (which might raise Constraint_Error - see 4.6); the [expression](S0108) of a named association is evaluated (and converted) once for each associated discriminant. The result of each evaluation and conversion is the value imposed by the constraint for the associated discriminant. 
+For the elaboration of a discriminant_constraint, the expressions in the discriminant_associations are evaluated in an arbitrary order and converted to the type of the associated discriminant (which might raise Constraint_Error - see 4.6); the expression of a named association is evaluated (and converted) once for each associated discriminant. The result of each evaluation and conversion is the value imposed by the constraint for the associated discriminant. 
 
 Reason: We convert to the type, not the subtype, so that the definition of compatibility of discriminant constraints is not vacuous.
 
@@ -2887,12 +2887,12 @@ Everything in RM83-3.7.2(7-12), which specifies the initial values for discrimin
 
 ### 3.7.2  Operations of Discriminated Types
 
-[If a discriminated type has [default_expression](S0060)s for its discriminants, then unconstrained variables of the type are permitted, and the discriminants of such a variable can be changed by assignment to the variable. For a formal parameter of such a type, an attribute is provided to determine whether the corresponding actual parameter is constrained or unconstrained.] 
+[If a discriminated type has default_expressions for its discriminants, then unconstrained variables of the type are permitted, and the discriminants of such a variable can be changed by assignment to the variable. For a formal parameter of such a type, an attribute is provided to determine whether the corresponding actual parameter is constrained or unconstrained.] 
 
 
 #### Static Semantics
 
-For a [prefix](S0086) A that is of a discriminated type [(after any implicit dereference)], the following attribute is defined: 
+For a prefix A that is of a discriminated type [(after any implicit dereference)], the following attribute is defined: 
 
 A'ConstrainedYields the value True if A denotes a constant, a value, or a constrained variable, and False otherwise. 
 
@@ -2901,21 +2901,21 @@ Implementation Note: This attribute is primarily used on parameters, to determin
 
 #### Erroneous Execution
 
-The execution of a construct is erroneous if the construct has a constituent that is a [name](S0084) denoting a subcomponent that depends on discriminants, and the value of any of these discriminants is changed by this execution between evaluating the [name](S0084) and the last use (within this execution) of the subcomponent denoted by the [name](S0084). 
+The execution of a construct is erroneous if the construct has a constituent that is a name denoting a subcomponent that depends on discriminants, and the value of any of these discriminants is changed by this execution between evaluating the name and the last use (within this execution) of the subcomponent denoted by the name. 
 
-Ramification: This rule applies to [assignment_statement](S0130)s, calls (except when the discriminant-dependent subcomponent is an in parameter passed by copy), [indexed_component](S0089)s, and [slice](S0090)s. Ada 83 only covered the first two cases. AI83-00585 pointed out the situation with the last two cases. The cases of [object_renaming_declaration](S0170)s and generic formal in out objects are handled differently, by disallowing the situation at compile time. 
+Ramification: This rule applies to assignment_statements, calls (except when the discriminant-dependent subcomponent is an in parameter passed by copy), indexed_components, and slices. Ada 83 only covered the first two cases. AI83-00585 pointed out the situation with the last two cases. The cases of object_renaming_declarations and generic formal in out objects are handled differently, by disallowing the situation at compile time. 
 
 
 #### Extensions to Ada 83
 
 For consistency with other attributes, we are allowing the prefix of Constrained to be a value as well as an object of a discriminated type, and also an implicit dereference. These extensions are not important capabilities, but there seems no reason to make this attribute different from other similar attributes. We are curious what most Ada 83 compilers do with F(1).X'Constrained.
 
-We now handle in a general way the cases of erroneousness identified by AI83-00585, where the [prefix](S0086) of an [indexed_component](S0089) or [slice](S0090) is discriminant-dependent, and the evaluation of the index or discrete range changes the value of a discriminant. 
+We now handle in a general way the cases of erroneousness identified by AI83-00585, where the prefix of an indexed_component or slice is discriminant-dependent, and the evaluation of the index or discrete range changes the value of a discriminant. 
 
 
 #### Wording Changes from Ada 83
 
-We have moved all discussion of erroneous use of [name](S0084)s that denote discriminant-dependent subcomponents to this subclause. In Ada 83, it used to appear separately under [assignment_statement](S0130)s and subprogram calls. 
+We have moved all discussion of erroneous use of names that denote discriminant-dependent subcomponents to this subclause. In Ada 83, it used to appear separately under assignment_statements and subprogram calls. 
 
 
 ## 3.8  Record Types
@@ -2925,43 +2925,43 @@ A record object is a composite object consisting of named components. The value 
 
 #### Syntax
 
-record_type_definition ::= [[abstract] tagged] [limited] [record_definition](S0064)
+record_type_definition ::= [[abstract] tagged] [limited] record_definition
 
 record_definition ::= 
     record
-       [component_list](S0065)
+       component_list
     end record
   | null record
 
 component_list ::= 
-      [component_item](S0066) {[component_item](S0066)}
-   | {[component_item](S0066)} [variant_part](S0068)
+      component_item {component_item}
+   | {component_item} variant_part
    |  null;
 
-component_item ::= [component_declaration](S0067) | [representation_clause](S0263)
+component_item ::= component_declaration | representation_clause
 
 component_declaration ::= 
-   [defining_identifier_list](S0030) : [component_definition](S0053) [:= [default_expression](S0060)];
+   defining_identifier_list : component_definition [:= default_expression];
 
 
 #### Name Resolution Rules
 
-The expected type for the [default_expression](S0060), if any, in a [component_declaration](S0067) is the type of the component. 
+The expected type for the default_expression, if any, in a component_declaration is the type of the component. 
 
 
 #### Legality Rules
 
-A [default_expression](S0060) is not permitted if the component is of a limited type.
+A default_expression is not permitted if the component is of a limited type.
 
-Each [component_declaration](S0067) declares a component of the record type. Besides components declared by [component_declaration](S0067)s, the components of a record type include any components declared by [discriminant_specification](S0059)s of the record type declaration. [The identifiers of all components of a record type shall be distinct.] 
+Each component_declaration declares a component of the record type. Besides components declared by component_declarations, the components of a record type include any components declared by discriminant_specifications of the record type declaration. [The identifiers of all components of a record type shall be distinct.] 
 
 Proof: The identifiers of all components of a record type have to be distinct because they are all declared immediately within the same declarative region. See Section 8. 
 
-Within a [type_declaration](S0020), a [name](S0084) that denotes a component, protected subprogram, or entry of the type is allowed only in the following cases:
+Within a type_declaration, a name that denotes a component, protected subprogram, or entry of the type is allowed only in the following cases:
 
-A [name](S0084) that denotes any component, protected subprogram, or entry is allowed within a representation item that occurs within the declaration of the composite type.
+A name that denotes any component, protected subprogram, or entry is allowed within a representation item that occurs within the declaration of the composite type.
 
-A [name](S0084) that denotes a noninherited discriminant is allowed within the declaration of the type, but not within the [discriminant_part](S0056). If the discriminant is used to define the constraint of a component, the bounds of an entry family, or the constraint of the parent subtype in a [derived_type_definition](S0032) then its name shall appear alone as a [direct_name](S0085) (not as part of a larger expression or expanded name). A discriminant shall not be used to define the constraint of a scalar component. 
+A name that denotes a noninherited discriminant is allowed within the declaration of the type, but not within the discriminant_part. If the discriminant is used to define the constraint of a component, the bounds of an entry family, or the constraint of the parent subtype in a derived_type_definition then its name shall appear alone as a direct_name (not as part of a larger expression or expanded name). A discriminant shall not be used to define the constraint of a scalar component. 
 
 Reason: The penultimate restriction simplifies implementation, and allows the outer discriminant and the inner discriminant or bound to possibly share storage. 
 
@@ -2971,51 +2971,51 @@ Reason: The last restriction is inherited from Ada 83. The restriction is not re
 
 Discussion: Note that a discriminant can be used to define the constraint for a component that is of an access-to-composite type. 
 
-Reason: The above rules, and a similar one in 6.1 for formal parameters, are intended to allow initializations of components or parameters to occur in an arbitrary order - whatever order is most efficient, since one [default_expression](S0060) cannot depend on the value of another one. It also prevent circularities. 
+Reason: The above rules, and a similar one in 6.1 for formal parameters, are intended to allow initializations of components or parameters to occur in an arbitrary order - whatever order is most efficient, since one default_expression cannot depend on the value of another one. It also prevent circularities. 
 
-Ramification: Inherited discriminants are not allowed to be denoted, except within representation items. However, the discriminant_[selector_name](S0092) of the parent [subtype_indication](S0024) is allowed to denote a discriminant of the parent. 
+Ramification: Inherited discriminants are not allowed to be denoted, except within representation items. However, the discriminant_selector_name of the parent subtype_indication is allowed to denote a discriminant of the parent. 
 
-If the name of the current instance of a type (see 8.6) is used to define the constraint of a component, then it shall appear as a [direct_name](S0085) that is the [prefix](S0086) of an [attribute_reference](S0093) whose result is of an access type, and the [attribute_reference](S0093) shall appear alone. 
+If the name of the current instance of a type (see 8.6) is used to define the constraint of a component, then it shall appear as a direct_name that is the prefix of an attribute_reference whose result is of an access type, and the attribute_reference shall appear alone. 
 
 Reason: This rule allows T'Access or T'Unchecked_Access, but disallows, for example, a range constraint (1..T'Size). Allowing things like (1..T'Size) would mean that a per-object constraint could affect the size of the object, which would be bad. 
 
 
 #### Static Semantics
 
-The [component_definition](S0053) of a [component_declaration](S0067) defines the (nominal) subtype of the component. If the reserved word aliased appears in the [component_definition](S0053), then the component is aliased (see 3.10). 
+The component_definition of a component_declaration defines the (nominal) subtype of the component. If the reserved word aliased appears in the component_definition, then the component is aliased (see 3.10). 
 
 Ramification: In this case, the nominal subtype cannot be an unconstrained discriminated subtype. See 3.6. 
 
-If the [component_list](S0065) of a record type is defined by the reserved word null and there are no discriminants, then the record type has no components and all records of the type are null records. A [record_definition](S0064) of null record is equivalent to record null; end record. 
+If the component_list of a record type is defined by the reserved word null and there are no discriminants, then the record type has no components and all records of the type are null records. A record_definition of null record is equivalent to record null; end record. 
 
 Ramification: This short-hand is available both for declaring a record type and a record extension - see 3.9.1. 
 
 
 #### Dynamic Semantics
 
-The elaboration of a [record_type_definition](S0063) creates the record type and its first subtype, and consists of the elaboration of the [record_definition](S0064). The elaboration of a [record_definition](S0064) consists of the elaboration of its [component_list](S0065), if any.
+The elaboration of a record_type_definition creates the record type and its first subtype, and consists of the elaboration of the record_definition. The elaboration of a record_definition consists of the elaboration of its component_list, if any.
 
-The elaboration of a [component_list](S0065) consists of the elaboration of the [component_item](S0066)s and [variant_part](S0068), if any, in the order in which they appear. The elaboration of a [component_declaration](S0067) consists of the elaboration of the [component_definition](S0053). 
+The elaboration of a component_list consists of the elaboration of the component_items and variant_part, if any, in the order in which they appear. The elaboration of a component_declaration consists of the elaboration of the component_definition. 
 
-Discussion: If the [defining_identifier_list](S0030) has more than one [defining_identifier](S0019), we presume here that the transformation explained in 3.3.1 has already taken place. Alternatively, we could say that the [component_definition](S0053) is elaborated once for each [defining_identifier](S0019) in the list. 
+Discussion: If the defining_identifier_list has more than one defining_identifier, we presume here that the transformation explained in 3.3.1 has already taken place. Alternatively, we could say that the component_definition is elaborated once for each defining_identifier in the list. 
 
-Within the definition of a composite type, if a [component_definition](S0053) or [discrete_subtype_definition](S0052) (see 9.5.2) includes a [name](S0084) that denotes a discriminant of the type, or that is an [attribute_reference](S0093) whose [prefix](S0086) denotes the current instance of the type, the expression containing the [name](S0084) is called a per-object expression, and the constraint being defined is called a per-object constraint. For the elaboration of a [component_definition](S0053) of a [component_declaration](S0067), if the [constraint](S0026)  of the [subtype_indication](S0024)  is not a per-object constraint, then the [subtype_indication](S0024) is elaborated. On the other hand, if the [constraint](S0026)  is a per-object constraint, then the elaboration consists of the evaluation of any included expression that is not part of a per-object expression. 
+Within the definition of a composite type, if a component_definition or discrete_subtype_definition (see 9.5.2) includes a name that denotes a discriminant of the type, or that is an attribute_reference whose prefix denotes the current instance of the type, the expression containing the name is called a per-object expression, and the constraint being defined is called a per-object constraint. For the elaboration of a component_definition of a component_declaration, if the constraint  of the subtype_indication  is not a per-object constraint, then the subtype_indication is elaborated. On the other hand, if the constraint  is a per-object constraint, then the elaboration consists of the evaluation of any included expression that is not part of a per-object expression. 
 
-Discussion: The evaluation of other expressions that appear in [component_definition](S0053)s and [discrete_subtype_definition](S0052)s is performed when the type definition is elaborated. The evaluation of expressions that appear as [default_expression](S0060)s is postponed until an object is created. Expressions in representation items that appear within a composite type definition are evaluated according to the rules of the particular representation item. 
+Discussion: The evaluation of other expressions that appear in component_definitions and discrete_subtype_definitions is performed when the type definition is elaborated. The evaluation of expressions that appear as default_expressions is postponed until an object is created. Expressions in representation items that appear within a composite type definition are evaluated according to the rules of the particular representation item. 
 
-NOTE 1   A [component_declaration](S0067) with several identifiers is equivalent to a sequence of single [component_declaration](S0067)s, as explained in 3.3.1.
+NOTE 1   A component_declaration with several identifiers is equivalent to a sequence of single component_declarations, as explained in 3.3.1.
 
-NOTE 2   The [default_expression](S0060) of a record component is only evaluated upon the creation of a default-initialized object of the record type (presuming the object has the component, if it is in a [variant_part](S0068) - see 3.3.1).
+NOTE 2   The default_expression of a record component is only evaluated upon the creation of a default-initialized object of the record type (presuming the object has the component, if it is in a variant_part - see 3.3.1).
 
-NOTE 3   The subtype defined by a [component_definition](S0053) (see 3.6) has to be a definite subtype.
+NOTE 3   The subtype defined by a component_definition (see 3.6) has to be a definite subtype.
 
-NOTE 4   If a record type does not have a [variant_part](S0068), then the same components are present in all values of the type.
+NOTE 4   If a record type does not have a variant_part, then the same components are present in all values of the type.
 
 NOTE 5   A record type is limited if it has the reserved word limited in its definition, or if any of its components are limited (see 7.5).
 
 NOTE 6   The predefined operations of a record type include membership tests, qualification, and explicit conversion. If the record type is nonlimited, they also include assignment and the predefined equality operators.
 
-NOTE 7   A component of a record can be named with a [selected_component](S0091). A value of a record can be specified with a [record_aggregate](S0098), unless the record type is limited.
+NOTE 7   A component of a record can be named with a selected_component. A value of a record can be specified with a record_aggregate, unless the record type is limited.
 
 
 #### Examples
@@ -3057,23 +3057,23 @@ A, B, C : Complex;
 
 #### Extensions to Ada 83
 
-The syntax rule for [component_declaration](S0067) is modified to use [component_definition](S0053) (instead of component_subtype_definition). The effect of this change is to allow the reserved word aliased before the component_subtype_definition.
+The syntax rule for component_declaration is modified to use component_definition (instead of component_subtype_definition). The effect of this change is to allow the reserved word aliased before the component_subtype_definition.
 
 A short-hand is provided for defining a null record type (and a null record extension), as these will be more common for abstract root types (and derived types without additional components).
 
-The syntax rule for [record_type_definition](S0063) is modified to allow the reserved words tagged and limited. Tagging is new. Limitedness is now orthogonal to privateness. In Ada 83 the syntax implied that limited private was sort of more private than private. However, limitedness really has nothing to do with privateness; limitedness simply indicates the lack of assignment capabilities, and makes perfect sense for nonprivate types such as record types. 
+The syntax rule for record_type_definition is modified to allow the reserved words tagged and limited. Tagging is new. Limitedness is now orthogonal to privateness. In Ada 83 the syntax implied that limited private was sort of more private than private. However, limitedness really has nothing to do with privateness; limitedness simply indicates the lack of assignment capabilities, and makes perfect sense for nonprivate types such as record types. 
 
 
 #### Wording Changes from Ada 83
 
-The syntax rules now allow [representation_clause](S0263)s to appear in a [record_definition](S0064). This is not a language extension, because Legality Rules prevent all language-defined representation clauses from appearing there. However, an implementation-defined [attribute_definition_clause](S0265) could appear there. The reason for this change is to allow the rules for [representation_clause](S0263)s and representation pragmas to be as similar as possible. 
+The syntax rules now allow representation_clauses to appear in a record_definition. This is not a language extension, because Legality Rules prevent all language-defined representation clauses from appearing there. However, an implementation-defined attribute_definition_clause could appear there. The reason for this change is to allow the rules for representation_clauses and representation pragmas to be as similar as possible. 
 
 
 ### 3.8.1  Variant Parts and Discrete Choices
 
-A record type with a [variant_part](S0068) specifies alternative lists of components. Each [variant](S0069) defines the components for the value or values of the discriminant covered by its [discrete_choice_list](S0070). 
+A record type with a variant_part specifies alternative lists of components. Each variant defines the components for the value or values of the discriminant covered by its discrete_choice_list. 
 
-Discussion: [Discrete_choice_list](S0070)s and [discrete_choice](S0071)s are said to cover values as defined below; which [discrete_choice_list](S0070) covers a value determines which of various alternatives is chosen. These are used in [variant_part](S0068)s, [array_aggregate](S0104)s, and [case_statement](S0133)s. 
+Discussion: Discrete_choice_lists and discrete_choices are said to cover values as defined below; which discrete_choice_list covers a value determines which of various alternatives is chosen. These are used in variant_parts, array_aggregates, and case_statements. 
 
 
 #### Language Design Principles
@@ -3086,72 +3086,72 @@ The rules of this subclause intentionally parallel those for case statements.
 #### Syntax
 
 variant_part ::= 
-   case discriminant_[direct_name](S0085) is
-       [variant](S0069)
-      {[variant](S0069)}
+   case discriminant_direct_name is
+       variant
+      {variant}
    end case;
 
 variant ::= 
-   when [discrete_choice_list](S0070) =&gt
-      [component_list](S0065)
+   when discrete_choice_list =&gt
+      component_list
 
-discrete_choice_list ::= [discrete_choice](S0071) {| [discrete_choice](S0071)}
+discrete_choice_list ::= discrete_choice {| discrete_choice}
 
-discrete_choice ::= [expression](S0108) | [discrete_range](S0055) | others
+discrete_choice ::= expression | discrete_range | others
 
 
 #### Name Resolution Rules
 
-The discriminant_[direct_name](S0085) shall resolve to denote a discriminant (called the discriminant of the [variant_part](S0068)) specified in the [known_discriminant_part](S0058) of the [full_type_declaration](S0021) that contains the [variant_part](S0068). The expected type for each [discrete_choice](S0071) in a [variant](S0069) is the type of the discriminant of the [variant_part](S0068). 
+The discriminant_direct_name shall resolve to denote a discriminant (called the discriminant of the variant_part) specified in the known_discriminant_part of the full_type_declaration that contains the variant_part. The expected type for each discrete_choice in a variant is the type of the discriminant of the variant_part. 
 
-Ramification: A [full_type_declaration](S0021) with a [variant_part](S0068) has to have a (new) [known_discriminant_part](S0058); the discriminant of the [variant_part](S0068) cannot be an inherited discriminant. 
+Ramification: A full_type_declaration with a variant_part has to have a (new) known_discriminant_part; the discriminant of the variant_part cannot be an inherited discriminant. 
 
 
 #### Legality Rules
 
-The discriminant of the [variant_part](S0068) shall be of a discrete type. 
+The discriminant of the variant_part shall be of a discrete type. 
 
 Ramification: It shall not be of an access type, named or anonymous.
 
-The [expression](S0108)s and [discrete_range](S0055)s given as [discrete_choice](S0071)s in a [variant_part](S0068) shall be static. The [discrete_choice](S0071) others shall appear alone in a [discrete_choice_list](S0070), and such a [discrete_choice_list](S0070), if it appears, shall be the last one in the enclosing construct.
+The expressions and discrete_ranges given as discrete_choices in a variant_part shall be static. The discrete_choice others shall appear alone in a discrete_choice_list, and such a discrete_choice_list, if it appears, shall be the last one in the enclosing construct.
 
-A [discrete_choice](S0071) is defined to cover a value in the following cases: 
+A discrete_choice is defined to cover a value in the following cases: 
 
-A [discrete_choice](S0071) that is an [expression](S0108) covers a value if the value equals the value of the [expression](S0108) converted to the expected type.
+A discrete_choice that is an expression covers a value if the value equals the value of the expression converted to the expected type.
 
-A [discrete_choice](S0071) that is a [discrete_range](S0055) covers all values (possibly none) that belong to the range.
+A discrete_choice that is a discrete_range covers all values (possibly none) that belong to the range.
 
-The [discrete_choice](S0071) others covers all values of its expected type that are not covered by previous [discrete_choice_list](S0070)s of the same construct. 
+The discrete_choice others covers all values of its expected type that are not covered by previous discrete_choice_lists of the same construct. 
 
-Ramification: For [case_statement](S0133)s, this includes values outside the range of the static subtype (if any) to be covered by the choices. It even includes values outside the base range of the case expression's type, since values of numeric types (and undefined values of any scalar type?) can be outside their base range. 
+Ramification: For case_statements, this includes values outside the range of the static subtype (if any) to be covered by the choices. It even includes values outside the base range of the case expression's type, since values of numeric types (and undefined values of any scalar type?) can be outside their base range. 
 
-A [discrete_choice_list](S0070) covers a value if one of its [discrete_choice](S0071)s covers the value.
+A discrete_choice_list covers a value if one of its discrete_choices covers the value.
 
-The possible values of the discriminant of a [variant_part](S0068) shall be covered as follows: 
+The possible values of the discriminant of a variant_part shall be covered as follows: 
 
-If the discriminant is of a static constrained scalar subtype, then each non-others [discrete_choice](S0071) shall cover only values in that subtype, and each value of that subtype shall be covered by some [discrete_choice](S0071) [(either explicitly or by others)];
+If the discriminant is of a static constrained scalar subtype, then each non-others discrete_choice shall cover only values in that subtype, and each value of that subtype shall be covered by some discrete_choice [(either explicitly or by others)];
 
-If the type of the discriminant is a descendant of a generic formal scalar type then the [variant_part](S0068) shall have an others [discrete_choice](S0071); 
+If the type of the discriminant is a descendant of a generic formal scalar type then the variant_part shall have an others discrete_choice; 
 
 Reason: The base range is not known statically in this case. 
 
 Otherwise, each value of the base range of the type of the discriminant shall be covered [(either explicitly or by others)]. 
 
-Two distinct [discrete_choice](S0071)s of a [variant_part](S0068) shall not cover the same value.
+Two distinct discrete_choices of a variant_part shall not cover the same value.
 
 
 #### Static Semantics
 
-If the [component_list](S0065) of a [variant](S0069) is specified by null, the variant has no components.
+If the component_list of a variant is specified by null, the variant has no components.
 
-The discriminant of a [variant_part](S0068) is said to govern the [variant_part](S0068) and its [variant](S0069)s. In addition, the discriminant of a derived type governs a [variant_part](S0068) and its [variant](S0069)s if it corresponds (see 3.7) to the discriminant of the [variant_part](S0068).
+The discriminant of a variant_part is said to govern the variant_part and its variants. In addition, the discriminant of a derived type governs a variant_part and its variants if it corresponds (see 3.7) to the discriminant of the variant_part.
 
 
 #### Dynamic Semantics
 
-A record value contains the values of the components of a particular [variant](S0069) only if the value of the discriminant governing the [variant](S0069) is covered by the [discrete_choice_list](S0070) of the [variant](S0069). This rule applies in turn to any further [variant](S0069) that is, itself, included in the [component_list](S0065) of the given [variant](S0069).
+A record value contains the values of the components of a particular variant only if the value of the discriminant governing the variant is covered by the discrete_choice_list of the variant. This rule applies in turn to any further variant that is, itself, included in the component_list of the given variant.
 
-The elaboration of a [variant_part](S0068) consists of the elaboration of the [component_list](S0065) of each [variant](S0069) in the order in which they appear. 
+The elaboration of a variant_part consists of the elaboration of the component_list of each variant in the order in which they appear. 
 
 
 #### Examples
@@ -3198,12 +3198,12 @@ Archive  : Disk_Unit;
 
 #### Extensions to Ada 83
 
-In Ada 83, the discriminant of a [variant_part](S0068) is not allowed to be of a generic formal type. This restriction is removed in Ada 95; an others [discrete_choice](S0071) is required in this case. 
+In Ada 83, the discriminant of a variant_part is not allowed to be of a generic formal type. This restriction is removed in Ada 95; an others discrete_choice is required in this case. 
 
 
 #### Wording Changes from Ada 83
 
-The syntactic category choice is removed. The syntax rules for [variant](S0069), [array_aggregate](S0104), and [case_statement](S0133) now use [discrete_choice_list](S0070) or [discrete_choice](S0071) instead. The syntax rule for [record_aggregate](S0098) now defines its own syntax for named associations.
+The syntactic category choice is removed. The syntax rules for variant, array_aggregate, and case_statement now use discrete_choice_list or discrete_choice instead. The syntax rule for record_aggregate now defines its own syntax for named associations.
 
 We have added the term Discrete Choice to the title since this is where they are talked about. This is analogous to the name of the subclause "Index Constraints and Discrete Ranges" in the clause on Array Types.
 
@@ -3244,23 +3244,23 @@ If an implementation shares code for instances of generic bodies, it should be a
 
 #### Static Semantics
 
-A record type or private type that has the reserved word tagged in its declaration is called a tagged type. [When deriving from a tagged type, additional components may be defined. As for any derived type, additional primitive subprograms may be defined, and inherited primitive subprograms may be overridden.] The derived type is called an extension of the ancestor type, or simply a type extension. Every type extension is also a tagged type, and is either a record extension or a private extension of some other tagged type. A record extension is defined by a [derived_type_definition](S0032) with a [record_extension_part](S0072). A private extension, which is a partial view of a record extension, can be declared in the visible part of a package (see 7.3) or in a generic formal part (see 12.5.1).
+A record type or private type that has the reserved word tagged in its declaration is called a tagged type. [When deriving from a tagged type, additional components may be defined. As for any derived type, additional primitive subprograms may be defined, and inherited primitive subprograms may be overridden.] The derived type is called an extension of the ancestor type, or simply a type extension. Every type extension is also a tagged type, and is either a record extension or a private extension of some other tagged type. A record extension is defined by a derived_type_definition with a record_extension_part. A private extension, which is a partial view of a record extension, can be declared in the visible part of a package (see 7.3) or in a generic formal part (see 12.5.1).
 
 Glossary entry: The objects of a tagged type have a run-time type tag, which indicates the specific type with which the object was originally created. An operand of a class-wide tagged type can be used in a dispatching call; the tag indicates which subprogram body to invoke. Nondispatching calls, in which the subprogram body to invoke is determined at compile time, are also allowed. Tagged types may be extended with additional components.
 
 Version=[5],Kind=(AddedNormal),Group=[T],Term=[tagged type], Def=[a type whose objects each have a run-time type tag, which indicates the specific type for which the object was originally created], Note1=[Tagged types can be extended with additional components.] 
 
-Ramification: If a tagged type is declared other than in a [package_specification](S0162), it is impossible to add new primitive subprograms for that type, although it can inherit primitive subprograms, and those can be overridden. If the user incorrectly thinks a certain subprogram is primitive when it is not, and tries to call it with a dispatching call, an error message will be given at the call site.
+Ramification: If a tagged type is declared other than in a package_specification, it is impossible to add new primitive subprograms for that type, although it can inherit primitive subprograms, and those can be overridden. If the user incorrectly thinks a certain subprogram is primitive when it is not, and tries to call it with a dispatching call, an error message will be given at the call site.
 
-Note that the accessibility rules imply that a tagged type declared in a library [package_specification](S0162) cannot be extended in a nested subprogram or task body. 
+Note that the accessibility rules imply that a tagged type declared in a library package_specification cannot be extended in a nested subprogram or task body. 
 
 An object of a tagged type has an associated (run-time) tag that identifies the specific tagged type used to create the object originally. [ The tag of an operand of a class-wide tagged type T'Class controls which subprogram body is to be executed when a primitive subprogram of type T is applied to the operand (see 3.9.2); using a tag to control which body to execute is called dispatching.] 
 
-The tag of a specific tagged type identifies the [full_type_declaration](S0021) of the type. If a declaration for a tagged type occurs within a [generic_package_declaration](S0238), then the corresponding type declarations in distinct instances of the generic package are associated with distinct tags. For a tagged type that is local to a generic package body, the language does not specify whether repeated instantiations of the generic body result in distinct tags. 
+The tag of a specific tagged type identifies the full_type_declaration of the type. If a declaration for a tagged type occurs within a generic_package_declaration, then the corresponding type declarations in distinct instances of the generic package are associated with distinct tags. For a tagged type that is local to a generic package body, the language does not specify whether repeated instantiations of the generic body result in distinct tags. 
 
 Reason: This eases generic code sharing. 
 
-Implementation Note: The language does not specify whether repeated elaborations of the same [full_type_declaration](S0021) correspond to distinct tags. In most cases, we expect that all elaborations will correspond to the same tag, since the tag will frequently be the address (or index) of a statically allocated type descriptor. However, with shared generics, the type descriptor might have to be allocated on a per-instance basis, which in some implementation models implies per-elaboration of the instantiation. 
+Implementation Note: The language does not specify whether repeated elaborations of the same full_type_declaration correspond to distinct tags. In most cases, we expect that all elaborations will correspond to the same tag, since the tag will frequently be the address (or index) of a statically allocated type descriptor. However, with shared generics, the type descriptor might have to be allocated on a per-instance basis, which in some implementation models implies per-elaboration of the instantiation. 
 
 The following language-defined library package exists: 
 
@@ -3293,15 +3293,15 @@ Reason: Tag is a nonlimited, definite subtype, because it needs the equality ope
 
 For an object X and a type T, "X'Tag = T'Tag" is not needed, because a membership test can be used. However, comparing the tags of two objects cannot be done via membership. This is one reason to allow equality for type Tag. 
 
-The function Expanded_Name returns the full expanded name of the first subtype of the specific type identified by the tag, in upper case, starting with a root library unit. The result is implementation defined if the type is declared within an unnamed [block_statement](S0138). 
+The function Expanded_Name returns the full expanded name of the first subtype of the specific type identified by the tag, in upper case, starting with a root library unit. The result is implementation defined if the type is declared within an unnamed block_statement. 
 
-To be honest: This name, as well as each [prefix](S0086) of it, does not denote a [renaming_declaration](S0169). 
+To be honest: This name, as well as each prefix of it, does not denote a renaming_declaration. 
 
-Implementation defined: The result of Tags.Expanded_Name for types declared within an unnamed [block_statement](S0138).
+Implementation defined: The result of Tags.Expanded_Name for types declared within an unnamed block_statement.
 
-The function External_Tag returns a string to be used in an external representation for the given tag. The call External_Tag(S'Tag) is equivalent to the [attribute_reference](S0093) S'External_Tag (see 13.3). 
+The function External_Tag returns a string to be used in an external representation for the given tag. The call External_Tag(S'Tag) is equivalent to the attribute_reference S'External_Tag (see 13.3). 
 
-Reason: It might seem redundant to provide both the function External_Tag and the attribute External_Tag. The function is needed because the attribute can't be applied to values of type Tag. The attribute is needed so that it can be specifiable via an [attribute_definition_clause](S0265). 
+Reason: It might seem redundant to provide both the function External_Tag and the attribute External_Tag. The function is needed because the attribute can't be applied to values of type Tag. The attribute is needed so that it can be specifiable via an attribute_definition_clause. 
 
 The function Internal_Tag returns the tag that corresponds to the given external tag, or raises Tag_Error if the given string is not the external tag for any specific type of the partition.
 
@@ -3323,7 +3323,7 @@ S'TagS'Tag denotes the tag of the type T (or if T is class-wide, the tag of the 
 
 Reason: S'Class'Tag equals S'Tag, to avoid generic contract model problems when S'Class is the actual type associated with a generic formal derived type.
 
-Given a [prefix](S0086) X that is of a class-wide tagged type [(after any implicit dereference)], the following attribute is defined: 
+Given a prefix X that is of a class-wide tagged type [(after any implicit dereference)], the following attribute is defined: 
 
 X'TagX'Tag denotes the tag of X. The value of this attribute is of type Tag. 
 
@@ -3334,7 +3334,7 @@ Reason: X'Tag is not defined if X is of a specific type. This is primarily to av
 
 The tag associated with an object of a tagged type is determined as follows: 
 
-The tag of a stand-alone object, a component, or an [aggregate](S0097) of a specific tagged type T identifies T. 
+The tag of a stand-alone object, a component, or an aggregate of a specific tagged type T identifies T. 
 
 Discussion: The tag of a formal parameter of type T is not necessarily the tag of T, if, for example, the actual was a type conversion. 
 
@@ -3344,7 +3344,7 @@ Discussion: The tag of an object designated by a value of such an access type mi
 
 The tag of an object of a class-wide tagged type is that of its initialization expression. 
 
-Ramification: The tag of an object (even a class-wide one) cannot be changed after it is initialized, since a "class-wide" [assignment_statement](S0130) raises Constraint_Error if the tags don't match, and a "specific" [assignment_statement](S0130) does not affect the tag. 
+Ramification: The tag of an object (even a class-wide one) cannot be changed after it is initialized, since a "class-wide" assignment_statement raises Constraint_Error if the tags don't match, and a "specific" assignment_statement does not affect the tag. 
 
 The tag of the result returned by a function whose result type is a specific tagged type T identifies T. 
 
@@ -3359,15 +3359,15 @@ The tag is preserved by type conversion and by parameter passing. The tag of a v
 
 The implementation of the functions in Ada.Tags may raise Tag_Error if no specific type corresponding to the tag passed as a parameter exists in the partition at the time the function is called. 
 
-Reason: In most implementations, repeated elaborations of the same [type_declaration](S0020) will all produce the same tag. In such an implementation, Tag_Error will be raised in cases where the internal or external tag was passed from a different partition. However, some implementations might create a new tag value at run time for each elaboration of a [type_declaration](S0020). In that case, Tag_Error could also be raised if the created type no longer exists because the subprogram containing it has returned, for example. We don't require the latter behavior; hence the word "may" in this rule. 
+Reason: In most implementations, repeated elaborations of the same type_declaration will all produce the same tag. In such an implementation, Tag_Error will be raised in cases where the internal or external tag was passed from a different partition. However, some implementations might create a new tag value at run time for each elaboration of a type_declaration. In that case, Tag_Error could also be raised if the created type no longer exists because the subprogram containing it has returned, for example. We don't require the latter behavior; hence the word "may" in this rule. 
 
 Implementation Advice: 
 
-NOTE 1   A type declared with the reserved word tagged should normally be declared in a [package_specification](S0162), so that new primitive subprograms can be declared for it.
+NOTE 1   A type declared with the reserved word tagged should normally be declared in a package_specification, so that new primitive subprograms can be declared for it.
 
 NOTE 2   Once an object has been created, its tag never changes.
 
-NOTE 3   Class-wide types are defined to have unknown discriminants (see 3.7). This means that objects of a class-wide type have to be explicitly initialized (whether created by an [object_declaration](S0029) or an [allocator](S0122)), and that [aggregate](S0097)s have to be explicitly qualified with a specific type when their expected type is class-wide.
+NOTE 3   Class-wide types are defined to have unknown discriminants (see 3.7). This means that objects of a class-wide type have to be explicitly initialized (whether created by an object_declaration or an allocator), and that aggregates have to be explicitly qualified with a specific type when their expected type is class-wide.
 
 NOTE 4   If S denotes an untagged private type whose full type is tagged, then S'Class is also allowed before the full type definition, but only in the private part of the package in which the type is declared (see 7.3.1). Similarly, the Class attribute is defined for incomplete types whose full type is tagged, but only within the library unit in which the incomplete type is declared (see 3.10.1). 
 
@@ -3410,16 +3410,16 @@ We don't want to allow components in an extension aggregate to depend on discrim
 
 #### Syntax
 
-record_extension_part ::= with [record_definition](S0064)
+record_extension_part ::= with record_definition
 
 
 #### Legality Rules
 
-The parent type of a record extension shall not be a class-wide type. If the parent type is nonlimited, then each of the components of the [record_extension_part](S0072) shall be nonlimited. The accessibility level (see 3.10.2) of a record extension shall not be statically deeper than that of its parent type. In addition to the places where Legality Rules normally apply (see 12.3), these rules apply also in the private part of an instance of a generic unit. 
+The parent type of a record extension shall not be a class-wide type. If the parent type is nonlimited, then each of the components of the record_extension_part shall be nonlimited. The accessibility level (see 3.10.2) of a record extension shall not be statically deeper than that of its parent type. In addition to the places where Legality Rules normally apply (see 12.3), these rules apply also in the private part of an instance of a generic unit. 
 
 Reason: If the parent is a limited formal type, then the actual might be nonlimited.
 
-A similar accessibility rule is not needed for private extensions, because in a package, the rule will apply to the [full_type_declaration](S0021), and for a generic formal private extension, the actual is all that matters.
+A similar accessibility rule is not needed for private extensions, because in a package, the rule will apply to the full_type_declaration, and for a generic formal private extension, the actual is all that matters.
 
 A type extension shall not be declared in a generic body if the parent type is declared outside that body.
 
@@ -3427,7 +3427,7 @@ Reason: This paragraph ensures that a dispatching call will never attempt to exe
 
 The part about generic bodies is necessary in order to preserve the contract model.
 
-Since a generic unit can be instantiated at a deeper accessibility level than the generic unit, it is necessary to prevent type extensions whose parent is declared outside the generic unit. The same is true if the parent is a formal of the generic unit . If the parent is declared in the [generic_declaration](S0236) (but is not a formal), we don't run afoul of the accessibility rules, because we know that the instance declaration and body will be at the same accessibility level. However, we still have a problem in that case, because it might have an unknown number of abstract subprograms, as in the following example: 
+Since a generic unit can be instantiated at a deeper accessibility level than the generic unit, it is necessary to prevent type extensions whose parent is declared outside the generic unit. The same is true if the parent is a formal of the generic unit . If the parent is declared in the generic_declaration (but is not a formal), we don't run afoul of the accessibility rules, because we know that the instance declaration and body will be at the same accessibility level. However, we still have a problem in that case, because it might have an unknown number of abstract subprograms, as in the following example: 
 
 ```ada
 package P is
@@ -3469,26 +3469,26 @@ If TT were declared as abstract, then we could have the same problem with abstra
 
 We considered disallowing all tagged types in a generic body, for simplicity. We decided not to go that far, in order to avoid unnecessary restrictions.
 
-We also considered trying make the accessibility level part of the contract; i.e. invent some way of saying (in the [generic_declaration](S0236)) "all instances of this generic unit will have the same accessibility level as the [generic_declaration](S0236)". Unfortunately, that doesn't solve the part of the problem having to do with abstract types.
+We also considered trying make the accessibility level part of the contract; i.e. invent some way of saying (in the generic_declaration) "all instances of this generic unit will have the same accessibility level as the generic_declaration". Unfortunately, that doesn't solve the part of the problem having to do with abstract types.
 
 Children of generic units obviate the need for extension in the body somewhat. 
 
 
 #### Dynamic Semantics
 
-The elaboration of a [record_extension_part](S0072) consists of the elaboration of the [record_definition](S0064). 
+The elaboration of a record_extension_part consists of the elaboration of the record_definition. 
 
 NOTE 1   The term "type extension" refers to a type as a whole. The term "extension part" refers to the piece of text that defines the additional components (if any) the type extension has relative to its specified ancestor type. 
 
 Discussion: We considered other terminology, such as "extended type". However, the terms "private extended type" and "record extended type" did not convey the proper meaning. Hence, we have chosen to uniformly use the term "extension" as the type resulting from extending a type, with "private extension" being one produced by privately extending the type, and "record extension" being one produced by extending the type with an additional record-like set of components. Note also that the term "type extension" refers to the result of extending a type in the language Oberon as well (though there the term "extended type" is also used, interchangeably, perhaps because Oberon doesn't have the concept of a "private extension"). 
 
-NOTE 2   The accessibility rules imply that a tagged type declared in a library [package_specification](S0162) can be extended only at library level or as a generic formal. When the extension is declared immediately within a [package_body](S0163), primitive subprograms are inherited and are overridable, but new primitive subprograms cannot be added.
+NOTE 2   The accessibility rules imply that a tagged type declared in a library package_specification can be extended only at library level or as a generic formal. When the extension is declared immediately within a package_body, primitive subprograms are inherited and are overridable, but new primitive subprograms cannot be added.
 
-NOTE 3   A [name](S0084) that denotes a component (including a discriminant) of the parent type is not allowed within the [record_extension_part](S0072). Similarly, a [name](S0084) that denotes a component defined within the [record_extension_part](S0072) is not allowed within the [record_extension_part](S0072). It is permissible to use a [name](S0084) that denotes a discriminant of the record extension, providing there is a new [known_discriminant_part](S0058) in the enclosing type declaration. (The full rule is given in 3.8.) 
+NOTE 3   A name that denotes a component (including a discriminant) of the parent type is not allowed within the record_extension_part. Similarly, a name that denotes a component defined within the record_extension_part is not allowed within the record_extension_part. It is permissible to use a name that denotes a discriminant of the record extension, providing there is a new known_discriminant_part in the enclosing type declaration. (The full rule is given in 3.8.) 
 
 Reason: The restriction against depending on discriminants of the parent is to simplify the definition of extension aggregates. The restriction against using parent components in other ways is methodological; it presumably simplifies implementation as well. 
 
-NOTE 4   Each visible component of a record extension has to have a unique name, whether the component is (visibly) inherited from the parent type or declared in the [record_extension_part](S0072) (see 8.3). 
+NOTE 4   Each visible component of a record extension has to have a unique name, whether the component is (visibly) inherited from the parent type or declared in the record_extension_part (see 8.3). 
 
 
 #### Examples
@@ -3566,23 +3566,23 @@ The controlling tag determination rules are analogous to the overload resolution
 
 #### Static Semantics
 
-A call on a dispatching operation is a call whose [name](S0084) or [prefix](S0086) denotes the declaration of a primitive subprogram of a tagged type, that is, a dispatching operation. A controlling operand in a call on a dispatching operation of a tagged type T is one whose corresponding formal parameter is of type T or is of an anonymous access type with designated type T; the corresponding formal parameter is called a controlling formal parameter. If the controlling formal parameter is an access parameter, the controlling operand is the object designated by the actual parameter, rather than the actual parameter itself. If the call is to a (primitive) function with result type T, then the call has a controlling result - the context of the call can control the dispatching. 
+A call on a dispatching operation is a call whose name or prefix denotes the declaration of a primitive subprogram of a tagged type, that is, a dispatching operation. A controlling operand in a call on a dispatching operation of a tagged type T is one whose corresponding formal parameter is of type T or is of an anonymous access type with designated type T; the corresponding formal parameter is called a controlling formal parameter. If the controlling formal parameter is an access parameter, the controlling operand is the object designated by the actual parameter, rather than the actual parameter itself. If the call is to a (primitive) function with result type T, then the call has a controlling result - the context of the call can control the dispatching. 
 
-Ramification: This definition implies that a call through the dereference of an access-to-subprogram value is never considered a call on a dispatching operation. Note also that if the [prefix](S0086) denotes a [renaming_declaration](S0169), the place where the renaming occurs determines whether it is primitive; the thing being renamed is irrelevant. 
+Ramification: This definition implies that a call through the dereference of an access-to-subprogram value is never considered a call on a dispatching operation. Note also that if the prefix denotes a renaming_declaration, the place where the renaming occurs determines whether it is primitive; the thing being renamed is irrelevant. 
 
-A [name](S0084) or expression of a tagged type is either statically tagged, dynamically tagged, or tag indeterminate, according to whether, when used as a controlling operand, the tag that controls dispatching is determined statically by the operand's (specific) type, dynamically by its tag at run time, or from context. A [qualified_expression](S0121) or parenthesized expression is statically, dynamically, or indeterminately tagged according to its operand. For other kinds of [name](S0084)s and expressions, this is determined as follows: 
+A name or expression of a tagged type is either statically tagged, dynamically tagged, or tag indeterminate, according to whether, when used as a controlling operand, the tag that controls dispatching is determined statically by the operand's (specific) type, dynamically by its tag at run time, or from context. A qualified_expression or parenthesized expression is statically, dynamically, or indeterminately tagged according to its operand. For other kinds of names and expressions, this is determined as follows: 
 
-The [name](S0084) or expression is statically tagged if it is of a specific tagged type and, if it is a call with a controlling result, it has at least one statically tagged controlling operand; 
+The name or expression is statically tagged if it is of a specific tagged type and, if it is a call with a controlling result, it has at least one statically tagged controlling operand; 
 
 Discussion: It is illegal to have both statically tagged and dynamically tagged controlling operands in the same call -- see below. 
 
-The [name](S0084) or expression is dynamically tagged if it is of a class-wide type, or it is a call with a controlling result and at least one dynamically tagged controlling operand;
+The name or expression is dynamically tagged if it is of a class-wide type, or it is a call with a controlling result and at least one dynamically tagged controlling operand;
 
-The [name](S0084) or expression is tag indeterminate if it is a call with a controlling result, all of whose controlling operands (if any) are tag indeterminate. 
+The name or expression is tag indeterminate if it is a call with a controlling result, all of whose controlling operands (if any) are tag indeterminate. 
 
-[A [type_conversion](S0120) is statically or dynamically tagged according to whether the type determined by the [subtype_mark](S0025) is specific or class-wide, respectively.] For a controlling operand that is designated by an actual parameter, the controlling operand is statically or dynamically tagged according to whether the designated type of the actual parameter is specific or class-wide, respectively. 
+[A type_conversion is statically or dynamically tagged according to whether the type determined by the subtype_mark is specific or class-wide, respectively.] For a controlling operand that is designated by an actual parameter, the controlling operand is statically or dynamically tagged according to whether the designated type of the actual parameter is specific or class-wide, respectively. 
 
-Ramification: A [type_conversion](S0120) is never tag indeterminate, even if its operand is. A designated object is never tag indeterminate.
+Ramification: A type_conversion is never tag indeterminate, even if its operand is. A designated object is never tag indeterminate.
 
 
 #### Legality Rules
@@ -3591,19 +3591,19 @@ A call on a dispatching operation shall not have both dynamically tagged and sta
 
 Reason: This restriction is intended to minimize confusion between whether the dynamically tagged operands are implicitly converted to, or tag checked against the specific type of the statically tagged operand(s). 
 
-If the expected type for an expression or [name](S0084) is some specific tagged type, then the expression or [name](S0084) shall not be dynamically tagged unless it is a controlling operand in a call on a dispatching operation. Similarly, if the expected type for an expression is an anonymous access-to-specific tagged type, then the expression shall not be of an access-to-class-wide type unless it designates a controlling operand in a call on a dispatching operation. 
+If the expected type for an expression or name is some specific tagged type, then the expression or name shall not be dynamically tagged unless it is a controlling operand in a call on a dispatching operation. Similarly, if the expected type for an expression is an anonymous access-to-specific tagged type, then the expression shall not be of an access-to-class-wide type unless it designates a controlling operand in a call on a dispatching operation. 
 
 Reason: This prevents implicit "truncation" of a dynamically-tagged value to the specific type of the target object/formal. An explicit conversion is required to request this truncation. 
 
-Ramification: This rule applies to all expressions or [name](S0084)s with a specific expected type, not just those that are actual parameters to a dispatching call. This rule does not apply to a membership test whose [expression](S0108) is class-wide, since any type that covers the tested type is explicitly allowed. See 4.5.2. 
+Ramification: This rule applies to all expressions or names with a specific expected type, not just those that are actual parameters to a dispatching call. This rule does not apply to a membership test whose expression is class-wide, since any type that covers the tested type is explicitly allowed. See 4.5.2. 
 
 In the declaration of a dispatching operation of a tagged type, everywhere a subtype of the tagged type appears as a subtype of the profile (see 6.1), it shall statically match the first subtype of the tagged type. If the dispatching operation overrides an inherited subprogram, it shall be subtype conformant with the inherited subprogram. A dispatching operation shall not be of convention Intrinsic. If a dispatching operation overrides the predefined equals operator, then it shall be of convention Ada [(either explicitly or by default - see 6.3.1)]. 
 
 Reason: These rules ensure that constraint checks can be performed by the caller in a dispatching call, and parameter passing conventions match up properly. A special rule on aggregates prevents values of a tagged type from being created that are outside of its first subtype. 
 
-The [default_expression](S0060) for a controlling formal parameter of a dispatching operation shall be tag indeterminate. A controlling formal parameter that is an access parameter shall not have a [default_expression](S0060). 
+The default_expression for a controlling formal parameter of a dispatching operation shall be tag indeterminate. A controlling formal parameter that is an access parameter shall not have a default_expression. 
 
-Reason: The first part ensures that the [default_expression](S0060) always produces the "correct" tag when called with or without dispatching, or when inherited by a descendant. If it were statically tagged, the default would be useless for a dispatching call; if it were dynamically tagged, the default would be useless for a nondispatching call.
+Reason: The first part ensures that the default_expression always produces the "correct" tag when called with or without dispatching, or when inherited by a descendant. If it were statically tagged, the default would be useless for a dispatching call; if it were dynamically tagged, the default would be useless for a nondispatching call.
 
 The second part is consistent with the first part, since designated objects are never tag-indeterminate. 
 
@@ -3619,9 +3619,9 @@ Note that a call upon a dispatching operation of type T will freeze T.
 
 We considered applying this rule to all derived types, for uniformity. However, that would be upward incompatible, so we rejected the idea. As in Ada 83, for an untagged type, the above call upon P will call the old P (which is arguably confusing). 
 
-Implementation Note: Because of this rule, the type descriptor can be created (presumably containing linker symbols pointing at the not-yet-compiled bodies) at the first freezing point of the type. It also prevents, for a tagged type declared in a [package_specification](S0162), overriding in the body or by a child subprogram. 
+Implementation Note: Because of this rule, the type descriptor can be created (presumably containing linker symbols pointing at the not-yet-compiled bodies) at the first freezing point of the type. It also prevents, for a tagged type declared in a package_specification, overriding in the body or by a child subprogram. 
 
-Ramification: A consequence is that for a derived_type_declaration in a [declarative_part](S0079), only the first primitive subprogram can be declared by a [subprogram_body](S0154). 
+Ramification: A consequence is that for a derived_type_declaration in a declarative_part, only the first primitive subprogram can be declared by a subprogram_body. 
 
 
 #### Dynamic Semantics
@@ -3630,7 +3630,7 @@ For the execution of a call on a dispatching operation of a type T, the controll
 
 If one or more controlling operands are statically tagged, then the controlling tag value is statically determined to be the tag of T.
 
-If one or more controlling operands are dynamically tagged, then the controlling tag value is not statically determined, but is rather determined by the tags of the controlling operands. If there is more than one dynamically tagged controlling operand, a check is made that they all have the same tag. If this check fails, Constraint_Error is raised unless the call is a [function_call](S0156) whose [name](S0084) denotes the declaration of an equality operator (predefined or user defined) that returns Boolean, in which case the result of the call is defined to indicate inequality, and no [subprogram_body](S0154) is executed. This check is performed prior to evaluating any tag-indeterminate controlling operands. 
+If one or more controlling operands are dynamically tagged, then the controlling tag value is not statically determined, but is rather determined by the tags of the controlling operands. If there is more than one dynamically tagged controlling operand, a check is made that they all have the same tag. If this check fails, Constraint_Error is raised unless the call is a function_call whose name denotes the declaration of an equality operator (predefined or user defined) that returns Boolean, in which case the result of the call is defined to indicate inequality, and no subprogram_body is executed. This check is performed prior to evaluating any tag-indeterminate controlling operands. 
 
 Reason: Tag mismatch is considered an error (except for "=" and "/=") since the corresponding primitive subprograms in each specific type expect all controlling operands to be of the same type. For tag mismatch with an equality operator, rather than raising an exception, "=" returns False and "/=" returns True. No equality operator is actually invoked, since there is no common tag value to control the dispatch. Equality is a special case to be consistent with the existing Ada 83 principle that equality comparisons, even between objects with different constraints, never raise Constraint_Error. 
 
@@ -3640,11 +3640,11 @@ If the call has a controlling result and is itself a (possibly parenthesized or 
 
 Otherwise, the controlling tag value is statically determined to be the tag of type T. 
 
-Ramification: This includes the cases of a tag-indeterminate procedure call, and a tag-indeterminate [function_call](S0156) that is used to initialize a class-wide formal parameter or class-wide object. 
+Ramification: This includes the cases of a tag-indeterminate procedure call, and a tag-indeterminate function_call that is used to initialize a class-wide formal parameter or class-wide object. 
 
 For the execution of a call on a dispatching operation, the body executed is the one for the corresponding primitive subprogram of the specific type identified by the controlling tag value. The body for an explicitly declared dispatching operation is the corresponding explicit body for the subprogram. The body for an implicitly declared dispatching operation that is overridden is the body for the overriding subprogram, [even if the overriding occurs in a private part.] The body for an inherited dispatching operation that is not overridden is the body of the corresponding subprogram of the parent or ancestor type.
 
-To be honest: In the unusual case in which a dispatching subprogram is explicitly declared (overridden) by a body (with no preceding [subprogram_declaration](S0141)), the body for that dispatching subprogram is that body; that is, the "corresponding explicit body" in the above rule is the body itself. 
+To be honest: In the unusual case in which a dispatching subprogram is explicitly declared (overridden) by a body (with no preceding subprogram_declaration), the body for that dispatching subprogram is that body; that is, the "corresponding explicit body" in the above rule is the body itself. 
 
 Reason: The wording of the above rule is intended to ensure that the same body is executed for a given tag, whether that tag is determined statically or dynamically. For a type declared in a package, it doesn't matter whether a given subprogram is overridden in the visible part or the private part, and it doesn't matter whether the call is inside or outside the package. For example: 
 
@@ -3690,11 +3690,11 @@ Implementation Note: Even when a tag is not statically determined, a compiler mi
 
 NOTE 1   The body to be executed for a call on a dispatching operation is determined by the tag; it does not matter whether that tag is determined statically or dynamically, and it does not matter whether the subprogram's declaration is visible at the place of the call.
 
-NOTE 2   This subclause covers calls on primitive subprograms of a tagged type. Rules for tagged type membership tests are described in 4.5.2. Controlling tag determination for an [assignment_statement](S0130) is described in 5.2.
+NOTE 2   This subclause covers calls on primitive subprograms of a tagged type. Rules for tagged type membership tests are described in 4.5.2. Controlling tag determination for an assignment_statement is described in 5.2.
 
 NOTE 3   A dispatching call can dispatch to a body whose declaration is not visible at the place of the call.
 
-NOTE 4   A call through an access-to-subprogram value is never a dispatching call, even if the access value designates a dispatching operation. Similarly a call whose [prefix](S0086) denotes a [subprogram_renaming_declaration](S0173) cannot be a dispatching call unless the renaming itself is the declaration of a primitive subprogram. 
+NOTE 4   A call through an access-to-subprogram value is never a dispatching call, even if the access value designates a dispatching operation. Similarly a call whose prefix denotes a subprogram_renaming_declaration cannot be a dispatching call unless the renaming itself is the declaration of a primitive subprogram. 
 
 
 #### Extensions to Ada 83
@@ -3720,7 +3720,7 @@ Ramification: Untagged types are never abstract, even though they can have primi
 
 Class-wide types are never abstract. If T is abstract, then it is illegal to declare a stand-alone object of type T, but it is OK to declare a stand-alone object of type T'Class; the latter will get a tag from its initial value, and this tag will necessarily be different from T'Tag. 
 
-A subprogram declared by an [abstract_subprogram_declaration](S0142) (see 6.1) is an abstract subprogram. If it is a primitive subprogram of a tagged type, then the tagged type shall be abstract. 
+A subprogram declared by an abstract_subprogram_declaration (see 6.1) is an abstract subprogram. If it is a primitive subprogram of a tagged type, then the tagged type shall be abstract. 
 
 Ramification: Note that for a private type, this applies to both views. The following is illegal: 
 
@@ -3806,7 +3806,7 @@ A call on an abstract subprogram shall be a dispatching call; nondispatching cal
 
 Ramification: If an abstract subprogram is not a dispatching operation of some tagged type, then it cannot be called at all. 
 
-The type of an [aggregate](S0097), or of an object created by an [object_declaration](S0029) or an [allocator](S0122), or a generic formal object of mode in, shall not be abstract. The type of the target of an assignment operation (see 5.2) shall not be abstract. The type of a component shall not be abstract. If the result type of a function is abstract, then the function shall be abstract. 
+The type of an aggregate, or of an object created by an object_declaration or an allocator, or a generic formal object of mode in, shall not be abstract. The type of the target of an assignment operation (see 5.2) shall not be abstract. The type of a component shall not be abstract. If the result type of a function is abstract, then the function shall be abstract. 
 
 Reason: This ensures that values of an abstract type cannot be created, which ensures that a dispatching call to an abstract subprogram will not try to execute the nonexistent body.
 
@@ -3834,9 +3834,9 @@ end Pack;
 
 The above example would be illegal if T1 has a nonabstract primitive procedure P, but T2 overrides P with an abstract one; the private part should override P with a nonabstract version. On the other hand, if the P were abstract for both T1 and T2, the example would be legal as is. 
 
-A generic actual subprogram shall not be an abstract subprogram . The [prefix](S0086) of an [attribute_reference](S0093) for the Access, Unchecked_Access, or Address attributes shall not denote an abstract subprogram. 
+A generic actual subprogram shall not be an abstract subprogram . The prefix of an attribute_reference for the Access, Unchecked_Access, or Address attributes shall not denote an abstract subprogram. 
 
-Ramification: An [abstract_subprogram_declaration](S0142) is not syntactically a [subprogram_declaration](S0141). Nonetheless, an abstract subprogram is a subprogram, and an [abstract_subprogram_declaration](S0142) is a declaration of a subprogram.
+Ramification: An abstract_subprogram_declaration is not syntactically a subprogram_declaration. Nonetheless, an abstract subprogram is a subprogram, and an abstract_subprogram_declaration is a declaration of a subprogram.
 
 The part about generic actual subprograms includes those given by default. 
 
@@ -3907,7 +3907,7 @@ Version=[5],Kind=(AddedNormal),Group=[T],Term=[progenitor of a derived type], De
 
 A value of an access type (an access value) provides indirect access to the object or subprogram it designates. Depending on its type, an access value can designate either subprograms, objects created by allocators (see 4.8), or more generally aliased objects of an appropriate type. 
 
-Discussion: A [name](S0084) denotes an entity; an access value designates an entity. The "dereference" of an access value X, written "X.all", is a [name](S0084) that denotes the entity designated by X. 
+Discussion: A name denotes an entity; an access value designates an entity. The "dereference" of an access value X, written "X.all", is a name that denotes the entity designated by X. 
 
 
 #### Language Design Principles
@@ -3918,19 +3918,19 @@ Access values should always be well defined (barring uses of certain unchecked f
 #### Syntax
 
 access_type_definition ::= 
-    [access_to_object_definition](S0074)
-  | [access_to_subprogram_definition](S0076)
+    access_to_object_definition
+  | access_to_subprogram_definition
 
 access_to_object_definition ::= 
-    access [[general_access_modifier](S0075)] [subtype_indication](S0024)
+    access [general_access_modifier] subtype_indication
 
 general_access_modifier ::= all | constant
 
 access_to_subprogram_definition ::= 
-    access [protected] procedure [parameter_profile](S0149)
-  | access [protected] function  [parameter_and_result_profile](S0150)
+    access [protected] procedure parameter_profile
+  | access [protected] function  parameter_and_result_profile
 
-access_definition ::= access [subtype_mark](S0025)
+access_definition ::= access subtype_mark
 
 
 #### Static Semantics
@@ -3941,7 +3941,7 @@ Access-to-object types are further subdivided into pool-specific access types, w
 
 Implementation Note: The value of an access type will typically be a machine address. However, a value of a pool-specific access type can be represented as an offset (or index) relative to its storage pool, since it can point only to the elements of that pool. 
 
-A view of an object is defined to be aliased if it is defined by an [object_declaration](S0029) or [component_definition](S0053) with the reserved word aliased, or by a renaming of an aliased view. In addition, the dereference of an access-to-object value denotes an aliased view, as does a view conversion (see 4.6) of an aliased view. Finally, the current instance of a limited type, and a formal parameter or generic formal object of a tagged type are defined to be aliased. [Aliased views are the ones that can be designated by an access value.] If the view defined by an [object_declaration](S0029) is aliased, and the type of the object has discriminants, then the object is constrained; if its nominal subtype is unconstrained, then the object is constrained by its initial value. [Similarly, if the object created by an [allocator](S0122) has discriminants, the object is constrained, either by the designated subtype, or by its initial value.] 
+A view of an object is defined to be aliased if it is defined by an object_declaration or component_definition with the reserved word aliased, or by a renaming of an aliased view. In addition, the dereference of an access-to-object value denotes an aliased view, as does a view conversion (see 4.6) of an aliased view. Finally, the current instance of a limited type, and a formal parameter or generic formal object of a tagged type are defined to be aliased. [Aliased views are the ones that can be designated by an access value.] If the view defined by an object_declaration is aliased, and the type of the object has discriminants, then the object is constrained; if its nominal subtype is unconstrained, then the object is constrained by its initial value. [Similarly, if the object created by an allocator has discriminants, the object is constrained, either by the designated subtype, or by its initial value.] 
 
 Glossary entry: An aliased view of an object is one that can be designated by an access value. Objects allocated by allocators are aliased. Objects can also be explicitly declared as aliased with the reserved word aliased. The Access attribute can be used to create an access value designating an aliased object.
 
@@ -3949,7 +3949,7 @@ Version=[5],Kind=(AddedNormal),Group=[T],Term=[aliased view], Def=[a view of an 
 
 Ramification: The current instance of a nonlimited type is not aliased.
 
-The object created by an allocator is aliased, but not its subcomponents, except of course for those that themselves have aliased in their [component_definition](S0053).
+The object created by an allocator is aliased, but not its subcomponents, except of course for those that themselves have aliased in their component_definition.
 
 The renaming of an aliased object is aliased.
 
@@ -3983,7 +3983,7 @@ We considered making more kinds of objects aliased by default. In particular, an
 
 Discussion: Note that we do not use the term "aliased" to refer to formal parameters that are referenced through multiple access paths (see 6.2). 
 
-An [access_to_object_definition](S0074) defines an access-to-object type and its first subtype; the [subtype_indication](S0024) defines the designated subtype of the access type. If a [general_access_modifier](S0075) appears, then the access type is a general access type. If the modifier is the reserved word constant, then the type is an access-to-constant type[; a designated object cannot be updated through a value of such a type]. If the modifier is the reserved word all, then the type is an access-to-variable type[; a designated object can be both read and updated through a value of such a type]. If no [general_access_modifier](S0075) appears in the [access_to_object_definition](S0074), the access type is a pool-specific access-to-variable type. 
+An access_to_object_definition defines an access-to-object type and its first subtype; the subtype_indication defines the designated subtype of the access type. If a general_access_modifier appears, then the access type is a general access type. If the modifier is the reserved word constant, then the type is an access-to-constant type[; a designated object cannot be updated through a value of such a type]. If the modifier is the reserved word all, then the type is an access-to-variable type[; a designated object can be both read and updated through a value of such a type]. If no general_access_modifier appears in the access_to_object_definition, the access type is a pool-specific access-to-variable type. 
 
 To be honest: The type of the designated subtype is called the designated type. 
 
@@ -3993,7 +3993,7 @@ Implementation Note: The predefined generic Unchecked_Deallocation can be instan
 
 Discussion: For the purpose of generic formal type matching, the relevant subclasses of access types are access-to-subprogram types, access-to-constant types, and (named) access-to-variable types, with its subclass (named) general access-to-variable types. Pool-specific access-to-variable types are not a separately matchable subclass of types, since they don't have any "extra" operations relative to all (named) access-to-variable types. 
 
-An [access_to_subprogram_definition](S0076) defines an access-to-subprogram type and its first subtype; the [parameter_profile](S0149) or [parameter_and_result_profile](S0150) defines the designated profile of the access type. There is a calling convention associated with the designated profile[; only subprograms with this calling convention can be designated by values of the access type.] By default, the calling convention is "protected" if the reserved word protected appears, and "Ada" otherwise. [See Annex B for how to override this default.] 
+An access_to_subprogram_definition defines an access-to-subprogram type and its first subtype; the parameter_profile or parameter_and_result_profile defines the designated profile of the access type. There is a calling convention associated with the designated profile[; only subprograms with this calling convention can be designated by values of the access type.] By default, the calling convention is "protected" if the reserved word protected appears, and "Ada" otherwise. [See Annex B for how to override this default.] 
 
 Ramification: The calling convention protected is in italics to emphasize that it cannot be specified explicitly by the user. This is a consequence of it being a reserved word. 
 
@@ -4009,34 +4009,34 @@ Essentially the same implementation issues arise for calls on dispatching operat
 
 Note that access parameters of an anonymous access-to-subprogram type are not permitted. If there were such parameters, full "downward" closureswould be required, meaning that in an implementation that uses a per-task (global) display, the display would have to be passed as a hidden parameter, and reconstructed at the point of call. This was felt to be an undue implementation burden, given that an equivalent (actually, more general) capability is available via formal subprogram parameters to a generic. 
 
-An [access_definition](S0077) defines an anonymous general access-to-variable type; the [subtype_mark](S0025) denotes its designated subtype. [An [access_definition](S0077) is used in the specification of an access discriminant (see 3.7) or an access parameter (see 6.1).]
+An access_definition defines an anonymous general access-to-variable type; the subtype_mark denotes its designated subtype. [An access_definition is used in the specification of an access discriminant (see 3.7) or an access parameter (see 6.1).]
 
-For each (named) access type, there is a literal null which has a null access value designating no entity at all. [The null value of a named access type is the default initial value of the type.] Other values of an access type are obtained by evaluating an [attribute_reference](S0093) for the Access or Unchecked_Access attribute of an aliased view of an object or nonintrinsic subprogram, or, in the case of a named access-to-object type, an [allocator](S0122)[, which returns an access value designating a newly created object (see 3.10.2)].
+For each (named) access type, there is a literal null which has a null access value designating no entity at all. [The null value of a named access type is the default initial value of the type.] Other values of an access type are obtained by evaluating an attribute_reference for the Access or Unchecked_Access attribute of an aliased view of an object or nonintrinsic subprogram, or, in the case of a named access-to-object type, an allocator[, which returns an access value designating a newly created object (see 3.10.2)].
 
 Ramification: A value of an anonymous access type (that is, the value of an access parameter or access discriminant) cannot be null. 
 
 Reason: Access parameters allow dispatching on the tag of the object designated by the actual parameter (which gets converted to the anonymous access type as part of the call). In order for dispatching to work properly, there had better be such an object. Hence, the type conversion will raise Constraint_Error if the value of the actual parameter is null. 
 
-[All subtypes of an access-to-subprogram type are constrained.] The first subtype of a type defined by an [access_type_definition](S0073) or an [access_to_object_definition](S0074) is unconstrained if the designated subtype is an unconstrained array or discriminated type; otherwise it is constrained. 
+[All subtypes of an access-to-subprogram type are constrained.] The first subtype of a type defined by an access_type_definition or an access_to_object_definition is unconstrained if the designated subtype is an unconstrained array or discriminated type; otherwise it is constrained. 
 
-Proof: The Legality Rules on [range_constraint](S0033)s (see 3.5) do not permit the [subtype_mark](S0025) of the [subtype_indication](S0024) to denote an access-to-scalar type, only a scalar type. The Legality Rules on [index_constraint](S0054)s (see 3.6.1) and [discriminant_constraint](S0061)s (see 3.7.1) both permit access-to-composite types in a [subtype_indication](S0024) with such _[constraint](S0026)s. Note that an access-to-access-to-composite is never permitted in a [subtype_indication](S0024) with a [constraint](S0026). 
+Proof: The Legality Rules on range_constraints (see 3.5) do not permit the subtype_mark of the subtype_indication to denote an access-to-scalar type, only a scalar type. The Legality Rules on index_constraints (see 3.6.1) and discriminant_constraints (see 3.7.1) both permit access-to-composite types in a subtype_indication with such _constraints. Note that an access-to-access-to-composite is never permitted in a subtype_indication with a constraint. 
 
-Reason: Only [composite_constraint](S0028)s are permitted for an access type, and only on access-to-composite types. A constraint on an access-to-scalar or access-to-access type might be violated due to assignments via other access paths that were not so constrained. By contrast, if the designated subtype is an array or discriminated type, the constraint could not be violated by unconstrained assignments, since array objects are always constrained, and aliased discriminated objects are also constrained (by fiat, see Static Semantics). 
+Reason: Only composite_constraints are permitted for an access type, and only on access-to-composite types. A constraint on an access-to-scalar or access-to-access type might be violated due to assignments via other access paths that were not so constrained. By contrast, if the designated subtype is an array or discriminated type, the constraint could not be violated by unconstrained assignments, since array objects are always constrained, and aliased discriminated objects are also constrained (by fiat, see Static Semantics). 
 
 
 #### Dynamic Semantics
 
-A [composite_constraint](S0028) is compatible with an unconstrained access subtype if it is compatible with the designated subtype. An access value satisfies a [composite_constraint](S0028) of an access subtype if it equals the null value of its type or if it designates an object whose value satisfies the constraint.
+A composite_constraint is compatible with an unconstrained access subtype if it is compatible with the designated subtype. An access value satisfies a composite_constraint of an access subtype if it equals the null value of its type or if it designates an object whose value satisfies the constraint.
 
-The elaboration of an [access_type_definition](S0073) creates the access type and its first subtype. For an access-to-object type, this elaboration includes the elaboration of the [subtype_indication](S0024), which creates the designated subtype.
+The elaboration of an access_type_definition creates the access type and its first subtype. For an access-to-object type, this elaboration includes the elaboration of the subtype_indication, which creates the designated subtype.
 
-The elaboration of an [access_definition](S0077) creates an anonymous general access-to-variable type [(this happens as part of the initialization of an access parameter or access discriminant)]. 
+The elaboration of an access_definition creates an anonymous general access-to-variable type [(this happens as part of the initialization of an access parameter or access discriminant)]. 
 
 NOTE 1   Access values are called "pointers" or "references" in some other languages.
 
-NOTE 2   Each access-to-object type has an associated storage pool; several access types can share the same pool. An object can be created in the storage pool of an access type by an [allocator](S0122) (see 4.8) for the access type. A storage pool (roughly) corresponds to what some other languages call a "heap". See 13.11 for a discussion of pools.
+NOTE 2   Each access-to-object type has an associated storage pool; several access types can share the same pool. An object can be created in the storage pool of an access type by an allocator (see 4.8) for the access type. A storage pool (roughly) corresponds to what some other languages call a "heap". See 13.11 for a discussion of pools.
 
-NOTE 3   Only [index_constraint](S0054)s and [discriminant_constraint](S0061)s can be applied to access types (see 3.6.1 and 3.7.1). 
+NOTE 3   Only index_constraints and discriminant_constraints can be applied to access types (see 3.6.1 and 3.7.1). 
 
 
 #### Examples
@@ -4076,7 +4076,7 @@ Give_Message.all;                 -- call with no parameters
 
 #### Extensions to Ada 83
 
-The syntax for [access_type_definition](S0073) is changed to support general access types (including access-to-constants) and access-to-subprograms. The syntax rules for [general_access_modifier](S0075) and [access_definition](S0077) are new. 
+The syntax for access_type_definition is changed to support general access types (including access-to-constants) and access-to-subprograms. The syntax rules for general_access_modifier and access_definition are new. 
 
 
 #### Wording Changes from Ada 83
@@ -4086,41 +4086,41 @@ We use the term "storage pool" to talk about the data area from which allocation
 
 ### 3.10.1  Incomplete Type Declarations
 
-There are no particular limitations on the designated type of an access type. In particular, the type of a component of the designated type can be another access type, or even the same access type. This permits mutually dependent and recursive access types. An [incomplete_type_declaration](S0078) can be used to introduce a type to be used as a designated type, while deferring its full definition to a subsequent [full_type_declaration](S0021). 
+There are no particular limitations on the designated type of an access type. In particular, the type of a component of the designated type can be another access type, or even the same access type. This permits mutually dependent and recursive access types. An incomplete_type_declaration can be used to introduce a type to be used as a designated type, while deferring its full definition to a subsequent full_type_declaration. 
 
 
 #### Syntax
 
-incomplete_type_declaration ::= type [defining_identifier](S0019) [[discriminant_part](S0056)];
+incomplete_type_declaration ::= type defining_identifier [discriminant_part];
 
 
 #### Legality Rules
 
-An [incomplete_type_declaration](S0078) requires a completion, which shall be a [full_type_declaration](S0021). [If the [incomplete_type_declaration](S0078) occurs immediately within either the visible part of a [package_specification](S0162) or a [declarative_part](S0079), then the [full_type_declaration](S0021) shall occur later and immediately within this visible part or [declarative_part](S0079). If the [incomplete_type_declaration](S0078) occurs immediately within the private part of a given [package_specification](S0162), then the [full_type_declaration](S0021) shall occur later and immediately within either the private part itself, or the [declarative_part](S0079) of the corresponding [package_body](S0163).] 
+An incomplete_type_declaration requires a completion, which shall be a full_type_declaration. [If the incomplete_type_declaration occurs immediately within either the visible part of a package_specification or a declarative_part, then the full_type_declaration shall occur later and immediately within this visible part or declarative_part. If the incomplete_type_declaration occurs immediately within the private part of a given package_specification, then the full_type_declaration shall occur later and immediately within either the private part itself, or the declarative_part of the corresponding package_body.] 
 
 Proof: This is implied by the next AARM-only rule, plus the rules in 3.11.1, "Completions of Declarations" which require a completion to appear later and immediately within the same declarative region. 
 
-To be honest: If the [incomplete_type_declaration](S0078) occurs immediately within the visible part of a [package_specification](S0162), then the [full_type_declaration](S0021) shall occur immediately within this visible part. 
+To be honest: If the incomplete_type_declaration occurs immediately within the visible part of a package_specification, then the full_type_declaration shall occur immediately within this visible part. 
 
-To be honest: If the implementation supports it, an [incomplete_type_declaration](S0078) can be completed by a [pragma](S0016) Import. 
+To be honest: If the implementation supports it, an incomplete_type_declaration can be completed by a pragma Import. 
 
-If an [incomplete_type_declaration](S0078) has a [known_discriminant_part](S0058), then a [full_type_declaration](S0021) that completes it shall have a fully conforming (explicit) [known_discriminant_part](S0058) (see 6.3.1). [If an [incomplete_type_declaration](S0078) has no [discriminant_part](S0056) (or an [unknown_discriminant_part](S0057)), then a corresponding [full_type_declaration](S0021) is nevertheless allowed to have discriminants, either explicitly, or inherited via derivation.]
+If an incomplete_type_declaration has a known_discriminant_part, then a full_type_declaration that completes it shall have a fully conforming (explicit) known_discriminant_part (see 6.3.1). [If an incomplete_type_declaration has no discriminant_part (or an unknown_discriminant_part), then a corresponding full_type_declaration is nevertheless allowed to have discriminants, either explicitly, or inherited via derivation.]
 
-The only allowed uses of a [name](S0084) that denotes an [incomplete_type_declaration](S0078) are as follows: 
+The only allowed uses of a name that denotes an incomplete_type_declaration are as follows: 
 
-Discussion: No need to say "prior to the end of the [full_type_declaration](S0021)" since the name would not denote the [incomplete_type_declaration](S0078) after the end of the [full_type_declaration](S0021). Also, with child library units, it would not be well defined whether they come before or after the [full_type_declaration](S0021) for deferred incomplete types. 
+Discussion: No need to say "prior to the end of the full_type_declaration" since the name would not denote the incomplete_type_declaration after the end of the full_type_declaration. Also, with child library units, it would not be well defined whether they come before or after the full_type_declaration for deferred incomplete types. 
 
-as the [subtype_mark](S0025) in the [subtype_indication](S0024) of an [access_to_object_definition](S0074); [the only form of [constraint](S0026) allowed in this [subtype_indication](S0024) is a [discriminant_constraint](S0061);] 
+as the subtype_mark in the subtype_indication of an access_to_object_definition; [the only form of constraint allowed in this subtype_indication is a discriminant_constraint;] 
 
-Implementation Note: We now allow [discriminant_constraint](S0061)s even if the full type is deferred to the package body. However, there is no particular implementation burden because we have dropped the concept of the dependent compatibility check. In other words, we have effectively repealed AI83-00007. 
+Implementation Note: We now allow discriminant_constraints even if the full type is deferred to the package body. However, there is no particular implementation burden because we have dropped the concept of the dependent compatibility check. In other words, we have effectively repealed AI83-00007. 
 
-as the [subtype_mark](S0025) defining the subtype of a parameter or result of an [access_to_subprogram_definition](S0076); 
+as the subtype_mark defining the subtype of a parameter or result of an access_to_subprogram_definition; 
 
 Reason: This allows, for example, a record to have a component designating a subprogram that takes that same record type as a parameter. 
 
-as the [subtype_mark](S0025) in an [access_definition](S0077); 
+as the subtype_mark in an access_definition; 
 
-as the [prefix](S0086) of an [attribute_reference](S0093) whose [attribute_designator](S0094) is Class; such an [attribute_reference](S0093) is similarly restricted to the uses allowed here; when used in this way, the corresponding [full_type_declaration](S0021) shall declare a tagged type, and the [attribute_reference](S0093) shall occur in the same library unit as the [incomplete_type_declaration](S0078). 
+as the prefix of an attribute_reference whose attribute_designator is Class; such an attribute_reference is similarly restricted to the uses allowed here; when used in this way, the corresponding full_type_declaration shall declare a tagged type, and the attribute_reference shall occur in the same library unit as the incomplete_type_declaration. 
 
 Reason: This is to prevent children from imposing requirements on their ancestor library units for deferred incomplete types. 
 
@@ -4129,18 +4129,18 @@ A dereference (whether implicit or explicit - see 4.1) shall not be of an incomp
 
 #### Static Semantics
 
-An [incomplete_type_declaration](S0078) declares an incomplete type and its first subtype; the first subtype is unconstrained if a [known_discriminant_part](S0058) appears. 
+An incomplete_type_declaration declares an incomplete type and its first subtype; the first subtype is unconstrained if a known_discriminant_part appears. 
 
-Reason: If an [unknown_discriminant_part](S0057) or no [discriminant_part](S0056) appears, then the constrainedness of the first subtype doesn't matter for any other rules or semantics, so we don't bother defining it. The case with a [known_discriminant_part](S0058) is the only case in which a constraint could later be given in a [subtype_indication](S0024) naming the incomplete type. 
+Reason: If an unknown_discriminant_part or no discriminant_part appears, then the constrainedness of the first subtype doesn't matter for any other rules or semantics, so we don't bother defining it. The case with a known_discriminant_part is the only case in which a constraint could later be given in a subtype_indication naming the incomplete type. 
 
 
 #### Dynamic Semantics
 
-The elaboration of an [incomplete_type_declaration](S0078) has no effect. 
+The elaboration of an incomplete_type_declaration has no effect. 
 
 Reason: An incomplete type has no real existence, so it doesn't need to be "created" in the usual sense we do for other types. It is roughly equivalent to a "forward;" declaration in Pascal. Private types are different, because they have a different set of characteristics from their full type. 
 
-NOTE 1   Within a [declarative_part](S0079), an [incomplete_type_declaration](S0078) and a corresponding [full_type_declaration](S0021) cannot be separated by an intervening body. This is because a type has to be completely defined before it is frozen, and a body freezes all types declared prior to it in the same [declarative_part](S0079) (see 13.14).
+NOTE 1   Within a declarative_part, an incomplete_type_declaration and a corresponding full_type_declaration cannot be separated by an intervening body. This is because a type has to be completely defined before it is frozen, and a body freezes all types declared prior to it in the same declarative_part (see 13.14).
 
 
 #### Examples
@@ -4218,9 +4218,9 @@ George.Vehicle := Your_Car;
 
 #### Extensions to Ada 83
 
-The [full_type_declaration](S0021) that completes an [incomplete_type_declaration](S0078) may have a [known_discriminant_part](S0058) even if the [incomplete_type_declaration](S0078) does not.
+The full_type_declaration that completes an incomplete_type_declaration may have a known_discriminant_part even if the incomplete_type_declaration does not.
 
-A [discriminant_constraint](S0061) may be applied to an incomplete type, even if it its completion is deferred to the package body, because there is no "dependent compatibility check" required any more. Of course, the constraint can be specified only if a [known_discriminant_part](S0058) was given in the [incomplete_type_declaration](S0078). As mentioned in the previous paragraph, that is no longer required even when the full type has discriminants. 
+A discriminant_constraint may be applied to an incomplete type, even if it its completion is deferred to the package body, because there is no "dependent compatibility check" required any more. Of course, the constraint can be specified only if a known_discriminant_part was given in the incomplete_type_declaration. As mentioned in the previous paragraph, that is no longer required even when the full type has discriminants. 
 
 
 #### Wording Changes from Ada 83
@@ -4271,14 +4271,14 @@ In order to create such access values, we require that the access type be a gene
 
 #### Name Resolution Rules
 
-For an [attribute_reference](S0093) with [attribute_designator](S0094) Access (or Unchecked_Access - see 13.10), the expected type shall be a single access type[; the [prefix](S0086) of such an [attribute_reference](S0093) is never interpreted as an [implicit_dereference](S0088)]. If the expected type is an access-to-subprogram type, then the expected profile of the [prefix](S0086) is the designated profile of the access type. 
+For an attribute_reference with attribute_designator Access (or Unchecked_Access - see 13.10), the expected type shall be a single access type[; the prefix of such an attribute_reference is never interpreted as an implicit_dereference]. If the expected type is an access-to-subprogram type, then the expected profile of the prefix is the designated profile of the access type. 
 
-Discussion: Saying that the expected type shall be a "single access type" is our "new" way of saying that the type has to be determinable from context using only the fact that it is an access type. See 4.2 and 8.6. Specifying the expected profile only implies type conformance. The more stringent subtype conformance is required by a Legality Rule. This is the only Resolution Rule that applies to the [name](S0084) in a [prefix](S0086) of an [attribute_reference](S0093). In all other cases, the [name](S0084) has to be resolved without using context. See 4.1.4.
+Discussion: Saying that the expected type shall be a "single access type" is our "new" way of saying that the type has to be determinable from context using only the fact that it is an access type. See 4.2 and 8.6. Specifying the expected profile only implies type conformance. The more stringent subtype conformance is required by a Legality Rule. This is the only Resolution Rule that applies to the name in a prefix of an attribute_reference. In all other cases, the name has to be resolved without using context. See 4.1.4.
 
 
 #### Static Semantics
 
-[The accessibility rules, which prevent dangling references, are written in terms of accessibility levels, which reflect the run-time nesting of masters. As explained in 7.6.1, a master is the execution of a ,[task_body](S0179), a [block_statement](S0138), a [subprogram_body](S0154), an [entry_body](S0190), or an [accept_statement](S0188). An accessibility level is deeper than another if it is more deeply nested at run time. For example, an object declared local to a called subprogram has a deeper accessibility level than an object declared local to the calling subprogram. The accessibility rules for access types require that the accessibility level of an object designated by an access value be no deeper than that of the access type. This ensures that the object will live at least as long as the access type, which in turn ensures that the access value cannot later designate an object that no longer exists. The Unchecked_Access attribute may be used to circumvent the accessibility rules.]
+[The accessibility rules, which prevent dangling references, are written in terms of accessibility levels, which reflect the run-time nesting of masters. As explained in 7.6.1, a master is the execution of a ,task_body, a block_statement, a subprogram_body, an entry_body, or an accept_statement. An accessibility level is deeper than another if it is more deeply nested at run time. For example, an object declared local to a called subprogram has a deeper accessibility level than an object declared local to the calling subprogram. The accessibility rules for access types require that the accessibility level of an object designated by an access value be no deeper than that of the access type. This ensures that the object will live at least as long as the access type, which in turn ensures that the access value cannot later designate an object that no longer exists. The Unchecked_Access attribute may be used to circumvent the accessibility rules.]
 
 Version=[5],Kind=(Added),Group=[T],Term=[accessibility level], Def=[a representation of the lifetime of an entity in terms of the level of dynamic nesting within which the entity is known to exist] [A given accessibility level is said to be statically deeper than another if the given level is known at compile time (as defined below) to be deeper than the other for all possible executions. In most cases, accessibility is enforced at compile time by Legality Rules. Run-time accessibility checks are also used, since the Legality Rules do not cover certain cases involving access parameters and generic packages.]
 
@@ -4288,7 +4288,7 @@ The accessibility level of a given master is deeper than that of each dynamicall
 
 An entity or view created by a declaration has the same accessibility level as the innermost enclosing master except in the cases of renaming and derived access types described below. A parameter of a master has the same accessibility level as the master. 
 
-The accessibility level of a view of an object or subprogram defined by a [renaming_declaration](S0169) is the same as that of the renamed view.
+The accessibility level of a view of an object or subprogram defined by a renaming_declaration is the same as that of the renamed view.
 
 The accessibility level of a view conversion is the same as that of the operand.
 
@@ -4298,9 +4298,9 @@ The accessibility level of a derived access type is the same as that of its ulti
 
 The accessibility level of the anonymous access type of an access discriminant is the same as that of the containing object or associated constrained subtype.
 
-The accessibility level of the anonymous access type of an access parameter is the same as that of the view designated by the actual. If the actual is an [allocator](S0122), this is the accessibility level of the execution of the called subprogram. 
+The accessibility level of the anonymous access type of an access parameter is the same as that of the view designated by the actual. If the actual is an allocator, this is the accessibility level of the execution of the called subprogram. 
 
-The accessibility level of an object created by an [allocator](S0122) is the same as that of the access type.
+The accessibility level of an object created by an allocator is the same as that of the access type.
 
 The accessibility level of a view of an object or subprogram denoted by a dereference of an access value is the same as that of the access type. 
 
@@ -4318,19 +4318,19 @@ The statically deeper relationship does not apply to the accessibility level of 
 
 [For determining whether one level is statically deeper than another when within a generic package body, the generic package is presumed to be instantiated at the same level as where it was declared; runtime checks are needed in the case of more deeply nested instantiations.] 
 
-For determining whether one level is statically deeper than another when within the declarative region of a [type_declaration](S0020), the current instance of the type is presumed to be an object created at a deeper level than that of the type. 
+For determining whether one level is statically deeper than another when within the declarative region of a type_declaration, the current instance of the type is presumed to be an object created at a deeper level than that of the type. 
 
-Ramification: In other words, the rules are checked at compile time of the [type_declaration](S0020), in an assume-the-worst manner. 
+Ramification: In other words, the rules are checked at compile time of the type_declaration, in an assume-the-worst manner. 
 
 The accessibility level of all library units is called the library level; a library-level declaration or entity is one whose accessibility level is the library level. 
 
-Ramification: [Library_unit_declaration](S0217)s are library level. Nested declarations are library level if they are nested only within packages (possibly more than one), and not within subprograms, tasks, etc. 
+Ramification: Library_unit_declarations are library level. Nested declarations are library level if they are nested only within packages (possibly more than one), and not within subprograms, tasks, etc. 
 
 To be honest: The definition of the accessibility level of the anonymous type of an access parameter cheats a bit, since it refers to the view designated by the actual, but access values designate objects, not views of objects. What we really mean is the view that "would be" denoted by an expression "X.all", where X is the actual, even though such an expression is a figment of our imagination. The definition is intended to be equivalent to the following more verbose version: The accessibility level of the anonymous type of an access parameter is as follows: 
 
 if the actual is an expression of a named access type - the accessibility level of that type;
 
-if the actual is an [allocator](S0122) - the accessibility level of the execution of the called subprogram;
+if the actual is an allocator - the accessibility level of the execution of the called subprogram;
 
 if the actual is a reference to the Access attribute - the accessibility level of the view denoted by the prefix;
 
@@ -4338,13 +4338,13 @@ if the actual is a reference to the Unchecked_Access attribute - library accessi
 
 if the actual is an access parameter - the accessibility level of its type. 
 
-Note that the [allocator](S0122) case is explicitly mentioned in the RM95, because otherwise the definition would be circular: the level of the anonymous type is that of the view designated by the actual, which is that of the access type. 
+Note that the allocator case is explicitly mentioned in the RM95, because otherwise the definition would be circular: the level of the anonymous type is that of the view designated by the actual, which is that of the access type. 
 
-Discussion: A deeper accessibility level implies a shorter maximum lifetime. Hence, when a rule requires X to have a level that is "not deeper than" Y's level, this requires that X has a lifetime at least as long as Y. (We say "maximum lifetime" here, because the accessibility level really represents an upper bound on the lifetime; an object created by an [allocator](S0122) can have its lifetime prematurely ended by an instance of Unchecked_Deallocation.)
+Discussion: A deeper accessibility level implies a shorter maximum lifetime. Hence, when a rule requires X to have a level that is "not deeper than" Y's level, this requires that X has a lifetime at least as long as Y. (We say "maximum lifetime" here, because the accessibility level really represents an upper bound on the lifetime; an object created by an allocator can have its lifetime prematurely ended by an instance of Unchecked_Deallocation.)
 
-Package elaborations are not masters, and are therefore invisible to the accessibility rules: an object declared immediately within a package has the same accessibility level as an object declared immediately within the declarative region containing the package. This is true even in the body of a package; it jibes with the fact that objects declared in a [package_body](S0163) live as long as objects declared outside the package, even though the body objects are not visible outside the package.
+Package elaborations are not masters, and are therefore invisible to the accessibility rules: an object declared immediately within a package has the same accessibility level as an object declared immediately within the declarative region containing the package. This is true even in the body of a package; it jibes with the fact that objects declared in a package_body live as long as objects declared outside the package, even though the body objects are not visible outside the package.
 
-Note that the level of the view denoted by X.all can be different from the level of the object denoted by X.all. The former is determined by the type of X; the latter is determined either by the type of the [allocator](S0122), or by the master in which the object was declared. The former is used in several Legality Rules and runtime checks; the latter is used to define when X.all gets finalized. The level of a view reflects what we can conservatively "know" about the object of that view; for example, due to [type_conversion](S0120)s, an access value might designate an object that was allocated by an [allocator](S0122) for a different access type.
+Note that the level of the view denoted by X.all can be different from the level of the object denoted by X.all. The former is determined by the type of X; the latter is determined either by the type of the allocator, or by the master in which the object was declared. The former is used in several Legality Rules and runtime checks; the latter is used to define when X.all gets finalized. The level of a view reflects what we can conservatively "know" about the object of that view; for example, due to type_conversions, an access value might designate an object that was allocated by an allocator for a different access type.
 
 Similarly, the level of the view denoted by X.all.Comp can be different from the level of the object denoted by X.all.Comp.
 
@@ -4376,7 +4376,7 @@ For each access parameter, the static depth passed depends on the actual, as fol
 
 If the actual is an expression of a named access type, pass the static nesting level of that type.
 
-If the actual is an [allocator](S0122), pass the static nesting level of the caller, plus one.
+If the actual is an allocator, pass the static nesting level of the caller, plus one.
 
 If the actual is a reference to the Access attribute, pass the level of the view denoted by the prefix.
 
@@ -4384,7 +4384,7 @@ If the actual is a reference to the Unchecked_Access attribute, pass 0 (the libr
 
 If the actual is an access parameter, usually just pass along the level passed in. However, if the static nesting level of the formal (access) parameter is greater than the static nesting level of the actual (access) parameter, the level to be passed is the minimum of the static nesting level of the access parameter and the actual level passed in. 
 
-For the Accessibility_Check associated with a [type_conversion](S0120) of an access parameter of a given subprogram to a named access type, if the target type is statically nested within the subprogram, do nothing; the check can't fail in this case. Otherwise, check that the value passed in is &lt= the static nesting depth of the target type. The other Accessibility_Checks are handled in a similar manner.
+For the Accessibility_Check associated with a type_conversion of an access parameter of a given subprogram to a named access type, if the target type is statically nested within the subprogram, do nothing; the check can't fail in this case. Otherwise, check that the value passed in is &lt= the static nesting depth of the target type. The other Accessibility_Checks are handled in a similar manner.
 
 This method, using statically known values most of the time, is efficient, and, more importantly, avoids distributed overhead.
 
@@ -4463,7 +4463,7 @@ end Main;
 
 The run-time Accessibility_Check at (1) can never fail, and no code should be generated to check it. The check at (2) will fail when called from (3), but not when called from (4).
 
-Within a [type_declaration](S0020), the rules are checked in an assume-the-worst manner. For example: 
+Within a type_declaration, the rules are checked in an assume-the-worst manner. For example: 
 
 ```ada
 package P is
@@ -4488,9 +4488,9 @@ C1, C2, and C3 are all illegal, because one might declare an object of type Rec 
 
 Note that we cannot defer the checks on C1, C2, and C3 until compile-time of the object creation, because that would cause violation of the privacy of private parts. Furthermore, the problems might occur within a task or protected body, which the compiler can't see while compiling an object creation. 
 
-The following attribute is defined for a [prefix](S0086) X that denotes an aliased view of an object: 
+The following attribute is defined for a prefix X that denotes an aliased view of an object: 
 
-X shall denote an aliased view of an object[, including possibly the current instance (see 8.6) of a limited type within its definition, or a formal parameter or generic formal object of a tagged type]. The view denoted by the [prefix](S0086) X shall satisfy the following additional requirements, presuming the expected type for X'Access is the general access type A: 
+X shall denote an aliased view of an object[, including possibly the current instance (see 8.6) of a limited type within its definition, or a formal parameter or generic formal object of a tagged type]. The view denoted by the prefix X shall satisfy the following additional requirements, presuming the expected type for X'Access is the general access type A: 
 
 If A is an access-to-variable type, then the view shall be a variable; [on the other hand, if A is an access-to-constant type, the view may be either a constant or a variable.] 
 
@@ -4520,7 +4520,7 @@ The accessibility level of the view shall not be statically deeper than that of 
 
 Ramification: In an instance body, a runtime check applies.
 
-If A is an anonymousaccess type, then the view can never have a deeper accessibility level than A, except when X'Access is used to initialize an access discriminant of an object created by an [allocator](S0122). The latter case is illegal if the accessibility level of X is statically deeper than that of the access type of the [allocator](S0122); a runtime check is needed in the case where the initial value comes from an access parameter. 
+If A is an anonymousaccess type, then the view can never have a deeper accessibility level than A, except when X'Access is used to initialize an access discriminant of an object created by an allocator. The latter case is illegal if the accessibility level of X is statically deeper than that of the access type of the allocator; a runtime check is needed in the case where the initial value comes from an access parameter. 
 
 A check is made that the accessibility level of X is not deeper than that of the access type A. If this check fails, Program_Error is raised. 
 
@@ -4530,7 +4530,7 @@ Implementation Note: This check requires that some indication of lifetime is pas
 
 If the nominal subtype of X does not statically match the designated subtype of A, a view conversion of X to the designated subtype is evaluated (which might raise Constraint_Error - see 4.6) and the value of X'Access designates that view. 
 
-The following attribute is defined for a [prefix](S0086) P that denotes a subprogram: 
+The following attribute is defined for a prefix P that denotes a subprogram: 
 
 The accessibility level of P shall not be statically deeper than that of S. In addition to the places where Legality Rules normally apply (see 12.3), this rule applies also in the private part of an instance of a generic unit. The profile of P shall be subtype-conformant with the designated profile of S, and shall not be Intrinsic. If the subprogram denoted by P is declared within a generic body, S shall be declared within the generic body.
 
@@ -4538,13 +4538,13 @@ Discussion: The part about generic bodies is worded in terms of the denoted subp
 
 Overload resolution ensures only that the profile is type-conformant. This rule specifies that subtype conformance is required (which also requires matching calling conventions). P cannot denote an entry because access-to-subprogram types never have the entry calling convention. P cannot denote an enumeration literal or an attribute function because these have intrinsic calling conventions. 
 
-NOTE 1   The Unchecked_Access attribute yields the same result as the Access attribute for objects, but has fewer restrictions (see 13.10). There are other predefined operations that yield access values: an [allocator](S0122) can be used to create an object, and return an access value that designates it (see 4.8); evaluating the literal null yields a null access value that designates no entity at all (see 4.2).
+NOTE 1   The Unchecked_Access attribute yields the same result as the Access attribute for objects, but has fewer restrictions (see 13.10). There are other predefined operations that yield access values: an allocator can be used to create an object, and return an access value that designates it (see 4.8); evaluating the literal null yields a null access value that designates no entity at all (see 4.2).
 
 NOTE 2   The predefined operations of an access type also include the assignment operation, qualification, and membership tests. Explicit conversion is allowed between general access types with matching designated subtypes; explicit conversion is allowed between access-to-subprogram types with subtype conformant profiles (see 4.6). Named access types have predefined equality operators; anonymous access types do not(see 4.5.2). 
 
 Reason: By not having equality operators for anonymous access types, we eliminate the need to specify exactly where the predefined operators for anonymous access types would be defined, as well as the need for an implementer to insert an implicit declaration for "=", etc. at the appropriate place in their symbol table. Note that 'Access and ".all" are defined, and ":=" is defined though useless since all instances are constant. The literal null is also defined for the purposes of overload resolution, but is disallowed by a Legality Rules of this subclause. 
 
-NOTE 3   The object or subprogram designated by an access value can be named with a dereference, either an [explicit_dereference](S0087) or an [implicit_dereference](S0088). See 4.1.
+NOTE 3   The object or subprogram designated by an access value can be named with a dereference, either an explicit_dereference or an implicit_dereference. See 4.1.
 
 NOTE 4   A call through the dereference of an access-to-subprogram value is never a dispatching call. 
 
@@ -4575,33 +4575,33 @@ George.Vehicle := Cars(2)'Access;
 
 #### Extensions to Ada 83
 
-We no longer make things like 'Last and ".component" (basic) operations of an access type that need to be "declared" somewhere. Instead, implicit dereference in a [prefix](S0086) takes care of them all. This means that there should never be a case when X.all'Last is legal while X'Last is not. See AI83-00154. 
+We no longer make things like 'Last and ".component" (basic) operations of an access type that need to be "declared" somewhere. Instead, implicit dereference in a prefix takes care of them all. This means that there should never be a case when X.all'Last is legal while X'Last is not. See AI83-00154. 
 
 
 ## 3.11  Declarative Parts
 
-[A [declarative_part](S0079) contains [declarative_item](S0080)s (possibly none).] 
+[A declarative_part contains declarative_items (possibly none).] 
 
 
 #### Syntax
 
-declarative_part ::= {[declarative_item](S0080)}
+declarative_part ::= {declarative_item}
 
 declarative_item ::= 
-    [basic_declarative_item](S0081) | [body](S0082)
+    basic_declarative_item | body
 
 basic_declarative_item ::= 
-    [basic_declaration](S0018) | [representation_clause](S0263) | [use_clause](S0166)
+    basic_declaration | representation_clause | use_clause
 
-body ::= [proper_body](S0083) | [body_stub](S0224)
+body ::= proper_body | body_stub
 
 proper_body ::= 
-    [subprogram_body](S0154) | [package_body](S0163) | [task_body](S0179) | [protected_body](S0185)
+    subprogram_body | package_body | task_body | protected_body
 
 
 #### Dynamic Semantics
 
-The elaboration of a [declarative_part](S0079) consists of the elaboration of the [declarative_item](S0080)s, if any, in the order in which they are given in the [declarative_part](S0079).
+The elaboration of a declarative_part consists of the elaboration of the declarative_items, if any, in the order in which they are given in the declarative_part.
 
 An elaborable construct is in the elaborated state after the normal completion of its elaboration. Prior to that, it is not yet elaborated. 
 
@@ -4613,44 +4613,44 @@ The use of the term "normal completion" implies that if the elaboration propagat
 
 For a construct that attempts to use a body, a check (Elaboration_Check) is performed, as follows: 
 
-For a call to a (non-protected) subprogram that has an explicit body, a check is made that the [subprogram_body](S0154) is already elaborated. This check and the evaluations of any actual parameters of the call are done in an arbitrary order. 
+For a call to a (non-protected) subprogram that has an explicit body, a check is made that the subprogram_body is already elaborated. This check and the evaluations of any actual parameters of the call are done in an arbitrary order. 
 
-Discussion: AI83-00180 specifies that there is no elaboration check for a subprogram defined by a [pragma](S0016) Interface (or equivalently, [pragma](S0016) Import). AI83-00430 specifies that there is no elaboration check for an enumeration literal. AI83-00406 specifies that the evaluation of parameters and the elaboration check occur in an arbitrary order. AI83-00406 applies to generic instantiation as well (see below).
+Discussion: AI83-00180 specifies that there is no elaboration check for a subprogram defined by a pragma Interface (or equivalently, pragma Import). AI83-00430 specifies that there is no elaboration check for an enumeration literal. AI83-00406 specifies that the evaluation of parameters and the elaboration check occur in an arbitrary order. AI83-00406 applies to generic instantiation as well (see below).
 
-For a call to a protected operation of a protected type (that has a body - no check is performed if a [pragma](S0016) Import applies to the protected type), a check is made that the [protected_body](S0185) is already elaborated. This check and the evaluations of any actual parameters of the call are done in an arbitrary order. 
+For a call to a protected operation of a protected type (that has a body - no check is performed if a pragma Import applies to the protected type), a check is made that the protected_body is already elaborated. This check and the evaluations of any actual parameters of the call are done in an arbitrary order. 
 
-Discussion: A protected type has only one elaboration "bit", rather than one for each operation, because one call may result in evaluating the barriers of other entries, and because there are no elaborable declarations between the bodies of the operations. In fact, the elaboration of a [protected_body](S0185) does not elaborate the enclosed bodies, since they are not considered independently elaborable.
+Discussion: A protected type has only one elaboration "bit", rather than one for each operation, because one call may result in evaluating the barriers of other entries, and because there are no elaborable declarations between the bodies of the operations. In fact, the elaboration of a protected_body does not elaborate the enclosed bodies, since they are not considered independently elaborable.
 
-Note that there is no elaboration check when calling a task entry. Task entry calls are permitted even before the associated [task_body](S0179) has been seen. Such calls are simply queued until the task is activated and reaches a corresponding [accept_statement](S0188). We considered a similar rule for protected entries - simply queuing all calls until the [protected_body](S0185) was seen, but felt it was not worth the possible implementation overhead, particularly given that there might be multiple instances of the protected type. 
+Note that there is no elaboration check when calling a task entry. Task entry calls are permitted even before the associated task_body has been seen. Such calls are simply queued until the task is activated and reaches a corresponding accept_statement. We considered a similar rule for protected entries - simply queuing all calls until the protected_body was seen, but felt it was not worth the possible implementation overhead, particularly given that there might be multiple instances of the protected type. 
 
-For the activation of a task, a check is made by the activator that the [task_body](S0179) is already elaborated. If two or more tasks are being activated together (see 9.2), as the result of the elaboration of a [declarative_part](S0079) or the initialization for the object created by an allocator, this check is done for all of them before activating any of them. 
+For the activation of a task, a check is made by the activator that the task_body is already elaborated. If two or more tasks are being activated together (see 9.2), as the result of the elaboration of a declarative_part or the initialization for the object created by an allocator, this check is done for all of them before activating any of them. 
 
 Reason: As specified by AI83-00149, the check is done by the activator, rather than by the task itself. If it were done by the task itself, it would be turned into a Tasking_Error in the activator, and the other tasks would still be activated. 
 
-For the instantiation of a generic unit that has a body, a check is made that this body is already elaborated. This check and the evaluation of any [explicit_generic_actual_parameter](S0244)s of the instantiation are done in an arbitrary order. 
+For the instantiation of a generic unit that has a body, a check is made that this body is already elaborated. This check and the evaluation of any explicit_generic_actual_parameters of the instantiation are done in an arbitrary order. 
 
 The exception Program_Error is raised if any of these checks fails. 
 
 
 #### Extensions to Ada 83
 
-The syntax for [declarative_part](S0079) is modified to remove the ordering restrictions of Ada 83; that is, the distinction between [basic_declarative_item](S0081)s and later_declarative_items within [declarative_part](S0079)s is removed. This means that things like [use_clause](S0166)s and variable_declarations can be freely intermixed with things like bodies.
+The syntax for declarative_part is modified to remove the ordering restrictions of Ada 83; that is, the distinction between basic_declarative_items and later_declarative_items within declarative_parts is removed. This means that things like use_clauses and variable_declarations can be freely intermixed with things like bodies.
 
-The syntax rule for [proper_body](S0083) now allows a [protected_body](S0185), and the rules for elaboration checks now cover calls on protected operations. 
+The syntax rule for proper_body now allows a protected_body, and the rules for elaboration checks now cover calls on protected operations. 
 
 
 #### Wording Changes from Ada 83
 
-The syntax rule for later_declarative_item is removed; the syntax rule for [declarative_item](S0080) is new.
+The syntax rule for later_declarative_item is removed; the syntax rule for declarative_item is new.
 
-RM83 defines "elaborated" and "not yet elaborated" for [declarative_item](S0080)s here, and for other things in 3.1, "Declarations". That's no longer necessary, since these terms are fully defined in 3.1.
+RM83 defines "elaborated" and "not yet elaborated" for declarative_items here, and for other things in 3.1, "Declarations". That's no longer necessary, since these terms are fully defined in 3.1.
 
-In RM83, all uses of [declarative_part](S0079) are optional (except for the one in [block_statement](S0138) with a declare) which is sort of strange, since a [declarative_part](S0079) can be empty, according to the syntax. That is, [declarative_part](S0079)s are sort of "doubly optional". In Ada 95, these [declarative_part](S0079)s are always required (but can still be empty). To simplify description, we go further and say (see 5.6, "Block Statements") that a [block_statement](S0138) without an explicit [declarative_part](S0079) is equivalent to one with an empty one. 
+In RM83, all uses of declarative_part are optional (except for the one in block_statement with a declare) which is sort of strange, since a declarative_part can be empty, according to the syntax. That is, declarative_parts are sort of "doubly optional". In Ada 95, these declarative_parts are always required (but can still be empty). To simplify description, we go further and say (see 5.6, "Block Statements") that a block_statement without an explicit declarative_part is equivalent to one with an empty one. 
 
 
 ### 3.11.1  Completions of Declarations
 
-Declarations sometimes come in two parts. A declaration that requires a second part is said to require completion. The second part is called the completion of the declaration (and of the entity declared), and is either another declaration, a body, or a [pragma](S0016). 
+Declarations sometimes come in two parts. A declaration that requires a second part is said to require completion. The second part is called the completion of the declaration (and of the entity declared), and is either another declaration, a body, or a pragma. 
 
 Discussion: Throughout the RM95, there are rules about completions that define the following: 
 
@@ -4673,16 +4673,16 @@ A construct that can be a completion is interpreted as the completion of a prior
 
 The declaration and the completion occur immediately within the same declarative region;
 
-The defining name or [defining_program_unit_name](S0146) in the completion is the same as in the declaration, or in the case of a [pragma](S0016), the [pragma](S0016) applies to the declaration;
+The defining name or defining_program_unit_name in the completion is the same as in the declaration, or in the case of a pragma, the pragma applies to the declaration;
 
-If the declaration is overloadable, then the completion either has a type-conformant profile, or is a [pragma](S0016). 
+If the declaration is overloadable, then the completion either has a type-conformant profile, or is a pragma. 
 
 
 #### Legality Rules
 
 An implicit declaration shall not have a completion. For any explicit declaration that is specified to require completion, there shall be a corresponding explicit completion. 
 
-Discussion: The implicit declarations of predefined operators are not allowed to have a completion. Enumeration literals, although they are subprograms, are not allowed to have a corresponding [subprogram_body](S0154). That's because the completion rules are described in terms of constructs ([subprogram_declaration](S0141)s) and not entities (subprograms). When a completion is required, it has to be explicit; the implicit null [package_body](S0163) that Section 7 talks about cannot serve as the completion of a [package_declaration](S0161) if a completion is required. 
+Discussion: The implicit declarations of predefined operators are not allowed to have a completion. Enumeration literals, although they are subprograms, are not allowed to have a corresponding subprogram_body. That's because the completion rules are described in terms of constructs (subprogram_declarations) and not entities (subprograms). When a completion is required, it has to be explicit; the implicit null package_body that Section 7 talks about cannot serve as the completion of a package_declaration if a completion is required. 
 
 At most one completion is allowed for a given declaration. Additional requirements on completions appear where each kind of completion is defined. 
 
@@ -4694,14 +4694,14 @@ A type is completely defined at a place that is after its full type definition (
 
 Reason: Index types are always completely defined - no need to mention them. There is no way for a completely defined type to depend on the value of a (still) deferred constant. 
 
-NOTE 1   Completions are in principle allowed for any kind of explicit declaration. However, for some kinds of declaration, the only allowed completion is a [pragma](S0016) Import, and implementations are not required to support [pragma](S0016) Import for every kind of entity. 
+NOTE 1   Completions are in principle allowed for any kind of explicit declaration. However, for some kinds of declaration, the only allowed completion is a pragma Import, and implementations are not required to support pragma Import for every kind of entity. 
 
-Discussion: In fact, we expect that implementations will not support pragma Import of things like types - it's hard to even define the semantics of what it would mean. Therefore, in practice, not every explicit declaration can have a completion. In any case, if an implementation chooses to support pragma Import for, say, types, it can place whatever restrictions on the feature it wants to. For example, it might want the [pragma](S0016) to be a freezing point for the type. 
+Discussion: In fact, we expect that implementations will not support pragma Import of things like types - it's hard to even define the semantics of what it would mean. Therefore, in practice, not every explicit declaration can have a completion. In any case, if an implementation chooses to support pragma Import for, say, types, it can place whatever restrictions on the feature it wants to. For example, it might want the pragma to be a freezing point for the type. 
 
 NOTE 2   There are rules that prevent premature uses of declarations that have a corresponding completion. The Elaboration_Checks of 3.11 prevent such uses at run time for subprograms, protected operations, tasks, and generic units. The rules of 13.14, "Freezing Rules" prevent, at compile time, premature uses of other entities such as private types and deferred constants. 
 
 
 #### Wording Changes from Ada 83
 
-This subclause is new. It is intended to cover all kinds of completions of declarations, be they a body for a spec, a full type for an incomplete or private type, a full constant declaration for a deferred constant declaration, or a [pragma](S0016) Import for any kind of entity. 
+This subclause is new. It is intended to cover all kinds of completions of declarations, be they a body for a spec, a full type for an incomplete or private type, a full constant declaration for a deferred constant declaration, or a pragma Import for any kind of entity. 
 

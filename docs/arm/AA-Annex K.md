@@ -17,17 +17,17 @@ No_Return See 6.5.1.
 
 This annex summarizes the definitions given elsewhere of the language-defined attributes.
 
-P'AccessFor a [prefix](S0086) P that denotes a subprogram:
+P'AccessFor a prefix P that denotes a subprogram:
 
 See 3.10.2.
 
-X'AccessFor a [prefix](S0086) X that denotes an aliased view of an object:
+X'AccessFor a prefix X that denotes an aliased view of an object:
 
 See 3.10.2.
 
 X'AddressFor a prefix X that denotes an object, program unit, or label:
 
-Denotes the address of the first of the storage elements allocated to X. For a program unit or label, this value refers to the machine code associated with the corresponding body or [statement](S0124). The value of this attribute is of type System.Address. See 13.3.
+Denotes the address of the first of the storage elements allocated to X. For a program unit or label, this value refers to the machine code associated with the corresponding body or statement. The value of this attribute is of type System.Address. See 13.3.
 
 S'AdjacentFor every subtype S of a floating point type T:
 
@@ -63,13 +63,13 @@ P'Body_VersionFor a prefix P that statically denotes a program unit:
 
 Yields a value of the predefined type String that identifies the version of the compilation unit that contains the body (but not any subunits) of the program unit. See E.3.
 
-T'CallableFor a [prefix](S0086) T that is of a task type (after any implicit dereference):
+T'CallableFor a prefix T that is of a task type (after any implicit dereference):
 
 Yields the value True when the task denoted by T is callable, and False otherwise; See 9.9.
 
-E'CallerFor a [prefix](S0086) E that denotes an [entry_declaration](S0187):
+E'CallerFor a prefix E that denotes an entry_declaration:
 
-Yields a value of the type Task_Id that identifies the task whose call is now being serviced. Use of this attribute is allowed only inside an [entry_body](S0190) or [accept_statement](S0188)corresponding to the [entry_declaration](S0187) denoted by E. See C.7.1.
+Yields a value of the type Task_Id that identifies the task whose call is now being serviced. Use of this attribute is allowed only inside an entry_body or accept_statementcorresponding to the entry_declaration denoted by E. See C.7.1.
 
 S'CeilingFor every subtype S of a floating point type T:
 
@@ -110,7 +110,7 @@ function S'Compose (Fraction : T;
 
 Let v be the value Fraction · T'Machine_RadixExponentk, where k is the normalized exponent of Fraction. If v is a machine number of the type T, or if |v|  T'Model_Small, the function yields v; otherwise, it yields either one of the machine numbers of the type T adjacent to v. Constraint_Error is optionally raised if v is outside the base range of S. A zero result has the sign of Fraction when S'Signed_Zeros is True. See A.5.3.
 
-A'ConstrainedFor a [prefix](S0086) A that is of a discriminated type (after any implicit dereference):
+A'ConstrainedFor a prefix A that is of a discriminated type (after any implicit dereference):
 
 Yields the value True if A denotes a constant, a value, or a constrained variable, and False otherwise. See 3.7.2.
 
@@ -126,7 +126,7 @@ function S'Copy_Sign (Value, Sign : T)
 
 If the value of Value is nonzero, the function yields a result whose magnitude is that of Value and whose sign is that of Sign; otherwise, it yields the value zero. Constraint_Error is optionally raised if the result is outside the base range of S. A zero result has the sign of Sign when S'Signed_Zeros is True. See A.5.3.
 
-E'CountFor a [prefix](S0086) E that denotes an entry of a task or protected unit:
+E'CountFor a prefix E that denotes an entry of a task or protected unit:
 
 Yields the number of calls presently queued on the entry E of the current instance of the unit. The value of this attribute is of the type universal_integer. See 9.9.
 
@@ -166,7 +166,7 @@ The function yields the normalized exponent of X. See A.5.3.
 
 S'External_TagFor every subtype S of a tagged type T (specific or class-wide):
 
-S'External_Tag denotes an external string representation for S'Tag; it is of the predefined type String. External_Tag may be specified for a specific tagged type via an [attribute_definition_clause](S0265); the expression of such a clause shall be static. The default external tag representation is implementation defined. See 3.9.2 and 13.13.2. See 13.3.
+S'External_Tag denotes an external string representation for S'Tag; it is of the predefined type String. External_Tag may be specified for a specific tagged type via an attribute_definition_clause; the expression of such a clause shall be static. The default external tag representation is implementation defined. See 3.9.2 and 13.13.2. See 13.3.
 
 A'FirstFor a prefix A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:
 
@@ -216,7 +216,7 @@ E'IdentityFor a prefix E that denotes an exception:
 
 E'Identity returns the unique identity of the exception. The type of this attribute is Exception_Id. See 11.4.1.
 
-T'IdentityFor a [prefix](S0086) T that is of a task type (after any implicit dereference):
+T'IdentityFor a prefix T that is of a task type (after any implicit dereference):
 
 Yields a value of the type Task_Id that identifies the task denoted by T. See C.7.1.
 
@@ -461,15 +461,15 @@ For an enumeration type, the function returns the value whose position number is
 
 A'RangeFor a prefix A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:
 
-A'Range is equivalent to the range A'First .. A'Last, except that the [prefix](S0086) A is only evaluated once. See 3.6.2.
+A'Range is equivalent to the range A'First .. A'Last, except that the prefix A is only evaluated once. See 3.6.2.
 
 S'RangeFor every scalar subtype S:
 
-S'Range is equivalent to the [range](S0034) S'First .. S'Last. See 3.5.
+S'Range is equivalent to the range S'First .. S'Last. See 3.5.
 
 A'Range(N)For a prefix A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:
 
-A'Range(N) is equivalent to the range A'First(N) .. A'Last(N), except that the [prefix](S0086) A is only evaluated once. See 3.6.2.
+A'Range(N) is equivalent to the range A'First(N) .. A'Last(N), except that the prefix A is only evaluated once. See 3.6.2.
 
 S'Class'ReadFor every subtype S'Class of a class-wide type T'Class:
 
@@ -608,11 +608,11 @@ S'TagFor every subtype S of a tagged type T (specific or class-wide):
 
 S'Tag denotes the tag of the type T (or if T is class-wide, the tag of the root type of the corresponding class). The value of this attribute is of type Tag. See 3.9.
 
-X'TagFor a [prefix](S0086) X that is of a class-wide tagged type (after any implicit dereference):
+X'TagFor a prefix X that is of a class-wide tagged type (after any implicit dereference):
 
 X'Tag denotes the tag of X. The value of this attribute is of type Tag. See 3.9.
 
-T'TerminatedFor a [prefix](S0086) T that is of a task type (after any implicit dereference):
+T'TerminatedFor a prefix T that is of a task type (after any implicit dereference):
 
 Yields the value True if the task denoted by T is terminated, and False otherwise. The value of this attribute is of the predefined type Boolean. See 9.9.
 
@@ -640,7 +640,7 @@ function S'Unbiased_Rounding (X : T)
 
 The function yields the integral value nearest to X, rounding toward the even integer if X lies exactly halfway between two integers. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.
 
-X'Unchecked_AccessFor a [prefix](S0086) X that denotes an aliased view of an object:
+X'Unchecked_AccessFor a prefix X that denotes an aliased view of an object:
 
 All rules and semantics that apply to X'Access (see 3.10.2) apply also to X'Unchecked_Access, except that, for the purposes of accessibility rules and checks, it is as if X were declared immediately within a library package. See 13.10.
 
@@ -656,7 +656,7 @@ function S'Val(Arg : universal_integer)
 
 This function returns a value of the type of S whose position number equals the value of Arg. See 3.5.5.
 
-X'ValidFor a [prefix](S0086) X that denotes a scalar object (after any implicit dereference):
+X'ValidFor a prefix X that denotes a scalar object (after any implicit dereference):
 
 Yields True if and only if the object denoted by X is normal and has a valid representation. The value of this attribute is of the predefined type Boolean. See 13.9.2.
 

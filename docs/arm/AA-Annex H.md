@@ -19,7 +19,7 @@ Restricting language constructs whose usage might complicate the demonstration o
 
 Execution understandability is supported by pragma Normalize_Scalars, and also by requirements for the implementation to document the effect of a program in the presence of a bounded error or where the language rules leave the effect unspecified. 
 
-The [pragma](S0016)s Reviewable and Restrictions relate to the other requirements addressed by this Annex. 
+The pragmas Reviewable and Restrictions relate to the other requirements addressed by this Annex. 
 
 NOTE   The Valid attribute (see 13.9.2) is also useful in addressing these needs, to avoid problems that could otherwise arise from scalars that have values outside their declared range constraints.
 
@@ -40,19 +40,19 @@ Discussion: The goal of the pragma is to reduce the impact of a bounded error th
 
 #### Syntax
 
-The form of a [pragma](S0016) Normalize_Scalars is as follows: 
+The form of a pragma Normalize_Scalars is as follows: 
 
   pragma Normalize_Scalars; 
 
 
 #### Post-Compilation Rules
 
-Pragma Normalize_Scalars is a configuration pragma. It applies to all [compilation_unit](S0215)s included in a partition. 
+Pragma Normalize_Scalars is a configuration pragma. It applies to all compilation_units included in a partition. 
 
 
 #### Documentation Requirements
 
-If a [pragma](S0016) Normalize_Scalars applies, the implementation shall document the implicit initial value for scalar subtypes, and shall identify each case in which such a value is used and is not an invalid representation. 
+If a pragma Normalize_Scalars applies, the implementation shall document the implicit initial value for scalar subtypes, and shall identify each case in which such a value is used and is not an invalid representation. 
 
 To be honest: It's slightly inaccurate to say that the value is a representation, but the point should be clear anyway. 
 
@@ -91,7 +91,7 @@ Discussion: Look up "unspecified" and "erroneous execution" in the index for a l
 
 The management of run-time storage is particularly important. For safety applications, it is often necessary to show that a program cannot raise Storage_Error, and for security applications that information cannot leak via the run-time system. Users are likely to prefer a simple storage model that can be easily validated.
 
-The documentation could helpfully take into account that users may well adopt a subset to avoid some forms of erroneous execution, for instance, not using the abort statement, so that the effects of a partly completed [assignment_statement](S0130) do not have to be considered in the validation of a program (see 9.8). For this reason documentation linked to an actual compilation may be most useful. Similarly, an implementation may be able to take into account use of the Restrictions pragma. 
+The documentation could helpfully take into account that users may well adopt a subset to avoid some forms of erroneous execution, for instance, not using the abort statement, so that the effects of a partly completed assignment_statement do not have to be considered in the validation of a program (see 9.8). For this reason documentation linked to an actual compilation may be most useful. Similarly, an implementation may be able to take into account use of the Restrictions pragma. 
 
 
 ## H.3  Reviewable Object Code
@@ -108,14 +108,14 @@ Discussion: Since the purpose of this pragma is to provide information to the us
 
 #### Syntax
 
-The form of a [pragma](S0016) Reviewable is as follows: 
+The form of a pragma Reviewable is as follows: 
 
   pragma Reviewable; 
 
 
 #### Post-Compilation Rules
 
-Pragma Reviewable is a configuration pragma. It applies to all [compilation_unit](S0215)s included in a partition. 
+Pragma Reviewable is a configuration pragma. It applies to all compilation_units included in a partition. 
 
 
 #### Implementation Requirements
@@ -185,9 +185,9 @@ Object code listings should be provided both in a symbolic format and also in an
 
 Reason: This is to enable other tools to perform any analysis that the user needed to aid validation. The format should be in some agreed form.
 
-NOTE 1   The order of elaboration of library units will be documented even in the absence of [pragma](S0016) Reviewable (see 10.2). 
+NOTE 1   The order of elaboration of library units will be documented even in the absence of pragma Reviewable (see 10.2). 
 
-Discussion: There might be some interactions between pragma Reviewable and compiler optimizations. For example, an implementation may disable some optimizations when pragma Reviewable is in force if it would be overly complicated to provide the detailed information to allow review of the optimized object code. See also [pragma](S0016) Optimize (2.8). 
+Discussion: There might be some interactions between pragma Reviewable and compiler optimizations. For example, an implementation may disable some optimizations when pragma Reviewable is in force if it would be overly complicated to provide the detailed information to allow review of the optimized object code. See also pragma Optimize (2.8). 
 
 
 ### H.3.2  Pragma Inspection_Point
@@ -199,14 +199,14 @@ Discussion: Inspection points are a high level equivalent of break points used b
 
 #### Syntax
 
-The form of a [pragma](S0016) Inspection_Point is as follows: 
+The form of a pragma Inspection_Point is as follows: 
 
-  pragma Inspection_Point[(object_[name](S0084) {, object_[name](S0084)})]; 
+  pragma Inspection_Point[(object_name {, object_name})]; 
 
 
 #### Legality Rules
 
-A pragma Inspection_Point is allowed wherever a [declarative_item](S0080) or [statement](S0124) is allowed. Each object_name shall statically denote the declaration of an object. 
+A pragma Inspection_Point is allowed wherever a declarative_item or statement is allowed. Each object_name shall statically denote the declaration of an object. 
 
 Discussion: The static denotation is required, since no dynamic evaluation of a name is involved in this pragma.
 
@@ -270,25 +270,25 @@ No_Protected_Types There are no declarations of protected types or protected obj
 
 Memory-management related restrictions:
 
-No_Allocators There are no occurrences of an [allocator](S0122).
+No_Allocators There are no occurrences of an allocator.
 
-No_Local_Allocators [Allocator](S0122)s are prohibited in subprograms, generic subprograms, tasks, and entry bodies; instantiations of generic packages are also prohibited in these contexts. 
+No_Local_Allocators Allocators are prohibited in subprograms, generic subprograms, tasks, and entry bodies; instantiations of generic packages are also prohibited in these contexts. 
 
-Ramification: Thus [allocator](S0122)s are permitted only in expressions whose evaluation can only be performed before the main subprogram is invoked. 
+Ramification: Thus allocators are permitted only in expressions whose evaluation can only be performed before the main subprogram is invoked. 
 
-Reason: The reason for the prohibition against instantiations of generic packages is to avoid contract model violations. An alternative would be to prohibit [allocator](S0122)s from generic packages, but it seems preferable to allow generality on the defining side and then place the restrictions on the usage (instantiation), rather than inhibiting what can be in the generic while liberalizing where they can be instantiated. 
+Reason: The reason for the prohibition against instantiations of generic packages is to avoid contract model violations. An alternative would be to prohibit allocators from generic packages, but it seems preferable to allow generality on the defining side and then place the restrictions on the usage (instantiation), rather than inhibiting what can be in the generic while liberalizing where they can be instantiated. 
 
 No_Unchecked_Deallocation Semantic dependence on Unchecked_Deallocation is not allowed. 
 
 Discussion: This restriction would be useful in those contexts in which heap storage is needed on program start-up, but need not be increased subsequently. The danger of a dangling pointer can therefore be avoided. 
 
-Immediate_Reclamation Except for storage occupied by objects created by [allocator](S0122)s and not deallocated via unchecked deallocation, any storage reserved at run time for an object is immediately reclaimed when the object no longer exists. 
+Immediate_Reclamation Except for storage occupied by objects created by allocators and not deallocated via unchecked deallocation, any storage reserved at run time for an object is immediately reclaimed when the object no longer exists. 
 
 Discussion: Immediate reclamation would apply to storage created by the compiler, such as for a return value from a function whose size is not known at the call site. 
 
 Exception-related restriction:
 
-No_Exceptions [Raise_statement](S0235)s and [exception_handler](S0232)s are not allowed. No language-defined runtime checks are generated; however, a runtime check performed automatically by the hardware is permitted.
+No_Exceptions Raise_statements and exception_handlers are not allowed. No language-defined runtime checks are generated; however, a runtime check performed automatically by the hardware is permitted.
 
 Discussion: This restriction mirrors a method of working that is quite common in the safety area. The programmer is required to show that exceptions cannot be raised. Then a simplified run-time system is used without exception handling. However, some hardware checks may still be enforced. If the software check would have failed, or if the hardware check actually fails, then the execution of the program is unpredictable. There are obvious dangers in this approach, but it is similar to programming at the assembler level.
 
@@ -300,7 +300,7 @@ Discussion: The intention is to avoid the use of floating point hardware at run 
 
 No_Fixed_Point Uses of predefined fixed point types and operations, and declarations of new fixed point types, are not allowed. 
 
-Discussion: This restriction would have the side effect of prohibiting the [delay_relative_statement](S0198). As with the No_Floating_Point restriction, this might be used to avoid any question of rounding errors. Unless an Ada run-time is written in Ada, it seems hard to rule out implicit use of fixed point, since at the machine level, fixed point is virtually the same as integer arithmetic.
+Discussion: This restriction would have the side effect of prohibiting the delay_relative_statement. As with the No_Floating_Point restriction, this might be used to avoid any question of rounding errors. Unless an Ada run-time is written in Ada, it seems hard to rule out implicit use of fixed point, since at the machine level, fixed point is virtually the same as integer arithmetic.
 
 No_Unchecked_Conversion Semantic dependence on the predefined generic Unchecked_Conversion is not allowed. 
 
@@ -316,9 +316,9 @@ No_IO Semantic dependence on any of the library units Sequential_IO, Direct_IO, 
 
 Discussion: Excluding the input-output facilities of an implementation may be needed in those environments which cannot support the supplied functionality. A program in such an environment is likely to require some low level facilities or a call on a non-Ada feature.
 
-No_Delay [Delay_Statement](S0196)s and semantic dependence on package Calendar are not allowed. 
+No_Delay Delay_Statements and semantic dependence on package Calendar are not allowed. 
 
-Ramification: This implies that [delay_alternative](S0204)s in a [select_statement](S0199) are prohibited.
+Ramification: This implies that delay_alternatives in a select_statement are prohibited.
 
 The purpose of this restriction is to avoid the need for timing facilities within the run-time system.
 
@@ -329,7 +329,7 @@ No_Reentrancy During the execution of a subprogram by a task, no other task invo
 
 #### Implementation Requirements
 
-If an implementation supports [pragma](S0016) Restrictions for a particular argument, then except for the restrictions No_Unchecked_Deallocation, No_Unchecked_Conversion, No_Access_Subprograms, and No_Unchecked_Access, the associated restriction applies to the run-time system. 
+If an implementation supports pragma Restrictions for a particular argument, then except for the restrictions No_Unchecked_Deallocation, No_Unchecked_Conversion, No_Access_Subprograms, and No_Unchecked_Access, the associated restriction applies to the run-time system. 
 
 Reason: Permission is granted for the run-time system to use the specified otherwise-restricted features, since the use of these features may simplify the run-time system by allowing more of it to be written in Ada. 
 

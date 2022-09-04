@@ -31,52 +31,52 @@ This Annex contains what used to be RM83-13.8.
 
 ## B.1  Interfacing Pragmas
 
-A [pragma](S0016) Import is used to import an entity defined in a foreign language into an Ada program, thus allowing a foreign-language subprogram to be called from Ada, or a foreign-language variable to be accessed from Ada. In contrast, a [pragma](S0016) Export is used to export an Ada entity to a foreign language, thus allowing an Ada subprogram to be called from a foreign language, or an Ada object to be accessed from a foreign language. The [pragma](S0016)s Import and Export are intended primarily for objects and subprograms, although implementations are allowed to support other entities.
+A pragma Import is used to import an entity defined in a foreign language into an Ada program, thus allowing a foreign-language subprogram to be called from Ada, or a foreign-language variable to be accessed from Ada. In contrast, a pragma Export is used to export an Ada entity to a foreign language, thus allowing an Ada subprogram to be called from a foreign language, or an Ada object to be accessed from a foreign language. The pragmas Import and Export are intended primarily for objects and subprograms, although implementations are allowed to support other entities.
 
-A [pragma](S0016) Convention is used to specify that an Ada entity should use the conventions of another language. It is intended primarily for types and "callback" subprograms. For example, "pragma Convention(Fortran, Matrix);" implies that Matrix should be represented according to the conventions of the supported Fortran implementation, namely column-major order.
+A pragma Convention is used to specify that an Ada entity should use the conventions of another language. It is intended primarily for types and "callback" subprograms. For example, "pragma Convention(Fortran, Matrix);" implies that Matrix should be represented according to the conventions of the supported Fortran implementation, namely column-major order.
 
-A [pragma](S0016) Linker_Options is used to specify the system linker parameters needed when a given compilation unit is included in a partition.
+A pragma Linker_Options is used to specify the system linker parameters needed when a given compilation unit is included in a partition.
 
 
 #### Syntax
 
-An interfacing pragma is a representation [pragma](S0016) that is one of the [pragma](S0016)s Import, Export, or Convention. Their forms, together with that of the related [pragma](S0016) Linker_Options, are as follows: 
+An interfacing pragma is a representation pragma that is one of the pragmas Import, Export, or Convention. Their forms, together with that of the related pragma Linker_Options, are as follows: 
 
   pragma Import(
-     [Convention =&gt] convention_[identifier](S0002), [Entity =&gt] [local_name](S0264)
-  [, [External_Name =&gt] string_[expression](S0108)] [, [Link_Name =&gt] string_[expression](S0108)]);
+     [Convention =&gt] convention_identifier, [Entity =&gt] local_name
+  [, [External_Name =&gt] string_expression] [, [Link_Name =&gt] string_expression]);
 
   pragma Export(
-     [Convention =&gt] convention_[identifier](S0002), [Entity =&gt] [local_name](S0264)
-  [, [External_Name =&gt] string_[expression](S0108)] [, [Link_Name =&gt] string_[expression](S0108)]);
+     [Convention =&gt] convention_identifier, [Entity =&gt] local_name
+  [, [External_Name =&gt] string_expression] [, [Link_Name =&gt] string_expression]);
 
-  pragma Convention([Convention =&gt] convention_[identifier](S0002),[Entity =&gt] [local_name](S0264));
+  pragma Convention([Convention =&gt] convention_identifier,[Entity =&gt] local_name);
 
-  pragma Linker_Options(string_[expression](S0108));
+  pragma Linker_Options(string_expression);
 
-A [pragma](S0016) Linker_Options is allowed only at the place of a [declarative_item](S0080).
+A pragma Linker_Options is allowed only at the place of a declarative_item.
 
 
 #### Name Resolution Rules
 
-The expected type for a string_[expression](S0108) in an interfacing pragma or in pragma Linker_Options is String. 
+The expected type for a string_expression in an interfacing pragma or in pragma Linker_Options is String. 
 
-Ramification: There is no language-defined support for external or link names of type Wide_String, or of other string types. Implementations may, of course, have additional pragmas for that purpose. Note that allowing both String and Wide_String in the same [pragma](S0016) would cause ambiguities. 
+Ramification: There is no language-defined support for external or link names of type Wide_String, or of other string types. Implementations may, of course, have additional pragmas for that purpose. Note that allowing both String and Wide_String in the same pragma would cause ambiguities. 
 
 
 #### Legality Rules
 
-The convention_[identifier](S0002) of an interfacing pragma shall be the name of a convention. The convention names are implementation defined, except for certain language-defined ones, such as Ada and Intrinsic, as explained in 6.3.1, "Conformance Rules". [Additional convention names generally represent the calling conventions of foreign languages, language implementations, or specific run-time models.] The convention of a callable entity is its calling convention. 
+The convention_identifier of an interfacing pragma shall be the name of a convention. The convention names are implementation defined, except for certain language-defined ones, such as Ada and Intrinsic, as explained in 6.3.1, "Conformance Rules". [Additional convention names generally represent the calling conventions of foreign languages, language implementations, or specific run-time models.] The convention of a callable entity is its calling convention. 
 
 Implementation defined: Implementation-defined convention names.
 
-Discussion: We considered representing the convention names using an enumeration type declared in System. Then, convention_[identifier](S0002) would be changed to convention_[name](S0084), and we would make its expected type be the enumeration type. We didn't do this because it seems to introduce extra complexity, and because the list of available languages is better represented as the list of children of package Interfaces - a more open-ended sort of list. 
+Discussion: We considered representing the convention names using an enumeration type declared in System. Then, convention_identifier would be changed to convention_name, and we would make its expected type be the enumeration type. We didn't do this because it seems to introduce extra complexity, and because the list of available languages is better represented as the list of children of package Interfaces - a more open-ended sort of list. 
 
-If L is a convention_[identifier](S0002) for a language, then a type T is said to be compatible with convention L, (alternatively, is said to be an L-compatible type) if any of the following conditions are met: 
+If L is a convention_identifier for a language, then a type T is said to be compatible with convention L, (alternatively, is said to be an L-compatible type) if any of the following conditions are met: 
 
 T is declared in a language interface package corresponding to L and is defined to be L-compatible (see B.3, B.3.1, B.3.2, B.4, B.5),
 
-Convention L has been specified for T in a [pragma](S0016) Convention, and T is eligible for convention L; that is: 
+Convention L has been specified for T in a pragma Convention, and T is eligible for convention L; that is: 
 
 T is an array type with either an unconstrained or statically-constrained first subtype, and its component type is L-compatible,
 
@@ -92,7 +92,7 @@ The implementation permits T as an L-compatible type.
 
 Discussion: For example, an implementation might permit Integer as a C-compatible type, though the C type to which it corresponds might be different in different environments. 
 
-If [pragma](S0016) Convention applies to a type, then the type shall either be compatible with or eligible for the convention specified in the pragma. 
+If pragma Convention applies to a type, then the type shall either be compatible with or eligible for the convention specified in the pragma. 
 
 Ramification: If a type is derived from an L-compatible type, the derived type is by default L-compatible, but it is also permitted to specify pragma Convention for the derived type.
 
@@ -100,38 +100,38 @@ It is permitted to specify pragma Convention for an incomplete type, but in the 
 
 If each component of a record type is L-compatible, then the record type itself is only L-compatible if it has a pragma Convention. 
 
-A [pragma](S0016) Import shall be the completion of a declaration. Notwithstanding any rule to the contrary, a [pragma](S0016) Import may serve as the completion of any kind of (explicit) declaration if supported by an implementation for that kind of declaration. If a completion is a [pragma](S0016) Import, then it shall appear in the same [declarative_part](S0079), [package_specification](S0162), [task_definition](S0177) or [protected_definition](S0182) as the declaration. For a library unit, it shall appear in the same [compilation](S0214), before any subsequent [compilation_unit](S0215)s other than [pragma](S0016)s. If the [local_name](S0264) denotes more than one entity, then the [pragma](S0016) Import is the completion of all of them. 
+A pragma Import shall be the completion of a declaration. Notwithstanding any rule to the contrary, a pragma Import may serve as the completion of any kind of (explicit) declaration if supported by an implementation for that kind of declaration. If a completion is a pragma Import, then it shall appear in the same declarative_part, package_specification, task_definition or protected_definition as the declaration. For a library unit, it shall appear in the same compilation, before any subsequent compilation_units other than pragmas. If the local_name denotes more than one entity, then the pragma Import is the completion of all of them. 
 
-Discussion: For declarations of deferred constants and subprograms, we mention pragma Import explicitly as a possible completion. For other declarations that require completions, we ignore the possibility of pragma Import. Nevertheless, if an implementation chooses to allow a [pragma](S0016) Import to complete the declaration of a task, protected type, incomplete type, private type, etc., it may do so, and the normal completion is then not allowed for that declaration. 
+Discussion: For declarations of deferred constants and subprograms, we mention pragma Import explicitly as a possible completion. For other declarations that require completions, we ignore the possibility of pragma Import. Nevertheless, if an implementation chooses to allow a pragma Import to complete the declaration of a task, protected type, incomplete type, private type, etc., it may do so, and the normal completion is then not allowed for that declaration. 
 
- An entity specified as the Entity argument to a [pragma](S0016) Import (or [pragma](S0016) Export) is said to be imported (respectively, exported).
+ An entity specified as the Entity argument to a pragma Import (or pragma Export) is said to be imported (respectively, exported).
 
 The declaration of an imported object shall not include an explicit initialization expression. [Default initializations are not performed.] 
 
 Proof: This follows from the "Notwithstanding ..." wording in the Dynamics Semantics paragraphs below. 
 
-The type of an imported or exported object shall be compatible with the convention specified in the corresponding [pragma](S0016). 
+The type of an imported or exported object shall be compatible with the convention specified in the corresponding pragma. 
 
 Ramification: This implies, for example, that importing an Integer object might be illegal, whereas importing an object of type Interfaces.C.int would be permitted. 
 
 For an imported or exported subprogram, the result and parameter types shall each be compatible with the convention specified in the corresponding pragma.
 
-The external name and link name string_[expression](S0108)s of a [pragma](S0016) Import or Export, and the string_[expression](S0108) of a [pragma](S0016) Linker_Options, shall be static.
+The external name and link name string_expressions of a pragma Import or Export, and the string_expression of a pragma Linker_Options, shall be static.
 
 
 #### Static Semantics
 
-Import, Export, and Convention [pragma](S0016)s are representation pragmas that specify the convention aspect of representation. In addition, Import and Export [pragma](S0016)s specify the imported and exported aspects of representation, respectively.
+Import, Export, and Convention pragmas are representation pragmas that specify the convention aspect of representation. In addition, Import and Export pragmas specify the imported and exported aspects of representation, respectively.
 
 An interfacing pragma is a program unit pragma when applied to a program unit (see 10.1.5).
 
-An interfacing pragma defines the convention of the entity denoted by the [local_name](S0264). The convention represents the calling convention or representation convention of the entity. For an access-to-subprogram type, it represents the calling convention of designated subprograms. In addition: 
+An interfacing pragma defines the convention of the entity denoted by the local_name. The convention represents the calling convention or representation convention of the entity. For an access-to-subprogram type, it represents the calling convention of designated subprograms. In addition: 
 
-A [pragma](S0016) Import specifies that the entity is defined externally (that is, outside the Ada program).
+A pragma Import specifies that the entity is defined externally (that is, outside the Ada program).
 
-A [pragma](S0016) Export specifies that the entity is used externally.
+A pragma Export specifies that the entity is used externally.
 
-A [pragma](S0016) Import or Export optionally specifies an entity's external name, link name, or both. 
+A pragma Import or Export optionally specifies an entity's external name, link name, or both. 
 
 An external name is a string value for the name used by a foreign language program either for an entity that an Ada program imports, or for referring to an entity that an Ada program exports.
 
@@ -154,13 +154,13 @@ Implementation defined: The effect of pragma Linker_Options.
 
 #### Dynamic Semantics
 
-Notwithstanding what this document says elsewhere, the elaboration of a declaration denoted by the [local_name](S0264) of a [pragma](S0016) Import does not create the entity. Such an elaboration has no other effect than to allow the defining name to denote the external entity. 
+Notwithstanding what this document says elsewhere, the elaboration of a declaration denoted by the local_name of a pragma Import does not create the entity. Such an elaboration has no other effect than to allow the defining name to denote the external entity. 
 
 Ramification: This implies that default initializations are skipped. (Explicit initializations are illegal.) For example, an imported access object is not initialized to null.
 
-Note that the [local_name](S0264) in a [pragma](S0016) Import might denote more than one declaration; in that case, the entity of all of those declarations will be the external entity. 
+Note that the local_name in a pragma Import might denote more than one declaration; in that case, the entity of all of those declarations will be the external entity. 
 
-Discussion: This "notwithstanding" wording is better than saying "unless named by a [pragma](S0016) Import" on every definition of elaboration. It says we recognize the contradiction, and this rule takes precedence. 
+Discussion: This "notwithstanding" wording is better than saying "unless named by a pragma Import" on every definition of elaboration. It says we recognize the contradiction, and this rule takes precedence. 
 
 
 #### Implementation Advice
@@ -171,11 +171,11 @@ Implementation Advice:
 
 Ramification: For example, if the main subprogram is written in C, it can call adainit before the first call to an Ada subprogram, and adafinal after the last. 
 
-Automatic elaboration of preelaborated packages should be provided when [pragma](S0016) Export is supported. 
+Automatic elaboration of preelaborated packages should be provided when pragma Export is supported. 
 
 Implementation Advice: 
 
-For each supported convention L other than Intrinsic, an implementation should support Import and Export [pragma](S0016)s for objects of L-compatible types and for subprograms, and [pragma](S0016) Convention for L-eligible types and for subprograms, presuming the other language has corresponding features. [Pragma](S0016) Convention need not be supported for scalar types. 
+For each supported convention L other than Intrinsic, an implementation should support Import and Export pragmas for objects of L-compatible types and for subprograms, and pragma Convention for L-eligible types and for subprograms, presuming the other language has corresponding features. Pragma Convention need not be supported for scalar types. 
 
 Implementation Advice: 
 
@@ -183,7 +183,7 @@ Reason: Pragma Convention is not necessary for scalar types, since the language 
 
 Implementation Note: If an implementation supports interfacing to C++, it should do so via the convention identifier C_Plus_Plus (in additional to any C++-implementation-specific ones). 
 
-Reason: The reason for giving the advice about C++ is to encourage uniformity among implementations, given that the name of the language is not syntactically legal as an [identifier](S0002). We place this advice in the AARM, rather than the RM95 proper, because (as of this writing) C++ is not an international standard, and we don't want to refer to a such a language from an international standard. 
+Reason: The reason for giving the advice about C++ is to encourage uniformity among implementations, given that the name of the language is not syntactically legal as an identifier. We place this advice in the AARM, rather than the RM95 proper, because (as of this writing) C++ is not an international standard, and we don't want to refer to a such a language from an international standard. 
 
 NOTE 1   Implementations may place restrictions on interfacing pragmas; for example, requiring each exported entity to be declared at the library level. 
 
@@ -191,17 +191,17 @@ Proof: Arbitrary restrictions are allowed by 13.1.
 
 Ramification: Such a restriction might be to disallow them altogether. Alternatively, the implementation might allow them only for certain kinds of entities, or only for certain conventions. 
 
-NOTE 2   A [pragma](S0016) Import specifies the conventions for accessing external entities. It is possible that the actual entity is written in assembly language, but reflects the conventions of a particular language. For example, pragma Import(Ada, ...) can be used to interface to an assembly language routine that obeys the Ada compiler's calling conventions.
+NOTE 2   A pragma Import specifies the conventions for accessing external entities. It is possible that the actual entity is written in assembly language, but reflects the conventions of a particular language. For example, pragma Import(Ada, ...) can be used to interface to an assembly language routine that obeys the Ada compiler's calling conventions.
 
 NOTE 3   To obtain "call-back" to an Ada subprogram from a foreign language environment, pragma Convention should be specified both for the access-to-subprogram type and the specific subprogram(s) to which 'Access is applied.
 
 NOTE 4   It is illegal to specify more than one of Import, Export, or Convention for a given entity.
 
-NOTE 5   The [local_name](S0264) in an interfacing pragma can denote more than one entity in the case of overloading. Such a [pragma](S0016) applies to all of the denoted entities.
+NOTE 5   The local_name in an interfacing pragma can denote more than one entity in the case of overloading. Such a pragma applies to all of the denoted entities.
 
 NOTE 6   See also 13.8, "Machine Code Insertions". 
 
-Ramification: The Intrinsic convention (see 6.3.1) implies that the entity is somehow "built in" to the implementation. Thus, it generally does not make sense for users to specify Intrinsic in a [pragma](S0016) Import. The intention is that only implementations will specify Intrinsic in a [pragma](S0016) Import. The language also defines certain subprograms to be Intrinsic. 
+Ramification: The Intrinsic convention (see 6.3.1) implies that the entity is somehow "built in" to the implementation. Thus, it generally does not make sense for users to specify Intrinsic in a pragma Import. The intention is that only implementations will specify Intrinsic in a pragma Import. The language also defines certain subprograms to be Intrinsic. 
 
 Discussion: There are many imaginable interfacing pragmas that don't make any sense. For example, setting the Convention of a protected procedure to Ada is probably wrong. Rather than enumerating all such cases, however, we leave it up to implementations to decide what is sensible. 
 
@@ -319,7 +319,7 @@ package Interfaces.Fortran renames Interfaces.This_Fortran;
 
 ## B.3  Interfacing with C
 
-The facilities relevant to interfacing with the C language are the package Interfaces.C and its children; and support for the Import, Export, and Convention pragmas with convention_[identifier](S0002) C.
+The facilities relevant to interfacing with the C language are the package Interfaces.C and its children; and support for the Import, Export, and Convention pragmas with convention_identifier C.
 
 The package Interfaces.C contains the basic types, constants and subprograms that allow an Ada program to pass scalars and strings to C functions. 
 
@@ -661,7 +661,7 @@ Some C functions that deal with strings take an explicit length as a parameter, 
 
 #### Implementation Requirements
 
-An implementation shall support pragma Convention with a C convention_[identifier](S0002) for a C-eligible type (see B.1) 
+An implementation shall support pragma Convention with a C convention_identifier for a C-eligible type (see B.1) 
 
 
 #### Implementation Permissions
@@ -760,7 +760,7 @@ end Test;
 
 ### B.3.1  The Package Interfaces.C.Strings
 
-The package Interfaces.C.Strings declares types and subprograms allowing an Ada program to allocate, reference, update, and free C-style strings. In particular, the private type chars_ptr corresponds to a common use of "char *" in C programs, and an object of this type can be passed to a subprogram to which [pragma](S0016) Import(C,...) has been applied, and for which "char *" is the type of the argument of the C function. 
+The package Interfaces.C.Strings declares types and subprograms allowing an Ada program to allocate, reference, update, and free C-style strings. In particular, the private type chars_ptr corresponds to a common use of "char *" in C programs, and an object of this type can be passed to a subprogram to which pragma Import(C,...) has been applied, and for which "char *" is the type of the argument of the C function. 
 
 
 #### Static Semantics
@@ -875,7 +875,7 @@ end Interfaces.C.Strings;
 
 ```
 
-Discussion: The string manipulation types and subprograms appear in a child of Interfaces.C versus being there directly, since it is useful to have Interfaces.C specified as [pragma](S0016) Pure.
+Discussion: The string manipulation types and subprograms appear in a child of Interfaces.C versus being there directly, since it is useful to have Interfaces.C specified as pragma Pure.
 
 Differently named functions New_String and New_Char_Array are declared, since if there were a single overloaded function a call with a string literal as actual parameter would be ambiguous. 
 
@@ -1280,7 +1280,7 @@ end Test_Pointers;
 
 ## B.4  Interfacing with COBOL
 
-The facilities relevant to interfacing with the COBOL language are the package Interfaces.COBOL and support for the Import, Export and Convention pragmas with convention_[identifier](S0002) COBOL.
+The facilities relevant to interfacing with the COBOL language are the package Interfaces.COBOL and support for the Import, Export and Convention pragmas with convention_identifier COBOL.
 
 The COBOL interface package supplies several sets of facilities: 
 
@@ -1725,7 +1725,7 @@ The package Interfaces.COBOL allows the Ada programmer to deal with data from fi
 
 #### Implementation Requirements
 
-An implementation shall support pragma Convention with a COBOL convention_[identifier](S0002) for a COBOL-eligible type (see B.1). 
+An implementation shall support pragma Convention with a COBOL convention_identifier for a COBOL-eligible type (see B.1). 
 
 Ramification: An implementation supporting this package shall ensure that if the bounds of a Packed_Decimal, Alphanumeric, or Numeric variable are static, then the representation of the object comprises solely the array components (that is, there is no implicit run-time "descriptor" that is part of the object). 
 
@@ -1945,7 +1945,7 @@ end Test_External_Formats;
 
 ## B.5  Interfacing with Fortran
 
-The facilities relevant to interfacing with the Fortran language are the package Interfaces.Fortran and support for the Import, Export and Convention pragmas with convention_[identifier](S0002) Fortran.
+The facilities relevant to interfacing with the Fortran language are the package Interfaces.Fortran and support for the Import, Export and Convention pragmas with convention_identifier Fortran.
 
 The package Interfaces.Fortran defines Ada types whose representations are identical to the default representations of the Fortran intrinsic types Integer, Real, Double Precision, Complex, Logical, and Character in a supported Fortran implementation. These Ada types can therefore be used to pass objects between Ada and Fortran programs. 
 
@@ -2047,7 +2047,7 @@ The To_Fortran and To_Ada functions map between the Ada type Character and the F
 
 #### Implementation Requirements
 
-An implementation shall support [pragma](S0016) Convention with a Fortran convention_[identifier](S0002) for a Fortran-eligible type (see B.1). 
+An implementation shall support pragma Convention with a Fortran convention_identifier for a Fortran-eligible type (see B.1). 
 
 
 #### Implementation Permissions
