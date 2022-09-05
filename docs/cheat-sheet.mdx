@@ -1,0 +1,773 @@
+---
+sidebar_position: 50
+---
+
+# Syntax Cheat Sheet
+
+import CodeBlock from "@theme/CodeBlock"
+
+## Names used in examples
+
+<table>
+  <tr>
+    <td>
+      <strong>Concept</strong>
+    </td>
+    <td>
+      <strong>Ada</strong>
+    </td>
+  </tr>
+  <tr>
+    <td> Reference </td>
+    <td> Access </td>
+  </tr>
+  <tr>
+    <td> Pointer </td>
+    <td> Access All </td>
+  </tr>
+  <tr>
+    <td> Pointer </td>
+    <td> Access All </td>
+  </tr>
+  <tr>
+    <td> Namespace </td>
+    <td> P, Q, R </td>
+  </tr>
+  <tr>
+    <td> Class </td>
+    <td> Capricorn </td>
+  </tr>
+  <tr>
+    <td>Struct </td>
+    <td> Scorpio </td>
+  </tr>
+  <tr>
+    <td>Type </td>
+    <td> S, T, V, W </td>
+  </tr>
+  <tr>
+    <td>Variables </td>
+    <td> A, B, C </td>
+  </tr>
+  <tr>
+    <td>Function </td>
+    <td> Foo, Bar </td>
+  </tr>
+</table>
+
+## Overview
+
+<table>
+  <tr>
+    <td>Identifiers </td>
+    <td>
+      Can't start with number or underscore, <strong>case insensitive</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Keywords </td>
+    <td>Case insensitive, usually lower case </td>
+  </tr>
+  <tr>
+    <td>Naming Conventions(s) </td>
+    <td>
+      <code>Ada_Case</code>(types and functions), <code>keywords</code>
+    </td>
+  </tr>
+  <tr>
+    <td>Declaration file </td>
+    <td>
+      <code>FileName.ads</code>
+    </td>
+  </tr>
+  <tr>
+    <td>Definition file </td>
+    <td>
+      <code>FileName.adb</code>
+    </td>
+  </tr>
+  <tr>
+    <td>Dependency </td>
+    <td>
+      <CodeBlock>with Package.Child;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Line comment </td>
+    <td>
+      <CodeBlock>-- line comment</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Block comment </td>
+    <td>
+      <strong>N/A</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Inline docs </td>
+    <td> Line comment before or after element </td>
+  </tr>
+</table>
+
+## Program Structure
+
+<table>
+  <tr><td>Compile-time config                           </td><td> <strong>N/A</strong>                                                      </td></tr>
+  <tr><td>Static assert                                 </td><td> <CodeBlock>pragma Assert(cond);</CodeBlock>                                  </td></tr>
+  <tr><td>                                              </td><td> <CodeBlock>pragma Assert(cond, message);</CodeBlock>                         </td></tr>
+  <tr><td>                                              </td><td> <strong>N/A</strong>                                                      </td></tr>
+  <tr><td>Namespacing                                   </td><td> <CodeBlock>package P</CodeBlock>                                             </td></tr>
+  <tr><td>Child Namespaces                              </td><td> <CodeBlock>package P.R</CodeBlock>                                           </td></tr>
+  <tr><td>Namespacing                                   </td><td> <CodeBlock>package P</CodeBlock>                                             </td></tr>
+  <tr><td>Namespace aliasing                            </td><td> <CodeBlock>package TIO renames Ada.Text_IO;</CodeBlock>                      </td></tr>
+  <tr><td>Using namespace                               </td><td> <CodeBlock>use Ada.Text_IO;</CodeBlock>                                      </td></tr>
+  <tr><td>Using subprograms of type                     </td><td> <CodeBlock>use type T;</CodeBlock>                                           </td></tr>
+  <tr><td>Scope resolution                              </td><td> <CodeBlock>P.Q.R</CodeBlock>                                                 </td></tr>
+  <tr><td>                                              </td><td> <CodeBlock>private with Q;</CodeBlock>                                       </td></tr>
+  <tr><td>                                              </td><td> <CodeBlock>limited with P;</CodeBlock>                                       </td></tr>
+  <tr><td>                                              </td><td> <CodeBlock>private package P;</CodeBlock>                                    </td></tr>
+  <tr><td>Ensuring module has no state                           </td><td>  <CodeBlock>package P with Pure</CodeBlock>                                  </td></tr>
+  <tr><td>No module initialization required                     </td><td>  <CodeBlock>pragma Preelaborate(P);</CodeBlock>                              </td></tr>
+  <tr><td>                                      </td><td>                                                            </td></tr>
+  <tr><td>Ensure elaboration immediately after specification                          </td><td> <CodeBlock>pragma Elaborate_Body;</CodeBlock>                                </td></tr>
+  <tr><td>Ensure other package is initialized before this one                      </td><td>                                                            </td></tr>
+  <tr><td>                      </td><td> <CodeBlock>pragma Elaborate(P);</CodeBlock>                                  </td></tr>
+  <tr><td>Ensure other package and all dependencies are initialized before this one.                        </td><td> <CodeBlock>pragma Elaborate_All(P);</CodeBlock>                              </td></tr>
+  <tr><td>                                              </td><td> <CodeBlock>pragma Restrictions(No_Dependencies =&gt; Other_Package)</CodeBlock> </td></tr>
+</table>
+
+## Memory
+
+<table>
+  <tr>
+    <td>Pointer </td>
+    <td>
+      <CodeBlock>Ptr : access all T;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Pointer to allocation </td>
+    <td>
+      <CodeBlock>Ptr : access T;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>from a specific pool </td>
+    <td> </td>
+  </tr>
+  <tr>
+    <td>Pointer deference </td>
+    <td>
+      <CodeBlock>Ptr.all</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Reference </td>
+    <td>
+      <CodeBlock>Ptr : not null access T;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Variable used by Pointer </td>
+    <td>
+      <CodeBlock>A: aliased T;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Address </td>
+    <td>
+      <CodeBlock>Ptr : access T := T'Access(A)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Address </td>
+    <td>
+      <CodeBlock>Ptr : access all T := T'Unchecked_Access(A)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Constant pointer </td>
+    <td>
+      <CodeBlock>Ptr : constant access T;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Pointer to constant </td>
+    <td>
+      <CodeBlock>Ptr : access constant T;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Constant pointer to constant </td>
+    <td>
+      <CodeBlock>Ptr : constant access constant T</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td> </td>
+    <td>
+      <CodeBlock>pragma Restrictions(No_Implicit_Heap_Allocation)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Prevents allocations to anonymous access types. </td>
+    <td>
+      <CodeBlock>pragma Restrictions(No_Anonymous_Allocators)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Dynamic allocation </td>
+    <td> A : access T := new T; </td>
+  </tr>
+</table>
+
+## Special Notations
+
+<table>
+  <tr>
+    <td>Equality </td>
+    <td>
+      <CodeBlock>A = B</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Inequality </td>
+    <td>
+      <CodeBlock>A /= B</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Assignment </td>
+    <td>
+      <CodeBlock>A := B</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Array Access </td>
+    <td>
+      <CodeBlock>A(i)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Range </td>
+    <td>
+      <CodeBlock>min .. max</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>"Box" </td>
+    <td>
+      <CodeBlock>&lt;&gt;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Exponentiation </td>
+    <td>
+      <CodeBlock>Base ** Exponent</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Discrete type </td>
+    <td>
+      <CodeBlock>(&lt;&gt;)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>"Tick" </td>
+    <td>
+      <CodeBlock>'</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>String Concatenation</td>
+    <td>
+      <CodeBlock>A & B</CodeBlock>
+    </td>
+  </tr>
+</table>
+
+## Expressions
+
+<table>
+  <tr>
+    <td>qualified expression </td>
+    <td>
+      <CodeBlock>for all A of B =&gt; expr</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>qualified expression </td>
+    <td>
+      <CodeBlock>for some A of B =&gt; expr</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>if expression </td>
+    <td>
+      <CodeBlock>A : Boolean := (if A then B else C);</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>case expression </td>
+    <td>
+      <CodeBlock>
+        A : Integer = (case Value is when 0 =&gt; 1, when 1 =&gt; 1, when 2 .. 4 =&gt; 5, when 5 |
+        9 =&gt; 10, when others =&gt; 0);
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Expression renaming </td>
+    <td>
+      <CodeBlock>L2 : Float renames V.Length * V.Length</CodeBlock>
+    </td>
+  </tr>
+</table>
+
+## Mathematics
+
+<table>
+  <tr>
+    <td>Modify in-place </td>
+    <td>
+      <CodeBlock>A := A + 1;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Modulus </td>
+    <td>
+      <CodeBlock>mod</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Remainder </td>
+    <td>
+      <CodeBlock>rem</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Exponentiation </td>
+    <td>
+      <CodeBlock>A ** B</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Bit shifting </td>
+    <td>In standard library </td>
+  </tr>
+</table>
+
+## Control Flow
+
+<table>
+  <tr><td>if                         </td><td>
+    <CodeBlock>
+      if A then
+      statements;
+      elsif B then
+      statements;
+      else
+      statements
+      end if;
+    </CodeBlock>
+  </td></tr>
+  <tr><td>while                         </td><td>
+    <CodeBlock>
+      while A loop
+      statements;
+      end loop;
+    </CodeBlock>
+  </td></tr>
+  <tr><td>do-while</td><td>
+    <CodeBlock>
+      loop
+      -- statements
+      exit when A;
+      end loop;
+    </CodeBlock>
+  </td></tr>
+  <tr><td>value-based loop</td><td>
+    <CodeBlock>
+      for Value in 0 .. 99 loop
+      statements;
+      end loop;
+    </CodeBlock>
+  </td></tr>
+  <tr><td>iterator-based loop</td>
+    <td><CodeBlock>
+      for Elem of Container loop
+      statements;
+      end loop;
+    </CodeBlock>
+    </td></tr>
+<tr>
+  <td>Multiple choice</td>
+  <td>
+    <CodeBlock>
+      case Value is when 0 =&gt; Handle_Zero; when 1 =&gt; Handle_One; when 2 .. 4 =&gt;
+      Handle_Range; when 7 | 9 =&gt; Handle_Choices; when others =&gt; Handle_Default; end case;
+    </CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Iterate over enum</td>
+  <td>
+    <CodeBlock>for Elem in EnumName loop statements; end loop;</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Stop iterating</td>
+  <td>
+    <CodeBlock>exit</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Start exception handling </td>
+  <td>
+    <CodeBlock>
+      declare statements; exception when A =&gt; statements; when others =&gt; statements; end;
+    </CodeBlock>
+  </td>
+</tr>
+  <tr><td>Empty statement (pass)   </td><td><CodeBlock>null;</CodeBlock></td></tr>
+  <tr><td>Label                    </td><td><CodeBlock>&lt;&lt;LABEL_NAME&gt;&gt;</CodeBlock></td></tr>
+  <tr><td>goto                     </td><td><CodeBlock>goto LABEL_NAME</CodeBlock></td></tr>
+</table>
+
+## Boolean Algebra
+
+<table>
+  <tr>
+    <td>Equality </td>
+    <td>
+      <CodeBlock>A = B</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Inequality </td>
+    <td>
+      <CodeBlock>A /= B</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Not </td>
+    <td>
+      <CodeBlock>not A</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Boolean operators </td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>or </td>
+    <td>
+      <CodeBlock>A or B</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>and </td>
+    <td>
+      <CodeBlock>A and B</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Short circuiting boolean operators </td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>or</td>
+    <td>
+      <CodeBlock>A or else B</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>and</td>
+    <td>
+      <CodeBlock>A and then B</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Exclusive-Or (XOR) </td>
+    <td>
+      <CodeBlock>A xor B</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Implies (not A, or B) </td>
+    <td>
+      <CodeBlock>(if A then B)</CodeBlock>
+    </td>
+  </tr>
+</table>
+
+## Functions and Procedures
+
+<table>
+  <tr><td>Procedure                </td><td>
+    <CodeBlock>procedure Foo(X: in T; Y: in V) is
+      begin
+      statements;
+      end Foo;
+    </CodeBlock></td></tr>
+<tr>
+  <td>Function </td>
+  <td>
+    <CodeBlock>
+      function Fibonacci(X: Natural) return Natural is if X = 0 or X = 1 then return X; else return
+      Fibonacci(X - 1) + Fibonacci(X - 2) end if; end Fibonacci;
+    </CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Subprogram call (no parameters)</td>
+  <td>
+    <CodeBlock>A;</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Subprogram call with named Parameters </td>
+  <td>
+    <CodeBlock>Foo(Bar1 =&gt; Value, Baz =&gt; Value2)</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Override specifier </td>
+  <td>
+    <CodeBlock>overriding procedure Foo procedure Foo(obj : in Object)</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Ensure that a subprogram definition does not override an existing one</td>
+  <td>
+    <CodeBlock>not overriding procedure Foo(obj : in Object)</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Pass by pointer</td>
+  <td>
+    <CodeBlock>procedure Foo (B : in access Bar)</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Pass by reference</td>
+  <td>
+    <CodeBlock>procedure Foo(B : in Bar)</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Inline </td>
+  <td>
+    <CodeBlock>procedure Foo with Inline</CodeBlock>
+  </td>
+</tr>
+
+  <tr><td>Using functions for a type unqualified.        </td><td><CodeBlock>use type P.Foo;      -- Make primitive ops visible</CodeBlock></td></tr>
+  <tr><td>                         </td><td><CodeBlock>use all type P.Foo;  -- Make all ops visible for type</CodeBlock></td></tr>
+  <tr><td>Modifiable parameters    </td><td><CodeBlock>procedure Foo(B : in out Bar)</CodeBlock></td></tr>
+  <tr><td>Expression function      </td><td><CodeBlock>function Foo return T is (expr)</CodeBlock></td></tr>
+  <tr><td>Empty procedure          </td><td><CodeBlock>procedure Foo is null;</CodeBlock></td></tr>
+</table>
+
+## Types
+
+<table>
+  <tr>
+    <td>Statically sized array </td>
+    <td>
+      <CodeBlock>type Buffer is array(1 .. 128) of Integer;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Array Access </td>
+    <td>
+      <CodeBlock>A(i)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Multi-dimensional Array </td>
+    <td>
+      <CodeBlock>Mat4 : array (1 .. 4, 1 .. 4) of Float;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Built-In Variable length array</td>
+    <td>
+      <CodeBlock>type Buffer is array(1 .. N) of Integer;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Semantic type </td>
+    <td>
+      <CodeBlock>type Microseconds is new Integer;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Range checks on type </td>
+    <td>
+      <CodeBlock>type My_Positive is range 1 .. 10;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Size </td>
+    <td>
+      <CodeBlock>T'Size</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Alignment </td>
+    <td>
+      <CodeBlock>T'Alignment</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Type Aliasing </td>
+    <td>
+      <CodeBlock>subtype T is W;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Type parameterized by value (run-time)</td>
+    <td>
+      <CodeBlock>type S(T: t) is record -- ...</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Enum range </td>
+    <td>
+      <CodeBlock>A'Range</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Membership test </td>
+    <td>
+      <CodeBlock>A in E</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td> </td>
+    <td>
+      <CodeBlock>A not in E</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Type invariant checks </td>
+    <td>
+      <CodeBlock>type T is new V with Type_Invariant =&gt; Expr(T)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Sum types </td>
+    <td>
+      <CodeBlock>type S is (T, V, W);</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Coercion (casting) </td>
+    <td>
+      <CodeBlock>A := B(C);</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Coercion with constraint check(casting) </td>
+    <td>
+      <CodeBlock>A := B'(C);</CodeBlock>
+    </td>
+  </tr>
+</table>
+
+## Object-Oriented Programming
+
+<table>
+  <tr><td>Class-like               </td><td><CodeBlock>type T is private;</CodeBlock></td></tr>
+  <tr><td>Abstract class           </td><td><CodeBlock>type T is interface;
+    function Foo(A : T) return V is abstract;
+    procedure Bar(A: in out T) is abstract;</CodeBlock></td></tr>
+<tr>
+  <td>Subprogram call of object-like type</td>
+  <td>
+    <CodeBlock>A.B;</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td> </td>
+  <td>
+    <CodeBlock>B (A);</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Member access from pointer</td>
+  <td>
+    <CodeBlock>A.all.B; -- Explicit</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td> </td>
+  <td>
+    <CodeBlock>A.B; -- Implicit</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Prevent copying </td>
+  <td>
+    <CodeBlock>type X is limited type;</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Inheritance </td>
+  <td>
+    <CodeBlock>type Foo is Bar with null record;</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Dynamic dispatch (virtual function call)</td>
+  <td>
+    <CodeBlock>procedure Foo(A : T'Class)</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Prevent implicit cast </td>
+  <td>
+    <CodeBlock>type T is new W;</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Runtime type checking </td>
+  <td>
+    <CodeBlock>if A in T then end if;</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Passing parameter by base class</td>
+  <td>
+    <CodeBlock>procedure Foo(A : BaseClass'Class)</CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Array-like indexing of user-defined type.</td>
+  <td>
+    <CodeBlock>
+      type My_Container is tagged type with Constant_Indexing =&gt; Foo Variable_Indexing =&gt; Bar
+      -- Foo and Bar are functions defined on the type.
+    </CodeBlock>
+  </td>
+</tr>
+<tr>
+  <td>Automatic dereference of a handle-type to the handle's contents.</td>
+  <td>
+    <CodeBlock>
+      type Handle(Target: not null access Element) is with Implicit_Dereference =&gt; Element; --
+      Old usage, calling Foo A_Handle.Target.all.Foo -- New usage A_Handle.Foo
+    </CodeBlock>
+  </td>
+</tr>
+  <tr><td>Iterator for loops for user-defined types.</td><td><CodeBlock>type My_Container
+    with
+    Default_Iterator  =&gt; Iterate,
+    Iterator_Element  =&gt; Element_Type;
+    type Cursor;
+    function First (M : in My_Container) return Cursor;
+    procedure Next  (C : in out Cursor);
+    function Has_Element (C : in Cursor) return Boolean;</CodeBlock></td></tr>
+</table>
