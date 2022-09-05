@@ -1,5 +1,5 @@
 ---
-sidebar_position:  27
+sidebar_position:  214
 ---
 
 # Annex N Glossary
@@ -9,5 +9,7 @@ We're still working on the Reference manual output.  Internal links are broken,
 as are a bunch of other things.
 See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
-This Annex contains informal descriptions of some terms used in this Reference Manual. To find more formal definitions, look the term up in the index.
+This paragraph was deleted.{AI95-00437-01} {AI12-0443-1} 
+
+Informal definitions of various terms are now found in 1.3. 
 
