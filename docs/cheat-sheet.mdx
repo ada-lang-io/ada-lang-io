@@ -113,28 +113,130 @@ import CodeBlock from "@theme/CodeBlock"
 ## Program Structure
 
 <table>
-  <tr><td>Compile-time config                           </td><td> <strong>N/A</strong>                                                      </td></tr>
-  <tr><td>Static assert                                 </td><td> <CodeBlock>pragma Assert(cond);</CodeBlock>                                  </td></tr>
-  <tr><td>                                              </td><td> <CodeBlock>pragma Assert(cond, message);</CodeBlock>                         </td></tr>
-  <tr><td>                                              </td><td> <strong>N/A</strong>                                                      </td></tr>
-  <tr><td>Namespacing                                   </td><td> <CodeBlock>package P</CodeBlock>                                             </td></tr>
-  <tr><td>Child Namespaces                              </td><td> <CodeBlock>package P.R</CodeBlock>                                           </td></tr>
-  <tr><td>Namespacing                                   </td><td> <CodeBlock>package P</CodeBlock>                                             </td></tr>
-  <tr><td>Namespace aliasing                            </td><td> <CodeBlock>package TIO renames Ada.Text_IO;</CodeBlock>                      </td></tr>
-  <tr><td>Using namespace                               </td><td> <CodeBlock>use Ada.Text_IO;</CodeBlock>                                      </td></tr>
-  <tr><td>Using subprograms of type                     </td><td> <CodeBlock>use type T;</CodeBlock>                                           </td></tr>
-  <tr><td>Scope resolution                              </td><td> <CodeBlock>P.Q.R</CodeBlock>                                                 </td></tr>
-  <tr><td>                                              </td><td> <CodeBlock>private with Q;</CodeBlock>                                       </td></tr>
-  <tr><td>                                              </td><td> <CodeBlock>limited with P;</CodeBlock>                                       </td></tr>
-  <tr><td>                                              </td><td> <CodeBlock>private package P;</CodeBlock>                                    </td></tr>
-  <tr><td>Ensuring module has no state                           </td><td>  <CodeBlock>package P with Pure</CodeBlock>                                  </td></tr>
-  <tr><td>No module initialization required                     </td><td>  <CodeBlock>pragma Preelaborate(P);</CodeBlock>                              </td></tr>
-  <tr><td>                                      </td><td>                                                            </td></tr>
-  <tr><td>Ensure elaboration immediately after specification                          </td><td> <CodeBlock>pragma Elaborate_Body;</CodeBlock>                                </td></tr>
-  <tr><td>Ensure other package is initialized before this one                      </td><td>                                                            </td></tr>
-  <tr><td>                      </td><td> <CodeBlock>pragma Elaborate(P);</CodeBlock>                                  </td></tr>
-  <tr><td>Ensure other package and all dependencies are initialized before this one.                        </td><td> <CodeBlock>pragma Elaborate_All(P);</CodeBlock>                              </td></tr>
-  <tr><td>                                              </td><td> <CodeBlock>pragma Restrictions(No_Dependencies =&gt; Other_Package)</CodeBlock> </td></tr>
+  <tr>
+    <td>Compile-time config</td>
+    <td>
+      <strong>N/A</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Static assert</td>
+    <td>
+      <CodeBlock>pragma Assert(cond);</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <CodeBlock>pragma Assert(cond, message);</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <strong>N/A</strong>
+    </td>
+  </tr>
+  <tr>
+    <td>Namespacing</td>
+    <td>
+      <CodeBlock>package P</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Child Namespaces</td>
+    <td>
+      <CodeBlock>package P.R</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Namespacing</td>
+    <td>
+      <CodeBlock>package P</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Namespace aliasing</td>
+    <td>
+      <CodeBlock>package TIO renames Ada.Text_IO;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Using namespace</td>
+    <td>
+      <CodeBlock>use Ada.Text_IO;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Using subprograms of type</td>
+    <td>
+      <CodeBlock>use type T;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Scope resolution</td>
+    <td>
+      <CodeBlock>P.Q.R</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <CodeBlock>private with Q;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <CodeBlock>limited with P;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <CodeBlock>private package P;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Ensuring module has no state</td>
+    <td>
+      <CodeBlock>package P with Pure</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>No module initialization required</td>
+    <td>
+      <CodeBlock>pragma Preelaborate(P);</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Ensure elaboration immediately after specification</td>
+    <td>
+      <CodeBlock>pragma Elaborate_Body;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Ensure other package is initialized before this one</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <CodeBlock>pragma Elaborate(P);</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Ensure other package and all dependencies are initialized before this one.</td>
+    <td>
+      <CodeBlock>pragma Elaborate_All(P);</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <CodeBlock>pragma Restrictions(No_Dependencies =&gt; Other_Package)</CodeBlock>
+    </td>
+  </tr>
 </table>
 
 ## Memory
@@ -312,15 +414,15 @@ import CodeBlock from "@theme/CodeBlock"
     <td>case expression </td>
     <td>
       <CodeBlock>
-        A : Integer = (case Value is when 0 =&gt; 1, when 1 =&gt; 1, when 2 .. 4 =&gt; 5, when 5 |
-        9 =&gt; 10, when others =&gt; 0);
+        A : Integer = (case Value is{"\n   "}when 0 =&gt; 1,{"\n   "}when 1 =&gt; 1,{"\n   "}when 2
+        .. 4 =&gt; 5,{"\n   "}when 5 | 9 =&gt; 10,{"\n   "}when others =&gt; 0);
       </CodeBlock>
     </td>
   </tr>
   <tr>
     <td>Expression renaming </td>
     <td>
-      <CodeBlock>L2 : Float renames V.Length * V.Length</CodeBlock>
+      <CodeBlock>L2 : Float renames V.Length * V.Length;</CodeBlock>
     </td>
   </tr>
 </table>
@@ -361,78 +463,108 @@ import CodeBlock from "@theme/CodeBlock"
 ## Control Flow
 
 <table>
-  <tr><td>if                         </td><td>
-    <CodeBlock>
-      if A then
-      statements;
-      elsif B then
-      statements;
-      else
-      statements
-      end if;
-    </CodeBlock>
-  </td></tr>
-  <tr><td>while                         </td><td>
-    <CodeBlock>
-      while A loop
-      statements;
-      end loop;
-    </CodeBlock>
-  </td></tr>
-  <tr><td>do-while</td><td>
-    <CodeBlock>
-      loop
-      -- statements
-      exit when A;
-      end loop;
-    </CodeBlock>
-  </td></tr>
-  <tr><td>value-based loop</td><td>
-    <CodeBlock>
-      for Value in 0 .. 99 loop
-      statements;
-      end loop;
-    </CodeBlock>
-  </td></tr>
-  <tr><td>iterator-based loop</td>
-    <td><CodeBlock>
-      for Elem of Container loop
-      statements;
-      end loop;
-    </CodeBlock>
-    </td></tr>
-<tr>
-  <td>Multiple choice</td>
-  <td>
-    <CodeBlock>
-      case Value is when 0 =&gt; Handle_Zero; when 1 =&gt; Handle_One; when 2 .. 4 =&gt;
-      Handle_Range; when 7 | 9 =&gt; Handle_Choices; when others =&gt; Handle_Default; end case;
-    </CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Iterate over enum</td>
-  <td>
-    <CodeBlock>for Elem in EnumName loop statements; end loop;</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Stop iterating</td>
-  <td>
-    <CodeBlock>exit</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Start exception handling </td>
-  <td>
-    <CodeBlock>
-      declare statements; exception when A =&gt; statements; when others =&gt; statements; end;
-    </CodeBlock>
-  </td>
-</tr>
-  <tr><td>Empty statement (pass)   </td><td><CodeBlock>null;</CodeBlock></td></tr>
-  <tr><td>Label                    </td><td><CodeBlock>&lt;&lt;LABEL_NAME&gt;&gt;</CodeBlock></td></tr>
-  <tr><td>goto                     </td><td><CodeBlock>goto LABEL_NAME</CodeBlock></td></tr>
+  <tr>
+    <td>if </td>
+    <td>
+      <CodeBlock>
+        if A then{"\n   "}statements;{"\n"}elsif B then{"\n   "}statements;{"\n"}else{"\n   "}
+        statements;{"\n"}end if;
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>while </td>
+    <td>
+      <CodeBlock>
+        while A loop{"\n    "}statements;{"\n"}end loop;
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>do-while</td>
+    <td>
+      <CodeBlock>
+        loop{"\n"}
+        {"   "}-- statements{"\n"}
+        {"   "}exit when A;{"\n"}end loop;
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>value-based loop</td>
+    <td>
+      <CodeBlock>
+        for Value in 0 .. 99 loop{"\n"}
+        {"   "}statements;{"\n"}end loop;
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>iterator-based loop</td>
+    <td>
+      <CodeBlock>
+        for Elem of Container loop{"\n"}
+        {"   "}statements;{"\n"}end loop;
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Multiple choice</td>
+    <td>
+      <CodeBlock>
+        case Value is{"\n"}
+        {"   "}when 0 =&gt; Handle_Zero;{"\n"}
+        {"   "}when 1 =&gt; Handle_One;{"\n"}
+        {"   "}
+        when 2 .. 4 =&gt;{"\n"}
+        {"      "}Handle_Range;{"\n"}
+        {"   "}when 7 | 9 =&gt;{"\n"}
+        {"      "}Handle_Choices;{"\n"}
+        {"   "}when others =&gt; Handle_Default;{"\n"}end case;
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Iterate over enum</td>
+    <td>
+      <CodeBlock>
+        for Elem in EnumName loop{"\n   "}statements;{"\n"}end loop;
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Stop iterating</td>
+    <td>
+      <CodeBlock>exit</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Start exception handling </td>
+    <td>
+      <CodeBlock>
+        declare{"\n   "}statements;{"\n"}exception{"\n   "}when A =&gt;{"\n      "}statements;
+        {"\n   "}when others =&gt;{"\n      "}statements;{"\n"}end;
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Empty statement (pass) </td>
+    <td>
+      <CodeBlock>null;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Label </td>
+    <td>
+      <CodeBlock>&lt;&lt;LABEL_NAME&gt;&gt;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>goto </td>
+    <td>
+      <CodeBlock>goto LABEL_NAME</CodeBlock>
+    </td>
+  </tr>
 </table>
 
 ## Boolean Algebra
@@ -506,62 +638,67 @@ import CodeBlock from "@theme/CodeBlock"
 
 <table>
   <tr><td>Procedure                </td><td>
-    <CodeBlock>procedure Foo(X: in T; Y: in V) is
-      begin
-      statements;
+    <CodeBlock>procedure Foo(X: in T; Y: in V) is{"\n"}
+      {"   "}begin{"\n"}
+      {"   "}statements;{"\n"}
       end Foo;
     </CodeBlock></td></tr>
-<tr>
-  <td>Function </td>
-  <td>
-    <CodeBlock>
-      function Fibonacci(X: Natural) return Natural is if X = 0 or X = 1 then return X; else return
-      Fibonacci(X - 1) + Fibonacci(X - 2) end if; end Fibonacci;
-    </CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Subprogram call (no parameters)</td>
-  <td>
-    <CodeBlock>A;</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Subprogram call with named Parameters </td>
-  <td>
-    <CodeBlock>Foo(Bar1 =&gt; Value, Baz =&gt; Value2)</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Override specifier </td>
-  <td>
-    <CodeBlock>overriding procedure Foo procedure Foo(obj : in Object)</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Ensure that a subprogram definition does not override an existing one</td>
-  <td>
-    <CodeBlock>not overriding procedure Foo(obj : in Object)</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Pass by pointer</td>
-  <td>
-    <CodeBlock>procedure Foo (B : in access Bar)</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Pass by reference</td>
-  <td>
-    <CodeBlock>procedure Foo(B : in Bar)</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Inline </td>
-  <td>
-    <CodeBlock>procedure Foo with Inline</CodeBlock>
-  </td>
-</tr>
+  <tr>
+    <td>Function </td>
+    <td>
+      <CodeBlock>
+        function Fibonacci(X: Natural) return Natural is{"\n"}
+{"   "}if X = 0 or X = 1 then{"\n"}
+        {"      "}return X;{"\n"}
+        {"   "}else{"\n"}
+        {"      "}return Fibonacci(X - 1) + Fibonacci(X - 2);{"\n"}
+        {"   "}end if;{"\n"}
+        end Fibonacci;
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Subprogram call (no parameters)</td>
+    <td>
+      <CodeBlock>A;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Subprogram call with named Parameters </td>
+    <td>
+      <CodeBlock>Foo(Bar1 =&gt; Value, Baz =&gt; Value2)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Override specifier </td>
+    <td>
+      <CodeBlock>overriding procedure Foo procedure Foo(obj : in Object)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Ensure that a subprogram definition does not override an existing one</td>
+    <td>
+      <CodeBlock>not overriding procedure Foo(obj : in Object)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Pass by pointer</td>
+    <td>
+      <CodeBlock>procedure Foo (B : in access Bar)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Pass by reference</td>
+    <td>
+      <CodeBlock>procedure Foo(B : in Bar)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Inline </td>
+    <td>
+      <CodeBlock>procedure Foo with Inline</CodeBlock>
+    </td>
+  </tr>
 
   <tr><td>Using functions for a type unqualified.        </td><td><CodeBlock>use type P.Foo;      -- Make primitive ops visible</CodeBlock></td></tr>
   <tr><td>                         </td><td><CodeBlock>use all type P.Foo;  -- Make all ops visible for type</CodeBlock></td></tr>
@@ -680,94 +817,114 @@ import CodeBlock from "@theme/CodeBlock"
 ## Object-Oriented Programming
 
 <table>
-  <tr><td>Class-like               </td><td><CodeBlock>type T is private;</CodeBlock></td></tr>
-  <tr><td>Abstract class           </td><td><CodeBlock>type T is interface;
-    function Foo(A : T) return V is abstract;
-    procedure Bar(A: in out T) is abstract;</CodeBlock></td></tr>
-<tr>
-  <td>Subprogram call of object-like type</td>
-  <td>
-    <CodeBlock>A.B;</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td> </td>
-  <td>
-    <CodeBlock>B (A);</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Member access from pointer</td>
-  <td>
-    <CodeBlock>A.all.B; -- Explicit</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td> </td>
-  <td>
-    <CodeBlock>A.B; -- Implicit</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Prevent copying </td>
-  <td>
-    <CodeBlock>type X is limited type;</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Inheritance </td>
-  <td>
-    <CodeBlock>type Foo is Bar with null record;</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Dynamic dispatch (virtual function call)</td>
-  <td>
-    <CodeBlock>procedure Foo(A : T'Class)</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Prevent implicit cast </td>
-  <td>
-    <CodeBlock>type T is new W;</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Runtime type checking </td>
-  <td>
-    <CodeBlock>if A in T then end if;</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Passing parameter by base class</td>
-  <td>
-    <CodeBlock>procedure Foo(A : BaseClass'Class)</CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Array-like indexing of user-defined type.</td>
-  <td>
-    <CodeBlock>
-      type My_Container is tagged type with Constant_Indexing =&gt; Foo Variable_Indexing =&gt; Bar
-      -- Foo and Bar are functions defined on the type.
-    </CodeBlock>
-  </td>
-</tr>
-<tr>
-  <td>Automatic dereference of a handle-type to the handle's contents.</td>
-  <td>
-    <CodeBlock>
-      type Handle(Target: not null access Element) is with Implicit_Dereference =&gt; Element; --
-      Old usage, calling Foo A_Handle.Target.all.Foo -- New usage A_Handle.Foo
-    </CodeBlock>
-  </td>
-</tr>
-  <tr><td>Iterator for loops for user-defined types.</td><td><CodeBlock>type My_Container
-    with
-    Default_Iterator  =&gt; Iterate,
-    Iterator_Element  =&gt; Element_Type;
-    type Cursor;
-    function First (M : in My_Container) return Cursor;
-    procedure Next  (C : in out Cursor);
-    function Has_Element (C : in Cursor) return Boolean;</CodeBlock></td></tr>
+  <tr>
+    <td>Class-like </td>
+    <td>
+      <CodeBlock>type T is private;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Abstract class </td>
+    <td>
+      <CodeBlock>
+        type T is interface;{"\n\n"}
+        function Foo(A : T) return V is abstract;{"\n"}
+        procedure Bar(A: in out T) is abstract;
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Subprogram call of object-like type</td>
+    <td>
+      <CodeBlock>A.B;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td> </td>
+    <td>
+      <CodeBlock>B (A);</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Member access from pointer</td>
+    <td>
+      <CodeBlock>A.all.B; -- Explicit</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td> </td>
+    <td>
+      <CodeBlock>A.B; -- Implicit</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Prevent copying </td>
+    <td>
+      <CodeBlock>type X is limited type;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Inheritance </td>
+    <td>
+      <CodeBlock>type Foo is Bar with null record;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Dynamic dispatch (virtual function call)</td>
+    <td>
+      <CodeBlock>procedure Foo(A : T'Class)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Prevent implicit cast </td>
+    <td>
+      <CodeBlock>type T is new W;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Runtime type checking </td>
+    <td>
+      <CodeBlock>if A in T then end if;</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Passing parameter by base class</td>
+    <td>
+      <CodeBlock>procedure Foo(A : BaseClass'Class)</CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Array-like indexing of user-defined type.</td>
+    <td>
+      <CodeBlock>
+        type My_Container is tagged type with{"\n   "}Constant_Indexing =&gt;Foo{"\n   "}
+        Variable_Indexing =&gt; Bar{"\n   "}-- Foo and Bar are functions defined on the type.
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Automatic dereference of a handle-type to the handle's contents.</td>
+    <td>
+      <CodeBlock>
+        type Handle(Target: not null access Element) is with Implicit_Dereference =&gt; Element;
+        {"\n"}
+        -- Old usage, calling Foo A_Handle.Target.all.Foo{"\n"}
+        -- New usage A_Handle.Foo{"\n"}
+      </CodeBlock>
+    </td>
+  </tr>
+  <tr>
+    <td>Iterator for loops for user-defined types.</td>
+    <td>
+      <CodeBlock>
+        type My_Container with Default_Iterator =&gt; Iterate, Iterator_Element =&gt; Element_Type;
+        {"\n"}
+        type Cursor;{"\n"}
+        {"\n"}
+        function First (M : in My_Container) return Cursor;{"\n"}
+        procedure Next (C : in out Cursor);{"\n"}
+        function Has_Element (C : in Cursor) return Boolean;{"\n"}
+      </CodeBlock>
+    </td>
+  </tr>
 </table>

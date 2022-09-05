@@ -27,7 +27,7 @@ the results seem worth it.
 
 The language comparison from the old "Programming with Ada" site has been
 condensed and turned into a [syntax cheat sheet][cheat-sheet] for easy
-reference.  It still needs some formatting help and some sections are
+reference. It still needs some formatting help and some sections are
 missing (like concurrency), but the perfect is the enemy of the good.
 
 Thanks to everyone who has been contributing with code or ideas,
