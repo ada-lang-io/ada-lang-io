@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkada_lang_io=self.webpackChunkada_lang_io||[]).push([[5216],{8758:a=>{a.exports=JSON.parse('{"permalink":"/blog/tags/website","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);
