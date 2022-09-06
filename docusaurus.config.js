@@ -4,6 +4,9 @@
 const lightCodeTheme = require("prism-react-renderer/themes/github")
 const darkCodeTheme = require("prism-react-renderer/themes/okaidia")
 
+const gitHubUserName = "ada-lang-io"
+const gitHubProjectName = "ada-lang-io"
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Ada Programming Language",
@@ -16,8 +19,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "ada-lang-io", // Usually your GitHub org/user name.
-  projectName: "ada-lang-io", // Usually your repo name.
+  organizationName: gitHubUserName, // Usually your GitHub org/user name.
+  projectName: gitHubProjectName, // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -25,6 +28,10 @@ const config = {
   i18n: {
     defaultLocale: "en",
     locales: ["en"]
+  },
+
+  customFields: {
+    description: "A programming language for readable, correct, and performant software."
   },
 
   // https://github.com/facebook/docusaurus/issues/4765#issuecomment-841135926
@@ -60,6 +67,10 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     {
+      image: "img/ada_saw_coin.svg", // Used for og:image and twitter:iamge
+      colorMode: {
+        respectPrefersColorScheme: true
+      },
       navbar: {
         title: "Ada",
         logo: {
@@ -121,8 +132,8 @@ const config = {
                 href: "https://en.wikibooks.org/wiki/Ada_Style_Guide"
               },
               {
-                label: "Ada 2012 Reference Manual",
-                href: "http://ada-auth.org/standards/rm12_w_tc1/html/RM-TOC.html"
+                label: "Style Guide",
+                href: "https://en.wikibooks.org/wiki/Ada_Style_Guide"
               }
             ]
           },
@@ -164,12 +175,18 @@ const config = {
               },
               {
                 label: "GitHub",
-                href: "https://github.com/ada-lang-io/ada-lang-io"
+                href: `https://github.com/${gitHubUserName}/${gitHubProjectName}`
               }
             ]
           }
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} ada-lang-io developers. Built with Docusaurus.`
+        logo: {
+          alt: "Alt",
+          src: "img/ada_saw_coin.svg",
+          width: 128,
+          height: 128
+        },
+        copyright: `Copyright © ${new Date().getFullYear()} ${gitHubProjectName} developers. Built with Docusaurus.`
       },
       prism: {
         theme: lightCodeTheme,

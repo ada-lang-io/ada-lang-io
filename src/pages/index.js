@@ -131,7 +131,7 @@ function Home() {
   const { siteConfig } = useDocusaurusContext()
 
   return (
-    <Layout title={siteConfig.title} description="Ada Programming Language">
+    <Layout title={siteConfig.title} description={siteConfig.customFields.description}>
       <HomepageHeader />
       <main>
         <HomepageFeatures />
