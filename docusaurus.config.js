@@ -27,6 +27,18 @@ const config = {
     locales: ["en"]
   },
 
+  // https://github.com/facebook/docusaurus/issues/4765#issuecomment-841135926
+  webpack: {
+    jsLoader: (isServer) => ({
+      loader: require.resolve('esbuild-loader'),
+      options: {
+        loader: 'tsx',
+        format: isServer ? 'cjs' : undefined,
+        target: isServer ? 'node12' : 'es2017',
+      },
+    }),
+  },
+
   presets: [
     [
       "classic",
