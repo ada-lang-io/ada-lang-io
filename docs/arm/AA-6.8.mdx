@@ -1,0 +1,80 @@
+---
+sidebar_position:  56
+---
+
+# 6.8  Expression Functions
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+
+<p>{"{"}<em>{"AI05-0177-1"}</em>{"}"} An <code><a href="./AA-6.8#S0228">expression_function_declaration</a></code> provides a shorthand to declare a function whose body consists of a single return statement. </p>
+
+#### Syntax
+
+<p>{"{"}<em>{"AI95-0177-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} <code>expression_function_declaration</code><a id="S0228"></a><code> ::= </code>   [<code><a href="./AA-8.3#S0234">overriding_indicator</a></code>]   <code><a href="./AA-6.1#S0198">function_specification</a></code> <strong>is</strong>       (<code><a href="./AA-4.4#S0132">expression</a></code>)       [<code><a href="./AA-13.1#S0346">aspect_specification</a></code>]; | [<code><a href="./AA-8.3#S0234">overriding_indicator</a></code>]   <code><a href="./AA-6.1#S0198">function_specification</a></code> <strong>is</strong>       <code><a href="./AA-4.3#S0106">aggregate</a></code>       [<code><a href="./AA-13.1#S0346">aspect_specification</a></code>];</p>
+
+#### Name Resolution Rules
+
+<p>{"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} The expected type for the <code><a href="./AA-4.4#S0132">expression</a></code> or <code><a href="./AA-4.3#S0106">aggregate</a></code> of an <code>[expression_function_declaration](./AA-6.8#S0228)</code> is the result type (see 6.5) of the function. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} {"{"}<em>{"AI12-0075-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} {"{"}<em>{"AI12-0408-1"}</em>{"}"} An <code>[expression_function_declaration](./AA-6.8#S0228)</code> that is not a completion declares an <em>expression function</em>. The <em>return expression of an expression function</em> is the <code><a href="./AA-4.4#S0132">expression</a></code> or <code><a href="./AA-4.3#S0106">aggregate</a></code> of the <code><a href="./AA-6.8#S0228">expression_function_declaration</a></code>. A completion is not allowed for an <code>[expression_function_declaration](./AA-6.8#S0228)</code>; however, an <code>[expression_function_declaration](./AA-6.8#S0228)</code> can complete a previous declaration.</p>
+<p>{"{"}<em>{"AI12-0075-1"}</em>{"}"} A <em>potentially static expression</em> is defined in the same way as a static expression except that</p>
+<p>a name denoting a formal parameter of an expression function is a potentially static expression; and</p>
+<p>each use of "static expression" in the definition of "static expression" is replaced with a corresponding use of "potentially static expression" in the definition of "potentially static expression". </p>
+<p><strong>Discussion: </strong>These uses occur in the definition of "static expression" in the cases of function calls, type conversions, qualified expressions, membership tests, short circuit control forms, conditional expressions, and parenthesized expressions. </p>
+<p>{"{"}<em>{"AI12-0075-1"}</em>{"}"} The following language-defined representation aspect may be specified for an expression function:</p>
+<p>StaticThe type of aspect Static is Boolean. When aspect Static is True for an expression function, the function is a <em>static expression function</em>. If directly specified, the <code><a href="./AA-13.1#S0348">aspect_definition</a></code> shall be a static expression.</p>
+<p><strong>Aspect Description for </strong><strong>Static: </strong>Specifies that an associated expression function can be used in static expressions.</p>
+<p>The Static value for an inherited function is True if some corresponding primitive function of the parent or progenitor type is a static expression function; otherwise, if not directly specified, the aspect is False. </p>
+<p>{"{"}<em>{"AI12-0075-1"}</em>{"}"} [A static expression function is a static function; see 4.9.] </p>
+
+#### Legality Rules
+
+<p>{"{"}<em>{"AI05-0177-1"}</em>{"}"} If an <code>[expression_function_declaration](./AA-6.8#S0228)</code> is a completion, it shall be the completion of a <code><a href="./AA-6.1#S0195">subprogram_declaration</a></code> or <code><a href="./AA-12.1#S0311">generic_subprogram_declaration</a></code>. The profile of an <code>[expression_function_declaration](./AA-6.8#S0228)</code> that completes a declaration shall conform fully to that of the declaration.</p>
+<p>{"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} If the result subtype has one or more unconstrained access discriminants, the accessibility level of the anonymous access type of each access discriminant, as determined by the <code><a href="./AA-4.4#S0132">expression</a></code> or <code><a href="./AA-4.3#S0106">aggregate</a></code> of the <code>[expression_function_declaration](./AA-6.8#S0228)</code>, shall not be statically deeper than that of the master that elaborated the <code>[expression_function_declaration](./AA-6.8#S0228)</code>.</p>
+<p><strong>Ramification: </strong>This can only fail if the discriminant is an access to a part of a nonaliased parameter, as there can be no local declarations here. </p>
+<p><strong>Discussion: </strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} We don't need to repeat any of the other Legality Rules for return statements since none of them can fail here: the implicit return statement has to apply to this function (and isn't nested in something), there clearly is a return statement in this function, and the static class-wide accessibility check cannot fail as a tagged type cannot be declared locally in an expression function. </p>
+<p>{"{"}<em>{"AI12-0075-1"}</em>{"}"} Aspect Static shall be specified to have the value True only if the associated <code>[expression_function_declaration](./AA-6.8#S0228)</code>:</p>
+<p>is not a completion;</p>
+<p>has an <code><a href="./AA-4.4#S0132">expression</a></code> that is a potentially static expression;</p>
+<p>contains no calls to itself;</p>
+<p>each parameter (if any) is of mode <strong>in</strong> and is of a static subtype;</p>
+<p>has a result subtype that is a static subtype;</p>
+<p>has no applicable precondition or postcondition expression; and</p>
+<p>{"{"}<em>{"AI12-0075-1"}</em>{"}"} {"{"}<em>{"AI12-0191-1"}</em>{"}"} for result type <em>R</em>, if the function is a boundary entity for type <em>R</em> (see 7.3.2), no type invariant applies to type <em>R</em>; if <em>R</em> has a component type <em>C</em>, a similar rule applies to <em>C</em>. </p>
+<p><strong>Ramification: </strong>Since a string subtype can be static, this allows an expression function of a string type to be static. </p>
+<p><em>Paragraph 6 was deleted.</em> </p>
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} {"{"}<em>{"AI12-0408-1"}</em>{"}"} The execution of an expression function is invoked by a subprogram call. For the execution of a subprogram call on an expression function, or on a function completed with a <code>[expression_function_declaration](./AA-6.8#S0228)</code>, the execution of the <code><a href="./AA-6.3#S0216">subprogram_body</a></code> executes an implicit function body containing only a <code><a href="./AA-6.5#S0222">simple_return_statement</a></code> whose <code><a href="./AA-4.4#S0132">expression</a></code> is the return expression of the expression function.</p>
+<p><strong>Discussion: </strong>The last sentence effectively means that all of the dynamic wording in 6.5 applies as needed, and we don't have to repeat it here. </p>
+<p>{"{"}<em>{"AI05-0177-1"}</em>{"}"} The elaboration of an <code>[expression_function_declaration](./AA-6.8#S0228)</code> has no other effect than to establish that the expression function can be called without failing the Elaboration_Check. </p>
+
+#### Examples
+
+<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em>Example of an expression function:</em> </p>
+<CodeBlock>
+{"{"}{"AI05-0177-1"}{"}"} function Is_Origin (P : in Point) return Boolean is -- see 3.9{"\n"}   (P.X = 0.0 and P.Y = 0.0);{"\n"}
+</CodeBlock>
+
+
+#### Extensions to Ada 2005
+
+<p>{"{"}<em>{"AI05-0177-1"}</em>{"}"} Expression functions are new in Ada 2012. </p>
+
+#### Extensions to Ada 2012
+
+<p>{"{"}<em>{"AI12-0157-1"}</em>{"}"} <strong>Corrigendum:</strong> A <code><a href="./AA-4.3#S0106">aggregate</a></code> can directly be the return expression of an expression function. This eliminates the double parentheses that otherwise would be necessary.</p>
+<p>{"{"}<em>{"AI12-0075-1"}</em>{"}"} Aspect Static is new; it allows using suitable expression functions in static expressions. </p>
+
+#### Wording Changes from Ada 2012
+
+<p>{"{"}<em>{"AI12-0408-1"}</em>{"}"} Clarified the term "expression function" so it matches the meaning expected in 6.1. </p>

@@ -1,0 +1,61 @@
+---
+sidebar_position:  74
+---
+
+# 9.3  Task Dependence - Termination of Tasks
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+
+
+#### Dynamic Semantics
+
+<p>Each task (other than an environment task - see 10.2) <em>depends</em> on one or more masters (see 7.6.1), as follows: </p>
+<p>{"{"}<em>{"AI12-0070-1"}</em>{"}"} If the task is created by the evaluation of an <code><a href="./AA-4.8#S0164">allocator</a></code> for a given named access type, it depends on each master that includes the elaboration of the declaration of the ultimate ancestor of the given access type.</p>
+<p>If the task is created by the elaboration of an <code><a href="./AA-3.3#S0032">object_declaration</a></code>, it depends on each master that includes this elaboration.</p>
+<p>{"{"}<em>{"AI95-00416-01"}</em>{"}"} Otherwise, the task depends on the master of the outermost object of which it is a part (as determined by the accessibility level of that object - see 3.10.2 and 7.6.1), as well as on any master whose execution includes that of the master of the outermost object. </p>
+<p><strong>Ramification: </strong>{"{"}<em>{"AI95-00416-01"}</em>{"}"} The master of a task created by a return statement changes when the accessibility of the return object changes. Note that its activation happens, if at all, only after the function returns and all accessibility level changes have occurred. </p>
+<p>Furthermore, if a task depends on a given master, it is defined to depend on the task that executes the master, and (recursively) on any master of that task. </p>
+<p><strong>Discussion: </strong>Don't confuse these kinds of dependences with the dependences among compilation units defined in 10.1.1, "Compilation Units - Library Units". </p>
+<p>A task is said to be <em>completed</em> when the execution of its corresponding <code><a href="./AA-9.1#S0248">task_body</a></code> is completed. A task is said to be <em>terminated</em> when any finalization of the <code><a href="./AA-9.1#S0248">task_body</a></code> has been performed (see 7.6.1). [The first step of finalizing a master (including a <code><a href="./AA-9.1#S0248">task_body</a></code>) is to wait for the termination of any tasks dependent on the master.] The task executing the master is blocked until all the dependents have terminated. [Any remaining finalization is then performed and the master is left.]</p>
+<p>Completion of a task (and the corresponding <code><a href="./AA-9.1#S0248">task_body</a></code>) can occur when the task is blocked at a <code>[select_statement](./AA-9.7#S0269)</code> with an open <code><a href="./AA-9.7#S0275">terminate_alternative</a></code> (see 9.7.1); the open <code><a href="./AA-9.7#S0275">terminate_alternative</a></code> is selected if and only if the following conditions are satisfied: </p>
+<p>{"{"}<em>{"AI95-00415-01"}</em>{"}"} The task depends on some completed master; and</p>
+<p>Each task that depends on the master considered is either already terminated or similarly blocked at a <code><a href="./AA-9.7#S0269">select_statement</a></code> with an open <code><a href="./AA-9.7#S0275">terminate_alternative</a></code>. </p>
+<p>When both conditions are satisfied, the task considered becomes completed, together with all tasks that depend on the master considered that are not yet completed. </p>
+<p><strong>Ramification: </strong>Any required finalization is performed after the selection of <code><a href="./AA-9.7#S0275">terminate_alternative</a></code>s. The tasks are not callable during the finalization. In some ways it is as though they were aborted. </p>
+<p>NOTE 1   The full view of a limited private type can be a task type, or can have subcomponents of a task type. Creation of an object of such a type creates dependences according to the full type.</p>
+<p>NOTE 2   An <code><a href="./AA-8.5#S0239">object_renaming_declaration</a></code> defines a new view of an existing entity and hence creates no further dependence.</p>
+<p>NOTE 3   {"{"}<em>{"AI12-0440-1"}</em>{"}"} The rules given for the collective completion of a group of tasks all blocked on <code><a href="./AA-9.7#S0269">select_statement</a></code>s with open <code><a href="./AA-9.7#S0275">terminate_alternative</a></code>s ensure that the collective completion can occur only when there are no remaining active tasks that can call one of the tasks being collectively completed.</p>
+<p>NOTE 4   If two or more tasks are blocked on <code><a href="./AA-9.7#S0269">select_statement</a></code>s with open <code><a href="./AA-9.7#S0275">terminate_alternative</a></code>s, and become completed collectively, their finalization actions proceed concurrently.</p>
+<p>NOTE 5   The completion of a task can occur due to any of the following: </p>
+<p>the raising of an exception during the elaboration of the <code><a href="./AA-3.11#S0086">declarative_part</a></code> of the corresponding <code><a href="./AA-9.1#S0248">task_body</a></code>;</p>
+<p>the completion of the <code><a href="./AA-11.2#S0304">handled_sequence_of_statements</a></code> of the corresponding <code><a href="./AA-9.1#S0248">task_body</a></code>;</p>
+<p>the selection of an open <code><a href="./AA-9.7#S0275">terminate_alternative</a></code> of a <code><a href="./AA-9.7#S0269">select_statement</a></code> in the corresponding <code><a href="./AA-9.1#S0248">task_body</a></code>;</p>
+<p>the abort of the task. </p>
+
+#### Examples
+
+<p><em>Example of task dependence:</em> </p>
+<CodeBlock>
+declare{"\n"}   type Global is access Server;        --  see 9.1{"\n"}   A, B : Server;{"\n"}   G    : Global;{"\n"}begin{"\n"}   --  activation of A and B{"\n"}   declare{"\n"}      type Local is access Server;{"\n"}      X : Global := new Server;  --  activation of X.all{"\n"}      L : Local  := new Server;  --  activation of L.all{"\n"}      C : Server;{"\n"}   begin{"\n"}      --  activation of C{"\n"}      G := X;  --  both G and X designate the same task object{"\n"}      ...{"\n"}   end;  --  await termination of C and L.all (but not X.all){"\n"}   ...{"\n"}end;  --  await termination of A, B, and G.all{"\n"}
+</CodeBlock>
+
+
+#### Wording Changes from Ada 83
+
+<p>We have revised the wording to be consistent with the definition of master now given in 7.6.1, "Completion and Finalization".</p>
+<p>Tasks that used to depend on library packages in Ada 83, now depend on the (implicit) <code><a href="./AA-9.1#S0248">task_body</a></code> of the environment task (see 10.2). Therefore, the environment task has to wait for them before performing library level finalization and terminating the partition. In Ada 83 the requirement to wait for tasks that depended on library packages was not as clear.</p>
+<p>What was "collective termination" is now "collective completion" resulting from selecting <code><a href="./AA-9.7#S0275">terminate_alternative</a></code>s. This is because finalization still occurs for such tasks, and this happens after selecting the <code><a href="./AA-9.7#S0275">terminate_alternative</a></code>, but before termination. </p>
+
+#### Wording Changes from Ada 95
+
+<p>{"{"}<em>{"AI95-00416-01"}</em>{"}"} Added missing wording that explained the master of tasks that are neither <code><a href="./AA-3.3#S0032">object_declaration</a></code>s nor <code><a href="./AA-4.8#S0164">allocator</a></code>s, such as function returns. </p>
+
+#### Wording Changes from Ada 2012
+
+<p>{"{"}<em>{"AI12-0070-1"}</em>{"}"} <strong>Corrigendum:</strong> Ensured that the master of tasks that are not <code><a href="./AA-4.8#S0164">allocator</a></code>s of named access types is correctly determined. (Ignoring the accessibility rules of 3.10.2 could not be intended.) </p>

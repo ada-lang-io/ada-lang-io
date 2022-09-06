@@ -1,0 +1,106 @@
+---
+sidebar_position:  132
+---
+
+# A.15  The Package Command_Line
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+
+<p>The package Command_Line allows a program to obtain the values of its arguments and to set the exit status code to be returned on normal termination. </p>
+<p><strong>Implementation defined: </strong>The meaning of Argument_Count, Argument, and Command_Name for package Command_Line. The bounds of type Command_Line.Exit_Status.</p>
+
+#### Static Semantics
+
+<p>The library package Ada.Command_Line has the following declaration: </p>
+<CodeBlock>
+{"{"}{"AI12-0241-1"}{"}"} package Ada.Command_Line{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  function Argument_Count return Natural;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  function Argument (Number : in Positive) return String;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  function Command_Name return String;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  type Exit_Status is implementation-defined integer type;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  Success : constant Exit_Status;{"\n"}  Failure : constant Exit_Status;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  procedure Set_Exit_Status (Code : in Exit_Status);{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+private{"\n"}  ... -- not specified by the language{"\n"}end Ada.Command_Line;{"\n"}{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+function Argument_Count return Natural;{"\n"}
+</CodeBlock>
+
+<p>{"{"}<em>{"AI05-0264-1"}</em>{"}"} If the external execution environment supports passing arguments to a program, then Argument_Count returns the number of arguments passed to the program invoking the function. Otherwise, it returns 0. The meaning of "number of arguments" is implementation defined.</p>
+<CodeBlock>
+function Argument (Number : in Positive) return String;{"\n"}
+</CodeBlock>
+
+<p>{"{"}<em>{"AI12-0259-1"}</em>{"}"} If the external execution environment supports passing arguments to a program, then Argument returns an implementation-defined value with lower bound 1 corresponding to the argument at relative position Number. If Number is outside the range 1..Argument_Count, then Constraint_Error is propagated. </p>
+<p><strong>Ramification: </strong>If the external execution environment does not support passing arguments to a program, then Argument(N) for any N will raise Constraint_Error, since Argument_Count is 0.</p>
+<CodeBlock>
+function Command_Name return String;{"\n"}
+</CodeBlock>
+
+<p>{"{"}<em>{"AI05-0264-1"}</em>{"}"} {"{"}<em>{"AI12-0259-1"}</em>{"}"} If the external execution environment supports passing arguments to a program, then Command_Name returns an implementation-defined value with lower bound 1 corresponding to the name of the command invoking the program; otherwise, Command_Name returns the null string.</p>
+<CodeBlock>
+type Exit_Status is implementation-defined integer type;{"\n"}
+</CodeBlock>
+
+<p>The type Exit_Status represents the range of exit status values supported by the external execution environment. The constants Success and Failure correspond to success and failure, respectively.</p>
+<CodeBlock>
+procedure Set_Exit_Status (Code : in Exit_Status);{"\n"}
+</CodeBlock>
+
+<p>If the external execution environment supports returning an exit status from a program, then Set_Exit_Status sets Code as the status. Normal termination of a program returns as the exit status the value most recently set by Set_Exit_Status, or, if no such value has been set, then the value Success. If a program terminates abnormally, the status set by Set_Exit_Status is ignored, and an implementation-defined exit status value is set.</p>
+<p>If the external execution environment does not support returning an exit value from a program, then Set_Exit_Status does nothing. </p>
+
+#### Implementation Permissions
+
+<p>An alternative declaration is allowed for package Command_Line if different functionality is appropriate for the external execution environment. </p>
+<p>NOTE   Argument_Count, Argument, and Command_Name correspond to the C language's argc, argv[n] (for n{">"}0) and argv[0], respectively. </p>
+<p><strong>To be honest: </strong>The correspondence of Argument_Count to argc is not direct - argc would be one more than Argument_Count, since the argc count includes the command name, whereas Argument_Count does not. </p>
+
+#### Extensions to Ada 83
+
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause is new in Ada 95. </p>
+
+#### Wording Changes from Ada 2012
+
+<p>{"{"}<em>{"AI12-0259-1"}</em>{"}"} <strong>Correction:</strong> Defined the lower bound of functions Argument and Command_Name. This could be inconsistent if someone depended on the lower bound of these routines (and it wasn't 1), but such code was never portable (even to later versions of the same implementation). Thus we don't document it as an inconsistency. </p>
+
+## A.15.1  The Packages Wide_Command_Line and Wide_Wide_Command_Line
+
+<p>{"{"}<em>{"AI12-0021-1"}</em>{"}"} The packages Wide_Command_Line and Wide_Wide_Command_Line allow a program to obtain the values of its arguments and to set the exit status code to be returned on normal termination. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI12-0021-1"}</em>{"}"} The specification of package Wide_Command_Line is the same as for Command_Line, except that each occurrence of String is replaced by Wide_String.</p>
+<p>{"{"}<em>{"AI12-0021-1"}</em>{"}"} The specification of package Wide_Wide_Command_Line is the same as for Command_Line, except that each occurrence of String is replaced by Wide_Wide_String.</p>
+
+#### Extensions to Ada 2012
+
+<p>{"{"}<em>{"AI12-0021-1"}</em>{"}"} These packages are new. </p>

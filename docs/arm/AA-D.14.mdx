@@ -1,0 +1,319 @@
+---
+sidebar_position:  165
+---
+
+# D.14  Execution Time
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause describes a language-defined package to measure execution time. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The following language-defined library package exists: </p>
+<CodeBlock>
+{"{"}{"AI12-0241-1"}{"}"} {"{"}{"AI12-0302-1"}{"}"} with Ada.Task_Identification;{"\n"}with Ada.Real_Time; use Ada.Real_Time;{"\n"}package Ada.Execution_Time{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   type CPU_Time is private;{"\n"}   CPU_Time_First : constant CPU_Time;{"\n"}   CPU_Time_Last  : constant CPU_Time;{"\n"}   CPU_Time_Unit  : constant := implementation-defined-real-number;{"\n"}   CPU_Tick : constant Time_Span;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   function Clock{"\n"}     (T : Ada.Task_Identification.Task_Id{"\n"}          := Ada.Task_Identification.Current_Task){"\n"}     return CPU_Time;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   function "+"  (Left : CPU_Time; Right : Time_Span) return CPU_Time;{"\n"}   function "+"  (Left : Time_Span; Right : CPU_Time) return CPU_Time;{"\n"}   function "-"  (Left : CPU_Time; Right : Time_Span) return CPU_Time;{"\n"}   function "-"  (Left : CPU_Time; Right : CPU_Time)  return Time_Span;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   function "{"<"}"  (Left, Right : CPU_Time) return Boolean;{"\n"}   function "{"<"}=" (Left, Right : CPU_Time) return Boolean;{"\n"}   function "{">"}"  (Left, Right : CPU_Time) return Boolean;{"\n"}   function "{">"}=" (Left, Right : CPU_Time) return Boolean;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   procedure Split{"\n"}     (T : in CPU_Time; SC : out Seconds_Count; TS : out Time_Span);{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   function Time_Of (SC : Seconds_Count;{"\n"}                     TS : Time_Span := Time_Span_Zero) return CPU_Time;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0170-1"}{"}"}    Interrupt_Clocks_Supported : constant Boolean := implementation-defined;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0170-1"}{"}"}    Separate_Interrupt_Clocks_Supported : constant Boolean :={"\n"}     implementation-defined;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0170-1"}{"}"}    function Clock_For_Interrupts return CPU_Time;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Execution_Time;{"\n"}
+</CodeBlock>
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} {"{"}<em>{"AI05-0170-1"}</em>{"}"} {"{"}<em>{"AI05-0269-1"}</em>{"}"} The <em>execution time</em> or CPU time of a given task is defined as the time spent by the system executing that task, including the time spent executing run-time or system services on its behalf. The mechanism used to measure execution time is implementation defined. The Boolean constant Interrupt_Clocks_Supported is set to True if the implementation separately accounts for the execution time of interrupt handlers. If it is set to False it is implementation defined which task, if any, is charged the execution time that is consumed by interrupt handlers. The Boolean constant Separate_Interrupt_Clocks_Supported is set to True if the implementation separately accounts for the execution time of individual interrupt handlers (see D.14.3). </p>
+<p><strong>Discussion: </strong>The implementation-defined properties above and of the values declared in the package are repeated in Documentation Requirements, so we don't mark them as implementation-defined. </p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The type CPU_Time represents the execution time of a task. The set of values of this type corresponds one-to-one with an implementation-defined range of mathematical integers.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The CPU_Time value I represents the half-open execution-time interval that starts with I*CPU_Time_Unit and is limited by (I+1)*CPU_Time_Unit, where CPU_Time_Unit is an implementation-defined real number. For each task, the execution time value is set to zero at the creation of the task.</p>
+<p><strong>Ramification: </strong>Since it is implementation-defined which task is charged execution time for system services, the execution time value may become nonzero even before the start of the activation of the task. </p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} CPU_Time_First and CPU_Time_Last are the smallest and largest values of the CPU_Time type, respectively. </p>
+<p>{"{"}<em>{"AI05-0170-1"}</em>{"}"} The execution time value for the function Clock_For_Interrupts is initialized to zero.</p>
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} CPU_Time_Unit is the smallest amount of execution time representable by the CPU_Time type; it is expressed in seconds. A <em>CPU clock tick</em> is an execution time interval during which the clock value (as observed by calling the Clock function) remains constant. CPU_Tick is the average length of such intervals.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The effects of the operators on CPU_Time and Time_Span are as for the operators defined for integer types.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The function Clock returns the current execution time of the task identified by T; Tasking_Error is raised if that task has terminated; Program_Error is raised if the value of T is Task_Identification.Null_Task_Id.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The effects of the Split and Time_Of operations are defined as follows, treating values of type CPU_Time, Time_Span, and Seconds_Count as mathematical integers. The effect of Split (T, SC, TS) is to set SC and TS to values such that T*CPU_Time_Unit = SC*1.0 + TS*CPU_Time_Unit, and 0.0 {"<"}= TS*CPU_Time_Unit {"<"} 1.0. The value returned by Time_Of(SC,TS) is the execution-time value T such that T*CPU_Time_Unit=SC*1.0 + TS*CPU_Time_Unit.</p>
+<p>{"{"}<em>{"AI05-0170-1"}</em>{"}"} The function Clock_For_Interrupts returns the total cumulative time spent executing within all interrupt handlers. This time is not allocated to any task execution time clock. If Interrupt_Clocks_Supported is set to False the function raises Program_Error.</p>
+
+#### Erroneous Execution
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} For a call of Clock, if the task identified by T no longer exists, the execution of the program is erroneous. </p>
+
+#### Implementation Requirements
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The range of CPU_Time values shall be sufficient to uniquely represent the range of execution times from the task start-up to 50 years of execution time later. CPU_Tick shall be no greater than 1 millisecond. </p>
+
+#### Documentation Requirements
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The implementation shall document the values of CPU_Time_First, CPU_Time_Last, CPU_Time_Unit, and CPU_Tick. </p>
+<p><strong>Documentation Requirement: </strong>The values of CPU_Time_First, CPU_Time_Last, CPU_Time_Unit, and CPU_Tick of package Execution_Time.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The implementation shall document the properties of the underlying mechanism used to measure execution times, such as the range of values supported and any relevant aspects of the underlying hardware or operating system facilities used. </p>
+<p><strong>Documentation Requirement: </strong>The properties of the mechanism used to implement package Execution_Time, including the values of the constants defined in the package.</p>
+
+#### Metrics
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The implementation shall document the following metrics:</p>
+<p>An upper bound on the execution-time duration of a clock tick. This is a value D such that if t1 and t2 are any execution times of a given task such that t1 {"<"} t2 and Clockt1 = Clockt2 then t2  t1 {"<"}= D.</p>
+<p>An upper bound on the size of a clock jump. A clock jump is the difference between two successive distinct values of an execution-time clock (as observed by calling the Clock function with the same Task_Id).</p>
+<p>An upper bound on the execution time of a call to the Clock function, in processor clock cycles.</p>
+<p>Upper bounds on the execution times of the operators of the type CPU_Time, in processor clock cycles. </p>
+<p><strong>Documentation Requirement: </strong>The metrics for execution time.</p>
+
+#### Implementation Permissions
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} {"{"}<em>{"AI12-0444-1"}</em>{"}"} Implementations targeted to machines with word size smaller than 32 bits may omit support for the full range and granularity of the CPU_Time type.</p>
+
+#### Implementation Advice
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} When appropriate, implementations should provide configuration mechanisms to change the value of CPU_Tick. </p>
+<p><strong>Implementation Advice: </strong>When appropriate, implementations should provide configuration mechanisms to change the value of Execution_Time.CPU_Tick.</p>
+
+#### Extensions to Ada 95
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The package Execution_Time is new. </p>
+
+#### Incompatibilities With Ada 2005
+
+<p>{"{"}<em>{"AI05-0170-1"}</em>{"}"} Function Clock_For_Interrupts, and constants Interrupt_Clocks_Supported and Separate_Interrupt_Clocks_Supported are added to Execution_Time. If Execution_Time is referenced in a <code><a href="./AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with a <code><a href="./AA-3.1#S0022">defining_identifier</a></code> of one of the added entities is defined in a package that is also referenced in a <code><a href="./AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. </p>
+
+#### Wording Changes from Ada 2005
+
+<p>{"{"}<em>{"AI05-0170-1"}</em>{"}"} If Interrupt_Clocks_Supported is True, it is now possible to determine the execution time of interrupt handlers. This is not an inconsistency, as not charging any task for such time was a legitimate implementation for Ada 2005. </p>
+
+## D.14.1  Execution Time Timers
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause describes a language-defined package that provides a facility for calling a handler when a task has used a defined amount of CPU time. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The following language-defined library package exists: </p>
+<CodeBlock>
+{"{"}{"AI12-0241-1"}{"}"} {"{"}{"AI12-0302-1"}{"}"} with System;{"\n"}package Ada.Execution_Time.Timers{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   type Timer (T : not null access constant{"\n"}                       Ada.Task_Identification.Task_Id) is{"\n"}      tagged limited private;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI12-0241-1"}{"}"}    type Timer_Handler is{"\n"}      access protected procedure (TM : in out Timer){"\n"}      with Nonblocking ={">"} False;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   Min_Handler_Ceiling : constant System.Any_Priority :={"\n"}   implementation-defined;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   procedure Set_Handler (TM      : in out Timer;{"\n"}                          In_Time : in Time_Span;{"\n"}                          Handler : in Timer_Handler);{"\n"}   procedure Set_Handler (TM      : in out Timer;{"\n"}                          At_Time : in CPU_Time;{"\n"}                          Handler : in Timer_Handler);{"\n"}   function Current_Handler (TM : Timer) return Timer_Handler;{"\n"}   procedure Cancel_Handler (TM        : in out Timer;{"\n"}                             Cancelled :    out Boolean);{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   function Time_Remaining (TM : Timer) return Time_Span;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   Timer_Resource_Error : exception;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Execution_Time.Timers;{"\n"}
+</CodeBlock>
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The type Timer represents an execution-time event for a single task and is capable of detecting execution-time overruns. The access discriminant T identifies the task concerned. The type Timer needs finalization (see 7.6).</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} An object of type Timer is said to be <em>set</em> if it is associated with a nonnull value of type Timer_Handler and <em>cleared</em> otherwise. All Timer objects are initially cleared. </p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The type Timer_Handler identifies a protected procedure to be executed by the implementation when the timer expires. Such a protected procedure is called a <em>handler</em>. </p>
+<p><strong>Discussion: </strong>Type Timer is tagged. This makes it possible to share a handler between several events. In simple cases, 'Access can be used to compare the parameter with a specific timer object (this works because a tagged type is a by-reference type). In more complex cases, a type extension of type Timer can be declared; a double type conversion can be used to access the extension data. An example of how this can be done can be found for the similar type Timing_Event, see D.15. </p>
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} When a Timer object is created, or upon the first call of a Set_Handler procedure with the timer as parameter, the resources required to operate an execution-time timer based on the associated execution-time clock are allocated and initialized. If this operation would exceed the available resources, Timer_Resource_Error is raised.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} The procedures Set_Handler associate the handler Handler with the timer TM: if Handler is <strong>null</strong>, the timer is cleared; otherwise, it is set. The first procedure Set_Handler loads the timer TM with an interval specified by the Time_Span parameter. In this mode, the timer TM <em>expires</em> when the execution time of the task identified by TM.T.<strong>all</strong> has increased by In_Time; if In_Time is less than or equal to zero, the timer expires immediately. The second procedure Set_Handler loads the timer TM with the absolute value specified by At_Time. In this mode, the timer TM expires when the execution time of the task identified by TM.T.<strong>all</strong> reaches At_Time; if the value of At_Time has already been reached when Set_Handler is called, the timer expires immediately.</p>
+<p><strong>Implementation Note: </strong>Since an access-to-constant can designate a variable, the Task_Id value designated by the discriminant of a Timer object can be changed after the object is created. Thus, an implementation cannot use the value of the Task_Id other than where this Reference Manual specifies. For instance, the Task_Id should be read when the timer is set, but it should not be used when the timer expires (as it may designate a different task at that point). </p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} A call of a procedure Set_Handler for a timer that is already set replaces the handler and the (absolute or relative) execution time; if Handler is not <strong>null</strong>, the timer remains set.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} When a timer expires, the associated handler is executed, passing the timer as parameter. The initial action of the execution of the handler is to clear the event.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} The function Current_Handler returns the handler associated with the timer TM if that timer is set; otherwise, it returns <strong>null</strong>.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} The procedure Cancel_Handler clears the timer if it is set. Cancelled is assigned True if the timer was set prior to it being cleared; otherwise, it is assigned False.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} The function Time_Remaining returns the execution time interval that remains until the timer TM would expire, if that timer is set; otherwise, it returns Time_Span_Zero.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The constant Min_Handler_Ceiling is the minimum ceiling priority required for a protected object with a handler to ensure that no ceiling violation will occur when that handler is invoked.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} As part of the finalization of an object of type Timer, the timer is cleared.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} For all the subprograms defined in this package, Tasking_Error is raised if the task identified by TM.T.<strong>all</strong> has terminated, and Program_Error is raised if the value of TM.T.<strong>all</strong> is Task_Identification.Null_Task_Id.</p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} An exception propagated from a handler invoked as part of the expiration of a timer has no effect.</p>
+
+#### Erroneous Execution
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} For a call of any of the subprograms defined in this package, if the task identified by TM.T.<strong>all</strong> no longer exists, the execution of the program is erroneous.</p>
+
+#### Implementation Requirements
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} For a given Timer object, the implementation shall perform the operations declared in this package atomically with respect to any of these operations on the same Timer object. The replacement of a handler by a call of Set_Handler shall be performed atomically with respect to the execution of the handler.</p>
+<p><strong>Reason: </strong>This prevents various race conditions. In particular it ensures that if an event occurs when Set_Handler is changing the handler then either the new or old handler is executed in response to the appropriate event. It is never possible for a new handler to be executed in response to an old event </p>
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} When an object of type Timer is finalized, the system resources used by the timer shall be deallocated.</p>
+
+#### Implementation Permissions
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} Implementations may limit the number of timers that can be defined for each task. If this limit is exceeded, then Timer_Resource_Error is raised.</p>
+<p>NOTE 1   {"{"}<em>{"AI95-00307-01"}</em>{"}"} A Timer_Handler can be associated with several Timer objects.</p>
+
+#### Extensions to Ada 95
+
+<p>{"{"}<em>{"AI95-00307-01"}</em>{"}"} The package Execution_Time.Timers is new. </p>
+
+## D.14.2  Group Execution Time Budgets
+
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause describes a language-defined package to assign execution time budgets to groups of tasks. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} The following language-defined library package exists: </p>
+<CodeBlock>
+{"{"}{"AI05-0169-1"}{"}"} {"{"}{"AI12-0241-1"}{"}"} {"{"}{"AI12-0302-1"}{"}"} with System;{"\n"}with System.Multiprocessors;{"\n"}package Ada.Execution_Time.Group_Budgets{"\n"}  with Nonblocking, Global ={">"} in out synchronized is{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0092-1"}{"}"} {"{"}{"AI05-0169-1"}{"}"}   type Group_Budget(CPU : System.Multiprocessors.CPU :={"\n"}                             System.Multiprocessors.CPU'First){"\n"}    is tagged limited private;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI12-0241-1"}{"}"}   type Group_Budget_Handler is access{"\n"}       protected procedure (GB : in out Group_Budget){"\n"}       with Nonblocking ={">"} False;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  type Task_Array is array (Positive range {"<"}{">"}) of{"\n"}                                  Ada.Task_Identification.Task_Id;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  Min_Handler_Ceiling : constant System.Any_Priority :={"\n"}    implementation-defined;{"\n"}
+</CodeBlock>
+
+<p><strong>Implementation defined: </strong>The value of Min_Handler_Ceiling in Execution_Time.Group_Budgets.</p>
+<CodeBlock>
+  procedure Add_Task (GB : in out Group_Budget;{"\n"}                      T  : in Ada.Task_Identification.Task_Id);{"\n"}  procedure Remove_Task (GB: in out Group_Budget;{"\n"}                         T  : in Ada.Task_Identification.Task_Id);{"\n"}  function Is_Member (GB : Group_Budget;{"\n"}                      T : Ada.Task_Identification.Task_Id) return Boolean;{"\n"}  function Is_A_Group_Member{"\n"}     (T : Ada.Task_Identification.Task_Id) return Boolean;{"\n"}  function Members (GB : Group_Budget) return Task_Array;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  procedure Replenish (GB : in out Group_Budget; To : in Time_Span);{"\n"}  procedure Add (GB : in out Group_Budget; Interval : in Time_Span);{"\n"}  function Budget_Has_Expired (GB : Group_Budget) return Boolean;{"\n"}  function Budget_Remaining (GB : Group_Budget) return Time_Span;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  procedure Set_Handler (GB      : in out Group_Budget;{"\n"}                         Handler : in Group_Budget_Handler);{"\n"}  function Current_Handler (GB : Group_Budget){"\n"}     return Group_Budget_Handler;{"\n"}  procedure Cancel_Handler (GB        : in out Group_Budget;{"\n"}                            Cancelled : out Boolean);{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  Group_Budget_Error : exception;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+private{"\n"}    --  not specified by the language{"\n"}end Ada.Execution_Time.Group_Budgets;{"\n"}
+</CodeBlock>
+
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} The type Group_Budget represents an execution time budget to be used by a group of tasks. The type Group_Budget needs finalization (see 7.6). A task can belong to at most one group. Tasks of any priority can be added to a group.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} An object of type Group_Budget has an associated nonnegative value of type Time_Span known as its <em>budget</em>, which is initially Time_Span_Zero. The type Group_Budget_Handler identifies a protected procedure to be executed by the implementation when the budget is <em>exhausted</em>, that is, reaches zero. Such a protected procedure is called a <em>handler</em>. </p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} An object of type Group_Budget also includes a handler, which is a value of type Group_Budget_Handler. The handler of the object is said to be <em>set</em> if it is not null and <em>cleared</em> otherwise. The handler of all Group_Budget objects is initially cleared. </p>
+<p><strong>Discussion: </strong>Type Group_Budget is tagged. This makes it possible to share a handler between several events. In simple cases, 'Access can be used to compare the parameter with a specific group budget object (this works because a tagged type is a by-reference type). In more complex cases, a type extension of type Group_Budget can be declared; a double type conversion can be used to access the extension data. An example of how this can be done can be found for the similar type Timing_Event, see D.15. </p>
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} The procedure Add_Task adds the task identified by T to the group GB; if that task is already a member of some other group, Group_Budget_Error is raised.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} The procedure Remove_Task removes the task identified by T from the group GB; if that task is not a member of the group GB, Group_Budget_Error is raised. After successful execution of this procedure, the task is no longer a member of any group.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} The function Is_Member returns True if the task identified by T is a member of the group GB; otherwise, it returns False.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} The function Is_A_Group_Member returns True if the task identified by T is a member of some group; otherwise, it returns False.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} The function Members returns an array of values of type Task_Identification.Task_Id identifying the members of the group GB. The order of the components of the array is unspecified.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} {"{"}<em>{"AI05-0092-1"}</em>{"}"} {"{"}<em>{"AI05-0169-1"}</em>{"}"} The procedure Replenish loads the group budget GB with To as the Time_Span value. The exception Group_Budget_Error is raised if the Time_Span value To is nonpositive. Any execution on CPU of any member of the group of tasks results in the budget counting down, unless exhausted. When the budget becomes exhausted (reaches Time_Span_Zero), the associated handler is executed if the handler of group budget GB is set. Nevertheless, the tasks continue to execute.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} The procedure Add modifies the budget of the group GB. A positive value for Interval increases the budget. A negative value for Interval reduces the budget, but never below Time_Span_Zero. A zero value for Interval has no effect. A call of procedure Add that results in the value of the budget going to Time_Span_Zero causes the associated handler to be executed if the handler of the group budget GB is set.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} The function Budget_Has_Expired returns True if the budget of group GB is exhausted (equal to Time_Span_Zero); otherwise, it returns False.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} The function Budget_Remaining returns the remaining budget for the group GB. If the budget is exhausted it returns Time_Span_Zero. This is the minimum value for a budget.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} The procedure Set_Handler associates the handler Handler with the Group_Budget GB: if Handler is <strong>null</strong>, the handler of Group_Budget is cleared; otherwise, it is set.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} A call of Set_Handler for a Group_Budget that already has a handler set replaces the handler; if Handler is not <strong>null</strong>, the handler for Group_Budget remains set.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} The function Current_Handler returns the handler associated with the group budget GB if the handler for that group budget is set; otherwise, it returns <strong>null</strong>.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} The procedure Cancel_Handler clears the handler for the group budget if it is set. Cancelled is assigned True if the handler for the group budget was set prior to it being cleared; otherwise, it is assigned False.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} The constant Min_Handler_Ceiling is the minimum ceiling priority required for a protected object with a handler to ensure that no ceiling violation will occur when that handler is invoked.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} The precision of the accounting of task execution time to a Group_Budget is the same as that defined for execution-time clocks from the parent package.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} As part of the finalization of an object of type Group_Budget all member tasks are removed from the group identified by that object.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} If a task is a member of a Group_Budget when it terminates, then as part of the finalization of the task it is removed from the group.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} For all the operations defined in this package, Tasking_Error is raised if the task identified by T has terminated, and Program_Error is raised if the value of T is Task_Identification.Null_Task_Id.</p>
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} An exception propagated from a handler invoked when the budget of a group of tasks becomes exhausted has no effect.</p>
+
+#### Erroneous Execution
+
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} For a call of any of the subprograms defined in this package, if the task identified by T no longer exists, the execution of the program is erroneous. </p>
+
+#### Implementation Requirements
+
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} For a given Group_Budget object, the implementation shall perform the operations declared in this package atomically with respect to any of these operations on the same Group_Budget object. The replacement of a handler, by a call of Set_Handler, shall be performed atomically with respect to the execution of the handler. </p>
+<p><strong>Reason: </strong>This prevents various race conditions. In particular it ensures that if the budget is exhausted when Set_Handler is changing the handler then either the new or old handler is executed and the exhausting event is not lost. </p>
+<p>NOTE 1   {"{"}<em>{"AI95-00354-01"}</em>{"}"} Clearing or setting of the handler of a group budget does not change the current value of the budget. Exhaustion or loading of a budget does not change whether the handler of the group budget is set or cleared.</p>
+<p>NOTE 2   {"{"}<em>{"AI95-00354-01"}</em>{"}"} A Group_Budget_Handler can be associated with several Group_Budget objects. </p>
+
+#### Extensions to Ada 95
+
+<p>{"{"}<em>{"AI95-00354-01"}</em>{"}"} The package Execution_Time.Group_Budgets is new. </p>
+
+#### Inconsistencies With Ada 2005
+
+<p>{"{"}<em>{"AI05-0169-1"}</em>{"}"} A Group_Budget is now defined to work on a single processor. If an implementation managed to make this package work for programs running on a multiprocessor system, and a program depends on that fact, it could fail when ported to Ada 2012. We believe it is unlikely that such an implementation exists because of the difficulty of signalling other processors when the time reaches zero; in any case, depending on such an implementation is not portable. </p>
+
+## D.14.3  Execution Time of Interrupt Handlers
+
+<p>{"{"}<em>{"AI05-0170-1"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause describes a language-defined package to measure the execution time of interrupt handlers. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI05-0170-1"}</em>{"}"} The following language-defined library package exists: </p>
+<CodeBlock>
+{"{"}{"AI12-0241-1"}{"}"} {"{"}{"AI12-0302-1"}{"}"} with Ada.Interrupts;{"\n"}package Ada.Execution_Time.Interrupts{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}   function Clock (Interrupt : Ada.Interrupts.Interrupt_Id){"\n"}        return CPU_Time;{"\n"}   function Supported (Interrupt : Ada.Interrupts.Interrupt_Id){"\n"}        return Boolean;{"\n"}end Ada.Execution_Time.Interrupts;{"\n"}
+</CodeBlock>
+
+<p>{"{"}<em>{"AI05-0170-1"}</em>{"}"} The execution time or CPU time of a given interrupt Interrupt is defined as the time spent by the system executing interrupt handlers identified by Interrupt, including the time spent executing run-time or system services on its behalf. The mechanism used to measure execution time is implementation defined. Time spent executing interrupt handlers is distinct from time spent executing any task. </p>
+<p><strong>Discussion: </strong>The implementation-defined mechanism here is the same as that covered by the Documentation Requirements of D.14, so we don't repeat that requirement here. </p>
+<p>{"{"}<em>{"AI05-0170-1"}</em>{"}"} For each interrupt, the execution time value is initially set to zero. </p>
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI05-0170-1"}</em>{"}"} The function Clock returns the current cumulative execution time of the interrupt identified by Interrupt. If Separate_Interrupt_Clocks_Supported is set to False the function raises Program_Error.</p>
+<p>{"{"}<em>{"AI05-0170-1"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} The function Supported returns True if the implementation is monitoring the execution time of the interrupt identified by Interrupt; otherwise, it returns False. For any Interrupt_Id Interrupt for which Supported(Interrupt) returns False, the function Clock(Interrupt) will return a value equal to Ada.Execution_Time.Time_Of(0).</p>
+
+#### Extensions to Ada 2005
+
+<p>{"{"}<em>{"AI05-0170-1"}</em>{"}"} The package Execution_Time.Interrupts is new. </p>

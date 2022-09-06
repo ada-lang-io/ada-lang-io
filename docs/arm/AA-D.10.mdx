@@ -1,0 +1,114 @@
+---
+sidebar_position:  161
+---
+
+# D.10  Synchronous Task Control
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} [This subclause describes a language-defined private semaphore (suspension object), which can be used for <em>two-stage suspend</em> operations and as a simple building block for implementing higher-level queues.] </p>
+
+#### Static Semantics
+
+<p>The following language-defined package exists: </p>
+<CodeBlock>
+{"{"}{"AI95-00362-01"}{"}"} {"{"}{"AI12-0241-1"}{"}"} {"{"}{"AI12-0302-1"}{"}"} package Ada.Synchronous_Task_Control{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI12-0241-1"}{"}"}   type Suspension_Object is limited private;{"\n"}  procedure Set_True(S : in out Suspension_Object);{"\n"}  procedure Set_False(S : in out Suspension_Object);{"\n"}  function Current_State(S : Suspension_Object) return Boolean;{"\n"}  procedure Suspend_Until_True(S : in out Suspension_Object){"\n"}     with Nonblocking ={">"} False;{"\n"}private{"\n"}     ... -- not specified by the language{"\n"}end Ada.Synchronous_Task_Control;{"\n"}
+</CodeBlock>
+
+<p>The type Suspension_Object is a by-reference type.</p>
+<p><strong>Implementation Note: </strong>{"{"}<em>{"AI95-00318-02"}</em>{"}"} The implementation can ensure this by, for example, making the full view an explicitly limited record type.</p>
+<p>{"{"}<em>{"AI05-0168-1"}</em>{"}"} The following language-defined package exists: </p>
+<CodeBlock>
+{"{"}{"AI05-0168-1"}{"}"} {"{"}{"AI12-0241-1"}{"}"} {"{"}{"AI12-0302-1"}{"}"} with Ada.Real_Time;{"\n"}package Ada.Synchronous_Task_Control.EDF{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}   procedure Suspend_Until_True_And_Set_Deadline{"\n"}      (S  : in out Suspension_Object;{"\n"}       TS : in     Ada.Real_Time.Time_Span){"\n"}      with Nonblocking ={">"} False;{"\n"}end Ada.Synchronous_Task_Control.EDF;{"\n"}
+</CodeBlock>
+
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI95-00114-01"}</em>{"}"} An object of the type Suspension_Object has two visible states: True and False. Upon initialization, its value is set to False. </p>
+<p><strong>Discussion: </strong>This object is assumed to be private to the declaring task, i.e. only that task will call Suspend_Until_True on this object, and the count of callers is at most one. Other tasks can, of course, change and query the state of this object. </p>
+<p>{"{"}<em>{"AI95-00114-01"}</em>{"}"} The operations Set_True and Set_False are atomic with respect to each other and with respect to Suspend_Until_True; they set the state to True and False respectively.</p>
+<p>Current_State returns the current state of the object. </p>
+<p><strong>Discussion: </strong>This state can change immediately after the operation returns. </p>
+<p>{"{"}<em>{"AI95-00114-01"}</em>{"}"} The procedure Suspend_Until_True blocks the calling task until the state of the object S is True; at that point the task becomes ready and the state of the object becomes False.</p>
+<p>{"{"}<em>{"AI12-0241-1"}</em>{"}"} Program_Error is raised upon calling Suspend_Until_True if another task is already waiting on that suspension object.</p>
+<p>{"{"}<em>{"AI05-0168-1"}</em>{"}"} {"{"}<em>{"AI05-0269-1"}</em>{"}"} {"{"}<em>{"AI12-0241-1"}</em>{"}"} The procedure Suspend_Until_True_And_Set_Deadline blocks the calling task until the state of the object S is True; at that point the task becomes ready with a deadline of Ada.Real_Time.Clock + TS, and the state of the object becomes False. Program_Error is raised upon calling Suspend_Until_True_And_Set_Deadline if another task is already waiting on that suspension object. </p>
+
+#### Bounded (Run-Time) Errors
+
+<p>{"{"}<em>{"AI12-0171-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} It is a bounded error for two or more tasks to call Suspend_Until_True on the same Suspension_Object concurrently. For each task, Program_Error can be raised, the task can proceed without suspending, or the task can suspend, potentially indefinitely. The state of the suspension object can end up either True or False. </p>
+
+#### Implementation Requirements
+
+<p>The implementation is required to allow the calling of Set_False and Set_True during any protected action, even one that has its ceiling priority in the Interrupt_Priority range.</p>
+<p>NOTE 1   {"{"}<em>{"AI05-0168-1"}</em>{"}"} More complex schemes, such as setting the deadline relative to when Set_True is called, can be programmed using a protected object. </p>
+
+#### Extensions to Ada 95
+
+<p>{"{"}<em>{"AI95-00362-01"}</em>{"}"} Synchronous_Task_Control is now Preelaborated, so it can be used in preelaborated units. </p>
+
+#### Extensions to Ada 2005
+
+<p>{"{"}<em>{"AI05-0168-1"}</em>{"}"} Child package Ada.Synchronous_Task_Control.EDF is new. </p>
+
+#### Wording Changes from Ada 2012
+
+<p>{"{"}<em>{"AI12-0171-1"}</em>{"}"} <strong>Correction:</strong> Clarified that Suspend_Until_True should only be called from a single task, and what happens if that is violated. </p>
+
+## D.10.1  Synchronous Barriers
+
+<p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause introduces a language-defined package to synchronously release a group of tasks after the number of blocked tasks reaches a specified count value. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} The following language-defined library package exists: </p>
+<CodeBlock>
+{"{"}{"AI12-0241-1"}{"}"} {"{"}{"AI12-0302-1"}{"}"} package Ada.Synchronous_Barriers{"\n"}   with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   subtype Barrier_Limit is Positive range 1 .. implementation-defined;{"\n"}
+</CodeBlock>
+
+<p><strong>Implementation defined: </strong>The value of Barrier_Limit'Last in Synchronous_Barriers.</p>
+<CodeBlock>
+   type Synchronous_Barrier (Release_Threshold : Barrier_Limit) is limited private;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI12-0241-1"}{"}"}    procedure Wait_For_Release (The_Barrier : in out Synchronous_Barrier;{"\n"}                               Notified    :    out Boolean){"\n"}      with Nonblocking ={">"} False;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+private{"\n"}   -- not specified by the language{"\n"}end Ada.Synchronous_Barriers;{"\n"}
+</CodeBlock>
+
+<p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} Type Synchronous_Barrier needs finalization (see 7.6). </p>
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} Each call to Wait_For_Release blocks the calling task until the number of blocked tasks associated with the Synchronous_Barrier object is equal to Release_Threshold, at which time all blocked tasks are released. Notified is set to True for one of the released tasks, and set to False for all other released tasks.</p>
+<p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} The mechanism for determining which task sets Notified to True is implementation defined.</p>
+<p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} Once all tasks have been released, a Synchronous_Barrier object may be reused to block another Release_Threshold number of tasks.</p>
+<p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} As the first step of the finalization of a Synchronous_Barrier, each blocked task is unblocked and Program_Error is raised at the place of the call to Wait_For_Release.</p>
+<p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} It is implementation defined whether an abnormal task which is waiting on a Synchronous_Barrier object is aborted immediately or aborted when the tasks waiting on the object are released. </p>
+<p><strong>Implementation defined: </strong>When an aborted task that is waiting on a Synchronous_Barrier is aborted.</p>
+<p><em>This paragraph was deleted.</em>{"{"}<em>{"AI05-0174-1"}</em>{"}"} {"{"}<em>{"AI12-0241-1"}</em>{"}"} </p>
+
+#### Bounded (Run-Time) Errors
+
+<p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} It is a bounded error to call Wait_For_Release on a Synchronous_Barrier object after that object is finalized. If the error is detected, Program_Error is raised. Otherwise, the call proceeds normally, which may leave a task blocked forever. </p>
+
+#### Extensions to Ada 2005
+
+<p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} The package Ada.Synchronous_Barriers is new. </p>

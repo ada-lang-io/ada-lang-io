@@ -1,0 +1,75 @@
+---
+sidebar_position:  45
+---
+
+# 5.6  Block Statements
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+
+<p>[A <code><a href="./AA-5.6#S0191">block_statement</a></code> encloses a <code><a href="./AA-11.2#S0304">handled_sequence_of_statements</a></code> optionally preceded by a <code><a href="./AA-3.11#S0086">declarative_part</a></code>.] </p>
+
+#### Syntax
+
+<p><code>block_statement</code><a id="S0191"></a><code> ::= </code>   [<em>block_</em><code><a href="./AA-5.1#S0172">statement_identifier</a></code>:]       [<strong>declare</strong>            <code><a href="./AA-3.11#S0086">declarative_part</a></code>]        <strong>begin</strong>            <code><a href="./AA-11.2#S0304">handled_sequence_of_statements</a></code>        <strong>end</strong> [<em>block_</em><code><a href="./AA-2.3#S0002">identifier</a></code>];</p>
+<p>If a <code><a href="./AA-5.6#S0191">block_statement</a></code> has a <em>block_</em><code><a href="./AA-5.1#S0172">statement_identifier</a></code>, then the <code><a href="./AA-2.3#S0002">identifier</a></code> shall be repeated after the <strong>end</strong>; otherwise, there shall not be an <code><a href="./AA-2.3#S0002">identifier</a></code> after the <strong>end</strong>. </p>
+
+#### Static Semantics
+
+<p>A <code><a href="./AA-5.6#S0191">block_statement</a></code> that has no explicit <code><a href="./AA-3.11#S0086">declarative_part</a></code> has an implicit empty <code><a href="./AA-3.11#S0086">declarative_part</a></code>. </p>
+<p><strong>Ramification: </strong>Thus, other rules can always refer to the <code><a href="./AA-3.11#S0086">declarative_part</a></code> of a <code><a href="./AA-5.6#S0191">block_statement</a></code>. </p>
+
+#### Dynamic Semantics
+
+<p>The execution of a <code><a href="./AA-5.6#S0191">block_statement</a></code> consists of the elaboration of its <code><a href="./AA-3.11#S0086">declarative_part</a></code> followed by the execution of its <code><a href="./AA-11.2#S0304">handled_sequence_of_statements</a></code>. </p>
+
+#### Examples
+
+<p><em>Example of a block statement with a local variable:</em> </p>
+<CodeBlock>
+Swap:{"\n"}   declare{"\n"}      Temp : Integer;{"\n"}   begin{"\n"}      Temp := V; V := U; U := Temp;{"\n"}   end Swap;{"\n"}
+</CodeBlock>
+
+<p><strong>Ramification: </strong>If task objects are declared within a <code><a href="./AA-5.6#S0191">block_statement</a></code> whose execution is completed, the <code><a href="./AA-5.6#S0191">block_statement</a></code> is not left until all its dependent tasks are terminated (see 7.6). This rule applies to completion caused by a transfer of control.</p>
+<p>Within a <code><a href="./AA-5.6#S0191">block_statement</a></code>, the block name can be used in expanded names denoting local entities such as Swap.Temp in the above example (see 4.1.3). </p>
+
+#### Wording Changes from Ada 83
+
+<p>The syntax rule for <code><a href="./AA-5.6#S0191">block_statement</a></code> now uses the syntactic category <code><a href="./AA-11.2#S0304">handled_sequence_of_statements</a></code>. </p>
+
+## 5.6.1  Parallel Block Statements
+
+<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} [A <code><a href="./AA-5.6#S0192">parallel_block_statement</a></code> comprises two or more <code><a href="./AA-5.1#S0166">sequence_of_statements</a></code> separated by <strong>and</strong> where each represents an independent activity that is intended to proceed concurrently with the others.]</p>
+
+#### Syntax
+
+<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} <code>parallel_block_statement</code><a id="S0192"></a><code> ::= </code>    <strong>parallel</strong> [(<code><a href="./AA-5.5#S0180">chunk_specification</a></code>)] [<code><a href="./AA-13.1#S0346">aspect_specification</a></code>] <strong>do</strong>       <code><a href="./AA-5.1#S0166">sequence_of_statements</a></code>    <strong>and</strong>       <code><a href="./AA-5.1#S0166">sequence_of_statements</a></code>   {"{"}<strong>and</strong>       <code><a href="./AA-5.1#S0166">sequence_of_statements</a></code>{"}"}    <strong>end do</strong>;</p>
+<p>{"{"}<em>{"AI12-0427-1"}</em>{"}"} The <code><a href="./AA-5.5#S0180">chunk_specification</a></code>, if any, of a <code><a href="./AA-5.6#S0192">parallel_block_statement</a></code> shall be an <em>integer_</em><code><a href="./AA-4.4#S0138">simple_expression</a></code>. </p>
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} For the execution of a <code><a href="./AA-5.6#S0192">parallel_block_statement</a></code>, the <code><a href="./AA-5.5#S0180">chunk_specification</a></code> and the <code><a href="./AA-13.1#S0346">aspect_specification</a></code>, if any, are elaborated in an arbitrary order. After elaborating the <code><a href="./AA-5.5#S0180">chunk_specification</a></code>, if any, a check is made that the determined maximum number of chunks is greater than zero. If this check fails, Program_Error is raised. </p>
+<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} Then, the various <code><a href="./AA-5.1#S0166">sequence_of_statements</a></code> are grouped into one or more <em>chunks</em>, each with its own logical thread of control (see clause 9), up to the maximum number of chunks specified by the <code><a href="./AA-5.5#S0180">chunk_specification</a></code>, if any. Within each chunk every <code><a href="./AA-5.1#S0166">sequence_of_statements</a></code> of the chunk is executed in turn, in an arbitrary order. The <code><a href="./AA-5.6#S0192">parallel_block_statement</a></code> is complete once every one of the <code><a href="./AA-5.1#S0166">sequence_of_statements</a></code> has completed, either by reaching the end of its execution, or due to a transfer of control out of the construct by one of the <code><a href="./AA-5.1#S0166">sequence_of_statements</a></code> (see 5.1).</p>
+<p><strong>Implementation Note: </strong>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} Although each <code><a href="./AA-5.1#S0166">sequence_of_statements</a></code> of a parallel block represents a separate logical thread of control, the implementation may choose to combine two or more such logical threads of control into a single physical thread of control to reduce the cost of creating numerous physical threads of control. </p>
+
+#### Examples
+
+<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em>Example of a parallel block used to walk a binary tree in parallel:</em></p>
+<CodeBlock>
+{"{"}{"AI12-0119-1"}{"}"} {"{"}{"AI12-0404-1"}{"}"} procedure Traverse (T : Expr_Ptr) is -- see 3.9.1{"\n"}begin{"\n"}   if T /= null and then{"\n"}      T.all in Binary_Operation'Class -- see 3.9.1{"\n"}   then -- recurse down the binary tree{"\n"}      parallel do{"\n"}         Traverse (T.Left);{"\n"}      and{"\n"}         Traverse (T.Right);{"\n"}      and{"\n"}         Ada.Text_IO.Put_Line{"\n"}            ("Processing " & Ada.Tags.Expanded_Name (T'Tag));{"\n"}      end do;{"\n"}   end if;{"\n"}end Traverse;{"\n"}
+</CodeBlock>
+
+<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em>Example of a parallel block used to search two halves of a string in parallel:</em></p>
+<CodeBlock>
+{"{"}{"AI12-0119-1"}{"}"} function Search (S : String; Char : Character) return Boolean is{"\n"}begin{"\n"}   if S'Length {"<"}= 1000 then{"\n"}       -- Sequential scan{"\n"}       return (for some C of S ={">"} C = Char);{"\n"}   else{"\n"}       -- Parallel divide and conquer{"\n"}       declare{"\n"}          Mid : constant Positive := S'First + S'Length/2 - 1;{"\n"}       begin{"\n"}          parallel do{"\n"}             for C of S(S'First .. Mid) loop{"\n"}                if C = Char then{"\n"}                   return True;  -- Terminates enclosing do{"\n"}                end if;{"\n"}             end loop;{"\n"}          and{"\n"}             for C of S(Mid + 1 .. S'Last) loop{"\n"}                if C = Char then{"\n"}                   return True;  -- Terminates enclosing do{"\n"}                end if;{"\n"}             end loop;{"\n"}          end do;{"\n"}          -- Not found{"\n"}          return False;{"\n"}       end;{"\n"}   end if;{"\n"}end Search;{"\n"}
+</CodeBlock>
+
+
+#### Extensions to Ada 2012
+
+<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} The <code><a href="./AA-5.6#S0192">parallel_block_statement</a></code> is new. </p>

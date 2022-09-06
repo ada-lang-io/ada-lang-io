@@ -1,0 +1,204 @@
+---
+sidebar_position:  107
+---
+
+# 13.5  Record Layout
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+
+<p>The <em>(record) layout</em> aspect of representation consists of the <em>storage places</em> for some or all components, that is, storage place attributes of the components. The layout can be specified with a <code>[record_representation_clause](./AA-13.5#S0352)</code>. </p>
+
+## 13.5.1  Record Representation Clauses
+
+<p>[A <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> specifies the storage representation of records and record extensions, that is, the order, position, and size of components (including discriminants, if any). ]</p>
+
+#### Language Design Principles
+
+<p>{"{"}<em>{"AI95-00114-01"}</em>{"}"} It should be feasible for an implementation to use negative offsets in the representation of composite types. However, no implementation should be forced to support negative offsets. Therefore, in the interest of uniformity, negative offsets should be disallowed in <code><a href="./AA-13.5#S0352">record_representation_clause</a></code>s. </p>
+
+#### Syntax
+
+<p>{"{"}<em>{"AI12-0213-1"}</em>{"}"} <code>record_representation_clause</code><a id="S0352"></a><code> ::= </code>    <strong>for</strong> <em>first_subtype_</em><code><a href="./AA-13.1#S0345">local_name</a></code> <strong>use</strong>       <strong>record</strong> [<code><a href="./AA-J.8#S0369">mod_clause</a></code>]          {"{"}<code><a href="./AA-13.5#S0353">component_clause</a></code>{"}"}       <strong>end</strong> <strong>record</strong> [<code><a href="./AA-13.1#S0345">local_name</a></code>];</p>
+<p><code>component_clause</code><a id="S0353"></a><code> ::= </code>    <em>component_</em><code><a href="./AA-13.1#S0345">local_name</a></code> <strong>at</strong> <code><a href="./AA-13.5#S0354">position</a></code> <strong>range</strong> <code><a href="./AA-13.5#S0355">first_bit</a></code> .. <code><a href="./AA-13.5#S0356">last_bit</a></code>;</p>
+<p><code>position</code><a id="S0354"></a><code> ::= </code><em>static_</em><code><a href="./AA-4.4#S0132">expression</a></code></p>
+<p><code>first_bit</code><a id="S0355"></a><code> ::= </code><em>static_</em><code><a href="./AA-4.4#S0138">simple_expression</a></code></p>
+<p><code>last_bit</code><a id="S0356"></a><code> ::= </code><em>static_</em><code><a href="./AA-4.4#S0138">simple_expression</a></code></p>
+<p><strong>Reason: </strong><code><a href="./AA-13.5#S0355">First_bit</a></code> and <code><a href="./AA-13.5#S0356">last_bit</a></code> need to be <code><a href="./AA-4.4#S0138">simple_expression</a></code> instead of <code><a href="./AA-4.4#S0132">expression</a></code> for the same reason as in <code><a href="./AA-3.5#S0037">range</a></code> (see 3.5, "Scalar Types"). </p>
+<p>{"{"}<em>{"AI12-0213-1"}</em>{"}"} If a <code><a href="./AA-13.1#S0345">local_name</a></code> appears at the end of the <code><a href="./AA-13.5#S0352">record_representation_clause</a></code>, it shall repeat the <em>first_subtype_</em><code><a href="./AA-13.1#S0345">local_name</a></code>. </p>
+
+#### Name Resolution Rules
+
+<p>Each <code><a href="./AA-13.5#S0354">position</a></code>, <code><a href="./AA-13.5#S0355">first_bit</a></code>, and <code><a href="./AA-13.5#S0356">last_bit</a></code> is expected to be of any integer type. </p>
+<p><strong>Ramification: </strong>These need not have the same integer type. </p>
+
+#### Legality Rules
+
+<p>{"{"}<em>{"AI95-00436-01"}</em>{"}"} The <em>first_subtype_</em><code><a href="./AA-13.1#S0345">local_name</a></code> of a <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> shall denote a specific record or record extension subtype. </p>
+<p><strong>Ramification: </strong>As for all type-related representation items, the <code><a href="./AA-13.1#S0345">local_name</a></code> is required to denote a first subtype. </p>
+<p>If the <em>component_</em><code><a href="./AA-13.1#S0345">local_name</a></code> is a <code><a href="./AA-4.1#S0092">direct_name</a></code>, the <code><a href="./AA-13.1#S0345">local_name</a></code> shall denote a component of the type. For a record extension, the component shall not be inherited, and shall not be a discriminant that corresponds to a discriminant of the parent type. If the <em>component_</em><code>[local_name](./AA-13.1#S0345)</code> has an <code>[attribute_designator](./AA-4.1#S0101)</code>, the <code>[direct_name](./AA-4.1#S0092)</code> of the <code>[local_name](./AA-13.1#S0345)</code> shall denote either the declaration of the type or a component of the type, and the <code>[attribute_designator](./AA-4.1#S0101)</code> shall denote an implementation-defined implicit component of the type.</p>
+<p>The <code><a href="./AA-13.5#S0354">position</a></code>, <code><a href="./AA-13.5#S0355">first_bit</a></code>, and <code><a href="./AA-13.5#S0356">last_bit</a></code> shall be static expressions. The value of <code><a href="./AA-13.5#S0354">position</a></code> and <code><a href="./AA-13.5#S0355">first_bit</a></code> shall be nonnegative. The value of <code><a href="./AA-13.5#S0356">last_bit</a></code> shall be no less than <code><a href="./AA-13.5#S0355">first_bit</a></code>  1. </p>
+<p><strong>Ramification: </strong>A <code><a href="./AA-13.5#S0353">component_clause</a></code> such as "X <strong>at</strong> 4 <strong>range</strong> 0..1;" is allowed if X can fit in zero bits. </p>
+<p>{"{"}<em>{"AI95-00133-01"}</em>{"}"} If the nondefault bit ordering applies to the type, then either: </p>
+<p>the value of <code><a href="./AA-13.5#S0356">last_bit</a></code> shall be less than the size of the largest machine scalar; or</p>
+<p>the value of <code><a href="./AA-13.5#S0355">first_bit</a></code> shall be zero and the value of <code><a href="./AA-13.5#S0356">last_bit</a></code> + 1 shall be a multiple of System.Storage_Unit. </p>
+<p>At most one <code><a href="./AA-13.5#S0353">component_clause</a></code> is allowed for each component of the type, including for each discriminant (<code><a href="./AA-13.5#S0353">component_clause</a></code>s may be given for some, all, or none of the components). Storage places within a <code><a href="./AA-3.8#S0068">component_list</a></code> shall not overlap, unless they are for components in distinct <code><a href="./AA-3.8#S0072">variant</a></code>s of the same <code><a href="./AA-3.8#S0071">variant_part</a></code>.</p>
+<p>A name that denotes a component of a type is not allowed within a <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> for the type, except as the <em>component_</em><code><a href="./AA-13.1#S0345">local_name</a></code> of a <code><a href="./AA-13.5#S0353">component_clause</a></code>. </p>
+<p><strong>Reason: </strong>It might seem strange to make the <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> part of the declarative region, and then disallow mentions of the components within almost all of the <code><a href="./AA-13.5#S0352">record_representation_clause</a></code>. The alternative would be to treat the <em>component_</em><code><a href="./AA-13.1#S0345">local_name</a></code> like a formal parameter name in a subprogram call (in terms of visibility). However, this rule would imply slightly different semantics, because (given the actual rule) the components can hide other declarations. This was the rule in Ada 83, and we see no reason to change it. The following, for example, was and is illegal: </p>
+<CodeBlock>
+type T is{"\n"}    record{"\n"}        X : Integer;{"\n"}    end record;{"\n"}X : constant := 31; -- Same defining name as the component.{"\n"}for T use{"\n"}    record{"\n"}        X at 0 range 0..X; -- Illegal!{"\n"}    end record;{"\n"}    {"\n"}
+</CodeBlock>
+
+<p>The component X hides the named number X throughout the <code><a href="./AA-13.5#S0352">record_representation_clause</a></code>. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI95-00133-01"}</em>{"}"} A <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> (without the <code><a href="./AA-J.8#S0369">mod_clause</a></code>) specifies the layout.</p>
+<p><strong>Aspect Description for </strong><strong>Layout (record): </strong>Layout of record components. Specified by a <code><a href="./AA-13.5#S0352">record_representation_clause</a></code>, not by an <code><a href="./AA-13.1#S0346">aspect_specification</a></code>.</p>
+<p><strong>Aspect Description for </strong><strong>Record layout: </strong>See Layout.</p>
+<p>{"{"}<em>{"AI95-00133-01"}</em>{"}"} If the default bit ordering applies to the type, the <code><a href="./AA-13.5#S0354">position</a></code>, <code><a href="./AA-13.5#S0355">first_bit</a></code>, and <code><a href="./AA-13.5#S0356">last_bit</a></code> of each <code><a href="./AA-13.5#S0353">component_clause</a></code> directly specify the position and size of the corresponding component.</p>
+<p>{"{"}<em>{"AI95-00133-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} If the nondefault bit ordering applies to the type, then the layout is determined as follows: </p>
+<p>the <code><a href="./AA-13.5#S0353">component_clause</a></code>s for which the value of <code><a href="./AA-13.5#S0356">last_bit</a></code> is greater than or equal to the size of the largest machine scalar directly specify the position and size of the corresponding component;</p>
+<p>for other <code><a href="./AA-13.5#S0353">component_clause</a></code>s, all of the components having the same value of <code><a href="./AA-13.5#S0354">position</a></code> are considered to be part of a single machine scalar, located at that <code><a href="./AA-13.5#S0354">position</a></code>; this machine scalar has a size which is the smallest machine scalar size larger than the largest <code><a href="./AA-13.5#S0356">last_bit</a></code> for all <code><a href="./AA-13.5#S0353">component_clause</a></code>s at that <code><a href="./AA-13.5#S0354">position</a></code>; the <code><a href="./AA-13.5#S0355">first_bit</a></code> and <code><a href="./AA-13.5#S0356">last_bit</a></code> of each <code><a href="./AA-13.5#S0353">component_clause</a></code> are then interpreted as bit offsets in this machine scalar. </p>
+<p><em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00133-01"}</em>{"}"} </p>
+<p><strong>Ramification: </strong>A <code><a href="./AA-13.5#S0353">component_clause</a></code> also determines the value of the Size attribute of the component, since this attribute is related to First_Bit and Last_Bit. </p>
+<p>[A <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> for a record extension does not override the layout of the parent part;] if the layout was specified for the parent type, it is inherited by the record extension. </p>
+
+#### Implementation Permissions
+
+<p>An implementation may generate implementation-defined components (for example, one containing the offset of another component). An implementation may generate names that denote such implementation-defined components; such names shall be implementation-defined <code><a href="./AA-4.1#S0100">attribute_reference</a></code>s. An implementation may allow such implementation-defined names to be used in <code>[record_representation_clause](./AA-13.5#S0352)</code>s. An implementation can restrict such <code>[component_clause](./AA-13.5#S0353)</code>s in any manner it sees fit. </p>
+<p><strong>Implementation defined: </strong>Implementation-defined components.</p>
+<p><strong>Ramification: </strong>Of course, since the semantics of implementation-defined attributes is implementation defined, the implementation need not support these names in all situations. They might be purely for the purpose of <code><a href="./AA-13.5#S0353">component_clause</a></code>s, for example. The visibility rules for such names are up to the implementation.</p>
+<p>We do not allow such component names to be normal identifiers - that would constitute blanket permission to do all kinds of evil things. </p>
+<p><strong>Discussion: </strong>Such implementation-defined components are known in the vernacular as "dope". Their main purpose is for storing offsets of components that depend on discriminants. </p>
+<p>If a <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> is given for an untagged derived type, the storage place attributes for all of the components of the derived type may differ from those of the corresponding components of the parent type, even for components whose storage place is not specified explicitly in the <code>[record_representation_clause](./AA-13.5#S0352)</code>. </p>
+<p><strong>Reason: </strong>This is clearly necessary, since the whole record may need to be laid out differently. </p>
+
+#### Implementation Advice
+
+<p>The recommended level of support for <code><a href="./AA-13.5#S0352">record_representation_clause</a></code>s is: </p>
+<p>{"{"}<em>{"AI95-00133-01"}</em>{"}"} An implementation should support machine scalars that correspond to all of the integer, floating point, and address formats supported by the machine.</p>
+<p>An implementation should support storage places that can be extracted with a load, mask, shift sequence of machine code, and set with a load, shift, mask, store sequence, given the available machine instructions and run-time model.</p>
+<p>A storage place should be supported if its size is equal to the Size of the component subtype, and it starts and ends on a boundary that obeys the Alignment of the component subtype.</p>
+<p>{"{"}<em>{"AI95-00133-01"}</em>{"}"} For a component with a subtype whose Size is less than the word size, any storage place that does not cross an aligned word boundary should be supported.</p>
+<p><strong>Reason: </strong>The above recommendations are sufficient to define interfaces to most interesting hardware. This causes less implementation burden than the definition in ACID, which requires arbitrary bit alignments of arbitrarily large components. Since the ACID definition is neither enforced by the ACVC, nor supported by all implementations, it seems OK for us to weaken it. </p>
+<p>An implementation may reserve a storage place for the tag field of a tagged type, and disallow other components from overlapping that place. </p>
+<p><strong>Ramification: </strong>Similar permission for other dope is not granted. </p>
+<p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} An implementation is not required to support a <code><a href="./AA-13.5#S0353">component_clause</a></code> for a component of an extension part if the storage place is not after the storage places of all components of the parent type, whether or not those storage places had been specified. </p>
+<p><strong>Reason: </strong>These restrictions are probably necessary if block equality operations are to be feasible for class-wide types. For block comparison to work, the implementation typically has to fill in any gaps with zero (or one) bits. If a "gap" in the parent type is filled in with a component in a type extension, then this won't work when a class-wide object is passed by reference, as is required. </p>
+<p><strong>Implementation Advice: </strong>The recommended level of support for <code><a href="./AA-13.5#S0352">record_representation_clause</a></code>s should be followed.</p>
+<p>NOTE   If no <code><a href="./AA-13.5#S0353">component_clause</a></code> is given for a component, then the choice of the storage place for the component is left to the implementation. If <code><a href="./AA-13.5#S0353">component_clause</a></code>s are given for all components, the <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> completely specifies the representation of the type and will be obeyed exactly by the implementation. </p>
+<p><strong>Ramification: </strong>The visibility rules prevent the name of a component of the type from appearing in a <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> at any place <em>except</em> for the <em>component_</em><code><a href="./AA-13.1#S0345">local_name</a></code> of a <code><a href="./AA-13.5#S0353">component_clause</a></code>. However, since the <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> is part of the declarative region of the type declaration, the component names hide outer homographs throughout.</p>
+<p>{"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} A <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> cannot be given for a protected type, even though protected types, like record types, have components. The primary reason for this rule is that there is likely to be too much dope in a protected type - entry queues, bit maps for barrier values, etc. In order to control the representation of the user-defined components, simply declare a record type, give it a <code>[record_representation_clause](./AA-13.5#S0352)</code>, and give the protected type one component whose type is the record type. Alternatively, if the protected object is protecting something like a device register, it makes more sense to keep the thing being protected outside the protected object (possibly with a pointer to it in the protected object), in order to keep implementation-defined components out of the way. </p>
+
+#### Examples
+
+<p><em>Example of specifying the layout of a record type:</em> </p>
+<CodeBlock>
+Word : constant := 4;  --  storage element is byte, 4 bytes per word{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+type State         is (A,M,W,P);{"\n"}type Mode          is (Fix, Dec, Exp, Signif);{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI12-0178-1"}{"}"} type Byte_Mask     is array (0..7)  of Boolean with Component_Size ={">"} 1;{"\n"}type State_Mask    is array (State) of Boolean with Component_Size ={">"} 1;{"\n"}type Mode_Mask     is array (Mode)  of Boolean with Component_Size ={">"} 1;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+type Program_Status_Word is{"\n"}  record{"\n"}      System_Mask        : Byte_Mask;{"\n"}      Protection_Key     : Integer range 0 .. 3;{"\n"}      Machine_State      : State_Mask;{"\n"}      Interrupt_Cause    : Interruption_Code;{"\n"}      Ilc                : Integer range 0 .. 3;{"\n"}      Cc                 : Integer range 0 .. 3;{"\n"}      Program_Mask       : Mode_Mask;{"\n"}      Inst_Address       : Address;{"\n"}end record;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+for Program_Status_Word use{"\n"}  record{"\n"}      System_Mask      at 0*Word range 0  .. 7;{"\n"}      Protection_Key   at 0*Word range 10 .. 11; -- bits 8,9 unused{"\n"}      Machine_State    at 0*Word range 12 .. 15;{"\n"}      Interrupt_Cause  at 0*Word range 16 .. 31;{"\n"}      Ilc              at 1*Word range 0  .. 1;  -- second word{"\n"}      Cc               at 1*Word range 2  .. 3;{"\n"}      Program_Mask     at 1*Word range 4  .. 7;{"\n"}      Inst_Address     at 1*Word range 8  .. 31;{"\n"}  end record;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+for Program_Status_Word'Size use 8*System.Storage_Unit;{"\n"}for Program_Status_Word'Alignment use 8;{"\n"}
+</CodeBlock>
+
+<p>NOTE 1   <em>Note on the example:</em> The <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> defines the record layout. The Size clause guarantees that (at least) eight storage elements are used for objects of the type. The Alignment clause guarantees that aliased, imported, or exported objects of the type will have addresses divisible by eight. </p>
+
+#### Wording Changes from Ada 83
+
+<p>The <code>alignment_clause</code> has been renamed to <code><a href="./AA-J.8#S0369">mod_clause</a></code> and moved to Annex J, "Obsolescent Features".</p>
+<p>We have clarified that implementation-defined component names have to be in the form of an <code><a href="./AA-4.1#S0100">attribute_reference</a></code> of a component or of the first subtype itself; surely Ada 83 did not intend to allow arbitrary identifiers.</p>
+<p>The RM83-13.4(7) wording incorrectly allows components in nonvariant records to overlap. We have corrected that oversight. </p>
+
+#### Incompatibilities With Ada 95
+
+<p>{"{"}<em>{"AI95-00133-01"}</em>{"}"} <strong>Amendment Correction:</strong> The meaning of a <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> for the nondefault bit order is now clearly defined. Thus, such clauses can be portably written. In order to do that though, the equivalence of bit 1 in word 1 to bit 9 in word 0 (for a machine with Storage_Unit = 8) had to be dropped for the nondefault bit order. Any <code><a href="./AA-13.5#S0352">record_representation_clause</a></code>s which depends on that equivalence will break (although such code would imply a noncontiguous representation for a component, and it seems unlikely that compilers were supporting that anyway). </p>
+
+#### Extensions to Ada 95
+
+<p>{"{"}<em>{"AI95-00436-01"}</em>{"}"} <strong>Amendment Correction:</strong> The undocumented (and likely unintentional) incompatibility with Ada 83 caused by not allowing <code><a href="./AA-13.5#S0352">record_representation_clause</a></code>s on limited record types is removed. </p>
+
+#### Extensions to Ada 2012
+
+<p>{"{"}<em>{"AI12-0213-1"}</em>{"}"} The <code><a href="./AA-13.1#S0345">local_name</a></code> following <strong>end record</strong> is new. </p>
+
+## 13.5.2  Storage Place Attributes
+
+
+#### Static Semantics
+
+<p>For a component C of a composite, non-array object R, the <em>storage place attributes</em> are defined: </p>
+<p><strong>Ramification: </strong>The storage place attributes are not (individually) specifiable, but the user may control their values by giving a <code><a href="./AA-13.5#S0352">record_representation_clause</a></code>. </p>
+<p>R.C'Position{"{"}<em>{"AI95-00133-01"}</em>{"}"} If the nondefault bit ordering applies to the composite type, and if a <code><a href="./AA-13.5#S0353">component_clause</a></code> specifies the placement of C, denotes the value given for the <code><a href="./AA-13.5#S0354">position</a></code> of the <code><a href="./AA-13.5#S0353">component_clause</a></code>; otherwise, denotes the same value as R.C'Address  R'Address. The value of this attribute is of the type <em>universal_integer</em>. </p>
+<p><strong>Ramification: </strong>{"{"}<em>{"AI95-00133-01"}</em>{"}"} Thus, for the default bit order, R.C'Position is the offset of C in storage elements from the beginning of the object, where the first storage element of an object is numbered zero. R'Address + R.C'Position = R.C'Address. For record extensions, the offset is not measured from the beginning of the extension part, but from the beginning of the whole object, as usual.</p>
+<p>In "R.C'Address  R'Address", the "" operator is the one in System.Storage_Elements that takes two Addresses and returns a Storage_Offset. </p>
+<p>R.C'First_Bit{"{"}<em>{"AI95-00133-01"}</em>{"}"} If the nondefault bit ordering applies to the composite type, and if a <code><a href="./AA-13.5#S0353">component_clause</a></code> specifies the placement of C, denotes the value given for the <code><a href="./AA-13.5#S0355">first_bit</a></code> of the <code><a href="./AA-13.5#S0353">component_clause</a></code>; otherwise, denotes the offset, from the start of the first of the storage elements occupied by C, of the first bit occupied by C. This offset is measured in bits. The first bit of a storage element is numbered zero. The value of this attribute is of the type <em>universal_integer</em>.</p>
+<p>R.C'Last_Bit{"{"}<em>{"AI95-00133-01"}</em>{"}"} If the nondefault bit ordering applies to the composite type, and if a <code><a href="./AA-13.5#S0353">component_clause</a></code> specifies the placement of C, denotes the value given for the <code><a href="./AA-13.5#S0356">last_bit</a></code> of the <code><a href="./AA-13.5#S0353">component_clause</a></code>; otherwise, denotes the offset, from the start of the first of the storage elements occupied by C, of the last bit occupied by C. This offset is measured in bits. The value of this attribute is of the type <em>universal_integer</em>. </p>
+<p><strong>Ramification: </strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} The ordering of bits in a storage element is defined in 13.5.3, "Bit Ordering".</p>
+<p>R.C'Size = R.C'Last_Bit  R.C'First_Bit + 1. (Unless the implementation chooses an indirection representation.)</p>
+<p>If a <code><a href="./AA-13.5#S0353">component_clause</a></code> applies to a component, then that component will be at the same relative storage place in all objects of the type. Otherwise, there is no such requirement. </p>
+
+#### Implementation Advice
+
+<p>If a component is represented using some form of pointer (such as an offset) to the actual data of the component, and this data is contiguous with the rest of the object, then the storage place attributes should reflect the place of the actual data, not the pointer. If a component is allocated discontiguously from the rest of the object, then a warning should be generated upon reference to one of its storage place attributes. </p>
+<p><strong>Reason: </strong>For discontiguous components, these attributes make no sense. For example, an implementation might allocate dynamic-sized components on the heap. For another example, an implementation might allocate the discriminants separately from the other components, so that multiple objects of the same subtype can share discriminants. Such representations cannot happen if there is a <code><a href="./AA-13.5#S0353">component_clause</a></code> for that component. </p>
+<p><strong>Implementation Advice: </strong>If a component is represented using a pointer to the actual data of the component which is contiguous with the rest of the object, then the storage place attributes should reflect the place of the actual data. If a component is allocated discontiguously from the rest of the object, then a warning should be generated upon reference to one of its storage place attributes.</p>
+
+#### Incompatibilities With Ada 95
+
+<p>{"{"}<em>{"AI95-00133-01"}</em>{"}"} <strong>Amendment Correction:</strong> The meaning of the storage place attributes for the nondefault bit order is now clearly defined, and can be different than that given by strictly following the Ada 95 wording. Any code which depends on the original Ada 95 values for a type using the nondefault bit order where they are different will break. </p>
+
+## 13.5.3  Bit Ordering
+
+<p>[The Bit_Order attribute specifies the interpretation of the storage place attributes.] </p>
+<p><strong>Reason: </strong>The intention is to provide uniformity in the interpretation of storage places across implementations on a particular machine by allowing the user to specify the Bit_Order. It is not intended to fully support data interoperability across different machines, although it can be used for that purpose in some situations.</p>
+<p>{"{"}<em>{"AI95-00114-01"}</em>{"}"} We can't require all implementations on a given machine to use the same bit ordering by default; if the user cares, a Bit_Order <code><a href="./AA-13.3#S0349">attribute_definition_clause</a></code> can be used to force all implementations to use the same bit ordering. </p>
+
+#### Static Semantics
+
+<p>A bit ordering is a method of interpreting the meaning of the storage place attributes. High_Order_First [(known in the vernacular as "big endian")] means that the first bit of a storage element (bit 0) is the most significant bit (interpreting the sequence of bits that represent a component as an unsigned integer value). Low_Order_First [(known in the vernacular as "little endian")] means the opposite: the first bit is the least significant.</p>
+<p>{"{"}<em>{"AI12-0373-1"}</em>{"}"} For every specific record subtype S, the following representation attribute is defined: </p>
+<p>S'Bit_OrderDenotes the bit ordering for the type of S. The value of this attribute is of type System.Bit_Order. Bit_Order may be specified for specific record types via an <code><a href="./AA-13.3#S0349">attribute_definition_clause</a></code>; the expression of such a clause shall be static.</p>
+<p><strong>Aspect Description for </strong><strong>Bit_Order: </strong>Order of bit numbering in a <code><a href="./AA-13.5#S0352">record_representation_clause</a></code>.</p>
+<p>If Word_Size = Storage_Unit, the default bit ordering is implementation defined. If Word_Size {">"} Storage_Unit, the default bit ordering is the same as the ordering of storage elements in a word, when interpreted as an integer. </p>
+<p><strong>Implementation defined: </strong>If Word_Size = Storage_Unit, the default bit ordering.</p>
+<p><strong>Ramification: </strong>Consider machines whose Word_Size = 32, and whose Storage_Unit = 8. Assume the default bit ordering applies. On a machine with big-endian addresses, the most significant storage element of an integer is at the address of the integer. Therefore, bit zero of a storage element is the most significant bit. On a machine with little-endian addresses, the least significant storage element of an integer is at the address of the integer. Therefore, bit zero of a storage element is the least significant bit. </p>
+<p>The storage place attributes of a component of a type are interpreted according to the bit ordering of the type. </p>
+<p><strong>Ramification: </strong>This implies that the interpretation of the <code><a href="./AA-13.5#S0354">position</a></code>, <code><a href="./AA-13.5#S0355">first_bit</a></code>, and <code><a href="./AA-13.5#S0356">last_bit</a></code> of a <code><a href="./AA-13.5#S0353">component_clause</a></code> of a <code><a href="./AA-13.5#S0352">record_representation_clause</a></code> obey the bit ordering given in a representation item. </p>
+
+#### Implementation Advice
+
+<p>The recommended level of support for the nondefault bit ordering is: </p>
+<p>{"{"}<em>{"AI95-00133-01"}</em>{"}"} The implementation should support the nondefault bit ordering in addition to the default bit ordering. </p>
+<p><strong>Ramification: </strong>{"{"}<em>{"AI95-00133-01"}</em>{"}"} The implementation should support both bit orderings. Implementations are required to support storage positions that cross storage element boundaries when Word_Size {">"} Storage_Unit but the definition of the storage place attributes for the nondefault bit order ensures that such storage positions will not be split into two or three pieces. Thus, there is no significant implementation burden to supporting the nondefault bit order, given that the set of machine scalars is implementation-defined. </p>
+<p><strong>Implementation Advice: </strong>The recommended level of support for the nondefault bit ordering should be followed.</p>
+<p>NOTE 1   {"{"}<em>{"AI95-00133-01"}</em>{"}"} Bit_Order clauses make it possible to write <code><a href="./AA-13.5#S0352">record_representation_clause</a></code>s that can be ported between machines having different bit ordering. They do not guarantee transparent exchange of data between such machines. </p>
+
+#### Extensions to Ada 83
+
+<p>The Bit_Order attribute is new to Ada 95. </p>
+
+#### Wording Changes from Ada 95
+
+<p>{"{"}<em>{"AI95-00133-01"}</em>{"}"} We now suggest that all implementations support the nondefault bit order. </p>

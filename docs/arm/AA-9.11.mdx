@@ -1,0 +1,69 @@
+---
+sidebar_position:  82
+---
+
+# 9.11  Example of Tasking and Synchronization
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+
+
+#### Examples
+
+<p>{"{"}<em>{"AI12-0440-1"}</em>{"}"} The following example defines a buffer protected object to smooth variations between the speed of output of a producing task and the speed of input of some consuming task. For instance, the producing task can have the following structure:</p>
+<CodeBlock>
+task Producer;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"} task body Producer is{"\n"}   Person : Person_Name; -- see 3.10.1{"\n"}begin{"\n"}   loop{"\n"}      ... --  simulate arrival of the next customer{"\n"}      Buffer.Append_Wait(Person);{"\n"}      exit when Person = null;{"\n"}   end loop;{"\n"}end Producer;{"\n"}
+</CodeBlock>
+
+<p>{"{"}<em>{"AI12-0440-1"}</em>{"}"} and the consuming task can have the following structure:</p>
+<CodeBlock>
+task Consumer;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"} task body Consumer is{"\n"}   Person : Person_Name;{"\n"}begin{"\n"}   loop{"\n"}      Buffer.Remove_First_Wait(Person);{"\n"}      exit when Person = null;{"\n"}      ... --  simulate serving a customer{"\n"}   end loop;{"\n"}end Consumer;{"\n"}
+</CodeBlock>
+
+<p>{"{"}<em>{"AI95-00433-01"}</em>{"}"} The buffer object contains an internal array of person names managed in a round-robin fashion. The array has two indices, an In_Index denoting the index for the next input person name and an Out_Index denoting the index for the next output person name.</p>
+<p>{"{"}<em>{"AI95-00433-01"}</em>{"}"} The Buffer is defined as an extension of the Synchronized_Queue interface (see 3.9.4), and as such promises to implement the abstraction defined by that interface. By doing so, the Buffer can be passed to the Transfer class-wide operation defined for objects of a type covered by Queue'Class.</p>
+<CodeBlock>
+{"{"}{"AI12-0178-1"}{"}"} type Person_Name_Array is array (Positive range {"<"}{">"}){"\n"}   of Person_Name;  -- see 3.10.1{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"} protected Buffer is new Synchronized_Queue with  -- see 3.9.4{"\n"}   entry Append_Wait(Person : in Person_Name);{"\n"}   entry Remove_First_Wait(Person : out Person_Name);{"\n"}   function Cur_Count return Natural;{"\n"}   function Max_Count return Natural;{"\n"}   procedure Append(Person : in Person_Name);{"\n"}   procedure Remove_First(Person : out Person_Name);{"\n"}private{"\n"}   Pool      : Person_Name_Array(1 .. 100);{"\n"}   Count     : Natural := 0;{"\n"}   In_Index, Out_Index : Positive := 1;{"\n"}end Buffer;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"} protected body Buffer is{"\n"}   entry Append_Wait(Person : in Person_Name){"\n"}      when Count {"<"} Pool'Length is{"\n"}   begin{"\n"}      Append(Person);{"\n"}   end Append_Wait;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"}    procedure Append(Person : in Person_Name) is{"\n"}   begin{"\n"}      if Count = Pool'Length then{"\n"}         raise Queue_Error with "Buffer Full";  -- see 11.3{"\n"}      end if;{"\n"}      Pool(In_Index) := Person;{"\n"}      In_Index       := (In_Index mod Pool'Length) + 1;{"\n"}      Count          := Count + 1;{"\n"}   end Append;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"}    entry Remove_First_Wait(Person : out Person_Name){"\n"}      when Count {">"} 0 is{"\n"}   begin{"\n"}      Remove_First(Person);{"\n"}   end Remove_First_Wait;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"}    procedure Remove_First(Person : out Person_Name) is{"\n"}   begin{"\n"}      if Count = 0 then{"\n"}         raise Queue_Error with "Buffer Empty"; -- see 11.3{"\n"}      end if;{"\n"}      Person    := Pool(Out_Index);{"\n"}      Out_Index := (Out_Index mod Pool'Length) + 1;{"\n"}      Count     := Count - 1;{"\n"}   end Remove_First;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"}    function Cur_Count return Natural is{"\n"}   begin{"\n"}       return Buffer.Count;{"\n"}   end Cur_Count;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"}    function Max_Count return Natural is{"\n"}   begin{"\n"}       return Pool'Length;{"\n"}   end Max_Count;{"\n"}end Buffer;{"\n"}
+</CodeBlock>
+
