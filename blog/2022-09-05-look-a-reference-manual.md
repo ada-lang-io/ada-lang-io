@@ -41,4 +41,4 @@ PJ
 [algolia-search]: https://docsearch.algolia.com/
 [cheat-sheet]: ../docs/cheat-sheet
 [growing-a-language]: https://www.youtube.com/watch?v=lw6TaiXzHAE
-[ref-manual]: ../docs/category/reference-manual
+[ref-manual]: ../docs/arm/AA-TOC
