@@ -19,7 +19,7 @@ cd ada-lang-io
 yarn install
 ```
 
-3. Run the site locally. This will open up your web browser to `http://localhost:3000.
+3. Run the site locally. This will open up your web browser to `http://localhost:3000`.
 
 ```bash
 yarn start
