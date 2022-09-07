@@ -84,9 +84,14 @@ const config = {
         items: [
           {
             type: "doc",
-            docId: "why-ada",
+            docId: "getting-started/why-ada",
             position: "left",
             label: "Docs"
+          },
+          {
+            to: "/docs/arm/AA-TOC",
+            position: "left",
+            label: "Manual"
           },
           {
             to: "/blog",
@@ -108,7 +113,7 @@ const config = {
             items: [
               {
                 label: "Tutorial",
-                to: "/docs/why-ada"
+                to: "/docs/getting-started/why-ada"
               },
               {
                 label: "Learn Ada (by AdaCore)",
