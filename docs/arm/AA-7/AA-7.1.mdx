@@ -1,0 +1,105 @@
+---
+sidebar_position:  58
+---
+
+# 7.1 Package Specifications and Declarations
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+import Admonition from "@theme/Admonition";
+
+<p>[A package is generally provided in two parts: a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> and a <code><a href="../AA-7/AA-7.2#S0231">package_body</a></code>. Every package has a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, but not all packages have a <code><a href="../AA-7/AA-7.2#S0231">package_body</a></code>.] </p>
+
+#### Syntax
+
+<p><code>package_declaration</code><a id="S0229"></a><code> ::= </code><code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>;</p>
+<p>{"{"}<em>{"AI05-0183-1"}</em>{"}"} <code>package_specification</code><a id="S0230"></a><code> ::= </code>    <strong>package</strong> <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code>        [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>] <strong>is</strong>      {"{"}<code><a href="../AA-3/AA-3.11#S0088">basic_declarative_item</a></code>{"}"}   [<strong>private</strong>      {"{"}<code><a href="../AA-3/AA-3.11#S0088">basic_declarative_item</a></code>{"}"}]    <strong>end</strong> [[<code><a href="../AA-10/AA-10.1#S0291">parent_unit_name</a></code>.]<code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>]</p>
+<p>If an <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> or <code><a href="../AA-10/AA-10.1#S0291">parent_unit_name</a></code>.<code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> appears at the end of a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, then this sequence of lexical elements shall repeat the <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code>. </p>
+
+#### Legality Rules
+
+<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} A <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code> or <code><a href="../AA-12/AA-12.1#S0312">generic_package_declaration</a></code> requires a completion [(a body)] if it contains any <code><a href="../AA-3/AA-3.11#S0088">basic_declarative_item</a></code> that requires a completion, but whose completion is not in its <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>. </p>
+<Admonition type="note">
+<p><strong>To be honest: </strong>{"{"}<em>{"AI05-0229-1"}</em>{"}"} If an implementation supports it, the body of a package or generic package may be imported (using aspect Import, see B.1), in which case no explicit body is allowed. </p></Admonition>
+
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI95-00420-01"}</em>{"}"} {"{"}<em>{"AI95-00434-01"}</em>{"}"} The first list of <code><a href="../AA-3/AA-3.11#S0088">basic_declarative_item</a></code>s of a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> of a package other than a generic formal package is called the <em>visible part</em> of the package. [ The optional list of <code><a href="../AA-3/AA-3.11#S0088">basic_declarative_item</a></code>s after the reserved word <strong>private</strong> (of any <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>) is called the <em>private part</em> of the package. If the reserved word <strong>private</strong> does not appear, the package has an implicit empty private part.] Each list of <code><a href="../AA-3/AA-3.11#S0088">basic_declarative_item</a></code>s of a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> forms a <em>declaration list</em> of the package.</p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>This definition of visible part does not apply to generic formal packages - 12.7 defines the visible part of a generic formal package.</p></Admonition>
+
+<Admonition type="note">
+<p>The implicit empty private part is important because certain implicit declarations occur there if the package is a child package, and it defines types in its visible part that are derived from, or contain as components, private types declared within the parent package. These implicit declarations are visible in children of the child package. See 10.1.1. </p></Admonition>
+
+<p>[An entity declared in the private part of a package is visible only within the declarative region of the package itself (including any child units - see 10.1.1). In contrast, expanded names denoting entities declared in the visible part can be used even outside the package; furthermore, direct visibility of such entities can be achieved by means of <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s (see 4.1.3 and 8.4).] </p>
+
+#### Dynamic Semantics
+
+<p>The elaboration of a <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code> consists of the elaboration of its <code><a href="../AA-3/AA-3.11#S0088">basic_declarative_item</a></code>s in the given order. </p>
+<Admonition type="note">
+<p>NOTE 1   The visible part of a package contains all the information that another program unit is able to know about the package.</p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 2   If a declaration occurs immediately within the specification of a package, and the declaration has a corresponding completion that is a body, then that body has to occur immediately within the body of the package. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Proof: </strong>This follows from the fact that the declaration and completion are required to occur immediately within the same declarative region, and the fact that <code>bodies</code> are disallowed (by the Syntax Rules) in <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>s. This does not apply to instances of generic units, whose bodies can occur in <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>s. </p></Admonition>
+
+
+#### Examples
+
+<p><em>Example of a package declaration:</em> </p>
+<CodeBlock>
+package Rational_Numbers is{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   type Rational is{"\n"}      record{"\n"}         Numerator   : Integer;{"\n"}         Denominator : Positive;{"\n"}      end record;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   function "="(X,Y : Rational) return Boolean;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   function "/"  (X,Y : Integer)  return Rational;  --  to construct a rational number{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+   function "+"  (X,Y : Rational) return Rational;{"\n"}   function "-"  (X,Y : Rational) return Rational;{"\n"}   function "*"  (X,Y : Rational) return Rational;{"\n"}   function "/"  (X,Y : Rational) return Rational;{"\n"}end Rational_Numbers;{"\n"}
+</CodeBlock>
+
+<p>There are also many examples of package declarations in the predefined language environment (see Annex A). </p>
+
+#### Incompatibilities With Ada 83
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0417-1"}</em>{"}"} In Ada 83, a library package is allowed to have a body even if it doesn't need one. In Ada 95, a library package body is either required or forbidden - never optional. The workaround is to add aspect Elaborate_Body, or something else requiring a body, to each library package that has a body that isn't otherwise required. </p></Admonition>
+
+
+#### Wording Changes from Ada 83
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} We have moved the syntax into this subclause and the next subclause from RM83-7.1, "Package Structure", which we have removed.</p></Admonition>
+
+<Admonition type="note">
+<p>RM83 was unclear on the rules about when a package requires a body. For example, RM83-7.1(4) and RM83-7.1(8) clearly forgot about the case of an incomplete type declared in a <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code> but completed in the body. In addition, RM83 forgot to make this rule apply to a generic package. We have corrected these rules. Finally, since we now allow a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Import for any explicit declaration, the completion rules need to take this into account as well. </p></Admonition>
+
+
+#### Wording Changes from Ada 95
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00420-01"}</em>{"}"} Defined "declaration list" to avoid ambiguity in other rules as to whether packages are included. </p></Admonition>
+
+
+#### Extensions to Ada 2005
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0183-1"}</em>{"}"} An optional <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> can be used in a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>. This is described in 13.1.1. </p></Admonition>
+

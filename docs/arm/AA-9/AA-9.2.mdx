@@ -1,0 +1,86 @@
+---
+sidebar_position:  73
+---
+
+# 9.2 Task Execution - Task Activation
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+import Admonition from "@theme/Admonition";
+
+
+#### Dynamic Semantics
+
+<p>The execution of a task of a given task type consists of the execution of the corresponding <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>. The initial part of this execution is called the <em>activation</em> of the task; it consists of the elaboration of the <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> of the <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>. Should an exception be propagated by the elaboration of its <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, the activation of the task is defined to have <em>failed</em>, and it becomes a completed task.</p>
+<p>{"{"}<em>{"AI95-00416-01"}</em>{"}"} A task object (which represents one task) can be a part of a stand-alone object, of an object created by an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>, or of an anonymous object of a limited type, or a coextension of one of these. All tasks that are part or coextensions of any of the stand-alone objects created by the elaboration of <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>s (or <code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code>s of formal objects of mode <strong>in</strong>) of a single declarative region are activated together. All tasks that are part or coextensions of a single object that is not a stand-alone object are activated together. </p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>The initialization of an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> or <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> can indirectly include the creation of other objects that contain tasks. For example, the default expression for a subcomponent of an object created by an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> might call a function that evaluates a completely different <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>. Tasks created by the two allocators are <em>not</em> activated together. </p></Admonition>
+
+<p>{"{"}<em>{"AI95-00416-01"}</em>{"}"} For the tasks of a given declarative region, the activations are initiated within the context of the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> (and its associated <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code>s if any - see 11.2), just prior to executing the statements of the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code>. [For a package without an explicit body or an explicit <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code>, an implicit body or an implicit <code><a href="../AA-5/AA-5.1#S0170">null_statement</a></code> is assumed, as defined in 7.2.] </p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>If Tasking_Error is raised, it can be handled by handlers of the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code>. </p></Admonition>
+
+<p>{"{"}<em>{"AI95-00416-01"}</em>{"}"} For tasks that are part or coextensions of a single object that is not a stand-alone object, activations are initiated after completing any initialization of the outermost object enclosing these tasks, prior to performing any other operation on the outermost object. In particular, for tasks that are part or coextensions of the object created by the evaluation of an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>, the activations are initiated as the last step of evaluating the <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>, prior to returning the new access value. For tasks that are part or coextensions of an object that is the result of a function call, the activations are not initiated until after the function returns.</p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>{"{"}<em>{"AI95-00416-01"}</em>{"}"} The intent is that "temporary" objects with task parts (or coextensions) are treated similarly to an object created by an allocator. The "whole" object is initialized, and then all of the task parts (including the coextensions) are activated together. Each such "whole" object has its own task activation sequence, involving the activating task being suspended until all the new tasks complete their activation. </p></Admonition>
+
+<p>The task that created the new tasks and initiated their activations (the <em>activator</em>) is blocked until all of these activations complete (successfully or not). Once all of these activations are complete, if the activation of any of the tasks has failed [(due to the propagation of an exception)], Tasking_Error is raised in the activator, at the place at which it initiated the activations. Otherwise, the activator proceeds with its execution normally. Any tasks that are aborted prior to completing their activation are ignored when determining whether to raise Tasking_Error. </p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>Note that a task created by an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> does not necessarily depend on its activator; in such a case the activator's termination can precede the termination of the newly created task. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Discussion: </strong>Tasking_Error is raised only once, even if two or more of the tasks being activated fail their activation. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>To be honest: </strong>{"{"}<em>{"AI95-00265-01"}</em>{"}"} The pragma Partition_Elaboration_Policy (see H.6) can be used to defer task activation to a later point, thus changing many of these rules. </p></Admonition>
+
+<p>{"{"}<em>{"AI05-0045-1"}</em>{"}"} If the master that directly encloses the point where the activation of a task <em>T</em> would be initiated, completes before the activation of <em>T</em> is initiated, <em>T</em> becomes terminated and is never activated. Furthermore, if a return statement is left such that the return object is not returned to the caller, any task that was created as a part of the return object or one of its coextensions immediately becomes terminated and is never activated. </p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>{"{"}<em>{"AI05-0045-1"}</em>{"}"} The first case can only happen if the activation point of T is not reached due to an exception being raised or a task or statement being aborted. Note that this is exclusive; if the master completes normally and starts finalization, we're already past the activation point.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0045-1"}</em>{"}"} The second case can happen with an exception being raised in a return statement, by an exit or goto from an <code><a href="../AA-6/AA-6.5#S0225">extended_return_statement</a></code>, or by a return statement being aborted. Any tasks created for the return object of such a return statement are never activated. </p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 1   An entry of a task can be called before the task has been activated.</p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 2   {"{"}<em>{"AI12-0442-1"}</em>{"}"} If several tasks are activated together, the execution of any of these tasks can proceed without waiting until the end of the activation of the other tasks.</p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 3   A task can become completed during its activation either because of an exception or because it is aborted (see 9.8).</p></Admonition>
+
+
+#### Examples
+
+<p><em>Example of task activation:</em> </p>
+<CodeBlock>
+procedure P is{"\n"}   A, B : Server;    --  elaborate the task objects A, B{"\n"}   C    : Server;    --  elaborate the task object C{"\n"}begin{"\n"}   --  the tasks A, B, C are activated together before the first statement{"\n"}   ...{"\n"}end;{"\n"}
+</CodeBlock>
+
+
+#### Wording Changes from Ada 83
+
+<Admonition type="note">
+<p>We have replaced the term <em>suspended</em> with <em>blocked</em>, since we didn't want to consider a task blocked when it was simply competing for execution resources. "Suspended" is sometimes used more generally to refer to tasks that are not actually running on some processor, due to the lack of resources.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause has been rewritten in an attempt to improve presentation. </p></Admonition>
+
+
+#### Wording Changes from Ada 95
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00416-01"}</em>{"}"} Adjusted the wording for activating tasks to handle the case of anonymous function return objects. This is critical; we don't want to be waiting for the tasks in a return object when we exit the function normally. </p></Admonition>
+
+
+#### Wording Changes from Ada 2005
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0045-1"}</em>{"}"} <strong>Correction:</strong> Corrected the wording that handles tasks that are never activated to ensure that no lookahead is implied and to make it clear that tasks created by return statements that never return are never activated. </p></Admonition>
+

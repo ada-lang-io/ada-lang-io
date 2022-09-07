@@ -1,0 +1,62 @@
+---
+sidebar_position:  193
+---
+
+# J.3 Reduced Accuracy Subtypes
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+import Admonition from "@theme/Admonition";
+
+<p>A <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> may be used to define a floating point subtype with a new value for its requested decimal precision, as reflected by its Digits attribute. Similarly, a <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code> may be used to define an ordinary fixed point subtype with a new value for its <em>delta</em>, as reflected by its Delta attribute. </p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>It might be more direct to make these attributes specifiable via an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>, and eliminate the syntax for these <code>_constraint</code>s. </p></Admonition>
+
+
+#### Syntax
+
+<p>{"{"}<em>{"AI12-0152-1"}</em>{"}"} <code>delta_constraint</code><a id="S0367"></a><code> ::= </code><strong>delta</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> [<code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>]</p>
+
+#### Name Resolution Rules
+
+<p>{"{"}<em>{"AI12-0152-1"}</em>{"}"} The <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> of a <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code> is expected to be of any real type. </p>
+
+#### Legality Rules
+
+<p>{"{"}<em>{"AI12-0152-1"}</em>{"}"} The <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> of a <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code> shall be static.</p>
+<p>For a <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> with a <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code>, the <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> shall denote an ordinary fixed point subtype.</p>
+<p>For a <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> with a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code>, the <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> shall denote either a decimal fixed point subtype or a floating point subtype (notwithstanding the rule given in 3.5.9 that only allows a decimal fixed point subtype). </p>
+<Admonition type="note">
+<p><em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00114-01"}</em>{"}"} </p></Admonition>
+
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI12-0152-1"}</em>{"}"} A <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> with a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> that denotes an ordinary fixed point subtype and a <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code> defines an ordinary fixed point subtype with a <em>delta</em> given by the value of the <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> of the <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code>. If the <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code> includes a <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>, then the ordinary fixed point subtype is constrained by the <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>.</p>
+<p>{"{"}<em>{"AI12-0152-1"}</em>{"}"} A <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> with a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> that denotes a floating point subtype and a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> defines a floating point subtype with a requested decimal precision (as reflected by its Digits attribute) given by the value of the <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> of the <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code>. If the <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> includes a <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>, then the floating point subtype is constrained by the <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>. </p>
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI12-0152-1"}</em>{"}"} A <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code> is <em>compatible</em> with an ordinary fixed point subtype if the value of the <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> is no less than the <em>delta</em> of the subtype, and the <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>, if any, is compatible with the subtype.</p>
+<p>{"{"}<em>{"AI12-0152-1"}</em>{"}"} A <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> is <em>compatible</em> with a floating point subtype if the value of the <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> is no greater than the requested decimal precision of the subtype, and the <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>, if any, is compatible with the subtype.</p>
+<p>The elaboration of a <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code> consists of the elaboration of the <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>, if any. </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>A numeric subtype is considered "constrained" only if a range constraint applies to it. The only effect of a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> or a <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code> without a <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code> is to specify the value of the corresponding Digits or Delta attribute in the new subtype. The set of values of the subtype is not "constrained" in any way by such <code>_constraint</code>s. </p></Admonition>
+
+
+#### Wording Changes from Ada 83
+
+<Admonition type="note">
+<p>In Ada 83, a <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code> is called a fixed_point_constraint, and a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> is called a floating_point_constraint. We have adopted other terms because <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code>s apply primarily to decimal fixed point types now (they apply to floating point types only as an obsolescent feature). </p></Admonition>
+
+
+#### Wording Changes from Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0152-1"}</em>{"}"} <strong>Corrigendum:</strong> Changed the syntax so that the value following <strong>delta</strong> in a <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code> is a <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>. This is compatible as any expressions that would require extra parentheses are already illegal. The change is necessary to eliminate syntax ambguities in <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>s. The similar change for <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> is documented in 3.5.9. </p></Admonition>
+

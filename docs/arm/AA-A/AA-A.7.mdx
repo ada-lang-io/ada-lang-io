@@ -1,0 +1,56 @@
+---
+sidebar_position:  124
+---
+
+# A.7 External Files and File Objects
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+import Admonition from "@theme/Admonition";
+
+
+#### Static Semantics
+
+<p>Values input from the external environment of the program, or output to the external environment, are considered to occupy <em>external files</em>. An external file can be anything external to the program that can produce a value to be read or receive a value to be written. An external file is identified by a string (the <em>name</em>). A second string (the <em>form</em>) gives further system-dependent characteristics that may be associated with the file, such as the physical organization or access rights. The conventions governing the interpretation of such strings shall be documented.</p>
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} Input and output operations are expressed as operations on objects of some <em>file type</em>, rather than directly in terms of the external files. In the remainder of this clause, the term <em>file</em> is always used to refer to a file object; the term <em>external file</em> is used otherwise.</p>
+<p>Input-output for sequential files of values of a single element type is defined by means of the generic package Sequential_IO. In order to define sequential input-output for a given element type, an instantiation of this generic unit, with the given type as actual parameter, has to be declared. The resulting package contains the declaration of a file type (called File_Type) for files of such elements, as well as the operations applicable to these files, such as the Open, Read, and Write procedures.</p>
+<p>{"{"}<em>{"AI95-00285-01"}</em>{"}"} Input-output for direct access files is likewise defined by a generic package called Direct_IO. Input-output in human-readable form is defined by the (nongeneric) packages Text_IO for Character and String data, Wide_Text_IO for Wide_Character and Wide_String data, and Wide_Wide_Text_IO for Wide_Wide_Character and Wide_Wide_String data. Input-output for files containing streams of elements representing values of possibly different types is defined by means of the (nongeneric) package Streams.Stream_IO.</p>
+<p>Before input or output operations can be performed on a file, the file first has to be associated with an external file. While such an association is in effect, the file is said to be <em>open</em>, and otherwise the file is said to be <em>closed</em>.</p>
+<p>The language does not define what happens to external files after the completion of the main program and all the library tasks (in particular, if corresponding files have not been closed). The effect of input-output for access types is unspecified.</p>
+<p>An open file has a <em>current mode</em>, which is a value of one of the following enumeration types: </p>
+<CodeBlock>
+type File_Mode is (In_File, Inout_File, Out_File);  --  for Direct_IO{"\n"}
+</CodeBlock>
+
+<p>These values correspond respectively to the cases where only reading, both reading and writing, or only writing are to be performed. </p>
+<CodeBlock>
+{"{"}{"AI95-00285-01"}{"}"} type File_Mode is (In_File, Out_File, Append_File);{"\n"}--  for Sequential_IO, Text_IO, Wide_Text_IO, Wide_Wide_Text_IO, and Stream_IO{"\n"}
+</CodeBlock>
+
+<p>These values correspond respectively to the cases where only reading, only writing, or only appending are to be performed.</p>
+<p>The mode of a file can be changed. </p>
+<p>{"{"}<em>{"AI95-00285-01"}</em>{"}"} Several file management operations are common to Sequential_IO, Direct_IO, Text_IO, Wide_Text_IO, and Wide_Wide_Text_IO. These operations are described in subclause A.8.2 for sequential and direct files. Any additional effects concerning text input-output are described in subclause A.10.2.</p>
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} The exceptions that can be propagated by the execution of an input-output subprogram are defined in the package IO_Exceptions; the situations in which they can be propagated are described following the description of the subprogram (and in subclause A.13). The exceptions Storage_Error and Program_Error may be propagated. (Program_Error can only be propagated due to errors made by the caller of the subprogram.) Finally, exceptions can be propagated in certain implementation-defined situations. </p>
+<Admonition type="note">
+<p><em>This paragraph was deleted.</em></p></Admonition>
+
+<Admonition type="note">
+<p><strong>Discussion: </strong>The last sentence here is referring to the documentation requirements in A.13, "Exceptions in Input-Output", and the documentation summary item is provided there. </p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 1   {"{"}<em>{"AI95-00285-01"}</em>{"}"} Each instantiation of the generic packages Sequential_IO and Direct_IO declares a different type File_Type. In the case of Text_IO, Wide_Text_IO, Wide_Wide_Text_IO, and Streams.Stream_IO, the corresponding type File_Type is unique.</p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 2   {"{"}<em>{"AI12-0440-1"}</em>{"}"} A bidirectional device can often be modeled as two sequential files associated with the device, one of mode In_File, and one of mode Out_File. An implementation can restrict the number of files that can be associated with a given external file. </p></Admonition>
+
+
+#### Wording Changes from Ada 95
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00285-01"}</em>{"}"} Included package Wide_Wide_Text_IO in this description. </p></Admonition>
+

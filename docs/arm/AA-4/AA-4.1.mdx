@@ -1,0 +1,697 @@
+---
+sidebar_position:  29
+---
+
+# 4.1 Names
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+import Admonition from "@theme/Admonition";
+
+<p>[<code><a href="../AA-4/AA-4.1#S0091">Name</a></code>s can denote declared entities, whether declared explicitly or implicitly (see 3.1). <code><a href="../AA-4/AA-4.1#S0091">Name</a></code>s can also denote objects or subprograms designated by access values; the results of <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>s or <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s; subcomponents and slices of objects and values; protected subprograms, single entries, entry families, and entries in families of entries. Finally, <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s can denote attributes of any of the foregoing.] </p>
+
+#### Syntax
+
+<p>{"{"}<em>{"AI05-0003-1"}</em>{"}"} {"{"}<em>{"AI05-0139-2"}</em>{"}"} {"{"}<em>{"AI12-0125-3"}</em>{"}"} <code>name</code><a id="S0091"></a><code> ::= </code>     <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code>	| <code><a href="../AA-4/AA-4.1#S0094">explicit_dereference</a></code>   | <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>	| <code><a href="../AA-4/AA-4.1#S0097">slice</a></code>   | <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>	| <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>   | <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>	| <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>   | <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>	| <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code>   | <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code>	| <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code>   | <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code></p>
+<p><code>direct_name</code><a id="S0092"></a><code> ::= </code><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> | <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code></p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> is no longer a <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code>. <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>s are usable even when the corresponding enumeration type declaration is not visible. See 4.2. </p></Admonition>
+
+<p><code>prefix</code><a id="S0093"></a><code> ::= </code><code><a href="../AA-4/AA-4.1#S0091">name</a></code> | <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code></p>
+<p><code>explicit_dereference</code><a id="S0094"></a><code> ::= </code><code><a href="../AA-4/AA-4.1#S0091">name</a></code>.<strong>all</strong></p>
+<p><code>implicit_dereference</code><a id="S0095"></a><code> ::= </code><code><a href="../AA-4/AA-4.1#S0091">name</a></code></p>
+<p>{"{"}<em>{"AI05-0004-1"}</em>{"}"} [Certain forms of <code><a href="../AA-4/AA-4.1#S0091">name</a></code> (<code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>s, <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>s, <code><a href="../AA-4/AA-4.1#S0097">slice</a></code>s, and <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>s) include a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> that is either itself a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes some related entity, or an <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code> of an access value that designates some related entity.] </p>
+
+#### Name Resolution Rules
+
+<p>The <code><a href="../AA-4/AA-4.1#S0091">name</a></code> in a <em>dereference</em> (either an <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code> or an <code><a href="../AA-4/AA-4.1#S0094">explicit_dereference</a></code>) is expected to be of any access type. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI05-0008-1"}</em>{"}"} If the type of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> in a dereference is some access-to-object type <em>T</em>, then the dereference denotes a view of an object, the <em>nominal subtype</em> of the view being the designated subtype of <em>T</em>. If the designated subtype has unconstrained discriminants, the (actual) subtype of the view is constrained by the values of the discriminants of the designated object, except when there is a partial view of the type of the designated subtype that does not have discriminants, in which case the dereference is not constrained by its discriminant values. </p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>If the value of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> is the result of an access type conversion, the dereference denotes a view created as part of the conversion. The nominal subtype of the view is not necessarily the same as that used to create the designated object. See 4.6. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>To be honest: </strong>We sometimes refer to the nominal subtype of a particular kind of <code><a href="../AA-4/AA-4.1#S0091">name</a></code> rather than the nominal subtype of the view denoted by the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> (presuming the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes a view of an object). These two uses of nominal subtype are intended to mean the same thing. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Reason: </strong>{"{"}<em>{"AI05-0008-1"}</em>{"}"} The last sentence was not present in Ada 95; it is necessary in Ada 2005 because general access types can designate unconstrained objects, which was not possible in Ada 95. Thus, the rules that had this effect in Ada 95 (the object being constrained by its initial value) don't work in Ada 2005 and we have to say this explicitly.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0008-1"}</em>{"}"} The "except" part of the last sentence prevents privacy "breaking", so that if a private type has discriminants only in the full view, they don't interfere with freely interassigning values between objects of the type, even when the objects live in the heap. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Implementation Note: </strong>{"{"}<em>{"AI05-0008-1"}</em>{"}"} Since we don't depend on whether the designated object is constrained, it is not necessary to include a constrained bit in every object that could be designated by a general access type. </p></Admonition>
+
+<p>If the type of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> in a dereference is some access-to-subprogram type <em>S</em>, then the dereference denotes a view of a subprogram, the <em>profile</em> of the view being the designated profile of <em>S</em>. </p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>This means that the formal parameter names and default expressions to be used in a call whose <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is a dereference are those of the designated profile, which need not be the same as those of the subprogram designated by the access value, since 'Access requires only subtype conformance, not full conformance. </p></Admonition>
+
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI95-00415-01"}</em>{"}"} The evaluation of a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> determines the entity denoted by the <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. This evaluation has no other effect for a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that is a <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> or a <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>.</p>
+<p>[The evaluation of a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that has a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> includes the evaluation of the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>.] The evaluation of a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> consists of the evaluation of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or the <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code>. The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes the entity denoted by the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or the <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code>.</p>
+<p>The evaluation of a dereference consists of the evaluation of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> and the determination of the object or subprogram that is designated by the value of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. A check is made that the value of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> is not the null access value. Constraint_Error is raised if this check fails. The dereference denotes the object or subprogram designated by the value of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. </p>
+
+#### Examples
+
+<p><em>Examples of direct names:</em> </p>
+<CodeBlock>
+Pi 	-- the direct name of a number 	(see 3.3.2){"\n"}Limit 	-- the direct name of a constant 	(see 3.3.1){"\n"}Count 	-- the direct name of a scalar variable 	(see 3.3.1){"\n"}Board 	-- the direct name of an array variable 	(see 3.6.1){"\n"}Matrix 	-- the direct name of a type 	(see 3.6){"\n"}Random 	-- the direct name of a function 	(see 6.1){"\n"}Error 	-- the direct name of an exception 	(see 11.1){"\n"}
+</CodeBlock>
+
+<p><em>Examples of dereferences:</em> </p>
+<CodeBlock>
+Next_Car.all	--  explicit dereference denoting the object designated by{"\n"}               	--  the access variable Next_Car (see 3.10.1){"\n"}Next_Car.Owner 	--  selected component with implicit dereference;{"\n"}               	--  same as Next_Car.all.Owner{"\n"}
+</CodeBlock>
+
+
+#### Extensions to Ada 83
+
+<Admonition type="note">
+<p>Type conversions and function calls are now considered names that denote the result of the operation. In the case of a type conversion used as an actual parameter or that is of a tagged type, the type conversion is considered a variable if the operand is a variable. This simplifies the description of "parameters of the form of a type conversion" as well as better supporting an important OOP paradigm that requires the combination of a conversion from a class-wide type to some specific type followed immediately by component selection. Function calls are considered names so that a type conversion of a function call and the function call itself are treated equivalently in the grammar. A function call is considered the name of a constant, and can be used anywhere such a name is permitted. See 6.5.</p></Admonition>
+
+<Admonition type="note">
+<p>Type conversions of a tagged type are permitted anywhere their operand is permitted. That is, if the operand is a variable, then the type conversion can appear on the left-hand side of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>. If the operand is an object, then the type conversion can appear in an object renaming or as a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. See 4.6. </p></Admonition>
+
+
+#### Wording Changes from Ada 83
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00114-01"}</em>{"}"} Everything of the general syntactic form <code><a href="../AA-4/AA-4.1#S0091">name</a></code>(...) is now syntactically a <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. In any realistic parser, this would be a necessity since distinguishing among the various <code><a href="../AA-4/AA-4.1#S0091">name</a></code>(...) constructs inevitably requires name resolution. In cases where the construct yields a value rather than an object, the name denotes a value rather than an object. Names already denote values in Ada 83 with named numbers, components of the result of a function call, etc. This is partly just a wording change, and partly an extension of functionality (see Extensions heading above).</p></Admonition>
+
+<Admonition type="note">
+<p>The syntax rule for <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> is new. It is used in places where direct visibility is required. It's kind of like Ada 83's <code>simple_name</code>, but <code>simple_name</code> applied to both direct visibility and visibility by selection, and furthermore, it didn't work right for <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code>s. The syntax rule for <code>simple_name</code> is removed, since its use is covered by a combination of <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> and <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>. The syntactic categories <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> and <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> are similar; it's mainly the visibility rules that distinguish the two. The introduction of <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> requires the insertion of one new explicit textual rule: to forbid <code><a href="../AA-5/AA-5.1#S0172">statement_identifier</a></code>s from being <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code>s. This is the only case where the explicit rule is needed, because this is the only case where the declaration of the entity is implicit. For example, there is no need to syntactically forbid (say) "X: "Rem";", because it is impossible to declare a type whose name is an <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code> in the first place.</p></Admonition>
+
+<Admonition type="note">
+<p>The syntax rules for <code><a href="../AA-4/AA-4.1#S0094">explicit_dereference</a></code> and <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code> are new; this makes other rules simpler, since dereferencing an access value has substantially different semantics from <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>s. We also use <code><a href="../AA-4/AA-4.1#S0091">name</a></code> instead of <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> in the <code><a href="../AA-4/AA-4.1#S0094">explicit_dereference</a></code> rule since that seems clearer. Note that these rules rely on the fact that function calls are now names, so we don't need to use prefix to allow functions calls in front of .<strong>all</strong>. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Discussion: </strong>Actually, it would be reasonable to allow any <code><a href="../AA-4/AA-4.4#S0141">primary</a></code> in front of .<strong>all</strong>, since only the value is needed, but that would be a bit radical. </p></Admonition>
+
+<Admonition type="note">
+<p>We no longer use the term <em>appropriate for a type</em> since we now describe the semantics of a prefix in terms of implicit dereference. </p></Admonition>
+
+
+#### Extensions to Ada 2005
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0003-1"}</em>{"}"} A <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> is now a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denoting a constant view; this allows them to be used as a prefix and to be renamed as an object. They are often used to remove ambiguity from function calls, and there may be no other way to do that. Interestingly, a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> of a <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> is already legal in these contexts, so this change mainly reduces clutter by eliminating an otherwise unneeded <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> from some expressions. </p></Admonition>
+
+
+#### Wording Changes from Ada 2005
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0008-1"}</em>{"}"} <strong>Correction:</strong> Added a missing rule so that most dereferences are assumed constrained (without determining whether the designated object is). This is just confirming the Ada 95 rules; Ada 2005 failed to ensure that this property was unchanged.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} Added <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> and <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> as types of <code><a href="../AA-4/AA-4.1#S0091">name</a></code>; these are documented as extensions in the appropriate subclauses. </p></Admonition>
+
+
+#### Wording Changes from Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0125-3"}</em>{"}"} Added a <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> (see 5.2.1) to the syntax of <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. </p></Admonition>
+
+
+## 4.1.1  Indexed Components
+
+<p>[An <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> denotes either a component of an array or an entry in a family of entries. ]</p>
+
+#### Syntax
+
+<p><code>indexed_component</code><a id="S0096"></a><code> ::= </code><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>(<code><a href="../AA-4/AA-4.4#S0132">expression</a></code> {"{"}, <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>{"}"})</p>
+
+#### Name Resolution Rules
+
+<p>The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> with a given number of <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s shall resolve to denote an array (after any implicit dereference) with the corresponding number of index positions, or shall resolve to denote an entry family of a task or protected object (in which case there shall be only one <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>).</p>
+<p>The expected type for each <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is the corresponding index type.</p>
+
+#### Static Semantics
+
+<p>When the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes an array, the <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> denotes the component of the array with the specified index value(s). The nominal subtype of the <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> is the component subtype of the array type. </p>
+<p>When the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes an entry family, the <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> denotes the individual entry of the entry family with the specified index value.</p>
+
+#### Dynamic Semantics
+
+<p>For the evaluation of an <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>, the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> and the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s are evaluated in an arbitrary order. The value of each <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is converted to the corresponding index type. A check is made that each index value belongs to the corresponding index range of the array or entry family denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. Constraint_Error is raised if this check fails.</p>
+
+#### Examples
+
+<p><em>Examples of indexed components:</em> </p>
+<CodeBlock>
+ My_Schedule(Sat)     --  a component of a one-dimensional array 	(see 3.6.1){"\n"} Page(10)             --  a component of a one-dimensional array 	(see 3.6){"\n"} Board(M, J + 1)      --  a component of a two-dimensional array 	(see 3.6.1){"\n"} Page(10)(20)         --  a component of a component 	(see 3.6){"\n"} Request(Medium)      --  an entry in a family of entries 	(see 9.1){"\n"} Next_Frame(L)(M, N)  --  a component of a function call 	(see 6.1){"\n"}
+</CodeBlock>
+
+<Admonition type="note">
+<p>NOTE 1   <em>Notes on the examples:</em> Distinct notations are used for components of multidimensional arrays (such as Board) and arrays of arrays (such as Page). The components of an array of arrays are arrays and can therefore be indexed. Thus Page(10)(20) denotes the 20th component of Page(10). In the last example Next_Frame(L) is a function call returning an access value that designates a two-dimensional array.</p></Admonition>
+
+
+## 4.1.2  Slices
+
+<p>[ A <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> denotes a one-dimensional array formed by a sequence of consecutive components of a one-dimensional array. A <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> of a variable is a variable; a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> of a constant is a constant;] a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> of a value is a value. </p>
+
+#### Syntax
+
+<p><code>slice</code><a id="S0097"></a><code> ::= </code><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>(<code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code>)</p>
+
+#### Name Resolution Rules
+
+<p>The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> shall resolve to denote a one-dimensional array (after any implicit dereference).</p>
+<p>The expected type for the <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code> of a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> is the index type of the array type. </p>
+
+#### Static Semantics
+
+<p>A <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> denotes a one-dimensional array formed by the sequence of consecutive components of the array denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>, corresponding to the range of values of the index given by the <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code>.</p>
+<p>The type of the <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> is that of the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. Its bounds are those defined by the <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code>.</p>
+
+#### Dynamic Semantics
+
+<p>For the evaluation of a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code>, the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> and the <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code> are evaluated in an arbitrary order. If the <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> is not a <em>null slice</em> (a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> where the <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code> is a null range), then a check is made that the bounds of the <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code> belong to the index range of the array denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. Constraint_Error is raised if this check fails.</p>
+<Admonition type="note">
+<p>NOTE 1   A <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> is not permitted as the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an Access <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>, even if the components or the array as a whole are aliased. See 3.10.2. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Proof: </strong>Slices are not aliased, by 3.10, "Access Types". </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Reason: </strong>This is to ease implementation of general-access-to-array. If slices were aliased, implementations would need to store array dope with the access values, which is not always desirable given access-to-incomplete types completed in a package body. </p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 2   For a one-dimensional array A, the <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> A(N .. N) denotes an array that has only one component; its type is the type of A. On the other hand, A(N) denotes a component of the array A and has the corresponding component type. </p></Admonition>
+
+
+#### Examples
+
+<p><em>Examples of slices:</em> </p>
+<CodeBlock>
+  Stars(1 .. 15)        --  a slice of 15 characters 	(see 3.6.3){"\n"}  Page(10 .. 10 + Size) --  a slice of 1 + Size components 	(see 3.6){"\n"}  Page(L)(A .. B)       --  a slice of the array Page(L) 	(see 3.6){"\n"}  Stars(1 .. 0)         --  a null slice 	(see 3.6.3){"\n"}  My_Schedule(Weekday)  --  bounds given by subtype 	(see 3.6.1 and 3.5.1){"\n"}  Stars(5 .. 15)(K)     --  same as Stars(K) 	(see 3.6.3){"\n"}                        --  provided that K is in 5 .. 15{"\n"}
+</CodeBlock>
+
+
+## 4.1.3  Selected Components
+
+<p>[<code><a href="../AA-4/AA-4.1#S0098">Selected_component</a></code>s are used to denote components (including discriminants), entries, entry families, and protected subprograms; they are also used as expanded names as described below. ]</p>
+
+#### Syntax
+
+<p><code>selected_component</code><a id="S0098"></a><code> ::= </code><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> . <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code></p>
+<p><code>selector_name</code><a id="S0099"></a><code> ::= </code><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> | <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> | <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code></p>
+
+#### Name Resolution Rules
+
+<p>A <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> is called an <em>expanded name</em> if, according to the visibility rules, at least one possible interpretation of its <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes a package or an enclosing named construct (directly, not through a <code><a href="../AA-8/AA-8.5#S0242">subprogram_renaming_declaration</a></code> or <code><a href="../AA-8/AA-8.5#S0243">generic_renaming_declaration</a></code>). </p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>See AI83-00187. </p></Admonition>
+
+<p>A <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> that is not an expanded name shall resolve to denote one of the following: </p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>If the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> denotes an enclosing named construct, then the <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> is interpreted only as an expanded name, even if the named construct is a function that could be called without parameters. </p></Admonition>
+
+<p>A component [(including a discriminant)]:</p>
+<p>The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> shall resolve to denote an object or value of some non-array composite type (after any implicit dereference). The <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> shall resolve to denote a <code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code> of the type, or, unless the type is a protected type, a <code><a href="../AA-3/AA-3.8#S0070">component_declaration</a></code> of the type. The <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> denotes the corresponding component of the object or value. </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} The components of a protected object cannot be named except by an expanded name, even from within the corresponding protected body. The protected body cannot reference the private components of some arbitrary object of the protected type; the protected body may reference components of the current instance only (by an expanded name or a <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code>). </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Ramification: </strong>Only the discriminants and components visible at the place of the <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> can be selected, since a <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> can only denote declarations that are visible (see 8.3). </p></Admonition>
+
+<p>A single entry, an entry family, or a protected subprogram:</p>
+<p>The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> shall resolve to denote an object or value of some task or protected type (after any implicit dereference). The <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> shall resolve to denote an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> or <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code> occurring (implicitly or explicitly) within the visible part of that type. The <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> denotes the corresponding entry, entry family, or protected subprogram. </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>This explicitly says "visible part" because even though the body has visibility on the private part, it cannot call the private operations of some arbitrary object of the task or protected type, only those of the current instance (and expanded name notation has to be used for that). </p></Admonition>
+
+<p>{"{"}<em>{"AI95-00252-01"}</em>{"}"} {"{"}<em>{"AI95-00407-01"}</em>{"}"} A view of a subprogram whose first formal parameter is of a tagged type or is an access parameter whose designated type is tagged:</p>
+<p>{"{"}<em>{"AI95-00252-01"}</em>{"}"} {"{"}<em>{"AI95-00407-01"}</em>{"}"} {"{"}<em>{"AI05-0090-1"}</em>{"}"} The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> (after any implicit dereference) shall resolve to denote an object or value of a specific tagged type <em>T</em> or class-wide type <em>T</em>'Class. The <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> shall resolve to denote a view of a subprogram declared immediately within the declarative region in which an ancestor of the type <em>T</em> is declared. The first formal parameter of the subprogram shall be of type <em>T</em>, or a class-wide type that covers <em>T</em>, or an access parameter designating one of these types. The designator of the subprogram shall not be the same as that of a component of the tagged type visible at the point of the <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>. The subprogram shall not be an implicitly declared primitive operation of type <em>T</em> that overrides an inherited subprogram implemented by an entry or protected subprogram visible at the point of the <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>. The <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> denotes a view of this subprogram that omits the first formal parameter. This view is called a <em>prefixed view</em> of the subprogram, and the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> (after any implicit dereference) is called the <em>prefix</em> of the prefixed view. </p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>{"{"}<em>{"AI05-0090-1"}</em>{"}"} The part of the rule that excludes a primitive overriding subprogram as a selector applies only to the wrapper subprogram that is implicitly declared to override a subprogram inherited from a synchronized interface that is implemented by an operation of a task or protected type (see 9.1 and 9.4). We don't want calls that use a prefixed view to be ambiguous between the wrapper subprogram and the implementing entry or protected operation. Note that it is illegal to declare an explicit primitive that has a prefixed view that is homographic with one of the type's operations, so in normal cases it isn't possible to have an ambiguity in a prefix call. However, a class-wide operation of an ancestor type that is declared in the same declaration list with the ancestor type is also considered, and that can still make a call ambiguous. </p></Admonition>
+
+<p>An expanded name shall resolve to denote a declaration that occurs immediately within a named declarative region, as follows: </p>
+<p>The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> shall resolve to denote either a package [(including the current instance of a generic package, or a rename of a package)], or an enclosing named construct.</p>
+<p>The <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> shall resolve to denote a declaration that occurs immediately within the declarative region of the package or enclosing construct [(the declaration shall be visible at the place of the expanded name - see 8.3)]. The expanded name denotes that declaration. </p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>Hence, a library unit or subunit can use an expanded name to refer to the declarations within the private part of its parent unit, as well as to other children that have been mentioned in <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s. </p></Admonition>
+
+<p>If the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> does not denote a package, then it shall be a <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> or an expanded name, and it shall resolve to denote a program unit (other than a package), the current instance of a type, a <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></code>, a <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code>, or an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> (in the case of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> or <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, no family index is allowed); the expanded name shall occur within the declarative region of this construct. Further, if this construct is a callable construct and the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes more than one such enclosing callable construct, then the expanded name is ambiguous, independently of the <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>.</p>
+
+#### Legality Rules
+
+<p>{"{"}<em>{"AI95-00252-01"}</em>{"}"} {"{"}<em>{"AI95-00407-01"}</em>{"}"} {"{"}<em>{"AI12-0204-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} For a prefixed view of a subprogram whose first formal parameter is an access parameter, the prefix shall be legal as the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> with <code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code> Access appearing as the first actual parameter in a call on the unprefixed view of the subprogram.</p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>{"{"}<em>{"AI12-0204-1"}</em>{"}"} This rule prevents, for instance, using a nonaliased prefix in such a prefixed view. It also prevents using discriminant-dependent components as the prefix of such a prefixed view if those components would not be allowed to be renamed. </p></Admonition>
+
+<p>{"{"}<em>{"AI95-00407-01"}</em>{"}"} For a subprogram whose first parameter is of mode <strong>in out</strong> or <strong>out</strong>, or of an anonymous access-to-variable type, the prefix of any prefixed view shall denote a variable.</p>
+<Admonition type="note">
+<p><strong>Reason: </strong>We want calls through a prefixed view and through a normal view to have the same legality. Thus, the implicit 'Access in this new notation needs the same legality check that an explicit 'Access would have. Similarly, we need to prohibit the object from being constant if the first parameter of the subprogram is <strong>in out</strong>, because that is (obviously) prohibited for passing a normal parameter. </p></Admonition>
+
+
+#### Dynamic Semantics
+
+<p>The evaluation of a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> includes the evaluation of the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>.</p>
+<p>For a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> that denotes a component of a <code><a href="../AA-3/AA-3.8#S0072">variant</a></code>, a check is made that the values of the discriminants are such that the value or object denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> has this component. The exception Constraint_Error is raised if this check fails.</p>
+
+#### Examples
+
+<p><em>Examples of selected components:</em> </p>
+<CodeBlock>
+{"{"}{"AI95-00252-01"}{"}"} {"{"}{"AI95-00407-01"}{"}"} {"{"}{"AI12-0178"}{"}"}   Tomorrow.Month     --  a record component 	(see 3.8){"\n"}  Next_Car.Owner     --  a record component 	(see 3.10.1){"\n"}  Next_Car.Owner.Age --  a record component 	(see 3.10.1){"\n"}                     --  the previous two lines involve implicit dereferences{"\n"}  Writer.Unit        --  a record component (a discriminant) 	(see 3.8.1){"\n"}  Min_Cell(H).Value  --  a record component of the result 	(see 6.1){"\n"}                     --  of the function call Min_Cell(H){"\n"}  Cashier.Append     --  a prefixed view of a procedure 	(see 3.9.4){"\n"}  Control.Seize      --  an entry of a protected object 	(see 9.4){"\n"}  Pool(K).Write      --  an entry of the task Pool(K) 	(see 9.1){"\n"}
+</CodeBlock>
+
+<p><em>Examples of expanded names:</em> </p>
+<CodeBlock>
+  Key_Manager."{"<"}"      --  an operator of the visible part of a package 	(see 7.3.1){"\n"}  Dot_Product.Sum      --  a variable declared in a function body 	(see 6.1){"\n"}  Buffer.Pool          --  a variable declared in a protected unit 	(see 9.11){"\n"}  Buffer.Read          --  an entry of a protected unit 	(see 9.11){"\n"}  Swap.Temp            --  a variable declared in a block statement 	(see 5.6){"\n"}  Standard.Boolean     --  the name of a predefined type 	(see A.1){"\n"}
+</CodeBlock>
+
+
+#### Extensions to Ada 83
+
+<Admonition type="note">
+<p>We now allow an expanded name to use a prefix that denotes a rename of a package, even if the selector is for an entity local to the body or private part of the package, so long as the entity is visible at the place of the reference. This eliminates a preexisting anomaly where references in a package body may refer to declarations of its visible part but not those of its private part or body when the prefix is a rename of the package. </p></Admonition>
+
+
+#### Wording Changes from Ada 83
+
+<Admonition type="note">
+<p>The syntax rule for <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> is new. It is used in places where visibility, but not necessarily direct visibility, is required. See 4.1, "Names" for more information.</p></Admonition>
+
+<Admonition type="note">
+<p>The description of dereferencing an access type has been moved to 4.1, "Names"; <code><a href="../AA-4/AA-4.1#S0091">name</a></code>.<strong>all</strong> is no longer considered a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>.</p></Admonition>
+
+<Admonition type="note">
+<p>The rules have been restated to be consistent with our new terminology, to accommodate class-wide types, etc. </p></Admonition>
+
+
+#### Extensions to Ada 95
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00252-01"}</em>{"}"} The prefixed view notation for tagged objects is new. This provides a similar notation to that used in other popular languages, and also reduces the need for <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s. This is sometimes known as "distinguished receiver notation". </p></Admonition>
+
+<Admonition type="note">
+<p>Given the following definitions for a tagged type T: </p></Admonition>
+
+<CodeBlock>
+procedure Do_Something (Obj : in out T; Count : in Natural);{"\n"}procedure Do_Something_Else (Obj : access T; Flag : in Boolean);{"\n"}My_Object : aliased T;{"\n"}
+</CodeBlock>
+
+<Admonition type="note">
+<p>the following calls are equivalent: </p></Admonition>
+
+<CodeBlock>
+Do_Something (My_Object, Count ={">"} 10);{"\n"}My_Object.Do_Something (Count ={">"} 10);{"\n"}
+</CodeBlock>
+
+<Admonition type="note">
+<p>as are the following calls: </p></Admonition>
+
+<CodeBlock>
+Do_Something_Else (My_Object'Access, Flag ={">"} True);{"\n"}My_Object.Do_Something_Else (Flag ={">"} True);{"\n"}
+</CodeBlock>
+
+
+#### Wording Changes from Ada 2005
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0090-1"}</em>{"}"} <strong>Correction:</strong> Corrected the definition of a prefixed view to ignore the implicit subprograms declared for "implemented by" entries and protected subprograms. </p></Admonition>
+
+
+#### Incompatibilities With Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0204-1"}</em>{"}"} <strong>Correction:</strong> Added a rule to ensure that all reasons that the prefix of an Access attribute can be illegal are covered by the rule for the implicit Access attribute of a prefixed view. If the object is a subcomponent that depends on discriminants or fails a static accessibility check, Ada 2012 would have allowed the prefix while Ada 2022 would not. This violated the principle that a prefixed view and a normal call have the same semantics; practically, the code may not have worked anyway if a compiler implemented generalized indexing by code expansion into the canonical form. Thus, such code wasn't practically portable. </p></Admonition>
+
+
+## 4.1.4  Attributes
+
+<p>[An <em>attribute</em> is a characteristic of an entity that can be queried via an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> or a <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>.] </p>
+<Admonition type="note">
+<p><strong>Glossary entry: </strong>An attribute is a characteristic or property of an entity that can be queried, and in some cases specified.</p></Admonition>
+
+<p>Version=[5],Kind=(AddedNormal),Group=[T],Term=[attribute], Def=[a characteristic or property of an entity that can be queried, and in some cases specified] </p>
+
+#### Syntax
+
+<p>{"{"}<em>{"AI12-0262-1"}</em>{"}"} <code>attribute_reference</code><a id="S0100"></a><code> ::= </code>    <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>'<code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code>  | <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code></p>
+<p>{"{"}<em>{"AI05-0004-1"}</em>{"}"} <code>attribute_designator</code><a id="S0101"></a><code> ::= </code>    <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>[(<em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>)]  | Access | Delta | Digits | Mod</p>
+<p><code>range_attribute_reference</code><a id="S0102"></a><code> ::= </code><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>'<code><a href="../AA-4/AA-4.1#S0103">range_attribute_designator</a></code></p>
+<p><code>range_attribute_designator</code><a id="S0103"></a><code> ::= </code>Range[(<em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>)]</p>
+
+#### Name Resolution Rules
+
+<p>{"{"}<em>{"AI12-0242-1"}</em>{"}"} {"{"}<em>{"AI12-0262-1"}</em>{"}"} In an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> that is not a <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code>, if the <code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code> is for an attribute defined for (at least some) objects of an access type, then the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is never interpreted as an <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code>; otherwise (and for all <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>s and <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code>s), if there is a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> and the type of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> within the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is of an access type, the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is interpreted as an <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code>. Similarly, if the <code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code> is for an attribute defined for (at least some) functions, then the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is never interpreted as a parameterless <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>; otherwise (and for all <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>s and <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code>s), if there is a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> and the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> consists of a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a function, it is interpreted as a parameterless <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>.</p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>The first part of this rule is essentially a "preference" against implicit dereference, so that it is possible to ask for, say, 'Size of an access object, without automatically getting the size of the object designated by the access object. This rule applies to 'Access, 'Unchecked_Access, 'Size, and 'Address, and any other attributes that are defined for at least some access objects.</p></Admonition>
+
+<Admonition type="note">
+<p>The second part of this rule implies that, for a parameterless function F, F'Address is the address of F, whereas F'Size is the size of the anonymous constant returned by F.</p></Admonition>
+
+<Admonition type="note">
+<p>We normally talk in terms of expected type or profile for name resolution rules, but we don't do this for attributes because certain attributes are legal independent of the type or the profile of the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00114-01"}</em>{"}"} Other than the rules given above, the Name Resolution Rules for the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of each attribute are defined as Name Resolution Rules for that attribute. If no such rules are defined, then no context at all should be used when resolving the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. In particular, any knowledge about the kind of entities required must not be used for resolution unless that is required by Name Resolution Rules. This matters in obscure cases; for instance, given the following declarations: </p></Admonition>
+
+<CodeBlock>
+  function Get_It return Integer is ... -- (1){"\n"}  function Get_It return Some_Record_Type is ... -- (2){"\n"}
+</CodeBlock>
+
+<Admonition type="note">
+<p>the following <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> cannot be resolved and is illegal: </p></Admonition>
+
+<CodeBlock>
+  if Get_It'Valid then{"\n"}
+</CodeBlock>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0005-1"}</em>{"}"} even though the Valid attribute is only defined for objects of scalar types, and thus cannot be applied to the result of function (2). That information cannot be used to resolve the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. The same would be true if (2) had been a procedure; even though the procedure does not denote an object, the <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> is still illegal. </p></Admonition>
+
+<p>The <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, if any, in an <code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code> or <code><a href="../AA-4/AA-4.1#S0103">range_attribute_designator</a></code> is expected to be of any integer type. </p>
+
+#### Legality Rules
+
+<p>The <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, if any, in an <code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code> or <code><a href="../AA-4/AA-4.1#S0103">range_attribute_designator</a></code> shall be static. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI05-0006-1"}</em>{"}"} {"{"}<em>{"AI12-0032-1"}</em>{"}"} {"{"}<em>{"AI12-0159-1"}</em>{"}"} An <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> denotes a value, an object, a subprogram, or some other kind of program entity. Unless explicitly specified otherwise, for an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> that denotes a value or an object, if its type is scalar, then its nominal subtype is the base subtype of the type; if its type is tagged, its nominal subtype is the first subtype of the type; otherwise, its nominal subtype is a subtype of the type without any constraint, <code><a href="../AA-3/AA-3.10#S0083">null_exclusion</a></code>, or predicate. Similarly, unless explicitly specified otherwise, for an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> that denotes a function, when its result type is scalar, its result subtype is the base subtype of the type, when its result type is tagged, the result subtype is the first subtype of the type, and when the result type is some other type, the result subtype is a subtype of the type without any constraint, <code><a href="../AA-3/AA-3.10#S0083">null_exclusion</a></code>, or predicate. </p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>The attributes defined by the language are summarized in K.2. Implementations can define additional attributes. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Discussion: </strong>{"{"}<em>{"AI05-0006-1"}</em>{"}"} The nominal subtype is primarily a concern when an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>, or a call on an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>, is used as the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a case statement, due to the full coverage requirement based on the nominal subtype. For nondiscrete cases, we define the nominal subtype mainly for completeness. Implementations may specify otherwise for implementation-defined attribute functions.</p></Admonition>
+
+<Admonition type="note">
+<p>The rule is written to match the meaning of the italicized <em>T</em> in the definition of attributes such as Input; see 4.5.1. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>To be honest: </strong>{"{"}<em>{"AI05-0006-1"}</em>{"}"} We don't worry about the fact that "base subtype" is not explicitly defined for the universal types. Since it is not possible to constrain a universal numeric type, all subtypes are unconstrained, and hence can be considered base subtypes. The wording above could be altered to bypass this issue, but it doesn't seem necessary, since universal integer is handled specially in the rules for case expression full coverage, and we don't allow user-defined functions for attribute functions whose result type is universal. </p></Admonition>
+
+<p>[A <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code> X'Range(N) is equivalent to the <code><a href="../AA-3/AA-3.5#S0037">range</a></code> X'First(N) .. X'Last(N), except that the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is only evaluated once. Similarly, X'Range is equivalent to X'First .. X'Last, except that the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is only evaluated once.]</p>
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI12-0262-1"}</em>{"}"} The evaluation of a <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code> or an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> that is not a <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code> consists of the evaluation of the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>.[ The evaluation of a <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code> is defined in 4.5.10.] </p>
+
+#### Implementation Permissions
+
+<p>{"{"}<em>8652/0015</em>{"}"} {"{"}<em>{"AI95-00093-01"}</em>{"}"} {"{"}<em>{"AI12-0362-2"}</em>{"}"} An implementation may provide implementation-defined attributes; the <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> for such an implementation-defined attribute shall differ from those of the language-defined attributes. </p>
+<Admonition type="note">
+<p><strong>Implementation defined: </strong>Implementation-defined attributes.</p></Admonition>
+
+<Admonition type="note">
+<p><strong>Ramification: </strong>They cannot be reserved words because reserved words are not legal identifiers.</p></Admonition>
+
+<Admonition type="note">
+<p>The semantics of implementation-defined attributes, and any associated rules, are, of course, implementation defined. For example, the implementation defines whether a given implementation-defined attribute can be used in a static expression. </p></Admonition>
+
+<p>{"{"}<em>{"AI12-0362-2"}</em>{"}"} An implementation may extend the definition of a language-defined attribute by accepting uses of that attribute that would otherwise be illegal in the following cases: </p>
+<p>in order to support compatibility with a previous edition of of this Reference Manual; or</p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>{"{"}<em>8652/0015</em>{"}"} {"{"}<em>{"AI95-00093-01"}</em>{"}"} Implementations are allowed to support the Small attribute for floating types, as this was defined in Ada 83, even though the name would conflict with a language-defined attribute. </p></Admonition>
+
+<p>in the case of a language-defined attribute whose <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is required by this document to be a floating point subtype, an implementation may accept an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> whose <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is a fixed point subtype[; the semantics of such an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> are implementation defined.] </p>
+<Admonition type="note">
+<p>NOTE 1   Attributes are defined throughout this document, and are summarized in K.2.</p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 2   {"{"}<em>{"AI95-00235"}</em>{"}"} In general, the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> in a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> (or a <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>) has to be resolved without using any context. However, in the case of the Access attribute, the expected type for the <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> has to be a single access type, and the resolution of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> can use the fact that the type of the object or the profile of the callable entity denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> has to match the designated type or be type conformant with the designated profile of the access type. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Proof: </strong>{"{"}<em>{"AI95-00235"}</em>{"}"} In the general case, there is no "expected type" for the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>. In the special case of 'Access, there is an "expected type" or "expected profile" for the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Reason: </strong>'Access is a special case, because without it, it would be very difficult to take 'Access of an overloaded subprogram. </p></Admonition>
+
+
+#### Examples
+
+<p><em>Examples of attributes:</em> </p>
+<CodeBlock>
+Color'First        -- minimum value of the enumeration type Color 	(see 3.5.1){"\n"}Rainbow'Base'First -- same as Color'First 	(see 3.5.1){"\n"}Real'Digits        -- precision of the type Real 	(see 3.5.7){"\n"}Board'Last(2)      -- upper bound of the second dimension of Board 	(see 3.6.1){"\n"}Board'Range(1)     -- index range of the first dimension of Board 	(see 3.6.1){"\n"}Pool(K)'Terminated -- True if task Pool(K) is terminated 	(see 9.1){"\n"}Date'Size          -- number of bits for records of type Date 	(see 3.8){"\n"}Message'Address    -- address of the record variable Message 	(see 3.7.1){"\n"}
+</CodeBlock>
+
+
+#### Extensions to Ada 83
+
+<Admonition type="note">
+<p>We now uniformly treat X'Range as X'First..X'Last, allowing its use with scalar subtypes.</p></Admonition>
+
+<Admonition type="note">
+<p>We allow any integer type in the <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an attribute designator, not just a value of <em>universal_integer</em>. The preference rules ensure upward compatibility. </p></Admonition>
+
+
+#### Wording Changes from Ada 83
+
+<Admonition type="note">
+<p>We use the syntactic category <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> rather than simply "attribute" to avoid confusing the name of something with the thing itself.</p></Admonition>
+
+<Admonition type="note">
+<p>The syntax rule for <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> now uses <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> instead of <code>simple_name</code>, because attribute <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s are not required to follow the normal visibility rules.</p></Admonition>
+
+<Admonition type="note">
+<p>We now separate <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> from <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>, and enumerate the reserved words that are legal attribute or range attribute designators. We do this because <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> no longer includes reserved words.</p></Admonition>
+
+<Admonition type="note">
+<p>The Ada 95 name resolution rules are a bit more explicit than in Ada 83. The Ada 83 rule said that the "meaning of the prefix of an attribute must be determinable independently of the attribute designator and independently of the fact that it is the prefix of an attribute".  That isn't quite right since the meaning even in Ada 83 embodies whether or not the prefix is interpreted as a parameterless function call, and in Ada 95, it also embodies whether or not the prefix is interpreted as an implicit_dereference. So the attribute designator does make a difference - just not much.</p></Admonition>
+
+<Admonition type="note">
+<p>Note however that if the attribute designator is Access, it makes a big difference in the interpretation of the prefix (see 3.10.2). </p></Admonition>
+
+
+#### Wording Changes from Ada 95
+
+<Admonition type="note">
+<p>{"{"}<em>8652/0015</em>{"}"} {"{"}<em>{"AI95-00093-01"}</em>{"}"} <strong>Corrigendum:</strong> The wording was changed to allow implementations to continue to implement the Ada 83 Small attribute. This was always intended to be allowed.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00235-01"}</em>{"}"} The note about resolving prefixes of attributes was updated to reflect that the prefix of an Access attribute now has an expected type (see 3.10.2). </p></Admonition>
+
+
+#### Wording Changes from Ada 2005
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0006-1"}</em>{"}"} <strong>Correction:</strong> Defined the nominal subtype of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> to close a minor language hole. </p></Admonition>
+
+
+#### Wording Changes from Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0032-1"}</em>{"}"} <strong>Corrigendum:</strong> Allowed overriding the nominal subtype of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> for an object; that is used elsewhere in this standard.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0159-1"}</em>{"}"} <strong>Corrigendum:</strong> Added wording so it is clear that predicates don't apply to the result of an attribute.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0242-1"}</em>{"}"} {"{"}<em>{"AI12-0262-1"}</em>{"}"} Added <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code> and cleaned up the rules here to avoid trampling the definition of those in 4.5.10.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0362-2"}</em>{"}"} Added a permission to support fixed point versions of float attributes, such as the rounding attributes found in A.5.3. </p></Admonition>
+
+
+## 4.1.5  User-Defined References
+
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} Given a discriminated type <em>T</em>, the following type-related operational aspect may be specified:</p>
+<p>Implicit_DereferenceThis aspect is specified by a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes an access discriminant declared for the type <em>T</em>.</p>
+<Admonition type="note">
+<p><strong>Aspect Description for </strong><strong>Implicit_Dereference: </strong>Mechanism for user-defined implicit .<strong>all</strong>.</p></Admonition>
+
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} A (view of a) type with a specified Implicit_Dereference aspect is a <em>reference type</em>. A <em>reference object</em> is an object of a reference type. The discriminant named by the Implicit_Dereference aspect is the <em>reference discriminant</em> of the reference type or reference object. [A <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> is a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that identifies a reference object, and denotes the object or subprogram designated by the reference discriminant of the reference object.]</p>
+<Admonition type="note">
+<p><strong>Glossary entry: </strong>A reference type is one that has user-defined behavior for ".<strong>all</strong>", defined by the Implicit_Dereference aspect.</p></Admonition>
+
+<p>Version=[5],Kind=(AddedNormal),Group=[T],Term=[reference type], Def=[a type that has user-defined behavior for ".all", defined by the Implicit_Dereference aspect] </p>
+
+#### Syntax
+
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} <code>generalized_reference</code><a id="S0104"></a><code> ::= </code><em>reference_object_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code></p>
+
+#### Name Resolution Rules
+
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} {"{"}<em>{"AI05-0269-1"}</em>{"}"} The expected type for the <em>reference_object_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> in a <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> is any reference type. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI12-0138-1"}</em>{"}"} The Implicit_Dereference aspect is nonoverridable (see 13.1.1).</p>
+<Admonition type="note">
+<p><strong>Reason: </strong>This ensures that all descendants of a reference type have the same reference discriminant. This prevents generic contract problems with formal derived types. </p></Admonition>
+
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} A <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> denotes a view equivalent to that of a dereference of the reference discriminant of the reference object.</p>
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} {"{"}<em>{"AI12-0203-1"}</em>{"}"} Given a reference type <em>T</em>, the Implicit_Dereference aspect is inherited by descendants of type <em>T</em> if not overridden [(which is only permitted if confirming)]. If a descendant type constrains the value of the reference discriminant of <em>T</em> by a new discriminant, that new discriminant is the reference discriminant of the descendant. [If the descendant type constrains the value of the reference discriminant of <em>T</em> by an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> other than the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> of a new discriminant, a <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> that identifies an object of the descendant type denotes the object or subprogram designated by the value of this constraining expression.]</p>
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} The evaluation of a <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> consists of the evaluation of the <em>reference_object_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> and a determination of the object or subprogram designated by the reference discriminant of the named reference object. A check is made that the value of the reference discriminant is not the null access value. Constraint_Error is raised if this check fails. The <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> denotes the object or subprogram designated by the value of the reference discriminant of the named reference object.</p>
+
+#### Examples
+
+<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em>Examples of the specification and use of generalized references:</em></p>
+<CodeBlock>
+{"{"}{"AI05-0268-1"}{"}"} type Barrel is tagged ...  -- holds objects of type Element{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0139-2"}{"}"} {"{"}{"AI05-0299-1"}{"}"} type Ref_Element(Data : access Element) is limited private{"\n"}   with Implicit_Dereference ={">"} Data;{"\n"}      -- This Ref_Element type is a "reference" type.{"\n"}      -- "Data" is its reference discriminant.{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0139-2"}{"}"} {"{"}{"AI05-0268-1"}{"}"} function Find (B : aliased in out Barrel; Key : String) return Ref_Element;{"\n"}   -- Returns a reference to an element of a barrel.{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0268-1"}{"}"} {"{"}{"AI05-0299-1"}{"}"} B: aliased Barrel;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0139-2"}{"}"} ...{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0139-2"}{"}"} {"{"}{"AI05-0268-1"}{"}"} Find (B, "grape") := Element'(...);  -- Assign through a reference.{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0139-2"}{"}"} {"{"}{"AI05-0268-1"}{"}"} -- This is equivalent to:{"\n"}Find (B, "grape").Data.all := Element'(...);{"\n"}
+</CodeBlock>
+
+
+#### Extensions to Ada 2005
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} The aspect Implicit_Dereference and the <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> are new. </p></Admonition>
+
+
+#### Incompatibilities With Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0138-1"}</em>{"}"} <strong>Corrigendum:</strong> Defined Implicit_Dereference to be nonoveridable, which makes redefinitions and hiding of the aspect illegal. It's possible that some program could violate one of these new restrictions, but this is not very likely as reference types are not likely to be used in a hierarchy. </p></Admonition>
+
+
+## 4.1.6  User-Defined Indexing
+
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} Given a tagged type <em>T</em>, the following type-related, operational aspects may be specified:</p>
+<p>{"{"}<em>{"AI12-0428-1"}</em>{"}"} Constant_IndexingThis aspect shall be specified by a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes one or more functions declared immediately within the same declaration list in which <em>T</em>, or the declaration completed by <em>T</em>, is declared. All such functions shall have at least two parameters, the first of which is of type <em>T</em> or <em>T</em>'Class, or is an access-to-constant parameter with designated type <em>T</em> or <em>T</em>'Class.</p>
+<Admonition type="note">
+<p><strong>Aspect Description for </strong><strong>Constant_Indexing: </strong>Defines function(s) to implement user-defined <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>s.</p></Admonition>
+
+<p>{"{"}<em>{"AI12-0428-1"}</em>{"}"} Variable_IndexingThis aspect shall be specified by a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes one or more functions declared immediately within the same declaration list in which <em>T</em>, or the declaration completed by <em>T</em>, is declared. All such functions shall have at least two parameters, the first of which is of type <em>T</em> or <em>T</em>'Class, or is an access parameter with designated type <em>T</em> or <em>T</em>'Class. All such functions shall have a return type that is a reference type (see 4.1.5), whose reference discriminant is of an access-to-variable type. </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>We require these functions to return a reference type so that the object returned from the function can act like a variable. We need no similar rule for Constant_Indexing, since all functions return constant objects. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Aspect Description for </strong><strong>Variable_Indexing: </strong>Defines function(s) to implement user-defined <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>s.</p></Admonition>
+
+<p>{"{"}<em>{"AI12-0104-1"}</em>{"}"} These aspects are inherited by descendants of <em>T</em> (including the class-wide type <em>T</em>'Class).</p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>Indexing can be provided for multiple index types by overloading routines with different parameter profiles. For instance, the map containers provide indexing on both cursors and keys by providing pairs of overloaded routines to the Constant_Indexing and Variable_Indexing aspects. </p></Admonition>
+
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} {"{"}<em>{"AI05-0292-1"}</em>{"}"} An <em>indexable container type</em> is (a view of) a tagged type with at least one of the aspects Constant_Indexing or Variable_Indexing specified. An <em>indexable container object</em> is an object of an indexable container type. [A <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes the result of calling a function named by a Constant_Indexing or Variable_Indexing aspect.]</p>
+<Admonition type="note">
+<p><strong>Glossary entry: </strong>An indexable container type is one that has user-defined behavior for indexing, via the Constant_Indexing or Variable_Indexing aspects.</p></Admonition>
+
+<p>Version=[5],Kind=(AddedNormal),Group=[T],Term=[indexable container type], Def=[a type that has user-defined behavior for indexing, via the Constant_Indexing or Variable_Indexing aspects]</p>
+<p>{"{"}<em>{"AI12-0138-1"}</em>{"}"} The Constant_Indexing and Variable_Indexing aspects are nonoverridable (see 13.1.1). </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>{"{"}<em>{"AI12-0160-1"}</em>{"}"} This (and the following Legality Rules) ensures that all descendants of an indexable container type have aspects with the same properties. This prevents generic contract problems with formal derived types.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0104-1"}</em>{"}"} {"{"}<em>{"AI12-0138-1"}</em>{"}"} A nonoverridable aspect allows the replacement of the implementation of an indexing function and the addition of a new indexing function for a derived type, but not the removal of an indexing function. This is necessary so that indexing can be used on objects of T'Class. So long as the tag of O is that of its nominal subtype, we do not want T'Class(O)(I) to mean something different than O(I). Thus we cannot allow a change in the function identified. As T'Class(O)(I) expands into a dispatching call, we need to ensure that there is a body for each such function -- but it is OK for that body to be changed from the original body (that's just normal dispatching). </p></Admonition>
+
+
+#### Legality Rules
+
+<p>{"{"}<em>{"AI12-0160-1"}</em>{"}"} If an ancestor of a type <em>T</em> is an indexable container type, then any explicit specification of the Constant_Indexing or Variable_Indexing aspects shall be confirming; that is, the specified <code><a href="../AA-4/AA-4.1#S0091">name</a></code> shall match the inherited aspect (see 13.1.1). </p>
+<p><em>Paragraphs 7 through 8 were deleted.</em> </p>
+<p>{"{"}<em>{"AI12-0160-1"}</em>{"}"} In addition to the places where Legality Rules normally apply (see 12.3), this rule applies also in the private part of an instance of a generic unit.</p>
+<p>{"{"}<em>{"AI12-0204-1"}</em>{"}"} A <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is illegal if the equivalent prefixed view (see below) is illegal. </p>
+
+#### Syntax
+
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} {"{"}<em>{"AI05-0292-1"}</em>{"}"} <code>generalized_indexing</code><a id="S0105"></a><code> ::= </code><em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> <code><a href="../AA-6/AA-6.4#S0219">actual_parameter_part</a></code></p>
+
+#### Name Resolution Rules
+
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} {"{"}<em>{"AI05-0292-1"}</em>{"}"} The expected type for the <em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of a <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is any indexable container type.</p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>A <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> can be an <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code> (see 4.1), so an access-to-<em>indexable_container_object</em> can be the prefix (English meaning!) of a <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code>. </p></Admonition>
+
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} {"{"}<em>{"AI05-0292-1"}</em>{"}"} If the Constant_Indexing aspect is specified for the type of the <em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of a <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code>, then the <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is interpreted as a <em>constant indexing</em> under the following circumstances:</p>
+<p>when the Variable_Indexing aspect is not specified for the type of the <em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>;</p>
+<p>when the <em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes a constant;</p>
+<p>when the <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is used within a <code><a href="../AA-4/AA-4.4#S0141">primary</a></code> where a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denoting a constant is permitted.</p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>This means it is not interpreted as a constant indexing for the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> in the LHS of an assignment (not inside a <code><a href="../AA-4/AA-4.4#S0141">primary</a></code>), nor for the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> used for an <strong>out</strong> or <strong>in out</strong> parameter (not allowed to be a constant), nor for the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> in an object renaming (not inside a primary), unless there is no Variable_Indexing aspect defined. </p></Admonition>
+
+<p>Otherwise, the <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is interpreted as a <em>variable indexing</em>.</p>
+<p>When a <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is interpreted as a constant (or variable) indexing, it is equivalent to a call on a prefixed view of one of the functions named by the Constant_Indexing (or Variable_Indexing) aspect of the type of the <em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> with the given <code><a href="../AA-6/AA-6.4#S0219">actual_parameter_part</a></code>, and with the <em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> as the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the prefixed view.</p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>In other words, the <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is equivalent to:</p></Admonition>
+
+<CodeBlock>
+indexable_container_object_<a href="../AA-4/AA-4.1#S0093">prefix</a>.Indexing <a href="../AA-6/AA-6.4#S0219">actual_parameter_part</a>{"\n"}
+</CodeBlock>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0005-1"}</em>{"}"} where Indexing is the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> specified for the Constant_Indexing or Variable_Indexing aspect. This equivalence is then resolved in the normal way; the aspect specifies a <code><a href="../AA-4/AA-4.1#S0091">name</a></code>, it does not denote declarations. </p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 1   {"{"}<em>{"AI12-0104-1"}</em>{"}"} The Constant_Indexing and Variable_Indexing aspects cannot be redefined when inherited for a derived type, but the functions that they denote can be modified by overriding or overloading. </p></Admonition>
+
+
+#### Examples
+
+<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em>Examples of the specification and use of generalized indexing:</em></p>
+<CodeBlock>
+{"{"}{"AI05-0268-1"}{"}"} {"{"}{"AI05-0292-1"}{"}"} type Indexed_Barrel is tagged ...{"\n"}  with Variable_Indexing ={">"} Find;{"\n"}  -- Indexed_Barrel is an indexable container type,{"\n"}  -- Find is the generalized indexing operation.{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0268-1"}{"}"} function Find (B : aliased in out Indexed_Barrel; Key : String) return Ref_Element;{"\n"}   -- Return a reference to an element of a barrel (see 4.1.5).{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0268-1"}{"}"} IB: aliased Indexed_Barrel;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI05-0268-1"}{"}"} -- All of the following calls are then equivalent:{"\n"}Find (IB,"pear").Data.all := Element'(...); -- Traditional call{"\n"}IB.Find ("pear").Data.all := Element'(...); -- Call of prefixed view{"\n"}IB.Find ("pear")          := Element'(...); -- Implicit dereference (see 4.1.5){"\n"}IB      ("pear")          := Element'(...); -- Implicit indexing and dereference{"\n"}IB      ("pear").Data.all := Element'(...); -- Implicit indexing only{"\n"}
+</CodeBlock>
+
+
+#### Extensions to Ada 2005
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0139-2"}</em>{"}"} Aspects Constant_Indexing and Variable_Indexing, and the <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> syntax are new. </p></Admonition>
+
+
+#### Incompatibilities With Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0160-1"}</em>{"}"} <strong>Correction:</strong> Prevented a derived type from specifying Constant_Indexing if the ancestor specified Variable_Indexing (and vice versa). This is necessary to preserve the intent that for an object Obj whose tag is that of its nominal subtype, T'Class(Obj)(I) always has the same meaning as Obj(I). Situations like this should be rare in practice; most types will either define both aspects or neither.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0204-1"}</em>{"}"} <strong>Correction:</strong> Added a rule that a generalized indexing is illegal if the equivalent prefixed view would be illegal. If the prefixed view would be illegal for any reason, Ada 2012 would have allowed the generalized indexing while Ada 2022 does not. This violated the principle that a generalized indexing and the equivalent prefixed view have the same semantics; practically, the code may not have worked anyway if a compiler implemented generalized indexing by code expansion into the canonical form. Thus, such code wasn't practically portable. </p></Admonition>
+
+
+#### Wording Changes from Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0104-1"}</em>{"}"} <strong>Corrigendum:</strong> Converted confusing and unnecessary normative wording about "overriding an aspect" into a note.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0138-1"}</em>{"}"} <strong>Corrigendum:</strong> Defined Constant_Indexing and Variable_Indexing to be nonoveridable. This is merely a new description for Legality Rules which already applied to these aspects.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0428-1"}</em>{"}"} <strong>Correction:</strong> Allowed the completion of a private type to use declarations from either the visible part or the private part. </p></Admonition>
+

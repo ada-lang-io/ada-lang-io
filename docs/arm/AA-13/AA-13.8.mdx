@@ -1,0 +1,86 @@
+---
+sidebar_position:  110
+---
+
+# 13.8 Machine Code Insertions
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+import Admonition from "@theme/Admonition";
+
+<p>[ A machine code insertion can be achieved by a call to a subprogram whose <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> contains <code><a href="../AA-13/AA-13.8#S0357">code_statement</a></code>s.] </p>
+
+#### Syntax
+
+<p><code>code_statement</code><a id="S0357"></a><code> ::= </code><code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code>;</p>
+<p>A <code><a href="../AA-13/AA-13.8#S0357">code_statement</a></code> is only allowed in the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> of a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code>. If a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> contains any <code><a href="../AA-13/AA-13.8#S0357">code_statement</a></code>s, then within this <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> the only allowed form of <code><a href="../AA-5/AA-5.1#S0167">statement</a></code> is a <code><a href="../AA-13/AA-13.8#S0357">code_statement</a></code> (labeled or not), the only allowed <code><a href="../AA-3/AA-3.11#S0087">declarative_item</a></code>s are <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s, and no <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code> is allowed (<code><a href="../AA-2/AA-2.7#S0018">comment</a></code>s and <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s are allowed as usual). </p>
+
+#### Name Resolution Rules
+
+<p>The <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> is expected to be of any type. </p>
+
+#### Legality Rules
+
+<p>The <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> shall be of a type declared in package System.Machine_Code. </p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>This includes types declared in children of System.Machine_Code. </p></Admonition>
+
+<p>A <code><a href="../AA-13/AA-13.8#S0357">code_statement</a></code> shall appear only within the scope of a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> that mentions package System.Machine_Code. </p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>Note that this is not a note; without this rule, it would be possible to write machine code in compilation units which depend on System.Machine_Code only indirectly. </p></Admonition>
+
+
+#### Static Semantics
+
+<p>The contents of the library package System.Machine_Code (if provided) are implementation defined. The meaning of <code><a href="../AA-13/AA-13.8#S0357">code_statement</a></code>s is implementation defined. [Typically, each <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> represents a machine instruction or assembly directive.] </p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>For example, an instruction might be a record with an Op_Code component and other components for the operands. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Implementation defined: </strong>The contents of the visible part of package System.Machine_Code, and the meaning of <code><a href="../AA-13/AA-13.8#S0357">code_statement</a></code>s.</p></Admonition>
+
+
+#### Implementation Permissions
+
+<p>An implementation may place restrictions on <code><a href="../AA-13/AA-13.8#S0357">code_statement</a></code>s. An implementation is not required to provide package System.Machine_Code. </p>
+<Admonition type="note">
+<p>NOTE 1   {"{"}<em>{"AI12-0440-1"}</em>{"}"} An implementation can provide implementation-defined pragmas specifying register conventions and calling conventions.</p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 2   {"{"}<em>{"AI95-00318-02"}</em>{"}"} Machine code functions are exempt from the rule that a return statement is required. In fact, return statements are forbidden, since only <code><a href="../AA-13/AA-13.8#S0357">code_statement</a></code>s are allowed. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Discussion: </strong>The idea is that the author of a machine code subprogram knows the calling conventions, and refers to parameters and results accordingly. The implementation should document where to put the result of a machine code function, for example, "Scalar results are returned in register 0". </p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 3   Intrinsic subprograms (see 6.3.1, "Conformance Rules") can also be used to achieve machine code insertions. Interface to assembly language can be achieved using the features in Annex B, "Interface to Other Languages". </p></Admonition>
+
+
+#### Examples
+
+<p><em>Example of a code statement:</em> </p>
+<CodeBlock>
+{"{"}{"AI05-0229-1"}{"}"} M : Mask;{"\n"}procedure Set_Mask{"\n"}  with Inline;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+procedure Set_Mask is{"\n"}  use System.Machine_Code; -- assume "with System.Machine_Code;" appears somewhere above{"\n"}begin{"\n"}  SI_Format'(Code ={">"} SSM, B ={">"} M'Base_Reg, D ={">"} M'Disp);{"\n"}  --  Base_Reg and Disp are implementation-defined attributes{"\n"}end Set_Mask;{"\n"}
+</CodeBlock>
+
+
+#### Extensions to Ada 83
+
+<Admonition type="note">
+<p>Machine code functions are allowed in Ada 95; in Ada 83, only procedures were allowed. </p></Admonition>
+
+
+#### Wording Changes from Ada 83
+
+<Admonition type="note">
+<p>The syntax for <code><a href="../AA-13/AA-13.8#S0357">code_statement</a></code> is changed to say "<code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code>" instead of "<code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>'<code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code>". Requiring the type of each instruction to be a record type is overspecification. </p></Admonition>
+

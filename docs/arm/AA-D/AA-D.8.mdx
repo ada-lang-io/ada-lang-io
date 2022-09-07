@@ -1,0 +1,232 @@
+---
+sidebar_position:  159
+---
+
+# D.8 Monotonic Time
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+import Admonition from "@theme/Admonition";
+
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} [This subclause specifies a high-resolution, monotonic clock package.] </p>
+
+#### Static Semantics
+
+<p>The following language-defined library package exists: </p>
+<CodeBlock>
+{"{"}{"AI12-0241-1"}{"}"} {"{"}{"AI12-0302-1"}{"}"} package Ada.Real_Time{"\n"}  with Nonblocking, Global ={">"} in out synchronized is{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  type Time is private;{"\n"}  Time_First : constant Time;{"\n"}  Time_Last : constant Time;{"\n"}  Time_Unit : constant := implementation-defined-real-number;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  type Time_Span is private;{"\n"}  Time_Span_First : constant Time_Span;{"\n"}  Time_Span_Last : constant Time_Span;{"\n"}  Time_Span_Zero : constant Time_Span;{"\n"}  Time_Span_Unit : constant Time_Span;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  Tick : constant Time_Span;{"\n"}  function Clock return Time;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  function "+" (Left : Time; Right : Time_Span) return Time;{"\n"}  function "+" (Left : Time_Span; Right : Time) return Time;{"\n"}  function "-" (Left : Time; Right : Time_Span) return Time;{"\n"}  function "-" (Left : Time; Right : Time) return Time_Span;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  function "{"<"}" (Left, Right : Time) return Boolean;{"\n"}  function "{"<"}="(Left, Right : Time) return Boolean;{"\n"}  function "{">"}" (Left, Right : Time) return Boolean;{"\n"}  function "{">"}="(Left, Right : Time) return Boolean;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  function "+" (Left, Right : Time_Span) return Time_Span;{"\n"}  function "-" (Left, Right : Time_Span) return Time_Span;{"\n"}  function "-" (Right : Time_Span) return Time_Span;{"\n"}  function "*" (Left : Time_Span; Right : Integer) return Time_Span;{"\n"}  function "*" (Left : Integer; Right : Time_Span) return Time_Span;{"\n"}  function "/" (Left, Right : Time_Span) return Integer;{"\n"}  function "/" (Left : Time_Span; Right : Integer) return Time_Span;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  function "abs"(Right : Time_Span) return Time_Span;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+This paragraph was deleted.{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  function "{"<"}" (Left, Right : Time_Span) return Boolean;{"\n"}  function "{"<"}="(Left, Right : Time_Span) return Boolean;{"\n"}  function "{">"}" (Left, Right : Time_Span) return Boolean;{"\n"}  function "{">"}="(Left, Right : Time_Span) return Boolean;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  function To_Duration (TS : Time_Span) return Duration;{"\n"}  function To_Time_Span (D : Duration) return Time_Span;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00386-01"}{"}"}   function Nanoseconds  (NS : Integer) return Time_Span;{"\n"}  function Microseconds (US : Integer) return Time_Span;{"\n"}  function Milliseconds (MS : Integer) return Time_Span;{"\n"}  function Seconds      (S  : Integer) return Time_Span;{"\n"}  function Minutes      (M  : Integer) return Time_Span;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  type Seconds_Count is range implementation-defined;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+  procedure Split(T : in Time; SC : out Seconds_Count; TS : out Time_Span);{"\n"}  function Time_Of(SC : Seconds_Count; TS : Time_Span) return Time;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Real_Time;{"\n"}
+</CodeBlock>
+
+<Admonition type="note">
+<p><em>This paragraph was deleted.</em></p></Admonition>
+
+<p>In this Annex, <em>real time</em> is defined to be the physical time as observed in the external environment. The type Time is a <em>time type</em> as defined by 9.6; [values of this type may be used in a <code><a href="../AA-9/AA-9.6#S0267">delay_until_statement</a></code>.] Values of this type represent segments of an ideal time line. The set of values of the type Time corresponds one-to-one with an implementation-defined range of mathematical integers. </p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>Informally, real time is defined to be the International Atomic Time (TAI) which is monotonic and nondecreasing. We use it here for the purpose of discussing rate of change and monotonic behavior only. It does not imply anything about the absolute value of Real_Time.Clock, or about Real_Time.Time being synchronized with TAI. It is also used for real time in the metrics, for comparison purposes. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Implementation Note: </strong>The specification of TAI as "real time" does not preclude the use of a simulated TAI clock for simulated execution environments. </p></Admonition>
+
+<p>The Time value I represents the half-open real time interval that starts with E+I*Time_Unit and is limited by E+(I+1)*Time_Unit, where Time_Unit is an implementation-defined real number and E is an unspecified origin point, the <em>epoch</em>, that is the same for all values of the type Time. It is not specified by the language whether the time values are synchronized with any standard time reference. [For example, E can correspond to the time of system initialization or it can correspond to the epoch of some time standard.] </p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>E itself does not have to be a proper time value.</p></Admonition>
+
+<Admonition type="note">
+<p>This half-open interval I consists of all real numbers R such that E+I*Time_Unit {"<"}= R {"<"} E+(I+1)*Time_Unit. </p></Admonition>
+
+<p>Values of the type Time_Span represent length of real time duration. The set of values of this type corresponds one-to-one with an implementation-defined range of mathematical integers. The Time_Span value corresponding to the integer I represents the real-time duration I*Time_Unit. </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>The purpose of this type is similar to Standard.Duration; the idea is to have a type with a higher resolution. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Discussion: </strong>We looked at many possible names for this type: Real_Time.Duration, Fine_Duration, Interval, Time_Interval_Length, Time_Measure, and more. Each of these names had some problems, and we've finally settled for Time_Span. </p></Admonition>
+
+<p>Time_First and Time_Last are the smallest and largest values of the Time type, respectively. Similarly, Time_Span_First and Time_Span_Last are the smallest and largest values of the Time_Span type, respectively.</p>
+<p>A value of type Seconds_Count represents an elapsed time, measured in seconds, since the epoch.</p>
+
+#### Dynamic Semantics
+
+<p>Time_Unit is the smallest amount of real time representable by the Time type; it is expressed in seconds. Time_Span_Unit is the difference between two successive values of the Time type. It is also the smallest positive value of type Time_Span. Time_Unit and Time_Span_Unit represent the same real time duration. A <em>clock tick</em> is a real time interval during which the clock value (as observed by calling the Clock function) remains constant. Tick is the average length of such intervals.</p>
+<p>{"{"}<em>{"AI95-00432-01"}</em>{"}"} The function To_Duration converts the value TS to a value of type Duration. Similarly, the function To_Time_Span converts the value D to a value of type Time_Span. For To_Duration, the result is rounded to the nearest value of type Duration (away from zero if exactly halfway between two values). If the result is outside the range of Duration, Constraint_Error is raised. For To_Time_Span, the value of D is first rounded to the nearest integral multiple of Time_Unit, away from zero if exactly halfway between two multiples. If the rounded value is outside the range of Time_Span, Constraint_Error is raised. Otherwise, the value is converted to the type Time_Span.</p>
+<p>To_Duration(Time_Span_Zero) returns 0.0, and To_Time_Span(0.0) returns Time_Span_Zero.</p>
+<p>{"{"}<em>{"AI95-00386-01"}</em>{"}"} {"{"}<em>{"AI95-00432-01"}</em>{"}"} The functions Nanoseconds, Microseconds, Milliseconds, Seconds, and Minutes convert the input parameter to a value of the type Time_Span. NS, US, MS, S, and M are interpreted as a number of nanoseconds, microseconds, milliseconds, seconds, and minutes respectively. The input parameter is first converted to seconds and rounded to the nearest integral multiple of Time_Unit, away from zero if exactly halfway between two multiples. If the rounded value is outside the range of Time_Span, Constraint_Error is raised. Otherwise, the rounded value is converted to the type Time_Span. </p>
+<Admonition type="note">
+<p><em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00432-01"}</em>{"}"} </p></Admonition>
+
+<p>The effects of the operators on Time and Time_Span are as for the operators defined for integer types. </p>
+<Admonition type="note">
+<p><strong>Implementation Note: </strong>Though time values are modeled by integers, the types Time and Time_Span need not be implemented as integers. </p></Admonition>
+
+<p>The function Clock returns the amount of time since the epoch.</p>
+<p>The effects of the Split and Time_Of operations are defined as follows, treating values of type Time, Time_Span, and Seconds_Count as mathematical integers. The effect of Split(T,SC,TS) is to set SC and TS to values such that T*Time_Unit = SC*1.0 + TS*Time_Unit, and 0.0 {"<"}= TS*Time_Unit {"<"} 1.0. The value returned by Time_Of(SC,TS) is the value T such that T*Time_Unit = SC*1.0 + TS*Time_Unit. </p>
+
+#### Implementation Requirements
+
+<p>The range of Time values shall be sufficient to uniquely represent the range of real times from program start-up to 50 years later. Tick shall be no greater than 1 millisecond. Time_Unit shall be less than or equal to 20 microseconds. </p>
+<Admonition type="note">
+<p><strong>Implementation Note: </strong>The required range and accuracy of Time are such that 32-bits worth of seconds and 32-bits worth of ticks in a second could be used as the representation. </p></Admonition>
+
+<p>Time_Span_First shall be no greater than 3600 seconds, and Time_Span_Last shall be no less than 3600 seconds. </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>This is equivalent to ± one hour and there is still room for a two-microsecond resolution. </p></Admonition>
+
+<p>A <em>clock jump</em> is the difference between two successive distinct values of the clock (as observed by calling the Clock function). There shall be no backward clock jumps.</p>
+
+#### Documentation Requirements
+
+<p>The implementation shall document the values of Time_First, Time_Last, Time_Span_First, Time_Span_Last, Time_Span_Unit, and Tick. </p>
+<Admonition type="note">
+<p><strong>Documentation Requirement: </strong>The values of Time_First, Time_Last, Time_Span_First, Time_Span_Last, Time_Span_Unit, and Tick for package Real_Time.</p></Admonition>
+
+<p>The implementation shall document the properties of the underlying time base used for the clock and for type Time, such as the range of values supported and any relevant aspects of the underlying hardware or operating system facilities used. </p>
+<Admonition type="note">
+<p><strong>Documentation Requirement: </strong>The properties of the underlying time base used in package Real_Time.</p></Admonition>
+
+<Admonition type="note">
+<p><strong>Discussion: </strong>If there is an underlying operating system, this might include information about which system call is used to implement the clock. Otherwise, it might include information about which hardware clock is used. </p></Admonition>
+
+<p>The implementation shall document whether or not there is any synchronization with external time references, and if such synchronization exists, the sources of synchronization information, the frequency of synchronization, and the synchronization method applied. </p>
+<Admonition type="note">
+<p><strong>Documentation Requirement: </strong>Any synchronization of package Real_Time with external time references.</p></Admonition>
+
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} The implementation shall document any aspects of the external environment that can interfere with the clock behavior as defined in this subclause. </p>
+<Admonition type="note">
+<p><strong>Documentation Requirement: </strong>Any aspects of the external environment that can interfere with package Real_Time.</p></Admonition>
+
+<Admonition type="note">
+<p><strong>Discussion: </strong>For example, the implementation is allowed to rely on the time services of an underlying operating system, and this operating system clock can implement time zones or allow the clock to be reset by an operator. This dependence has to be documented. </p></Admonition>
+
+
+#### Metrics
+
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} For the purpose of the metrics defined in this subclause, real time is defined to be the International Atomic Time (TAI).</p>
+<p>The implementation shall document the following metrics: </p>
+<p>An upper bound on the real-time duration of a clock tick. This is a value D such that if t1 and t2 are any real times such that t1 {"<"} t2 and Clockt1 = Clockt2 then t2  t1 {"<"}= D.</p>
+<p>An upper bound on the size of a clock jump.</p>
+<p>An upper bound on the <em>drift rate</em> of Clock with respect to real time. This is a real number D such that </p>
+<p>E*(1D) {"<"}= (Clockt+E  Clockt) {"<"}= E*(1+D)        provided that: Clockt + E*(1+D) {"<"}= Time_Last.</p>
+<p>where Clockt is the value of Clock at time t, and E is a real time duration not less than 24 hours. The value of E used for this metric shall be reported. </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>This metric is intended to provide a measurement of the long term (cumulative) deviation; therefore, 24 hours is the lower bound on the measurement period. On some implementations, this is also the maximum period, since the language does not require that the range of the type Duration be more than 24 hours. On those implementations that support longer-range Duration, longer measurements should be performed. </p></Admonition>
+
+<p>An upper bound on the execution time of a call to the Clock function, in processor clock cycles.</p>
+<p>Upper bounds on the execution times of the operators of the types Time and Time_Span, in processor clock cycles. </p>
+<Admonition type="note">
+<p><strong>Implementation Note: </strong>A fast implementation of the Clock function involves repeated reading until you get the same value twice. It is highly improbable that more than three reads will be necessary. Arithmetic on time values should not be significantly slower than 64-bit arithmetic in the underlying machine instruction set. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Documentation Requirement: </strong>The metrics for package Real_Time.</p></Admonition>
+
+
+#### Implementation Permissions
+
+<p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} Implementations targeted to machines with word size smaller than 32 bits may omit support for the full range and granularity of the Time and Time_Span types. </p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>These requirements are based on machines with a word size of 32 bits.</p></Admonition>
+
+<Admonition type="note">
+<p>Since the range and granularity are implementation defined, the supported values need to be documented. </p></Admonition>
+
+
+#### Implementation Advice
+
+<p>When appropriate, implementations should provide configuration mechanisms to change the value of Tick. </p>
+<Admonition type="note">
+<p><strong>Implementation Advice: </strong>When appropriate, mechanisms to change the value of Tick should be provided.</p></Admonition>
+
+<Admonition type="note">
+<p><strong>Reason: </strong>This is often needed when the compilation system was originally targeted to a particular processor with a particular interval timer, but the customer uses the same processor with a different interval timer. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Discussion: </strong>Tick is a deferred constant and not a named number specifically for this purpose. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Implementation Note: </strong>This can be achieved either by pre-run-time configuration tools, or by having Tick be initialized (in the package private part) by a function call residing in a board specific module. </p></Admonition>
+
+<p>It is recommended that Calendar.Clock and Real_Time.Clock be implemented as transformations of the same time base. </p>
+<Admonition type="note">
+<p><strong>Implementation Advice: </strong>Calendar.Clock and Real_Time.Clock should be transformations of the same time base.</p></Admonition>
+
+<p>It is recommended that the "best" time base which exists in the underlying system be available to the application through Clock. "Best" may mean highest accuracy or largest range. </p>
+<Admonition type="note">
+<p><strong>Implementation Advice: </strong>The "best" time base which exists in the underlying system should be available to the application through Real_Time.Clock.</p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 1   {"{"}<em>{"AI05-0299-1"}</em>{"}"} The rules in this subclause do not imply that the implementation can protect the user from operator or installation errors that can result in the clock being set incorrectly.</p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 2   Time_Unit is the granularity of the Time type. In contrast, Tick represents the granularity of Real_Time.Clock. There is no requirement that these be the same.</p></Admonition>
+
+
+#### Incompatibilities With Ada 95
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00386-01"}</em>{"}"} {"{"}<em>{"AI05-0005-1"}</em>{"}"} Functions Seconds and Minutes are added to Real_Time. If Real_Time is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with a <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> of Seconds or Minutes is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. </p></Admonition>
+
+
+#### Wording Changes from Ada 95
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00432-01"}</em>{"}"} Added wording explaining how and when many of these functions can raise Constraint_Error. While there always was an intent to raise Constraint_Error if the values did not fit, there never was any wording to that effect, and since Time_Span was a private type, the normal numeric type rules do not apply to it. </p></Admonition>
+

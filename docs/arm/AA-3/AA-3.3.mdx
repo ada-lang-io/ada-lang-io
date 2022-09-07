@@ -1,0 +1,495 @@
+---
+sidebar_position:  19
+---
+
+# 3.3 Objects and Named Numbers
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+import Admonition from "@theme/Admonition";
+
+<p>[Objects are created at run time and contain a value of a given type. An object can be created and initialized as part of elaborating a declaration, evaluating an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>, <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>, or <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>, or passing a parameter by copy. Prior to reclaiming the storage for an object, it is finalized if necessary (see 7.6.1).] </p>
+
+#### Static Semantics
+
+<p>All of the following are objects: </p>
+<Admonition type="note">
+<p><strong>Glossary entry: </strong>An object is either a constant or a variable. An object contains a value. An object is created by an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> or by an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>. A formal parameter is (a view of) an object. A subcomponent of an object is an object.</p></Admonition>
+
+<p>Version=[5],Kind=(AddedNormal),Group=[T],Term=[object], Def=[an entity that contains a value, and is either a constant or a variable], Note1=[An object is created by an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> or by an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>. A formal parameter is (a view of) an object. A subcomponent of an object is an object.]</p>
+<p>the entity declared by an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>;</p>
+<p>a formal parameter of a subprogram, entry, or generic subprogram;</p>
+<p>a generic formal object;</p>
+<p>a loop parameter;</p>
+<p>{"{"}<em>{"AI12-0061-1"}</em>{"}"} the index parameter of an <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>;</p>
+<p>{"{"}<em>{"AI12-0308-1"}</em>{"}"} the chunk parameter of a <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>;</p>
+<p>a choice parameter of an <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code>;</p>
+<p>an entry index of an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>;</p>
+<p>the result of dereferencing an access-to-object value (see 4.1);</p>
+<p>{"{"}<em>{"AI95-00416-01"}</em>{"}"} {"{"}<em>{"AI05-0015-1"}</em>{"}"} the return object of a function;</p>
+<p>the result of evaluating an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>;</p>
+<p>{"{"}<em>{"AI05-0003-1"}</em>{"}"} {"{"}<em>{"AI12-0226-1"}</em>{"}"} a value conversion or <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> whose operand denotes an object;</p>
+<p>a component, slice, or view conversion of another object. </p>
+<p>{"{"}<em>{"AI05-0054-2"}</em>{"}"} An object is either a <em>constant</em> object or a <em>variable</em> object. Similarly, a view of an object is either a <em>constant</em> or a <em>variable</em>. All views of a constant elementary object are constant. All views of a constant composite object are constant, except for parts that are of controlled or immutably limited types; variable views of those parts and their subcomponents may exist. In this sense, objects of controlled and immutably limited types are <em>inherently mutable</em>. A constant view of an object cannot be used to modify its value. The terms constant and variable by themselves refer to constant and variable views of objects.</p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>{"{"}<em>{"AI12-0422-1"}</em>{"}"} If some part of an object has a variable view, then the object as a whole has a variable view, and not all views of the object are constant. That's true even if only a subcomponent has a variable view. </p></Admonition>
+
+<p>{"{"}<em>{"AI12-0422-1"}</em>{"}"} A constant object is <em>known to have no variable views</em> if it does not have a part that is immutably limited, or of a controlled type, private type, or private extension.</p>
+<Admonition type="note">
+<p><strong>Reason: </strong>{"{"}<em>{"AI12-0422-1"}</em>{"}"} This definition can be used in Legality Rules as it respects privacy. It is an assume-the-worst rule, as all private types and private extensions might have a controlled component. </p></Admonition>
+
+<p>The value of an object is <em>read</em> when the value of any part of the object is evaluated, or when the value of an enclosing object is evaluated. The value of a variable is <em>updated</em> when an assignment is performed to any part of the variable, or when an assignment is performed to an enclosing object. </p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>Reading and updating are intended to include read/write references of any kind, even if they are not associated with the evaluation of a particular construct. Consider, for example, the expression "X.<strong>all</strong>(F)", where X is an access-to-array object, and F is a function. The implementation is allowed to first evaluate "X.<strong>all</strong>" and then F. Finally, a read is performed to get the value of the F'th component of the array. Note that the array is not necessarily read as part of the evaluation of "X.<strong>all</strong>". This is important, because if F were to free X using Unchecked_Deallocation, we want the execution of the final read to be erroneous. </p></Admonition>
+
+<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} Whether a view of an object is constant or variable is determined by the definition of the view. The following (and no others) represent variables: </p>
+<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} an object declared by an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> without the reserved word <strong>constant</strong>;</p>
+<Admonition type="note">
+<p><strong>To be honest: </strong>{"{"}<em>{"AI95-00385-01"}</em>{"}"} We mean the word <strong>constant</strong> as defined by the grammar for <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>, not some random word <strong>constant</strong>. Thus, </p></Admonition>
+
+<CodeBlock>
+X : access constant T;{"\n"}
+</CodeBlock>
+
+<Admonition type="note">
+<p>is not a constant. </p></Admonition>
+
+<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} a formal parameter of mode <strong>in out</strong> or <strong>out</strong>;</p>
+<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} a generic formal object of mode <strong>in out</strong>;</p>
+<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} a non-discriminant component of a variable;</p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>{"{"}<em>{"AI12-0392-1"}</em>{"}"} This includes both <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>s and <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>s. </p></Admonition>
+
+<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> of a variable;</p>
+<p>{"{"}<em>{"AI05-0262-1"}</em>{"}"} {"{"}<em>{"AI12-0392-1"}</em>{"}"} a loop parameter that is specified to be a variable for a generalized loop (see 5.5.2);</p>
+<p>{"{"}<em>{"AI05-0262-1"}</em>{"}"} {"{"}<em>{"AI12-0392-1"}</em>{"}"} a view conversion of a variable;</p>
+<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} a dereference of an access-to-variable value;</p>
+<p>{"{"}<em>{"AI05-0015-1"}</em>{"}"} {"{"}<em>{"AI12-0392-1"}</em>{"}"} the return object declared by an <code><a href="../AA-6/AA-6.5#S0225">extended_return_statement</a></code> without the reserved word <strong>constant</strong>;</p>
+<p>{"{"}<em>{"AI05-0015-1"}</em>{"}"} {"{"}<em>{"AI12-0392-1"}</em>{"}"} the current instance of a type other than a protected type[, if the current instance is an object and not a value (see 8.6)];</p>
+<Admonition type="note">
+<p><strong>Reason: </strong>{"{"}<em>{"AI12-0392-1"}</em>{"}"} We exclude current instances of protected types as they are protected units and the next bullet applies. </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Proof: </strong>{"{"}<em>{"AI12-0392-1"}</em>{"}"} This list of bullets only applies to views of objects, so current instances that are not objects are not considered here. </p></Admonition>
+
+<p><em>This paragraph was deleted.</em>{"{"}<em>{"AI05-0003-1"}</em>{"}"} {"{"}<em>{"AI12-0392-1"}</em>{"}"} </p>
+<p>{"{"}<em>{"AI05-0120-1"}</em>{"}"} {"{"}<em>{"AI12-0392-1"}</em>{"}"} the current instance of a protected unit except within the body of a protected function of that protected unit, or within a function declared immediately within the body of the protected unit;</p>
+<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> where the attribute is defined to denote a variable (for example, the Storage_Pool attribute  see 13.11).</p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>{"{"}<em>{"AI12-0392-1"}</em>{"}"} In particular, this implies that the following are not variables: </p></Admonition>
+
+<p>{"{"}<em>{"AI12-0226-1"}</em>{"}"} {"{"}<em>{"AI12-0392-1"}</em>{"}"} the result of evaluating a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>, an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>, a value conversion, a <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code>, a <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code>, a <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code>, or a parenthesized expression;</p>
+<p>{"{"}<em>{"AI12-0125-3"}</em>{"}"} a <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> (see 5.2.1);</p>
+<p>{"{"}<em>{"AI12-0061-1"}</em>{"}"} the index parameter of an <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>;</p>
+<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} a choice parameter or entry index;</p>
+<p>{"{"}<em>{"AI12-0308-1"}</em>{"}"} a chunk parameter of a <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>. </p>
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} This list of constructs that yield constant views is not exhaustive. </p></Admonition>
+
+<p>{"{"}<em>{"AI05-0264-1"}</em>{"}"} {"{"}<em>{"AI12-0191-1"}</em>{"}"} {"{"}<em>{"AI12-0294-1"}</em>{"}"} At the place where a view of an object is defined, a <em>nominal subtype</em> is associated with the view. The <em>nominal type</em> of a view is the type of the nominal subtype of the view. The object's <em>actual subtype</em> (that is, its subtype) can be more restrictive than the nominal subtype of the view; it always is more restrictive if the nominal subtype is an <em>indefinite subtype</em>. A subtype is an indefinite subtype if it is an unconstrained array subtype, or if it has unknown discriminants or unconstrained discriminants without defaults (see 3.7); otherwise, the subtype is a <em>definite</em> subtype [(all elementary subtypes are definite subtypes)]. [A class-wide subtype is defined to have unknown discriminants, and is therefore an indefinite subtype. An indefinite subtype does not by itself provide enough information to create an object; an additional <code><a href="../AA-3/AA-3.2#S0029">constraint</a></code> or explicit initialization <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is necessary (see 3.3.1). A component cannot have an indefinite nominal subtype.]</p>
+<Admonition type="note">
+<p><strong>Glossary entry: </strong>The nominal subtype of a view of an object is the subtype specified when the view is defined.</p></Admonition>
+
+<p>Version=[5],Kind=(AddedNormal),Group=[T], Term=[nominal subtype of a view of an object], Def=[the subtype specified when the view is defined]</p>
+<p>{"{"}<em>{"AI05-0008-1"}</em>{"}"} A view of a composite object is <em>known to be constrained</em> if:</p>
+<p>{"{"}<em>{"AI12-0401-1"}</em>{"}"} its nominal subtype is constrained and not an untagged partial view, and it is neither a value conversion nor a <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code>; or</p>
+<p>its nominal subtype is indefinite; or</p>
+<p>{"{"}<em>{"AI05-0008-1"}</em>{"}"} {"{"}<em>{"AI05-0093-1"}</em>{"}"} its type is immutably limited (see 7.5); or</p>
+<p>it is part of a stand-alone constant (including a generic formal object of mode <strong>in</strong>); or</p>
+<p>it is part of a formal parameter of mode <strong>in</strong>; or</p>
+<p>it is part of the object denoted by a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> or <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>; or</p>
+<p>{"{"}<em>{"AI12-0226-1"}</em>{"}"} {"{"}<em>{"AI12-0228-1"}</em>{"}"} it is a value conversion or <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> where the operand denotes a view of a composite object that is known to be constrained; or</p>
+<p>{"{"}<em>{"AI12-0228-1"}</em>{"}"} it is part of a constant return object of an <code><a href="../AA-6/AA-6.5#S0225">extended_return_statement</a></code>; or</p>
+<p>{"{"}<em>{"AI05-0008-1"}</em>{"}"} {"{"}<em>{"AI05-0041-1"}</em>{"}"} {"{"}<em>{"AI12-0228-1"}</em>{"}"} it is a dereference of a pool-specific access type, and there is no ancestor of its type that has a constrained partial view.</p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>We do not include dereferences of general access types because they might denote stand-alone aliased unconstrained variables. That's true even for access-to-constant types (the denoted object does not have to be a constant).</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0005-1"}</em>{"}"} {"{"}<em>{"AI05-0008-1"}</em>{"}"} {"{"}<em>{"AI12-0228-1"}</em>{"}"} We don't mention view conversions as there are no mutable tagged types (discriminant defaults are allowed only if the type is immutably limited), so all tagged view conversions are either of an indefinite type (if it has discriminants without defaults), an immutably limited type (if the discriminants do have defaults), or constrained (if there are no discriminants). This matches the first three bullets here, so all tagged view conversions are known to be constrained without needing to mention them explicitly. Untagged view conversions only can occur in parameter passing (as actuals to <strong>in out</strong> or <strong>out</strong> parameters), and "known to be constrained" is not used there.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0228-1"}</em>{"}"} We don't need to mention the current instance of a (sub)type, either. If a current instance of a type or subtype appears in an aspect specification, it represents a value, so whether or not it is known to be constrained is irrelevant (the term is only defined for composite objects). Otherwise, the current instance of a type can only be used in an immutably limited type, so all such instances are known to be constrained by the third bullet. </p></Admonition>
+
+<p>{"{"}<em>{"AI05-0008-1"}</em>{"}"} {"{"}<em>{"AI05-0041-1"}</em>{"}"} {"{"}<em>{"AI12-0228-1"}</em>{"}"} For the purposes of determining within a generic body whether an object is known to be constrained: </p>
+<p>if a subtype is a descendant of an untagged generic formal private or derived type, and the subtype is not an unconstrained array subtype, it is not considered indefinite and is considered to have a constrained partial view;</p>
+<p>if a subtype is a descendant of a formal access type, it is not considered pool-specific.</p>
+<p>A <em>named number</em> provides a name for a numeric value known at compile time. It is declared by a <code><a href="../AA-3/AA-3.3#S0034">number_declaration</a></code>. </p>
+<Admonition type="note">
+<p>NOTE 1   A constant cannot be the target of an assignment operation, nor be passed as an <strong>in</strong> <strong>out</strong> or <strong>out</strong> parameter, between its initialization and finalization, if any.</p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 2   {"{"}<em>{"AI05-0054-2"}</em>{"}"} The value of a constant object cannot be changed after its initialization, except in some cases where the object has a controlled or immutably limited part (see 7.5, 7.6, and 13.9.1).</p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 3   {"{"}<em>{"AI05-0264-1"}</em>{"}"} The nominal and actual subtypes of an elementary object are always the same. For a discriminated or array object, if the nominal subtype is constrained, then so is the actual subtype. </p></Admonition>
+
+
+#### Extensions to Ada 83
+
+<Admonition type="note">
+<p>There are additional kinds of objects (choice parameters and entry indices of entry bodies).</p></Admonition>
+
+<Admonition type="note">
+<p>The result of a function and of evaluating an aggregate are considered (constant) objects. This is necessary to explain the action of finalization on such things. Because a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> is also syntactically a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> (see 4.1), the result of a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> can be renamed, thereby allowing repeated use of the result without calling the function again. </p></Admonition>
+
+
+#### Wording Changes from Ada 83
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause now follows the subclauses on types and subtypes, to cut down on the number of forward references.</p></Admonition>
+
+<Admonition type="note">
+<p>The term nominal subtype is new. It is used to distinguish what is known at compile time about an object's constraint, versus what its "true" run-time constraint is.</p></Admonition>
+
+<Admonition type="note">
+<p>The terms definite and indefinite (which apply to subtypes) are new. They are used to aid in the description of generic formal type matching, and to specify when an explicit initial value is required in an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>.</p></Admonition>
+
+<Admonition type="note">
+<p>We have moved the syntax for <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> and <code><a href="../AA-3/AA-3.3#S0034">number_declaration</a></code> down into their respective subclauses, to keep the syntax close to the description of the associated semantics.</p></Admonition>
+
+<Admonition type="note">
+<p>We talk about variables and constants here, since the discussion is not specific to <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>s, and it seems better to have the list of the kinds of constants juxtaposed with the kinds of objects.</p></Admonition>
+
+<Admonition type="note">
+<p>We no longer talk about indirect updating due to parameter passing. Parameter passing is handled in 6.2 and 6.4.1 in a way that there is no need to mention it here in the definition of read and update. Reading and updating now includes the case of evaluating or assigning to an enclosing object. </p></Admonition>
+
+
+#### Wording Changes from Ada 95
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00416-01"}</em>{"}"} Clarified that the return object is the object created by a function call. </p></Admonition>
+
+
+#### Extensions to Ada 2005
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0015-1"}</em>{"}"} Added wording to allow return objects to be declared as constants, and corrected the definition of return objects as objects. </p></Admonition>
+
+
+#### Wording Changes from Ada 2005
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0008-1"}</em>{"}"} {"{"}<em>{"AI05-0041-1"}</em>{"}"} {"{"}<em>{"AI05-0093-1"}</em>{"}"} <strong>Correction:</strong> Added a definition of <em>known to be constrained</em>, for use in other rules.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0054-2"}</em>{"}"} <strong>Correction:</strong> We now recognize the fact that not all declared constant objects are immutable; for those that a variable view can be constructed, they can be changed via that view.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0120-1"}</em>{"}"} <strong>Correction:</strong> Added the current instance of a protected object to the list of constant views; since the list claims to include all possibilities, it had better include that one.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0003-1"}</em>{"}"} The result of a <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> is defined to be a constant view and is defined to be an object if the operand of the <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> is an object. These definitions, combined with some grammar changes, allow <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code>s to be used in more places. See 4.1 for details. </p></Admonition>
+
+
+#### Incompatibilities With Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0401-1"}</em>{"}"} <strong>Correction:</strong> Corrected the definition of "known to be constrained" so that the status of the operand of value conversions and <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code>s is always used to determine whether the property exists. As the rules are <strong>or</strong>ed together, a value conversion or <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> with a constrained nominal subtype would have always met the requirements in Ada 2012, regardless of the operand. This change will mean that some conversions or qualifications (mostly of variables) will no longer be considered "known to be constrained" and therefore 'Access and renaming of such <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>es will now be illegal. This is necessary to meet the design goal that subsequent execution cannot cause a renaming or 'Access to cause erroneous execution. </p></Admonition>
+
+
+#### Extensions to Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0228-1"}</em>{"}"} <strong>Correction:</strong> A <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> of an object that is known to be constrained is now also known to be constrained. This allows qualification to be used to disambiguate a function call used as a prefix in a <code><a href="../AA-8/AA-8.5#S0238">renaming_declaration</a></code> without making the <code><a href="../AA-8/AA-8.5#S0238">renaming_declaration</a></code> illegal.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0226-1"}</em>{"}"} A value conversion of an object is an object; this makes value conversions consistent with qualified expressions. </p></Admonition>
+
+
+#### Wording Changes from Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} <strong>Correction:</strong> Changed from a list of constants to a list of variables. This makes the default to be a constant, which is the more common case, and eliminates issues caused by omissions from the list (such as parenthesized expressions).</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0422-1"}</em>{"}"} Added the term "known to have no variable views" in order to have a definition that can be used in Legality Rules without breaking privacy. </p></Admonition>
+
+
+## 3.3.1  Object Declarations
+
+<p>{"{"}<em>{"AI05-0262-1"}</em>{"}"} An <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> declares a <em>stand-alone</em> object with a given nominal subtype and, optionally, an explicit initial value given by an initialization expression. For an array, access, task, or protected object, the <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> may include the definition of the (anonymous) type of the object. </p>
+
+#### Syntax
+
+<p>{"{"}<em>{"AI95-00385-01"}</em>{"}"} {"{"}<em>{"AI95-00406-01"}</em>{"}"} {"{"}<em>{"AI05-0183-1"}</em>{"}"} <code>object_declaration</code><a id="S0032"></a><code> ::= </code>    <code><a href="../AA-3/AA-3.3#S0033">defining_identifier_list</a></code> : [<strong>aliased</strong>] [<strong>constant</strong>] <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> [:= <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>]        [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];  | <code><a href="../AA-3/AA-3.3#S0033">defining_identifier_list</a></code> : [<strong>aliased</strong>] [<strong>constant</strong>] <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code> [:= <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>]        [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];  | <code><a href="../AA-3/AA-3.3#S0033">defining_identifier_list</a></code> : [<strong>aliased</strong>] [<strong>constant</strong>] <code><a href="../AA-3/AA-3.6#S0051">array_type_definition</a></code> [:= <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>]        [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];  | <code><a href="../AA-9/AA-9.1#S0245">single_task_declaration</a></code>  | <code><a href="../AA-9/AA-9.4#S0250">single_protected_declaration</a></code></p>
+<p><code>defining_identifier_list</code><a id="S0033"></a><code> ::= </code>  <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> {"{"}, <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code>{"}"}</p>
+
+#### Name Resolution Rules
+
+<p>For an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> with an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> following the compound delimiter :=, the type expected for the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is that of the object. This <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is called the <em>initialization expression</em>. </p>
+
+#### Legality Rules
+
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} An <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> without the reserved word <strong>constant</strong> declares a variable object. If it has a <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> or an <code><a href="../AA-3/AA-3.6#S0051">array_type_definition</a></code> that defines an indefinite subtype, then there shall be an initialization expression. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI05-0264-1"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} An <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> with the reserved word <strong>constant</strong> declares a constant object. If it has an initialization expression, then it is called a <em>full constant declaration</em>. Otherwise, it is called a <em>deferred constant declaration</em>. The rules for deferred constant declarations are given in subclause 7.4. The rules for full constant declarations are given in this subclause.</p>
+<p>Any declaration that includes a <code><a href="../AA-3/AA-3.3#S0033">defining_identifier_list</a></code> with more than one <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> is equivalent to a series of declarations each containing one <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> from the list, with the rest of the text of the declaration copied for each declaration in the series, in the same order as the list. The remainder of this Reference Manual relies on this equivalence; explanations are given for declarations with a single <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code>.</p>
+<p>{"{"}<em>{"AI95-00385-01"}</em>{"}"} The <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code>, <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code>, or full type definition of an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> defines the nominal subtype of the object. The <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> declares an object of the type of the nominal subtype. </p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>{"{"}<em>{"AI95-00385-01"}</em>{"}"} The phrase "full type definition" here includes the case of an anonymous array, access, task, or protected type. </p></Admonition>
+
+<p>{"{"}<em>{"AI95-00373-01"}</em>{"}"} {"{"}<em>{"AI12-0192-1"}</em>{"}"} A component of an object is said to <em>require late initialization</em> if: </p>
+<p>{"{"}<em>{"AI12-0192-1"}</em>{"}"} {"{"}<em>{"AI12-0404-1"}</em>{"}"} it has an access discriminant value constrained by a per-object expression; or</p>
+<p>{"{"}<em>{"AI12-0192-1"}</em>{"}"} it has an initialization expression that includes a name denoting an access discriminant; or</p>
+<p>{"{"}<em>{"AI12-0192-1"}</em>{"}"} it has an initialization expression that includes a reference to the current instance of the type either by name or implicitly as the target object of a call. </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>Such components can depend on the values of other components of the object. We want to initialize them as late and as reproducibly as possible. </p></Admonition>
+
+
+#### Dynamic Semantics
+
+<p>{"{"}<em>{"AI95-00363-01"}</em>{"}"} If a composite object declared by an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> has an unconstrained nominal subtype, then if this subtype is indefinite or the object is constant the actual subtype of this object is constrained. The constraint is determined by the bounds or discriminants (if any) of its initial value; the object is said to be <em>constrained by its initial value</em>. When not constrained by its initial value, the actual and nominal subtypes of the object are the same. If its actual subtype is constrained, the object is called a <em>constrained object</em>.</p>
+<p>For an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> without an initialization expression, any initial values for the object or its subcomponents are determined by the <em>implicit initial values</em> defined for its nominal subtype, as follows: </p>
+<p>The implicit initial value for an access subtype is the null value of the access type.</p>
+<p>{"{"}<em>{"AI05-0228-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} The implicit initial value for a scalar subtype that has the Default_Value aspect specified is the value of that aspect converted to the nominal subtype (which can raise Constraint_Error - see 4.6, "Type Conversions");</p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>This is a Dynamic Semantics rule, so the visibility of the <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> is not relevant - if the full type for a private type has the Default_Value aspect specified, partial views of the type also have this implicit initial value. </p></Admonition>
+
+<p>The implicit initial (and only) value for each discriminant of a constrained discriminated subtype is defined by the subtype.</p>
+<p>{"{"}<em>{"AI05-0228-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} For a (definite) composite subtype, the implicit initial value of each component with a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> is obtained by evaluation of this expression and conversion to the component's nominal subtype (which can raise Constraint_Error), unless the component is a discriminant of a constrained subtype (the previous case), or is in an excluded <code><a href="../AA-3/AA-3.8#S0072">variant</a></code> (see 3.8.1). For each component that does not have a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>, if the composite subtype has the Default_Component_Value aspect specified, the implicit initial value is the value of that aspect converted to the component's nominal subtype; otherwise, any implicit initial values are those determined by the component's nominal subtype.</p>
+<p>For a protected or task subtype, there is an implicit component (an entry queue) corresponding to each entry, with its implicit initial value being an empty queue. </p>
+<Admonition type="note">
+<p><strong>Implementation Note: </strong>The implementation may add implicit components for its own use, which might have implicit initial values. For a task subtype, such components might represent the state of the associated thread of control. For a type with dynamic-sized components, such implicit components might be used to hold the offset to some explicit component. </p></Admonition>
+
+<p>The elaboration of an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> proceeds in the following sequence of steps: </p>
+<p>a){"{"}<em>{"AI95-00385-01"}</em>{"}"} The <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code>, <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code>, <code><a href="../AA-3/AA-3.6#S0051">array_type_definition</a></code>, <code><a href="../AA-9/AA-9.1#S0245">single_task_declaration</a></code>, or <code><a href="../AA-9/AA-9.4#S0250">single_protected_declaration</a></code> is first elaborated. This creates the nominal subtype (and the anonymous type in the last four cases).</p>
+<p>b){"{"}<em>{"AI12-0439-1"}</em>{"}"} If the <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> includes an initialization expression, the (explicit) initial value is obtained by evaluating the expression and converting it to the nominal subtype (which can raise Constraint_Error - see 4.6). </p>
+<p>c){"{"}<em>8652/0002</em>{"}"} {"{"}<em>{"AI95-00171-01"}</em>{"}"} {"{"}<em>{"AI95-00373-01"}</em>{"}"} The object is created, and, if there is not an initialization expression, the object is <em>initialized by default</em>. When an object is initialized by default, any per-object constraints (see 3.8) are elaborated and any implicit initial values for the object or for its subcomponents are obtained as determined by the nominal subtype. Any initial values (whether explicit or implicit) are assigned to the object or to the corresponding subcomponents. As described in 5.2 and 7.6, Initialize and Adjust procedures can be called. </p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>For a per-object constraint that contains some per-object expressions and some non-per-object expressions, the values used for the constraint consist of the values of the non-per-object expressions evaluated at the point of the <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code>, and the values of the per-object expressions evaluated at the point of the creation of the object.</p></Admonition>
+
+<Admonition type="note">
+<p>The elaboration of per-object constraints was presumably performed as part of the dependent compatibility check in Ada 83. If the object is of a limited type with an access discriminant, the <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code> is elaborated at this time (see 3.7). </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Reason: </strong>The reason we say that evaluating an explicit initialization expression happens before creating the object is that in some cases it is impossible to know the size of the object being created until its initial value is known, as in "X: String := Func_Call(...);". The implementation can create the object early in the common case where the size can be known early, since this optimization is semantically neutral. </p></Admonition>
+
+<p><em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00373-01"}</em>{"}"} </p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>Since the initial values have already been converted to the appropriate nominal subtype, the only Constraint_Errors that might occur as part of these assignments are for values outside their base range that are used to initialize unconstrained numeric subcomponents. See 3.5. </p></Admonition>
+
+<p>{"{"}<em>{"AI95-00373-01"}</em>{"}"} For the third step above, evaluations and assignments are performed in an arbitrary order subject to the following restrictions: </p>
+<p>{"{"}<em>{"AI95-00373-01"}</em>{"}"} Assignment to any part of the object is preceded by the evaluation of the value that is to be assigned. </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>Duh. But we ought to say it. Note that, like any rule in the Reference Manual, it doesn't prevent an "as-if" optimization; as long as the semantics as observed from the program are correct, the compiler can generate any code it wants. </p></Admonition>
+
+<p>{"{"}<em>{"AI95-00373-01"}</em>{"}"} The evaluation of a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> that includes the name of a discriminant is preceded by the assignment to that discriminant. </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>Duh again. But we have to say this, too. It's odd that Ada 95 only required the default expressions to be evaluated before the discriminant is used; it says nothing about discriminant values that come from <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code>s. </p></Admonition>
+
+<p>{"{"}<em>{"AI95-00373-01"}</em>{"}"} The evaluation of the <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> for any component that depends on a discriminant is preceded by the assignment to that discriminant. </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>For example: </p></Admonition>
+
+<CodeBlock>
+type R(D : Integer := F) is{"\n"}    record{"\n"}        S : String(1..D) := (others ={">"} G);{"\n"}    end record;{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+X : R;{"\n"}
+</CodeBlock>
+
+<Admonition type="note">
+<p>For the elaboration of the declaration of X, it is important that F be evaluated before the aggregate. </p></Admonition>
+
+<p>{"{"}<em>{"AI95-00373-01"}</em>{"}"} {"{"}<em>{"AI05-0092-1"}</em>{"}"} The assignments to any components, including implicit components, not requiring late initialization precede the initial value evaluations for any components requiring late initialization; if two components both require late initialization, then assignments to parts of the component occurring earlier in the order of the component declarations precede the initial value evaluations of the component occurring later. </p>
+<Admonition type="note">
+<p><strong>Reason: </strong>Components that require late initialization can refer to the entire object during their initialization. We want them to be initialized as late as possible to reduce the chance that their initialization depends on uninitialized components. For instance: </p></Admonition>
+
+<CodeBlock>
+type T (D : Natural) is{"\n"}  limited record{"\n"}    C1 : T1 (T'Access);{"\n"}    C2 : Natural := F (D);{"\n"}    C3 : String (1 .. D) := (others ={">"} ' ');{"\n"}  end record;{"\n"}
+</CodeBlock>
+
+<Admonition type="note">
+<p>Component C1 requires late initialization. The initialization could depend on the values of any component of T, including D, C2, or C3. Therefore, we want to it to be initialized last. Note that C2 and C3 do not require late initialization; they only have to be initialized after D.</p></Admonition>
+
+<Admonition type="note">
+<p>It is possible for there to be more than one component that requires late initialization. In this case, the language can't prevent problems, because all of the components can't be the last one initialized. In this case, we specify the order of initialization for components requiring late initialization; by doing so, programmers can arrange their code to avoid accessing uninitialized components, and such arrangements are portable. Note that if the program accesses an uninitialized component, 13.9.1 defines the execution to be erroneous. </p></Admonition>
+
+<p>{"{"}<em>{"AI05-0228-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} [There is no implicit initial value defined for a scalar subtype unless the Default_Value aspect has been specified for the type.] In the absence of an explicit initialization or the specification of the Default_Value aspect, a newly created scalar object can have a value that does not belong to its subtype (see 13.9.1 and H.1). </p>
+<Admonition type="note">
+<p><strong>To be honest: </strong>It could even be represented by a bit pattern that doesn't actually represent any value of the type at all, such as an invalid internal code for an enumeration type, or a NaN for a floating point type. It is a generally a bounded error to reference scalar objects with such "invalid representations", as explained in 13.9.1, "Data Validity". </p></Admonition>
+
+<Admonition type="note">
+<p><strong>Ramification: </strong>There is no requirement that two objects of the same scalar subtype have the same implicit initial "value" (or representation). It might even be the case that two elaborations of the same <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> produce two different initial values. However, any particular uninitialized object is default-initialized to a single value (or invalid representation). Thus, multiple reads of such an uninitialized object will produce the same value each time (if the implementation chooses not to detect the error). </p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 1   Implicit initial values are not defined for an indefinite subtype, because if an object's nominal subtype is indefinite, an explicit initial value is required.</p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 2   {"{"}<em>{"AI05-0092-1"}</em>{"}"} {"{"}<em>{"AI05-0255-1"}</em>{"}"} {"{"}<em>{"AI12-0061-1"}</em>{"}"} {"{"}<em>{"AI12-0308-1"}</em>{"}"} As indicated above, a stand-alone object is an object declared by an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>. Similar definitions apply to "stand-alone constant" and "stand-alone variable". A subcomponent of an object is not a stand-alone object, nor is an object that is created by an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>. An object declared by a <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code>, <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>, <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>, <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>, <code><a href="../AA-6/AA-6.1#S0207">parameter_specification</a></code>, <code><a href="../AA-9/AA-9.5#S0263">entry_index_specification</a></code>, <code><a href="../AA-11/AA-11.2#S0306">choice_parameter_specification</a></code>, <code><a href="../AA-6/AA-6.5#S0225">extended_return_statement</a></code>, or a <code><a href="../AA-12/AA-12.4#S0319">formal_object_declaration</a></code> of mode <strong>in out</strong> is not considered a stand-alone object.</p></Admonition>
+
+<Admonition type="note">
+<p>NOTE 3   The type of a stand-alone object cannot be abstract (see 3.9.3). </p></Admonition>
+
+
+#### Examples
+
+<p><em>Example of a multiple object declaration:</em> </p>
+<CodeBlock>
+--  the multiple object declaration {"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"} John, Paul : not null Person_Name := new Person(Sex ={">"} M);  --  see 3.10.1{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+--  is equivalent to the two single object declarations in the order given{"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"} John : not null Person_Name := new Person(Sex ={">"} M);{"\n"}Paul : not null Person_Name := new Person(Sex ={">"} M);{"\n"}
+</CodeBlock>
+
+<p><em>Examples of variable declarations:</em> </p>
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"} {"{"}{"AI12-0430-1"}{"}"} Count, Sum  : Integer;{"\n"}Size        : Integer range 0 .. 10_000 := 0;{"\n"}Sorted      : Boolean := False;{"\n"}Color_Table : array(1 .. Max) of Color;{"\n"}Option      : Bit_Vector(1 .. 10) := (others ={">"} True); -- see 3.6{"\n"}Hello       : aliased String := "Hi, world.";{"\n"},         : Float range - .. +;{"\n"}
+</CodeBlock>
+
+<p><em>Examples of constant declarations:</em> </p>
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"} {"{"}{"AI12-0425-1"}{"}"} Limit     : constant Integer := 10_000;{"\n"}Low_Limit : constant Integer := Limit/10;{"\n"}Tolerance : constant Real := Dispersion(1.15);{"\n"}A_String  : constant String := "A";{"\n"}Hello_Msg : constant access String := Hello'Access; -- see 3.10.2{"\n"}
+</CodeBlock>
+
+
+#### Extensions to Ada 83
+
+<Admonition type="note">
+<p>The syntax rule for <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> is modified to allow the <strong>aliased</strong> reserved word.</p></Admonition>
+
+<Admonition type="note">
+<p>A variable declared by an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> can be constrained by its initial value; that is, a variable of a nominally unconstrained array subtype, or discriminated type without defaults, can be declared so long as it has an explicit initial value. In Ada 83, this was permitted for constants, and for variables created by allocators, but not for variables declared by <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>s. This is particularly important for tagged class-wide types, since there is no way to constrain them explicitly, and so an initial value is the only way to provide a constraint. It is also important for generic formal private types with unknown discriminants.</p></Admonition>
+
+<Admonition type="note">
+<p>We now allow an <code><a href="../AA-3/AA-3.6#S0052">unconstrained_array_definition</a></code> in an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>. This allows an object of an anonymous array type to have its bounds determined by its initial value. This is for uniformity: If one can write "X: <strong>constant</strong> <strong>array</strong>(Integer <strong>range</strong> 1..10) <strong>of</strong> Integer := ...;" then it makes sense to also allow "X: <strong>constant</strong> <strong>array</strong>(Integer <strong>range</strong> {"<"}{">"}) <strong>of</strong> Integer := ...;". (Note that if anonymous array types are ever sensible, a common situation is for a table implemented as an array. Tables are often constant, and for constants, there's usually no point in forcing the user to count the number of elements in the value.) </p></Admonition>
+
+
+#### Wording Changes from Ada 83
+
+<Admonition type="note">
+<p>We have moved the syntax for <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>s into this subclause.</p></Admonition>
+
+<Admonition type="note">
+<p>Deferred constants no longer have a separate syntax rule, but rather are incorporated in <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> as constants declared without an initialization expression. </p></Admonition>
+
+
+#### Inconsistencies With Ada 95
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00363-01"}</em>{"}"} Unconstrained aliased objects of types with discriminants with defaults are no longer constrained by their initial values. This means that a program that raised Constraint_Error from an attempt to change the discriminants will no longer do so. The change only affects programs that depended on the raising of Constraint_Error in this case, so the inconsistency is unlikely to occur outside of the ACATS. This change may however cause compilers to implement these objects differently, possibly taking additional memory or time. This is unlikely to be worse than the differences caused by any major compiler upgrade. </p></Admonition>
+
+
+#### Extensions to Ada 95
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} A constant may have a limited type; the initialization <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> has to be built-in-place (see 7.5).</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00385-01"}</em>{"}"} {"{"}<em>{"AI95-00406-01"}</em>{"}"} A stand-alone object may have an anonymous access type. </p></Admonition>
+
+
+#### Wording Changes from Ada 95
+
+<Admonition type="note">
+<p>{"{"}<em>8652/0002</em>{"}"} {"{"}<em>{"AI95-00171-01"}</em>{"}"} <strong>Corrigendum:</strong> Corrected wording to say that per-object constraints are elaborated (not evaluated).</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00373-01"}</em>{"}"} The rules for evaluating default initialization have been tightened. In particular, components whose default initialization can refer to the rest of the object are required to be initialized last.</p></Admonition>
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI95-00433-01"}</em>{"}"} Added examples of various new constructs. </p></Admonition>
+
+
+#### Extensions to Ada 2005
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0183-1"}</em>{"}"} An optional <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> can be used in an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>. This is described in 13.1.1. </p></Admonition>
+
+
+#### Wording Changes from Ada 2005
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI05-0228-1"}</em>{"}"} Implicit initial values can now be given for scalar types and for scalar array components, using the Default_Value (see 3.5) and Default_Component_Value (see 3.6) aspects; the extension is documented there. </p></Admonition>
+
+
+#### Inconsistencies With Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0192-1"}</em>{"}"} <strong>Correction:</strong> Components of a protected type require late initialization if their initialization includes (implicitly) the current instance of the type. This means that the components could end up being initialized in a different order. In most cases, this will have no visible effect, or will even fix bugs. Most code for which this is an issue depends on the (unspecified) order of initialization, so it is at risk of failing with a new compiler version regardless of Ada rule changes. However, there do exist very unlikely cases where legal, portable Ada 2012 code would become erroneous. (See the discussion section of {"AI12-0192-1"} for an example.) These are so unlikely that it is expected that they only exist in the minds of Ada lawyers. </p></Admonition>
+
+
+## 3.3.2  Number Declarations
+
+<p>A <code><a href="../AA-3/AA-3.3#S0034">number_declaration</a></code> declares a named number. </p>
+<Admonition type="note">
+<p><strong>Discussion: </strong>{"{"}<em>{"AI05-0299-1"}</em>{"}"} If a value or other property of a construct is required to be <em>static</em> that means it is required to be determined prior to execution. A <em>static</em> expression is an expression whose value is computed at compile time and is usable in contexts where the actual value might affect the legality of the construct. This is fully defined in subclause 4.9. </p></Admonition>
+
+
+#### Syntax
+
+<p><code>number_declaration</code><a id="S0034"></a><code> ::= </code>     <code><a href="../AA-3/AA-3.3#S0033">defining_identifier_list</a></code> : <strong>constant</strong> := <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>;</p>
+
+#### Name Resolution Rules
+
+<p>The <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> given for a <code><a href="../AA-3/AA-3.3#S0034">number_declaration</a></code> is expected to be of any numeric type.</p>
+<p>{"{"}<em>{"AI12-0394-1"}</em>{"}"} A <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a <code><a href="../AA-3/AA-3.3#S0034">number_declaration</a></code> is interpreted as a value of a universal type, unless the expected type for the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> is a non-numeric type with an Integer_Literal or Real_Literal aspect, in which case it is interpreted to be of its expected type.</p>
+<Admonition type="note">
+<p><strong>To be honest: </strong>This is only a Name Resolution Rule; all named numbers are values of a universal type (see the Static Semantics below). We need this rule so that named numbers can match types with user-defined literals; we need the other rules so the value of the named number is well-defined in all cases. </p></Admonition>
+
+
+#### Legality Rules
+
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} The <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> given for a number declaration shall be a static expression, as defined by subclause 4.9. </p>
+
+#### Static Semantics
+
+<p>The named number denotes a value of type <em>universal_integer</em> if the type of the <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is an integer type. The named number denotes a value of type <em>universal_real</em> if the type of the <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is a real type.</p>
+<p>The value denoted by the named number is the value of the <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, converted to the corresponding universal type. </p>
+
+#### Dynamic Semantics
+
+<p>The elaboration of a <code><a href="../AA-3/AA-3.3#S0034">number_declaration</a></code> has no effect. </p>
+<Admonition type="note">
+<p><strong>Proof: </strong>Since the <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> was evaluated at compile time. </p></Admonition>
+
+
+#### Examples
+
+<p><em>Examples of number declarations:</em> </p>
+<CodeBlock>
+Two_Pi        : constant := 2.0*Ada.Numerics.Pi;   -- a real number (see A.5){"\n"}
+</CodeBlock>
+
+<CodeBlock>
+{"{"}{"AI95-00433-01"}{"}"} Max           : constant := 500;                   -- an integer number{"\n"}Max_Line_Size : constant := Max/6;                 -- the integer 83{"\n"}Power_16      : constant := 2**16;                 -- the integer 65_536{"\n"}One, Un, Eins : constant := 1;                     -- three different names for 1{"\n"}
+</CodeBlock>
+
+
+#### Extensions to Ada 83
+
+<Admonition type="note">
+<p>We now allow a static expression of any numeric type to initialize a named number. For integer types, it was possible in Ada 83 to use 'Pos to define a named number, but there was no way to use a static expression of some nonuniversal real type to define a named number. This change is upward compatible because of the preference rule for the operators of the root numeric types. </p></Admonition>
+
+
+#### Wording Changes from Ada 83
+
+<Admonition type="note">
+<p>We have moved the syntax rule into this subclause.</p></Admonition>
+
+<Admonition type="note">
+<p>AI83-00263 describes the elaboration of a number declaration in words similar to that of an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>. However, since there is no expression to be evaluated and no object to be created, it seems simpler to say that the elaboration has no effect. </p></Admonition>
+
+
+#### Extensions to Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0394-1"}</em>{"}"} Named numbers now can be used with (non-numeric) types that define user-defined literals (see 4.2.1). </p></Admonition>
+

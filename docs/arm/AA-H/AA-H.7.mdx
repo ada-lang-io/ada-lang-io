@@ -1,0 +1,95 @@
+---
+sidebar_position:  189
+---
+
+# H.7 Extensions to Global and Global'Class Aspects
+
+:::warning
+We're still working on the Reference manual output.  Internal links are broken,
+as are a bunch of other things.
+See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+:::
+
+import CodeBlock from "@theme/CodeBlock";
+import Admonition from "@theme/Admonition";
+
+<p>{"{"}<em>{"AI12-0079-3"}</em>{"}"} In addition to the entities specified in 6.1.2, the Global aspect may be specified for a subtype (including a formal subtype), formal package, formal subprogram, and formal object of an anonymous access-to-subprogram type. </p>
+
+#### Syntax
+
+<p>{"{"}<em>{"AI12-0079-3"}</em>{"}"} {"{"}<em>{"AI12-0380-1"}</em>{"}"} The following additional syntax is provided to override the mode of a formal parameter to reflect indirect effects on variables reachable from the formal parameter by one or more access-value dereferences:</p>
+<p><code>extended_global_mode</code><a id="S0361"></a><code> ::= </code>    <strong>overriding</strong> <code><a href="../AA-6/AA-6.1#S0212">basic_global_mode</a></code></p>
+
+#### Name Resolution Rules
+
+<p>{"{"}<em>{"AI12-0079-3"}</em>{"}"} The <em>object_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> that is associated with an <strong>overriding</strong> mode shall resolve to statically denote a formal object, or a formal parameter of the associated entity. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI12-0079-3"}</em>{"}"} The presence of the reserved word <strong>overriding</strong> in a global mode indicates that the specification is overriding the mode of a formal parameter with another mode to reflect the overall effect of an invocation of the callable entity on the state associated with the corresponding actual parameter.</p>
+<p>{"{"}<em>{"AI12-0380-1"}</em>{"}"} [As described in 6.1.2, the following rules are defined in terms of operations that are performed by or on behalf of an entity.]</p>
+<p>{"{"}<em>{"AI12-0079-3"}</em>{"}"} {"{"}<em>{"AI12-0431-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} The Global aspect for a subtype identifies the global variables that can be referenced during default initialization, adjustment as part of assignment, finalization of an object of the subtype, or conversion to the subtype, including the evaluation of any assertion expressions that apply. If not specified for the first subtype of a derived type, the aspect defaults to that of the ancestor subtype; if not specified for a nonderived composite first subtype the aspect defaults to that of the enclosing library unit; if not specified for a nonderived elementary first subtype (or scalar base subtype), the aspect defaults to <strong>null</strong> in the absence of a predicate (or when the predicate is statically True), and to that of the enclosing library unit otherwise. If not specified for a nonfirst subtype <em>S</em>, the Global aspect defaults to that of the subtype identified in the <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> defining <em>S</em>.</p>
+<p>{"{"}<em>{"AI12-0079-3"}</em>{"}"} The Global'Class aspect may be specified for the first subtype of a tagged type <em>T</em>, indicating an upper bound on the Global aspect of any descendant of <em>T</em>. If not specified, it defaults to Unspecified. </p>
+
+#### Legality Rules
+
+<p>{"{"}<em>{"AI12-0079-3"}</em>{"}"} For a tagged subtype <em>T</em>, each mode of its Global aspect shall identify a subset of the variables identified either by the corresponding mode, or by the <strong>in out</strong> mode, of the Global'Class aspect of the first subtype of any ancestor of <em>T</em>. </p>
+
+#### Extensions to Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0079-3"}</em>{"}"} {"{"}<em>{"AI12-0380-1"}</em>{"}"} These extensions to the Global aspect are new. </p></Admonition>
+
+
+## H.7.1  The Use_Formal and Dispatching Aspects
+
+<p>{"{"}<em>{"AI12-0380-1"}</em>{"}"} The Use_Formal and Dispatching aspects are provided to more precisely describe the use of generic formal parameters and dispatching calls within the execution of an operation, enabling more precise checking of conformance with the Nonblocking and global aspects that apply at the point of invocation of the operation.</p>
+<p>{"{"}<em>{"AI12-0079-3"}</em>{"}"} {"{"}<em>{"AI12-0380-1"}</em>{"}"} For any declaration within a generic unit for which a global or Nonblocking aspect may be specified, other than a <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code>, the following aspect may be specified to indicate which generic formal parameters are <em>used</em> by the associated entity:</p>
+<p>{"{"}<em>{"AI12-0380-1"}</em>{"}"} Use_FormalThe aspect is specified with a <code><a href="../AA-H/AA-H.7#S0362">formal_parameter_set</a></code>, with the following form:</p>
+<Admonition type="note">
+<p><strong>Aspect Description for </strong><strong>Use_Formal: </strong>Generic formal parameters used in the implementation of an entity.</p></Admonition>
+
+<p><code>formal_parameter_set</code><a id="S0362"></a><code> ::= </code>    <code><a href="../AA-H/AA-H.7#S0363">formal_group_designator</a></code>  | <code><a href="../AA-H/AA-H.7#S0364">formal_parameter_name</a></code>  | (<code><a href="../AA-H/AA-H.7#S0364">formal_parameter_name</a></code>{"{"}, <code><a href="../AA-H/AA-H.7#S0364">formal_parameter_name</a></code>{"}"})</p>
+<p><code>formal_group_designator</code><a id="S0363"></a><code> ::= </code><strong>null</strong> | <strong>all</strong></p>
+<p><code>formal_parameter_name</code><a id="S0364"></a><code> ::= </code>    <em>formal_</em><code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>  | <em>formal_subprogram_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>  | <em>formal_access_to_subprogram_object_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code></p>
+<p>{"{"}<em>{"AI12-0079-3"}</em>{"}"} {"{"}<em>{"AI12-0380-1"}</em>{"}"} For any declaration for which a global or Nonblocking aspect may be specified, other than for a library package, a generic library package, or a generic formal, the following aspect may be specified:</p>
+<p>{"{"}<em>{"AI12-0380-1"}</em>{"}"} Dispatching The aspect is specified with a <code><a href="../AA-H/AA-H.7#S0365">dispatching_operation_set</a></code>, with the following form:</p>
+<Admonition type="note">
+<p><strong>Aspect Description for </strong><strong>Dispatching: </strong>Generic formal parameters used in the implementation of an entity.</p></Admonition>
+
+<p><code>dispatching_operation_set</code><a id="S0365"></a><code> ::= </code>    <code><a href="../AA-H/AA-H.7#S0366">dispatching_operation_specifier</a></code>  | (<code><a href="../AA-H/AA-H.7#S0366">dispatching_operation_specifier</a></code>{"{"}, <code><a href="../AA-H/AA-H.7#S0366">dispatching_operation_specifier</a></code>{"}"})</p>
+<p><code>dispatching_operation_specifier</code><a id="S0366"></a><code> ::= </code>    <em>dispatching_operation_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> (<em>object_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>)</p>
+
+#### Name Resolution Rules
+
+<p>{"{"}<em>{"AI12-0380-1"}</em>{"}"} A <code><a href="../AA-H/AA-H.7#S0364">formal_parameter_name</a></code> in a Use_Formal aspect shall resolve to statically denote a formal subtype, a formal subprogram, or a formal object of an anonymous access-to-subprogram type[ of an enclosing generic unit or visible formal package].</p>
+<p>{"{"}<em>{"AI12-0380-1"}</em>{"}"} The <em>object_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> of a <code><a href="../AA-H/AA-H.7#S0366">dispatching_operation_specifier</a></code> shall resolve to statically name an object (including possibly a formal parameter) of a tagged class-wide type <em>T</em>'Class, or of an access type designating a tagged class-wide type <em>T</em>'Class; the <em>dispatching_operation_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> of the <code><a href="../AA-H/AA-H.7#S0366">dispatching_operation_specifier</a></code> shall resolve to statically denote a dispatching operation associated with <em>T</em>. </p>
+
+#### Static Semantics
+
+<p>{"{"}<em>{"AI12-0380-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} The <em>formal parameter set</em> is identified by a set of <code><a href="../AA-H/AA-H.7#S0364">formal_parameter_name</a></code>s. Alternatively, the reserved word <strong>null</strong> may be used to indicate none of the generic formal parameters, or <strong>all</strong> to indicate all of the generic formal parameters, of any enclosing generic unit (or visible formal package) can be used within the execution of the operation. If there is no formal parameter set specified for an entity declared within a generic unit, it defaults to <strong>all</strong>.</p>
+<p>{"{"}<em>{"AI12-0380-1"}</em>{"}"} {"{"}<em>{"AI12-0404-1"}</em>{"}"} {"{"}<em>{"AI12-0444-1"}</em>{"}"} The <em>dispatching operation set</em> is identified by a set of <code><a href="../AA-H/AA-H.7#S0366">dispatching_operation_specifier</a></code>s. It indicates that the Nonblocking and global effects of dispatching calls that match one of the specifiers, rather than being accounted for by the Nonblocking or global aspect, are instead to be accounted for by the invoker of the operation. A dispatching call matches a <code><a href="../AA-H/AA-H.7#S0366">dispatching_operation_specifier</a></code> if the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the call statically denotes the same operation(s) as that of the <code><a href="../AA-H/AA-H.7#S0366">dispatching_operation_specifier</a></code>, and at least one of the objects controlling the call is denoted by, or designated by, a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that statically names the same object as that denoted by the <em>object_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> of the <code><a href="../AA-H/AA-H.7#S0366">dispatching_operation_specifier</a></code>.</p>
+<Admonition type="note">
+<p><strong>Ramification: </strong>The object "controlling the call" is not necessarily a controlling parameter of the call if the call is a function with a controlling result or has parameters that is such a function. It is one of the objects that provide the dispatching tag used for the call; that could, for example, be a parameter of a function used as a parameter to the call, or an object being assigned to, or a parameter of an enclosing call. </p></Admonition>
+
+<p>{"{"}<em>{"AI12-0380-1"}</em>{"}"} {"{"}<em>{"AI12-0404-1"}</em>{"}"} In the absence of any <code><a href="../AA-H/AA-H.7#S0366">dispatching_operation_specifier</a></code>s, or if none of them match a dispatching call <em>C</em> within an operation <em>P</em>, Nonblocking and global aspects checks are performed at the point of the call <em>C</em> within <em>P</em> using the Nonblocking and Global'Class aspects that apply to the dispatching operation named in call <em>C</em>. If there is a match, any global access or potential blocking within the subprogram body invoked by the call <em>C</em> is ignored at the point of call within <em>P</em>. Instead, when the operation <em>P</em> itself is invoked, Nonblocking and global aspect checks are performed presuming each named dispatching operation is called at least once (with the named object controlling the call), but similarly ignoring those dispatching calls that would match a <code><a href="../AA-H/AA-H.7#S0366">dispatching_operation_specifier</a></code> applicable at the point of invocation of <em>P</em>.</p>
+
+#### Legality Rules
+
+<p>{"{"}<em>{"AI12-0380-1"}</em>{"}"} Within an operation to which a Use_Formal aspect applies, if the formal parameter set is anything but <strong>all</strong>, then the only generic formal subtypes that may be used, the only formal subprograms that may be called, and the only formal objects of an anonymous access-to-subprogram type that may be dereferenced as part of a call or passed as the actual for an access parameter, are those included in the formal parameter set.</p>
+<p>{"{"}<em>{"AI12-0380-1"}</em>{"}"} When an operation (or instance thereof) to which a Use_Formal aspect applies is invoked, Nonblocking and global aspect checks are performed presuming each generic formal parameter (or corresponding actual parameter) of the formal parameter set is used at least once. </p>
+
+#### Examples
+
+<p>{"{"}<em>{"AI12-0430-1"}</em>{"}"} <em>An example of use of the Dispatching aspect:</em> </p>
+<CodeBlock>
+procedure My_Write(  --  see 13.13.2{"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item   : My_Integer'Base){"\n"}   with Dispatching ={">"} Write(Stream);{"\n"}for My_Integer'Write use My_Write;{"\n"}
+</CodeBlock>
+
+<p>{"{"}<em>{"AI12-0430-1"}</em>{"}"} <em>For examples of use of the Use_Formal aspect, see the Element functions of Hashed_Sets in A.18.8.</em></p>
+
+#### Extensions to Ada 2012
+
+<Admonition type="note">
+<p>{"{"}<em>{"AI12-0079-3"}</em>{"}"} The aspects Use_Formal and Dispatching are new. </p></Admonition>
+
