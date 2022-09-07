@@ -33,8 +33,8 @@ Yes, there are also commercial compilers which are not free to use.
 
 FSF GNAT is licensed with the GCC Runtime exception:
 
-- `Runtime Library Exception http://www.gnu.org/licenses/gpl-faq.html#LibGCCException \_
-- `FAQ About GCC Runtime Exception http://www.gnu.org/licenses/gcc-exception-3.1-faq.html \_
+- [Runtime Library Exception](http://www.gnu.org/licenses/gpl-faq.html#LibGCCException)
+- [FAQ About GCC Runtime Exception](http://www.gnu.org/licenses/gcc-exception-3.1-faq.html)
 
 Alire 1.1 supports downloading and installing
 the FSF GNAT toolchain for you.
