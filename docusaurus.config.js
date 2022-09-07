@@ -99,9 +99,10 @@ const config = {
             position: "left"
           },
           {
-            href: "https://github.com/ada-lang-io/ada-lang-io",
-            label: "GitHub",
-            position: "right"
+            href: `https://github.com/${gitHubUserName}/${gitHubProjectName}`,
+            position: "right",
+            className: "fa-icon header__image header-github-link",
+            "aria-label": "GitHub repository"
           }
         ]
       },
@@ -147,19 +148,23 @@ const config = {
             items: [
               {
                 label: "Gitter",
-                href: "https://gitter.im/ada-lang/Lobby"
+                href: "https://gitter.im/ada-lang/Lobby",
+                className: "fa-icon footer__image footer-gitter-link"
               },
               {
                 label: "Reddit",
-                href: "https://www.reddit.com/r/ada/"
+                href: "https://www.reddit.com/r/ada/",
+                className: "fa-icon footer__image footer-reddit-link"
               },
               {
                 label: "Telegram",
-                href: "https://t.me/ada_lang"
+                href: "https://t.me/ada_lang",
+                className: "fa-icon footer__image footer-telegram-link"
               },
               {
                 label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/ada"
+                href: "https://stackoverflow.com/questions/tagged/ada",
+                className: "fa-icon footer__image footer-stackoverflow-link"
               }
             ]
           },
@@ -180,7 +185,8 @@ const config = {
               },
               {
                 label: "GitHub",
-                href: `https://github.com/${gitHubUserName}/${gitHubProjectName}`
+                href: `https://github.com/${gitHubUserName}/${gitHubProjectName}`,
+                className: "fa-icon footer__image footer-github-link"
               }
             ]
           }
