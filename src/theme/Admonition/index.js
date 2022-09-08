@@ -2,7 +2,7 @@ import React from "react"
 
 import Admonition from "@theme-original/Admonition"
 
-import styles from "./styles.module.css"
+import styles from "./styles.module.scss"
 
 // Possible types are: note, tip, info, caution, danger
 const aarmTypes = {
