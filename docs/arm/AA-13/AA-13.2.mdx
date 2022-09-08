@@ -18,13 +18,13 @@ import Admonition from "@theme/Admonition";
 
 #### Language Design Principles
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0001-1"}</em>{"}"} If the default representation already uses minimal storage for a particular type, aspect Pack might not cause any representation change. It follows that aspect Pack should always be allowed, even when it has no effect on representation.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>As a consequence, the chosen representation for a packed type may change during program maintenance even if the type is unchanged (in particular, if other representation aspects change on a part of the type). This is different than the behavior of most other representation aspects, whose properties remain guaranteed no matter what changes are made to other aspects.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Therefore, aspect Pack should not be used to achieve a representation required by external criteria. For instance, setting Component_Size to 1 should be preferred over using aspect Pack to ensure an array of bits. If future maintenance would make the array components aliased, independent, or atomic, the program would become illegal if Component_Size is used (immediately identifying a problem) while the aspect Pack version would simply change representations (probably causing a hard-to-find bug). </p></Admonition>
 
 
@@ -32,64 +32,64 @@ import Admonition from "@theme/Admonition";
 
 <p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} For a full type declaration of a composite type, the following language-defined representation aspect may be specified:</p>
 <p>PackThe type of aspect Pack is Boolean. When aspect Pack is True for a type, the type (or the extension part) is said to be <em>packed</em>. For a type extension, the parent part is packed as for the parent type, and specifying Pack causes packing only of the extension part. </p>
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p><strong>Aspect Description for </strong><strong>Pack: </strong>Minimize storage when laying out records and arrays.</p></Admonition>
 
 <p>If directly specified, the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> shall be a static expression. If not specified (including by inheritance), the aspect is False. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>{"{"}<em>{"AI05-0229-1"}</em>{"}"} The only high level semantic effect of specifying the Pack aspect is potential loss of independent addressability (see 9.10, "Shared Variables").] </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>{"{"}<em>{"AI05-0229-1"}</em>{"}"} The only high level semantic effect of specifying the Pack aspect is potential loss of independent addressability (see 9.10, "Shared Variables").] </p></Admonition>
 
 
 #### Implementation Advice
 
 <p>If a type is packed, then the implementation should try to minimize storage allocated to objects of the type, possibly at the expense of speed of accessing components, subject to reasonable complexity in addressing calculations. </p>
-<Admonition type="note">
-<p><strong>Implementation Advice: </strong>Storage allocated to objects of a packed type should be minimized.</p></Admonition>
+<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<p><strong></strong>Storage allocated to objects of a packed type should be minimized.</p></Admonition>
 
-<Admonition type="note">
-<p><strong>Ramification: </strong>{"{"}<em>{"AI05-0229-1"}</em>{"}"} Specifying the Pack aspect is for gaining space efficiency, possibly at the expense of time. If more explicit control over representation is desired, then a <code><a href="../AA-13/AA-13.5#S0352">record_representation_clause</a></code>, a Component_Size clause, or a Size clause should be used instead of, or in addition to, the Pack aspect. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>{"{"}<em>{"AI05-0229-1"}</em>{"}"} Specifying the Pack aspect is for gaining space efficiency, possibly at the expense of time. If more explicit control over representation is desired, then a <code><a href="../AA-13/AA-13.5#S0352">record_representation_clause</a></code>, a Component_Size clause, or a Size clause should be used instead of, or in addition to, the Pack aspect. </p></Admonition>
 
 <p><em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00291-02"}</em>{"}"} {"{"}<em>{"AI12-0001-1"}</em>{"}"} </p>
 <p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} The recommended level of support for the Pack aspect is: </p>
 <p>{"{"}<em>{"AI12-0001-1"}</em>{"}"} Any component of a packed type that is of a by-reference type, that is specified as independently addressable, or that contains an aliased part, shall be aligned according to the alignment of its subtype.</p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>This also applies to atomic components. "Atomic" implies "specified as independently addressable", so we don't need to mention atomic here.</p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>This also applies to atomic components. "Atomic" implies "specified as independently addressable", so we don't need to mention atomic here.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Other components do not have to respect the alignment of the subtype when packed; in many cases, the Recommended Level of Support will require the alignment to be ignored. </p></Admonition>
 
 <p>{"{"}<em>{"AI12-0001-1"}</em>{"}"} {"{"}<em>{"AI12-0444-1"}</em>{"}"} For a packed record type, the components should be packed as tightly as possible subject to the above alignment requirements, the Sizes of the component subtypes, and any <code><a href="../AA-13/AA-13.5#S0352">record_representation_clause</a></code> that applies to the type; the implementation is allowed to reorder components or cross aligned word boundaries to improve the packing. A component whose Size is greater than the word size may be allocated an integral number of words.</p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>The implementation can always allocate an integral number of words for a component that will not fit in a word. The rule also allows small component sizes to be rounded up if such rounding does not waste space. For example, if Storage_Unit = 8, then a component of size 8 is probably more efficient than a component of size 7 plus a 1-bit gap (assuming the gap is needed anyway). </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>The implementation can always allocate an integral number of words for a component that will not fit in a word. The rule also allows small component sizes to be rounded up if such rounding does not waste space. For example, if Storage_Unit = 8, then a component of size 8 is probably more efficient than a component of size 7 plus a 1-bit gap (assuming the gap is needed anyway). </p></Admonition>
 
 <p>{"{"}<em>{"AI05-0009-1"}</em>{"}"} {"{"}<em>{"AI12-0001-1"}</em>{"}"} For a packed array type, if the Size of the component subtype is less than or equal to the word size, Component_Size should be less than or equal to the Size of the component subtype, rounded up to the nearest factor of the word size, unless this would violate the above alignment requirements.</p>
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p><em>This paragraph was deleted.</em>{"{"}<em>{"AI12-0001-1"}</em>{"}"} </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Implementation Advice: </strong>The recommended level of support for the Pack aspect should be followed.</p></Admonition>
+<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<p><strong></strong>The recommended level of support for the Pack aspect should be followed.</p></Admonition>
 
 
 #### Wording Changes from Ada 95
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00291-02"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} Added clarification that the Pack aspect can ignore alignment requirements on types that don't have by-reference or aliased parts. This was always intended, but there was no wording to that effect. </p></Admonition>
 
 
 #### Extensions to Ada 2005
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} Aspect Pack is new; <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Pack is now obsolescent. </p></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI05-0009-1"}</em>{"}"} <strong>Correction:</strong> Fixed so that the presence or absence of a confirming Component_Size representation clause does not change the meaning of the Pack aspect. </p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI05-0009-1"}</em>{"}"} <strong></strong> Fixed so that the presence or absence of a confirming Component_Size representation clause does not change the meaning of the Pack aspect. </p></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0001-1"}</em>{"}"} <strong>Corrigendum:</strong> Fixed so that the Recommended Level of Support does not require packing of components for which such packing would violate other representation items or aspects. This is not incompatible, as either such Pack aspects were treated as illegal or the Recommended Level of Support was ignored as impractical, neither of which would change the behavior of any working programs. (Other behavior cannot be justifed from the Reference Manual.) </p></Admonition>
 

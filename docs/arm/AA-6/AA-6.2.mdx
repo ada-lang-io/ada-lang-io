@@ -23,124 +23,124 @@ import Admonition from "@theme/Admonition";
 <p>a tagged type;</p>
 <p>a task or protected type;</p>
 <p>{"{"}<em>{"AI05-0096-1"}</em>{"}"} an explicitly limited record type; </p>
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p><em>This paragraph was deleted.</em>{"{"}<em>{"AI05-0096-1"}</em>{"}"} </p></Admonition>
 
 <p>a composite type with a subcomponent of a by-reference type;</p>
 <p>a private type whose full type is a by-reference type. </p>
 <p>{"{"}<em>{"AI05-0142-4"}</em>{"}"} {"{"}<em>{"AI05-0188-1"}</em>{"}"} {"{"}<em>{"AI12-0027-1"}</em>{"}"} {"{"}<em>{"AI12-0236-1"}</em>{"}"} {"{"}<em>{"AI12-0317-1"}</em>{"}"} A parameter of a by-reference type is passed by reference, as is an explicitly aliased parameter of any type. Each value of a by-reference type has an associated object. For a value conversion, the associated object is the anonymous result object if such an object is created (see 4.6); otherwise it is the associated object of the operand.  In other cases, the object associated with the evaluated operative constituent of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> (see 4.4) determines its associated object.</p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>By-reference parameter passing makes sense only if there is an object to reference; hence, we define such an object for each case.</p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>By-reference parameter passing makes sense only if there is an object to reference; hence, we define such an object for each case.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Since tagged types are by-reference types, this implies that every value of a tagged type has an associated object. This simplifies things, because we can define the tag to be a property of the object, and not of the value of the object, which makes it clearer that object tags never change.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0317-1"}</em>{"}"} A construct like parenthesized expression or <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> is ignored for the purposes of determining the associated object; for a <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code>, it is relevant only in that it determines which <em>dependent_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> defines the associated object.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>We considered simplifying things even more by making every value (and therefore every expression) have an associated object. After all, there is little semantic difference between a constant object and a value. However, this would cause problems for untagged types. In particular, we would have to do a constraint check on every read of a type conversion (or a renaming thereof) in certain cases.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00318-02"}</em>{"}"} We do not want this definition to depend on the view of the type; privateness is essentially ignored for this definition. Otherwise, things would be confusing (does the rule apply at the call site, at the site of the declaration of the subprogram, at the site of the return statement?), and requiring different calls to use different mechanisms would be an implementation burden.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>C.6, "Shared Variable Control" says that a composite type with an atomic or volatile subcomponent is a by-reference type, among other things.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Every value of a limited by-reference type is the value of one and only one limited object. The <em>associated object</em> of a value of a limited by-reference type is the object whose value it represents. Two values of a limited by-reference type are the <em>same</em> if and only if they represent the value of the same object.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>We say "by-reference" above because these statements are not always true for limited private types whose underlying type is nonlimited (unfortunately). </p></Admonition>
 
 <p>{"{"}<em>{"AI05-0240-1"}</em>{"}"} For other parameters, it is unspecified whether the parameter is passed by copy or by reference. </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} There is no need to incorporate the discussion of AI83-00178, which requires pass-by-copy for certain kinds of actual parameters, while allowing pass-by-reference for others. This is because we explicitly indicate that a function creates an anonymous constant object for its result (see 6.5). We also provide a special dispensation for instances of Unchecked_Conversion to return by reference (see 13.9). </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} There is no need to incorporate the discussion of AI83-00178, which requires pass-by-copy for certain kinds of actual parameters, while allowing pass-by-reference for others. This is because we explicitly indicate that a function creates an anonymous constant object for its result (see 6.5). We also provide a special dispensation for instances of Unchecked_Conversion to return by reference (see 13.9). </p></Admonition>
 
 
 #### Bounded (Run-Time) Errors
 
 <p>{"{"}<em>{"AI05-0240-1"}</em>{"}"} If one <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes a part of a formal parameter, and a second <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes a part of a distinct formal parameter or an object that is not part of a formal parameter, then the two <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s are considered <em>distinct access paths</em>. If an object is of a type for which the parameter passing mechanism is not specified and is not an explicitly aliased parameter, then it is a bounded error to assign to the object via one access path, and then read the value of the object via a distinct access path, unless the first access path denotes a part of a formal parameter that no longer exists at the point of the second access [(due to leaving the corresponding callable construct).] The possible consequences are that Program_Error is raised, or the newly assigned value is read, or some old value of the object is read. </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>For example, if we call "P(X ={">"} Global_Variable, Y ={">"} Global_Variable)", then within P, the names "X", "Y", and "Global_Variable" are all distinct access paths. If Global_Variable's type is neither pass-by-copy nor pass-by-reference, then it is a bounded error to assign to Global_Variable and then read X or Y, since the language does not specify whether the old or the new value would be read. On the other hand, if Global_Variable's type is pass-by-copy, then the old value would always be read, and there is no error. Similarly, if Global_Variable's type is defined by the language to be pass-by-reference, then the new value would always be read, and again there is no error. </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>For example, if we call "P(X ={">"} Global_Variable, Y ={">"} Global_Variable)", then within P, the names "X", "Y", and "Global_Variable" are all distinct access paths. If Global_Variable's type is neither pass-by-copy nor pass-by-reference, then it is a bounded error to assign to Global_Variable and then read X or Y, since the language does not specify whether the old or the new value would be read. On the other hand, if Global_Variable's type is pass-by-copy, then the old value would always be read, and there is no error. Similarly, if Global_Variable's type is defined by the language to be pass-by-reference, then the new value would always be read, and again there is no error. </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Reason: </strong>We are saying <em>assign</em> here, not <em>update</em>, because updating any subcomponent is considered to update the enclosing object.</p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>We are saying <em>assign</em> here, not <em>update</em>, because updating any subcomponent is considered to update the enclosing object.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>The "still exists" part is so that a read after the subprogram returns is OK.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>If the parameter is of a by-copy type, then there is no issue here - the formal is not a view of the actual. If the parameter is of a by-reference type, then the programmer may depend on updates through one access path being visible through some other access path, just as if the parameter were of an access type. </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Implementation Note: </strong>The implementation can keep a copy in a register of a parameter whose parameter-passing mechanism is not specified. If a different access path is used to update the object (creating a bounded error situation), then the implementation can still use the value of the register, even though the in-memory version of the object has been changed. However, to keep the error properly bounded, if the implementation chooses to read the in-memory version, it has to be consistent -- it cannot then assume that something it has proven about the register is true of the memory location. For example, suppose the formal parameter is L, the value of L(6) is now in a register, and L(6) is used in an <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> as in "A(L(6)) := 99;", where A has bounds 1..3. If the implementation can prove that the value for L(6) in the register is in the range 1..3, then it need not perform the constraint check if it uses the register value. However, if the memory value of L(6) has been changed to 4, and the implementation uses that memory value, then it had better not alter memory outside of A.</p></Admonition>
+<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<p><strong></strong>The implementation can keep a copy in a register of a parameter whose parameter-passing mechanism is not specified. If a different access path is used to update the object (creating a bounded error situation), then the implementation can still use the value of the register, even though the in-memory version of the object has been changed. However, to keep the error properly bounded, if the implementation chooses to read the in-memory version, it has to be consistent -- it cannot then assume that something it has proven about the register is true of the memory location. For example, suppose the formal parameter is L, the value of L(6) is now in a register, and L(6) is used in an <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> as in "A(L(6)) := 99;", where A has bounds 1..3. If the implementation can prove that the value for L(6) in the register is in the range 1..3, then it need not perform the constraint check if it uses the register value. However, if the memory value of L(6) has been changed to 4, and the implementation uses that memory value, then it had better not alter memory outside of A.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Note that the rule allows the implementation to pass a parameter by reference and then keep just part of it in a register, or, equivalently, to pass part of the parameter by reference and another part by copy. </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Reason: </strong>We do not want to go so far as to say that the mere presence of aliasing is wrong. We wish to be able to write the following sorts of things in standard Ada: </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>We do not want to go so far as to say that the mere presence of aliasing is wrong. We wish to be able to write the following sorts of things in standard Ada: </p></Admonition>
 
 <CodeBlock>
 procedure Move ( Source  : in  String;{"\n"}                 Target  : out String;{"\n"}                 Drop    : in  Truncation := Error;{"\n"}                 Justify : in  Alignment  := Left;{"\n"}                 Pad     : in  Character  := Space);{"\n"}-- Copies elements from Source to Target (safely if they overlap){"\n"}
 </CodeBlock>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>This is from the standard string handling package. It would be embarrassing if this couldn't be written in Ada!</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>The "then" before "read" in the rule implies that the implementation can move a read to an earlier place in the code, but not to a later place after a potentially aliased assignment. Thus, if the subprogram reads one of its parameters into a local variable, and then updates another potentially aliased one, the local copy is safe - it is known to have the old value. For example, the above-mentioned Move subprogram can be implemented by copying Source into a local variable before assigning into Target.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>For an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> assigning one array parameter to another, the implementation has to check which direction to copy at run time, in general, in case the actual parameters are overlapping slices. For example: </p></Admonition>
 
 <CodeBlock>
 procedure Copy(X : in out String; Y: String) is{"\n"}begin{"\n"}    X := Y;{"\n"}end Copy;{"\n"}
 </CodeBlock>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>It would be wrong for the compiler to assume that X and Y do not overlap (unless, of course, it can prove otherwise). </p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE 1   {"{"}<em>{"AI12-0056-1"}</em>{"}"} The mode of a formal parameter describes the direction of information transfer to or from the <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> (see 6.1).</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE 2   A formal parameter of mode <strong>in</strong> is a constant view (see 3.3); it cannot be updated within the <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code>.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE 3   {"{"}<em>{"AI12-0056-1"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} A formal parameter of mode <strong>out</strong> can be uninitialized at the start of the <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> (see 6.4.1). </p></Admonition>
 
 
 #### Extensions to Ada 83
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>The value of an <strong>out</strong> parameter may be read. An <strong>out</strong> parameter is treated like a declared variable without an explicit initial expression. </p></Admonition>
 
 
 #### Wording Changes from Ada 83
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Discussion of copy-in for parts of out parameters is now covered in 6.4.1, "Parameter Associations".</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>The concept of a by-reference type is new to Ada 95.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>We now cover in a general way in 3.7.2 the rule regarding erroneous execution when a discriminant is changed and one of the parameters depends on the discriminant. </p></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI05-0096-1"}</em>{"}"} <strong>Correction:</strong> Corrected so that limited derived types are by-reference only if their parent is.</p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI05-0096-1"}</em>{"}"} <strong></strong> Corrected so that limited derived types are by-reference only if their parent is.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI05-0142-4"}</em>{"}"} Defined that explicitly aliased parameters (see 6.1) are always passed by reference. </p></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI05-0027-1"}</em>{"}"} <strong>Corrigendum:</strong> Corrected so that value conversions that are copies are the "associated object" for parameter passing of by-reference types. This can only happen if the conversion is between unrelated non-limited types, and it is necessary just so the correct object is defined. </p></Admonition>
 

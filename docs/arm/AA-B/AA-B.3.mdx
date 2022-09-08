@@ -251,13 +251,13 @@ This paragraph was deleted.{"{"}{"AI05-0229-1"}{"}"} {"\n"}
 end Interfaces.C;{"\n"}
 </CodeBlock>
 
-<Admonition type="note">
-<p><strong>Implementation defined: </strong>The definitions of certain types and constants in Interfaces.C.</p></Admonition>
+<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<p><strong></strong>The definitions of certain types and constants in Interfaces.C.</p></Admonition>
 
 <p>Each of the types declared in Interfaces.C is C-compatible.</p>
 <p>{"{"}<em>{"AI95-00285-01"}</em>{"}"} {"{"}<em>{"AI12-0411-1"}</em>{"}"} The types int, short, long, unsigned, ptrdiff_t, size_t, double, char, wchar_t, char16_t, and char32_t correspond respectively to the C types having the same names. The types signed_char, unsigned_short, unsigned_long, unsigned_char, C_bool, C_float, and long_double correspond respectively to the C types signed char, unsigned short, unsigned long, unsigned char, bool,  float, and long double.</p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>The C types wchar_t and char16_t seem to be the same. However, wchar_t has an implementation-defined size, whereas char16_t is guaranteed to be an unsigned type of at least 16 bits. Also, char16_t and char32_t are encouraged to have UTF-16 and UTF-32 representations; that means that they are not directly the same as the Ada types, which most likely don't use any UTF encoding. </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>The C types wchar_t and char16_t seem to be the same. However, wchar_t has an implementation-defined size, whereas char16_t is guaranteed to be an unsigned type of at least 16 bits. Also, char16_t and char32_t are encouraged to have UTF-16 and UTF-32 representations; that means that they are not directly the same as the Ada types, which most likely don't use any UTF encoding. </p></Admonition>
 
 <p>The type of the subtype plain_char is either signed_char or unsigned_char, depending on the C implementation. </p>
 <CodeBlock>
@@ -265,16 +265,16 @@ function To_C   (Item : in Character) return char;{"\n"}function To_Ada (Item : 
 </CodeBlock>
 
 <p>The functions To_C and To_Ada map between the Ada type Character and the C type char.</p>
-<Admonition type="note">
-<p><strong>Implementation Note: </strong>{"{"}<em>8652/0114</em>{"}"} {"{"}<em>{"AI95-00038-01"}</em>{"}"} The To_C and To_Ada functions map between corresponding characters, not necessarily between characters with the same internal representation. Corresponding characters are characters defined by the same enumeration literal, if such exist; otherwise, the correspondence is unspecified.</p></Admonition>
+<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<p><strong></strong>{"{"}<em>8652/0114</em>{"}"} {"{"}<em>{"AI95-00038-01"}</em>{"}"} The To_C and To_Ada functions map between corresponding characters, not necessarily between characters with the same internal representation. Corresponding characters are characters defined by the same enumeration literal, if such exist; otherwise, the correspondence is unspecified.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>The following definition is equivalent to the above summary:</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>To_C (Latin_1_Char) = char'Value(Character'Image(Latin_1_Char))provided that char'Value does not raise an exception; otherwise the result is unspecified.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>To_Ada (Native_C_Char) = Character'Value(char'Image(Native_C_Char))provided that Character'Value does not raise an exception; otherwise the result is unspecified. </p></Admonition>
 
 <CodeBlock>
@@ -339,33 +339,33 @@ function To_C (Item       : in Wide_Wide_String;{"\n"}               Append_Nul 
 </CodeBlock>
 
 <p>{"{"}<em>{"AI95-00285-01"}</em>{"}"} The To_C and To_Ada subprograms that convert between Wide_Wide_String and char32_array have analogous effects to the To_C and To_Ada subprograms that convert between String and char_array, except that char32_nul is used instead of nul.</p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>The Interfaces.C package provides an implementation-defined character type, char, designed to model the C run-time character set, and mappings between the types char and Character.</p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>The Interfaces.C package provides an implementation-defined character type, char, designed to model the C run-time character set, and mappings between the types char and Character.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>One application of the C interface package is to compose a C string and pass it to a C function. One way to do this is for the programmer to declare an object that will hold the C array, and then pass this array to the C function. This is realized via the type char_array: </p></Admonition>
 
 <CodeBlock>
 type char_array is array (size_t range {"<"}{">"}) of Char;{"\n"}
 </CodeBlock>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>The programmer can declare an Ada String, convert it to a char_array, and pass the char_array as actual parameter to the C function that is expecting a char *.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>An alternative approach is for the programmer to obtain a C char pointer from an Ada String (or from a char_array) by invoking an allocation function. The package Interfaces.C.Strings (see below) supplies the needed facilities, including a private type chars_ptr that corresponds to C's char *, and two allocation functions. To avoid storage leakage, a Free procedure releases the storage that was allocated by one of these allocate functions.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>It is typical for a C function that deals with strings to adopt the convention that the string is delimited by a nul char. The C interface packages support this convention. A constant nul of type Char is declared, and the function Value(Chars_Ptr) in Interfaces.C.Strings returns a char_array up to and including the first nul in the array that the chars_ptr points to. The Allocate_Chars function allocates an array that is nul terminated.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Some C functions that deal with strings take an explicit length as a parameter, thus allowing strings to be passed that contain nul as a data element. Other C functions take an explicit length that is an upper bound: the prefix of the string up to the char before nul, or the prefix of the given length, is used by the function, whichever is shorter. The C Interface packages support calling such functions. </p></Admonition>
 
 <p>{"{"}<em>8652/0059</em>{"}"} {"{"}<em>{"AI95-00131-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} The Convention aspect with <em>convention_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> C_Pass_By_Copy shall only be specified for a type.</p>
 <p>{"{"}<em>8652/0059</em>{"}"} {"{"}<em>{"AI95-00131-01"}</em>{"}"} {"{"}<em>{"AI95-00216-01"}</em>{"}"} The eligibility rules in B.1 do not apply to convention C_Pass_By_Copy. Instead, a type T is eligible for convention C_Pass_By_Copy if T is an unchecked union type or if T is a record type that has no discriminants and that only has components with statically constrained subtypes, and each component is C-compatible.</p>
 <p>{"{"}<em>8652/0059</em>{"}"} {"{"}<em>{"AI95-00131-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} If a type is C_Pass_By_Copy-compatible, then it is also C-compatible.</p>
 <p>{"{"}<em>{"AI12-0028-1"}</em>{"}"} The identifiers C_Variadic_0, C_Variadic_1, C_Variadic_2, and so on are <em>convention_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s. These conventions are said to be <em>C_Variadic</em>. The convention C_Variadic_<em>n</em> is the calling convention for a variadic C function taking <em>n</em> fixed parameters and then a variable number of additional parameters. The C_Variadic_<em>n</em> convention shall only be specified as the convention aspect for a subprogram, or for an access-to-subprogram type, having at least <em>n</em> parameters. A type is compatible with a C_Variadic convention if and only if the type is C-compatible.</p>
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p><strong>To be honest: </strong>It is implementation defined what the largest <em>n</em> in C_Variadic_<em>n</em> is supported. We don't say this because it complicates the wording and it is true for almost any <em>convention_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> (only Ada is required to be supported by the language, all others need to be documented in order for programmers to know that they are available). </p></Admonition>
 
 
@@ -380,20 +380,20 @@ type char_array is array (size_t range {"<"}{">"}) of Char;{"\n"}
 <p>{"{"}<em>{"AI05-0248-1"}</em>{"}"} for a subprogram that has a parameter of an unconstrained array subtype, unless the Import aspect has the value True for the subprogram;</p>
 <p>for a function with an unconstrained array result subtype;</p>
 <p>for an object whose nominal subtype is an unconstrained array subtype. </p>
-<Admonition type="note">
-<p><strong>Implementation Note: </strong>{"{"}<em>{"AI05-0002-1"}</em>{"}"} These rules ensure that an implementation never needs to create bounds for an unconstrained array that originates in C (and thus does not have bounds). An implementation can do so if it wishes, of course. Note that these permissions do not extend to passing an unconstrained array as a parameter to a C function; in this case, the bounds can simply be dropped and thus support is required. </p></Admonition>
+<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<p><strong></strong>{"{"}<em>{"AI05-0002-1"}</em>{"}"} These rules ensure that an implementation never needs to create bounds for an unconstrained array that originates in C (and thus does not have bounds). An implementation can do so if it wishes, of course. Note that these permissions do not extend to passing an unconstrained array as a parameter to a C function; in this case, the bounds can simply be dropped and thus support is required. </p></Admonition>
 
 
 #### Implementation Advice
 
 <p>{"{"}<em>8652/0060</em>{"}"} {"{"}<em>{"AI95-00037-01"}</em>{"}"} {"{"}<em>{"AI95-00285-01"}</em>{"}"} The constants nul, wide_nul, char16_nul, and char32_nul should have a representation of zero. </p>
-<Admonition type="note">
-<p><strong>Implementation Advice: </strong>The constants nul, wide_nul, char16_nul, and char32_nul in package Interfaces.C should have a representation of zero.</p></Admonition>
+<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<p><strong></strong>The constants nul, wide_nul, char16_nul, and char32_nul in package Interfaces.C should have a representation of zero.</p></Admonition>
 
 <p>An implementation should support the following interface correspondences between Ada and C. </p>
 <p>An Ada procedure corresponds to a void-returning C function. </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>The programmer can also choose an Ada procedure when the C function returns an int that is to be discarded.</p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>The programmer can also choose an Ada procedure when the C function returns an int that is to be discarded.</p></Admonition>
 
 <p>An Ada function corresponds to a non-void C function.</p>
 <p>{"{"}<em>{"AI12-0135-1"}</em>{"}"} An Ada enumeration type corresponds to a C enumeration type with corresponding enumeration literals having the same internal codes, provided the internal codes fall within the range of the C int type.</p>
@@ -407,22 +407,22 @@ type char_array is array (size_t range {"<"}{">"}) of Char;{"\n"}
 <p>{"{"}<em>{"AI05-0002-1"}</em>{"}"} An Ada parameter of a private type is passed as specified for the full view of the type.</p>
 <p>{"{"}<em>{"AI05-0002-1"}</em>{"}"} The rules of correspondence given above for parameters of mode <strong>in</strong> also apply to the return object of a function.</p>
 <p>{"{"}<em>{"AI95-00337-01"}</em>{"}"} {"{"}<em>{"AI05-0002-1"}</em>{"}"} {"{"}<em>{"AI12-0184-1"}</em>{"}"} An implementation should provide unsigned_long_long and long_long as 64-bit modular and signed integer types (respectively) in package Interfaces.C if the C implementation supports unsigned long long and long long as 64-bit types.</p>
-<Admonition type="note">
-<p><strong>Implementation Advice: </strong>If C interfacing is supported, the interface correspondences between Ada and C should be supported.</p></Admonition>
+<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<p><strong></strong>If C interfacing is supported, the interface correspondences between Ada and C should be supported.</p></Admonition>
 
-<Admonition type="note">
-<p><strong>Implementation Advice: </strong>If the C implementation supports unsigned long long and long long, unsigned_long_long and long_long should be supported.</p></Admonition>
+<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<p><strong></strong>If the C implementation supports unsigned long long and long long, unsigned_long_long and long_long should be supported.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE 1   Values of type char_array are not implicitly terminated with nul. If a char_array is to be passed as a parameter to an imported C function requiring nul termination, it is the programmer's responsibility to obtain this effect.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE 2   To obtain the effect of C's sizeof(item_type), where Item_Type is the corresponding Ada type, evaluate the expression: size_t(Item_Type'Size/CHAR_BIT).</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p><em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00216-01"}</em>{"}"} </p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE 3   {"{"}<em>{"AI12-0028-1"}</em>{"}"} A variadic C function can correspond to several Ada subprograms, taking various specific numbers and types of parameters. </p></Admonition>
 
 
@@ -434,7 +434,7 @@ type char_array is array (size_t range {"<"}{">"}) of Char;{"\n"}
 </CodeBlock>
 
 <CodeBlock>
-{"{"}{"AI05-0229-1"}{"}"}    -- Note: since the C function's return value is of no interest, the Ada interface is a procedure{"\n"}   procedure Strcpy (Target : out C.char_array;{"\n"}                     Source : in  C.char_array){"\n"}      with Import ={">"} True, Convention ={">"} C, External_Name ={">"} "strcpy";{"\n"}
+{"{"}{"AI05-0229-1"}{"}"}    -- {"\n"}   procedure Strcpy (Target : out C.char_array;{"\n"}                     Source : in  C.char_array){"\n"}      with Import ={">"} True, Convention ={">"} C, External_Name ={">"} "strcpy";{"\n"}
 </CodeBlock>
 
 <CodeBlock>
@@ -442,7 +442,7 @@ type char_array is array (size_t range {"<"}{">"}) of Char;{"\n"}
 </CodeBlock>
 
 <CodeBlock>
-{"{"}{"AI12-0312-1"}{"}"}    -- Note: since the C function's return value is of no interest, the Ada interface is a procedure{"\n"}   procedure Printf (Format : in C.char_array;{"\n"}                     Param1 : in C.char_array;{"\n"}                     Param2 : in C.int){"\n"}      with Import ={">"} True, Convention ={">"} C_Variadic_1, External_Name ={">"} "printf";{"\n"}
+{"{"}{"AI12-0312-1"}{"}"}    -- {"\n"}   procedure Printf (Format : in C.char_array;{"\n"}                     Param1 : in C.char_array;{"\n"}                     Param2 : in C.int){"\n"}      with Import ={">"} True, Convention ={">"} C_Variadic_1, External_Name ={">"} "printf";{"\n"}
 </CodeBlock>
 
 <CodeBlock>
@@ -472,67 +472,67 @@ end Test;{"\n"}
 
 #### Incompatibilities With Ada 95
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00285-01"}</em>{"}"} {"{"}<em>{"AI05-0005-1"}</em>{"}"} Types char16_t and char32_t and their related types and operations are added to Interfaces.C. If Interfaces.C is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with the same <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> as a new entity in Interfaces.C is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. </p></Admonition>
 
 
 #### Extensions to Ada 95
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>8652/0059</em>{"}"} {"{"}<em>{"AI95-00131-01"}</em>{"}"} <strong>Corrigendum:</strong> Convention C_Pass_By_Copy is new. </p></Admonition>
 
 
 #### Wording Changes from Ada 95
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>8652/0060</em>{"}"} {"{"}<em>{"AI95-00037-01"}</em>{"}"} <strong>Corrigendum:</strong> Clarified the intent for Nul and Wide_Nul.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00216-01"}</em>{"}"} Specified that an unchecked union type (see B.3.3) is eligible for convention C_Pass_By_Copy.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00258-01"}</em>{"}"} Specified what happens if the To_C function tries to return a null string.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00337-01"}</em>{"}"} Clarified that the interface correspondences also apply to private types whose full types have the specified characteristics.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00343-01"}</em>{"}"} Clarified that a type must have convention C_Pass_By_Copy in order to be passed by copy (not just a type that could have that convention).</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00376-01"}</em>{"}"} Added wording to make it clear that these facilities can also be used with C++. </p></Admonition>
 
 
 #### Incompatibilities With Ada 2005
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI05-0002-1"}</em>{"}"} <strong>Correction:</strong> Added a definition of correspondences for function results. Also added wording to make it clear that we do not expect the implementation to conjure bounds for unconstrained arrays out of thin air. These changes allow (but don't require) compilers to reject unreasonable uses of array types. Such uses probably didn't work anyway (and probably were rejected, no matter what the language definition said), so little existing code should be impacted. </p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI05-0002-1"}</em>{"}"} <strong></strong> Added a definition of correspondences for function results. Also added wording to make it clear that we do not expect the implementation to conjure bounds for unconstrained arrays out of thin air. These changes allow (but don't require) compilers to reject unreasonable uses of array types. Such uses probably didn't work anyway (and probably were rejected, no matter what the language definition said), so little existing code should be impacted. </p></Admonition>
 
 
 #### Incompatibilities With Ada 2012
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0411-1"}</em>{"}"} Added type C_bool and (implicitly) the enumeration literals True and False to the Interfaces.C package. Therefore, a use clause conflict is possible; see the introduction of Annex A for more on this topic. </p></Admonition>
 
 
 #### Extensions to Ada 2012
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0028-1"}</em>{"}"} <strong>Corrigendum:</strong> The <em>convention_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s C_Variadic_0, C_Variadic_1, and so on are new. These are classified as a correction as any implementation can add such identifiers and it is important that special conventions be available for variadic functions as typical x64 conventions are different for normal and variadic C functions.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0135-1"}</em>{"}"} <strong>Corrigendum:</strong> Defined the correspondence between an Ada enumeration type and a C enumeration type; implementations should support convention C for enumeration types. </p></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI12-0184-1"}</em>{"}"} Added Implementation Advice that types be defined in Interfaces.C corresponding to long long and unsigned long long.</p></Admonition>
+<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<p>{"{"}<em>{"AI12-0184-1"}</em>{"}"} Added  that types be defined in Interfaces.C corresponding to long long and unsigned long long.</p></Admonition>
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI12-0219-1"}</em>{"}"} <strong>Correction:</strong> Added advice that const t* map to Ada <strong>in</strong> parameters and vice versa.</p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI12-0219-1"}</em>{"}"} <strong></strong> Added advice that const t* map to Ada <strong>in</strong> parameters and vice versa.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0411-1"}</em>{"}"} Added advice about mapping type Boolean. </p></Admonition>
 
 
@@ -619,15 +619,15 @@ end Test;{"\n"}
 private{"\n"}   ... -- not specified by the language{"\n"}end Interfaces.C.Strings;{"\n"}
 </CodeBlock>
 
-<Admonition type="note">
-<p><strong>Discussion: </strong>The string manipulation types and subprograms appear in a child of Interfaces.C versus being there directly, since it is useful to have Interfaces.C specified as <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Pure.</p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>The string manipulation types and subprograms appear in a child of Interfaces.C versus being there directly, since it is useful to have Interfaces.C specified as <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Pure.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Differently named functions New_String and New_Char_Array are declared, since if there were a single overloaded function a call with a string literal as actual parameter would be ambiguous. </p></Admonition>
 
 <p>The type chars_ptr is C-compatible and corresponds to the use of C's "char *" for a pointer to the first char in a char array terminated by nul. When an object of type chars_ptr is declared, its value is by default set to Null_Ptr, unless the object is imported (see B.1). </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>The type char_array_access is not necessarily C-compatible, since an object of this type may carry "dope" information. The programmer should convert from char_array_access to chars_ptr for objects imported from, exported to, or passed to C.</p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>The type char_array_access is not necessarily C-compatible, since an object of this type may carry "dope" information. The programmer should convert from char_array_access to chars_ptr for objects imported from, exported to, or passed to C.</p></Admonition>
 
 <CodeBlock>
 function To_Chars_Ptr (Item      : in char_array_access;{"\n"}                       Nul_Check : in Boolean := False){"\n"}   return chars_ptr;{"\n"}
@@ -662,8 +662,8 @@ function Value (Item : in chars_ptr; Length : in size_t){"\n"}   return char_arr
 </CodeBlock>
 
 <p>{"{"}<em>8652/0062</em>{"}"} {"{"}<em>{"AI95-00139-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} If Item = Null_Ptr, then Value propagates Dereference_Error. Otherwise, Value returns the shorter of two arrays, either the first Length chars pointed to by Item, or Value(Item). The lower bound of the result is 0. If Length is 0, then Value propagates Constraint_Error. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>Value(New_Char_Array(Chars)) = Chars if Chars does not contain nul; else Value(New_Char_Array( Chars)) is the prefix of Chars up to and including the first nul. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>Value(New_Char_Array(Chars)) = Chars if Chars does not contain nul; else Value(New_Char_Array( Chars)) is the prefix of Chars up to and including the first nul. </p></Admonition>
 
 <CodeBlock>
 function Value (Item : in chars_ptr) return String;{"\n"}
@@ -680,13 +680,13 @@ function Strlen (Item : in chars_ptr) return size_t;{"\n"}
 </CodeBlock>
 
 <p>Returns <em>Val</em>'Length1 where <em>Val</em> = Value(Item); propagates Dereference_Error if Item = Null_Ptr. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>Strlen returns the number of chars in the array pointed to by Item, up to and including the char immediately before the first nul.</p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>Strlen returns the number of chars in the array pointed to by Item, up to and including the char immediately before the first nul.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Strlen has the same possibility for erroneous execution as Value, in cases where the string has not been nul-terminated.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Strlen has the effect of C's strlen function. </p></Admonition>
 
 <CodeBlock>
@@ -698,16 +698,16 @@ procedure Update (Item   : in chars_ptr;{"\n"}                  Offset : in size
 <p>If Offset+Chars'Length{">"}N, propagate Update_Error.</p>
 <p>Otherwise, overwrite the data in the array pointed to by Item, starting at the char at position Offset, with the data in Chars. </p>
 <p>If Check is False, then processing is as above, but with no check that Offset+Chars'Length{">"}N. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>If Chars contains nul, Update's effect may be to "shorten" the pointed-to char array.</p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>If Chars contains nul, Update's effect may be to "shorten" the pointed-to char array.</p></Admonition>
 
 <CodeBlock>
 procedure Update (Item   : in chars_ptr;{"\n"}                  Offset : in size_t;{"\n"}                  Str    : in String;{"\n"}                  Check  : in Boolean := True);{"\n"}
 </CodeBlock>
 
 <p>{"{"}<em>{"AI95-00242-01"}</em>{"}"} Equivalent to Update(Item, Offset, To_C(Str, Append_Nul ={">"} False), Check). </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>{"{"}<em>{"AI95-00242-01"}</em>{"}"} To truncate the Item to the length of Str, use Update(Item, Offset, To_C(Str), Check) instead of Update(Item, Offset, Str, Check). Note that when truncating Item, Item must be longer than Str. </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>{"{"}<em>{"AI95-00242-01"}</em>{"}"} To truncate the Item to the length of Str, use Update(Item, Offset, To_C(Str), Check) instead of Update(Item, Offset, Str, Check). Note that when truncating Item, Item must be longer than Str. </p></Admonition>
 
 
 #### Erroneous Execution
@@ -719,7 +719,7 @@ procedure Update (Item   : in chars_ptr;{"\n"}                  Offset : in size
 <p>Execution of Free(X) is also erroneous if the chars_ptr X was not returned by New_Char_Array or New_String.</p>
 <p>Reading or updating a freed char_array is erroneous.</p>
 <p>Execution of Update is erroneous if Check is False and a call with Check equal to True would have propagated Update_Error. </p>
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE   {"{"}<em>{"AI12-0440-1"}</em>{"}"} New_Char_Array and New_String can be implemented either through the allocation function from the C environment ("malloc") or through Ada dynamic memory allocation ("new"). The key points are </p></Admonition>
 
 <p>{"{"}<em>{"AI12-0440-1"}</em>{"}"} the returned value (a chars_ptr) is represented as a C "char *" so that it can be passed to C functions;</p>
@@ -727,31 +727,31 @@ procedure Update (Item   : in chars_ptr;{"\n"}                  Offset : in size
 
 #### Inconsistencies With Ada 95
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI95-00242-01"}</em>{"}"} <strong>Amendment Correction:</strong> Update for a String parameter is now defined to not add a nul character. It did add a nul in Ada 95. This means that programs that used this behavior of Update to truncate a string will no longer work (the string will not be truncated). This change makes Update for a string consistent with Update for a char_array (no implicit nul is added to the end of a char_array). </p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI95-00242-01"}</em>{"}"} <strong>Amendment </strong> Update for a String parameter is now defined to not add a nul character. It did add a nul in Ada 95. This means that programs that used this behavior of Update to truncate a string will no longer work (the string will not be truncated). This change makes Update for a string consistent with Update for a char_array (no implicit nul is added to the end of a char_array). </p></Admonition>
 
 
 #### Extensions to Ada 95
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI95-00161-01"}</em>{"}"} <strong>Amendment Correction:</strong> Added <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Preelaborable_Initialization to type chars_ptr, so that it can be used in preelaborated units.</p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI95-00161-01"}</em>{"}"} <strong>Amendment </strong> Added <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Preelaborable_Initialization to type chars_ptr, so that it can be used in preelaborated units.</p></Admonition>
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI95-00276-01"}</em>{"}"} <strong>Amendment Correction:</strong> The components of chars_ptr_array are aliased so that it can be used to instantiate Interfaces.C.Pointers (that is its intended purpose, which is otherwise mysterious as it has no operations). </p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI95-00276-01"}</em>{"}"} <strong>Amendment </strong> The components of chars_ptr_array are aliased so that it can be used to instantiate Interfaces.C.Pointers (that is its intended purpose, which is otherwise mysterious as it has no operations). </p></Admonition>
 
 
 #### Wording Changes from Ada 95
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>8652/0061</em>{"}"} {"{"}<em>{"AI95-00140-01"}</em>{"}"} <strong>Corrigendum:</strong> Fixed the missing semantics of To_Char_Ptr when Nul_Check is False.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>8652/0062</em>{"}"} {"{"}<em>{"AI95-00139-01"}</em>{"}"} <strong>Corrigendum:</strong> Fixed the missing semantics of Value when the Length is 0.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>8652/0063</em>{"}"} {"{"}<em>{"AI95-00177-01"}</em>{"}"} <strong>Corrigendum:</strong> Corrected the definition of Value to avoid raising Terminator_Error.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>8652/0064</em>{"}"} {"{"}<em>{"AI95-00039-01"}</em>{"}"} <strong>Corrigendum:</strong> Fixed the missing semantics of Update when Item is Null_Ptr. </p></Admonition>
 
 
@@ -849,11 +849,11 @@ procedure Copy_Terminated_Array{"\n"}   (Source     : in Pointer;{"\n"}    Targe
 </CodeBlock>
 
 <p>This procedure copies Value(Source, Terminator) into the array pointed to by Target; it stops either after Terminator has been copied, or the number of elements copied is Limit, whichever occurs first. Dereference_Error is propagated if either Source or Target is <strong>null</strong>. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>It is the programmer's responsibility to ensure that elements are not copied beyond the logical length of the target array. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>It is the programmer's responsibility to ensure that elements are not copied beyond the logical length of the target array. </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Implementation Note: </strong>The implementation has to take care to check the Limit first. </p></Admonition>
+<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<p><strong></strong>The implementation has to take care to check the Limit first. </p></Admonition>
 
 <CodeBlock>
 procedure Copy_Array (Source  : in Pointer;{"\n"}                      Target  : in Pointer;{"\n"}                      Length  : in ptrdiff_t);{"\n"}
@@ -864,8 +864,8 @@ procedure Copy_Array (Source  : in Pointer;{"\n"}                      Target  :
 #### Erroneous Execution
 
 <p>It is erroneous to dereference a Pointer that does not designate an aliased Element. </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>Such a Pointer could arise via "+", "", Increment, or Decrement.</p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>Such a Pointer could arise via "+", "", Increment, or Decrement.</p></Admonition>
 
 <p>Execution of Value(Ref, Terminator) is erroneous if Ref does not designate an aliased Element in an Element_Array terminated by Terminator.</p>
 <p>Execution of Value(Ref, Length) is erroneous if Ref does not designate an aliased Element in an Element_Array containing at least Length Elements between the designated Element and the end of the array, inclusive.</p>
@@ -874,7 +874,7 @@ procedure Copy_Array (Source  : in Pointer;{"\n"}                      Target  :
 <p>Execution of both Value(Source, Terminator) and Value(Source, Limit) are erroneous, or</p>
 <p>Copying writes past the end of the array containing the Element designated by Target. </p>
 <p>Execution of Copy_Array(Source, Target, Length) is erroneous if either Value(Source, Length) is erroneous, or copying writes past the end of the array containing the Element designated by Target. </p>
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE   To compose a Pointer from an Element_Array, use 'Access on the first element. For example (assuming appropriate instantiations): </p></Admonition>
 
 <CodeBlock>
@@ -911,7 +911,7 @@ with Interfaces.C.Pointers;{"\n"}with Interfaces.C.Strings;{"\n"}procedure Test_
 
 <p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} For a discriminated record type having a <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code>, the following language-defined representation aspect may be specified:</p>
 <p>Unchecked_UnionThe type of aspect Unchecked_Union is Boolean. If directly specified, the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> shall be a static expression. If not specified (including by inheritance), the aspect is False.</p>
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p><strong>Aspect Description for </strong><strong>Unchecked_Union: </strong>Type is used to interface to a C union type.</p></Admonition>
 
 
@@ -923,13 +923,13 @@ with Interfaces.C.Pointers;{"\n"}with Interfaces.C.Strings;{"\n"}procedure Test_
 <p>{"{"}<em>{"AI95-00216-01"}</em>{"}"} If a component subtype of an unchecked union type is subject to a per-object constraint, then the component subtype shall be an unchecked union subtype.</p>
 <p>{"{"}<em>{"AI95-00216-01"}</em>{"}"} {"{"}<em>{"AI05-0026-1"}</em>{"}"} {"{"}<em>{"AI12-0174-1"}</em>{"}"} Any name that denotes a discriminant of an object of an unchecked union type shall occur within the declarative region of the type or as the <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> of an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>, and shall not occur within a <code><a href="../AA-13/AA-13.5#S0352">record_representation_clause</a></code>.</p>
 <p>{"{"}<em>{"AI95-00216-01"}</em>{"}"} {"{"}<em>{"AI05-0026-1"}</em>{"}"} The type of a component declared in a <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code> of an unchecked union type shall not need finalization. In addition to the places where Legality Rules normally apply (see 12.3), this rule also applies in the private part of an instance of a generic unit. For an unchecked union type declared within the body of a generic unit, or within the body of any of its descendant library units, no part of the type of a component declared in a <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code> of the unchecked union type shall be of a formal private type or formal private extension declared within the formal part of the generic unit.</p>
-<Admonition type="note">
-<p><strong>Reason: </strong>{"{"}<em>{"AI05-0026-1"}</em>{"}"} The last part is a classic assume-the-worst rule that avoids dependence on the actuals in a generic body. We did not include this in the definition of "needs finalization" as it has a bad interaction with the use of that term for the No_Nested_Finalization restriction. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>{"{"}<em>{"AI05-0026-1"}</em>{"}"} The last part is a classic assume-the-worst rule that avoids dependence on the actuals in a generic body. We did not include this in the definition of "needs finalization" as it has a bad interaction with the use of that term for the No_Nested_Finalization restriction. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00216-01"}</em>{"}"} The completion of an incomplete or private type declaration having a <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code> shall not be an unchecked union type.</p>
 <p>{"{"}<em>{"AI95-00216-01"}</em>{"}"} An unchecked union subtype shall only be passed as a generic actual parameter if the corresponding formal type has no known discriminants or is an unchecked union type.</p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>This includes formal private types without a <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code>, formal derived types that do not inherit any discriminants (formal derived types do not have <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code>s), and formal derived types that are unchecked union types. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>This includes formal private types without a <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code>, formal derived types that do not inherit any discriminants (formal derived types do not have <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code>s), and formal derived types that are unchecked union types. </p></Admonition>
 
 
 #### Static Semantics
@@ -941,8 +941,8 @@ with Interfaces.C.Pointers;{"\n"}with Interfaces.C.Strings;{"\n"}procedure Test_
 <p>The check performed when addressing a variant component (i.e., a component that was declared in a variant part) of an unchecked union object that the object has this component (see 4.1.3).</p>
 <p>Any checks associated with a type or subtype conversion of a value of an unchecked union type (see 4.6). This includes, for example, the check associated with the implicit subtype conversion of an assignment statement.</p>
 <p>The subtype membership check associated with the evaluation of a qualified expression (see 4.7) or an uninitialized allocator (see 4.8). </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>If a suppressed check would have failed, execution is erroneous (see 11.5). An implementation is always allowed to make a suppressed check if it can somehow determine the discriminant value. </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>If a suppressed check would have failed, execution is erroneous (see 11.5). An implementation is always allowed to make a suppressed check if it can somehow determine the discriminant value. </p></Admonition>
 
 
 #### Dynamic Semantics
@@ -957,7 +957,7 @@ with Interfaces.C.Pointers;{"\n"}with Interfaces.C.Strings;{"\n"}procedure Test_
 <p>Execution of the default implementation of the Write or Read attribute of an unchecked union type.</p>
 <p>Execution of the default implementation of the Output or Input attribute of an unchecked union type if the type lacks default discriminant values. </p>
 <p><em>Paragraph 29 was deleted.</em> </p>
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE   {"{"}<em>{"AI95-00216-01"}</em>{"}"} The use of an unchecked union to obtain the effect of an unchecked conversion results in erroneous execution (see 11.5). Execution of the following example is erroneous even if Float'Size = Integer'Size:</p></Admonition>
 
 <CodeBlock>
@@ -971,33 +971,33 @@ X : T;{"\n"}Y : Integer := X.F2; -- erroneous{"\n"}
 
 #### Extensions to Ada 95
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00216-01"}</em>{"}"} <code><a href="../AA-2/AA-2.8#S0019">Pragma</a></code> Unchecked_Union is new. </p></Admonition>
 
 
 #### Incompatibilities With Ada 2005
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI05-0026-1"}</em>{"}"} <strong>Correction:</strong> The use of discriminants on Unchecked_Union types is now illegal in <code><a href="../AA-13/AA-13.5#S0352">record_representation_clause</a></code>s, as it makes no sense to specify a position for something that is not supposed to exist. It is very unlikely that this change will have any impact on existing code. </p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI05-0026-1"}</em>{"}"} <strong></strong> The use of discriminants on Unchecked_Union types is now illegal in <code><a href="../AA-13/AA-13.5#S0352">record_representation_clause</a></code>s, as it makes no sense to specify a position for something that is not supposed to exist. It is very unlikely that this change will have any impact on existing code. </p></Admonition>
 
 
 #### Extensions to Ada 2005
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} Aspect Unchecked_Union is new; <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Unchecked_Union is now obsolescent. </p></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI05-0026-1"}</em>{"}"} <strong>Correction:</strong> Revised the rules to use the "needs finalization" definition, and eliminated generic contract issues. </p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI05-0026-1"}</em>{"}"} <strong></strong> Revised the rules to use the "needs finalization" definition, and eliminated generic contract issues. </p></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI05-0162-1"}</em>{"}"} <strong>Correction:</strong> Adjusted the wording to reflect that membership tests can have more than one expression or <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>.</p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI05-0162-1"}</em>{"}"} <strong></strong> Adjusted the wording to reflect that membership tests can have more than one expression or <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>.</p></Admonition>
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} <strong>Correction:</strong> Adjusted the wording to allow named aggregates of an unchecked union type; it is clearly madness to allow positional record components in an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> but not named component associations. </p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} <strong></strong> Adjusted the wording to allow named aggregates of an unchecked union type; it is clearly madness to allow positional record components in an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> but not named component associations. </p></Admonition>
 

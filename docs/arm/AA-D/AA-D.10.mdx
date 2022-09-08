@@ -27,8 +27,8 @@ import Admonition from "@theme/Admonition";
 </CodeBlock>
 
 <p>The type Suspension_Object is a by-reference type.</p>
-<Admonition type="note">
-<p><strong>Implementation Note: </strong>{"{"}<em>{"AI95-00318-02"}</em>{"}"} The implementation can ensure this by, for example, making the full view an explicitly limited record type.</p></Admonition>
+<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<p><strong></strong>{"{"}<em>{"AI95-00318-02"}</em>{"}"} The implementation can ensure this by, for example, making the full view an explicitly limited record type.</p></Admonition>
 
 <p>{"{"}<em>{"AI05-0168-1"}</em>{"}"} The following language-defined package exists: </p>
 <CodeBlock>
@@ -39,13 +39,13 @@ import Admonition from "@theme/Admonition";
 #### Dynamic Semantics
 
 <p>{"{"}<em>{"AI95-00114-01"}</em>{"}"} An object of the type Suspension_Object has two visible states: True and False. Upon initialization, its value is set to False. </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>This object is assumed to be private to the declaring task, i.e. only that task will call Suspend_Until_True on this object, and the count of callers is at most one. Other tasks can, of course, change and query the state of this object. </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>This object is assumed to be private to the declaring task, i.e. only that task will call Suspend_Until_True on this object, and the count of callers is at most one. Other tasks can, of course, change and query the state of this object. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00114-01"}</em>{"}"} The operations Set_True and Set_False are atomic with respect to each other and with respect to Suspend_Until_True; they set the state to True and False respectively.</p>
 <p>Current_State returns the current state of the object. </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>This state can change immediately after the operation returns. </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>This state can change immediately after the operation returns. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00114-01"}</em>{"}"} The procedure Suspend_Until_True blocks the calling task until the state of the object S is True; at that point the task becomes ready and the state of the object becomes False.</p>
 <p>{"{"}<em>{"AI12-0241-1"}</em>{"}"} Program_Error is raised upon calling Suspend_Until_True if another task is already waiting on that suspension object.</p>
@@ -58,26 +58,26 @@ import Admonition from "@theme/Admonition";
 #### Implementation Requirements
 
 <p>The implementation is required to allow the calling of Set_False and Set_True during any protected action, even one that has its ceiling priority in the Interrupt_Priority range.</p>
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE 1   {"{"}<em>{"AI05-0168-1"}</em>{"}"} More complex schemes, such as setting the deadline relative to when Set_True is called, can be programmed using a protected object. </p></Admonition>
 
 
 #### Extensions to Ada 95
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00362-01"}</em>{"}"} Synchronous_Task_Control is now Preelaborated, so it can be used in preelaborated units. </p></Admonition>
 
 
 #### Extensions to Ada 2005
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI05-0168-1"}</em>{"}"} Child package Ada.Synchronous_Task_Control.EDF is new. </p></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI12-0171-1"}</em>{"}"} <strong>Correction:</strong> Clarified that Suspend_Until_True should only be called from a single task, and what happens if that is violated. </p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI12-0171-1"}</em>{"}"} <strong></strong> Clarified that Suspend_Until_True should only be called from a single task, and what happens if that is violated. </p></Admonition>
 
 
 ## D.10.1  Synchronous Barriers
@@ -95,8 +95,8 @@ import Admonition from "@theme/Admonition";
    subtype Barrier_Limit is Positive range 1 .. implementation-defined;{"\n"}
 </CodeBlock>
 
-<Admonition type="note">
-<p><strong>Implementation defined: </strong>The value of Barrier_Limit'Last in Synchronous_Barriers.</p></Admonition>
+<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<p><strong></strong>The value of Barrier_Limit'Last in Synchronous_Barriers.</p></Admonition>
 
 <CodeBlock>
    type Synchronous_Barrier (Release_Threshold : Barrier_Limit) is limited private;{"\n"}
@@ -119,8 +119,8 @@ private{"\n"}   -- not specified by the language{"\n"}end Ada.Synchronous_Barrie
 <p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} Once all tasks have been released, a Synchronous_Barrier object may be reused to block another Release_Threshold number of tasks.</p>
 <p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} As the first step of the finalization of a Synchronous_Barrier, each blocked task is unblocked and Program_Error is raised at the place of the call to Wait_For_Release.</p>
 <p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} It is implementation defined whether an abnormal task which is waiting on a Synchronous_Barrier object is aborted immediately or aborted when the tasks waiting on the object are released. </p>
-<Admonition type="note">
-<p><strong>Implementation defined: </strong>When an aborted task that is waiting on a Synchronous_Barrier is aborted.</p></Admonition>
+<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<p><strong></strong>When an aborted task that is waiting on a Synchronous_Barrier is aborted.</p></Admonition>
 
 <p><em>This paragraph was deleted.</em>{"{"}<em>{"AI05-0174-1"}</em>{"}"} {"{"}<em>{"AI12-0241-1"}</em>{"}"} </p>
 
@@ -130,6 +130,6 @@ private{"\n"}   -- not specified by the language{"\n"}end Ada.Synchronous_Barrie
 
 #### Extensions to Ada 2005
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI05-0174-1"}</em>{"}"} The package Ada.Synchronous_Barriers is new. </p></Admonition>
 

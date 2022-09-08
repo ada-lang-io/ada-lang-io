@@ -20,57 +20,57 @@ import Admonition from "@theme/Admonition";
 <p><code>type_conversion</code><a id="S0162"></a><code> ::= </code>    <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>(<code><a href="../AA-4/AA-4.4#S0132">expression</a></code>)  | <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>(<code><a href="../AA-4/AA-4.1#S0091">name</a></code>)</p>
 <p>The <em>target subtype</em> of a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> is the subtype denoted by the <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>. The <em>operand</em> of a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> is the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <code><a href="../AA-4/AA-4.1#S0091">name</a></code> within the parentheses; its type is the <em>operand type</em>.</p>
 <p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} One type is <em>convertible</em> to a second type if a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> with the first type as operand type and the second type as target type is legal according to the rules of this subclause. Two types are convertible if each is convertible to the other. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>Note that "convertible" is defined in terms of legality of the conversion. Whether the conversion would raise an exception at run time is irrelevant to this definition. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>Note that "convertible" is defined in terms of legality of the conversion. Whether the conversion would raise an exception at run time is irrelevant to this definition. </p></Admonition>
 
 <p>{"{"}<em>8652/0017</em>{"}"} {"{"}<em>{"AI95-00184-01"}</em>{"}"} {"{"}<em>{"AI95-00330-01"}</em>{"}"} {"{"}<em>{"AI12-0392-1"}</em>{"}"} A <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> is called a <em>view conversion</em> if both its target type and operand type are tagged, or if it appears in a call as an actual parameter of mode <strong>out</strong> or <strong>in out</strong>; other <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>s are called <em>value conversions</em>. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>A view conversion to a tagged type can appear in any context that requires an object <code><a href="../AA-4/AA-4.1#S0091">name</a></code>, including in an object renaming, the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>, and if the operand is a variable, on the left side of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>. View conversions to other types only occur as actual parameters. Allowing view conversions of untagged types in all contexts seemed to incur an undue implementation burden.</p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>A view conversion to a tagged type can appear in any context that requires an object <code><a href="../AA-4/AA-4.1#S0091">name</a></code>, including in an object renaming, the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>, and if the operand is a variable, on the left side of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>. View conversions to other types only occur as actual parameters. Allowing view conversions of untagged types in all contexts seemed to incur an undue implementation burden.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00330-01"}</em>{"}"} A type conversion appearing as an <strong>in out</strong> parameter in a generic instantiation is not a view conversion; the second part of the rule only applies to subprogram calls, not instantiations. </p></Admonition>
 
 
 #### Name Resolution Rules
 
 <p>The operand of a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> is expected to be of any type. </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>This replaces the "must be determinable" wording of Ada 83. This is equivalent to (but hopefully more intuitive than) saying that the operand of a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> is a "complete context". </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>This replaces the "must be determinable" wording of Ada 83. This is equivalent to (but hopefully more intuitive than) saying that the operand of a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> is a "complete context". </p></Admonition>
 
 <p>The operand of a view conversion is interpreted only as a <code><a href="../AA-4/AA-4.1#S0091">name</a></code>; the operand of a value conversion is interpreted as an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>. </p>
-<Admonition type="note">
-<p><strong>Reason: </strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} This formally resolves the syntactic ambiguity between the two forms of <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>. This matters because an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> that is a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> is evaluated and represents a value while a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> by itself can be an object; we want a view conversion to be an object. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} This formally resolves the syntactic ambiguity between the two forms of <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>. This matters because an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> that is a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> is evaluated and represents a value while a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> by itself can be an object; we want a view conversion to be an object. </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Ramification: </strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} This wording uses "interpreted as" rather than "shall be" so that this rule is not used to resolve overloading; it is solely about evaluation as described above. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} This wording uses "interpreted as" rather than "shall be" so that this rule is not used to resolve overloading; it is solely about evaluation as described above. </p></Admonition>
 
 
 #### Legality Rules
 
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} In a view conversion for an untagged type, the target type shall be convertible (back) to the operand type. </p>
-<Admonition type="note">
-<p><strong>Reason: </strong>Untagged view conversions appear only as [<strong>in</strong>] <strong>out</strong> parameters. Hence, the reverse conversion must be legal as well. The forward conversion must be legal even for an <strong>out</strong> parameter, because (for example) actual parameters of an access type are always copied in anyway. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>Untagged view conversions appear only as [<strong>in</strong>] <strong>out</strong> parameters. Hence, the reverse conversion must be legal as well. The forward conversion must be legal even for an <strong>out</strong> parameter, because (for example) actual parameters of an access type are always copied in anyway. </p></Admonition>
 
 <p><em>Paragraphs 9 through 20 were reorganized and moved below.</em> </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>{"{"}<em>{"AI95-00251-01"}</em>{"}"} The entire Legality Rules section has been reorganized to eliminate an unintentional incompatibility with Ada 83. In rare cases, a type conversion between two types related by derivation is not allowed by Ada 95, while it is allowed in Ada 83. The reorganization fixes this. Much of the wording of the legality section is unchanged, but it is reordered and reformatted. Because of the limitations of our tools, we had to delete and replace nearly the entire section. The text of Ada 95 paragraphs 8 through 12, 14, 15, 17, 19, 20, and 24 are unchanged (just moved); these are now 24.1 through 24.5, 24.12, 24.13, 24.17, 24.19, 24.20, and 8. </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>{"{"}<em>{"AI95-00251-01"}</em>{"}"} The entire Legality Rules section has been reorganized to eliminate an unintentional incompatibility with Ada 83. In rare cases, a type conversion between two types related by derivation is not allowed by Ada 95, while it is allowed in Ada 83. The reorganization fixes this. Much of the wording of the legality section is unchanged, but it is reordered and reformatted. Because of the limitations of our tools, we had to delete and replace nearly the entire section. The text of Ada 95 paragraphs 8 through 12, 14, 15, 17, 19, 20, and 24 are unchanged (just moved); these are now 24.1 through 24.5, 24.12, 24.13, 24.17, 24.19, 24.20, and 8. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} {"{"}<em>{"AI05-0115-1"}</em>{"}"} If there is a type (other than a root numeric type) that is an ancestor of both the target type and the operand type, or both types are class-wide types, then at least one of the following rules shall apply: </p>
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} The target type shall be untagged; or</p>
 <p>The operand type shall be covered by or descended from the target type; or </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>This is a conversion toward the root, which is always safe. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>This is a conversion toward the root, which is always safe. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} The operand type shall be a class-wide type that covers the target type; or </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>This is a conversion of a class-wide type toward the leaves, which requires a tag check. See Dynamic Semantics.</p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>This is a conversion of a class-wide type toward the leaves, which requires a tag check. See Dynamic Semantics.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} These two rules imply that a conversion from an ancestor type to a type extension is not permitted, as this would require specifying the values for additional components, in general, and changing the tag. An <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> has to be used instead, constructing a new value, rather than converting an existing value. However, a conversion from the class-wide type rooted at an ancestor type is permitted; such a conversion just verifies that the operand's tag is a descendant of the target. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} The operand and target types shall both be class-wide types and the specific type associated with at least one of them shall be an interface type. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>We allow converting any class-wide type T'Class to or from a class-wide interface type even if the specific type T does not have an appropriate interface ancestor, because some extension of T might have the needed ancestor. This is similar to a conversion of a class-wide type toward the leaves of the tree, and we need to be consistent. Of course, there is a runtime check that the actual object has the needed interface. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>We allow converting any class-wide type T'Class to or from a class-wide interface type even if the specific type T does not have an appropriate interface ancestor, because some extension of T might have the needed ancestor. This is similar to a conversion of a class-wide type toward the leaves of the tree, and we need to be consistent. Of course, there is a runtime check that the actual object has the needed interface. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} {"{"}<em>{"AI05-0115-1"}</em>{"}"} If there is no type (other than a root numeric type) that is the ancestor of both the target type and the operand type, and they are not both class-wide types, one of the following rules shall apply: </p>
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} If the target type is a numeric type, then the operand type shall be a numeric type.</p>
@@ -79,77 +79,77 @@ import Admonition from "@theme/Admonition";
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} Corresponding index types shall be convertible; </p>
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} The component subtypes shall statically match; </p>
 <p>{"{"}<em>{"AI95-00392-01"}</em>{"}"} If the component types are anonymous access types, then the accessibility level of the operand type shall not be statically deeper than that of the target type; </p>
-<Admonition type="note">
-<p><strong>Reason: </strong>For unrelated array types, the component types could have different accessibility, and we had better not allow a conversion of a local type into a global type, in case the local type points at local objects. We don't need a check for other types of components; such components necessarily are for related types, and either have the same accessibility or (for access discriminants) cannot be changed so the discriminant check will prevent problems. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>For unrelated array types, the component types could have different accessibility, and we had better not allow a conversion of a local type into a global type, in case the local type points at local objects. We don't need a check for other types of components; such components necessarily are for related types, and either have the same accessibility or (for access discriminants) cannot be changed so the discriminant check will prevent problems. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00246-01"}</em>{"}"} Neither the target type nor the operand type shall be limited; </p>
-<Admonition type="note">
-<p><strong>Reason: </strong>We cannot allow conversions between unrelated limited types, as they may have different representations, and (since the types are limited), a copy cannot be made to reconcile the representations. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>We cannot allow conversions between unrelated limited types, as they may have different representations, and (since the types are limited), a copy cannot be made to reconcile the representations. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} {"{"}<em>{"AI95-00363-01"}</em>{"}"} If the target type of a view conversion has aliased components, then so shall the operand type; and </p>
-<Admonition type="note">
-<p><strong>Reason: </strong>{"{"}<em>{"AI95-00363-01"}</em>{"}"} We cannot allow a view conversion from an object with unaliased components to an object with aliased components, because that would effectively allow pointers to unaliased components. This rule was missing from Ada 95. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>{"{"}<em>{"AI95-00363-01"}</em>{"}"} We cannot allow a view conversion from an object with unaliased components to an object with aliased components, because that would effectively allow pointers to unaliased components. This rule was missing from Ada 95. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00246-01"}</em>{"}"} {"{"}<em>{"AI95-00251-01"}</em>{"}"} The operand type of a view conversion shall not have a tagged, private, or volatile subcomponent. </p>
-<Admonition type="note">
-<p><strong>Reason: </strong>{"{"}<em>{"AI95-00246-01"}</em>{"}"} We cannot allow view conversions between unrelated might-be-by-reference types, as they may have different representations, and a copy cannot be made to reconcile the representations. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>{"{"}<em>{"AI95-00246-01"}</em>{"}"} We cannot allow view conversions between unrelated might-be-by-reference types, as they may have different representations, and a copy cannot be made to reconcile the representations. </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Ramification: </strong>These rules only apply to unrelated array conversions; different (weaker) rules apply to conversions between related types. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>These rules only apply to unrelated array conversions; different (weaker) rules apply to conversions between related types. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00230-01"}</em>{"}"} If the target type is <em>universal_access</em>, then the operand type shall be an access type.</p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>Such a conversion cannot be written explicitly, of course, but it can be implicit (see below). </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>Such a conversion cannot be written explicitly, of course, but it can be implicit (see below). </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00230-01"}</em>{"}"} {"{"}<em>{"AI95-00251-01"}</em>{"}"} If the target type is a general access-to-object type, then the operand type shall be <em>universal_access</em> or an access-to-object type. Further, if the operand type is not <em>universal_access</em>:</p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>The Legality Rules and Dynamic Semantics are worded so that a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> T(X) (where T is an access type) is (almost) equivalent to the <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> X.<strong>all</strong>'Access, where the result is of type T. The only difference is that the <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> accepts a null value, whereas the <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> would raise Constraint_Error. </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>The Legality Rules and Dynamic Semantics are worded so that a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> T(X) (where T is an access type) is (almost) equivalent to the <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> X.<strong>all</strong>'Access, where the result is of type T. The only difference is that the <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> accepts a null value, whereas the <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> would raise Constraint_Error. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} If the target type is an access-to-variable type, then the operand type shall be an access-to-variable type; </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>If the target type is an access-to-constant type, then the operand type can be access-to-constant or access-to-variable. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>If the target type is an access-to-constant type, then the operand type can be access-to-constant or access-to-variable. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} If the target designated type is tagged, then the operand designated type shall be convertible to the target designated type; </p>
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} {"{"}<em>{"AI95-00363-01"}</em>{"}"} If the target designated type is not tagged, then the designated types shall be the same, and either:</p>
 <p>{"{"}<em>{"AI95-00363-01"}</em>{"}"} the designated subtypes shall statically match; or</p>
 <p>{"{"}<em>{"AI95-00363-01"}</em>{"}"} {"{"}<em>{"AI95-00384-01"}</em>{"}"} the designated type shall be discriminated in its full view and unconstrained in any partial view, and one of the designated subtypes shall be unconstrained;</p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>{"{"}<em>{"AI95-00363-01"}</em>{"}"} This does not require that types have a partial view in order to allow the conversion, simply that any partial view that does exist is unconstrained.</p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>{"{"}<em>{"AI95-00363-01"}</em>{"}"} This does not require that types have a partial view in order to allow the conversion, simply that any partial view that does exist is unconstrained.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00384-01"}</em>{"}"} This allows conversions both ways (either subtype can be unconstrained); while Ada 95 only allowed the conversion if the target subtype is unconstrained. We generally want type conversions to be symmetric; which type is the target shouldn't matter for legality. </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Reason: </strong>{"{"}<em>{"AI95-00363-01"}</em>{"}"} If the visible partial view is constrained, we do not allow conversion between unconstrained and constrained subtypes. This means that whether the full type had discriminants is not visible to clients of the partial view. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>{"{"}<em>{"AI95-00363-01"}</em>{"}"} If the visible partial view is constrained, we do not allow conversion between unconstrained and constrained subtypes. This means that whether the full type had discriminants is not visible to clients of the partial view. </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Discussion: </strong>{"{"}<em>{"AI12-0095-1"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} We assume the worst in a generic body about whether or not a formal subtype has a constrained partial view; specifically, in a generic body a discriminated subtype is considered to have a constrained partial view if it is a descendant of an untagged generic formal private or derived type (see 12.5.1 for the formal definition of this rule). </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>{"{"}<em>{"AI12-0095-1"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} We assume the worst in a generic body about whether or not a formal subtype has a constrained partial view; specifically, in a generic body a discriminated subtype is considered to have a constrained partial view if it is a descendant of an untagged generic formal private or derived type (see 12.5.1 for the formal definition of this rule). </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Reason: </strong>These rules are designed to ensure that aliased array objects only <em>need</em> "dope" if their nominal subtype is unconstrained, but they can always <em>have</em> dope if required by the run-time model (since no sliding is permitted as part of access type conversion). By contrast, aliased discriminated objects will always <em>need</em> their discriminants stored with them, even if nominally constrained. (Here, we are assuming an implementation that represents an access value as a single pointer.) </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>These rules are designed to ensure that aliased array objects only <em>need</em> "dope" if their nominal subtype is unconstrained, but they can always <em>have</em> dope if required by the run-time model (since no sliding is permitted as part of access type conversion). By contrast, aliased discriminated objects will always <em>need</em> their discriminants stored with them, even if nominally constrained. (Here, we are assuming an implementation that represents an access value as a single pointer.) </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} {"{"}<em>{"AI05-0148-1"}</em>{"}"} {"{"}<em>{"AI05-0248-1"}</em>{"}"} {"{"}<em>{"AI12-0027-1"}</em>{"}"} The accessibility level of the operand type shall not be statically deeper than that of the target type, unless the target type is an anonymous access type of a stand-alone object. If the target type is that of such a stand-alone object, the accessibility level of the operand type shall not be statically deeper than that of the declaration of the stand-alone object. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>{"{"}<em>{"AI05-0148-1"}</em>{"}"} The access parameter case is handled by a run-time check. runtime checks are also done in instance bodies, and for stand-alone objects of anonymous access types. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>{"{"}<em>{"AI05-0148-1"}</em>{"}"} The access parameter case is handled by a run-time check. runtime checks are also done in instance bodies, and for stand-alone objects of anonymous access types. </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Reason: </strong>We prohibit storing accesses to objects deeper than a stand-alone object of an anonymous access-to-object (even while we allow storing all other accesses) in order to prevent dangling accesses. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>We prohibit storing accesses to objects deeper than a stand-alone object of an anonymous access-to-object (even while we allow storing all other accesses) in order to prevent dangling accesses. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00230-01"}</em>{"}"} If the target type is a pool-specific access-to-object type, then the operand type shall be <em>universal_access</em>. </p>
-<Admonition type="note">
-<p><strong>Reason: </strong>This allows <strong>null</strong> to be converted to pool-specific types. Without it, <strong>null</strong> could be converted to general access types but not pool-specific ones, which would be too inconsistent. Remember that these rules only apply to unrelated types, so we don't have to talk about conversions to derived or other related types. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>This allows <strong>null</strong> to be converted to pool-specific types. Without it, <strong>null</strong> could be converted to general access types but not pool-specific ones, which would be too inconsistent. Remember that these rules only apply to unrelated types, so we don't have to talk about conversions to derived or other related types. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00230-01"}</em>{"}"} {"{"}<em>{"AI95-00251-01"}</em>{"}"} If the target type is an access-to-subprogram type, then the operand type shall be <em>universal_access</em> or an access-to-subprogram type. Further, if the operand type is not <em>universal_access</em>:</p>
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} {"{"}<em>{"AI05-0239-1"}</em>{"}"} The designated profiles shall be subtype conformant. </p>
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} {"{"}<em>{"AI12-0027-1"}</em>{"}"} The accessibility level of the operand type shall not be statically deeper than that of the target type. If the operand type is declared within a generic body, the target type shall be declared within the generic body.</p>
-<Admonition type="note">
-<p><strong>Reason: </strong>The reason it is illegal to convert from an access-to-subprogram type declared in a generic body to one declared outside that body is that in an implementation that shares generic bodies, subprograms declared inside the generic need to have a different calling convention - they need an extra parameter pointing to the data declared in the current instance. For subprograms declared in the spec, that's OK, because the compiler can know about them at compile time of the instantiation. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>The reason it is illegal to convert from an access-to-subprogram type declared in a generic body to one declared outside that body is that in an implementation that shares generic bodies, subprograms declared inside the generic need to have a different calling convention - they need an extra parameter pointing to the data declared in the current instance. For subprograms declared in the spec, that's OK, because the compiler can know about them at compile time of the instantiation. </p></Admonition>
 
 <p>{"{"}<em>{"AI12-0380-1"}</em>{"}"} If the target type has a Global aspect other than <strong>in out all</strong> or Unspecified, then each mode of the Global aspect of the operand type shall identify a subset of the variables identified by the corresponding mode of the target type Global aspect, or by the <strong>in out</strong> mode of the target type Global aspect.</p>
 <p>{"{"}<em>{"AI12-0064-2"}</em>{"}"} If the target type is nonblocking, the operand type shall be nonblocking. </p>
 <p>{"{"}<em>{"AI12-0027-1"}</em>{"}"} In addition to the places where Legality Rules normally apply (see 12.3), these rules apply also in the private part of an instance of a generic unit. </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} This applies to <em>all</em> of the Legality Rules in this section. It won't matter for the majority of these rules, but in any case that it does, we want to apply the same rules in the private part. (Ada got the default wrong for these, as there is only one known case where we don't want to recheck in the private part, see derivations without record extensions in 3.4.) </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} This applies to <em>all</em> of the Legality Rules in this section. It won't matter for the majority of these rules, but in any case that it does, we want to apply the same rules in the private part. (Ada got the default wrong for these, as there is only one known case where we don't want to recheck in the private part, see derivations without record extensions in 3.4.) </p></Admonition>
 
 
 #### Static Semantics
@@ -165,88 +165,88 @@ import Admonition from "@theme/Admonition";
 <p>If the target and the operand types are both integer types, then the result is the value of the target type that corresponds to the same mathematical integer as the operand.</p>
 <p>If the target type is a decimal fixed point type, then the result is truncated (toward 0) if the value of the operand is not a multiple of the <em>small</em> of the target type.</p>
 <p>If the target type is some other real type, then the result is within the accuracy of the target type (see G.2, "Numeric Performance Requirements", for implementations that support the Numerics Annex). </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>An integer type might have more bits of precision than a real type, so on conversion (of a large integer), some precision might be lost. </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>An integer type might have more bits of precision than a real type, so on conversion (of a large integer), some precision might be lost. </p></Admonition>
 
 <p>If the target type is an integer type and the operand type is real, the result is rounded to the nearest integer (away from zero if exactly halfway between two integers). </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>{"{"}<em>{"AI95-00267-01"}</em>{"}"} This was implementation defined in Ada 83. There seems no reason to preserve the nonportability in Ada 95. Round-away-from-zero is the conventional definition of rounding, and standard Fortran and COBOL both specify rounding away from zero, so for interoperability, it seems important to pick this. This is also the most easily "undone" by hand. Round-to-nearest-even is an alternative, but that is quite complicated if not supported by the hardware. In any case, this operation is not usually part of an inner loop, so predictability and portability are judged most important. A floating point attribute function Unbiased_Rounding is provided (see A.5.3) for those applications that require round-to-nearest-even, and a floating point attribute function Machine_Rounding (also see A.5.3) is provided for those applications that require the highest possible performance. "Deterministic" rounding is required for static conversions to integer as well. See 4.9. </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>{"{"}<em>{"AI95-00267-01"}</em>{"}"} This was implementation defined in Ada 83. There seems no reason to preserve the nonportability in Ada 95. Round-away-from-zero is the conventional definition of rounding, and standard Fortran and COBOL both specify rounding away from zero, so for interoperability, it seems important to pick this. This is also the most easily "undone" by hand. Round-to-nearest-even is an alternative, but that is quite complicated if not supported by the hardware. In any case, this operation is not usually part of an inner loop, so predictability and portability are judged most important. A floating point attribute function Unbiased_Rounding is provided (see A.5.3) for those applications that require round-to-nearest-even, and a floating point attribute function Machine_Rounding (also see A.5.3) is provided for those applications that require the highest possible performance. "Deterministic" rounding is required for static conversions to integer as well. See 4.9. </p></Admonition>
 
 <p>Enumeration Type Conversion </p>
 <p>The result is the value of the target type with the same position number as that of the operand value. </p>
 <p>Array Type Conversion </p>
 <p>If the target subtype is a constrained array subtype, then a check is made that the length of each dimension of the value of the operand equals the length of the corresponding dimension of the target subtype. The bounds of the result are those of the target subtype.</p>
 <p>If the target subtype is an unconstrained array subtype, then the bounds of the result are obtained by converting each bound of the value of the operand to the corresponding index type of the target type. For each nonnull index range, a check is made that the bounds of the range belong to the corresponding index subtype. </p>
-<Admonition type="note">
-<p><strong>Discussion: </strong>Only nonnull index ranges are checked, per AI83-00313. </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>Only nonnull index ranges are checked, per AI83-00313. </p></Admonition>
 
 <p>In either array case, the value of each component of the result is that of the matching component of the operand value (see 4.5.2). </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>This applies whether or not the component is initialized. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>This applies whether or not the component is initialized. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00392-01"}</em>{"}"} If the component types of the array types are anonymous access types, then a check is made that the accessibility level of the operand type is not deeper than that of the target type. </p>
-<Admonition type="note">
-<p><strong>Reason: </strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} This check is needed for operands that are in instance bodies. Other cases are handled by the legality rule given previously. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} This check is needed for operands that are in instance bodies. Other cases are handled by the legality rule given previously. </p></Admonition>
 
 <p>Composite (Non-Array) Type Conversion </p>
 <p>The value of each nondiscriminant component of the result is that of the matching component of the operand value. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>This applies whether or not the component is initialized. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>This applies whether or not the component is initialized. </p></Admonition>
 
 <p>[The tag of the result is that of the operand.] If the operand type is class-wide, a check is made that the tag of the operand identifies a (specific) type that is covered by or descended from the target type. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>This check is certain to succeed if the operand type is itself covered by or descended from the target type. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>This check is certain to succeed if the operand type is itself covered by or descended from the target type. </p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p><strong>Proof: </strong>The fact that a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> preserves the tag is stated officially in 3.9, "Tagged Types and Type Extensions" </p></Admonition>
 
 <p>For each discriminant of the target type that corresponds to a discriminant of the operand type, its value is that of the corresponding discriminant of the operand value; if it corresponds to more than one discriminant of the operand type, a check is made that all these discriminants are equal in the operand value.</p>
 <p>For each discriminant of the target type that corresponds to a discriminant that is specified by the <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> for some ancestor of the operand type (or if class-wide, some ancestor of the specific type identified by the tag of the operand), its value in the result is that specified by the <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>It is a ramification of the rules for the discriminants of derived types that each discriminant of the result is covered either by this paragraph or the previous one. See 3.7. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>It is a ramification of the rules for the discriminants of derived types that each discriminant of the result is covered either by this paragraph or the previous one. See 3.7. </p></Admonition>
 
 <p>For each discriminant of the operand type that corresponds to a discriminant that is specified by the <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> for some ancestor of the target type, a check is made that in the operand value it equals the value specified for it.</p>
 <p>For each discriminant of the result, a check is made that its value belongs to its subtype. </p>
 <p>Access Type Conversion </p>
 <p>{"{"}<em>{"AI05-0148-1"}</em>{"}"} {"{"}<em>{"AI05-0248-1"}</em>{"}"} For an access-to-object type, a check is made that the accessibility level of the operand type is not deeper than that of the target type, unless the target type is an anonymous access type of a stand-alone object. If the target type is that of such a stand-alone object, a check is made that the accessibility level of the operand type is not deeper than that of the declaration of the stand-alone object[; then if the check succeeds, the accessibility level of the target type becomes that of the operand type]. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>{"{"}<em>{"AI05-0148-1"}</em>{"}"} This check is needed for operands that are access parameters, for stand-alone anonymous access objects, and in instance bodies.</p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>{"{"}<em>{"AI05-0148-1"}</em>{"}"} This check is needed for operands that are access parameters, for stand-alone anonymous access objects, and in instance bodies.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Note that this check can never fail for the implicit conversion to the anonymous type of an access parameter that is done when calling a subprogram with an access parameter. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00230-01"}</em>{"}"} {"{"}<em>{"AI95-00231-01"}</em>{"}"} If the operand value is null, the result of the conversion is the null value of the target type. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>A conversion to an anonymous access type happens implicitly as part of initializing or assigning to an anonymous access object. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>A conversion to an anonymous access type happens implicitly as part of initializing or assigning to an anonymous access object. </p></Admonition>
 
 <p>If the operand value is not null, then the result designates the same object (or subprogram) as is designated by the operand value, but viewed as being of the target designated subtype (or profile); any checks associated with evaluating a conversion to the target designated subtype are performed. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>The checks are certain to succeed if the target and operand designated subtypes statically match. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>The checks are certain to succeed if the target and operand designated subtypes statically match. </p></Admonition>
 
 <p>{"{"}<em>{"AI95-00231-01"}</em>{"}"} {"{"}<em>{"AI05-0153-3"}</em>{"}"} {"{"}<em>{"AI05-0290-1"}</em>{"}"} {"{"}<em>{"AI12-0071-1"}</em>{"}"} {"{"}<em>{"AI12-0333-1"}</em>{"}"} After conversion of the value to the target type, if the target subtype is constrained, a check is performed that the value satisfies this constraint. If the target subtype excludes null, then a check is made that the value is not null. If predicate checks are enabled for the target subtype (see 3.2.4), a check is performed that the value satisfies the predicates of the target subtype, unless the conversion is:. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>{"{"}<em>{"AI95-00231-01"}</em>{"}"} The first check above is a Range_Check for scalar subtypes, a Discriminant_Check or Index_Check for access subtypes, and a Discriminant_Check for discriminated subtypes. The Length_Check for an array conversion is performed as part of the conversion to the target type. The check for exclusion of null is an Access_Check. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>{"{"}<em>{"AI95-00231-01"}</em>{"}"} The first check above is a Range_Check for scalar subtypes, a Discriminant_Check or Index_Check for access subtypes, and a Discriminant_Check for discriminated subtypes. The Length_Check for an array conversion is performed as part of the conversion to the target type. The check for exclusion of null is an Access_Check. </p></Admonition>
 
 <p>{"{"}<em>{"AI12-0333-1"}</em>{"}"} {"{"}<em>{"AI12-0432-1"}</em>{"}"} a view conversion that is the target of an assignment statement and is not referenced with a <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code>, or an actual parameter of mode <strong>out</strong>; or</p>
 <p>{"{"}<em>{"AI12-0333-1"}</em>{"}"} an implicit subtype conversion of an actual parameter of mode <strong>out</strong> to the nominal subtype of its formal parameter. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>{"{"}<em>{"AI12-0333-1"}</em>{"}"} The reverse conversion applied to by-copy <strong>out</strong> parameters is <em>not</em> a view conversion and it is to the nominal subtype of the <em>actual</em> parameter, therefore any enabled predicate checks <em>are</em> performed. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>{"{"}<em>{"AI12-0333-1"}</em>{"}"} The reverse conversion applied to by-copy <strong>out</strong> parameters is <em>not</em> a view conversion and it is to the nominal subtype of the <em>actual</em> parameter, therefore any enabled predicate checks <em>are</em> performed. </p></Admonition>
 
 <p>For the evaluation of a view conversion, the operand <code><a href="../AA-4/AA-4.1#S0091">name</a></code> is evaluated, and a new view of the object denoted by the operand is created, whose type is the target type; if the target type is composite, checks are performed as above for a value conversion.</p>
 <p>The properties of this new view are as follows: </p>
 <p>{"{"}<em>8652/0017</em>{"}"} {"{"}<em>{"AI95-00184-01"}</em>{"}"} If the target type is composite, the bounds or discriminants (if any) of the view are as defined above for a value conversion; each nondiscriminant component of the view denotes the matching component of the operand object; the subtype of the view is constrained if either the target subtype or the operand object is constrained, or if the target subtype is indefinite, or if the operand type is a descendant of the target type and has discriminants that were not inherited from the target type;</p>
 <p>{"{"}<em>{"AI12-0439-1"}</em>{"}"} If the target type is tagged, then an assignment to the view assigns to the corresponding part of the object denoted by the operand; otherwise, an assignment to the view assigns to the object, after converting the assigned value to the subtype of the object (which can raise Constraint_Error); </p>
 <p>{"{"}<em>{"AI12-0074-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} Reading the value of the view yields the result of converting the value of the operand object to the target subtype (which can raise Constraint_Error), except if the object is of an elementary type and the view conversion is passed as an <strong>out</strong> parameter; in this latter case, the value of the operand object may be used to initialize the formal parameter without checking against any constraint of the target subtype (as described more precisely in 6.4.1). </p>
-<Admonition type="note">
-<p><strong>Reason: </strong>{"{"}<em>{"AI12-0074-1"}</em>{"}"} This ensures that even an <strong>out</strong> parameter of an elementary type is initialized reasonably. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>{"{"}<em>{"AI12-0074-1"}</em>{"}"} This ensures that even an <strong>out</strong> parameter of an elementary type is initialized reasonably. </p></Admonition>
 
 <p>{"{"}<em>{"AI05-0290-1"}</em>{"}"} {"{"}<em>{"AI12-0096-1"}</em>{"}"} If an Accessibility_Check fails, Program_Error is raised. If a predicate check fails, the effect is as defined in subclause 3.2.4, "Subtype Predicates". Any other check associated with a conversion raises Constraint_Error if it fails.</p>
 <p>Conversion to a type is the same as conversion to an unconstrained subtype of the type. </p>
-<Admonition type="note">
-<p><strong>Reason: </strong>This definition is needed because the semantics of various constructs involves converting to a type, whereas an explicit <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> actually converts to a subtype. For example, the evaluation of a <code><a href="../AA-3/AA-3.5#S0037">range</a></code> is defined to convert the values of the expressions to the type of the range. </p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>This definition is needed because the semantics of various constructs involves converting to a type, whereas an explicit <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> actually converts to a subtype. For example, the evaluation of a <code><a href="../AA-3/AA-3.5#S0037">range</a></code> is defined to convert the values of the expressions to the type of the range. </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Ramification: </strong>A conversion to a scalar type, or, equivalently, to an unconstrained scalar subtype, can raise Constraint_Error if the value is outside the base range of the type. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>A conversion to a scalar type, or, equivalently, to an unconstrained scalar subtype, can raise Constraint_Error if the value is outside the base range of the type. </p></Admonition>
 
 <p>{"{"}<em>{"AI12-0027-1"}</em>{"}"} {"{"}<em>{"AI12-0226-1"}</em>{"}"} Evaluation of a value conversion of an object either creates a new anonymous object[ (similar to the object created by the evaluation of an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or a function call)] or yields a new view of the operand object without creating a new object:</p>
 <p>If the target type is a by-reference type and there is a type that is an ancestor of both the target type and the operand type then no new object is created;</p>
@@ -254,28 +254,28 @@ import Admonition from "@theme/Admonition";
 <p>{"{"}<em>{"AI12-0226-1"}</em>{"}"} If the target type is an elementary type, then a new object is created;</p>
 <p>Otherwise, it is unspecified whether a new object is created. </p>
 <p>{"{"}<em>{"AI12-0027-1"}</em>{"}"} If a new object is created, then the initialization of that object is an assignment operation.</p>
-<Admonition type="note">
-<p><strong>Reason: </strong>This makes a difference in the case of converting from an array type with unaliased components to one with aliased components if the element type has a controlled part.</p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>This makes a difference in the case of converting from an array type with unaliased components to one with aliased components if the element type has a controlled part.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0226-1"}</em>{"}"} For an elementary type, the representation might change so we require a new object to avoid problems. </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Implementation Note: </strong>{"{"}<em>{"AI12-0226-1"}</em>{"}"} The temporary object need not be materialized in most cases; it should be handled like the return object of a predefined operator. Generally, whether the object exists can only be detected if it is renamed (unless a part of the type is controlled). </p></Admonition>
+<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<p><strong></strong>{"{"}<em>{"AI12-0226-1"}</em>{"}"} The temporary object need not be materialized in most cases; it should be handled like the return object of a predefined operator. Generally, whether the object exists can only be detected if it is renamed (unless a part of the type is controlled). </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Discussion: </strong>{"{"}<em>{"AI12-0226-1"}</em>{"}"} This set of rules does not apply in those cases where the operand is not an object (such as a value conversion of a named number); in such cases, the result isn't an object, so it isn't necessary to describe what that means. The rules cover all value conversions of composite types (since there aren't any values of composite types separate from objects). </p></Admonition>
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<p><strong></strong>{"{"}<em>{"AI12-0226-1"}</em>{"}"} This set of rules does not apply in those cases where the operand is not an object (such as a value conversion of a named number); in such cases, the result isn't an object, so it isn't necessary to describe what that means. The rules cover all value conversions of composite types (since there aren't any values of composite types separate from objects). </p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE 1   In addition to explicit <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>s, type conversions are performed implicitly in situations where the expected type and the actual type of a construct differ, as is permitted by the type resolution rules (see 8.6). For example, an integer literal is of the type <em>universal_integer</em>, and is implicitly converted when assigned to a target of some specific integer type. Similarly, an actual parameter of a specific tagged type is implicitly converted when the corresponding formal parameter is of a class-wide type.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Even when the expected and actual types are the same, implicit subtype conversions are performed to adjust the array bounds (if any) of an operand to match the desired target subtype, or to raise Constraint_Error if the (possibly adjusted) value does not satisfy the constraints of the target subtype.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE 2   {"{"}<em>{"AI95-00230-01"}</em>{"}"} A ramification of the overload resolution rules is that the operand of an (explicit) <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> cannot be an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>, an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>, a <code><a href="../AA-2/AA-2.6#S0016">string_literal</a></code>, a <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>, or an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> for an Access or Unchecked_Access attribute. Similarly, such an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> enclosed by parentheses is not allowed. A <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> (see 4.7) can be used instead of such a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE 3   The constraint of the target subtype has no effect for a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> of an elementary type passed as an <strong>out</strong> parameter. Hence, it is recommended that the first subtype be specified as the target to minimize confusion (a similar recommendation applies to renaming and generic formal <strong>in out</strong> objects). </p></Admonition>
 
 
@@ -311,132 +311,132 @@ Sequence(Ledger)            --  bounds are those of Ledger{"\n"}Sequence(Ledger(
 
 #### Incompatibilities With Ada 83
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>A <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> is not allowed as the operand of a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>, since there are now two character types in package Standard.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>The component subtypes have to statically match in an array conversion, rather than being checked for matching constraints at run time.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>Because sliding of array bounds is now provided for operations where it was not in Ada 83, programs that used to raise Constraint_Error might now continue executing and produce a reasonable result. This is likely to fix more bugs than it creates. </p></Admonition>
 
 
 #### Extensions to Ada 83
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>A <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> is considered the name of an object in certain circumstances (such a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> is called a view conversion). In particular, as in Ada 83, a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> can appear as an <strong>in out</strong> or <strong>out</strong> actual parameter. In addition, if the target type is tagged and the operand is the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> of an object, then so is the <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>, and it can be used as the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> to a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>, in an <code><a href="../AA-8/AA-8.5#S0239">object_renaming_declaration</a></code>, etc.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>We no longer require type-mark conformance between a parameter of the form of a type conversion, and the corresponding formal parameter. This had caused some problems for inherited subprograms (since there isn't really a type-mark for converted formals), as well as for renamings, formal subprograms, etc. See AI83-00245, AI83-00318, AI83-00547.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>We now specify "deterministic" rounding from real to integer types when the value of the operand is exactly between two integers (rounding is away from zero in this case).</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>"Sliding" of array bounds (which is part of conversion to an array subtype) is performed in more cases in Ada 95 than in Ada 83. Sliding is not performed on the operand of a membership test, nor on the operand of a <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code>. It wouldn't make sense on a membership test, and we wish to retain a connection between subtype membership and subtype qualification. In general, a subtype membership test returns True if and only if a corresponding subtype qualification succeeds without raising an exception. Other operations that take arrays perform sliding. </p></Admonition>
 
 
 #### Wording Changes from Ada 83
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>We no longer explicitly list the kinds of things that are not allowed as the operand of a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>, except in a NOTE.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} The rules in this subclause subsume the rules for "parameters of the form of a type conversion", and have been generalized to cover the use of a type conversion as a <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. </p></Admonition>
 
 
 #### Incompatibilities With Ada 95
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI95-00246-01"}</em>{"}"} <strong>Amendment Correction:</strong> Conversions between unrelated array types that are limited or (for view conversions) might be by-reference types are now illegal. The representations of two such arrays may differ, making the conversions impossible. We make the check here, because legality should not be based on representation properties. Such conversions are likely to be rare, anyway. There is a potential that this change would make a working program illegal (if the types have the same representation).</p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI95-00246-01"}</em>{"}"} <strong>Amendment </strong> Conversions between unrelated array types that are limited or (for view conversions) might be by-reference types are now illegal. The representations of two such arrays may differ, making the conversions impossible. We make the check here, because legality should not be based on representation properties. Such conversions are likely to be rare, anyway. There is a potential that this change would make a working program illegal (if the types have the same representation).</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00363-01"}</em>{"}"} If a discriminated full type has a partial view (private type) that is constrained, we do not allow conversion between access-to-unconstrained and access-to-constrained subtypes designating the type. Ada 95 allowed this conversion and the declaration of various access subtypes, requiring that the designated object be constrained and thus making details of the implementation of the private type visible to the client of the private type. See 4.8 for more on this topic. </p></Admonition>
 
 
 #### Extensions to Ada 95
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00230-01"}</em>{"}"} Conversion rules for <em>universal_access</em> were defined. These allow the use of anonymous access values in equality tests (see 4.5.2), and also allow the use of <strong>null</strong> in type conversions and other contexts that do not provide a single expected type.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00384-01"}</em>{"}"} A type conversion from an access-to-discriminated and unconstrained object to an access-to-discriminated and constrained one is allowed. Ada 95 only allowed the reverse conversion, which was weird and asymmetric. Of course, a constraint check will be performed for this conversion. </p></Admonition>
 
 
 #### Wording Changes from Ada 95
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>8652/0017</em>{"}"} {"{"}<em>{"AI95-00184-01"}</em>{"}"} <strong>Corrigendum:</strong> Wording was added to ensure that view conversions are constrained, and that a tagged view conversion has a tagged object. Both rules are needed to avoid having a way to change the discriminants of a constrained object.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>8652/0008</em>{"}"} {"{"}<em>{"AI95-00168-01"}</em>{"}"} <strong>Corrigendum:</strong> Wording was added to ensure that the aliased status of array components cannot change in a view conversion. This rule was needed to avoid having a way to change the discriminants of an aliased object. This rule was repealed later, as Ada 2005 allows changing the discriminants of an aliased object.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00231-01"}</em>{"}"} Wording was added to check subtypes that exclude null (see 3.10).</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00251-01"}</em>{"}"} The organization of the legality rules was changed, both to make it clearer, and to eliminate an unintentional incompatibility with Ada 83. The old organization prevented type conversions between some types that were related by derivation (which Ada 83 always allowed).</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00330-01"}</em>{"}"} {"{"}<em>{"AI05-0005-1"}</em>{"}"} Clarified that an untagged type conversion appearing as a generic actual parameter for a generic <strong>in out</strong> formal parameter is not a view conversion (and thus is illegal). This confirms the ACATS tests, so all implementations already follow this interpretation.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00363-01"}</em>{"}"} Rules added by the Corrigendum to eliminate problems with discriminants of aliased components changing were removed, as we now generally allow discriminants of aliased components to be changed.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI95-00392-01"}</em>{"}"} Accessibility checks on conversions involving types with anonymous access components were added. These components have the level of the type, and conversions can be between types at different levels, which could cause dangling access values in the absence of such checks. </p></Admonition>
 
 
 #### Inconsistencies With Ada 2005
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI05-0148-1"}</em>{"}"} A stand-alone object of an anonymous access-to-object type now has dynamic accessibility. Normally, this will make programs legal that were illegal in Ada 2005. However, it is possible that a program that previously raised Program_Error now will not. It is very unlikely that an existing program intentionally depends on the exception being raised; the change is more likely to fix bugs than introduce them. </p></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI05-0115-1"}</em>{"}"} <strong>Correction:</strong> Clarified that a root numeric type is not considered a common ancestor for a conversion.</p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI05-0115-1"}</em>{"}"} <strong></strong> Clarified that a root numeric type is not considered a common ancestor for a conversion.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI05-0153-3"}</em>{"}"} {"{"}<em>{"AI05-0290-1"}</em>{"}"} Added rules so that predicate aspects (see 3.2.4) are enforced on subtype conversion. </p></Admonition>
 
 
 #### Inconsistencies With Ada 2012
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI12-0333-1"}</em>{"}"} {"{"}<em>{"AI12-0432-1"}</em>{"}"} <strong>Correction:</strong> Predicate checks are no longer made on any <strong>out</strong> parameters before a call (they're still made when the call returns). This was already true for elementary <strong>out</strong> parameters. If a program depends on a predicate check failing on an inbound <strong>out</strong> composite parameter, it will get an incorrect result. Similarly, predicate checks are no longer made on the view conversion of a target of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>. Both of these cases seem quite unlikely, as programs (outside of ACATS tests) that depend on the failure of checks are very rare, and the predicate might be checking uninitialized components (making check failure unreliable). </p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI12-0333-1"}</em>{"}"} {"{"}<em>{"AI12-0432-1"}</em>{"}"} <strong></strong> Predicate checks are no longer made on any <strong>out</strong> parameters before a call (they're still made when the call returns). This was already true for elementary <strong>out</strong> parameters. If a program depends on a predicate check failing on an inbound <strong>out</strong> composite parameter, it will get an incorrect result. Similarly, predicate checks are no longer made on the view conversion of a target of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>. Both of these cases seem quite unlikely, as programs (outside of ACATS tests) that depend on the failure of checks are very rare, and the predicate might be checking uninitialized components (making check failure unreliable). </p></Admonition>
 
 
 #### Incompatibilities With Ada 2012
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0095-1"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} <strong>Corrigendum:</strong> Because of a rule added in 12.5.1, the checks for the legality of an access type conversion in a generic body were strengthened to use an assume-the-worst rule. This case is rather unlikely because a formal private or derived type with discriminants is required along with a conversion between two access types whose designated types don't statically match, and any such programs were at risk having objects disappear while valid access values still pointed at them. </p></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0027-1"}</em>{"}"} <strong>Corrigendum:</strong> Moved the generic boilerplate so that it covers all Legality Rules in this subclause. This was always intended, but it is not expected to change anything other than conversions between unrelated arrays.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0027-1"}</em>{"}"} <strong>Corrigendum:</strong> Added a formal definition of the copy potentially created by a value conversion of a composite type, so properties like finalization and accessibility are properly defined. This model was always intended and expected (else 13.6 would not work), but it was not previously formally defined.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0071-1"}</em>{"}"} <strong>Corrigendum:</strong> Updated wording of type conversions to use the new term "satisfies the predicates" (see 3.2.4).</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0074-1"}</em>{"}"} <strong>Corrigendum:</strong> Clarified the wording describing the effect of view conversions of <strong>out</strong> parameters such that it is clear that the detailed effect is defined in 6.4.1, not here.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0096-1"}</em>{"}"} <strong>Corrigendum:</strong> Updated wording of type conversions so that the exception raise or other effect of a failed predicate check is as defined in 3.2.4; we don't want to repeat those rules here. This doesn't change the behavior for predicate checks possible in original Ada 2012, only ones using the new aspect Predicate_Failure.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0064-2"}</em>{"}"} {"{"}<em>{"AI12-0380-1"}</em>{"}"} Required Global (see 6.1.2) and Nonblocking (see 9.5) aspect matching for access-to-subprogram conversions.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>{"{"}<em>{"AI12-0226-1"}</em>{"}"} Described the objects associated with value conversions of elementary types. This is necessary to support an extension documented in 3.3.</p></Admonition>
 
-<Admonition type="note">
-<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} <strong>Correction:</strong> Eliminated the requirement that the operand of a view conversion be a simple <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. The requirement could cause unintended consequences in the case where the operand of a type conversion represents an object but is more complex than a simple <code><a href="../AA-4/AA-4.1#S0091">name</a></code> (such as a <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> or <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code>). </p></Admonition>
+<Admonition type="aarm" aarm="correction" title="Correction:">
+<p>{"{"}<em>{"AI12-0392-1"}</em>{"}"} <strong></strong> Eliminated the requirement that the operand of a view conversion be a simple <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. The requirement could cause unintended consequences in the case where the operand of a type conversion represents an object but is more complex than a simple <code><a href="../AA-4/AA-4.1#S0091">name</a></code> (such as a <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> or <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code>). </p></Admonition>
 

@@ -8,6 +8,9 @@ import styles from "./styles.module.scss"
 const aarmTypes = {
   reason: "info",
   discussion: "info",
+  ramification: "note",
+  "glossary-entry": "tip",
+  correction: "caution",
   "implementation-advice": "tip",
   "implementation-defined": "caution",
   "implementation-note": "caution"

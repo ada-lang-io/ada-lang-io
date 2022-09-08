@@ -19,24 +19,24 @@ import Admonition from "@theme/Admonition";
 
 <p>The following attribute is defined for a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an aliased view of an object: </p>
 <p>X'Unchecked_AccessAll rules and semantics that apply to X'Access (see 3.10.2) apply also to X'Unchecked_Access, except that, for the purposes of accessibility rules and checks, it is as if X were declared immediately within a library package. </p>
-<Admonition type="note">
-<p><strong>Ramification: </strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} We say "rules and semantics" here so that library-level accessibility applies to the value created by X'Unchecked_Access as well as to the checks needed for the attribute itself. This means that any anonymous access values that inherit the accessibility of this attribute (such as access parameters) also act as if they have library-level accessibility. We don't want the "real" accessibility of the created value re-emerging at a later point  that would create hard-to-understand bugs. </p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} We say "rules and semantics" here so that library-level accessibility applies to the value created by X'Unchecked_Access as well as to the checks needed for the attribute itself. This means that any anonymous access values that inherit the accessibility of this attribute (such as access parameters) also act as if they have library-level accessibility. We don't want the "real" accessibility of the created value re-emerging at a later point  that would create hard-to-understand bugs. </p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE 1   This attribute is provided to support the situation where a local object is to be inserted into a global linked data structure, when the programmer knows that it will always be removed from the data structure prior to exiting the object's scope. The Access attribute would be illegal in this case (see 3.10.2, "Operations of Access Types"). </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Ramification: </strong>The expected type for X'Unchecked_Access is as for X'Access.</p></Admonition>
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<p><strong></strong>The expected type for X'Unchecked_Access is as for X'Access.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>If an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> with Unchecked_Access is used as the actual parameter for an access parameter, an Accessibility_Check can never fail on that access parameter. </p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>NOTE 2   There is no Unchecked_Access attribute for subprograms. </p></Admonition>
 
-<Admonition type="note">
-<p><strong>Reason: </strong>{"{"}<em>{"AI95-00254-01"}</em>{"}"} Such an attribute would allow unsafe "downward closures", where an access value designating a more nested subprogram is passed to a less nested subprogram. (Anonymous access-to-subprogram parameters provide safe "downward closures".) This requires some means of reconstructing the global environment for the more nested subprogram, so that it can do up-level references to objects. The two methods of implementing up-level references are displays and static links. If unsafe downward closures were supported, each access-to-subprogram value would have to carry the static link or display with it. We don't want to require the space and time overhead of requiring the extra information for all access-to-subprogram types, especially as including it would make interfacing to other languages (like C) harder.</p></Admonition>
+<Admonition type="aarm" aarm="reason" title="Reason: ">
+<p><strong></strong>{"{"}<em>{"AI95-00254-01"}</em>{"}"} Such an attribute would allow unsafe "downward closures", where an access value designating a more nested subprogram is passed to a less nested subprogram. (Anonymous access-to-subprogram parameters provide safe "downward closures".) This requires some means of reconstructing the global environment for the more nested subprogram, so that it can do up-level references to objects. The two methods of implementing up-level references are displays and static links. If unsafe downward closures were supported, each access-to-subprogram value would have to carry the static link or display with it. We don't want to require the space and time overhead of requiring the extra information for all access-to-subprogram types, especially as including it would make interfacing to other languages (like C) harder.</p></Admonition>
 
-<Admonition type="note">
+<Admonition type="aarm" aarm="note" title="Note: ">
 <p>If desired, an instance of Unchecked_Conversion can be used to create an access value of a global access-to-subprogram type that designates a local subprogram. The semantics of using such a value are not specified by the language. In particular, it is not specified what happens if such subprograms make up-level references; even if the frame being referenced still exists, the up-level reference might go awry if the representation of a value of a global access-to-subprogram type doesn't include a static link. </p></Admonition>
 
