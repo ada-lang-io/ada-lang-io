@@ -6,7 +6,7 @@ import iconReadability from "@site/static/img/student-reading-svgrepo-com.svg"
 
 import clsx from "clsx"
 
-import styles from "./styles.module.css"
+import styles from "./styles.module.scss"
 
 function Feature({ icon, title, children }) {
   const Svg = icon

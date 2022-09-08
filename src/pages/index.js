@@ -15,7 +15,7 @@ import sampleC from "!!raw-loader!./code-rp2040.adb"
 import sampleB from "!!raw-loader!./code-spark.ads"
 import clsx from "clsx"
 
-import styles from "./index.module.css"
+import styles from "./index.module.scss"
 
 // sampleB from src/xoshiro128.ads in https://github.com/onox/xoshiro
 //
