@@ -17,7 +17,11 @@ export default function AdmonitionWrapper(props) {
   if (props.type === "aarm") {
     return (
       <div className={styles.aarm}>
-        <Admonition {...props} type={aarmTypes[props.aarm] ?? "note"} />
+        <Admonition
+          {...props}
+          type={aarmTypes[props.aarm] ?? "note"}
+          title={!!aarmTypes[props.aarm] ? props.aarm.replace("-", " ") : props.title}
+        />
       </div>
     )
   }
