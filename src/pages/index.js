@@ -21,13 +21,11 @@ import {
 import { useOs } from "@mantine/hooks"
 import { Prism } from "@mantine/prism"
 
-import clsx from "clsx"
-
 import styles from "./index.module.scss"
 
-import sampleA from "!!raw-loader!./code-basic.adb"
-import sampleC from "!!raw-loader!./code-rp2040.adb"
-import sampleB from "!!raw-loader!./code-spark.ads"
+import sampleA from "!!raw-loader!./code/code-basic.adb"
+import sampleC from "!!raw-loader!./code/code-rp2040.adb"
+import sampleB from "!!raw-loader!./code/code-spark.ads"
 
 // sampleB from src/xoshiro128.ads in https://github.com/onox/xoshiro
 //
