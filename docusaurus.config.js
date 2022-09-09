@@ -56,9 +56,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js")
         },
-        blog: {
-          showReadingTime: true
-        },
+        blog: false,
         theme: {
           customCss: require.resolve("./src/css/custom.scss")
         }
@@ -88,17 +86,12 @@ const config = {
             type: "doc",
             docId: "getting-started/why-ada",
             position: "left",
-            label: "Docs"
+            label: "Getting Started"
           },
           {
-            to: "/docs/arm/AA-TOC",
+            to: "/docs/arm/AA-TOC", 
             position: "left",
-            label: "Manual"
-          },
-          {
-            to: "/blog",
-            label: "Blog",
-            position: "left"
+            label: "Reference Manual"
           },
           {
             href: `https://github.com/${gitHubUserName}/${gitHubProjectName}`,
