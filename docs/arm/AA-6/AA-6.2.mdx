@@ -5,9 +5,9 @@ sidebar_position:  50
 # 6.2 Formal Parameter Modes
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
@@ -20,24 +20,23 @@ import Admonition from "@theme/Admonition";
 
 <p>A parameter is passed either <em>by copy</em> or <em>by reference</em>. [When a parameter is passed by copy, the formal parameter denotes a separate object from the actual parameter, and any information transfer between the two occurs only before and after executing the subprogram. When a parameter is passed by reference, the formal parameter denotes (a view of) the object denoted by the actual parameter; reads and updates of the formal parameter directly reference the actual parameter object.]<br /></p>
 
-<p>{"{"}<em>{"AI05-0142-4"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} A type is a <em>by-copy type</em> if it is an elementary type, or if it is a descendant of a private type whose full type is a by-copy type. A parameter of a by-copy type is passed by copy, unless the formal parameter is explicitly aliased.<br /></p>
+<p>{"{"}<em>{"AI05-0142-4"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />A type is a <em>by-copy type</em> if it is an elementary type, or if it is a descendant of a private type whose full type is a by-copy type. A parameter of a by-copy type is passed by copy, unless the formal parameter is explicitly aliased.<br /></p>
 
 <p>A type is a <em>by-reference type</em> if it is a descendant of one of the following: <br /></p>
 
-<p>a tagged type;<br /></p>
-
-<p>a task or protected type;<br /></p>
-
-<p>{"{"}<em>{"AI05-0096-1"}</em>{"}"} an explicitly limited record type; <br /></p>
-
+<ul>
+<li>a tagged type;<br /></li>
+<li>a task or protected type;<br /></li>
+<li>{"{"}<em>{"AI05-0096-1"}</em>{"}"} <br />an explicitly limited record type; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em>{"{"}<em>{"AI05-0096-1"}</em>{"}"} <br /></Admonition>
 
-<p>a composite type with a subcomponent of a by-reference type;<br /></p>
-
-<p>a private type whose full type is a by-reference type. <br /></p>
-
-<p>{"{"}<em>{"AI05-0142-4"}</em>{"}"} {"{"}<em>{"AI05-0188-1"}</em>{"}"} {"{"}<em>{"AI12-0027-1"}</em>{"}"} {"{"}<em>{"AI12-0236-1"}</em>{"}"} {"{"}<em>{"AI12-0317-1"}</em>{"}"} A parameter of a by-reference type is passed by reference, as is an explicitly aliased parameter of any type. Each value of a by-reference type has an associated object. For a value conversion, the associated object is the anonymous result object if such an object is created (see 4.6); otherwise it is the associated object of the operand.  In other cases, the object associated with the evaluated operative constituent of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> (see 4.4) determines its associated object.<br /></p>
+<ul>
+<li>a composite type with a subcomponent of a by-reference type;<br /></li>
+<li>a private type whose full type is a by-reference type. <br /></li>
+</ul>
+<p>{"{"}<em>{"AI05-0142-4"}</em>{"}"} {"{"}<em>{"AI05-0188-1"}</em>{"}"} {"{"}<em>{"AI12-0027-1"}</em>{"}"} {"{"}<em>{"AI12-0236-1"}</em>{"}"} {"{"}<em>{"AI12-0317-1"}</em>{"}"} <br />A parameter of a by-reference type is passed by reference, as is an explicitly aliased parameter of any type. Each value of a by-reference type has an associated object. For a value conversion, the associated object is the anonymous result object if such an object is created (see 4.6); otherwise it is the associated object of the operand.  In other cases, the object associated with the evaluated operative constituent of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> (see 4.4) determines its associated object.<br /></p>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>By-reference parameter passing makes sense only if there is an object to reference; hence, we define such an object for each case.<br /></Admonition>
@@ -46,13 +45,13 @@ import Admonition from "@theme/Admonition";
 Since tagged types are by-reference types, this implies that every value of a tagged type has an associated object. This simplifies things, because we can define the tag to be a property of the object, and not of the value of the object, which makes it clearer that object tags never change.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0317-1"}</em>{"}"} A construct like parenthesized expression or <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> is ignored for the purposes of determining the associated object; for a <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code>, it is relevant only in that it determines which <em>dependent_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> defines the associated object.<br /></Admonition>
+{"{"}<em>{"AI12-0317-1"}</em>{"}"} <br />A construct like parenthesized expression or <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> is ignored for the purposes of determining the associated object; for a <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code>, it is relevant only in that it determines which <em>dependent_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> defines the associated object.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 We considered simplifying things even more by making every value (and therefore every expression) have an associated object. After all, there is little semantic difference between a constant object and a value. However, this would cause problems for untagged types. In particular, we would have to do a constraint check on every read of a type conversion (or a renaming thereof) in certain cases.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00318-02"}</em>{"}"} We do not want this definition to depend on the view of the type; privateness is essentially ignored for this definition. Otherwise, things would be confusing (does the rule apply at the call site, at the site of the declaration of the subprogram, at the site of the return statement?), and requiring different calls to use different mechanisms would be an implementation burden.<br /></Admonition>
+{"{"}<em>{"AI95-00318-02"}</em>{"}"} <br />We do not want this definition to depend on the view of the type; privateness is essentially ignored for this definition. Otherwise, things would be confusing (does the rule apply at the call site, at the site of the declaration of the subprogram, at the site of the return statement?), and requiring different calls to use different mechanisms would be an implementation burden.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 C.6, "Shared Variable Control" says that a composite type with an atomic or volatile subcomponent is a by-reference type, among other things.<br /></Admonition>
@@ -63,15 +62,15 @@ Every value of a limited by-reference type is the value of one and only one limi
 <Admonition type="aarm" aarm="note" title="Note: ">
 We say "by-reference" above because these statements are not always true for limited private types whose underlying type is nonlimited (unfortunately). <br /></Admonition>
 
-<p>{"{"}<em>{"AI05-0240-1"}</em>{"}"} For other parameters, it is unspecified whether the parameter is passed by copy or by reference. <br /></p>
+<p>{"{"}<em>{"AI05-0240-1"}</em>{"}"} <br />For other parameters, it is unspecified whether the parameter is passed by copy or by reference. <br /></p>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} There is no need to incorporate the discussion of AI83-00178, which requires pass-by-copy for certain kinds of actual parameters, while allowing pass-by-reference for others. This is because we explicitly indicate that a function creates an anonymous constant object for its result (see 6.5). We also provide a special dispensation for instances of Unchecked_Conversion to return by reference (see 13.9). <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />There is no need to incorporate the discussion of AI83-00178, which requires pass-by-copy for certain kinds of actual parameters, while allowing pass-by-reference for others. This is because we explicitly indicate that a function creates an anonymous constant object for its result (see 6.5). We also provide a special dispensation for instances of Unchecked_Conversion to return by reference (see 13.9). <br /></Admonition>
 
 
 #### Bounded (Run-Time) Errors
 
-<p>{"{"}<em>{"AI05-0240-1"}</em>{"}"} If one <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes a part of a formal parameter, and a second <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes a part of a distinct formal parameter or an object that is not part of a formal parameter, then the two <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s are considered <em>distinct access paths</em>. If an object is of a type for which the parameter passing mechanism is not specified and is not an explicitly aliased parameter, then it is a bounded error to assign to the object via one access path, and then read the value of the object via a distinct access path, unless the first access path denotes a part of a formal parameter that no longer exists at the point of the second access [(due to leaving the corresponding callable construct).] The possible consequences are that Program_Error is raised, or the newly assigned value is read, or some old value of the object is read. <br /></p>
+<p>{"{"}<em>{"AI05-0240-1"}</em>{"}"} <br />If one <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes a part of a formal parameter, and a second <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes a part of a distinct formal parameter or an object that is not part of a formal parameter, then the two <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s are considered <em>distinct access paths</em>. If an object is of a type for which the parameter passing mechanism is not specified and is not an explicitly aliased parameter, then it is a bounded error to assign to the object via one access path, and then read the value of the object via a distinct access path, unless the first access path denotes a part of a formal parameter that no longer exists at the point of the second access [(due to leaving the corresponding callable construct).] The possible consequences are that Program_Error is raised, or the newly assigned value is read, or some old value of the object is read. <br /></p>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>For example, if we call "P(X ={">"} Global_Variable, Y ={">"} Global_Variable)", then within P, the names "X", "Y", and "Global_Variable" are all distinct access paths. If Global_Variable's type is neither pass-by-copy nor pass-by-reference, then it is a bounded error to assign to Global_Variable and then read X or Y, since the language does not specify whether the old or the new value would be read. On the other hand, if Global_Variable's type is pass-by-copy, then the old value would always be read, and there is no error. Similarly, if Global_Variable's type is defined by the language to be pass-by-reference, then the new value would always be read, and again there is no error. <br /></Admonition>
@@ -115,13 +114,13 @@ procedure Copy(X : in out String; Y: String) is{"\n"}begin{"\n"}    X := Y;{"\n"
 It would be wrong for the compiler to assume that X and Y do not overlap (unless, of course, it can prove otherwise). <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 1   {"{"}<em>{"AI12-0056-1"}</em>{"}"} The mode of a formal parameter describes the direction of information transfer to or from the <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> (see 6.1).<br /></Admonition>
+NOTE 1   {"{"}<em>{"AI12-0056-1"}</em>{"}"} <br />The mode of a formal parameter describes the direction of information transfer to or from the <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> (see 6.1).<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 2   A formal parameter of mode <strong>in</strong> is a constant view (see 3.3); it cannot be updated within the <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code>.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 3   {"{"}<em>{"AI12-0056-1"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} A formal parameter of mode <strong>out</strong> can be uninitialized at the start of the <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> (see 6.4.1). <br /></Admonition>
+NOTE 3   {"{"}<em>{"AI12-0056-1"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />A formal parameter of mode <strong>out</strong> can be uninitialized at the start of the <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> (see 6.4.1). <br /></Admonition>
 
 
 #### Extensions to Ada 83
@@ -145,14 +144,14 @@ We now cover in a general way in 3.7.2 the rule regarding erroneous execution wh
 #### Wording Changes from Ada 2005
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0096-1"}</em>{"}"} <strong></strong> Corrected so that limited derived types are by-reference only if their parent is.<br /></Admonition>
+{"{"}<em>{"AI05-0096-1"}</em>{"}"} <strong><br /></strong> Corrected so that limited derived types are by-reference only if their parent is.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0142-4"}</em>{"}"} Defined that explicitly aliased parameters (see 6.1) are always passed by reference. <br /></Admonition>
+{"{"}<em>{"AI05-0142-4"}</em>{"}"} <br />Defined that explicitly aliased parameters (see 6.1) are always passed by reference. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0027-1"}</em>{"}"} <strong>Corrigendum:</strong> Corrected so that value conversions that are copies are the "associated object" for parameter passing of by-reference types. This can only happen if the conversion is between unrelated non-limited types, and it is necessary just so the correct object is defined. <br /></Admonition>
+{"{"}<em>{"AI05-0027-1"}</em>{"}"} <strong><br />Corrigendum:</strong> Corrected so that value conversions that are copies are the "associated object" for parameter passing of by-reference types. This can only happen if the conversion is between unrelated non-limited types, and it is necessary just so the correct object is defined. <br /></Admonition>
 

@@ -5,9 +5,9 @@ sidebar_position:  45
 # 5.6 Block Statements
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
@@ -59,35 +59,35 @@ The syntax rule for <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></co
 
 ## 5.6.1  Parallel Block Statements
 
-<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} [A <code><a href="../AA-5/AA-5.6#S0192">parallel_block_statement</a></code> comprises two or more <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> separated by <strong>and</strong> where each represents an independent activity that is intended to proceed concurrently with the others.]<br /></p>
+<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} <br />[A <code><a href="../AA-5/AA-5.6#S0192">parallel_block_statement</a></code> comprises two or more <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> separated by <strong>and</strong> where each represents an independent activity that is intended to proceed concurrently with the others.]<br /></p>
 
 
 #### Syntax
 
-<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} <code>parallel_block_statement</code><a id="S0192"></a><code> ::= </code><br />    <strong>parallel</strong> [(<code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>)] [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>] <strong>do</strong><br />       <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code><br />    <strong>and</strong><br />       <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code><br />   {"{"}<strong>and</strong><br />       <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>{"}"}<br />    <strong>end do</strong>;<br /></p>
+<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} <br /><code>parallel_block_statement</code><a id="S0192"></a><code> ::= </code><br />    <strong>parallel</strong> [(<code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>)] [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>] <strong>do</strong><br />       <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code><br />    <strong>and</strong><br />       <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code><br />   {"{"}<strong>and</strong><br />       <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>{"}"}<br />    <strong>end do</strong>;<br /></p>
 
-<p>{"{"}<em>{"AI12-0427-1"}</em>{"}"} The <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>, if any, of a <code><a href="../AA-5/AA-5.6#S0192">parallel_block_statement</a></code> shall be an <em>integer_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>. <br /></p>
+<p>{"{"}<em>{"AI12-0427-1"}</em>{"}"} <br />The <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>, if any, of a <code><a href="../AA-5/AA-5.6#S0192">parallel_block_statement</a></code> shall be an <em>integer_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>. <br /></p>
 
 
 #### Dynamic Semantics
 
-<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} For the execution of a <code><a href="../AA-5/AA-5.6#S0192">parallel_block_statement</a></code>, the <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code> and the <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>, if any, are elaborated in an arbitrary order. After elaborating the <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>, if any, a check is made that the determined maximum number of chunks is greater than zero. If this check fails, Program_Error is raised. <br /></p>
+<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} <br />For the execution of a <code><a href="../AA-5/AA-5.6#S0192">parallel_block_statement</a></code>, the <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code> and the <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>, if any, are elaborated in an arbitrary order. After elaborating the <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>, if any, a check is made that the determined maximum number of chunks is greater than zero. If this check fails, Program_Error is raised. <br /></p>
 
-<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} Then, the various <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> are grouped into one or more <em>chunks</em>, each with its own logical thread of control (see clause 9), up to the maximum number of chunks specified by the <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>, if any. Within each chunk every <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the chunk is executed in turn, in an arbitrary order. The <code><a href="../AA-5/AA-5.6#S0192">parallel_block_statement</a></code> is complete once every one of the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> has completed, either by reaching the end of its execution, or due to a transfer of control out of the construct by one of the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> (see 5.1).<br /></p>
+<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} <br />Then, the various <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> are grouped into one or more <em>chunks</em>, each with its own logical thread of control (see clause 9), up to the maximum number of chunks specified by the <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>, if any. Within each chunk every <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the chunk is executed in turn, in an arbitrary order. The <code><a href="../AA-5/AA-5.6#S0192">parallel_block_statement</a></code> is complete once every one of the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> has completed, either by reaching the end of its execution, or due to a transfer of control out of the construct by one of the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> (see 5.1).<br /></p>
 
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
-<strong></strong>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} Although each <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of a parallel block represents a separate logical thread of control, the implementation may choose to combine two or more such logical threads of control into a single physical thread of control to reduce the cost of creating numerous physical threads of control. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} <br />Although each <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of a parallel block represents a separate logical thread of control, the implementation may choose to combine two or more such logical threads of control into a single physical thread of control to reduce the cost of creating numerous physical threads of control. <br /></Admonition>
 
 
 #### Examples
 
-<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em>Example of a parallel block used to walk a binary tree in parallel:</em><br /></p>
+<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Example of a parallel block used to walk a binary tree in parallel:</em><br /></p>
 
 <CodeBlock>
 --  {"{"}{"AI12-0119-1"}{"}"}{"\n"} --  {"{"}{"AI12-0404-1"}{"}"}{"\n"} procedure Traverse (T : Expr_Ptr) is -- see 3.9.1{"\n"}begin{"\n"}   if T /= null and then{"\n"}      T.all in Binary_Operation'Class -- see 3.9.1{"\n"}   then -- recurse down the binary tree{"\n"}      parallel do{"\n"}         Traverse (T.Left);{"\n"}      and{"\n"}         Traverse (T.Right);{"\n"}      and{"\n"}         Ada.Text_IO.Put_Line{"\n"}            ("Processing " & Ada.Tags.Expanded_Name (T'Tag));{"\n"}      end do;{"\n"}   end if;{"\n"}end Traverse;{"\n"}
 
 </CodeBlock>
-<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em>Example of a parallel block used to search two halves of a string in parallel:</em><br /></p>
+<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Example of a parallel block used to search two halves of a string in parallel:</em><br /></p>
 
 <CodeBlock>
 --  {"{"}{"AI12-0119-1"}{"}"}{"\n"} function Search (S : String; Char : Character) return Boolean is{"\n"}begin{"\n"}   if S'Length {"<"}= 1000 then{"\n"}       -- Sequential scan{"\n"}       return (for some C of S ={">"} C = Char);{"\n"}   else{"\n"}       -- Parallel divide and conquer{"\n"}       declare{"\n"}          Mid : constant Positive := S'First + S'Length/2 - 1;{"\n"}       begin{"\n"}          parallel do{"\n"}             for C of S(S'First .. Mid) loop{"\n"}                if C = Char then{"\n"}                   return True;  -- Terminates enclosing do{"\n"}                end if;{"\n"}             end loop;{"\n"}          and{"\n"}             for C of S(Mid + 1 .. S'Last) loop{"\n"}                if C = Char then{"\n"}                   return True;  -- Terminates enclosing do{"\n"}                end if;{"\n"}             end loop;{"\n"}          end do;{"\n"}          -- Not found{"\n"}          return False;{"\n"}       end;{"\n"}   end if;{"\n"}end Search;{"\n"}
@@ -97,5 +97,5 @@ The syntax rule for <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></co
 #### Extensions to Ada 2012
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} The <code><a href="../AA-5/AA-5.6#S0192">parallel_block_statement</a></code> is new. <br /></Admonition>
+{"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0427-1"}</em>{"}"} {"{"}<em>{"AI12-0436-1"}</em>{"}"} <br />The <code><a href="../AA-5/AA-5.6#S0192">parallel_block_statement</a></code> is new. <br /></Admonition>
 

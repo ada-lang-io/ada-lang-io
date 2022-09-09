@@ -5,9 +5,9 @@ sidebar_position:  74
 # 9.3 Task Dependence - Termination of Tasks
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
@@ -18,14 +18,13 @@ import Admonition from "@theme/Admonition";
 
 <p>Each task (other than an environment task - see 10.2) <em>depends</em> on one or more masters (see 7.6.1), as follows: <br /></p>
 
-<p>{"{"}<em>{"AI12-0070-1"}</em>{"}"} If the task is created by the evaluation of an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> for a given named access type, it depends on each master that includes the elaboration of the declaration of the ultimate ancestor of the given access type.<br /></p>
-
-<p>If the task is created by the elaboration of an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>, it depends on each master that includes this elaboration.<br /></p>
-
-<p>{"{"}<em>{"AI95-00416-01"}</em>{"}"} Otherwise, the task depends on the master of the outermost object of which it is a part (as determined by the accessibility level of that object - see 3.10.2 and 7.6.1), as well as on any master whose execution includes that of the master of the outermost object. <br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI12-0070-1"}</em>{"}"} <br />If the task is created by the evaluation of an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> for a given named access type, it depends on each master that includes the elaboration of the declaration of the ultimate ancestor of the given access type.<br /></li>
+<li>If the task is created by the elaboration of an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>, it depends on each master that includes this elaboration.<br /></li>
+<li>{"{"}<em>{"AI95-00416-01"}</em>{"}"} <br />Otherwise, the task depends on the master of the outermost object of which it is a part (as determined by the accessibility level of that object - see 3.10.2 and 7.6.1), as well as on any master whose execution includes that of the master of the outermost object. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI95-00416-01"}</em>{"}"} The master of a task created by a return statement changes when the accessibility of the return object changes. Note that its activation happens, if at all, only after the function returns and all accessibility level changes have occurred. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00416-01"}</em>{"}"} <br />The master of a task created by a return statement changes when the accessibility of the return object changes. Note that its activation happens, if at all, only after the function returns and all accessibility level changes have occurred. <br /></Admonition>
 
 <p>Furthermore, if a task depends on a given master, it is defined to depend on the task that executes the master, and (recursively) on any master of that task. <br /></p>
 
@@ -36,10 +35,10 @@ import Admonition from "@theme/Admonition";
 
 <p>Completion of a task (and the corresponding <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>) can occur when the task is blocked at a <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code> with an open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> (see 9.7.1); the open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> is selected if and only if the following conditions are satisfied: <br /></p>
 
-<p>{"{"}<em>{"AI95-00415-01"}</em>{"}"} The task depends on some completed master; and<br /></p>
-
-<p>Each task that depends on the master considered is either already terminated or similarly blocked at a <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code> with an open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code>. <br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI95-00415-01"}</em>{"}"} <br />The task depends on some completed master; and<br /></li>
+<li>Each task that depends on the master considered is either already terminated or similarly blocked at a <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code> with an open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code>. <br /></li>
+</ul>
 <p>When both conditions are satisfied, the task considered becomes completed, together with all tasks that depend on the master considered that are not yet completed. <br /></p>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -52,7 +51,7 @@ NOTE 1   The full view of a limited private type can be a task type, or can have
 NOTE 2   An <code><a href="../AA-8/AA-8.5#S0239">object_renaming_declaration</a></code> defines a new view of an existing entity and hence creates no further dependence.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 3   {"{"}<em>{"AI12-0440-1"}</em>{"}"} The rules given for the collective completion of a group of tasks all blocked on <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code>s with open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code>s ensure that the collective completion can occur only when there are no remaining active tasks that can call one of the tasks being collectively completed.<br /></Admonition>
+NOTE 3   {"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />The rules given for the collective completion of a group of tasks all blocked on <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code>s with open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code>s ensure that the collective completion can occur only when there are no remaining active tasks that can call one of the tasks being collectively completed.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 4   If two or more tasks are blocked on <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code>s with open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code>s, and become completed collectively, their finalization actions proceed concurrently.<br /></Admonition>
@@ -60,14 +59,12 @@ NOTE 4   If two or more tasks are blocked on <code><a href="../AA-9/AA-9.7#S0269
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 5   The completion of a task can occur due to any of the following: <br /></Admonition>
 
-<p>the raising of an exception during the elaboration of the <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> of the corresponding <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>;<br /></p>
-
-<p>the completion of the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> of the corresponding <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>;<br /></p>
-
-<p>the selection of an open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> of a <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code> in the corresponding <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>;<br /></p>
-
-<p>the abort of the task. <br /></p>
-
+<ul>
+<li>the raising of an exception during the elaboration of the <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> of the corresponding <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>;<br /></li>
+<li>the completion of the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> of the corresponding <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>;<br /></li>
+<li>the selection of an open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> of a <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code> in the corresponding <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>;<br /></li>
+<li>the abort of the task. <br /></li>
+</ul>
 
 #### Examples
 
@@ -93,11 +90,11 @@ What was "collective termination" is now "collective completion" resulting from 
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00416-01"}</em>{"}"} Added missing wording that explained the master of tasks that are neither <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>s nor <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s, such as function returns. <br /></Admonition>
+{"{"}<em>{"AI95-00416-01"}</em>{"}"} <br />Added missing wording that explained the master of tasks that are neither <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>s nor <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s, such as function returns. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0070-1"}</em>{"}"} <strong>Corrigendum:</strong> Ensured that the master of tasks that are not <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s of named access types is correctly determined. (Ignoring the accessibility rules of 3.10.2 could not be intended.) <br /></Admonition>
+{"{"}<em>{"AI12-0070-1"}</em>{"}"} <strong><br />Corrigendum:</strong> Ensured that the master of tasks that are not <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s of named access types is correctly determined. (Ignoring the accessibility rules of 3.10.2 could not be intended.) <br /></Admonition>
 

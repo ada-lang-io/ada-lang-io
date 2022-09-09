@@ -5,15 +5,15 @@ sidebar_position:  147
 # C.4 Preelaboration Requirements
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
 
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0417-1"}</em>{"}"} [This subclause specifies additional implementation and documentation requirements for the Preelaborate aspect (see 10.2.1).] <br /></p>
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0417-1"}</em>{"}"} <br />[This subclause specifies additional implementation and documentation requirements for the Preelaborate aspect (see 10.2.1).] <br /></p>
 
 
 #### Implementation Requirements
@@ -25,35 +25,34 @@ import Admonition from "@theme/Admonition";
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>On systems where the image of the partition is initially copied from disk to RAM, or from ROM to RAM, prior to starting execution of the partition, the intention is that "load time" consist of this initial copying step. On other systems, load time and run time might actually be interspersed. <br /></Admonition>
 
-<p>Any <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> denotes a statically constrained subtype, with statically constrained subcomponents, if any;<br /></p>
-
-<p>{"{"}<em>{"AI95-00161-01"}</em>{"}"} no <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> denotes a controlled type, a private type, a private extension, a generic formal private type, a generic formal derived type, or a descendant of such a type;<br /></p>
-
+<ul>
+<li>Any <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> denotes a statically constrained subtype, with statically constrained subcomponents, if any;<br /></li>
+<li>{"{"}<em>{"AI95-00161-01"}</em>{"}"} <br />no <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> denotes a controlled type, a private type, a private extension, a generic formal private type, a generic formal derived type, or a descendant of such a type;<br /></li>
+</ul>
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
 <strong></strong>For an implementation that uses the registration method of finalization, a controlled object will require some code executed to register the object at the appropriate point. The other types are those that <em>might</em> have a controlled component. None of these types were allowed in preelaborated units in Ada 95. These types are covered by the , of course, so they should still execute as little code as possible. <br /></Admonition>
 
-<p>any <code><a href="../AA-3/AA-3.2#S0029">constraint</a></code> is a static constraint;<br /></p>
-
-<p>any <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> is for an access-to-constant type;<br /></p>
-
-<p>any uses of predefined operators appear only within static expressions;<br /></p>
-
-<p>any <code>primaries</code> that are <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s, other than <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>s for the Access or Address attributes, appear only within static expressions; <br /></p>
-
+<ul>
+<li>any <code><a href="../AA-3/AA-3.2#S0029">constraint</a></code> is a static constraint;<br /></li>
+<li>any <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> is for an access-to-constant type;<br /></li>
+<li>any uses of predefined operators appear only within static expressions;<br /></li>
+<li>any <code>primaries</code> that are <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s, other than <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>s for the Access or Address attributes, appear only within static expressions; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>This cuts out <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>s that are not static, except for Access and Address. <br /></Admonition>
 
-<p>{"{"}<em>{"AI12-0368-1"}</em>{"}"} any <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that is not part of a static expression is an expanded name or <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> that statically names some entity; <br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI12-0368-1"}</em>{"}"} <br />any <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that is not part of a static expression is an expanded name or <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> that statically names some entity; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI12-0368-1"}</em>{"}"} This cuts out <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s and <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>s that are not static, including calls on attribute functions like 'Image and 'Value. We do allow components if those components don't require any evaluation or checks. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI12-0368-1"}</em>{"}"} <br />This cuts out <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s and <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>s that are not static, including calls on attribute functions like 'Image and 'Value. We do allow components if those components don't require any evaluation or checks. <br /></Admonition>
 
-<p>any <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> of an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> is static;<br /></p>
-
-<p>no language-defined check associated with the elaboration of the <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> can fail. <br /></p>
-
+<ul>
+<li>any <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> of an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> is static;<br /></li>
+<li>no language-defined check associated with the elaboration of the <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> can fail. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} The intent is that aggregates all of whose scalar subcomponents are static and all of whose access subcomponents are <strong>null</strong>, allocators for access-to-constant types, or X'Access, will be supported with no run-time code generated. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />The intent is that aggregates all of whose scalar subcomponents are static and all of whose access subcomponents are <strong>null</strong>, allocators for access-to-constant types, or X'Access, will be supported with no run-time code generated. <br /></Admonition>
 
 
 #### Documentation Requirements
@@ -72,7 +71,7 @@ import Admonition from "@theme/Admonition";
 <em>This paragraph was deleted.</em><br /></Admonition>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} This covers the issue of the run-time system itself being restartable, so that need not be a separate Documentation Requirement. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />This covers the issue of the run-time system itself being restartable, so that need not be a separate Documentation Requirement. <br /></Admonition>
 
 
 #### Implementation Advice
@@ -86,11 +85,11 @@ import Admonition from "@theme/Admonition";
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00161-01"}</em>{"}"} Added wording to exclude the additional kinds of types allowed in preelaborated units from the Implementation Requirements. <br /></Admonition>
+{"{"}<em>{"AI95-00161-01"}</em>{"}"} <br />Added wording to exclude the additional kinds of types allowed in preelaborated units from the Implementation Requirements. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0368-1"}</em>{"}"} Added wording to allow components so long as no evaluation or checks are required for the reference. <br /></Admonition>
+{"{"}<em>{"AI12-0368-1"}</em>{"}"} <br />Added wording to allow components so long as no evaluation or checks are required for the reference. <br /></Admonition>
 

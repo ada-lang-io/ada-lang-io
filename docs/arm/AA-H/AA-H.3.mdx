@@ -5,9 +5,9 @@ sidebar_position:  185
 # H.3 Reviewable Object Code
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
@@ -43,62 +43,74 @@ import Admonition from "@theme/Admonition";
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>The list of requirements can be checked for, even if issues like intelligibility are not addressed.<br /></Admonition>
 
-<p>Where compiler-generated runtime checks remain; <br /></p>
-
+<ul>
+<li>Where compiler-generated runtime checks remain; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>A constraint check which is implemented via a check on the upper and lower bound should clearly be indicated. If a check is implicit in the form of machine instructions used (such an overflow checking), this should also be covered by the documentation. It is particularly important to cover those checks which are not obvious from the source code, such as that for stack overflow.<br /></Admonition>
 
-<p>An identification of any construct with a language-defined check that is recognized prior to run time as certain to fail if executed (even if the generation of runtime checks has been suppressed); <br /></p>
-
+<ul>
+<li>An identification of any construct with a language-defined check that is recognized prior to run time as certain to fail if executed (even if the generation of runtime checks has been suppressed); <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>In this case, if the compiler determines that a check must fail, the user should be informed of this. However, since it is not in general possible to know what the compiler will detect, it is not easy to test for this. In practice, it is thought that compilers claiming conformity to this Annex will perform significant optimizations and therefore <em>will</em> detect such situations. Of course, such events could well indicate a programmer error.<br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00209-01"}</em>{"}"} For each read of a scalar object, an identification of the read as either "known to be initialized", or "possibly uninitialized", independent of whether pragma Normalize_Scalars applies; <br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI95-00209-01"}</em>{"}"} <br />For each read of a scalar object, an identification of the read as either "known to be initialized", or "possibly uninitialized", independent of whether pragma Normalize_Scalars applies; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>This issue again raises the question as to what the compiler has determined. A lazy implementation could clearly mark all scalars as "possibly uninitialized", but this would be very unhelpful to the user. It should be possible to analyze a range of scalar uses and note the percentage in each class. Note that an access marked "known to be initialized" does not imply that the value is in range, since the initialization could be from an (erroneous) call of unchecked conversion, or by means external to the Ada program.<br /></Admonition>
 
-<p>Where run-time support routines are implicitly invoked; <br /></p>
-
+<ul>
+<li>Where run-time support routines are implicitly invoked; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>Validators will need to know the calls invoked in order to check for the correct functionality. For instance, for some safety applications, it may be necessary to ensure that certain sections of code can execute in a particular time.<br /></Admonition>
 
-<p>An object code listing, including: <br /></p>
-
-<p>Machine instructions, with relative offsets; <br /></p>
-
+<ul>
+<li>An object code listing, including: <br /></li>
+</ul>
+<ul>
+<li>Machine instructions, with relative offsets; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>The machine instructions should be in a format that is easily understood, such as the symbolic format of the assembler. The relative offsets are needed in numeric format, to check any alignment restrictions that the architecture might impose.<br /></Admonition>
 
-<p>Where each data object is stored during its lifetime; <br /></p>
-
+<ul>
+<li>Where each data object is stored during its lifetime; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>This requirement implies that if the optimizer assigns a variable to a register, this needs to be evident.<br /></Admonition>
 
-<p>Correspondence with the source program, including an identification of the code produced per declaration and per statement. <br /></p>
-
+<ul>
+<li>Correspondence with the source program, including an identification of the code produced per declaration and per statement. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>This correspondence will be quite complex when extensive optimization is performed. In particular, address calculation to access some data structures could be moved from the actual access. However, when all the machine code arising from a statement or declaration is in one basic block, this must be indicated by the implementation.<br /></Admonition>
 
-<p>An identification of each construct for which the implementation detects the possibility of erroneous execution; <br /></p>
-
+<ul>
+<li>An identification of each construct for which the implementation detects the possibility of erroneous execution; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>This requirement is quite vague. In general, it is hard for compilers to detect erroneous execution and therefore the requirement will be rarely invoked. However, if the pragma Suppress is used and the compiler can show that a predefined exception will be raised, then such an identification would be useful.<br /></Admonition>
 
-<p>For each subprogram, block, task, or other construct implemented by reserving and subsequently freeing an area on a run-time stack, an identification of the length of the fixed-size portion of the area and an indication of whether the non-fixed size portion is reserved on the stack or in a dynamically-managed storage region. <br /></p>
-
+<ul>
+<li>For each subprogram, block, task, or other construct implemented by reserving and subsequently freeing an area on a run-time stack, an identification of the length of the fixed-size portion of the area and an indication of whether the non-fixed size portion is reserved on the stack or in a dynamically-managed storage region. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>This requirement is vital for those requiring to show that the storage available to a program is sufficient. This is crucial in those cases in which the internal checks for stack overflow are suppressed (perhaps by <strong>pragma</strong> Restrictions(No_Exceptions)). <br /></Admonition>
 
 <p>The implementation shall provide the following information for any partition to which the pragma applies: <br /></p>
 
-<p>An object code listing of the entire partition, including initialization and finalization code as well as run-time system components, and with an identification of those instructions and data that will be relocated at load time; <br /></p>
-
+<ul>
+<li>An object code listing of the entire partition, including initialization and finalization code as well as run-time system components, and with an identification of those instructions and data that will be relocated at load time; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>The object code listing should enable a validator to estimate upper bounds for the time taken by critical parts of a program. Similarly, by an analysis of the entire partition, it should be possible to ensure that the storage requirements are suitably bounded, assuming that the partition was written in an appropriate manner.<br /></Admonition>
 
-<p>A description of the run-time model relevant to the partition. <br /></p>
-
+<ul>
+<li>A description of the run-time model relevant to the partition. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>For example, a description of the storage model is vital, since the Ada language does not explicitly define such a model. <br /></Admonition>
 
@@ -133,7 +145,7 @@ NOTE 1   The order of elaboration of library units will be documented even in th
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00209-01"}</em>{"}"} The wording was clarified that pragma Reviewable applies to each read of an object, as it makes no sense to talk about the state of an object that will immediately be overwritten. <br /></Admonition>
+{"{"}<em>{"AI95-00209-01"}</em>{"}"} <br />The wording was clarified that pragma Reviewable applies to each read of an object, as it makes no sense to talk about the state of an object that will immediately be overwritten. <br /></Admonition>
 
 
 ## H.3.2  Pragma Inspection_Point
@@ -161,16 +173,16 @@ NOTE 1   The order of elaboration of library units will be documented even in th
 
 #### Static Semantics
 
-<p>{"{"}<em>8652/0093</em>{"}"} {"{"}<em>{"AI95-00207-01"}</em>{"}"} {"{"}<em>{"AI95-00434-01"}</em>{"}"} An <em>inspection point</em> is a point in the object code corresponding to the occurrence of a pragma Inspection_Point in the compilation unit. An object is <em>inspectable</em> at an inspection point if the corresponding pragma Inspection_Point either has an argument denoting that object, or has no arguments and the declaration of the object is visible at the inspection point. <br /></p>
+<p>{"{"}<em>8652/0093</em>{"}"} {"{"}<em>{"AI95-00207-01"}</em>{"}"} {"{"}<em>{"AI95-00434-01"}</em>{"}"} <br />An <em>inspection point</em> is a point in the object code corresponding to the occurrence of a pragma Inspection_Point in the compilation unit. An object is <em>inspectable</em> at an inspection point if the corresponding pragma Inspection_Point either has an argument denoting that object, or has no arguments and the declaration of the object is visible at the inspection point. <br /></p>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>If a pragma Inspection_Point is in an in-lined subprogram, there might be numerous inspection points in the object code corresponding to the single occurrence of the pragma in the source; similar considerations apply if such a pragma is in a generic, or in a loop that has been "unrolled" by an optimizer.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0093</em>{"}"} {"{"}<em>{"AI95-00207-01"}</em>{"}"} The short form of the pragma is a convenient shorthand for listing all objects which could be explicitly made inspectable by the long form of the pragma; thus only visible objects are made inspectable by it. Objects that are not visible at the point of the pragma are not made inspectable by the short form pragma. This is necessary so that implementations need not keep information about (or prevent optimizations on) a unit simply because some other unit <em>might</em> contain a short form Inspection_Point pragma. <br /></Admonition>
+{"{"}<em>8652/0093</em>{"}"} {"{"}<em>{"AI95-00207-01"}</em>{"}"} <br />The short form of the pragma is a convenient shorthand for listing all objects which could be explicitly made inspectable by the long form of the pragma; thus only visible objects are made inspectable by it. Objects that are not visible at the point of the pragma are not made inspectable by the short form pragma. This is necessary so that implementations need not keep information about (or prevent optimizations on) a unit simply because some other unit <em>might</em> contain a short form Inspection_Point pragma. <br /></Admonition>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>8652/0093</em>{"}"} {"{"}<em>{"AI95-00207-01"}</em>{"}"} If the short form of the pragma is used, then all visible objects are inspectable. This implies that global objects from other compilation units are inspectable. A good interactive debugging system could provide information similar to a post-mortem dump at such inspection points. The annex does not require that any inspection facility is provided, merely that the information is available to understand the state of the machine at those points. <br /></Admonition>
+<strong></strong>{"{"}<em>8652/0093</em>{"}"} {"{"}<em>{"AI95-00207-01"}</em>{"}"} <br />If the short form of the pragma is used, then all visible objects are inspectable. This implies that global objects from other compilation units are inspectable. A good interactive debugging system could provide information similar to a post-mortem dump at such inspection points. The annex does not require that any inspection facility is provided, merely that the information is available to understand the state of the machine at those points. <br /></Admonition>
 
 
 #### Dynamic Semantics
@@ -178,12 +190,12 @@ NOTE 1   The order of elaboration of library units will be documented even in th
 <p>Execution of a pragma Inspection_Point has no effect. <br /></p>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} Although an inspection point has no (semantic) effect, the removal or adding of a new point could change the machine code generated by the compiler.<br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />Although an inspection point has no (semantic) effect, the removal or adding of a new point could change the machine code generated by the compiler.<br /></Admonition>
 
 
 #### Implementation Requirements
 
-<p>Reaching an inspection point is an external interaction with respect to the values of the inspectable objects at that point (see ). <br /></p>
+<p>Reaching an inspection point is an external interaction with respect to the values of the inspectable objects at that point (see 1.1.3). <br /></p>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>The compiler is inhibited from moving an assignment to an inspectable variable past an inspection point for that variable. On the other hand, the evaluation of an expression that might raise an exception may be moved past an inspection point (see 11.6).<br /></Admonition>
@@ -200,7 +212,7 @@ NOTE 1   The order of elaboration of library units will be documented even in th
 <strong>Documentation Requirement: </strong>For each inspection point, a mapping between each inspectable object and the machine resources where the object's value can be obtained shall be provided.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 1   {"{"}<em>{"AI95-00209-01"}</em>{"}"} The implementation is not allowed to perform "dead store elimination" on the last assignment to a variable prior to a point where the variable is inspectable. Thus an inspection point has the effect of an implicit read of each of its inspectable objects.<br /></Admonition>
+NOTE 1   {"{"}<em>{"AI95-00209-01"}</em>{"}"} <br />The implementation is not allowed to perform "dead store elimination" on the last assignment to a variable prior to a point where the variable is inspectable. Thus an inspection point has the effect of an implicit read of each of its inspectable objects.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 2   Inspection points are useful in maintaining a correspondence between the state of the program in source code terms, and the machine state during the program's execution. Assertions about the values of program objects can be tested in machine terms at inspection points. Object code between inspection points can be processed by automated tools to verify programs mechanically. <br /></Admonition>
@@ -218,5 +230,5 @@ NOTE 3   The identification of the mapping from source program objects to machin
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0093</em>{"}"} {"{"}<em>{"AI95-00207-01"}</em>{"}"} <strong>Corrigendum:</strong> Corrected the definition of the Inspection_Point pragma to apply to only variables visible at the point of the pragma. Otherwise, the compiler would have to assume that some other code somewhere could have a pragma Inspection_Point, preventing many optimizations (such as unused object elimination). <br /></Admonition>
+{"{"}<em>8652/0093</em>{"}"} {"{"}<em>{"AI95-00207-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Corrected the definition of the Inspection_Point pragma to apply to only variables visible at the point of the pragma. Otherwise, the compiler would have to assume that some other code somewhere could have a pragma Inspection_Point, preventing many optimizations (such as unused object elimination). <br /></Admonition>
 

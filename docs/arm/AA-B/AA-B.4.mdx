@@ -5,24 +5,23 @@ sidebar_position:  141
 # B.4 Interfacing with COBOL
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
 
-<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} The facilities relevant to interfacing with the COBOL language are the package Interfaces.COBOL and support for specifying the Convention aspect with <em>convention_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> COBOL.<br /></p>
+<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />The facilities relevant to interfacing with the COBOL language are the package Interfaces.COBOL and support for specifying the Convention aspect with <em>convention_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> COBOL.<br /></p>
 
 <p>The COBOL interface package supplies several sets of facilities: <br /></p>
 
-<p>A set of types corresponding to the native COBOL types of the supported COBOL implementation (so-called "internal COBOL representations"), allowing Ada data to be passed as parameters to COBOL programs<br /></p>
-
-<p>{"{"}<em>{"AI12-0439-1"}</em>{"}"} A set of types and constants reflecting external data representations such as can be found in files or databases, allowing COBOL-generated data to be read by an Ada program, and Ada-generated data to be read by COBOL programs<br /></p>
-
-<p>A generic package for converting between an Ada decimal type value and either an internal or external COBOL representation <br /></p>
-
+<ul>
+<li>A set of types corresponding to the native COBOL types of the supported COBOL implementation (so-called "internal COBOL representations"), allowing Ada data to be passed as parameters to COBOL programs<br /></li>
+<li>{"{"}<em>{"AI12-0439-1"}</em>{"}"} <br />A set of types and constants reflecting external data representations such as can be found in files or databases, allowing COBOL-generated data to be read by an Ada program, and Ada-generated data to be read by COBOL programs<br /></li>
+<li>A generic package for converting between an Ada decimal type value and either an internal or external COBOL representation <br /></li>
+</ul>
 
 #### Static Semantics
 
@@ -107,12 +106,11 @@ function Valid (Item   : in Numeric;{"\n"}                Format : in Display_Fo
 </CodeBlock>
 <p>The function Valid checks that the Item parameter has a value consistent with the value of Format. If the value of Format is other than Unsigned, Leading_Separate, and Trailing_Separate, the effect is implementation defined. If Format does have one of these values, the following rules apply: <br /></p>
 
-<p>{"{"}<em>8652/0066</em>{"}"} {"{"}<em>{"AI95-00071-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} Format=Unsigned: if Item comprises one or more decimal digit characters, then Valid returns True, else it returns False.<br /></p>
-
-<p>{"{"}<em>8652/0066</em>{"}"} {"{"}<em>{"AI95-00071-01"}</em>{"}"} Format=Leading_Separate: if Item comprises a single occurrence of the plus or minus sign character, and then one or more decimal digit characters, then Valid returns True, else it returns False.<br /></p>
-
-<p>{"{"}<em>8652/0066</em>{"}"} {"{"}<em>{"AI95-00071-01"}</em>{"}"} Format=Trailing_Separate: if Item comprises one or more decimal digit characters and finally a plus or minus sign character, then Valid returns True, else it returns False. <br /></p>
-
+<ul>
+<li>{"{"}<em>8652/0066</em>{"}"} {"{"}<em>{"AI95-00071-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />Format=Unsigned: if Item comprises one or more decimal digit characters, then Valid returns True, else it returns False.<br /></li>
+<li>{"{"}<em>8652/0066</em>{"}"} {"{"}<em>{"AI95-00071-01"}</em>{"}"} <br />Format=Leading_Separate: if Item comprises a single occurrence of the plus or minus sign character, and then one or more decimal digit characters, then Valid returns True, else it returns False.<br /></li>
+<li>{"{"}<em>8652/0066</em>{"}"} {"{"}<em>{"AI95-00071-01"}</em>{"}"} <br />Format=Trailing_Separate: if Item comprises one or more decimal digit characters and finally a plus or minus sign character, then Valid returns True, else it returns False. <br /></li>
+</ul>
 <CodeBlock>
 function Length (Format : in Display_Format) return Natural;{"\n"}
 
@@ -132,7 +130,7 @@ function To_Decimal (Item   : in Numeric;{"\n"}                     Format : in 
 function To_Display (Item   : in Num;{"\n"}                     Format : in Display_Format) return Numeric;{"\n"}
 
 </CodeBlock>
-<p>{"{"}<em>8652/0067</em>{"}"} {"{"}<em>{"AI95-00072-01"}</em>{"}"} This function returns the Numeric value for Item, represented in accordance with Format. The length of the returned value is Length(Format), and the lower bound is 1. Conversion_Error is propagated if Num is negative and Format is Unsigned.<br /></p>
+<p>{"{"}<em>8652/0067</em>{"}"} {"{"}<em>{"AI95-00072-01"}</em>{"}"} <br />This function returns the Numeric value for Item, represented in accordance with Format. The length of the returned value is Length(Format), and the lower bound is 1. Conversion_Error is propagated if Num is negative and Format is Unsigned.<br /></p>
 
 <CodeBlock>
 function Valid (Item   : in Packed_Decimal;{"\n"}                Format : in Packed_Format) return Boolean;{"\n"}
@@ -156,7 +154,7 @@ function To_Decimal (Item   : in Packed_Decimal;{"\n"}                     Forma
 function To_Packed (Item   : in Num;{"\n"}                    Format : in Packed_Format) return Packed_Decimal;{"\n"}
 
 </CodeBlock>
-<p>{"{"}<em>8652/0067</em>{"}"} {"{"}<em>{"AI95-00072-01"}</em>{"}"} This function returns the Packed_Decimal value for Item, represented in accordance with Format. The length of the returned value is Length(Format), and the lower bound is 1. Conversion_Error is propagated if Num is negative and Format is Packed_Unsigned.<br /></p>
+<p>{"{"}<em>8652/0067</em>{"}"} {"{"}<em>{"AI95-00072-01"}</em>{"}"} <br />This function returns the Packed_Decimal value for Item, represented in accordance with Format. The length of the returned value is Length(Format), and the lower bound is 1. Conversion_Error is propagated if Num is negative and Format is Packed_Unsigned.<br /></p>
 
 <CodeBlock>
 function Valid (Item   : in Byte_Array;{"\n"}                Format : in Binary_Format) return Boolean;{"\n"}
@@ -183,7 +181,7 @@ function To_Decimal (Item   : in Byte_Array;{"\n"}                     Format : 
 function To_Binary (Item   : in Num;{"\n"}                    Format : in Binary_Format) return Byte_Array;{"\n"}
 
 </CodeBlock>
-<p>{"{"}<em>8652/0067</em>{"}"} {"{"}<em>{"AI95-00072-01"}</em>{"}"} This function returns the Byte_Array value for Item, represented in accordance with Format. The length of the returned value is Length(Format), and the lower bound is 1.<br /></p>
+<p>{"{"}<em>8652/0067</em>{"}"} {"{"}<em>{"AI95-00072-01"}</em>{"}"} <br />This function returns the Byte_Array value for Item, represented in accordance with Format. The length of the returned value is Length(Format), and the lower bound is 1.<br /></p>
 
 <CodeBlock>
 function To_Decimal (Item : in Binary)      return Num;{"\n"}{"\n"}function To_Decimal (Item : in Long_Binary) return Num;{"\n"}
@@ -209,20 +207,16 @@ Several types are provided for support of alphanumeric data. Since COBOL's run-t
 <Admonition type="aarm" aarm="note" title="Note: ">
 Numeric data may have either a "display" or "computational" representation in COBOL. On the Ada side, the data is of a decimal fixed point type. Passing an Ada decimal data item to a COBOL program requires conversion from the Ada decimal type to some type that reflects the representation expected on the COBOL side. <br /></Admonition>
 
-<p>Computational Representation<br /></p>
-
-<p>Floating point representation is modeled by Ada floating point types, Floating and Long_Floating. Conversion between these types and Ada decimal types is obtained directly, since the type name serves as a conversion function.<br /></p>
-
-<p>Binary representation is modeled by an Ada integer type, Binary, and possibly other types such as Long_Binary. Conversion between, say, Binary and a decimal type is through functions from an instantiation of the generic package Decimal_Conversions.<br /></p>
-
-<p>Packed decimal representation is modeled by the Ada array type Packed_Decimal. Conversion between packed decimal and a decimal type is through functions from an instantiation of the generic package Decimal_Conversions.<br /></p>
-
-<p>Display Representation<br /></p>
-
-<p>Display representation for numeric data is modeled by the array type Numeric. Conversion between display representation and a decimal type is through functions from an instantiation of the generic package Decimal_Conversions. A parameter to the conversion function indicates the desired interpretation of the data (e.g., signed leading separate, etc.) <br /></p>
-
+<ul>
+<li>Computational Representation<br /></li>
+<li>Floating point representation is modeled by Ada floating point types, Floating and Long_Floating. Conversion between these types and Ada decimal types is obtained directly, since the type name serves as a conversion function.<br /></li>
+<li>Binary representation is modeled by an Ada integer type, Binary, and possibly other types such as Long_Binary. Conversion between, say, Binary and a decimal type is through functions from an instantiation of the generic package Decimal_Conversions.<br /></li>
+<li>Packed decimal representation is modeled by the Ada array type Packed_Decimal. Conversion between packed decimal and a decimal type is through functions from an instantiation of the generic package Decimal_Conversions.<br /></li>
+<li>Display Representation<br /></li>
+<li>Display representation for numeric data is modeled by the array type Numeric. Conversion between display representation and a decimal type is through functions from an instantiation of the generic package Decimal_Conversions. A parameter to the conversion function indicates the desired interpretation of the data (e.g., signed leading separate, etc.) <br /></li>
+</ul>
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0229-1"}</em>{"}"} The Convention of a record type may be specified as COBOL to direct the compiler to choose a COBOL-compatible representation for objects of the type.<br /></Admonition>
+{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />The Convention of a record type may be specified as COBOL to direct the compiler to choose a COBOL-compatible representation for objects of the type.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 The package Interfaces.COBOL allows the Ada programmer to deal with data from files (or databases) created by a COBOL program. For data that is alphanumeric, or in display or packed decimal format, the approach is the same as for passing parameters (instantiate Decimal_Conversions to obtain the needed conversion functions). For binary data, the external representation is treated as a Byte array, and an instantiation of Decimal_IO produces a package that declares the needed conversion functions. A parameter to the conversion function indicates the desired interpretation of the data (e.g., high- versus low-order byte first). <br /></Admonition>
@@ -230,7 +224,7 @@ The package Interfaces.COBOL allows the Ada programmer to deal with data from fi
 
 #### Implementation Requirements
 
-<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} An implementation shall support specifying aspect Convention with a COBOL <em>convention</em>_<code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> for a COBOL-eligible type (see B.1). <br /></p>
+<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />An implementation shall support specifying aspect Convention with a COBOL <em>convention</em>_<code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> for a COBOL-eligible type (see B.1). <br /></p>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>An implementation supporting this package shall ensure that if the bounds of a Packed_Decimal, Alphanumeric, or Numeric variable are static, then the representation of the object comprises solely the array components (that is, there is no implicit run-time "descriptor" that is part of the object). <br /></Admonition>
@@ -250,23 +244,22 @@ The package Interfaces.COBOL allows the Ada programmer to deal with data from fi
 
 <p>An Ada implementation should support the following interface correspondences between Ada and COBOL. <br /></p>
 
-<p>An Ada <strong>access</strong> T parameter is passed as a "BY REFERENCE" data item of the COBOL type corresponding to T.<br /></p>
-
-<p>An Ada <strong>in</strong> scalar parameter is passed as a "BY CONTENT" data item of the corresponding COBOL type.<br /></p>
-
-<p>Any other Ada parameter is passed as a "BY REFERENCE" data item of the COBOL type corresponding to the Ada parameter type; for scalars, a local copy is used if necessary to ensure by-copy semantics. <br /></p>
-
+<ul>
+<li>An Ada <strong>access</strong> T parameter is passed as a "BY REFERENCE" data item of the COBOL type corresponding to T.<br /></li>
+<li>An Ada <strong>in</strong> scalar parameter is passed as a "BY CONTENT" data item of the corresponding COBOL type.<br /></li>
+<li>Any other Ada parameter is passed as a "BY REFERENCE" data item of the COBOL type corresponding to the Ada parameter type; for scalars, a local copy is used if necessary to ensure by-copy semantics. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
 <strong></strong>If COBOL interfacing is supported, the interface correspondences between Ada and COBOL should be supported.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 1   {"{"}<em>{"AI05-0229-1"}</em>{"}"} An implementation is not required to support specifying aspect Convention for access types, nor is it required to support specifying aspects Import, Export, or Convention for functions. <br /></Admonition>
+NOTE 1   {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />An implementation is not required to support specifying aspect Convention for access types, nor is it required to support specifying aspects Import, Export, or Convention for functions. <br /></Admonition>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>COBOL does not have a pointer facility, and a COBOL program does not return a value. <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 2   {"{"}<em>{"AI12-0440-1"}</em>{"}"} If an Ada subprogram is exported to COBOL, then a call from COBOL call can specify either "BY CONTENT" or "BY REFERENCE". <br /></Admonition>
+NOTE 2   {"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />If an Ada subprogram is exported to COBOL, then a call from COBOL call can specify either "BY CONTENT" or "BY REFERENCE". <br /></Admonition>
 
 
 #### Examples
@@ -303,8 +296,8 @@ begin{"\n"}   Open (COBOL_File, Name ={">"} "Some_File");{"\n"}
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0066</em>{"}"} {"{"}<em>{"AI95-00071-01"}</em>{"}"} <strong>Corrigendum:</strong> Corrected the definition of Valid to match COBOL.<br /></Admonition>
+{"{"}<em>8652/0066</em>{"}"} {"{"}<em>{"AI95-00071-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Corrected the definition of Valid to match COBOL.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0067</em>{"}"} {"{"}<em>{"AI95-00072-01"}</em>{"}"} <strong>Corrigendum:</strong> Specified the bounds of the results of To_Display, To_Packed, and To_Binary. <br /></Admonition>
+{"{"}<em>8652/0067</em>{"}"} {"{"}<em>{"AI95-00072-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Specified the bounds of the results of To_Display, To_Packed, and To_Binary. <br /></Admonition>
 

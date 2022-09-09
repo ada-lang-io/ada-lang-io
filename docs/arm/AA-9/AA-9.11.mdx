@@ -5,9 +5,9 @@ sidebar_position:  82
 # 9.11 Example of Tasking and Synchronization
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
@@ -16,23 +16,23 @@ import Admonition from "@theme/Admonition";
 
 #### Examples
 
-<p>{"{"}<em>{"AI12-0440-1"}</em>{"}"} The following example defines a buffer protected object to smooth variations between the speed of output of a producing task and the speed of input of some consuming task. For instance, the producing task can have the following structure:<br /></p>
+<p>{"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />The following example defines a buffer protected object to smooth variations between the speed of output of a producing task and the speed of input of some consuming task. For instance, the producing task can have the following structure:<br /></p>
 
 <CodeBlock>
 task Producer;{"\n"}
 --  {"{"}{"AI95-00433-01"}{"}"}{"\n"} task body Producer is{"\n"}   Person : Person_Name; -- see 3.10.1{"\n"}begin{"\n"}   loop{"\n"}      ... --  simulate arrival of the next customer{"\n"}      Buffer.Append_Wait(Person);{"\n"}      exit when Person = null;{"\n"}   end loop;{"\n"}end Producer;{"\n"}
 
 </CodeBlock>
-<p>{"{"}<em>{"AI12-0440-1"}</em>{"}"} and the consuming task can have the following structure:<br /></p>
+<p>{"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />and the consuming task can have the following structure:<br /></p>
 
 <CodeBlock>
 task Consumer;{"\n"}
 --  {"{"}{"AI95-00433-01"}{"}"}{"\n"} task body Consumer is{"\n"}   Person : Person_Name;{"\n"}begin{"\n"}   loop{"\n"}      Buffer.Remove_First_Wait(Person);{"\n"}      exit when Person = null;{"\n"}      ... --  simulate serving a customer{"\n"}   end loop;{"\n"}end Consumer;{"\n"}
 
 </CodeBlock>
-<p>{"{"}<em>{"AI95-00433-01"}</em>{"}"} The buffer object contains an internal array of person names managed in a round-robin fashion. The array has two indices, an In_Index denoting the index for the next input person name and an Out_Index denoting the index for the next output person name.<br /></p>
+<p>{"{"}<em>{"AI95-00433-01"}</em>{"}"} <br />The buffer object contains an internal array of person names managed in a round-robin fashion. The array has two indices, an In_Index denoting the index for the next input person name and an Out_Index denoting the index for the next output person name.<br /></p>
 
-<p>{"{"}<em>{"AI95-00433-01"}</em>{"}"} The Buffer is defined as an extension of the Synchronized_Queue interface (see 3.9.4), and as such promises to implement the abstraction defined by that interface. By doing so, the Buffer can be passed to the Transfer class-wide operation defined for objects of a type covered by Queue'Class.<br /></p>
+<p>{"{"}<em>{"AI95-00433-01"}</em>{"}"} <br />The Buffer is defined as an extension of the Synchronized_Queue interface (see 3.9.4), and as such promises to implement the abstraction defined by that interface. By doing so, the Buffer can be passed to the Transfer class-wide operation defined for objects of a type covered by Queue'Class.<br /></p>
 
 <CodeBlock>
 --  {"{"}{"AI12-0178-1"}{"}"}{"\n"} type Person_Name_Array is array (Positive range {"<"}{">"}){"\n"}   of Person_Name;  -- see 3.10.1{"\n"}

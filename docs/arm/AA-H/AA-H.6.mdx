@@ -5,20 +5,20 @@ sidebar_position:  188
 # H.6 Pragma Partition_Elaboration_Policy
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
 
-<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause defines a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> for user control over elaboration policy. <br /></p>
+<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />This subclause defines a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> for user control over elaboration policy. <br /></p>
 
 
 #### Syntax
 
-<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} The form of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Partition_Elaboration_Policy is as follows: <br /></p>
+<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} <br />The form of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Partition_Elaboration_Policy is as follows: <br /></p>
 
 <p>  <strong>pragma</strong> Partition_Elaboration_Policy (<em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>);<br /></p>
 
@@ -33,33 +33,31 @@ import Admonition from "@theme/Admonition";
 
 #### Post-Compilation Rules
 
-<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Partition_Elaboration_Policy is a configuration pragma. It specifies the elaboration policy for a partition. At most one elaboration policy shall be specified for a partition.<br /></p>
+<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} <br />A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Partition_Elaboration_Policy is a configuration pragma. It specifies the elaboration policy for a partition. At most one elaboration policy shall be specified for a partition.<br /></p>
 
-<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} If the Sequential policy is specified for a partition, then pragma Restrictions (No_Task_Hierarchy) shall also be specified for the partition. <br /></p>
+<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />If the Sequential policy is specified for a partition, then pragma Restrictions (No_Task_Hierarchy) shall also be specified for the partition. <br /></p>
 
 
 #### Dynamic Semantics
 
-<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} Notwithstanding what this document says elsewhere, this <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> allows partition elaboration rules concerning task activation and interrupt attachment to be changed. If the <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> is Concurrent, or if there is no pragma Partition_Elaboration_Policy defined for the partition, then the rules defined elsewhere in this Reference Manual apply.<br /></p>
+<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} <br />Notwithstanding what this document says elsewhere, this <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> allows partition elaboration rules concerning task activation and interrupt attachment to be changed. If the <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> is Concurrent, or if there is no pragma Partition_Elaboration_Policy defined for the partition, then the rules defined elsewhere in this Reference Manual apply.<br /></p>
 
-<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI95-00421-01"}</em>{"}"} If the partition elaboration policy is Sequential, then task activation and interrupt attachment are performed in the following sequence of steps:<br /></p>
+<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI95-00421-01"}</em>{"}"} <br />If the partition elaboration policy is Sequential, then task activation and interrupt attachment are performed in the following sequence of steps:<br /></p>
 
-<p>The activation of all library-level tasks and the attachment of interrupt handlers are deferred until all library units are elaborated.<br /></p>
+<ul>
+<li>The activation of all library-level tasks and the attachment of interrupt handlers are deferred until all library units are elaborated.<br /></li>
+<li>The interrupt handlers are attached by the environment task.<br /></li>
+<li>The environment task is suspended while the library-level tasks are activated.<br /></li>
+<li>The environment task executes the main subprogram (if any) concurrently with these executing tasks. <br /></li>
+</ul>
+<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI95-00421-01"}</em>{"}"} <br />If several dynamic interrupt handler attachments for the same interrupt are deferred, then the most recent call of Attach_Handler or Exchange_Handler determines which handler is attached.<br /></p>
 
-<p>The interrupt handlers are attached by the environment task.<br /></p>
-
-<p>The environment task is suspended while the library-level tasks are activated.<br /></p>
-
-<p>The environment task executes the main subprogram (if any) concurrently with these executing tasks. <br /></p>
-
-<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI95-00421-01"}</em>{"}"} If several dynamic interrupt handler attachments for the same interrupt are deferred, then the most recent call of Attach_Handler or Exchange_Handler determines which handler is attached.<br /></p>
-
-<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI95-00421-01"}</em>{"}"} If any deferred task activation fails, Tasking_Error is raised at the beginning of the sequence of statements of the body of the environment task prior to calling the main subprogram.<br /></p>
+<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI95-00421-01"}</em>{"}"} <br />If any deferred task activation fails, Tasking_Error is raised at the beginning of the sequence of statements of the body of the environment task prior to calling the main subprogram.<br /></p>
 
 
 #### Implementation Advice
 
-<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} If the partition elaboration policy is Sequential and the Environment task becomes permanently blocked during elaboration, then the partition is deadlocked and it is recommended that the partition be immediately terminated. <br /></p>
+<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />If the partition elaboration policy is Sequential and the Environment task becomes permanently blocked during elaboration, then the partition is deadlocked and it is recommended that the partition be immediately terminated. <br /></p>
 
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
 <strong></strong>If the partition elaboration policy is Sequential and the Environment task becomes permanently blocked during elaboration, then the partition should be immediately terminated.<br /></Admonition>
@@ -67,14 +65,14 @@ import Admonition from "@theme/Admonition";
 
 #### Implementation Permissions
 
-<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} If the partition elaboration policy is Sequential and any task activation fails, then an implementation may immediately terminate the active partition to mitigate the hazard posed by continuing to execute with a subset of the tasks being active. <br /></p>
+<p>{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />If the partition elaboration policy is Sequential and any task activation fails, then an implementation may immediately terminate the active partition to mitigate the hazard posed by continuing to execute with a subset of the tasks being active. <br /></p>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 1   {"{"}<em>{"AI95-00421-01"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} If any deferred task activation fails, the environment task is unable to handle the Tasking_Error exception and completes immediately. By contrast, if the partition elaboration policy is Concurrent, then this exception can be handled within a library unit. <br /></Admonition>
+NOTE 1   {"{"}<em>{"AI95-00421-01"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />If any deferred task activation fails, the environment task is unable to handle the Tasking_Error exception and completes immediately. By contrast, if the partition elaboration policy is Concurrent, then this exception can be handled within a library unit. <br /></Admonition>
 
 
 #### Extensions to Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI95-00421-01"}</em>{"}"} <code><a href="../AA-2/AA-2.8#S0019">Pragma</a></code> Partition_Elaboration_Policy is new. <br /></Admonition>
+{"{"}<em>{"AI95-00265-01"}</em>{"}"} {"{"}<em>{"AI95-00421-01"}</em>{"}"} <br /><code><a href="../AA-2/AA-2.8#S0019">Pragma</a></code> Partition_Elaboration_Policy is new. <br /></Admonition>
 

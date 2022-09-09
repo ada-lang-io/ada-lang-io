@@ -5,15 +5,15 @@ sidebar_position:  159
 # D.8 Monotonic Time
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
 
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} [This subclause specifies a high-resolution, monotonic clock package.] <br /></p>
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />[This subclause specifies a high-resolution, monotonic clock package.] <br /></p>
 
 
 #### Static Semantics
@@ -74,11 +74,11 @@ This half-open interval I consists of all real numbers R such that E+I*Time_Unit
 
 <p>Time_Unit is the smallest amount of real time representable by the Time type; it is expressed in seconds. Time_Span_Unit is the difference between two successive values of the Time type. It is also the smallest positive value of type Time_Span. Time_Unit and Time_Span_Unit represent the same real time duration. A <em>clock tick</em> is a real time interval during which the clock value (as observed by calling the Clock function) remains constant. Tick is the average length of such intervals.<br /></p>
 
-<p>{"{"}<em>{"AI95-00432-01"}</em>{"}"} The function To_Duration converts the value TS to a value of type Duration. Similarly, the function To_Time_Span converts the value D to a value of type Time_Span. For To_Duration, the result is rounded to the nearest value of type Duration (away from zero if exactly halfway between two values). If the result is outside the range of Duration, Constraint_Error is raised. For To_Time_Span, the value of D is first rounded to the nearest integral multiple of Time_Unit, away from zero if exactly halfway between two multiples. If the rounded value is outside the range of Time_Span, Constraint_Error is raised. Otherwise, the value is converted to the type Time_Span.<br /></p>
+<p>{"{"}<em>{"AI95-00432-01"}</em>{"}"} <br />The function To_Duration converts the value TS to a value of type Duration. Similarly, the function To_Time_Span converts the value D to a value of type Time_Span. For To_Duration, the result is rounded to the nearest value of type Duration (away from zero if exactly halfway between two values). If the result is outside the range of Duration, Constraint_Error is raised. For To_Time_Span, the value of D is first rounded to the nearest integral multiple of Time_Unit, away from zero if exactly halfway between two multiples. If the rounded value is outside the range of Time_Span, Constraint_Error is raised. Otherwise, the value is converted to the type Time_Span.<br /></p>
 
 <p>To_Duration(Time_Span_Zero) returns 0.0, and To_Time_Span(0.0) returns Time_Span_Zero.<br /></p>
 
-<p>{"{"}<em>{"AI95-00386-01"}</em>{"}"} {"{"}<em>{"AI95-00432-01"}</em>{"}"} The functions Nanoseconds, Microseconds, Milliseconds, Seconds, and Minutes convert the input parameter to a value of the type Time_Span. NS, US, MS, S, and M are interpreted as a number of nanoseconds, microseconds, milliseconds, seconds, and minutes respectively. The input parameter is first converted to seconds and rounded to the nearest integral multiple of Time_Unit, away from zero if exactly halfway between two multiples. If the rounded value is outside the range of Time_Span, Constraint_Error is raised. Otherwise, the rounded value is converted to the type Time_Span. <br /></p>
+<p>{"{"}<em>{"AI95-00386-01"}</em>{"}"} {"{"}<em>{"AI95-00432-01"}</em>{"}"} <br />The functions Nanoseconds, Microseconds, Milliseconds, Seconds, and Minutes convert the input parameter to a value of the type Time_Span. NS, US, MS, S, and M are interpreted as a number of nanoseconds, microseconds, milliseconds, seconds, and minutes respectively. The input parameter is first converted to seconds and rounded to the nearest integral multiple of Time_Unit, away from zero if exactly halfway between two multiples. If the rounded value is outside the range of Time_Span, Constraint_Error is raised. Otherwise, the rounded value is converted to the type Time_Span. <br /></p>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00432-01"}</em>{"}"} <br /></Admonition>
@@ -128,7 +128,7 @@ This half-open interval I consists of all real numbers R such that E+I*Time_Unit
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>Documentation Requirement: </strong>Any synchronization of package Real_Time with external time references.<br /></Admonition>
 
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} The implementation shall document any aspects of the external environment that can interfere with the clock behavior as defined in this subclause. <br /></p>
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} <br />The implementation shall document any aspects of the external environment that can interfere with the clock behavior as defined in this subclause. <br /></p>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>Documentation Requirement: </strong>Any aspects of the external environment that can interfere with package Real_Time.<br /></Admonition>
@@ -139,27 +139,27 @@ This half-open interval I consists of all real numbers R such that E+I*Time_Unit
 
 #### Metrics
 
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} For the purpose of the metrics defined in this subclause, real time is defined to be the International Atomic Time (TAI).<br /></p>
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />For the purpose of the metrics defined in this subclause, real time is defined to be the International Atomic Time (TAI).<br /></p>
 
 <p>The implementation shall document the following metrics: <br /></p>
 
-<p>An upper bound on the real-time duration of a clock tick. This is a value D such that if t1 and t2 are any real times such that t1 {"<"} t2 and Clockt1 = Clockt2 then t2  t1 {"<"}= D.<br /></p>
-
-<p>An upper bound on the size of a clock jump.<br /></p>
-
-<p>An upper bound on the <em>drift rate</em> of Clock with respect to real time. This is a real number D such that <br /></p>
-
+<ul>
+<li>An upper bound on the real-time duration of a clock tick. This is a value D such that if t1 and t2 are any real times such that t1 {"<"} t2 and Clockt1 = Clockt2 then t2  t1 {"<"}= D.<br /></li>
+<li>An upper bound on the size of a clock jump.<br /></li>
+<li>An upper bound on the <em>drift rate</em> of Clock with respect to real time. This is a real number D such that <br /></li>
+</ul>
 <p>E*(1D) {"<"}= (Clockt+E  Clockt) {"<"}= E*(1+D)<br />        provided that: Clockt + E*(1+D) {"<"}= Time_Last.<br /></p>
 
-<p>where Clockt is the value of Clock at time t, and E is a real time duration not less than 24 hours. The value of E used for this metric shall be reported. <br /></p>
-
+<ul>
+<li>where Clockt is the value of Clock at time t, and E is a real time duration not less than 24 hours. The value of E used for this metric shall be reported. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>This metric is intended to provide a measurement of the long term (cumulative) deviation; therefore, 24 hours is the lower bound on the measurement period. On some implementations, this is also the maximum period, since the language does not require that the range of the type Duration be more than 24 hours. On those implementations that support longer-range Duration, longer measurements should be performed. <br /></Admonition>
 
-<p>An upper bound on the execution time of a call to the Clock function, in processor clock cycles.<br /></p>
-
-<p>Upper bounds on the execution times of the operators of the types Time and Time_Span, in processor clock cycles. <br /></p>
-
+<ul>
+<li>An upper bound on the execution time of a call to the Clock function, in processor clock cycles.<br /></li>
+<li>Upper bounds on the execution times of the operators of the types Time and Time_Span, in processor clock cycles. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>A fast implementation of the Clock function involves repeated reading until you get the same value twice. It is highly improbable that more than three reads will be necessary. Arithmetic on time values should not be significantly slower than 64-bit arithmetic in the underlying machine instruction set. <br /></Admonition>
 
@@ -169,7 +169,7 @@ This half-open interval I consists of all real numbers R such that E+I*Time_Unit
 
 #### Implementation Permissions
 
-<p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} Implementations targeted to machines with word size smaller than 32 bits may omit support for the full range and granularity of the Time and Time_Span types. <br /></p>
+<p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />Implementations targeted to machines with word size smaller than 32 bits may omit support for the full range and granularity of the Time and Time_Span types. <br /></p>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>These requirements are based on machines with a word size of 32 bits.<br /></Admonition>
@@ -205,7 +205,7 @@ Since the range and granularity are implementation defined, the supported values
 <strong></strong>The "best" time base which exists in the underlying system should be available to the application through Real_Time.Clock.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 1   {"{"}<em>{"AI05-0299-1"}</em>{"}"} The rules in this subclause do not imply that the implementation can protect the user from operator or installation errors that can result in the clock being set incorrectly.<br /></Admonition>
+NOTE 1   {"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />The rules in this subclause do not imply that the implementation can protect the user from operator or installation errors that can result in the clock being set incorrectly.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 2   Time_Unit is the granularity of the Time type. In contrast, Tick represents the granularity of Real_Time.Clock. There is no requirement that these be the same.<br /></Admonition>
@@ -214,11 +214,11 @@ NOTE 2   Time_Unit is the granularity of the Time type. In contrast, Tick repres
 #### Incompatibilities With Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00386-01"}</em>{"}"} {"{"}<em>{"AI05-0005-1"}</em>{"}"} Functions Seconds and Minutes are added to Real_Time. If Real_Time is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with a <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> of Seconds or Minutes is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. <br /></Admonition>
+{"{"}<em>{"AI95-00386-01"}</em>{"}"} {"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />Functions Seconds and Minutes are added to Real_Time. If Real_Time is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with a <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> of Seconds or Minutes is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00432-01"}</em>{"}"} Added wording explaining how and when many of these functions can raise Constraint_Error. While there always was an intent to raise Constraint_Error if the values did not fit, there never was any wording to that effect, and since Time_Span was a private type, the normal numeric type rules do not apply to it. <br /></Admonition>
+{"{"}<em>{"AI95-00432-01"}</em>{"}"} <br />Added wording explaining how and when many of these functions can raise Constraint_Error. While there always was an intent to raise Constraint_Error if the values did not fit, there never was any wording to that effect, and since Time_Span was a private type, the normal numeric type rules do not apply to it. <br /></Admonition>
 

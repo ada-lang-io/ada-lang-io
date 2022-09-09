@@ -5,24 +5,24 @@ sidebar_position:  62
 # 7.5 Limited Types
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
 
-<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} [A limited type is (a view of) a type for which copying (such as for an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>) is not allowed. A nonlimited type is a (view of a) type for which copying is allowed.] <br /></p>
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />[A limited type is (a view of) a type for which copying (such as for an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>) is not allowed. A nonlimited type is a (view of a) type for which copying is allowed.] <br /></p>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>The concept of the <em>value</em> of a limited type is difficult to define, since the abstract value of a limited type often extends beyond its physical representation. In some sense, values of a limited type cannot be divorced from their object. The value <em>is</em> the object.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00318-02"}</em>{"}"} In Ada 83, in the two places where limited types were defined by the language, namely tasks and files, an implicit level of indirection was implied by the semantics to avoid the separation of the value from an associated object. In Ada 95, most limited types are passed by reference, and even return-ed by reference. In Ada 2005, most limited types are built-in-place upon return, rather than returned by reference. Thus the object "identity" is part of the logical value of most limited types. <br /></Admonition>
+{"{"}<em>{"AI95-00318-02"}</em>{"}"} <br />In Ada 83, in the two places where limited types were defined by the language, namely tasks and files, an implicit level of indirection was implied by the semantics to avoid the separation of the value from an associated object. In Ada 95, most limited types are passed by reference, and even return-ed by reference. In Ada 2005, most limited types are built-in-place upon return, rather than returned by reference. Thus the object "identity" is part of the logical value of most limited types. <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<strong>To be honest: </strong>{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI95-00419-01"}</em>{"}"} For a limited partial view whose full view is nonlimited, copying is possible on parameter passing and function return. To prevent any copying whatsoever, one should make both the partial <em>and</em> full views limited. <br /></Admonition>
+<strong>To be honest: </strong>{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI95-00419-01"}</em>{"}"} <br />For a limited partial view whose full view is nonlimited, copying is possible on parameter passing and function return. To prevent any copying whatsoever, one should make both the partial <em>and</em> full views limited. <br /></Admonition>
 
 <Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
 <strong></strong>A limited type is a type for which copying (such as in an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>) is not allowed. A nonlimited type is a type for which copying is allowed.<br /></Admonition>
@@ -30,10 +30,10 @@ import Admonition from "@theme/Admonition";
 
 #### Legality Rules
 
-<p>{"{"}<em>{"AI95-00419-01"}</em>{"}"} If a tagged record type has any limited components, then the reserved word <strong>limited</strong> shall appear in its <code><a href="../AA-3/AA-3.8#S0066">record_type_definition</a></code>. [If the reserved word <strong>limited</strong> appears in the definition of a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>, its parent type and any progenitor interfaces shall be limited.] <br /></p>
+<p>{"{"}<em>{"AI95-00419-01"}</em>{"}"} <br />If a tagged record type has any limited components, then the reserved word <strong>limited</strong> shall appear in its <code><a href="../AA-3/AA-3.8#S0066">record_type_definition</a></code>. [If the reserved word <strong>limited</strong> appears in the definition of a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>, its parent type and any progenitor interfaces shall be limited.] <br /></p>
 
 <Admonition type="aarm" aarm="proof" title="Proof: ">
-<strong></strong>{"{"}<em>{"AI95-00419-01"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} The rule about the parent type being required to be limited can be found in 3.4. Rules about progenitor interfaces can be found in 3.9.4; specifically, a nonlimited interface can appear only on a nonlimited type. We repeat these rules here to gather these scattered rules in one obvious place. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00419-01"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />The rule about the parent type being required to be limited can be found in 3.4. Rules about progenitor interfaces can be found in 3.9.4; specifically, a nonlimited interface can appear only on a nonlimited type. We repeat these rules here to gather these scattered rules in one obvious place. <br /></Admonition>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>This prevents tagged limited types from becoming nonlimited. Otherwise, the following could happen: <br /></Admonition>
@@ -44,101 +44,93 @@ package Q is{"\n"}    type R2 is new R with{"\n"}        record{"\n"}           
 
 </CodeBlock>
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00230-01"}</em>{"}"} If the above were legal, then assignment would be defined for R'Class in the body of P, which is bad news, given the task. <br /></Admonition>
+{"{"}<em>{"AI95-00230-01"}</em>{"}"} <br />If the above were legal, then assignment would be defined for R'Class in the body of P, which is bad news, given the task. <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI95-00318-02"}</em>{"}"} {"{"}<em>{"AI05-0147-1"}</em>{"}"} {"{"}<em>{"AI12-0172-1"}</em>{"}"} {"{"}<em>{"AI12-0236-1"}</em>{"}"} {"{"}<em>{"AI12-0317-1"}</em>{"}"} In the following contexts, an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a limited type is permitted only if each of its operative constituents is newly constructed (see 4.4): <br /></p>
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI95-00318-02"}</em>{"}"} {"{"}<em>{"AI05-0147-1"}</em>{"}"} {"{"}<em>{"AI12-0172-1"}</em>{"}"} {"{"}<em>{"AI12-0236-1"}</em>{"}"} {"{"}<em>{"AI12-0317-1"}</em>{"}"} <br />In the following contexts, an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a limited type is permitted only if each of its operative constituents is newly constructed (see 4.4): <br /></p>
 
-<p>the initialization <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> (see 3.3.1)<br /></p>
-
-<p>the <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> of a <code><a href="../AA-3/AA-3.8#S0070">component_declaration</a></code> (see 3.8)<br /></p>
-
-<p>the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> (see 4.3.1)<br /></p>
-
-<p>the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> for an <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> of an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> (see 4.3.2)<br /></p>
-
-<p>an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code> or the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> (see 4.3.3)<br /></p>
-
-<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> (see 4.3.4) <br /></p>
-
+<ul>
+<li>the initialization <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> (see 3.3.1)<br /></li>
+<li>the <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> of a <code><a href="../AA-3/AA-3.8#S0070">component_declaration</a></code> (see 3.8)<br /></li>
+<li>the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> (see 4.3.1)<br /></li>
+<li>the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> for an <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> of an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> (see 4.3.2)<br /></li>
+<li>an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code> or the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> (see 4.3.3)<br /></li>
+<li>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> (see 4.3.4) <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI12-0127-1"}</em>{"}"} We don't need to mention the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code> here, as its type cannot be limited (see 4.3.4), and thus neither can its <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>. Similarly, we do not need any rules for components of a <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> nor the elements of a <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code>, as neither are allowed to be limited (see 4.3.4 and 4.3.5) <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />We don't need to mention the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code> here, as its type cannot be limited (see 4.3.4), and thus neither can its <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>. Similarly, we do not need any rules for components of a <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> nor the elements of a <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code>, as neither are allowed to be limited (see 4.3.4 and 4.3.5) <br /></Admonition>
 
-<p>the <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> of an initialized allocator (see 4.8)<br /></p>
-
-<p>the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a return statement (see 6.5)<br /></p>
-
-<p>{"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} the return expression of an expression function (see 6.8)<br /></p>
-
-<p>the <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> or actual parameter for a formal object of mode <strong>in</strong> (see 12.4)<br /></p>
-
+<ul>
+<li>the <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> of an initialized allocator (see 4.8)<br /></li>
+<li>the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a return statement (see 6.5)<br /></li>
+<li>{"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} <br />the return expression of an expression function (see 6.8)<br /></li>
+<li>the <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> or actual parameter for a formal object of mode <strong>in</strong> (see 12.4)<br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>All of these contexts normally require copying; by restricting the uses as above, we can require the new object to be built-in-place. <br /></Admonition>
 
 
 #### Static Semantics
 
-<p>{"{"}<em>{"AI95-00419-01"}</em>{"}"} {"{"}<em>{"AI05-0178-1"}</em>{"}"} A view of a type is <em>limited</em> if it is one of the following: <br /></p>
+<p>{"{"}<em>{"AI95-00419-01"}</em>{"}"} {"{"}<em>{"AI05-0178-1"}</em>{"}"} <br />A view of a type is <em>limited</em> if it is one of the following: <br /></p>
 
-<p>{"{"}<em>{"AI95-00411-01"}</em>{"}"} {"{"}<em>{"AI95-00419-01"}</em>{"}"} a type with the reserved word <strong>limited</strong>, <strong>synchronized</strong>, <strong>task</strong>, or <strong>protected</strong> in its definition; <br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI95-00411-01"}</em>{"}"} {"{"}<em>{"AI95-00419-01"}</em>{"}"} <br />a type with the reserved word <strong>limited</strong>, <strong>synchronized</strong>, <strong>task</strong>, or <strong>protected</strong> in its definition; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Note that there is always a "definition", conceptually, even if there is no syntactic category called "..._definition".<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00419-01"}</em>{"}"} This includes interfaces of the above kinds, derived types with the reserved word <strong>limited</strong>, as well as task and protected types. <br /></Admonition>
+{"{"}<em>{"AI95-00419-01"}</em>{"}"} <br />This includes interfaces of the above kinds, derived types with the reserved word <strong>limited</strong>, as well as task and protected types. <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00419-01"}</em>{"}"} {"{"}<em>{"AI05-0087-1"}</em>{"}"} a class-wide type whose specific type is limited;<br /></p>
-
-<p>{"{"}<em>{"AI95-00419-01"}</em>{"}"} a composite type with a limited component;<br /></p>
-
-<p>{"{"}<em>{"AI05-0178-1"}</em>{"}"} an incomplete view;<br /></p>
-
-<p>{"{"}<em>{"AI95-00419-01"}</em>{"}"} a derived type whose parent is limited and is not an interface.<br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI95-00419-01"}</em>{"}"} {"{"}<em>{"AI05-0087-1"}</em>{"}"} <br />a class-wide type whose specific type is limited;<br /></li>
+<li>{"{"}<em>{"AI95-00419-01"}</em>{"}"} <br />a composite type with a limited component;<br /></li>
+<li>{"{"}<em>{"AI05-0178-1"}</em>{"}"} <br />an incomplete view;<br /></li>
+<li>{"{"}<em>{"AI95-00419-01"}</em>{"}"} <br />a derived type whose parent is limited and is not an interface.<br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI95-00419-01"}</em>{"}"} Limitedness is not inherited from interfaces; it must be explicitly specified when the parent is an interface. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00419-01"}</em>{"}"} <br />Limitedness is not inherited from interfaces; it must be explicitly specified when the parent is an interface. <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<strong>To be honest: </strong>{"{"}<em>{"AI95-00419-01"}</em>{"}"} A derived type can become nonlimited if <strong>limited</strong> does not appear and the derivation takes place in the visible part of a child package, and the parent type is nonlimited as viewed from the private part or body of the child package. <br /></Admonition>
+<strong>To be honest: </strong>{"{"}<em>{"AI95-00419-01"}</em>{"}"} <br />A derived type can become nonlimited if <strong>limited</strong> does not appear and the derivation takes place in the visible part of a child package, and the parent type is nonlimited as viewed from the private part or body of the child package. <br /></Admonition>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI95-00419-01"}</em>{"}"} We considered a rule where limitedness was always inherited from the parent for derived types, but in the case of a type whose parent is an interface, this meant that the first interface is treated differently than other interfaces. It also would have forced users to declare dummy nonlimited interfaces just to get the limitedness right. We also considered a syntax like <strong>not limited</strong> to specify nonlimitedness when the parent was limited, but that was unsavory. The rule given is more uniform and simpler to understand.<br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00419-01"}</em>{"}"} <br />We considered a rule where limitedness was always inherited from the parent for derived types, but in the case of a type whose parent is an interface, this meant that the first interface is treated differently than other interfaces. It also would have forced users to declare dummy nonlimited interfaces just to get the limitedness right. We also considered a syntax like <strong>not limited</strong> to specify nonlimitedness when the parent was limited, but that was unsavory. The rule given is more uniform and simpler to understand.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00419-01"}</em>{"}"} The rules for interfaces are asymmetrical, but the language is not: if the parent interface is limited, the presence of the word <strong>limited</strong> determines the limitedness, and nonlimited progenitors are illegal by the rules in 3.9.4 if <strong>limited</strong> is present. If the parent interface is nonlimited, the word <strong>limited</strong> is illegal by the rules in 3.4. The net effect is that the order of the interfaces doesn't matter. <br /></Admonition>
+{"{"}<em>{"AI95-00419-01"}</em>{"}"} <br />The rules for interfaces are asymmetrical, but the language is not: if the parent interface is limited, the presence of the word <strong>limited</strong> determines the limitedness, and nonlimited progenitors are illegal by the rules in 3.9.4 if <strong>limited</strong> is present. If the parent interface is nonlimited, the word <strong>limited</strong> is illegal by the rules in 3.4. The net effect is that the order of the interfaces doesn't matter. <br /></Admonition>
 
 <p>Otherwise, the type is nonlimited.<br /></p>
 
 <p>[There are no predefined equality operators for a limited type.]<br /></p>
 
-<p>{"{"}<em>{"AI05-0052-1"}</em>{"}"} A type is <em>immutably limited</em> if it is one of the following:<br /></p>
+<p>{"{"}<em>{"AI05-0052-1"}</em>{"}"} <br />A type is <em>immutably limited</em> if it is one of the following:<br /></p>
 
-<p>An explicitly limited record type;<br /></p>
-
-<p>{"{"}<em>{"AI05-0217-1"}</em>{"}"} A record extension with the reserved word <strong>limited</strong>;<br /></p>
-
-<p>A nonformal limited private type that is tagged or has at least one access discriminant with a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>;<br /></p>
-
+<ul>
+<li>An explicitly limited record type;<br /></li>
+<li>{"{"}<em>{"AI05-0217-1"}</em>{"}"} <br />A record extension with the reserved word <strong>limited</strong>;<br /></li>
+<li>A nonformal limited private type that is tagged or has at least one access discriminant with a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>;<br /></li>
+</ul>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>The full type in both of these cases must necessarily be immutably limited. We need to include private types as much as possible so that we aren't unintentionally discouraging the use of private types. <br /></Admonition>
 
-<p>A task type, a protected type, or a synchronized interface;<br /></p>
-
-<p>A type derived from an immutably limited type.<br /></p>
-
+<ul>
+<li>A task type, a protected type, or a synchronized interface;<br /></li>
+<li>A type derived from an immutably limited type.<br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>An immutably limited type is a type that cannot become nonlimited subsequently in a private part or in a child unit. If a view of the type makes it immutably limited, then no copying (assignment) operations are ever available for objects of the type. This allows other properties; for instance, it is safe for such objects to have access discriminants that have defaults or designate other limited objects. <br /></Admonition>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>A nonsynchronized limited interface type is not immutably limited; a type derived from it can be nonlimited. <br /></Admonition>
 
-<p>{"{"}<em>{"AI05-0052-1"}</em>{"}"} A descendant of a generic formal limited private type is presumed to be immutably limited except within the body of a generic unit or a body declared within the declarative region of a generic unit, if the formal type is declared within the formal part of the generic unit.<br /></p>
+<p>{"{"}<em>{"AI05-0052-1"}</em>{"}"} <br />A descendant of a generic formal limited private type is presumed to be immutably limited except within the body of a generic unit or a body declared within the declarative region of a generic unit, if the formal type is declared within the formal part of the generic unit.<br /></p>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>In an instance, a type is descended from the actual type corresponding to the formal, and all rules are rechecked in the specification. Bodies are excepted so that we assume the worst there; the complex wording is required to handle children of generics and unrelated bodies properly. <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 1   {"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI95-00318-02"}</em>{"}"} {"{"}<em>{"AI05-0067-1"}</em>{"}"} {"{"}<em>{"AI12-0442-1"}</em>{"}"} While it is allowed to write initializations of limited objects, such initializations never copy a limited object. The source of such an assignment operation will be an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>, and such <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s and <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s will be built directly in the target object (see 7.6). <br /></Admonition>
+NOTE 1   {"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI95-00318-02"}</em>{"}"} {"{"}<em>{"AI05-0067-1"}</em>{"}"} {"{"}<em>{"AI12-0442-1"}</em>{"}"} <br />While it is allowed to write initializations of limited objects, such initializations never copy a limited object. The source of such an assignment operation will be an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>, and such <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s and <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s will be built directly in the target object (see 7.6). <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>To be honest: </strong>This isn't quite true if the type can become nonlimited (see below); <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s only are required to be build-in-place for "really" limited types. <br /></Admonition>
@@ -170,13 +162,13 @@ package body IO_Package is{"\n"}   Limit : constant := 200;{"\n"}   type File_De
 
 </CodeBlock>
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 3   {"{"}<em>{"AI12-0440-1"}</em>{"}"} <em>Notes on the example:</em> In the example above, an outside subprogram making use of IO_Package can obtain a file name by calling Open and later use it in calls to Read and Write. Thus, outside the package, a file name obtained from Open acts as a kind of password; its internal properties (such as containing a numeric value) are not known and no other operations (such as addition or comparison of internal names) can be performed on a file name. Most importantly, clients of the package cannot make copies of objects of type File_Name.<br /></Admonition>
+NOTE 3   {"{"}<em>{"AI12-0440-1"}</em>{"}"} <em><br />Notes on the example:</em> In the example above, an outside subprogram making use of IO_Package can obtain a file name by calling Open and later use it in calls to Read and Write. Thus, outside the package, a file name obtained from Open acts as a kind of password; its internal properties (such as containing a numeric value) are not known and no other operations (such as addition or comparison of internal names) can be performed on a file name. Most importantly, clients of the package cannot make copies of objects of type File_Name.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 This example is characteristic of any case where complete control over the operations of a type is desired. Such packages serve a dual purpose. They prevent a user from making use of the internal structure of the type. They also implement the notion of an encapsulated data type where the only operations on the type are those given in the package specification.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00318-02"}</em>{"}"} The fact that the full view of File_Name is explicitly declared <strong>limited</strong> means that parameter passing will always be by reference and function results will always be built directly in the result object (see 6.2 and 6.5).<br /></Admonition>
+{"{"}<em>{"AI95-00318-02"}</em>{"}"} <br />The fact that the full view of File_Name is explicitly declared <strong>limited</strong> means that parameter passing will always be by reference and function results will always be built directly in the result object (see 6.2 and 6.5).<br /></Admonition>
 
 
 #### Extensions to Ada 83
@@ -188,50 +180,50 @@ The restrictions in RM83-7.4.4(4), which disallowed <strong>out</strong> paramet
 #### Wording Changes from Ada 83
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0299-1"}</em>{"}"} Since limitedness and privateness are orthogonal in Ada 95 (and to some extent in Ada 83), this is now its own subclause rather than being a subclause of 7.3, "Private Types and Private Extensions". <br /></Admonition>
+{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />Since limitedness and privateness are orthogonal in Ada 95 (and to some extent in Ada 83), this is now its own subclause rather than being a subclause of 7.3, "Private Types and Private Extensions". <br /></Admonition>
 
 
 #### Extensions to Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI95-00318-02"}</em>{"}"} Limited types now have an assignment operation, but its use is restricted such that all uses are build-in-place. This is accomplished by restricting uses to <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s and <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s. <code><a href="../AA-4/AA-4.3#S0106">Aggregate</a></code>s were not allowed to have a limited type in Ada 95, which causes a compatibility issue discussed in 4.3, "Aggregates". Compatibility issues with return statements for limited <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s are discussed in 6.5, "Return Statements". <br /></Admonition>
+{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI95-00318-02"}</em>{"}"} <br />Limited types now have an assignment operation, but its use is restricted such that all uses are build-in-place. This is accomplished by restricting uses to <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s and <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s. <code><a href="../AA-4/AA-4.3#S0106">Aggregate</a></code>s were not allowed to have a limited type in Ada 95, which causes a compatibility issue discussed in 4.3, "Aggregates". Compatibility issues with return statements for limited <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s are discussed in 6.5, "Return Statements". <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00411-01"}</em>{"}"} {"{"}<em>{"AI95-00419-01"}</em>{"}"} Rewrote the definition of limited to ensure that interfaces are covered, but that limitedness is not inherited from interfaces. Derived types that explicitly include <strong>limited</strong> are now also covered. <br /></Admonition>
+{"{"}<em>{"AI95-00411-01"}</em>{"}"} {"{"}<em>{"AI95-00419-01"}</em>{"}"} <br />Rewrote the definition of limited to ensure that interfaces are covered, but that limitedness is not inherited from interfaces. Derived types that explicitly include <strong>limited</strong> are now also covered. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0052-1"}</em>{"}"} {"{"}<em>{"AI05-0217-1"}</em>{"}"} <strong></strong> Added a definition for immutably limited types, so that the fairly complex definition does not need to be repeated in rules elsewhere in the Reference Manual.<br /></Admonition>
+{"{"}<em>{"AI05-0052-1"}</em>{"}"} {"{"}<em>{"AI05-0217-1"}</em>{"}"} <strong><br /></strong> Added a definition for immutably limited types, so that the fairly complex definition does not need to be repeated in rules elsewhere in the Reference Manual.<br /></Admonition>
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0067-1"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} <strong></strong> The built-in-place rules are consolidated in 7.6, and thus they are removed from this subclause.<br /></Admonition>
+{"{"}<em>{"AI05-0067-1"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} <strong><br /></strong> The built-in-place rules are consolidated in 7.6, and thus they are removed from this subclause.<br /></Admonition>
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0087-1"}</em>{"}"} <strong></strong> Fixed an oversight: class-wide types were never defined to be limited, even if their associated specific type is. It is thought that this oversight was never implemented incorrectly by any compiler, thus we have not classified it as an incompatibility.<br /></Admonition>
+{"{"}<em>{"AI05-0087-1"}</em>{"}"} <strong><br /></strong> Fixed an oversight: class-wide types were never defined to be limited, even if their associated specific type is. It is thought that this oversight was never implemented incorrectly by any compiler, thus we have not classified it as an incompatibility.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0147-1"}</em>{"}"} Allowed <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code>s in limited constructor contexts - we want to treat these as closely to parentheses as possible.<br /></Admonition>
+{"{"}<em>{"AI05-0147-1"}</em>{"}"} <br />Allowed <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code>s in limited constructor contexts - we want to treat these as closely to parentheses as possible.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0177-1"}</em>{"}"} Added wording so that expression functions can return limited entities.<br /></Admonition>
+{"{"}<em>{"AI05-0177-1"}</em>{"}"} <br />Added wording so that expression functions can return limited entities.<br /></Admonition>
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0178-1"}</em>{"}"} <strong></strong> Added incomplete views to the list of reasons for a view of a type to be limited. This is not a change as the definition already was in 3.10.1. But it is much better to have all of the reasons for limitedness together. <br /></Admonition>
+{"{"}<em>{"AI05-0178-1"}</em>{"}"} <strong><br /></strong> Added incomplete views to the list of reasons for a view of a type to be limited. This is not a change as the definition already was in 3.10.1. But it is much better to have all of the reasons for limitedness together. <br /></Admonition>
 
 
 #### Extensions to Ada 2012
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI12-0172-1"}</em>{"}"} <strong></strong> A <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> can be used in an expression used in a limited context. This is harmless (no object will be created if an exception is raised instead), useful, and thus appears to have been an omission when <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code>s were added to the language. <br /></Admonition>
+{"{"}<em>{"AI12-0172-1"}</em>{"}"} <strong><br /></strong> A <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> can be used in an expression used in a limited context. This is harmless (no object will be created if an exception is raised instead), useful, and thus appears to have been an omission when <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code>s were added to the language. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0127-1"}</em>{"}"} Added the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> as a limited context. <br /></Admonition>
+{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />Added the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> as a limited context. <br /></Admonition>
 

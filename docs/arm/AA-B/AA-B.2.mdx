@@ -5,9 +5,9 @@ sidebar_position:  139
 # B.2 The Package Interfaces
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
@@ -35,21 +35,23 @@ import Admonition from "@theme/Admonition";
 
 <p>An implementation shall provide the following declarations in the visible part of package Interfaces: <br /></p>
 
-<p>Signed and modular integer types of <em>n</em> bits, if supported by the target architecture, for each <em>n</em> that is at least the size of a storage element and that is a factor of the word size. The names of these types are of the form Integer_<em>n</em> for the signed types, and Unsigned_<em>n</em> for the modular types; <br /></p>
-
+<ul>
+<li>Signed and modular integer types of <em>n</em> bits, if supported by the target architecture, for each <em>n</em> that is at least the size of a storage element and that is a factor of the word size. The names of these types are of the form Integer_<em>n</em> for the signed types, and Unsigned_<em>n</em> for the modular types; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>For example, for a typical 32-bit machine the corresponding types might be Integer_8, Unsigned_8, Integer_16, Unsigned_16, Integer_32, and Unsigned_32.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 The wording above implies, for example, that Integer_16'Size = Unsigned_16'Size = 16. Unchecked conversions between same-Sized types will work as expected. <br /></Admonition>
 
-<p>For each such modular type in Interfaces, shifting and rotating subprograms as specified in the declaration of Interfaces above. These subprograms are Intrinsic. They operate on a bit-by-bit basis, using the binary representation of the value of the operands to yield a binary representation for the result. The Amount parameter gives the number of bits by which to shift or rotate. For shifting, zero bits are shifted in, except in the case of Shift_Right_Arithmetic, where one bits are shifted in if Value is at least half the modulus. <br /></p>
-
+<ul>
+<li>For each such modular type in Interfaces, shifting and rotating subprograms as specified in the declaration of Interfaces above. These subprograms are Intrinsic. They operate on a bit-by-bit basis, using the binary representation of the value of the operands to yield a binary representation for the result. The Amount parameter gives the number of bits by which to shift or rotate. For shifting, zero bits are shifted in, except in the case of Shift_Right_Arithmetic, where one bits are shifted in if Value is at least half the modulus. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>We considered making shifting and rotating be primitive operations of all modular types. However, it is a design principle of Ada that all predefined operations should be operators (not functions named by identifiers). (Note that an early version of Ada had "<strong>abs</strong>" as an identifier, but it was changed to a reserved word operator before standardization of Ada 83.) This is important because the implicit declarations would hide nonoverloadable declarations with the same name, whereas operators are always overloadable. Therefore, we would have had to make shift and rotate into reserved words, which would have been upward incompatible, or else invent new operator symbols, which seemed like too much mechanism. <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<strong>To be honest: </strong>{"{"}<em>{"AI12-0264-1"}</em>{"}"} "Shifting" and "rotating" have the conventional meaning. Neither of these terms is usefully defined by the usual normative references of the Reference Manual, so we provide pseudo-code here to describe the intended semantics of the above wording (all operations in these examples are using modular semantics).<br /></Admonition>
+<strong>To be honest: </strong>{"{"}<em>{"AI12-0264-1"}</em>{"}"} <br />"Shifting" and "rotating" have the conventional meaning. Neither of these terms is usefully defined by the usual normative references of the Reference Manual, so we provide pseudo-code here to describe the intended semantics of the above wording (all operations in these examples are using modular semantics).<br /></Admonition>
 
 <CodeBlock>
 function Rotate_Left (Value : Unsigned_n; Amount : Natural){"\n"}   return Unsigned_n is{"\n"}   Result : Unsigned_n := Value;{"\n"}   Bit : Unsigned_n range 0 .. 1;{"\n"}begin{"\n"}   for Count in 1 .. Amount loop{"\n"}      Bit := Result/2**(n-1); -- High-bit of Result{"\n"}      Result := Result*2 + Bit;{"\n"}   end loop;{"\n"}   return Result;{"\n"}end Rotate_Left;{"\n"}
@@ -60,10 +62,11 @@ function Shift_Right_Arithmetic (Value : Unsigned_n; Amount : Natural){"\n"}   r
 
 </CodeBlock>
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0264-1"}</em>{"}"} These generally correspond to machine instructions, although there may not be an exact match in terms of boundary conditions, as Ada requires the correct result to be produced for all values of Amount. <br /></Admonition>
+{"{"}<em>{"AI12-0264-1"}</em>{"}"} <br />These generally correspond to machine instructions, although there may not be an exact match in terms of boundary conditions, as Ada requires the correct result to be produced for all values of Amount. <br /></Admonition>
 
-<p>Floating point types corresponding to each floating point format fully supported by the hardware. <br /></p>
-
+<ul>
+<li>Floating point types corresponding to each floating point format fully supported by the hardware. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>The names for these floating point types are not specified. However, if IEEE arithmetic is supported, then the names should be IEEE_Float_32 and IEEE_Float_64 for single and double precision, respectively.<br /></Admonition>
 
@@ -75,7 +78,7 @@ function Shift_Right_Arithmetic (Value : Unsigned_n; Amount : Natural){"\n"}   r
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>Implementation-defined children of package Interfaces.<br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00204-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} A child package of package Interfaces with the name of a convention may be provided independently of whether the convention is supported by the Convention aspect and vice versa. Such a child package should contain any declarations that would be useful for interfacing to the language (implementation) represented by the convention. Any declarations useful for interfacing to any language on the given hardware architecture should be provided directly in Interfaces. <br /></p>
+<p>{"{"}<em>{"AI95-00204-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />A child package of package Interfaces with the name of a convention may be provided independently of whether the convention is supported by the Convention aspect and vice versa. Such a child package should contain any declarations that would be useful for interfacing to the language (implementation) represented by the convention. Any declarations useful for interfacing to any language on the given hardware architecture should be provided directly in Interfaces. <br /></p>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>For example, package Interfaces.XYZ_Pascal might contain declarations of types that match the data types provided by the XYZ implementation of Pascal, so that it will be more convenient to pass parameters to a subprogram whose convention is XYZ_Pascal. <br /></Admonition>
@@ -88,7 +91,7 @@ function Shift_Right_Arithmetic (Value : Unsigned_n; Amount : Natural){"\n"}   r
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em><br /></Admonition>
 
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} An implementation supporting an interface to C, COBOL, or Fortran should provide the corresponding package or packages described in the following subclauses. <br /></p>
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />An implementation supporting an interface to C, COBOL, or Fortran should provide the corresponding package or packages described in the following subclauses. <br /></p>
 
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
 <strong></strong>If an interface to C, COBOL, or Fortran is provided, the corresponding package or packages described in Annex B, "Interface to Other Languages" should also be provided.<br /></Admonition>
@@ -104,11 +107,11 @@ package Interfaces.Fortran renames Interfaces.This_Fortran;{"\n"}
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00204-01"}</em>{"}"} Clarified that interfacing to foreign languages is optional and has the same restrictions as a Specialized Needs Annex. <br /></Admonition>
+{"{"}<em>{"AI95-00204-01"}</em>{"}"} <br />Clarified that interfacing to foreign languages is optional and has the same restrictions as a Specialized Needs Annex. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0262-1"}</em>{"}"} Move the restrictions on implementations of optional features to the start of this Annex. <br /></Admonition>
+{"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />Move the restrictions on implementations of optional features to the start of this Annex. <br /></Admonition>
 

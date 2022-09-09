@@ -5,9 +5,9 @@ sidebar_position:  79
 # 9.8 Abort of a Task - Abort of a Sequence of Statements
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
@@ -23,7 +23,7 @@ import Admonition from "@theme/Admonition";
 
 #### Name Resolution Rules
 
-<p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} Each <em>task_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is expected to be of any task type[; each can be of a different task type.]<br /></p>
+<p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />Each <em>task_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is expected to be of any task type[; each can be of a different task type.]<br /></p>
 
 
 #### Dynamic Semantics
@@ -31,22 +31,18 @@ import Admonition from "@theme/Admonition";
 <p>For the execution of an <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code>, the given <em>task_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>s are evaluated in an arbitrary order. Each named task is then <em>aborted</em>, which consists of making the task <em>abnormal</em> and aborting the execution of the corresponding <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>, unless it is already completed. <br /></p>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} Note that aborting those tasks is not defined to be an abort-deferred operation. Therefore, if one of the named tasks is the task executing the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code>, or if the task executing the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> depends on one of the named tasks, then it is possible for the execution of the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> to be aborted, thus leaving some of the tasks unaborted. This allows the implementation to use either a sequence of calls to an "abort task" run-time system primitive, or a single call to an "abort list of tasks" run-time system primitive. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />Note that aborting those tasks is not defined to be an abort-deferred operation. Therefore, if one of the named tasks is the task executing the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code>, or if the task executing the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> depends on one of the named tasks, then it is possible for the execution of the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> to be aborted, thus leaving some of the tasks unaborted. This allows the implementation to use either a sequence of calls to an "abort task" run-time system primitive, or a single call to an "abort list of tasks" run-time system primitive. <br /></Admonition>
 
 <p>When the execution of a construct is <em>aborted</em> (including that of a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> or of a <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>), the execution of every construct included within the aborted execution is also aborted, except for executions included within the execution of an <em>abort-deferred</em> operation; the execution of an abort-deferred operation continues to completion without being affected by the abort; the following are the abort-deferred operations: <br /></p>
 
-<p>a protected action;<br /></p>
-
-<p>waiting for an entry call to complete (after having initiated the attempt to cancel it - see below);<br /></p>
-
-<p>waiting for the termination of dependent tasks;<br /></p>
-
-<p>the execution of an Initialize procedure as the last step of the default initialization of a controlled object;<br /></p>
-
-<p>the execution of a Finalize procedure as part of the finalization of a controlled object;<br /></p>
-
-<p>an assignment operation to an object with a controlled part. <br /></p>
-
+<ul>
+<li>a protected action;<br /></li>
+<li>waiting for an entry call to complete (after having initiated the attempt to cancel it - see below);<br /></li>
+<li>waiting for the termination of dependent tasks;<br /></li>
+<li>the execution of an Initialize procedure as the last step of the default initialization of a controlled object;<br /></li>
+<li>the execution of a Finalize procedure as part of the finalization of a controlled object;<br /></li>
+<li>an assignment operation to an object with a controlled part. <br /></li>
+</ul>
 <p>[The last three of these are discussed further in 7.6.] <br /></p>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
@@ -61,21 +57,19 @@ import Admonition from "@theme/Admonition";
 
 <p>If the execution of an entry call is aborted, an immediate attempt is made to cancel the entry call (see 9.5.3). If the execution of a construct is aborted at a time when the execution is blocked, other than for an entry call, at a point that is outside the execution of an abort-deferred operation, then the execution of the construct completes immediately. For an abort due to an <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code>, these immediate effects occur before the execution of the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> completes. Other than for these immediate cases, the execution of a construct that is aborted does not necessarily complete before the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> completes. However, the execution of the aborted construct completes no later than its next <em>abort completion point</em> (if any) that occurs outside of an abort-deferred operation; the following are abort completion points for an execution: <br /></p>
 
-<p>the point where the execution initiates the activation of another task;<br /></p>
-
-<p>the end of the activation of a task;<br /></p>
-
-<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} a point within a parallel construct where a new logical thread of control is created;<br /></p>
-
-<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} the end of a parallel construct;<br /></p>
-
-<p>the start or end of the execution of an entry call, <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code>, or <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code>; <br /></p>
-
+<ul>
+<li>the point where the execution initiates the activation of another task;<br /></li>
+<li>the end of the activation of a task;<br /></li>
+<li>{"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />a point within a parallel construct where a new logical thread of control is created;<br /></li>
+<li>{"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />the end of a parallel construct;<br /></li>
+<li>the start or end of the execution of an entry call, <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code>, or <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code>; <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Although the abort completion point doesn't occur until the end of the entry call or <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code>, these operations might be cut short because an abort attempts to cancel them. <br /></Admonition>
 
-<p>the start of the execution of a <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code>, or of the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of an <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code>. <br /></p>
-
+<ul>
+<li>the start of the execution of a <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code>, or of the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of an <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code>. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>The start of an <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code> is considered an abort completion point simply because it is easy for an implementation to check at such points. <br /></Admonition>
 
@@ -85,7 +79,7 @@ import Admonition from "@theme/Admonition";
 
 #### Bounded (Run-Time) Errors
 
-<p>{"{"}<em>{"AI05-0264-1"}</em>{"}"} {"{"}<em>{"AI12-0445-1"}</em>{"}"} An attempt to execute an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> as part of the execution of an abort-deferred operation is a bounded error. Similarly, an attempt to create a task that depends on a master that is included entirely within the execution of an abort-deferred operation is a bounded error. In both cases, Program_Error is raised if the error is detected by the implementation; otherwise, the operations proceed as they would outside an abort-deferred operation, except that an abort of the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> or the created task does not necessarily have an effect. <br /></p>
+<p>{"{"}<em>{"AI05-0264-1"}</em>{"}"} {"{"}<em>{"AI12-0445-1"}</em>{"}"} <br />An attempt to execute an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> as part of the execution of an abort-deferred operation is a bounded error. Similarly, an attempt to create a task that depends on a master that is included entirely within the execution of an abort-deferred operation is a bounded error. In both cases, Program_Error is raised if the error is detected by the implementation; otherwise, the operations proceed as they would outside an abort-deferred operation, except that an abort of the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> or the created task does not necessarily have an effect. <br /></p>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>An <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> relies on an abort of the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> to effect the asynchronous transfer of control. For an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> within an abort-deferred operation, the abort might have no effect.<br /></Admonition>
@@ -99,7 +93,7 @@ Creating a task dependent on a master included within an abort-deferred operatio
 <p>If an assignment operation completes prematurely due to an abort, the assignment is said to be <em>disrupted</em>; the target of the assignment or its parts can become abnormal, and certain subsequent uses of the object can be erroneous, as explained in 13.9.1. <br /></p>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 1   {"{"}<em>{"AI12-0442-1"}</em>{"}"} An <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> is best used only in situations requiring unconditional termination.<br /></Admonition>
+NOTE 1   {"{"}<em>{"AI12-0442-1"}</em>{"}"} <br />An <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> is best used only in situations requiring unconditional termination.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 2   A task is allowed to abort any task it can name, including itself.<br /></Admonition>
@@ -111,11 +105,11 @@ NOTE 3   Additional requirements associated with abort are given in D.6, "Preemp
 #### Wording Changes from Ada 83
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause has been rewritten to accommodate the concept of aborting the execution of a construct, rather than just of a task. <br /></Admonition>
+{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />This subclause has been rewritten to accommodate the concept of aborting the execution of a construct, rather than just of a task. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0119-1"}</em>{"}"} Added points within parallel constructs to the list of abort completion points. <br /></Admonition>
+{"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />Added points within parallel constructs to the list of abort completion points. <br /></Admonition>
 

@@ -5,9 +5,9 @@ sidebar_position:  27
 # 3.11 Declarative Parts
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
@@ -22,7 +22,7 @@ import Admonition from "@theme/Admonition";
 
 <p><code>declarative_item</code><a id="S0087"></a><code> ::= </code><br />    <code><a href="../AA-3/AA-3.11#S0088">basic_declarative_item</a></code> | <code><a href="../AA-3/AA-3.11#S0089">body</a></code><br /></p>
 
-<p>{"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} <code>basic_declarative_item</code><a id="S0088"></a><code> ::= </code><br />    <code><a href="../AA-3/AA-3.1#S0021">basic_declaration</a></code> | <code><a href="../AA-13/AA-13.1#S0343">aspect_clause</a></code> | <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code><br /></p>
+<p>{"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} <br /><code>basic_declarative_item</code><a id="S0088"></a><code> ::= </code><br />    <code><a href="../AA-3/AA-3.1#S0021">basic_declaration</a></code> | <code><a href="../AA-13/AA-13.1#S0343">aspect_clause</a></code> | <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code><br /></p>
 
 <p><code>body</code><a id="S0089"></a><code> ::= </code><code><a href="../AA-3/AA-3.11#S0090">proper_body</a></code> | <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code><br /></p>
 
@@ -31,7 +31,7 @@ import Admonition from "@theme/Admonition";
 
 #### Static Semantics
 
-<p>{"{"}<em>{"AI95-00420-01"}</em>{"}"} The list of <code><a href="../AA-3/AA-3.11#S0087">declarative_item</a></code>s of a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> is called the <em>declaration list</em> of the <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>. <br /></p>
+<p>{"{"}<em>{"AI95-00420-01"}</em>{"}"} <br />The list of <code><a href="../AA-3/AA-3.11#S0087">declarative_item</a></code>s of a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> is called the <em>declaration list</em> of the <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>. <br /></p>
 
 
 #### Dynamic Semantics
@@ -51,36 +51,40 @@ The use of the term "normal completion" implies that if the elaboration propagat
 
 <p>For a construct that attempts to use a body, a check (Elaboration_Check) is performed, as follows: <br /></p>
 
-<p>{"{"}<em>8652/0014</em>{"}"} {"{"}<em>{"AI95-00064-01"}</em>{"}"} For a call to a (non-protected) subprogram that has an explicit body, a check is made that the body is already elaborated. This check and the evaluations of any actual parameters of the call are done in an arbitrary order. <br /></p>
-
+<ul>
+<li>{"{"}<em>8652/0014</em>{"}"} {"{"}<em>{"AI95-00064-01"}</em>{"}"} <br />For a call to a (non-protected) subprogram that has an explicit body, a check is made that the body is already elaborated. This check and the evaluations of any actual parameters of the call are done in an arbitrary order. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>AI83-00180 specifies that there is no elaboration check for a subprogram defined by a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Interface (or equivalently, <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Import). AI83-00430 specifies that there is no elaboration check for an enumeration literal. AI83-00406 specifies that the evaluation of parameters and the elaboration check occur in an arbitrary order. AI83-00406 applies to generic instantiation as well (see below).<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0014</em>{"}"} {"{"}<em>{"AI95-00064-01"}</em>{"}"} {"{"}<em>{"AI05-0177-1"}</em>{"}"} A subprogram can be completed by a renaming-as-body, a <code><a href="../AA-6/AA-6.7#S0227">null_procedure_declaration</a></code>, or an <code><a href="../AA-6/AA-6.8#S0228">expression_function_declaration</a></code>, and we need to make an elaboration check on such a body, so we use "body" rather than <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> above. <br /></Admonition>
+{"{"}<em>8652/0014</em>{"}"} {"{"}<em>{"AI95-00064-01"}</em>{"}"} {"{"}<em>{"AI05-0177-1"}</em>{"}"} <br />A subprogram can be completed by a renaming-as-body, a <code><a href="../AA-6/AA-6.7#S0227">null_procedure_declaration</a></code>, or an <code><a href="../AA-6/AA-6.8#S0228">expression_function_declaration</a></code>, and we need to make an elaboration check on such a body, so we use "body" rather than <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> above. <br /></Admonition>
 
-<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} For a call to a protected operation of a protected type (that has a body - no check is performed if  the protected type is imported - see B.1), a check is made that the <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code> is already elaborated. This check and the evaluations of any actual parameters of the call are done in an arbitrary order. <br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />For a call to a protected operation of a protected type (that has a body - no check is performed if  the protected type is imported - see B.1), a check is made that the <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code> is already elaborated. This check and the evaluations of any actual parameters of the call are done in an arbitrary order. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>A protected type has only one elaboration "bit", rather than one for each operation, because one call may result in evaluating the barriers of other entries, and because there are no elaborable declarations between the bodies of the operations. In fact, the elaboration of a <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code> does not elaborate the enclosed bodies, since they are not considered independently elaborable.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 Note that there is no elaboration check when calling a task entry. Task entry calls are permitted even before the associated <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> has been seen. Such calls are simply queued until the task is activated and reaches a corresponding <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>. We considered a similar rule for protected entries - simply queuing all calls until the <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code> was seen, but felt it was not worth the possible implementation overhead, particularly given that there might be multiple instances of the protected type. <br /></Admonition>
 
-<p>For the activation of a task, a check is made by the activator that the <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> is already elaborated. If two or more tasks are being activated together (see 9.2), as the result of the elaboration of a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> or the initialization for the object created by an allocator, this check is done for all of them before activating any of them. <br /></p>
-
+<ul>
+<li>For the activation of a task, a check is made by the activator that the <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> is already elaborated. If two or more tasks are being activated together (see 9.2), as the result of the elaboration of a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> or the initialization for the object created by an allocator, this check is done for all of them before activating any of them. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>As specified by AI83-00149, the check is done by the activator, rather than by the task itself. If it were done by the task itself, it would be turned into a Tasking_Error in the activator, and the other tasks would still be activated. <br /></Admonition>
 
-<p>For the instantiation of a generic unit that has a body, a check is made that this body is already elaborated. This check and the evaluation of any <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code>s of the instantiation are done in an arbitrary order. <br /></p>
-
+<ul>
+<li>For the instantiation of a generic unit that has a body, a check is made that this body is already elaborated. This check and the evaluation of any <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code>s of the instantiation are done in an arbitrary order. <br /></li>
+</ul>
 <p>The exception Program_Error is raised if any of these checks fails. <br /></p>
 
 
 #### Extensions to Ada 83
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00114-01"}</em>{"}"} The syntax for <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> is modified to remove the ordering restrictions of Ada 83; that is, the distinction between <code><a href="../AA-3/AA-3.11#S0088">basic_declarative_item</a></code>s and <code>later_declarative_item</code>s within <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>s is removed. This means that things like <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s and <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>s can be freely intermixed with things like bodies.<br /></Admonition>
+{"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />The syntax for <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> is modified to remove the ordering restrictions of Ada 83; that is, the distinction between <code><a href="../AA-3/AA-3.11#S0088">basic_declarative_item</a></code>s and <code>later_declarative_item</code>s within <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>s is removed. This means that things like <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s and <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>s can be freely intermixed with things like bodies.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 The syntax rule for <code><a href="../AA-3/AA-3.11#S0090">proper_body</a></code> now allows a <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code>, and the rules for elaboration checks now cover calls on protected operations. <br /></Admonition>
@@ -101,30 +105,28 @@ In RM83, all uses of <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a><
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} <strong>Corrigendum:</strong> Changed representation clauses to aspect clauses to reflect that they are used for more than just representation.<br /></Admonition>
+{"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Changed representation clauses to aspect clauses to reflect that they are used for more than just representation.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0014</em>{"}"} {"{"}<em>{"AI95-00064-01"}</em>{"}"} <strong>Corrigendum:</strong> Clarified that the elaboration check applies to all kinds of subprogram bodies.<br /></Admonition>
+{"{"}<em>8652/0014</em>{"}"} {"{"}<em>{"AI95-00064-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Clarified that the elaboration check applies to all kinds of subprogram bodies.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00420-01"}</em>{"}"} Defined "declaration list" to avoid confusion for various rules. Other kinds of declaration list are defined elsewhere. <br /></Admonition>
+{"{"}<em>{"AI95-00420-01"}</em>{"}"} <br />Defined "declaration list" to avoid confusion for various rules. Other kinds of declaration list are defined elsewhere. <br /></Admonition>
 
 
 ## 3.11.1  Completions of Declarations
 
-<p>{"{"}<em>8652/0014</em>{"}"} {"{"}<em>{"AI95-00064-01"}</em>{"}"} {"{"}<em>{"AI05-0177-1"}</em>{"}"} Declarations sometimes come in two parts. A declaration that requires a second part is said to <em>require completion</em>. The second part is called the <em>completion</em> of the declaration (and of the entity declared), and is either another declaration, a body, or a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>. A <em>body</em> is a <code><a href="../AA-3/AA-3.11#S0089">body</a></code>, an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, a <code><a href="../AA-6/AA-6.7#S0227">null_procedure_declaration</a></code> or an <code><a href="../AA-6/AA-6.8#S0228">expression_function_declaration</a></code> that completes another declaration, or a renaming-as-body (see 8.5.4). <br /></p>
+<p>{"{"}<em>8652/0014</em>{"}"} {"{"}<em>{"AI95-00064-01"}</em>{"}"} {"{"}<em>{"AI05-0177-1"}</em>{"}"} <br />Declarations sometimes come in two parts. A declaration that requires a second part is said to <em>require completion</em>. The second part is called the <em>completion</em> of the declaration (and of the entity declared), and is either another declaration, a body, or a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>. A <em>body</em> is a <code><a href="../AA-3/AA-3.11#S0089">body</a></code>, an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, a <code><a href="../AA-6/AA-6.7#S0227">null_procedure_declaration</a></code> or an <code><a href="../AA-6/AA-6.8#S0228">expression_function_declaration</a></code> that completes another declaration, or a renaming-as-body (see 8.5.4). <br /></p>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>Throughout the RM95, there are rules about completions that define the following: <br /></Admonition>
 
-<p>Which declarations require a corresponding completion.<br /></p>
-
-<p>Which constructs can only serve as the completion of a declaration.<br /></p>
-
-<p>Where the completion of a declaration is allowed to be.<br /></p>
-
-<p>What kinds of completions are allowed to correspond to each kind of declaration that allows one. <br /></p>
-
+<ul>
+<li>Which declarations require a corresponding completion.<br /></li>
+<li>Which constructs can only serve as the completion of a declaration.<br /></li>
+<li>Where the completion of a declaration is allowed to be.<br /></li>
+<li>What kinds of completions are allowed to correspond to each kind of declaration that allows one. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Don't confuse this compile-time concept with the run-time concept of completion defined in 7.6.1.<br /></Admonition>
 
@@ -132,32 +134,31 @@ Don't confuse this compile-time concept with the run-time concept of completion 
 Note that the declaration of a private type (if limited) can be completed with the declaration of a task type, which is then completed with a body. Thus, a declaration can actually come in <em>three</em> parts.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0162-1"}</em>{"}"} An incomplete type (whether declared in the limited view of a package or not) may be completed by a private type declaration, so we can in fact have <em>four</em> parts.<br /></Admonition>
+{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0162-1"}</em>{"}"} <br />An incomplete type (whether declared in the limited view of a package or not) may be completed by a private type declaration, so we can in fact have <em>four</em> parts.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0229-1"}</em>{"}"} In Ada 2012, there are no language-defined pragmas that act as completions. Pragma Import (which is obsolescent) has the effect of setting aspect Import to True; such an aspect makes giving a completion illegal. The wording that allows pragmas as completions was left as it is harmless and appears in many places in this Reference Manual. <br /></Admonition>
+{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />In Ada 2012, there are no language-defined pragmas that act as completions. Pragma Import (which is obsolescent) has the effect of setting aspect Import to True; such an aspect makes giving a completion illegal. The wording that allows pragmas as completions was left as it is harmless and appears in many places in this Reference Manual. <br /></Admonition>
 
 
 #### Name Resolution Rules
 
 <p>A construct that can be a completion is interpreted as the completion of a prior declaration only if: <br /></p>
 
-<p>The declaration and the completion occur immediately within the same declarative region;<br /></p>
-
-<p>The defining name or <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code> in the completion is the same as in the declaration, or in the case of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>, the <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> applies to the declaration;<br /></p>
-
-<p>If the declaration is overloadable, then the completion either has a type-conformant profile, or is a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>. <br /></p>
-
+<ul>
+<li>The declaration and the completion occur immediately within the same declarative region;<br /></li>
+<li>The defining name or <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code> in the completion is the same as in the declaration, or in the case of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>, the <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> applies to the declaration;<br /></li>
+<li>If the declaration is overloadable, then the completion either has a type-conformant profile, or is a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>. <br /></li>
+</ul>
 
 #### Legality Rules
 
-<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} An implicit declaration shall not have a completion. For any explicit declaration that is specified to <em>require completion</em>, there shall be a corresponding explicit completion, unless the declared entity is imported (see B.1). <br /></p>
+<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />An implicit declaration shall not have a completion. For any explicit declaration that is specified to <em>require completion</em>, there shall be a corresponding explicit completion, unless the declared entity is imported (see B.1). <br /></p>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<strong>To be honest: </strong>{"{"}<em>{"AI95-00217-06"}</em>{"}"} The implicit declarations occurring in a limited view do have a completion (the explicit declaration occurring in the full view) but that's a special case, since the implicit declarations are actually built from the explicit ones. So they do not <em>require</em> a completion, they have one by <em>fiat</em>. <br /></Admonition>
+<strong>To be honest: </strong>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />The implicit declarations occurring in a limited view do have a completion (the explicit declaration occurring in the full view) but that's a special case, since the implicit declarations are actually built from the explicit ones. So they do not <em>require</em> a completion, they have one by <em>fiat</em>. <br /></Admonition>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>{"AI05-0299-1"}</em>{"}"} The implicit declarations of predefined operators are not allowed to have a completion. Enumeration literals, although they are subprograms, are not allowed to have a corresponding <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code>. That's because the completion rules are described in terms of constructs (<code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code>s) and not entities (subprograms). When a completion is required, it has to be explicit; the implicit null <code><a href="../AA-7/AA-7.2#S0231">package_body</a></code> that Clause 7 talks about cannot serve as the completion of a <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code> if a completion is required. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />The implicit declarations of predefined operators are not allowed to have a completion. Enumeration literals, although they are subprograms, are not allowed to have a corresponding <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code>. That's because the completion rules are described in terms of constructs (<code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code>s) and not entities (subprograms). When a completion is required, it has to be explicit; the implicit null <code><a href="../AA-7/AA-7.2#S0231">package_body</a></code> that Clause 7 talks about cannot serve as the completion of a <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code> if a completion is required. <br /></Admonition>
 
 <p>At most one completion is allowed for a given declaration. Additional requirements on completions appear where each kind of completion is defined. <br /></p>
 
@@ -173,7 +174,7 @@ If the completion of a declaration is also a declaration, then <em>that</em> dec
 <strong></strong>Index types are always completely defined - no need to mention them. There is no way for a completely defined type to depend on the value of a (still) deferred constant. <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 1   {"{"}<em>{"AI05-0229-1"}</em>{"}"} Completions are in principle allowed for any kind of explicit declaration. However, for some kinds of declaration, the only allowed completion is an implementation-defined pragma, and implementations are not required to have any such pragmas. <br /></Admonition>
+NOTE 1   {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />Completions are in principle allowed for any kind of explicit declaration. However, for some kinds of declaration, the only allowed completion is an implementation-defined pragma, and implementations are not required to have any such pragmas. <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br /></Admonition>
@@ -191,11 +192,11 @@ This subclause is new. It is intended to cover all kinds of completions of decla
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0014</em>{"}"} {"{"}<em>{"AI95-00064-01"}</em>{"}"} <strong>Corrigendum:</strong> Added a definition of <em>body</em>, which is different than <code><a href="../AA-3/AA-3.11#S0089">body</a></code> or <strong>body</strong>. <br /></Admonition>
+{"{"}<em>8652/0014</em>{"}"} {"{"}<em>{"AI95-00064-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Added a definition of <em>body</em>, which is different than <code><a href="../AA-3/AA-3.11#S0089">body</a></code> or <strong>body</strong>. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-0177-1"}</em>{"}"} Added null procedures and expression functions that are completions to the definition of <em>body</em>. <br /></Admonition>
+{"{"}<em>{"AI95-0177-1"}</em>{"}"} <br />Added null procedures and expression functions that are completions to the definition of <em>body</em>. <br /></Admonition>
 

@@ -5,9 +5,9 @@ sidebar_position:  180
 # G.2 Numeric Performance Requirements
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
@@ -35,7 +35,7 @@ import Admonition from "@theme/Admonition";
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>Whether the strict mode or the relaxed mode is the default.<br /></Admonition>
 
-<p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} The two modes can be one and the same. <br /></p>
+<p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />The two modes can be one and the same. <br /></p>
 
 
 #### Extensions to Ada 83
@@ -75,8 +75,9 @@ In hardware that is free of arithmetic anomalies, T'Model_Mantissa, T'Model_Emin
 
 <p>For any predefined arithmetic operation that yields a result of a floating point type T, the required bounds on the result are given by a model interval of T (called the <em>result interval</em>) defined in terms of the operand values as follows: <br /></p>
 
-<p>The result interval is the smallest model interval of T that includes the minimum and the maximum of all the values obtained by applying the (exact) mathematical operation to values arbitrarily selected from the respective operand intervals. <br /></p>
-
+<ul>
+<li>The result interval is the smallest model interval of T that includes the minimum and the maximum of all the values obtained by applying the (exact) mathematical operation to values arbitrarily selected from the respective operand intervals. <br /></li>
+</ul>
 <p>The result interval of an exponentiation is obtained by applying the above rule to the sequence of multiplications defined by the exponent, assuming arbitrary association of the factors, and to the final division in the case of a negative exponent.<br /></p>
 
 <p>The result interval of a conversion of a numeric value to a floating point type T is the model interval of T associated with the operand value, except when the source expression is of a fixed point type with a <em>small</em> that is not a power of T'Machine_Radix or is a fixed point multiplication or division either of whose operands has a <em>small</em> that is not a power of T'Machine_Radix; in these cases, the result interval is implementation defined. <br /></p>
@@ -86,10 +87,10 @@ In hardware that is free of arithmetic anomalies, T'Model_Mantissa, T'Model_Emin
 
 <p>For any of the foregoing operations, the implementation shall deliver a value that belongs to the result interval when both bounds of the result interval are in the safe range of the result type T, as determined by the values of T'Safe_First and T'Safe_Last; otherwise, <br /></p>
 
-<p>if T'Machine_Overflows is True, the implementation shall either deliver a value that belongs to the result interval or raise Constraint_Error;<br /></p>
-
-<p>if T'Machine_Overflows is False, the result is implementation defined. <br /></p>
-
+<ul>
+<li>if T'Machine_Overflows is True, the implementation shall either deliver a value that belongs to the result interval or raise Constraint_Error;<br /></li>
+<li>if T'Machine_Overflows is False, the result is implementation defined. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>The result of a floating point arithmetic operation in overflow situations, when the Machine_Overflows attribute of the result type is False.<br /></Admonition>
 
@@ -149,36 +150,42 @@ The wording of the model of floating point arithmetic has been simplified to a l
 
 <p>For every subtype S of a floating point type <em>T</em>: <br /></p>
 
-<p>{"{"}<em>{"AI95-00256-01"}</em>{"}"} S'Model_Mantissa Yields the number of digits in the mantissa of the canonical form of the model numbers of <em>T</em> (see A.5.3). The value of this attribute shall be greater than or equal to <br /></p>
-
+<dt><br/>{"{"}<em>{"AI95-00256-01"}</em>{"}"} <br />S'Model_Mantissa </dt>
+<dl>
+<dd>Yields the number of digits in the mantissa of the canonical form of the model numbers of <em>T</em> (see A.5.3). The value of this attribute shall be greater than or equal to <br /></dd>
+</dl>
 <p>d � log(10) / log(T'Machine_Radix) + g<br /></p>
 
-<p>where d is the requested decimal precision of <em>T</em>, and g is 0 if <em>T</em>'Machine_Radix is a positive power of 10 and 1 otherwise. In addition, <em>T</em>'Model_Mantissa shall be less than or equal to the value of <em>T</em>'Machine_Mantissa. This attribute yields a value of the type <em>universal_integer</em>. <br /></p>
-
+<dl>
+<dd>where d is the requested decimal precision of <em>T</em>, and g is 0 if <em>T</em>'Machine_Radix is a positive power of 10 and 1 otherwise. In addition, <em>T</em>'Model_Mantissa shall be less than or equal to the value of <em>T</em>'Machine_Mantissa. This attribute yields a value of the type <em>universal_integer</em>. <br /></dd>
+</dl>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>S'Model_Epsilon, which is defined in terms of S'Model_Mantissa (see A.5.3), yields the absolute value of the difference between one and the next model number of the type <em>T</em> above one. It is equal to or larger than the absolute value of the difference between one and the next machine number of the type <em>T</em> above one. <br /></Admonition>
 
-<p>S'Model_Emin Yields the minimum exponent of the canonical form of the model numbers of <em>T</em> (see A.5.3). The value of this attribute shall be greater than or equal to the value of <em>T</em>'Machine_Emin. This attribute yields a value of the type <em>universal_integer</em>. <br /></p>
-
+<dt><br/>S'Model_Emin </dt>
+<dl>
+<dd>Yields the minimum exponent of the canonical form of the model numbers of <em>T</em> (see A.5.3). The value of this attribute shall be greater than or equal to the value of <em>T</em>'Machine_Emin. This attribute yields a value of the type <em>universal_integer</em>. <br /></dd>
+</dl>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>S'Model_Small, which is defined in terms of S'Model_Emin (see A.5.3), yields the smallest positive (nonzero) model number of the type <em>T</em>. <br /></Admonition>
 
-<p>S'Safe_First Yields the lower bound of the safe range of <em>T</em>. The value of this attribute shall be a model number of <em>T</em> and greater than or equal to the lower bound of the base range of <em>T</em>. In addition, if <em>T</em> is declared by a <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> or is derived from such a type, and the <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> includes a <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code> specifying a lower bound of lb, then the value of this attribute shall be less than or equal to lb; otherwise, it shall be less than or equal to 10.0 4 � d, where d is the requested decimal precision of <em>T</em>. This attribute yields a value of the type <em>universal_real</em>.<br /></p>
-
-<p>S'Safe_Last Yields the upper bound of the safe range of <em>T</em>. The value of this attribute shall be a model number of <em>T</em> and less than or equal to the upper bound of the base range of <em>T</em>. In addition, if <em>T</em> is declared by a <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> or is derived from such a type, and the <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> includes a <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code> specifying an upper bound of ub, then the value of this attribute shall be greater than or equal to ub; otherwise, it shall be greater than or equal to 10.0 4 � d, where d is the requested decimal precision of <em>T</em>. This attribute yields a value of the type <em>universal_real</em>.<br /></p>
-
-<p>S'Model Denotes a function (of a parameter <em>X</em>) whose specification is given in A.5.3. If <em>X</em> is a model number of <em>T</em>, the function yields <em>X</em>; otherwise, it yields the value obtained by rounding or truncating <em>X</em> to either one of the adjacent model numbers of <em>T</em>. Constraint_Error is raised if the resulting model number is outside the safe range of S. A zero result has the sign of <em>X</em> when S'Signed_Zeros is True. <br /></p>
-
+<dt><br/>S'Safe_First </dt>
+<dl>
+<dd>Yields the lower bound of the safe range of <em>T</em>. The value of this attribute shall be a model number of <em>T</em> and greater than or equal to the lower bound of the base range of <em>T</em>. In addition, if <em>T</em> is declared by a <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> or is derived from such a type, and the <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> includes a <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code> specifying a lower bound of lb, then the value of this attribute shall be less than or equal to lb; otherwise, it shall be less than or equal to 10.0 4 � d, where d is the requested decimal precision of <em>T</em>. This attribute yields a value of the type <em>universal_real</em>.<br /></dd>
+<dt><br/>S'Safe_Last </dt>
+<dd>Yields the upper bound of the safe range of <em>T</em>. The value of this attribute shall be a model number of <em>T</em> and less than or equal to the upper bound of the base range of <em>T</em>. In addition, if <em>T</em> is declared by a <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> or is derived from such a type, and the <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> includes a <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code> specifying an upper bound of ub, then the value of this attribute shall be greater than or equal to ub; otherwise, it shall be greater than or equal to 10.0 4 � d, where d is the requested decimal precision of <em>T</em>. This attribute yields a value of the type <em>universal_real</em>.<br /></dd>
+<dt><br/>S'Model </dt>
+<dd>Denotes a function (of a parameter <em>X</em>) whose specification is given in A.5.3. If <em>X</em> is a model number of <em>T</em>, the function yields <em>X</em>; otherwise, it yields the value obtained by rounding or truncating <em>X</em> to either one of the adjacent model numbers of <em>T</em>. Constraint_Error is raised if the resulting model number is outside the safe range of S. A zero result has the sign of <em>X</em> when S'Signed_Zeros is True. <br /></dd>
+</dl>
 <p>Subject to the constraints given above, the values of S'Model_Mantissa and S'Safe_Last are to be maximized, and the values of S'Model_Emin and S'Safe_First minimized, by the implementation as follows: <br /></p>
 
-<p>First, S'Model_Mantissa is set to the largest value for which values of S'Model_Emin, S'Safe_First, and S'Safe_Last can be chosen so that the implementation satisfies the strict-mode requirements of G.2.1 in terms of the model numbers and safe range induced by these attributes.<br /></p>
-
-<p>Next, S'Model_Emin is set to the smallest value for which values of S'Safe_First and S'Safe_Last can be chosen so that the implementation satisfies the strict-mode requirements of G.2.1 in terms of the model numbers and safe range induced by these attributes and the previously determined value of S'Model_Mantissa.<br /></p>
-
-<p>{"{"}<em>{"AI05-0092-1"}</em>{"}"} Finally, S'Safe_First and S'Safe_Last are set (in either order) to the smallest and largest values, respectively, for which the implementation satisfies the strict-mode requirements of G.2.1 in terms of the model numbers and safe range induced by these attributes and the previously determined values of S'Model_Mantissa and S'Model_Emin. <br /></p>
-
+<ul>
+<li>First, S'Model_Mantissa is set to the largest value for which values of S'Model_Emin, S'Safe_First, and S'Safe_Last can be chosen so that the implementation satisfies the strict-mode requirements of G.2.1 in terms of the model numbers and safe range induced by these attributes.<br /></li>
+<li>Next, S'Model_Emin is set to the smallest value for which values of S'Safe_First and S'Safe_Last can be chosen so that the implementation satisfies the strict-mode requirements of G.2.1 in terms of the model numbers and safe range induced by these attributes and the previously determined value of S'Model_Mantissa.<br /></li>
+<li>{"{"}<em>{"AI05-0092-1"}</em>{"}"} <br />Finally, S'Safe_First and S'Safe_Last are set (in either order) to the smallest and largest values, respectively, for which the implementation satisfies the strict-mode requirements of G.2.1 in terms of the model numbers and safe range induced by these attributes and the previously determined values of S'Model_Mantissa and S'Model_Emin. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI12-0437-1"}</em>{"}"} The following table shows appropriate attribute values for IEEE basic single and double precision types (ANSI/IEEE Std 754-1985, ISO/IEC 60559:2020). Here, we use the names IEEE_Float_32 and IEEE_Float_64, the names that would typically be declared in package Interfaces, in an implementation that supports IEEE arithmetic. In such an implementation, the attributes would typically be the same for Standard.Float and Long_Float, respectively. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI12-0437-1"}</em>{"}"} <br />The following table shows appropriate attribute values for IEEE basic single and double precision types (ANSI/IEEE Std 754-1985, ISO/IEC 60559:2020). Here, we use the names IEEE_Float_32 and IEEE_Float_64, the names that would typically be declared in package Interfaces, in an implementation that supports IEEE arithmetic. In such an implementation, the attributes would typically be the same for Standard.Float and Long_Float, respectively. <br /></Admonition>
 
 <CodeBlock>
 Attribute                        IEEE_Float_32                 IEEE_Float_64{"\n"}
@@ -195,7 +202,7 @@ Note: 'Machine_Overflows can be True or False, depending on whether the Ada impl
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00256-01"}</em>{"}"} Corrected the definition of Model_Mantissa to match that given in 3.5.8. <br /></Admonition>
+{"{"}<em>{"AI95-00256-01"}</em>{"}"} <br />Corrected the definition of Model_Mantissa to match that given in 3.5.8. <br /></Admonition>
 
 
 ## G.2.3  Model of Fixed Point Arithmetic
@@ -226,55 +233,61 @@ Note: 'Machine_Overflows can be True or False, depending on whether the Ada impl
 
 <p>For a fixed point multiplication or division whose (exact) mathematical result is v, and for the conversion of a value v to a fixed point type, the perfect result set and close result set are defined as follows: <br /></p>
 
-<p>If the result type is an ordinary fixed point type with a <em>small</em> of s, <br /></p>
-
-<p>if v is an integer multiple of s, then the perfect result set contains only the value v;<br /></p>
-
-<p>otherwise, it contains the integer multiple of s just below v and the integer multiple of s just above v. <br /></p>
-
-<p>The close result set is an implementation-defined set of consecutive integer multiples of s containing the perfect result set as a subset.<br /></p>
-
-<p>If the result type is a decimal type with a <em>small</em> of s, <br /></p>
-
-<p>if v is an integer multiple of s, then the perfect result set contains only the value v;<br /></p>
-
-<p>{"{"}<em>{"AI05-0264-1"}</em>{"}"} otherwise, if truncation applies, then it contains only the integer multiple of s in the direction toward zero, whereas if rounding applies, then it contains only the nearest integer multiple of s (with ties broken by rounding away from zero). <br /></p>
-
-<p>The close result set is an implementation-defined set of consecutive integer multiples of s containing the perfect result set as a subset. <br /></p>
-
+<ul>
+<li>If the result type is an ordinary fixed point type with a <em>small</em> of s, <br /></li>
+</ul>
+<ul>
+<li>if v is an integer multiple of s, then the perfect result set contains only the value v;<br /></li>
+<li>otherwise, it contains the integer multiple of s just below v and the integer multiple of s just above v. <br /></li>
+</ul>
+<ul>
+<li>The close result set is an implementation-defined set of consecutive integer multiples of s containing the perfect result set as a subset.<br /></li>
+<li>If the result type is a decimal type with a <em>small</em> of s, <br /></li>
+</ul>
+<ul>
+<li>if v is an integer multiple of s, then the perfect result set contains only the value v;<br /></li>
+<li>{"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />otherwise, if truncation applies, then it contains only the integer multiple of s in the direction toward zero, whereas if rounding applies, then it contains only the nearest integer multiple of s (with ties broken by rounding away from zero). <br /></li>
+</ul>
+<ul>
+<li>The close result set is an implementation-defined set of consecutive integer multiples of s containing the perfect result set as a subset. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>As a consequence of subsequent rules, this case does not arise when the operand types are also decimal types. <br /></Admonition>
 
-<p>If the result type is an integer type, <br /></p>
-
-<p>if v is an integer, then the perfect result set contains only the value v;<br /></p>
-
-<p>otherwise, it contains the integer nearest to the value v (if v lies equally distant from two consecutive integers, the perfect result set contains the one that is further from zero). <br /></p>
-
-<p>The close result set is an implementation-defined set of consecutive integers containing the perfect result set as a subset. <br /></p>
-
+<ul>
+<li>If the result type is an integer type, <br /></li>
+</ul>
+<ul>
+<li>if v is an integer, then the perfect result set contains only the value v;<br /></li>
+<li>otherwise, it contains the integer nearest to the value v (if v lies equally distant from two consecutive integers, the perfect result set contains the one that is further from zero). <br /></li>
+</ul>
+<ul>
+<li>The close result set is an implementation-defined set of consecutive integers containing the perfect result set as a subset. <br /></li>
+</ul>
 <p>The result of a fixed point multiplication or division shall belong either to the perfect result set or to the close result set, as described below, if overflow does not occur. In the following cases, if the result type is a fixed point type, let s be its <em>small</em>; otherwise, i.e. when the result type is an integer type, let s be 1.0. <br /></p>
 
-<p>For a multiplication or division neither of whose operands is of type <em>universal_real</em>, let l and r be the <em>smalls</em> of the left and right operands. For a multiplication, if (l � r) / s is an integer or the reciprocal of an integer (the <em>smalls</em> are said to be "compatible" in this case), the result shall belong to the perfect result set; otherwise, it belongs to the close result set. For a division, if l / (r � s) is an integer or the reciprocal of an integer (i.e., the <em>smalls</em> are compatible), the result shall belong to the perfect result set; otherwise, it belongs to the close result set. <br /></p>
-
+<ul>
+<li>For a multiplication or division neither of whose operands is of type <em>universal_real</em>, let l and r be the <em>smalls</em> of the left and right operands. For a multiplication, if (l � r) / s is an integer or the reciprocal of an integer (the <em>smalls</em> are said to be "compatible" in this case), the result shall belong to the perfect result set; otherwise, it belongs to the close result set. For a division, if l / (r � s) is an integer or the reciprocal of an integer (i.e., the <em>smalls</em> are compatible), the result shall belong to the perfect result set; otherwise, it belongs to the close result set. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>When the operand and result types are all decimal types, their <em>smalls</em> are necessarily compatible; the same is true when they are all ordinary fixed point types with binary <em>smalls</em>. <br /></Admonition>
 
-<p>For a multiplication or division having one <em>universal_real</em> operand with a value of v, note that it is always possible to factor v as an integer multiple of a "compatible" <em>small</em>, but the integer multiple may be "too big". If there exists a factorization in which that multiple is less than some implementation-defined limit, the result shall belong to the perfect result set; otherwise, it belongs to the close result set. <br /></p>
-
+<ul>
+<li>For a multiplication or division having one <em>universal_real</em> operand with a value of v, note that it is always possible to factor v as an integer multiple of a "compatible" <em>small</em>, but the integer multiple may be "too big". If there exists a factorization in which that multiple is less than some implementation-defined limit, the result shall belong to the perfect result set; otherwise, it belongs to the close result set. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>Conditions on a <em>universal_real</em> operand of a fixed point multiplication or division for which the result shall be in the <em>perfect result set</em>.<br /></Admonition>
 
-<p>{"{"}<em>{"AI12-0300-1"}</em>{"}"} A multiplication P * Q of an operand of a fixed point type F by an operand of type Integer, or vice versa, and a division P / Q of an operand of a fixed point type F by an operand of type Integer, are also allowed. In these cases, the result has the type of F; explicit conversion of the result is never required. The accuracy required in these cases is the same as that required for a multiplication F(P * Q) or a division F(P / Q) obtained by interpreting the operand of the integer type to have a fixed point type with a <em>small</em> of 1.0.<br /></p>
+<p>{"{"}<em>{"AI12-0300-1"}</em>{"}"} <br />A multiplication P * Q of an operand of a fixed point type F by an operand of type Integer, or vice versa, and a division P / Q of an operand of a fixed point type F by an operand of type Integer, are also allowed. In these cases, the result has the type of F; explicit conversion of the result is never required. The accuracy required in these cases is the same as that required for a multiplication F(P * Q) or a division F(P / Q) obtained by interpreting the operand of the integer type to have a fixed point type with a <em>small</em> of 1.0.<br /></p>
 
 <p>The accuracy of the result of a conversion from an integer or fixed point type to a fixed point type, or from a fixed point type to an integer type, is the same as that of a fixed point multiplication of the source value by a fixed point operand having a <em>small</em> of 1.0 and a value of 1.0, as given by the foregoing rules. The result of a conversion from a floating point type to a fixed point type shall belong to the close result set. The result of a conversion of a <em>universal_real</em> operand to a fixed point type shall belong to the perfect result set.<br /></p>
 
 <p>The possibility of overflow in the result of a predefined arithmetic operation or conversion yielding a result of a fixed point type T is analogous to that for floating point types, except for being related to the base range instead of the safe range. If all of the permitted results belong to the base range of T, then the implementation shall deliver one of the permitted results; otherwise, <br /></p>
 
-<p>if T'Machine_Overflows is True, the implementation shall either deliver one of the permitted results or raise Constraint_Error;<br /></p>
-
-<p>if T'Machine_Overflows is False, the result is implementation defined. <br /></p>
-
+<ul>
+<li>if T'Machine_Overflows is True, the implementation shall either deliver one of the permitted results or raise Constraint_Error;<br /></li>
+<li>if T'Machine_Overflows is False, the result is implementation defined. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>The result of a fixed point arithmetic operation in overflow situations, when the Machine_Overflows attribute of the result type is False.<br /></Admonition>
 
@@ -293,15 +306,15 @@ The accuracy requirements in the case of incompatible <em>smalls</em> are relaxe
 <Admonition type="aarm" aarm="note" title="Note: ">
 The fixed point accuracy requirements are now expressed without reference to model or safe numbers, largely because the full generality of the former model was never exploited in the case of fixed point types (particularly in regard to operand perturbation). Although the new formulation in terms of perfect result sets and close result sets is still verbose, it can be seen to distill down to two cases: <br /></Admonition>
 
-<p>a case where the result must be the exact result, if the exact result is representable, or, if not, then either one of the adjacent values of the type (in some subcases only one of those adjacent values is allowed);<br /></p>
-
-<p>a case where the accuracy is not specified by the language. <br /></p>
-
+<ul>
+<li>a case where the result must be the exact result, if the exact result is representable, or, if not, then either one of the adjacent values of the type (in some subcases only one of those adjacent values is allowed);<br /></li>
+<li>a case where the accuracy is not specified by the language. <br /></li>
+</ul>
 
 #### Wording Changes from Ada 2012
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI12-0300-1"}</em>{"}"} <strong></strong> Reworded the fixed*integer accuracy requirements to clarify that the only allowed integer type in such operations is Standard.Integer. We make this correction as readers of the Reference Manual have been confused on this point. <br /></Admonition>
+{"{"}<em>{"AI12-0300-1"}</em>{"}"} <strong><br /></strong> Reworded the fixed*integer accuracy requirements to clarify that the only allowed integer type in such operations is Standard.Integer. We make this correction as readers of the Reference Manual have been confused on this point. <br /></Admonition>
 
 
 ## G.2.4  Accuracy Requirements for the Elementary Functions
@@ -313,21 +326,20 @@ The fixed point accuracy requirements are now expressed without reference to mod
 
 <p>When an exception is not raised, the result of evaluating a function in an instance <em>EF</em> of Numerics.Generic_Elementary_Functions belongs to a <em>result interval</em>, defined as the smallest model interval of <em>EF</em>.Float_Type that contains all the values of the form f � (1.0 + d), where f is the exact value of the corresponding mathematical function at the given parameter values, d is a real number, and |d| is less than or equal to the function's <em>maximum relative error</em>. The function delivers a value that belongs to the result interval when both of its bounds belong to the safe range of <em>EF</em>.Float_Type; otherwise, <br /></p>
 
-<p>if <em>EF</em>.Float_Type'Machine_Overflows is True, the function either delivers a value that belongs to the result interval or raises Constraint_Error, signaling overflow;<br /></p>
-
-<p>if <em>EF</em>.Float_Type'Machine_Overflows is False, the result is implementation defined. <br /></p>
-
+<ul>
+<li>if <em>EF</em>.Float_Type'Machine_Overflows is True, the function either delivers a value that belongs to the result interval or raises Constraint_Error, signaling overflow;<br /></li>
+<li>if <em>EF</em>.Float_Type'Machine_Overflows is False, the result is implementation defined. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>The result of an elementary function reference in overflow situations, when the Machine_Overflows attribute of the result type is False.<br /></Admonition>
 
 <p>The maximum relative error exhibited by each function is as follows: <br /></p>
 
-<p>2.0 � EF.Float_Type'Model_Epsilon, in the case of the Sqrt, Sin, and Cos functions;<br /></p>
-
-<p>4.0 � EF.Float_Type'Model_Epsilon, in the case of the Log, Exp, Tan, Cot, and inverse trigonometric functions; and<br /></p>
-
-<p>8.0 � EF.Float_Type'Model_Epsilon, in the case of the forward and inverse hyperbolic functions. <br /></p>
-
+<ul>
+<li>2.0 � EF.Float_Type'Model_Epsilon, in the case of the Sqrt, Sin, and Cos functions;<br /></li>
+<li>4.0 � EF.Float_Type'Model_Epsilon, in the case of the Log, Exp, Tan, Cot, and inverse trigonometric functions; and<br /></li>
+<li>8.0 � EF.Float_Type'Model_Epsilon, in the case of the forward and inverse hyperbolic functions. <br /></li>
+</ul>
 <p>The maximum relative error exhibited by the exponentiation operator, which depends on the values of the operands, is (4.0 + |Right � log(Left)| / 32.0) � EF.Float_Type'Model_Epsilon.<br /></p>
 
 <p>The maximum relative error given above applies throughout the domain of the forward trigonometric functions when the Cycle parameter is specified. When the Cycle parameter is omitted, the maximum relative error given above applies only when the absolute value of the angle parameter X is less than or equal to some implementation-defined <em>angle threshold</em>, which shall be at least EF.Float_Type'Machine_Radix EF.Float_Type'Machine_Mantissa/2. Beyond the angle threshold, the accuracy of the forward trigonometric functions is implementation defined. <br /></p>
@@ -341,7 +353,7 @@ The fixed point accuracy requirements are now expressed without reference to mod
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>The angle threshold indirectly determines the amount of precision that the implementation has to maintain during argument reduction. <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} The prescribed results specified in A.5.1 for certain functions at particular parameter values take precedence over the maximum relative error bounds; effectively, they narrow to a single value the result interval allowed by the maximum relative error bounds. Additional rules with a similar effect are given by table G-1 for the inverse trigonometric functions, at particular parameter values for which the mathematical result is possibly not a model number of <em>EF</em>.Float_Type (or is, indeed, even transcendental). In each table entry, the values of the parameters are such that the result lies on the axis between two quadrants; the corresponding accuracy rule, which takes precedence over the maximum relative error bounds, is that the result interval is the model interval of <em>EF</em>.Float_Type associated with the exact mathematical result given in the table.<br /></p>
+<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} <br />The prescribed results specified in A.5.1 for certain functions at particular parameter values take precedence over the maximum relative error bounds; effectively, they narrow to a single value the result interval allowed by the maximum relative error bounds. Additional rules with a similar effect are given by table G-1 for the inverse trigonometric functions, at particular parameter values for which the mathematical result is possibly not a model number of <em>EF</em>.Float_Type (or is, indeed, even transcendental). In each table entry, the values of the parameters are such that the result lies on the axis between two quadrants; the corresponding accuracy rule, which takes precedence over the maximum relative error bounds, is that the result interval is the model interval of <em>EF</em>.Float_Type associated with the exact mathematical result given in the table.<br /></p>
 
 <p><em>This paragraph was deleted.</em><br /></p>
 
@@ -351,12 +363,11 @@ The fixed point accuracy requirements are now expressed without reference to mod
 
 <p>Finally, the following specifications also take precedence over the maximum relative error bounds: <br /></p>
 
-<p>The absolute value of the result of the Sin, Cos, and Tanh functions never exceeds one.<br /></p>
-
-<p>The absolute value of the result of the Coth function is never less than one.<br /></p>
-
-<p>The result of the Cosh function is never less than one. <br /></p>
-
+<ul>
+<li>The absolute value of the result of the Sin, Cos, and Tanh functions never exceeds one.<br /></li>
+<li>The absolute value of the result of the Coth function is never less than one.<br /></li>
+<li>The result of the Cosh function is never less than one. <br /></li>
+</ul>
 
 #### Implementation Advice
 
@@ -371,10 +382,10 @@ The fixed point accuracy requirements are now expressed without reference to mod
 <Admonition type="aarm" aarm="note" title="Note: ">
 The semantics of Numerics.Generic_Elementary_Functions differs from Generic_Elementary_Functions as defined in ISO/IEC DIS 11430 (for Ada 83) in the following ways related to the accuracy specified for strict mode: <br /></Admonition>
 
-<p>The maximum relative error bounds use the Model_Epsilon attribute instead of the Base'Epsilon attribute.<br /></p>
-
-<p>The accuracy requirements are expressed in terms of result intervals that are model intervals. On the one hand, this facilitates the description of the required results in the presence of underflow; on the other hand, it slightly relaxes the requirements expressed in ISO/IEC DIS 11430. <br /></p>
-
+<ul>
+<li>The maximum relative error bounds use the Model_Epsilon attribute instead of the Base'Epsilon attribute.<br /></li>
+<li>The accuracy requirements are expressed in terms of result intervals that are model intervals. On the one hand, this facilitates the description of the required results in the presence of underflow; on the other hand, it slightly relaxes the requirements expressed in ISO/IEC DIS 11430. <br /></li>
+</ul>
 
 ## G.2.5  Performance Requirements for Random Number Generation
 
@@ -392,33 +403,25 @@ The semantics of Numerics.Generic_Elementary_Functions differs from Generic_Elem
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>In the floating point random number test suite, the generator is reset to a time-dependent state at the beginning of the run. The test suite incorporates the following tests, adapted from D. E. Knuth, <em>The Art of Computer Programming, vol. 2: Seminumerical Algorithms.</em>  In the descriptions below, the given number of degrees of freedom is the number before reduction due to any necessary combination of measurement categories with small expected counts; it is one less than the number of measurement categories. <br /></Admonition>
 
-<p>Proportional Distribution Test (a variant of the Equidistribution Test). The interval 0.0 .. 1.0 is partitioned into K subintervals. K is chosen randomly between 4 and 25 for each repetition of the test, along with the boundaries of the subintervals (subject to the constraint that at least 2 of the subintervals have a width of 0.001 or more). 5000 random floating point numbers are generated. The counts of random numbers falling into each subinterval are tallied and compared with the expected counts, which are proportional to the widths of the subintervals. The number of degrees of freedom for the chi-square test is K1.<br /></p>
-
-<p>Gap Test. The bounds of a range A .. B, with 0.0  A {"<"} B  1.0, are chosen randomly for each repetition of the test, subject to the constraint that 0.2  BA  0.6. Random floating point numbers are generated until 5000 falling into the range A .. B have been encountered. Each of these 5000 is preceded by a "gap" (of length greater than or equal to 0) of consecutive random numbers not falling into the range A .. B. The counts of gaps of each length from 0 to 15, and of all lengths greater than 15 lumped together, are tallied and compared with the expected counts. Let P = BA. The probability that a gap has a length of L is (1P) L � P for L  15, while the probability that a gap has a length of 16 or more is (1P) 16. The number of degrees of freedom for the chi-square test is 16.<br /></p>
-
-<p>Permutation Test. 5000 tuples of 4 different random floating point numbers are generated. (An entire 4-tuple is discarded in the unlikely event that it contains any two exactly equal components.) The counts of each of the 4! = 24 possible relative orderings of the components of the 4-tuples are tallied and compared with the expected counts. Each of the possible relative orderings has an equal probability. The number of degrees of freedom for the chi-square test is 23.<br /></p>
-
-<p>Increasing-Runs Test. Random floating point numbers are generated until 5000 increasing runs have been observed. An "increasing run" is a sequence of random numbers in strictly increasing order; it is followed by a random number that is strictly smaller than the preceding random number. (A run under construction is entirely discarded in the unlikely event that one random number is followed immediately by an exactly equal random number.) The decreasing random number that follows an increasing run is discarded and not included with the next increasing run. The counts of increasing runs of each length from 1 to 4, and of all lengths greater than 4 lumped together, are tallied and compared with the expected counts. The probability that an increasing run has a length of L is 1/L!  1/(L+1)! for L  4, while the probability that an increasing run has a length of 5 or more is 1/5!. The number of degrees of freedom for the chi-square test is 4.<br /></p>
-
-<p>Decreasing-Runs Test. The test is similar to the Increasing Runs Test, but with decreasing runs.<br /></p>
-
-<p>Maximum-of-t Test (with t = 5). 5000 tuples of 5 random floating point numbers are generated. The maximum of the components of each 5-tuple is determined and raised to the 5th power. The uniformity of the resulting values over the range 0.0 .. 1.0 is tested as in the Proportional Distribution Test. <br /></p>
-
+<ul>
+<li>Proportional Distribution Test (a variant of the Equidistribution Test). The interval 0.0 .. 1.0 is partitioned into K subintervals. K is chosen randomly between 4 and 25 for each repetition of the test, along with the boundaries of the subintervals (subject to the constraint that at least 2 of the subintervals have a width of 0.001 or more). 5000 random floating point numbers are generated. The counts of random numbers falling into each subinterval are tallied and compared with the expected counts, which are proportional to the widths of the subintervals. The number of degrees of freedom for the chi-square test is K1.<br /></li>
+<li>Gap Test. The bounds of a range A .. B, with 0.0  A {"<"} B  1.0, are chosen randomly for each repetition of the test, subject to the constraint that 0.2  BA  0.6. Random floating point numbers are generated until 5000 falling into the range A .. B have been encountered. Each of these 5000 is preceded by a "gap" (of length greater than or equal to 0) of consecutive random numbers not falling into the range A .. B. The counts of gaps of each length from 0 to 15, and of all lengths greater than 15 lumped together, are tallied and compared with the expected counts. Let P = BA. The probability that a gap has a length of L is (1P) L � P for L  15, while the probability that a gap has a length of 16 or more is (1P) 16. The number of degrees of freedom for the chi-square test is 16.<br /></li>
+<li>Permutation Test. 5000 tuples of 4 different random floating point numbers are generated. (An entire 4-tuple is discarded in the unlikely event that it contains any two exactly equal components.) The counts of each of the 4! = 24 possible relative orderings of the components of the 4-tuples are tallied and compared with the expected counts. Each of the possible relative orderings has an equal probability. The number of degrees of freedom for the chi-square test is 23.<br /></li>
+<li>Increasing-Runs Test. Random floating point numbers are generated until 5000 increasing runs have been observed. An "increasing run" is a sequence of random numbers in strictly increasing order; it is followed by a random number that is strictly smaller than the preceding random number. (A run under construction is entirely discarded in the unlikely event that one random number is followed immediately by an exactly equal random number.) The decreasing random number that follows an increasing run is discarded and not included with the next increasing run. The counts of increasing runs of each length from 1 to 4, and of all lengths greater than 4 lumped together, are tallied and compared with the expected counts. The probability that an increasing run has a length of L is 1/L!  1/(L+1)! for L  4, while the probability that an increasing run has a length of 5 or more is 1/5!. The number of degrees of freedom for the chi-square test is 4.<br /></li>
+<li>Decreasing-Runs Test. The test is similar to the Increasing Runs Test, but with decreasing runs.<br /></li>
+<li>Maximum-of-t Test (with t = 5). 5000 tuples of 5 random floating point numbers are generated. The maximum of the components of each 5-tuple is determined and raised to the 5th power. The uniformity of the resulting values over the range 0.0 .. 1.0 is tested as in the Proportional Distribution Test. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>In the discrete random number test suite, Numerics.Discrete_Random is instantiated as described below. The generator is reset to a time-dependent state after each instantiation. The test suite incorporates the following tests, adapted from D. E. Knuth (<em>op. cit.</em>) and other sources. The given number of degrees of freedom for the chi-square test is reduced by any necessary combination of measurement categories with small expected counts, as described above. <br /></Admonition>
 
-<p>Equidistribution Test. In each repetition of the test, a number R between 2 and 30 is chosen randomly, and Numerics.Discrete_Random is instantiated with an integer subtype whose range is 1 .. R. 5000 integers are generated randomly from this range. The counts of occurrences of each integer in the range are tallied and compared with the expected counts, which have equal probabilities. The number of degrees of freedom for the chi-square test is R1.<br /></p>
-
-<p>Simplified Poker Test. Numerics.Discrete_Random is instantiated once with an enumeration subtype representing the 13 denominations (Two through Ten, Jack, Queen, King, and Ace) of an infinite deck of playing cards. 2000 "poker" hands (5-tuples of values of this subtype) are generated randomly. The counts of hands containing exactly K different denominations (1  K  5) are tallied and compared with the expected counts. The probability that a hand contains exactly K different denominations is given by a formula in Knuth. The number of degrees of freedom for the chi-square test is 4.<br /></p>
-
-<p>Coupon Collector's Test. Numerics.Discrete_Random is instantiated in each repetition of the test with an integer subtype whose range is 1 .. R, where R varies systematically from 2 to 11. Integers are generated randomly from this range until each value in the range has occurred, and the number K of integers generated is recorded. This constitutes a "coupon collector's segment" of length K. 2000 such segments are generated. The counts of segments of each length from R to R+29, and of all lengths greater than R+29 lumped together, are tallied and compared with the expected counts. The probability that a segment has any given length is given by formulas in Knuth. The number of degrees of freedom for the chi-square test is 30.<br /></p>
-
-<p>Craps Test (Lengths of Games). Numerics.Discrete_Random is instantiated once with an integer subtype whose range is 1 .. 6 (representing the six numbers on a die). 5000 craps games are played, and their lengths are recorded. (The length of a craps game is the number of rolls of the pair of dice required to produce a win or a loss. A game is won on the first roll if the dice show 7 or 11; it is lost if they show 2, 3, or 12. If the dice show some other sum on the first roll, it is called the <em>point</em>, and the game is won if and only if the point is rolled again before a 7 is rolled.) The counts of games of each length from 1 to 18, and of all lengths greater than 18 lumped together, are tallied and compared with the expected counts. For 2  S  12, let D S be the probability that a roll of a pair of dice shows the sum S, and let Q S(L) = D S � (1  (D S + D 7)) L2 � (D S + D 7). Then, the probability that a game has a length of 1 is D 7 + D 11 + D 2 + D 3 + D 12 and, for L {">"} 1, the probability that a game has a length of L is Q 4(L) + Q 5(L) + Q 6(L) + Q 8(L) + Q 9(L) + Q 10(L). The number of degrees of freedom for the chi-square test is 18.<br /></p>
-
-<p>Craps Test (Lengths of Passes). This test is similar to the last, but enough craps games are played for 3000 losses to occur. A string of wins followed by a loss is called a <em>pass</em>, and its length is the number of wins preceding the loss. The counts of passes of each length from 0 to 7, and of all lengths greater than 7 lumped together, are tallied and compared with the expected counts. For L  0, the probability that a pass has a length of L is W L � (1W), where W, the probability that a game ends in a win, is 244.0/495.0. The number of degrees of freedom for the chi-square test is 8.<br /></p>
-
-<p>Collision Test. Numerics.Discrete_Random is instantiated once with an integer or enumeration type representing binary bits. 15 successive calls on the Random function are used to obtain the bits of a 15-bit binary integer between 0 and 32767. 3000 such integers are generated, and the number of collisions (integers previously generated) is counted and compared with the expected count. A chi-square test is not used to assess the number of collisions; rather, the limits on the number of collisions, corresponding to the 2.5 and 97.5 percentage points, are (from formulas in Knuth) 112 and 154. The test passes if and only if the number of collisions is in this range. <br /></p>
-
+<ul>
+<li>Equidistribution Test. In each repetition of the test, a number R between 2 and 30 is chosen randomly, and Numerics.Discrete_Random is instantiated with an integer subtype whose range is 1 .. R. 5000 integers are generated randomly from this range. The counts of occurrences of each integer in the range are tallied and compared with the expected counts, which have equal probabilities. The number of degrees of freedom for the chi-square test is R1.<br /></li>
+<li>Simplified Poker Test. Numerics.Discrete_Random is instantiated once with an enumeration subtype representing the 13 denominations (Two through Ten, Jack, Queen, King, and Ace) of an infinite deck of playing cards. 2000 "poker" hands (5-tuples of values of this subtype) are generated randomly. The counts of hands containing exactly K different denominations (1  K  5) are tallied and compared with the expected counts. The probability that a hand contains exactly K different denominations is given by a formula in Knuth. The number of degrees of freedom for the chi-square test is 4.<br /></li>
+<li>Coupon Collector's Test. Numerics.Discrete_Random is instantiated in each repetition of the test with an integer subtype whose range is 1 .. R, where R varies systematically from 2 to 11. Integers are generated randomly from this range until each value in the range has occurred, and the number K of integers generated is recorded. This constitutes a "coupon collector's segment" of length K. 2000 such segments are generated. The counts of segments of each length from R to R+29, and of all lengths greater than R+29 lumped together, are tallied and compared with the expected counts. The probability that a segment has any given length is given by formulas in Knuth. The number of degrees of freedom for the chi-square test is 30.<br /></li>
+<li>Craps Test (Lengths of Games). Numerics.Discrete_Random is instantiated once with an integer subtype whose range is 1 .. 6 (representing the six numbers on a die). 5000 craps games are played, and their lengths are recorded. (The length of a craps game is the number of rolls of the pair of dice required to produce a win or a loss. A game is won on the first roll if the dice show 7 or 11; it is lost if they show 2, 3, or 12. If the dice show some other sum on the first roll, it is called the <em>point</em>, and the game is won if and only if the point is rolled again before a 7 is rolled.) The counts of games of each length from 1 to 18, and of all lengths greater than 18 lumped together, are tallied and compared with the expected counts. For 2  S  12, let D S be the probability that a roll of a pair of dice shows the sum S, and let Q S(L) = D S � (1  (D S + D 7)) L2 � (D S + D 7). Then, the probability that a game has a length of 1 is D 7 + D 11 + D 2 + D 3 + D 12 and, for L {">"} 1, the probability that a game has a length of L is Q 4(L) + Q 5(L) + Q 6(L) + Q 8(L) + Q 9(L) + Q 10(L). The number of degrees of freedom for the chi-square test is 18.<br /></li>
+<li>Craps Test (Lengths of Passes). This test is similar to the last, but enough craps games are played for 3000 losses to occur. A string of wins followed by a loss is called a <em>pass</em>, and its length is the number of wins preceding the loss. The counts of passes of each length from 0 to 7, and of all lengths greater than 7 lumped together, are tallied and compared with the expected counts. For L  0, the probability that a pass has a length of L is W L � (1W), where W, the probability that a game ends in a win, is 244.0/495.0. The number of degrees of freedom for the chi-square test is 8.<br /></li>
+<li>Collision Test. Numerics.Discrete_Random is instantiated once with an integer or enumeration type representing binary bits. 15 successive calls on the Random function are used to obtain the bits of a 15-bit binary integer between 0 and 32767. 3000 such integers are generated, and the number of collisions (integers previously generated) is counted and compared with the expected count. A chi-square test is not used to assess the number of collisions; rather, the limits on the number of collisions, corresponding to the 2.5 and 97.5 percentage points, are (from formulas in Knuth) 112 and 154. The test passes if and only if the number of collisions is in this range. <br /></li>
+</ul>
 
 ## G.2.6  Accuracy Requirements for Complex Arithmetic
 
@@ -443,14 +446,14 @@ The semantics of Numerics.Generic_Elementary_Functions differs from Generic_Elem
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>The components of a complex function that exhibits bounded relative error in each component have to have the correct sign. In contrast, one of the components of a complex function that exhibits bounded box error may have the wrong sign, since the dimensions of the box containing the result are proportional to the modulus of the mathematical result and not to either component of the mathematical result individually. Thus, for example, the box containing the computed result of a complex function whose mathematical result has a large modulus but lies very close to the imaginary axis might well straddle that axis, allowing the real component of the computed result to have the wrong sign. In this case, the distance between the computed result and the mathematical result is, nevertheless, a small fraction of the modulus of the mathematical result. <br /></Admonition>
 
-<p>if <em>CT</em>.Real'Machine_Overflows is True, the function either delivers a value that belongs to the result interval (or a value both of whose components belong to their respective result intervals) or raises Constraint_Error, signaling overflow;<br /></p>
-
-<p>if <em>CT</em>.Real'Machine_Overflows is False, the result is implementation defined. <br /></p>
-
+<ul>
+<li>if <em>CT</em>.Real'Machine_Overflows is True, the function either delivers a value that belongs to the result interval (or a value both of whose components belong to their respective result intervals) or raises Constraint_Error, signaling overflow;<br /></li>
+<li>if <em>CT</em>.Real'Machine_Overflows is False, the result is implementation defined. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>The result of a complex arithmetic operation or complex elementary function reference in overflow situations, when the Machine_Overflows attribute of the corresponding real type is False.<br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} The error bounds for particular complex functions are tabulated in table G-2. In the table, the error bound is given as the coefficient of <em>CT</em>.Real'Model_Epsilon.<br /></p>
+<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} <br />The error bounds for particular complex functions are tabulated in table G-2. In the table, the error bound is given as the coefficient of <em>CT</em>.Real'Model_Epsilon.<br /></p>
 
 <p><em>This paragraph was deleted.</em><br /></p>
 
@@ -461,16 +464,15 @@ The semantics of Numerics.Generic_Elementary_Functions differs from Generic_Elem
 
 <p>The prescribed results specified in G.1.2 for certain functions at particular parameter values take precedence over the error bounds; effectively, they narrow to a single value the result interval allowed by the error bounds for a component of the result. Additional rules with a similar effect are given below for certain inverse trigonometric and inverse hyperbolic functions, at particular parameter values for which a component of the mathematical result is transcendental. In each case, the accuracy rule, which takes precedence over the error bounds, is that the result interval for the stated result component is the model interval of <em>CT</em>.Real associated with the component's exact mathematical value. The cases in question are as follows: <br /></p>
 
-<p>When the parameter X has the value zero, the real (resp., imaginary) component of the result of the Arccot (resp., Arccoth) function is in the model interval of <em>CT</em>.Real associated with the value /2.0.<br /></p>
-
-<p>When the parameter X has the value one, the real component of the result of the Arcsin function is in the model interval of <em>CT</em>.Real associated with the value /2.0.<br /></p>
-
-<p>When the parameter X has the value 1.0, the real component of the result of the Arcsin (resp., Arccos) function is in the model interval of <em>CT</em>.Real associated with the value /2.0 (resp., ). <br /></p>
-
+<ul>
+<li>When the parameter X has the value zero, the real (resp., imaginary) component of the result of the Arccot (resp., Arccoth) function is in the model interval of <em>CT</em>.Real associated with the value /2.0.<br /></li>
+<li>When the parameter X has the value one, the real component of the result of the Arcsin function is in the model interval of <em>CT</em>.Real associated with the value /2.0.<br /></li>
+<li>When the parameter X has the value 1.0, the real component of the result of the Arcsin (resp., Arccos) function is in the model interval of <em>CT</em>.Real associated with the value /2.0 (resp., ). <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>It is possible to give many other prescribed results in which a component of the parameter is restricted to a similar model interval when the parameter X is appropriately restricted to an easily testable portion of the domain. We follow the proposed ISO/IEC standard for Generic_Complex_Elementary_Functions (for Ada 83) in not doing so, however. <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} The amount by which a component of the result of an inverse trigonometric or inverse hyperbolic function is allowed to spill over into a quadrant adjacent to the one corresponding to the principal branch, as given in G.1.2, is limited. The rule is that the result belongs to the smallest model interval of <em>CT</em>.Real that contains both boundaries of the quadrant corresponding to the principal branch. This rule also takes precedence over the maximum error bounds, effectively narrowing the result interval allowed by them.<br /></p>
+<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} <br />The amount by which a component of the result of an inverse trigonometric or inverse hyperbolic function is allowed to spill over into a quadrant adjacent to the one corresponding to the principal branch, as given in G.1.2, is limited. The rule is that the result belongs to the smallest model interval of <em>CT</em>.Real that contains both boundaries of the quadrant corresponding to the principal branch. This rule also takes precedence over the maximum error bounds, effectively narrowing the result interval allowed by them.<br /></p>
 
 <p>Finally, the results allowed by the error bounds are narrowed by one further rule: The absolute value of each component of the result of the Exp function, for a pure-imaginary parameter, never exceeds one. <br /></p>
 

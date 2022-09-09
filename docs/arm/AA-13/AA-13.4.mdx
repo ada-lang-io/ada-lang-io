@@ -5,9 +5,9 @@ sidebar_position:  106
 # 13.4 Enumeration Representation Clauses
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
@@ -38,7 +38,7 @@ import Admonition from "@theme/Admonition";
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>As for all type-related representation items, the <code><a href="../AA-13/AA-13.1#S0345">local_name</a></code> is required to denote a first subtype. <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} Each component of the <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> shall be given by an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> rather than a {"<"}{">"}. The <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s given in the <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> shall be static, and shall specify distinct integer codes for each value of the enumeration type; the associated integer codes shall satisfy the predefined ordering relation of the type. <br /></p>
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />Each component of the <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> shall be given by an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> rather than a {"<"}{">"}. The <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s given in the <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> shall be static, and shall specify distinct integer codes for each value of the enumeration type; the associated integer codes shall satisfy the predefined ordering relation of the type. <br /></p>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>Each value of the enumeration type has to be given an internal code, even if the first subtype of the enumeration type is constrained to only a subrange (this is only possible if the enumeration type is a derived type). This "full coverage" requirement is important because one may refer to Enum'Base'First and Enum'Base'Last, which need to have defined representations. <br /></Admonition>
@@ -67,8 +67,9 @@ import Admonition from "@theme/Admonition";
 
 <p>The recommended level of support for <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code>s is: <br /></p>
 
-<p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} An implementation should support at least the internal codes in the range System.Min_Int .. System.Max_Int. An implementation is not required to support <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code>s for boolean types. <br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />An implementation should support at least the internal codes in the range System.Min_Int .. System.Max_Int. An implementation is not required to support <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code>s for boolean types. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>The implementation may support numbers outside the above range, such as numbers greater than System.Max_Int. See AI83-00564. <br /></Admonition>
 
@@ -81,29 +82,33 @@ import Admonition from "@theme/Admonition";
 
 #### Static Semantics
 
-<p>{"{"}<em>{"AI12-0237-1"}</em>{"}"} For every discrete subtype S, the following attributes are defined: <br /></p>
+<p>{"{"}<em>{"AI12-0237-1"}</em>{"}"} <br />For every discrete subtype S, the following attributes are defined: <br /></p>
 
-<p>S'Enum_Rep{"{"}<em>{"AI12-0237-1"}</em>{"}"} S'Enum_Rep denotes a function with the following specification: <br /></p>
-
+<dt><br/>S'Enum_Rep</dt>
+<dl>
+<dd>{"{"}<em>{"AI12-0237-1"}</em>{"}"} <br />S'Enum_Rep denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Enum_Rep (Arg : S'Base) return universal_integer{"\n"}
 
 </CodeBlock>
-<p>This function returns the representation value of the value of Arg, as a value of type <em>universal_integer</em>. The <em>representation value</em> is the internal code specified in an enumeration representation clause, if any, for the type corresponding to the value of Arg, and otherwise is the position number of the value.<br /></p>
-
-<p>S'Enum_Val{"{"}<em>{"AI12-0237-1"}</em>{"}"} S'Enum_Val denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>This function returns the representation value of the value of Arg, as a value of type <em>universal_integer</em>. The <em>representation value</em> is the internal code specified in an enumeration representation clause, if any, for the type corresponding to the value of Arg, and otherwise is the position number of the value.<br /></dd>
+<dt><br/>S'Enum_Val</dt>
+<dd>{"{"}<em>{"AI12-0237-1"}</em>{"}"} <br />S'Enum_Val denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Enum_Val (Arg : universal_integer) return S'Base{"\n"}
 
 </CodeBlock>
-<p>This function returns a value of the type of S whose representation value equals the value of Arg. For the evaluation of a call on S'Enum_Val, if there is no value in the base range of its type with the given representation value, Constraint_Error is raised.<br /></p>
-
+<dl>
+<dd>This function returns a value of the type of S whose representation value equals the value of Arg. For the evaluation of a call on S'Enum_Val, if there is no value in the base range of its type with the given representation value, Constraint_Error is raised.<br /></dd>
+</dl>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>We define these on all discrete types so that they can be used inside of a generic unit on a subtype of a generic formal discrete type. They're not useful on integer types (they have the same effect as S'Pos and S'Val). <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE   {"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0237-1"}</em>{"}"} {"{"}<em>{"AI12-0442-1"}</em>{"}"} Attribute Enum_Rep can be used to query the internal codes used for an enumeration type; attribute Enum_Val can be used to convert from an internal code to an enumeration value. The other attributes of the type, such as Succ, Pred, and Pos, are unaffected by an <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code>. For example, Pos always returns the position number, <em>not</em> an internal integer code that was specified in an <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code>. <br /></Admonition>
+NOTE   {"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0237-1"}</em>{"}"} {"{"}<em>{"AI12-0442-1"}</em>{"}"} <br />Attribute Enum_Rep can be used to query the internal codes used for an enumeration type; attribute Enum_Val can be used to convert from an internal code to an enumeration value. The other attributes of the type, such as Succ, Pred, and Pos, are unaffected by an <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code>. For example, Pos always returns the position number, <em>not</em> an internal integer code that was specified in an <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code>. <br /></Admonition>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>Suppose the enumeration type in question is derived: <br /></Admonition>
@@ -113,7 +118,7 @@ type T1 is (Red, Green, Blue);{"\n"}subtype S1 is T1 range Red .. Green;{"\n"}ty
 
 </CodeBlock>
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} The <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code> has to specify values for all enumerals, even ones that are not in S2 (such as Blue). The Base attribute can be used to get at these values. For example: <br /></Admonition>
+{"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} <br />The <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code> has to specify values for all enumerals, even ones that are not in S2 (such as Blue). The Base attribute can be used to get at these values. For example: <br /></Admonition>
 
 <CodeBlock>
 for I in S2'Base loop{"\n"}    ... -- When I equals Blue, the internal code is 30.{"\n"}end loop;{"\n"}
@@ -125,7 +130,7 @@ We considered allowing or requiring "<strong>for</strong> S2'Base <strong>use</s
 
 #### Examples
 
-<p>{"{"}<em>{"AI12-0312-1"}</em>{"}"} <em>Examples of enumeration representation clauses:</em> <br /></p>
+<p>{"{"}<em>{"AI12-0312-1"}</em>{"}"} <em><br />Examples of enumeration representation clauses:</em> <br /></p>
 
 <CodeBlock>
 type Mix_Code is (ADD, SUB, MUL, LDA, STA, STZ);{"\n"}
@@ -147,14 +152,14 @@ For portability, we now require that the default coding for an enumeration type 
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} <strong>Corrigendum:</strong> Updated to reflect that we no longer have something called <code>representation_clause</code>.<br /></Admonition>
+{"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Updated to reflect that we no longer have something called <code>representation_clause</code>.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00287-01"}</em>{"}"} Added wording to prevent the use of {"<"}{">"} in a <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code>. ({"<"}{">"} is newly added to <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>s.) <br /></Admonition>
+{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />Added wording to prevent the use of {"<"}{">"} in a <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code>. ({"<"}{">"} is newly added to <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>s.) <br /></Admonition>
 
 
 #### Extensions to Ada 2012
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0237-1"}</em>{"}"} Attributes Enum_Rep and Enum_Val are new. <br /></Admonition>
+{"{"}<em>{"AI12-0237-1"}</em>{"}"} <br />Attributes Enum_Rep and Enum_Val are new. <br /></Admonition>
 

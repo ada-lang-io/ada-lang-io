@@ -5,9 +5,9 @@ sidebar_position:  117
 # Annex A Predefined Language Environment
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
@@ -42,10 +42,10 @@ import Admonition from "@theme/Admonition";
 
 #### Implementation Requirements
 
-<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} {"{"}<em>{"AI12-0052-1"}</em>{"}"} {"{"}<em>{"AI12-0114-1"}</em>{"}"} {"{"}<em>{"AI12-0200-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} The implementation shall ensure that concurrent calls on any two (possibly the same) language-defined subprograms perform as specified, so long as all pairs of objects (one from each call) that are either denoted by parameters that can be passed by reference, or are designated by parameters of an access type, are nonoverlapping. <br /></p>
+<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} {"{"}<em>{"AI12-0052-1"}</em>{"}"} {"{"}<em>{"AI12-0114-1"}</em>{"}"} {"{"}<em>{"AI12-0200-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} <br />The implementation shall ensure that concurrent calls on any two (possibly the same) language-defined subprograms perform as specified, so long as all pairs of objects (one from each call) that are either denoted by parameters that can be passed by reference, or are designated by parameters of an access type, are nonoverlapping. <br /></p>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI12-0052-1"}</em>{"}"} {"{"}<em>{"AI12-0114-1"}</em>{"}"} So long as the parameters are disjoint, concurrent calls on the same language-defined subprogram, and concurrent calls on two different language-defined subprograms are required to work. But concurrent calls operating on overlapping objects (be they of the same or different language-defined subprograms) are <em>not</em> required to work (being an erroneous use of shared variables) unless both subprograms are required to pass the associated parameter by-copy.<br /></Admonition>
+<strong></strong>{"{"}<em>{"AI12-0052-1"}</em>{"}"} {"{"}<em>{"AI12-0114-1"}</em>{"}"} <br />So long as the parameters are disjoint, concurrent calls on the same language-defined subprogram, and concurrent calls on two different language-defined subprograms are required to work. But concurrent calls operating on overlapping objects (be they of the same or different language-defined subprograms) are <em>not</em> required to work (being an erroneous use of shared variables) unless both subprograms are required to pass the associated parameter by-copy.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 For example, simultaneous calls to Text_IO.Put will work properly, so long as they are going to two different files. On the other hand, simultaneous output to the same file constitutes erroneous use of shared variables. <br /></Admonition>
@@ -54,14 +54,14 @@ For example, simultaneous calls to Text_IO.Put will work properly, so long as th
 <strong>To be honest: </strong>Here, "language defined subprogram" means a language defined library subprogram, a subprogram declared in the visible part of a language defined library package, an instance of a language defined generic library subprogram, or a subprogram declared in the visible part of an instance of a language defined generic library package. <br /></Admonition>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI12-0052-1"}</em>{"}"} This rule applies to all language-defined subprograms, including those defined in packages that manage some global state (like environment variables or the current directory). Unless specified above, such subprograms need to work when the explicit parameters are not overlapping; in particular, the existence of the global state is not considered.<br /></Admonition>
+<strong></strong>{"{"}<em>{"AI12-0052-1"}</em>{"}"} <br />This rule applies to all language-defined subprograms, including those defined in packages that manage some global state (like environment variables or the current directory). Unless specified above, such subprograms need to work when the explicit parameters are not overlapping; in particular, the existence of the global state is not considered.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0052-1"}</em>{"}"} The rule implies that any data local to the private part or body of the package (including global state as described above) has to be somehow protected against simultaneous access. <br /></Admonition>
+{"{"}<em>{"AI12-0052-1"}</em>{"}"} <br />The rule implies that any data local to the private part or body of the package (including global state as described above) has to be somehow protected against simultaneous access. <br /></Admonition>
 
-<p>{"{"}<em>{"AI12-0052-1"}</em>{"}"} {"{"}<em>{"AI12-0159-1"}</em>{"}"} For the purpose of determining whether concurrent calls on text input-output subprograms are required to perform as specified above, when calling a subprogram within Text_IO or its children that implicitly operates on one of the default input-output files, the subprogram is considered to have a parameter of Current_Input or Current_Output (as appropriate).<br /></p>
+<p>{"{"}<em>{"AI12-0052-1"}</em>{"}"} {"{"}<em>{"AI12-0159-1"}</em>{"}"} <br />For the purpose of determining whether concurrent calls on text input-output subprograms are required to perform as specified above, when calling a subprogram within Text_IO or its children that implicitly operates on one of the default input-output files, the subprogram is considered to have a parameter of Current_Input or Current_Output (as appropriate).<br /></p>
 
-<p>{"{"}<em>{"AI05-0048-1"}</em>{"}"} If a descendant of a language-defined tagged type is declared, the implementation shall ensure that each inherited language-defined subprogram behaves as described in this Reference Manual. In particular, overriding a language-defined subprogram shall not alter the effect of any inherited language-defined subprogram. <br /></p>
+<p>{"{"}<em>{"AI05-0048-1"}</em>{"}"} <br />If a descendant of a language-defined tagged type is declared, the implementation shall ensure that each inherited language-defined subprogram behaves as described in this Reference Manual. In particular, overriding a language-defined subprogram shall not alter the effect of any inherited language-defined subprogram. <br /></p>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>This means that internally the implementation must not do redispatching unless it is required by the Standard. So when we say that some subprogram Bar is equivalent to Foo, overriding Foo for a derived type doesn't change the semantics of Bar, and in particular it means that Bar may no longer be equivalent to Foo. The word "equivalent" is always a bit of a lie anyway. <br /></Admonition>
@@ -75,7 +75,7 @@ For example, simultaneous calls to Text_IO.Put will work properly, so long as th
 <strong></strong>For example, the implementation may say, "you cannot compile a library unit called System" or "you cannot compile a child of package System" or "if you compile a library unit called System, it has to be a package, and it has to contain at least the following declarations: ...". <br /></Admonition>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI12-0112-1"}</em>{"}"} Implementations are of course allowed to make changes to the specifications of language-defined units, so long as those changes are semantically neutral (that is, no program could change legality or effect because of the changes). In particular, an implementation can <strong>with</strong> additional units (especially implementation-defined units) so long as those units do not change the elaboration of the language-defined unit.<br /></Admonition>
+<strong></strong>{"{"}<em>{"AI12-0112-1"}</em>{"}"} <br />Implementations are of course allowed to make changes to the specifications of language-defined units, so long as those changes are semantically neutral (that is, no program could change legality or effect because of the changes). In particular, an implementation can <strong>with</strong> additional units (especially implementation-defined units) so long as those units do not change the elaboration of the language-defined unit.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 Similarly, an implementation can add postconditions to language-defined subprograms, so long as those postconditions always evaluate to True. This is useful if the implementation can use those postconditions for optimization. <br /></Admonition>
@@ -93,38 +93,38 @@ The order and lettering of the annexes has been changed. <br /></Admonition>
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0047</em>{"}"} {"{"}<em>{"AI95-00081-01"}</em>{"}"} <strong>Corrigendum:</strong> Units missing from the list of predefined units were added.<br /></Admonition>
+{"{"}<em>8652/0047</em>{"}"} {"{"}<em>{"AI95-00081-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Units missing from the list of predefined units were added.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00424-01"}</em>{"}"} Added new units to the list of predefined units. <br /></Admonition>
+{"{"}<em>{"AI95-00424-01"}</em>{"}"} <br />Added new units to the list of predefined units. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0048-1"}</em>{"}"} <strong></strong> Added wording to ban redispatching unless it is explicitly required, in order to safeguard portability when overriding language-defined routines.<br /></Admonition>
+{"{"}<em>{"AI05-0048-1"}</em>{"}"} <strong><br /></strong> Added wording to ban redispatching unless it is explicitly required, in order to safeguard portability when overriding language-defined routines.<br /></Admonition>
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0060-1"}</em>{"}"} {"{"}<em>{"AI05-0206-1"}</em>{"}"} <strong></strong> Added a permission to omit pragma Remote_Types from language-defined units if Annex E is not supported. This was later removed, as a better method of supporting the reason is now available. Note that this requires all implementations to provide minimal support for the Remote_Types categorization even if Annex E is not supported; being unable to compile language-defined units is not allowed.<br /></Admonition>
+{"{"}<em>{"AI05-0060-1"}</em>{"}"} {"{"}<em>{"AI05-0206-1"}</em>{"}"} <strong><br /></strong> Added a permission to omit pragma Remote_Types from language-defined units if Annex E is not supported. This was later removed, as a better method of supporting the reason is now available. Note that this requires all implementations to provide minimal support for the Remote_Types categorization even if Annex E is not supported; being unable to compile language-defined units is not allowed.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0001-1"}</em>{"}"} {"{"}<em>{"AI05-0049-1"}</em>{"}"} {"{"}<em>{"AI05-0069-1"}</em>{"}"} {"{"}<em>{"AI05-0111-3"}</em>{"}"} {"{"}<em>{"AI05-0136-1"}</em>{"}"} {"{"}<em>{"AI05-0137-1"}</em>{"}"} {"{"}<em>{"AI05-0166-1"}</em>{"}"} {"{"}<em>{"AI05-0168-1"}</em>{"}"} Added various new units to the list of predefined units. <br /></Admonition>
+{"{"}<em>{"AI05-0001-1"}</em>{"}"} {"{"}<em>{"AI05-0049-1"}</em>{"}"} {"{"}<em>{"AI05-0069-1"}</em>{"}"} {"{"}<em>{"AI05-0111-3"}</em>{"}"} {"{"}<em>{"AI05-0136-1"}</em>{"}"} {"{"}<em>{"AI05-0137-1"}</em>{"}"} {"{"}<em>{"AI05-0166-1"}</em>{"}"} {"{"}<em>{"AI05-0168-1"}</em>{"}"} <br />Added various new units to the list of predefined units. <br /></Admonition>
 
 
 #### Incompatibilities With Ada 2012
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0005-1"}</em>{"}"} When a new entity <em>E</em> is added to a package <em>P</em> that is <strong>use</strong>d in client code, <em>use clause conflicts</em> are possible. Specifically, if <em>P</em> is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>F</em> with the same defining identifier as <em>E</em> is defined in some other package that is also referenced in a <em>use_clause</em>, the user-defined entity <em>F</em> may no longer be use-visible, resulting in errors. This is an incompatibility when the new entity is added to a language-defined package. Note that use clause conflicts are rare and easily fixed by using an expanded name. <br /></Admonition>
+{"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />When a new entity <em>E</em> is added to a package <em>P</em> that is <strong>use</strong>d in client code, <em>use clause conflicts</em> are possible. Specifically, if <em>P</em> is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>F</em> with the same defining identifier as <em>E</em> is defined in some other package that is also referenced in a <em>use_clause</em>, the user-defined entity <em>F</em> may no longer be use-visible, resulting in errors. This is an incompatibility when the new entity is added to a language-defined package. Note that use clause conflicts are rare and easily fixed by using an expanded name. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0052-1"}</em>{"}"} {"{"}<em>{"AI12-0114-1"}</em>{"}"} {"{"}<em>{"AI12-0159-1"}</em>{"}"} <strong>Corrigendum:</strong> The rules requiring concurrent access of language-defined subprograms were expanded to include implicit Text_IO objects, overlapping objects designated by parameters of an access type, and simultaneous calls on different language-defined subprograms. While this might change behavior of some programs, it would do so by eliminating erroneous execution, so we don't consider this an inconsistency.<br /></Admonition>
+{"{"}<em>{"AI12-0052-1"}</em>{"}"} {"{"}<em>{"AI12-0114-1"}</em>{"}"} {"{"}<em>{"AI12-0159-1"}</em>{"}"} <strong><br />Corrigendum:</strong> The rules requiring concurrent access of language-defined subprograms were expanded to include implicit Text_IO objects, overlapping objects designated by parameters of an access type, and simultaneous calls on different language-defined subprograms. While this might change behavior of some programs, it would do so by eliminating erroneous execution, so we don't consider this an inconsistency.<br /></Admonition>
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI12-0200-1"}</em>{"}"} <strong></strong> The rules requiring concurrent access of language-defined subprograms were clarified further.<br /></Admonition>
+{"{"}<em>{"AI12-0200-1"}</em>{"}"} <strong><br /></strong> The rules requiring concurrent access of language-defined subprograms were clarified further.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0021-1"}</em>{"}"} {"{"}<em>{"AI12-0208-1"}</em>{"}"} {"{"}<em>{"AI12-0234-1"}</em>{"}"} {"{"}<em>{"AI12-0254-1"}</em>{"}"} {"{"}<em>{"AI12-0293-1"}</em>{"}"} {"{"}<em>{"AI12-0321-1"}</em>{"}"} {"{"}<em>{"AI12-0340-1"}</em>{"}"} Added various new units to the list of predefined units. <br /></Admonition>
+{"{"}<em>{"AI12-0021-1"}</em>{"}"} {"{"}<em>{"AI12-0208-1"}</em>{"}"} {"{"}<em>{"AI12-0234-1"}</em>{"}"} {"{"}<em>{"AI12-0254-1"}</em>{"}"} {"{"}<em>{"AI12-0293-1"}</em>{"}"} {"{"}<em>{"AI12-0321-1"}</em>{"}"} {"{"}<em>{"AI12-0340-1"}</em>{"}"} <br />Added various new units to the list of predefined units. <br /></Admonition>
 

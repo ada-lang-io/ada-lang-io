@@ -5,843 +5,757 @@ sidebar_position:  208
 # K.2 Language-Defined Attributes
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
 
-<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause summarizes the definitions given elsewhere of the language-defined attributes. Attributes are properties of entities that can be queried by an Ada program.<br /></p>
+<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />This subclause summarizes the definitions given elsewhere of the language-defined attributes. Attributes are properties of entities that can be queried by an Ada program.<br /></p>
 
-<p>P'AccessFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that denotes a subprogram:<br /></p>
-
-<p>P'Access yields an access value that designates the subprogram denoted by P. The type of P'Access is an access-to-subprogram type (<em>S</em>), as determined by the expected type. See 3.10.2.<br /></p>
-
-<p>X'AccessFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an aliased view of an object:<br /></p>
-
-<p>X'Access yields an access value that designates the object denoted by X. The type of X'Access is an access-to-object type, as determined by the expected type. The expected type shall be a general access type. See 3.10.2.<br /></p>
-
-<p>X'AddressFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an object, program unit, or label:<br /></p>
-
-<p>Denotes the address of the first of the storage elements allocated to X. For a program unit or label, this value refers to the machine code associated with the corresponding body or <code><a href="../AA-5/AA-5.1#S0167">statement</a></code>. The value of this attribute is of type System.Address. See 13.3.<br /></p>
-
-<p>S'AdjacentFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Adjacent denotes a function with the following specification: <br /></p>
-
+<dt><br/>P'Access</dt>
+<dl>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that denotes a subprogram:<br /></dd>
+<dd>P'Access yields an access value that designates the subprogram denoted by P. The type of P'Access is an access-to-subprogram type (<em>S</em>), as determined by the expected type. See 3.10.2.<br /></dd>
+<dt><br/>X'Access</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an aliased view of an object:<br /></dd>
+<dd>X'Access yields an access value that designates the object denoted by X. The type of X'Access is an access-to-object type, as determined by the expected type. The expected type shall be a general access type. See 3.10.2.<br /></dd>
+<dt><br/>X'Address</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an object, program unit, or label:<br /></dd>
+<dd>Denotes the address of the first of the storage elements allocated to X. For a program unit or label, this value refers to the machine code associated with the corresponding body or <code><a href="../AA-5/AA-5.1#S0167">statement</a></code>. The value of this attribute is of type System.Address. See 13.3.<br /></dd>
+<dt><br/>S'Adjacent</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Adjacent denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Adjacent (X, Towards : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>If Towards = X, the function yields X; otherwise, it yields the machine number of the type T adjacent to X in the direction of Towards, if that machine number exists. If the result would be outside the base range of S, Constraint_Error is raised. When T'Signed_Zeros is True, a zero result has the sign of X. When Towards is zero, its sign has no bearing on the result. See A.5.3.<br /></p>
-
-<p>S'AftFor every fixed point subtype S:<br /></p>
-
-<p>S'Aft yields the number of decimal digits needed after the decimal point to accommodate the <em>delta</em> of the subtype S, unless the <em>delta</em> of the subtype S is greater than 0.1, in which case the attribute yields the value one. (S'Aft is the smallest positive integer N for which (10**N)*S'Delta is greater than or equal to one.) The value of this attribute is of the type <em>universal_integer</em>. See 3.5.10.<br /></p>
-
-<p>S'AlignmentFor every subtype S:<br /></p>
-
-<p>The value of this attribute is of type <em>universal_integer</em>, and nonnegative.<br /></p>
-
-<p>For an object X of subtype S, if S'Alignment is not zero, then X'Alignment is a nonzero integral multiple of S'Alignment unless specified otherwise by a representation item. See 13.3.<br /></p>
-
-<p>X'AlignmentFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an object:<br /></p>
-
-<p>The value of this attribute is of type <em>universal_integer</em>, and nonnegative; zero means that the object is not necessarily aligned on a storage element boundary. If X'Alignment is not zero, then X is aligned on a storage unit boundary and X'Address is an integral multiple of X'Alignment (that is, the Address modulo the Alignment is zero).<br /></p>
-
-<p><em>This paragraph was deleted.</em> See 13.3.<br /></p>
-
-<p>S'BaseFor every scalar subtype S:<br /></p>
-
-<p>S'Base denotes an unconstrained subtype of the type of S. This unconstrained subtype is called the <em>base subtype</em> of the type. See 3.5.<br /></p>
-
-<p>S'Bit_OrderFor every specific record subtype S:<br /></p>
-
-<p>Denotes the bit ordering for the type of S. The value of this attribute is of type System.Bit_Order. See 13.5.3.<br /></p>
-
-<p>P'Body_VersionFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that statically denotes a program unit:<br /></p>
-
-<p>Yields a value of the predefined type String that identifies the version of the compilation unit that contains the body (but not any subunits) of the program unit. See E.3.<br /></p>
-
-<p>T'CallableFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> T that is of a task type (after any implicit dereference):<br /></p>
-
-<p>Yields the value True when the task denoted by T is <em>callable</em>, and False otherwise; See 9.9.<br /></p>
-
-<p>E'CallerFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> E that denotes an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code>:<br /></p>
-
-<p>Yields a value of the type Task_Id that identifies the task whose call is now being serviced. Use of this attribute is allowed only inside an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, or <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> after the <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code>, corresponding to the <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> denoted by E. See C.7.1.<br /></p>
-
-<p>S'CeilingFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Ceiling denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>If Towards = X, the function yields X; otherwise, it yields the machine number of the type T adjacent to X in the direction of Towards, if that machine number exists. If the result would be outside the base range of S, Constraint_Error is raised. When T'Signed_Zeros is True, a zero result has the sign of X. When Towards is zero, its sign has no bearing on the result. See A.5.3.<br /></dd>
+<dt><br/>S'Aft</dt>
+<dd>For every fixed point subtype S:<br /></dd>
+<dd>S'Aft yields the number of decimal digits needed after the decimal point to accommodate the <em>delta</em> of the subtype S, unless the <em>delta</em> of the subtype S is greater than 0.1, in which case the attribute yields the value one. (S'Aft is the smallest positive integer N for which (10**N)*S'Delta is greater than or equal to one.) The value of this attribute is of the type <em>universal_integer</em>. See 3.5.10.<br /></dd>
+<dt><br/>S'Alignment</dt>
+<dd>For every subtype S:<br /></dd>
+<dd>The value of this attribute is of type <em>universal_integer</em>, and nonnegative.<br /></dd>
+<dd>For an object X of subtype S, if S'Alignment is not zero, then X'Alignment is a nonzero integral multiple of S'Alignment unless specified otherwise by a representation item. See 13.3.<br /></dd>
+<dt><br/>X'Alignment</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an object:<br /></dd>
+<dd>The value of this attribute is of type <em>universal_integer</em>, and nonnegative; zero means that the object is not necessarily aligned on a storage element boundary. If X'Alignment is not zero, then X is aligned on a storage unit boundary and X'Address is an integral multiple of X'Alignment (that is, the Address modulo the Alignment is zero).<br /></dd>
+<dt><br/></dt>
+<dd><em>This paragraph was deleted.</em> See 13.3.<br /></dd>
+<dt><br/>S'Base</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Base denotes an unconstrained subtype of the type of S. This unconstrained subtype is called the <em>base subtype</em> of the type. See 3.5.<br /></dd>
+<dt><br/>S'Bit_Order</dt>
+<dd>For every specific record subtype S:<br /></dd>
+<dd>Denotes the bit ordering for the type of S. The value of this attribute is of type System.Bit_Order. See 13.5.3.<br /></dd>
+<dt><br/>P'Body_Version</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that statically denotes a program unit:<br /></dd>
+<dd>Yields a value of the predefined type String that identifies the version of the compilation unit that contains the body (but not any subunits) of the program unit. See E.3.<br /></dd>
+<dt><br/>T'Callable</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> T that is of a task type (after any implicit dereference):<br /></dd>
+<dd>Yields the value True when the task denoted by T is <em>callable</em>, and False otherwise; See 9.9.<br /></dd>
+<dt><br/>E'Caller</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> E that denotes an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code>:<br /></dd>
+<dd>Yields a value of the type Task_Id that identifies the task whose call is now being serviced. Use of this attribute is allowed only inside an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, or <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> after the <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code>, corresponding to the <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> denoted by E. See C.7.1.<br /></dd>
+<dt><br/>S'Ceiling</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Ceiling denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Ceiling (X : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>The function yields the value X, i.e., the smallest (most negative) integral value greater than or equal to X. When X is zero, the result has the sign of X; a zero result otherwise has a negative sign when S'Signed_Zeros is True. See A.5.3.<br /></p>
-
-<p>S'ClassFor every subtype S of a tagged type <em>T</em> (specific or class-wide):<br /></p>
-
-<p>S'Class denotes a subtype of the class-wide type (called <em>T</em>'Class in this document) for the class rooted at <em>T</em> (or if S already denotes a class-wide subtype, then S'Class is the same as S).<br /></p>
-
-<p>S'Class is unconstrained. However, if S is constrained, then the values of S'Class are only those that when converted to the type <em>T</em> belong to S. See 3.9.<br /></p>
-
-<p>S'ClassFor every subtype S of an untagged private type whose full view is tagged:<br /></p>
-
-<p>Denotes the class-wide subtype corresponding to the full view of S. This attribute is allowed only from the beginning of the private part in which the full view is declared, until the declaration of the full view. After the full view, the Class attribute of the full view can be used. See 7.3.1.<br /></p>
-
-<p>X'Component_SizeFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an array subtype or array object (after any implicit dereference):<br /></p>
-
-<p>Denotes the size in bits of components of the type of X. The value of this attribute is of type <em>universal_integer</em>. See 13.3.<br /></p>
-
-<p>S'ComposeFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Compose denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>The function yields the value X, i.e., the smallest (most negative) integral value greater than or equal to X. When X is zero, the result has the sign of X; a zero result otherwise has a negative sign when S'Signed_Zeros is True. See A.5.3.<br /></dd>
+<dt><br/>S'Class</dt>
+<dd>For every subtype S of a tagged type <em>T</em> (specific or class-wide):<br /></dd>
+<dd>S'Class denotes a subtype of the class-wide type (called <em>T</em>'Class in this document) for the class rooted at <em>T</em> (or if S already denotes a class-wide subtype, then S'Class is the same as S).<br /></dd>
+<dd>S'Class is unconstrained. However, if S is constrained, then the values of S'Class are only those that when converted to the type <em>T</em> belong to S. See 3.9.<br /></dd>
+<dt><br/>S'Class</dt>
+<dd>For every subtype S of an untagged private type whose full view is tagged:<br /></dd>
+<dd>Denotes the class-wide subtype corresponding to the full view of S. This attribute is allowed only from the beginning of the private part in which the full view is declared, until the declaration of the full view. After the full view, the Class attribute of the full view can be used. See 7.3.1.<br /></dd>
+<dt><br/>X'Component_Size</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an array subtype or array object (after any implicit dereference):<br /></dd>
+<dd>Denotes the size in bits of components of the type of X. The value of this attribute is of type <em>universal_integer</em>. See 13.3.<br /></dd>
+<dt><br/>S'Compose</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Compose denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Compose (Fraction : T;{"\n"}                    Exponent : universal_integer){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>Let v be the value Fraction � T'Machine_RadixExponentk, where k is the normalized exponent of Fraction. If v is a machine number of the type T, or if |v|  T'Model_Small, the function yields v; otherwise, it yields either one of the machine numbers of the type T adjacent to v. Constraint_Error is optionally raised if v is outside the base range of S. A zero result has the sign of Fraction when S'Signed_Zeros is True. See A.5.3.<br /></p>
-
-<p>A'ConstrainedFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of a discriminated type (after any implicit dereference):<br /></p>
-
-<p>Yields the value True if A denotes a constant, a value, a tagged object, or a constrained variable, and False otherwise. The value of this attribute is of the predefined type Boolean. See 3.7.2.<br /></p>
-
-<p>S'Copy_SignFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Copy_Sign denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>Let v be the value Fraction � T'Machine_RadixExponentk, where k is the normalized exponent of Fraction. If v is a machine number of the type T, or if |v|  T'Model_Small, the function yields v; otherwise, it yields either one of the machine numbers of the type T adjacent to v. Constraint_Error is optionally raised if v is outside the base range of S. A zero result has the sign of Fraction when S'Signed_Zeros is True. See A.5.3.<br /></dd>
+<dt><br/>A'Constrained</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of a discriminated type (after any implicit dereference):<br /></dd>
+<dd>Yields the value True if A denotes a constant, a value, a tagged object, or a constrained variable, and False otherwise. The value of this attribute is of the predefined type Boolean. See 3.7.2.<br /></dd>
+<dt><br/>S'Copy_Sign</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Copy_Sign denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Copy_Sign (Value, Sign : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>If the value of Value is nonzero, the function yields a result whose magnitude is that of Value and whose sign is that of Sign; otherwise, it yields the value zero. Constraint_Error is optionally raised if the result is outside the base range of S. A zero result has the sign of Sign when S'Signed_Zeros is True. See A.5.3.<br /></p>
-
-<p>E'CountFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> E that denotes an entry of a task or protected unit:<br /></p>
-
-<p>Yields the number of calls presently queued on the entry E of the current instance of the unit. The value of this attribute is of the type <em>universal_integer</em>. See 9.9.<br /></p>
-
-<p>S'DefiniteFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> S that denotes a formal indefinite subtype:<br /></p>
-
-<p>S'Definite yields True if the actual subtype corresponding to S is definite; otherwise, it yields False. The value of this attribute is of the predefined type Boolean. See 12.5.1.<br /></p>
-
-<p>S'DeltaFor every fixed point subtype S:<br /></p>
-
-<p>S'Delta denotes the <em>delta</em> of the fixed point subtype S. The value of this attribute is of the type <em>universal_real</em>. See 3.5.10.<br /></p>
-
-<p>S'DenormFor every subtype S of a floating point type T:<br /></p>
-
-<p>Yields the value True if every value expressible in the form<br />    � mantissa � T'Machine_RadixT'Machine_Emin<br />where <em>mantissa</em> is a nonzero T'Machine_Mantissa-digit fraction in the number base T'Machine_Radix, the first digit of which is zero, is a machine number (see 3.5.7) of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. See A.5.3.<br /></p>
-
-<p>S'DigitsFor every floating point subtype S:<br /></p>
-
-<p>S'Digits denotes the requested decimal precision for the subtype S. The value of this attribute is of the type <em>universal_integer</em>. See 3.5.8.<br /></p>
-
-<p>S'DigitsFor every decimal fixed point subtype S:<br /></p>
-
-<p>S'Digits denotes the <em>digits</em> of the decimal fixed point subtype S, which corresponds to the number of decimal digits that are representable in objects of the subtype. The value of this attribute is of the type <em>universal_integer</em>. See 3.5.10.<br /></p>
-
-<p>S'Enum_RepFor every discrete subtype S:<br /></p>
-
-<p>S'Enum_Rep denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>If the value of Value is nonzero, the function yields a result whose magnitude is that of Value and whose sign is that of Sign; otherwise, it yields the value zero. Constraint_Error is optionally raised if the result is outside the base range of S. A zero result has the sign of Sign when S'Signed_Zeros is True. See A.5.3.<br /></dd>
+<dt><br/>E'Count</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> E that denotes an entry of a task or protected unit:<br /></dd>
+<dd>Yields the number of calls presently queued on the entry E of the current instance of the unit. The value of this attribute is of the type <em>universal_integer</em>. See 9.9.<br /></dd>
+<dt><br/>S'Definite</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> S that denotes a formal indefinite subtype:<br /></dd>
+<dd>S'Definite yields True if the actual subtype corresponding to S is definite; otherwise, it yields False. The value of this attribute is of the predefined type Boolean. See 12.5.1.<br /></dd>
+<dt><br/>S'Delta</dt>
+<dd>For every fixed point subtype S:<br /></dd>
+<dd>S'Delta denotes the <em>delta</em> of the fixed point subtype S. The value of this attribute is of the type <em>universal_real</em>. See 3.5.10.<br /></dd>
+<dt><br/>S'Denorm</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>Yields the value True if every value expressible in the form<br />    � mantissa � T'Machine_RadixT'Machine_Emin<br />where <em>mantissa</em> is a nonzero T'Machine_Mantissa-digit fraction in the number base T'Machine_Radix, the first digit of which is zero, is a machine number (see 3.5.7) of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. See A.5.3.<br /></dd>
+<dt><br/>S'Digits</dt>
+<dd>For every floating point subtype S:<br /></dd>
+<dd>S'Digits denotes the requested decimal precision for the subtype S. The value of this attribute is of the type <em>universal_integer</em>. See 3.5.8.<br /></dd>
+<dt><br/>S'Digits</dt>
+<dd>For every decimal fixed point subtype S:<br /></dd>
+<dd>S'Digits denotes the <em>digits</em> of the decimal fixed point subtype S, which corresponds to the number of decimal digits that are representable in objects of the subtype. The value of this attribute is of the type <em>universal_integer</em>. See 3.5.10.<br /></dd>
+<dt><br/>S'Enum_Rep</dt>
+<dd>For every discrete subtype S:<br /></dd>
+<dd>S'Enum_Rep denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Enum_Rep (Arg : S'Base) return universal_integer{"\n"}
 
 </CodeBlock>
-<p>This function returns the representation value of the value of Arg, as a value of type <em>universal_integer</em>. The <em>representation value</em> is the internal code specified in an enumeration representation clause, if any, for the type corresponding to the value of Arg, and otherwise is the position number of the value. See 13.4.<br /></p>
-
-<p>S'Enum_ValFor every discrete subtype S:<br /></p>
-
-<p>S'Enum_Val denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>This function returns the representation value of the value of Arg, as a value of type <em>universal_integer</em>. The <em>representation value</em> is the internal code specified in an enumeration representation clause, if any, for the type corresponding to the value of Arg, and otherwise is the position number of the value. See 13.4.<br /></dd>
+<dt><br/>S'Enum_Val</dt>
+<dd>For every discrete subtype S:<br /></dd>
+<dd>S'Enum_Val denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Enum_Val (Arg : universal_integer) return S'Base{"\n"}
 
 </CodeBlock>
-<p>This function returns a value of the type of S whose representation value equals the value of Arg. For the evaluation of a call on S'Enum_Val, if there is no value in the base range of its type with the given representation value, Constraint_Error is raised. See 13.4.<br /></p>
-
-<p>S'ExponentFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Exponent denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>This function returns a value of the type of S whose representation value equals the value of Arg. For the evaluation of a call on S'Enum_Val, if there is no value in the base range of its type with the given representation value, Constraint_Error is raised. See 13.4.<br /></dd>
+<dt><br/>S'Exponent</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Exponent denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Exponent (X : T){"\n"}  return universal_integer{"\n"}
 
 </CodeBlock>
-<p>The function yields the normalized exponent of X. See A.5.3.<br /></p>
-
-<p>S'External_TagFor every subtype S of a tagged type <em>T</em> (specific or class-wide):<br /></p>
-
-<p>S'External_Tag denotes an external string representation for S'Tag; it is of the predefined type String. External_Tag may be specified for a specific tagged type via an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>; the expression of such a clause shall be static. The default external tag representation is implementation defined. See 13.13.2. See 13.3.<br /></p>
-
-<p>A'FirstFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></p>
-
-<p>A'First denotes the lower bound of the first index range; its type is the corresponding index type. See 3.6.2.<br /></p>
-
-<p>S'FirstFor every scalar subtype S:<br /></p>
-
-<p>S'First denotes the lower bound of the range of S. The value of this attribute is of the type of S. See 3.5.<br /></p>
-
-<p>A'First(N)For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></p>
-
-<p>A'First(N) denotes the lower bound of the N-th index range; its type is the corresponding index type. See 3.6.2.<br /></p>
-
-<p>R.C'First_BitFor a component C of a composite, non-array object R:<br /></p>
-
-<p>If the nondefault bit ordering applies to the composite type, and if a <code><a href="../AA-13/AA-13.5#S0353">component_clause</a></code> specifies the placement of C, denotes the value given for the <code><a href="../AA-13/AA-13.5#S0355">first_bit</a></code> of the <code><a href="../AA-13/AA-13.5#S0353">component_clause</a></code>; otherwise, denotes the offset, from the start of the first of the storage elements occupied by C, of the first bit occupied by C. This offset is measured in bits. The first bit of a storage element is numbered zero. The value of this attribute is of the type <em>universal_integer</em>. See 13.5.2.<br /></p>
-
-<p>S'First_ValidFor every static discrete subtype S for which there exists at least one value belonging to S that satisfies the predicates of S:<br /></p>
-
-<p>S'First_Valid denotes the smallest value that belongs to S and satisfies the predicates of S. The value of this attribute is of the type of S. See 3.5.5.<br /></p>
-
-<p>S'FloorFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Floor denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>The function yields the normalized exponent of X. See A.5.3.<br /></dd>
+<dt><br/>S'External_Tag</dt>
+<dd>For every subtype S of a tagged type <em>T</em> (specific or class-wide):<br /></dd>
+<dd>S'External_Tag denotes an external string representation for S'Tag; it is of the predefined type String. External_Tag may be specified for a specific tagged type via an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>; the expression of such a clause shall be static. The default external tag representation is implementation defined. See 13.13.2. See 13.3.<br /></dd>
+<dt><br/>A'First</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></dd>
+<dd>A'First denotes the lower bound of the first index range; its type is the corresponding index type. See 3.6.2.<br /></dd>
+<dt><br/>S'First</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'First denotes the lower bound of the range of S. The value of this attribute is of the type of S. See 3.5.<br /></dd>
+<dt><br/>A'First(N)</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></dd>
+<dd>A'First(N) denotes the lower bound of the N-th index range; its type is the corresponding index type. See 3.6.2.<br /></dd>
+<dt><br/>R.C'First_Bit</dt>
+<dd>For a component C of a composite, non-array object R:<br /></dd>
+<dd>If the nondefault bit ordering applies to the composite type, and if a <code><a href="../AA-13/AA-13.5#S0353">component_clause</a></code> specifies the placement of C, denotes the value given for the <code><a href="../AA-13/AA-13.5#S0355">first_bit</a></code> of the <code><a href="../AA-13/AA-13.5#S0353">component_clause</a></code>; otherwise, denotes the offset, from the start of the first of the storage elements occupied by C, of the first bit occupied by C. This offset is measured in bits. The first bit of a storage element is numbered zero. The value of this attribute is of the type <em>universal_integer</em>. See 13.5.2.<br /></dd>
+<dt><br/>S'First_Valid</dt>
+<dd>For every static discrete subtype S for which there exists at least one value belonging to S that satisfies the predicates of S:<br /></dd>
+<dd>S'First_Valid denotes the smallest value that belongs to S and satisfies the predicates of S. The value of this attribute is of the type of S. See 3.5.5.<br /></dd>
+<dt><br/>S'Floor</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Floor denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Floor (X : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>The function yields the value X, i.e., the largest (most positive) integral value less than or equal to X. When X is zero, the result has the sign of X; a zero result otherwise has a positive sign. See A.5.3.<br /></p>
-
-<p>S'ForeFor every fixed point subtype S:<br /></p>
-
-<p>S'Fore yields the minimum number of characters needed before the decimal point for the decimal representation of any value of the subtype S, assuming that the representation does not include an exponent, but includes a one-character prefix that is either a minus sign or a space. (This minimum number does not include superfluous zeros or underlines, and is at least 2.) The value of this attribute is of the type <em>universal_integer</em>. See 3.5.10.<br /></p>
-
-<p>S'FractionFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Fraction denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>The function yields the value X, i.e., the largest (most positive) integral value less than or equal to X. When X is zero, the result has the sign of X; a zero result otherwise has a positive sign. See A.5.3.<br /></dd>
+<dt><br/>S'Fore</dt>
+<dd>For every fixed point subtype S:<br /></dd>
+<dd>S'Fore yields the minimum number of characters needed before the decimal point for the decimal representation of any value of the subtype S, assuming that the representation does not include an exponent, but includes a one-character prefix that is either a minus sign or a space. (This minimum number does not include superfluous zeros or underlines, and is at least 2.) The value of this attribute is of the type <em>universal_integer</em>. See 3.5.10.<br /></dd>
+<dt><br/>S'Fraction</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Fraction denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Fraction (X : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>The function yields the value X � T'Machine_Radixk, where k is the normalized exponent of X. A zero result, which can only occur when X is zero, has the sign of X. See A.5.3.<br /></p>
-
-<p>X'Has_Same_StorageFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an object:<br /></p>
-
-<p>X'Has_Same_Storage denotes a function with the following specification:<br /></p>
-
+<dl>
+<dd>The function yields the value X � T'Machine_Radixk, where k is the normalized exponent of X. A zero result, which can only occur when X is zero, has the sign of X. See A.5.3.<br /></dd>
+<dt><br/>X'Has_Same_Storage</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an object:<br /></dd>
+<dd>X'Has_Same_Storage denotes a function with the following specification:<br /></dd>
+</dl>
 <CodeBlock>
 function X'Has_Same_Storage (Arg : any_type){"\n"}  return Boolean{"\n"}
 
 </CodeBlock>
-<p>The actual parameter shall be a name that denotes an object. The object denoted by the actual parameter can be of any type. This function evaluates the names of the objects involved. It returns True if the representation of the object denoted by the actual parameter occupies exactly the same bits as the representation of the object denoted by X and the objects occupy at least one bit; otherwise, it returns False. See 13.3.<br /></p>
-
-<p>E'IdentityFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> E that denotes an exception:<br /></p>
-
-<p>E'Identity returns the unique identity of the exception. The type of this attribute is Exception_Id. See 11.4.1.<br /></p>
-
-<p>T'IdentityFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> T that is of a task type (after any implicit dereference):<br /></p>
-
-<p>Yields a value of the type Task_Id that identifies the task denoted by T. See C.7.1.<br /></p>
-
-<p>S'ImageFor every subtype S of a type T:<br /></p>
-
-<p>S'Image denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>The actual parameter shall be a name that denotes an object. The object denoted by the actual parameter can be of any type. This function evaluates the names of the objects involved. It returns True if the representation of the object denoted by the actual parameter occupies exactly the same bits as the representation of the object denoted by X and the objects occupy at least one bit; otherwise, it returns False. See 13.3.<br /></dd>
+<dt><br/>E'Identity</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> E that denotes an exception:<br /></dd>
+<dd>E'Identity returns the unique identity of the exception. The type of this attribute is Exception_Id. See 11.4.1.<br /></dd>
+<dt><br/>T'Identity</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> T that is of a task type (after any implicit dereference):<br /></dd>
+<dd>Yields a value of the type Task_Id that identifies the task denoted by T. See C.7.1.<br /></dd>
+<dt><br/>S'Image</dt>
+<dd>For every subtype S of a type T:<br /></dd>
+<dd>S'Image denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Image(Arg : S'Base){"\n"}  return String{"\n"}
 
 </CodeBlock>
-<p>S'Image calls S'Put_Image passing Arg (which will typically store a sequence of character values in a text buffer) and then returns the result of retrieving the contents of that buffer with function Get. See 4.10.<br /></p>
-
-<p>X'ImageFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X of a type T other than <em>universal_real</em> or <em>universal_fixed</em>:<br /></p>
-
-<p>X'Image denotes the result of calling function S'Image with <em>Arg</em> being X, where S is the nominal subtype of X. See 4.10.<br /></p>
-
-<p>E'IndexFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> E that denotes an entry declaration of an entry family:<br /></p>
-
-<p>Within a precondition or postcondition expression for entry family E, denotes the value of the entry index for the call of E. The nominal subtype of this attribute is the entry index subtype. See 6.1.1.<br /></p>
-
-<p>S'Class'InputFor every subtype S'Class of a class-wide type <em>T</em>'Class:<br /></p>
-
-<p>S'Class'Input denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>S'Image calls S'Put_Image passing Arg (which will typically store a sequence of character values in a text buffer) and then returns the result of retrieving the contents of that buffer with function Get. See 4.10.<br /></dd>
+<dt><br/>X'Image</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X of a type T other than <em>universal_real</em> or <em>universal_fixed</em>:<br /></dd>
+<dd>X'Image denotes the result of calling function S'Image with <em>Arg</em> being X, where S is the nominal subtype of X. See 4.10.<br /></dd>
+<dt><br/>E'Index</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> E that denotes an entry declaration of an entry family:<br /></dd>
+<dd>Within a precondition or postcondition expression for entry family E, denotes the value of the entry index for the call of E. The nominal subtype of this attribute is the entry index subtype. See 6.1.1.<br /></dd>
+<dt><br/>S'Class'Input</dt>
+<dd>For every subtype S'Class of a class-wide type <em>T</em>'Class:<br /></dd>
+<dd>S'Class'Input denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Class'Input({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class){"\n"}   return T'Class{"\n"}
 
 </CodeBlock>
-<p>First reads the external tag from <em>Stream</em> and determines the corresponding internal tag (by calling Tags.Descendant_Tag(String'Input(<em>Stream</em>), S'Tag) which can raise Tag_Error - see 3.9) and then dispatches to the subprogram denoted by the Input attribute of the specific type identified by the internal tag; returns that result. If the specific type identified by the internal tag is abstract, Constraint_Error is raised. See 13.13.2.<br /></p>
-
-<p>S'InputFor every subtype S of a specific type <em>T</em>:<br /></p>
-
-<p>S'Input denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>First reads the external tag from <em>Stream</em> and determines the corresponding internal tag (by calling Tags.Descendant_Tag(String'Input(<em>Stream</em>), S'Tag) which can raise Tag_Error - see 3.9) and then dispatches to the subprogram denoted by the Input attribute of the specific type identified by the internal tag; returns that result. If the specific type identified by the internal tag is abstract, Constraint_Error is raised. See 13.13.2.<br /></dd>
+<dt><br/>S'Input</dt>
+<dd>For every subtype S of a specific type <em>T</em>:<br /></dd>
+<dd>S'Input denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Input({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class){"\n"}   return T{"\n"}
 
 </CodeBlock>
-<p>S'Input reads and returns one value from <em>Stream</em>, using any bounds or discriminants written by a corresponding S'Output to determine how much to read. See 13.13.2.<br /></p>
-
-<p>A'LastFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></p>
-
-<p>A'Last denotes the upper bound of the first index range; its type is the corresponding index type. See 3.6.2.<br /></p>
-
-<p>S'LastFor every scalar subtype S:<br /></p>
-
-<p>S'Last denotes the upper bound of the range of S. The value of this attribute is of the type of S. See 3.5.<br /></p>
-
-<p>A'Last(N)For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></p>
-
-<p>A'Last(N) denotes the upper bound of the N-th index range; its type is the corresponding index type. See 3.6.2.<br /></p>
-
-<p>R.C'Last_BitFor a component C of a composite, non-array object R:<br /></p>
-
-<p>If the nondefault bit ordering applies to the composite type, and if a <code><a href="../AA-13/AA-13.5#S0353">component_clause</a></code> specifies the placement of C, denotes the value given for the <code><a href="../AA-13/AA-13.5#S0356">last_bit</a></code> of the <code><a href="../AA-13/AA-13.5#S0353">component_clause</a></code>; otherwise, denotes the offset, from the start of the first of the storage elements occupied by C, of the last bit occupied by C. This offset is measured in bits. The value of this attribute is of the type <em>universal_integer</em>. See 13.5.2.<br /></p>
-
-<p>S'Last_ValidFor every static discrete subtype S for which there exists at least one value belonging to S that satisfies the predicates of S:<br /></p>
-
-<p>S'Last_Valid denotes the largest value that belongs to S and satisfies the predicates of S. The value of this attribute is of the type of S. See 3.5.5.<br /></p>
-
-<p>S'Leading_PartFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Leading_Part denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>S'Input reads and returns one value from <em>Stream</em>, using any bounds or discriminants written by a corresponding S'Output to determine how much to read. See 13.13.2.<br /></dd>
+<dt><br/>A'Last</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></dd>
+<dd>A'Last denotes the upper bound of the first index range; its type is the corresponding index type. See 3.6.2.<br /></dd>
+<dt><br/>S'Last</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Last denotes the upper bound of the range of S. The value of this attribute is of the type of S. See 3.5.<br /></dd>
+<dt><br/>A'Last(N)</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></dd>
+<dd>A'Last(N) denotes the upper bound of the N-th index range; its type is the corresponding index type. See 3.6.2.<br /></dd>
+<dt><br/>R.C'Last_Bit</dt>
+<dd>For a component C of a composite, non-array object R:<br /></dd>
+<dd>If the nondefault bit ordering applies to the composite type, and if a <code><a href="../AA-13/AA-13.5#S0353">component_clause</a></code> specifies the placement of C, denotes the value given for the <code><a href="../AA-13/AA-13.5#S0356">last_bit</a></code> of the <code><a href="../AA-13/AA-13.5#S0353">component_clause</a></code>; otherwise, denotes the offset, from the start of the first of the storage elements occupied by C, of the last bit occupied by C. This offset is measured in bits. The value of this attribute is of the type <em>universal_integer</em>. See 13.5.2.<br /></dd>
+<dt><br/>S'Last_Valid</dt>
+<dd>For every static discrete subtype S for which there exists at least one value belonging to S that satisfies the predicates of S:<br /></dd>
+<dd>S'Last_Valid denotes the largest value that belongs to S and satisfies the predicates of S. The value of this attribute is of the type of S. See 3.5.5.<br /></dd>
+<dt><br/>S'Leading_Part</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Leading_Part denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Leading_Part (X : T;{"\n"}                         Radix_Digits : universal_integer){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>Let v be the value T'Machine_RadixkRadix_Digits, where k is the normalized exponent of X. The function yields the value <br /></p>
-
-<p>X/v � v, when X is nonnegative and Radix_Digits is positive;<br /></p>
-
-<p>X/v � v, when X is negative and Radix_Digits is positive. <br /></p>
-
-<p>Constraint_Error is raised when Radix_Digits is zero or negative. A zero result, which can only occur when X is zero, has the sign of X. See A.5.3.<br /></p>
-
-<p>A'LengthFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></p>
-
-<p>A'Length denotes the number of values of the first index range (zero for a null range); its type is <em>universal_integer</em>. See 3.6.2.<br /></p>
-
-<p>A'Length(N)For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></p>
-
-<p>A'Length(N) denotes the number of values of the N-th index range (zero for a null range); its type is <em>universal_integer</em>. See 3.6.2.<br /></p>
-
-<p>S'MachineFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Machine denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>Let v be the value T'Machine_RadixkRadix_Digits, where k is the normalized exponent of X. The function yields the value <br /></dd>
+</dl>
+<ul>
+<li>X/v � v, when X is nonnegative and Radix_Digits is positive;<br /></li>
+<li>X/v � v, when X is negative and Radix_Digits is positive. <br /></li>
+</ul>
+<dl>
+<dd>Constraint_Error is raised when Radix_Digits is zero or negative. A zero result, which can only occur when X is zero, has the sign of X. See A.5.3.<br /></dd>
+<dt><br/>A'Length</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></dd>
+<dd>A'Length denotes the number of values of the first index range (zero for a null range); its type is <em>universal_integer</em>. See 3.6.2.<br /></dd>
+<dt><br/>A'Length(N)</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></dd>
+<dd>A'Length(N) denotes the number of values of the N-th index range (zero for a null range); its type is <em>universal_integer</em>. See 3.6.2.<br /></dd>
+<dt><br/>S'Machine</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Machine denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Machine (X : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>If X is a machine number of the type T, the function yields X; otherwise, it yields the value obtained by rounding or truncating X to either one of the adjacent machine numbers of the type T. Constraint_Error is raised if rounding or truncating X to the precision of the machine numbers results in a value outside the base range of S. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.<br /></p>
-
-<p>S'Machine_EmaxFor every subtype S of a floating point type T:<br /></p>
-
-<p>Yields the largest (most positive) value of <em>exponent</em> such that every value expressible in the canonical form (for the type T), having a <em>mantissa</em> of T'Machine_Mantissa digits, is a machine number (see 3.5.7) of the type T. This attribute yields a value of the type <em>universal_integer</em>. See A.5.3.<br /></p>
-
-<p>S'Machine_EminFor every subtype S of a floating point type T:<br /></p>
-
-<p>Yields the smallest (most negative) value of <em>exponent</em> such that every value expressible in the canonical form (for the type T), having a <em>mantissa</em> of T'Machine_Mantissa digits, is a machine number (see 3.5.7) of the type T. This attribute yields a value of the type <em>universal_integer</em>. See A.5.3.<br /></p>
-
-<p>S'Machine_MantissaFor every subtype S of a floating point type T:<br /></p>
-
-<p>Yields the largest value of p such that every value expressible in the canonical form (for the type T), having a p-digit <em>mantissa</em> and an <em>exponent</em> between T'Machine_Emin and T'Machine_Emax, is a machine number (see 3.5.7) of the type T. This attribute yields a value of the type <em>universal_integer</em>. See A.5.3.<br /></p>
-
-<p>S'Machine_OverflowsFor every subtype S of a floating point type T:<br /></p>
-
-<p>Yields the value True if overflow and divide-by-zero are detected and reported by raising Constraint_Error for every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. See A.5.3.<br /></p>
-
-<p>S'Machine_OverflowsFor every subtype S of a fixed point type T:<br /></p>
-
-<p>Yields the value True if overflow and divide-by-zero are detected and reported by raising Constraint_Error for every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. See A.5.4.<br /></p>
-
-<p>S'Machine_RadixFor every subtype S of a floating point type T:<br /></p>
-
-<p>Yields the radix of the hardware representation of the type T. The value of this attribute is of the type <em>universal_integer</em>. See A.5.3.<br /></p>
-
-<p>S'Machine_RadixFor every subtype S of a fixed point type T:<br /></p>
-
-<p>Yields the radix of the hardware representation of the type T. The value of this attribute is of the type <em>universal_integer</em>. See A.5.4.<br /></p>
-
-<p>S'Machine_RoundingFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Machine_Rounding denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>If X is a machine number of the type T, the function yields X; otherwise, it yields the value obtained by rounding or truncating X to either one of the adjacent machine numbers of the type T. Constraint_Error is raised if rounding or truncating X to the precision of the machine numbers results in a value outside the base range of S. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.<br /></dd>
+<dt><br/>S'Machine_Emax</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>Yields the largest (most positive) value of <em>exponent</em> such that every value expressible in the canonical form (for the type T), having a <em>mantissa</em> of T'Machine_Mantissa digits, is a machine number (see 3.5.7) of the type T. This attribute yields a value of the type <em>universal_integer</em>. See A.5.3.<br /></dd>
+<dt><br/>S'Machine_Emin</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>Yields the smallest (most negative) value of <em>exponent</em> such that every value expressible in the canonical form (for the type T), having a <em>mantissa</em> of T'Machine_Mantissa digits, is a machine number (see 3.5.7) of the type T. This attribute yields a value of the type <em>universal_integer</em>. See A.5.3.<br /></dd>
+<dt><br/>S'Machine_Mantissa</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>Yields the largest value of p such that every value expressible in the canonical form (for the type T), having a p-digit <em>mantissa</em> and an <em>exponent</em> between T'Machine_Emin and T'Machine_Emax, is a machine number (see 3.5.7) of the type T. This attribute yields a value of the type <em>universal_integer</em>. See A.5.3.<br /></dd>
+<dt><br/>S'Machine_Overflows</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>Yields the value True if overflow and divide-by-zero are detected and reported by raising Constraint_Error for every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. See A.5.3.<br /></dd>
+<dt><br/>S'Machine_Overflows</dt>
+<dd>For every subtype S of a fixed point type T:<br /></dd>
+<dd>Yields the value True if overflow and divide-by-zero are detected and reported by raising Constraint_Error for every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. See A.5.4.<br /></dd>
+<dt><br/>S'Machine_Radix</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>Yields the radix of the hardware representation of the type T. The value of this attribute is of the type <em>universal_integer</em>. See A.5.3.<br /></dd>
+<dt><br/>S'Machine_Radix</dt>
+<dd>For every subtype S of a fixed point type T:<br /></dd>
+<dd>Yields the radix of the hardware representation of the type T. The value of this attribute is of the type <em>universal_integer</em>. See A.5.4.<br /></dd>
+<dt><br/>S'Machine_Rounding</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Machine_Rounding denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Machine_Rounding (X : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>The function yields the integral value nearest to X. If X lies exactly halfway between two integers, one of those integers is returned, but which of them is returned is unspecified. A zero result has the sign of X when S'Signed_Zeros is True. This function provides access to the rounding behavior which is most efficient on the target processor. See A.5.3.<br /></p>
-
-<p>S'Machine_RoundsFor every subtype S of a floating point type T:<br /></p>
-
-<p>Yields the value True if rounding is performed on inexact results of every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. See A.5.3.<br /></p>
-
-<p>S'Machine_RoundsFor every subtype S of a fixed point type T:<br /></p>
-
-<p>Yields the value True if rounding is performed on inexact results of every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. See A.5.4.<br /></p>
-
-<p>S'MaxFor every scalar subtype S:<br /></p>
-
-<p>S'Max denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>The function yields the integral value nearest to X. If X lies exactly halfway between two integers, one of those integers is returned, but which of them is returned is unspecified. A zero result has the sign of X when S'Signed_Zeros is True. This function provides access to the rounding behavior which is most efficient on the target processor. See A.5.3.<br /></dd>
+<dt><br/>S'Machine_Rounds</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>Yields the value True if rounding is performed on inexact results of every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. See A.5.3.<br /></dd>
+<dt><br/>S'Machine_Rounds</dt>
+<dd>For every subtype S of a fixed point type T:<br /></dd>
+<dd>Yields the value True if rounding is performed on inexact results of every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. See A.5.4.<br /></dd>
+<dt><br/>S'Max</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Max denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Max(Left, Right : S'Base){"\n"}  return S'Base{"\n"}
 
 </CodeBlock>
-<p>The function returns the greater of the values of the two parameters. See 3.5.<br /></p>
-
-<p>S'Max_Alignment_For_AllocationFor every subtype S:<br /></p>
-
-<p>Denotes the maximum value for Alignment that can be requested by the implementation via Allocate for an access type whose designated subtype is S. The value of this attribute is of type <em>universal_integer</em>. See 13.11.1.<br /></p>
-
-<p>S'Max_Size_In_Storage_ElementsFor every subtype S:<br /></p>
-
-<p>Denotes the maximum value for Size_In_Storage_Elements that can be requested by the implementation via Allocate for an access type whose designated subtype is S. The value of this attribute is of type <em>universal_integer</em>. See 13.11.1.<br /></p>
-
-<p>S'MinFor every scalar subtype S:<br /></p>
-
-<p>S'Min denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>The function returns the greater of the values of the two parameters. See 3.5.<br /></dd>
+<dt><br/>S'Max_Alignment_For_Allocation</dt>
+<dd>For every subtype S:<br /></dd>
+<dd>Denotes the maximum value for Alignment that can be requested by the implementation via Allocate for an access type whose designated subtype is S. The value of this attribute is of type <em>universal_integer</em>. See 13.11.1.<br /></dd>
+<dt><br/>S'Max_Size_In_Storage_Elements</dt>
+<dd>For every subtype S:<br /></dd>
+<dd>Denotes the maximum value for Size_In_Storage_Elements that can be requested by the implementation via Allocate for an access type whose designated subtype is S. The value of this attribute is of type <em>universal_integer</em>. See 13.11.1.<br /></dd>
+<dt><br/>S'Min</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Min denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Min(Left, Right : S'Base){"\n"}  return S'Base{"\n"}
 
 </CodeBlock>
-<p>The function returns the lesser of the values of the two parameters. See 3.5.<br /></p>
-
-<p>S'ModFor every modular subtype S:<br /></p>
-
-<p>S'Mod denotes a function with the following specification:<br /></p>
-
+<dl>
+<dd>The function returns the lesser of the values of the two parameters. See 3.5.<br /></dd>
+<dt><br/>S'Mod</dt>
+<dd>For every modular subtype S:<br /></dd>
+<dd>S'Mod denotes a function with the following specification:<br /></dd>
+</dl>
 <CodeBlock>
 function S'Mod (Arg : universal_integer){"\n"}  return S'Base{"\n"}
 
 </CodeBlock>
-<p>This function returns <em>Arg</em> <strong>mod</strong> S'Modulus, as a value of the type of S. See 3.5.4.<br /></p>
-
-<p>S'ModelFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Model denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>This function returns <em>Arg</em> <strong>mod</strong> S'Modulus, as a value of the type of S. See 3.5.4.<br /></dd>
+<dt><br/>S'Model</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Model denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Model (X : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>If the Numerics Annex is not supported, the meaning of this attribute is implementation defined; see G.2.2 for the definition that applies to implementations supporting the Numerics Annex. See A.5.3.<br /></p>
-
-<p>S'Model_EminFor every subtype S of a floating point type T:<br /></p>
-
-<p>If the Numerics Annex is not supported, this attribute yields an implementation defined value that is greater than or equal to the value of T'Machine_Emin. See G.2.2 for further requirements that apply to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_integer</em>. See A.5.3.<br /></p>
-
-<p>S'Model_EpsilonFor every subtype S of a floating point type T:<br /></p>
-
-<p>Yields the value T'Machine_Radix1  T'Model_Mantissa. The value of this attribute is of the type <em>universal_real</em>. See A.5.3.<br /></p>
-
-<p>S'Model_MantissaFor every subtype S of a floating point type T:<br /></p>
-
-<p>If the Numerics Annex is not supported, this attribute yields an implementation defined value that is greater than or equal to d � log(10) / log(T'Machine_Radix) + 1, where d is the requested decimal precision of T, and less than or equal to the value of T'Machine_Mantissa. See G.2.2 for further requirements that apply to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_integer</em>. See A.5.3.<br /></p>
-
-<p>S'Model_SmallFor every subtype S of a floating point type T:<br /></p>
-
-<p>Yields the value T'Machine_RadixT'Model_Emin  1. The value of this attribute is of the type <em>universal_real</em>. See A.5.3.<br /></p>
-
-<p>S'ModulusFor every modular subtype S:<br /></p>
-
-<p>S'Modulus yields the modulus of the type of S, as a value of the type <em>universal_integer</em>. See 3.5.4.<br /></p>
-
-<p>S'Object_SizeFor every subtype S:<br /></p>
-
-<p>If S is definite, denotes the size (in bits) of a stand-alone aliased object, or a component of subtype S in the absence of an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> or representation item that specifies the size of the object or component. If S is indefinite, the meaning is implementation-defined. The value of this attribute is of the type <em>universal_integer</em>. See 13.3.<br /></p>
-
-<p>X'OldFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an object of a nonlimited type:<br /></p>
-
-<p>Each X'Old in a postcondition expression that is enabled, other than those that occur in subexpressions that are determined to be unevaluated, denotes a constant that is implicitly declared at the beginning of the subprogram body, entry body, or accept statement. See 6.1.1.<br /></p>
-
-<p>S'Class'OutputFor every subtype S'Class of a class-wide type <em>T</em>'Class:<br /></p>
-
-<p>S'Class'Output denotes a procedure with the following specification: <br /></p>
-
+<dl>
+<dd>If the Numerics Annex is not supported, the meaning of this attribute is implementation defined; see G.2.2 for the definition that applies to implementations supporting the Numerics Annex. See A.5.3.<br /></dd>
+<dt><br/>S'Model_Emin</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>If the Numerics Annex is not supported, this attribute yields an implementation defined value that is greater than or equal to the value of T'Machine_Emin. See G.2.2 for further requirements that apply to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_integer</em>. See A.5.3.<br /></dd>
+<dt><br/>S'Model_Epsilon</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>Yields the value T'Machine_Radix1  T'Model_Mantissa. The value of this attribute is of the type <em>universal_real</em>. See A.5.3.<br /></dd>
+<dt><br/>S'Model_Mantissa</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>If the Numerics Annex is not supported, this attribute yields an implementation defined value that is greater than or equal to d � log(10) / log(T'Machine_Radix) + 1, where d is the requested decimal precision of T, and less than or equal to the value of T'Machine_Mantissa. See G.2.2 for further requirements that apply to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_integer</em>. See A.5.3.<br /></dd>
+<dt><br/>S'Model_Small</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>Yields the value T'Machine_RadixT'Model_Emin  1. The value of this attribute is of the type <em>universal_real</em>. See A.5.3.<br /></dd>
+<dt><br/>S'Modulus</dt>
+<dd>For every modular subtype S:<br /></dd>
+<dd>S'Modulus yields the modulus of the type of S, as a value of the type <em>universal_integer</em>. See 3.5.4.<br /></dd>
+<dt><br/>S'Object_Size</dt>
+<dd>For every subtype S:<br /></dd>
+<dd>If S is definite, denotes the size (in bits) of a stand-alone aliased object, or a component of subtype S in the absence of an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> or representation item that specifies the size of the object or component. If S is indefinite, the meaning is implementation-defined. The value of this attribute is of the type <em>universal_integer</em>. See 13.3.<br /></dd>
+<dt><br/>X'Old</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an object of a nonlimited type:<br /></dd>
+<dd>Each X'Old in a postcondition expression that is enabled, other than those that occur in subexpressions that are determined to be unevaluated, denotes a constant that is implicitly declared at the beginning of the subprogram body, entry body, or accept statement. See 6.1.1.<br /></dd>
+<dt><br/>S'Class'Output</dt>
+<dd>For every subtype S'Class of a class-wide type <em>T</em>'Class:<br /></dd>
+<dd>S'Class'Output denotes a procedure with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 procedure S'Class'Output({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item   : in T'Class){"\n"}
 
 </CodeBlock>
-<p>First writes the external tag of <em>Item</em> to <em>Stream</em> (by calling String'Output(<em>Stream</em>, Tags.External_Tag(<em>Item</em>'Tag)) - see 3.9) and then dispatches to the subprogram denoted by the Output attribute of the specific type identified by the tag. Tag_Error is raised if the tag of Item identifies a type declared at an accessibility level deeper than that of S. See 13.13.2.<br /></p>
-
-<p>S'OutputFor every subtype S of a specific type <em>T</em>:<br /></p>
-
-<p>S'Output denotes a procedure with the following specification: <br /></p>
-
+<dl>
+<dd>First writes the external tag of <em>Item</em> to <em>Stream</em> (by calling String'Output(<em>Stream</em>, Tags.External_Tag(<em>Item</em>'Tag)) - see 3.9) and then dispatches to the subprogram denoted by the Output attribute of the specific type identified by the tag. Tag_Error is raised if the tag of Item identifies a type declared at an accessibility level deeper than that of S. See 13.13.2.<br /></dd>
+<dt><br/>S'Output</dt>
+<dd>For every subtype S of a specific type <em>T</em>:<br /></dd>
+<dd>S'Output denotes a procedure with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 procedure S'Output({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item : in T){"\n"}
 
 </CodeBlock>
-<p>S'Output writes the value of <em>Item</em> to <em>Stream</em>, including any bounds or discriminants. See 13.13.2.<br /></p>
-
-<p>X'Overlaps_StorageFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an object:<br /></p>
-
-<p>X'Overlaps_Storage denotes a function with the following specification:<br /></p>
-
+<dl>
+<dd>S'Output writes the value of <em>Item</em> to <em>Stream</em>, including any bounds or discriminants. See 13.13.2.<br /></dd>
+<dt><br/>X'Overlaps_Storage</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an object:<br /></dd>
+<dd>X'Overlaps_Storage denotes a function with the following specification:<br /></dd>
+</dl>
 <CodeBlock>
 function X'Overlaps_Storage (Arg : any_type){"\n"}  return Boolean{"\n"}
 
 </CodeBlock>
-<p>The actual parameter shall be a name that denotes an object. The object denoted by the actual parameter can be of any type. This function evaluates the names of the objects involved and returns True if the representation of the object denoted by the actual parameter shares at least one bit with the representation of the object denoted by X; otherwise, it returns False. See 13.3.<br /></p>
-
-<p>X'Parallel_Reduce(Reducer, Initial_Value)For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X of an array type (after any implicit dereference), or that denotes an iterable container object (see 5.5.1):<br /></p>
-
-<p>X'Parallel_Reduce is a reduction expression that yields a result equivalent to replacing the attribute <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> with Reduce and the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the attribute with the <code><a href="../AA-4/AA-4.5#S0159">value_sequence</a></code>: <br /></p>
-
+<dl>
+<dd>The actual parameter shall be a name that denotes an object. The object denoted by the actual parameter can be of any type. This function evaluates the names of the objects involved and returns True if the representation of the object denoted by the actual parameter shares at least one bit with the representation of the object denoted by X; otherwise, it returns False. See 13.3.<br /></dd>
+<dt><br/>X'Parallel_Reduce(Reducer, Initial_Value)</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X of an array type (after any implicit dereference), or that denotes an iterable container object (see 5.5.1):<br /></dd>
+<dd>X'Parallel_Reduce is a reduction expression that yields a result equivalent to replacing the attribute <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> with Reduce and the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the attribute with the <code><a href="../AA-4/AA-4.5#S0159">value_sequence</a></code>: <br /></dd>
+</dl>
 <CodeBlock>
 [parallel for Item of X ={">"} Item]{"\n"}
 
 </CodeBlock>
-<p>See 4.5.10.<br /></p>
-
-<p>D'Partition_IdFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> D that denotes a library-level declaration, excepting a declaration of or within a declared-pure library unit:<br /></p>
-
-<p>Denotes a value of the type <em>universal_integer</em> that identifies the partition in which D was elaborated. If D denotes the declaration of a remote call interface library unit (see E.2.3) the given partition is the one where the body of D was elaborated. See E.1.<br /></p>
-
-<p>S'PosFor every discrete subtype S:<br /></p>
-
-<p>S'Pos denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>See 4.5.10.<br /></dd>
+<dt><br/>D'Partition_Id</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> D that denotes a library-level declaration, excepting a declaration of or within a declared-pure library unit:<br /></dd>
+<dd>Denotes a value of the type <em>universal_integer</em> that identifies the partition in which D was elaborated. If D denotes the declaration of a remote call interface library unit (see E.2.3) the given partition is the one where the body of D was elaborated. See E.1.<br /></dd>
+<dt><br/>S'Pos</dt>
+<dd>For every discrete subtype S:<br /></dd>
+<dd>S'Pos denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Pos(Arg : S'Base){"\n"}  return universal_integer{"\n"}
 
 </CodeBlock>
-<p>This function returns the position number of the value of Arg, as a value of type <em>universal_integer</em>. See 3.5.5.<br /></p>
-
-<p>R.C'PositionFor a component C of a composite, non-array object R:<br /></p>
-
-<p>If the nondefault bit ordering applies to the composite type, and if a <code><a href="../AA-13/AA-13.5#S0353">component_clause</a></code> specifies the placement of C, denotes the value given for the <code><a href="../AA-13/AA-13.5#S0354">position</a></code> of the <code><a href="../AA-13/AA-13.5#S0353">component_clause</a></code>; otherwise, denotes the same value as R.C'Address  R'Address. The value of this attribute is of the type <em>universal_integer</em>. See 13.5.2.<br /></p>
-
-<p>S'PredFor every scalar subtype S:<br /></p>
-
-<p>S'Pred denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>This function returns the position number of the value of Arg, as a value of type <em>universal_integer</em>. See 3.5.5.<br /></dd>
+<dt><br/>R.C'Position</dt>
+<dd>For a component C of a composite, non-array object R:<br /></dd>
+<dd>If the nondefault bit ordering applies to the composite type, and if a <code><a href="../AA-13/AA-13.5#S0353">component_clause</a></code> specifies the placement of C, denotes the value given for the <code><a href="../AA-13/AA-13.5#S0354">position</a></code> of the <code><a href="../AA-13/AA-13.5#S0353">component_clause</a></code>; otherwise, denotes the same value as R.C'Address  R'Address. The value of this attribute is of the type <em>universal_integer</em>. See 13.5.2.<br /></dd>
+<dt><br/>S'Pred</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Pred denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Pred(Arg : S'Base){"\n"}  return S'Base{"\n"}
 
 </CodeBlock>
-<p>For an enumeration type, the function returns the value whose position number is one less than that of the value of Arg; Constraint_Error is raised if there is no such value of the type. For an integer type, the function returns the result of subtracting one from the value of Arg. For a fixed point type, the function returns the result of subtracting <em>small</em> from the value of Arg. For a floating point type, the function returns the machine number (as defined in 3.5.7) immediately below the value of Arg; Constraint_Error is raised if there is no such machine number. See 3.5.<br /></p>
-
-<p>S'Preelaborable_InitializationFor a nonformal composite subtype S declared within the visible part of a package or a generic package, or a generic formal private subtype or formal derived subtype:<br /></p>
-
-<p>This attribute is of Boolean type, and its value reflects whether the type of S has preelaborable initialization. See 10.2.1.<br /></p>
-
-<p>P'PriorityFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that denotes a protected object:<br /></p>
-
-<p>Denotes a non-aliased component of the protected object P. This component is of type System.Any_Priority and its value is the priority of P. P'Priority denotes a variable if and only if P denotes a variable. A reference to this attribute shall appear only within the body of P. See D.5.2.<br /></p>
-
-<p>S'Put_ImageFor every subtype S of a type T other than <em>universal_real</em> or <em>universal_fixed</em>:<br /></p>
-
-<p>S'Put_Image denotes a procedure with the following specification: <br /></p>
-
+<dl>
+<dd>For an enumeration type, the function returns the value whose position number is one less than that of the value of Arg; Constraint_Error is raised if there is no such value of the type. For an integer type, the function returns the result of subtracting one from the value of Arg. For a fixed point type, the function returns the result of subtracting <em>small</em> from the value of Arg. For a floating point type, the function returns the machine number (as defined in 3.5.7) immediately below the value of Arg; Constraint_Error is raised if there is no such machine number. See 3.5.<br /></dd>
+<dt><br/>S'Preelaborable_Initialization</dt>
+<dd>For a nonformal composite subtype S declared within the visible part of a package or a generic package, or a generic formal private subtype or formal derived subtype:<br /></dd>
+<dd>This attribute is of Boolean type, and its value reflects whether the type of S has preelaborable initialization. See 10.2.1.<br /></dd>
+<dt><br/>P'Priority</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that denotes a protected object:<br /></dd>
+<dd>Denotes a non-aliased component of the protected object P. This component is of type System.Any_Priority and its value is the priority of P. P'Priority denotes a variable if and only if P denotes a variable. A reference to this attribute shall appear only within the body of P. See D.5.2.<br /></dd>
+<dt><br/>S'Put_Image</dt>
+<dd>For every subtype S of a type T other than <em>universal_real</em> or <em>universal_fixed</em>:<br /></dd>
+<dd>S'Put_Image denotes a procedure with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 procedure S'Put_Image{"\n"}   (Buffer : in out {"\n"}             Ada.Strings.Text_Buffers.Root_Buffer_Type'Class;{"\n"}    Arg   : in T);{"\n"}
 
 </CodeBlock>
-<p>The default implementation of S'Put_Image writes (using Wide_Wide_Put) an <em>image</em> of the value of Arg. See 4.10.<br /></p>
-
-<p>A'RangeFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></p>
-
-<p>A'Range is equivalent to the range A'First .. A'Last, except that the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A is only evaluated once. See 3.6.2.<br /></p>
-
-<p>S'RangeFor every scalar subtype S:<br /></p>
-
-<p>S'Range is equivalent to the <code><a href="../AA-3/AA-3.5#S0037">range</a></code> S'First .. S'Last. See 3.5.<br /></p>
-
-<p>A'Range(N)For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></p>
-
-<p>A'Range(N) is equivalent to the range A'First(N) .. A'Last(N), except that the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A is only evaluated once. See 3.6.2.<br /></p>
-
-<p>S'Class'ReadFor every subtype S'Class of a class-wide type <em>T</em>'Class:<br /></p>
-
-<p>S'Class'Read denotes a procedure with the following specification: <br /></p>
-
+<dl>
+<dd>The default implementation of S'Put_Image writes (using Wide_Wide_Put) an <em>image</em> of the value of Arg. See 4.10.<br /></dd>
+<dt><br/>A'Range</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></dd>
+<dd>A'Range is equivalent to the range A'First .. A'Last, except that the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A is only evaluated once. See 3.6.2.<br /></dd>
+<dt><br/>S'Range</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Range is equivalent to the <code><a href="../AA-3/AA-3.5#S0037">range</a></code> S'First .. S'Last. See 3.5.<br /></dd>
+<dt><br/>A'Range(N)</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of an array type (after any implicit dereference), or denotes a constrained array subtype:<br /></dd>
+<dd>A'Range(N) is equivalent to the range A'First(N) .. A'Last(N), except that the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A is only evaluated once. See 3.6.2.<br /></dd>
+<dt><br/>S'Class'Read</dt>
+<dd>For every subtype S'Class of a class-wide type <em>T</em>'Class:<br /></dd>
+<dd>S'Class'Read denotes a procedure with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 procedure S'Class'Read({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item : out T'Class){"\n"}
 
 </CodeBlock>
-<p>Dispatches to the subprogram denoted by the Read attribute of the specific type identified by the tag of Item. See 13.13.2.<br /></p>
-
-<p>S'ReadFor every subtype S of a specific type <em>T</em>:<br /></p>
-
-<p>S'Read denotes a procedure with the following specification: <br /></p>
-
+<dl>
+<dd>Dispatches to the subprogram denoted by the Read attribute of the specific type identified by the tag of Item. See 13.13.2.<br /></dd>
+<dt><br/>S'Read</dt>
+<dd>For every subtype S of a specific type <em>T</em>:<br /></dd>
+<dd>S'Read denotes a procedure with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 procedure S'Read({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item : out T){"\n"}
 
 </CodeBlock>
-<p>S'Read reads the value of <em>Item</em> from <em>Stream</em>. See 13.13.2.<br /></p>
-
-<p>V'Reduce(Reducer, Initial_Value)For a <code><a href="../AA-4/AA-4.5#S0159">value_sequence</a></code> V:<br /></p>
-
-<p>This attribute represents a <em>reduction expression</em>, and is in the form of a <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code>. See 4.5.10.<br /></p>
-
-<p>X'Reduce(Reducer, Initial_Value)For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X of an array type (after any implicit dereference), or that denotes an iterable container object (see 5.5.1):<br /></p>
-
-<p>X'Reduce is a reduction expression that yields a result equivalent to replacing the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the attribute with the <code><a href="../AA-4/AA-4.5#S0159">value_sequence</a></code>: <br /></p>
-
+<dl>
+<dd>S'Read reads the value of <em>Item</em> from <em>Stream</em>. See 13.13.2.<br /></dd>
+<dt><br/>V'Reduce(Reducer, Initial_Value)</dt>
+<dd>For a <code><a href="../AA-4/AA-4.5#S0159">value_sequence</a></code> V:<br /></dd>
+<dd>This attribute represents a <em>reduction expression</em>, and is in the form of a <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code>. See 4.5.10.<br /></dd>
+<dt><br/>X'Reduce(Reducer, Initial_Value)</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X of an array type (after any implicit dereference), or that denotes an iterable container object (see 5.5.1):<br /></dd>
+<dd>X'Reduce is a reduction expression that yields a result equivalent to replacing the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the attribute with the <code><a href="../AA-4/AA-4.5#S0159">value_sequence</a></code>: <br /></dd>
+</dl>
 <CodeBlock>
 [for Item of X ={">"} Item]{"\n"}
 
 </CodeBlock>
-<p>See 4.5.10.<br /></p>
-
-<p>P'Relative_DeadlineFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that denotes a protected object:<br /></p>
-
-<p>Denotes a non-aliased component of the protected object P. This component is of type Ada.Real_Time.Time_Span and its value is the relative deadline of P. P'Relative_Deadline denotes a variable if and only if P denotes a variable. A reference to this attribute shall appear only within the body of P. See D.5.2.<br /></p>
-
-<p>S'RemainderFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Remainder denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>See 4.5.10.<br /></dd>
+<dt><br/>P'Relative_Deadline</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that denotes a protected object:<br /></dd>
+<dd>Denotes a non-aliased component of the protected object P. This component is of type Ada.Real_Time.Time_Span and its value is the relative deadline of P. P'Relative_Deadline denotes a variable if and only if P denotes a variable. A reference to this attribute shall appear only within the body of P. See D.5.2.<br /></dd>
+<dt><br/>S'Remainder</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Remainder denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Remainder (X, Y : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>For nonzero Y, let v be the value X  n � Y, where n is the integer nearest to the exact value of X/Y; if |n  X/Y| = 1/2, then n is chosen to be even. If v is a machine number of the type T, the function yields v; otherwise, it yields zero. Constraint_Error is raised if Y is zero. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.<br /></p>
-
-<p>F'ResultFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> F that denotes a function declaration or an access-to-function type:<br /></p>
-
-<p>Within a postcondition expression for F, denotes the return object of the function call for which the postcondition expression is evaluated. The type of this attribute is that of the result subtype of the function or access-to-function type  except within a Post'Class postcondition expression for a function with a controlling result or with a controlling access result; in those cases the type of the attribute is described above as part of the Name Resolution Rules for Post'Class. See 6.1.1.<br /></p>
-
-<p>S'RoundFor every decimal fixed point subtype S:<br /></p>
-
-<p>S'Round denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>For nonzero Y, let v be the value X  n � Y, where n is the integer nearest to the exact value of X/Y; if |n  X/Y| = 1/2, then n is chosen to be even. If v is a machine number of the type T, the function yields v; otherwise, it yields zero. Constraint_Error is raised if Y is zero. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.<br /></dd>
+<dt><br/>F'Result</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> F that denotes a function declaration or an access-to-function type:<br /></dd>
+<dd>Within a postcondition expression for F, denotes the return object of the function call for which the postcondition expression is evaluated. The type of this attribute is that of the result subtype of the function or access-to-function type  except within a Post'Class postcondition expression for a function with a controlling result or with a controlling access result; in those cases the type of the attribute is described above as part of the Name Resolution Rules for Post'Class. See 6.1.1.<br /></dd>
+<dt><br/>S'Round</dt>
+<dd>For every decimal fixed point subtype S:<br /></dd>
+<dd>S'Round denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Round(X : universal_real){"\n"}  return S'Base{"\n"}
 
 </CodeBlock>
-<p>The function returns the value obtained by rounding X (away from 0, if X is midway between two values of the type of S). See 3.5.10.<br /></p>
-
-<p>S'RoundingFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Rounding denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>The function returns the value obtained by rounding X (away from 0, if X is midway between two values of the type of S). See 3.5.10.<br /></dd>
+<dt><br/>S'Rounding</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Rounding denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Rounding (X : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>The function yields the integral value nearest to X, rounding away from zero if X lies exactly halfway between two integers. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.<br /></p>
-
-<p>S'Safe_FirstFor every subtype S of a floating point type T:<br /></p>
-
-<p>Yields the lower bound of the safe range (see 3.5.7) of the type T. If the Numerics Annex is not supported, the value of this attribute is implementation defined; see G.2.2 for the definition that applies to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_real</em>. See A.5.3.<br /></p>
-
-<p>S'Safe_LastFor every subtype S of a floating point type T:<br /></p>
-
-<p>Yields the upper bound of the safe range (see 3.5.7) of the type T. If the Numerics Annex is not supported, the value of this attribute is implementation defined; see G.2.2 for the definition that applies to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_real</em>. See A.5.3.<br /></p>
-
-<p>S'ScaleFor every decimal fixed point subtype S:<br /></p>
-
-<p>S'Scale denotes the <em>scale</em> of the subtype S, defined as the value N such that S'Delta = 10.0**(N). The scale indicates the position of the point relative to the rightmost significant digits of values of subtype S. The value of this attribute is of the type <em>universal_integer</em>. See 3.5.10.<br /></p>
-
-<p>S'ScalingFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Scaling denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>The function yields the integral value nearest to X, rounding away from zero if X lies exactly halfway between two integers. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.<br /></dd>
+<dt><br/>S'Safe_First</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>Yields the lower bound of the safe range (see 3.5.7) of the type T. If the Numerics Annex is not supported, the value of this attribute is implementation defined; see G.2.2 for the definition that applies to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_real</em>. See A.5.3.<br /></dd>
+<dt><br/>S'Safe_Last</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>Yields the upper bound of the safe range (see 3.5.7) of the type T. If the Numerics Annex is not supported, the value of this attribute is implementation defined; see G.2.2 for the definition that applies to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_real</em>. See A.5.3.<br /></dd>
+<dt><br/>S'Scale</dt>
+<dd>For every decimal fixed point subtype S:<br /></dd>
+<dd>S'Scale denotes the <em>scale</em> of the subtype S, defined as the value N such that S'Delta = 10.0**(N). The scale indicates the position of the point relative to the rightmost significant digits of values of subtype S. The value of this attribute is of the type <em>universal_integer</em>. See 3.5.10.<br /></dd>
+<dt><br/>S'Scaling</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Scaling denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Scaling (X : T;{"\n"}                    Adjustment : universal_integer){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>Let v be the value X � T'Machine_RadixAdjustment. If v is a machine number of the type T, or if |v|  T'Model_Small, the function yields v; otherwise, it yields either one of the machine numbers of the type T adjacent to v. Constraint_Error is optionally raised if v is outside the base range of S. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.<br /></p>
-
-<p>S'Signed_ZerosFor every subtype S of a floating point type T:<br /></p>
-
-<p>Yields the value True if the hardware representation for the type T has the capability of representing both positively and negatively signed zeros, these being generated and used by the predefined operations of the type T as specified in IEC 559:1989; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. See A.5.3.<br /></p>
-
-<p>S'SizeFor every subtype S:<br /></p>
-
-<p>If S is definite, denotes the size (in bits) that the implementation would choose for the following objects of subtype S: <br /></p>
-
-<p>A record component of subtype S when the record type is packed.<br /></p>
-
-<p>The formal parameter of an instance of Unchecked_Conversion that converts from subtype S to some other subtype. <br /></p>
-
-<p>If S is indefinite, the meaning is implementation defined. The value of this attribute is of the type <em>universal_integer</em>. See 13.3.<br /></p>
-
-<p>X'SizeFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an object:<br /></p>
-
-<p>Denotes the size in bits of the representation of the object. The value of this attribute is of the type <em>universal_integer</em>. See 13.3.<br /></p>
-
-<p>S'SmallFor every fixed point subtype S:<br /></p>
-
-<p>S'Small denotes the <em>small</em> of the type of S. The value of this attribute is of the type <em>universal_real</em>. See 3.5.10.<br /></p>
-
-<p>S'Storage_PoolFor every access-to-object subtype S:<br /></p>
-
-<p>Denotes the storage pool of the type of S. The type of this attribute is Root_Storage_Pool'Class. See 13.11.<br /></p>
-
-<p>S'Storage_SizeFor every access-to-object subtype S:<br /></p>
-
-<p>Yields the result of calling Storage_Size(S'Storage_Pool), which is intended to be a measure of the number of storage elements reserved for the pool. The type of this attribute is <em>universal_integer</em>. See 13.11.<br /></p>
-
-<p>T'Storage_SizeFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> T that denotes a task object (after any implicit dereference):<br /></p>
-
-<p>Denotes the number of storage elements reserved for the task. The value of this attribute is of the type <em>universal_integer</em>. The Storage_Size includes the size of the task's stack, if any. The language does not specify whether or not it includes other storage associated with the task (such as the "task control block" used by some implementations.) See 13.3.<br /></p>
-
-<p>S'Stream_SizeFor every subtype S of an elementary type <em>T</em>:<br /></p>
-
-<p>Denotes the number of bits read from or written to a stream by the default implementations of S'Read and S'Write. Hence, the number of stream elements required per item of elementary type <em>T</em> is:<br /></p>
-
+<dl>
+<dd>Let v be the value X � T'Machine_RadixAdjustment. If v is a machine number of the type T, or if |v|  T'Model_Small, the function yields v; otherwise, it yields either one of the machine numbers of the type T adjacent to v. Constraint_Error is optionally raised if v is outside the base range of S. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.<br /></dd>
+<dt><br/>S'Signed_Zeros</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>Yields the value True if the hardware representation for the type T has the capability of representing both positively and negatively signed zeros, these being generated and used by the predefined operations of the type T as specified in IEC 559:1989; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. See A.5.3.<br /></dd>
+<dt><br/>S'Size</dt>
+<dd>For every subtype S:<br /></dd>
+<dd>If S is definite, denotes the size (in bits) that the implementation would choose for the following objects of subtype S: <br /></dd>
+</dl>
+<ul>
+<li>A record component of subtype S when the record type is packed.<br /></li>
+<li>The formal parameter of an instance of Unchecked_Conversion that converts from subtype S to some other subtype. <br /></li>
+</ul>
+<dl>
+<dd>If S is indefinite, the meaning is implementation defined. The value of this attribute is of the type <em>universal_integer</em>. See 13.3.<br /></dd>
+<dt><br/>X'Size</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an object:<br /></dd>
+<dd>Denotes the size in bits of the representation of the object. The value of this attribute is of the type <em>universal_integer</em>. See 13.3.<br /></dd>
+<dt><br/>S'Small</dt>
+<dd>For every fixed point subtype S:<br /></dd>
+<dd>S'Small denotes the <em>small</em> of the type of S. The value of this attribute is of the type <em>universal_real</em>. See 3.5.10.<br /></dd>
+<dt><br/>S'Storage_Pool</dt>
+<dd>For every access-to-object subtype S:<br /></dd>
+<dd>Denotes the storage pool of the type of S. The type of this attribute is Root_Storage_Pool'Class. See 13.11.<br /></dd>
+<dt><br/>S'Storage_Size</dt>
+<dd>For every access-to-object subtype S:<br /></dd>
+<dd>Yields the result of calling Storage_Size(S'Storage_Pool), which is intended to be a measure of the number of storage elements reserved for the pool. The type of this attribute is <em>universal_integer</em>. See 13.11.<br /></dd>
+<dt><br/>T'Storage_Size</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> T that denotes a task object (after any implicit dereference):<br /></dd>
+<dd>Denotes the number of storage elements reserved for the task. The value of this attribute is of the type <em>universal_integer</em>. The Storage_Size includes the size of the task's stack, if any. The language does not specify whether or not it includes other storage associated with the task (such as the "task control block" used by some implementations.) See 13.3.<br /></dd>
+<dt><br/>S'Stream_Size</dt>
+<dd>For every subtype S of an elementary type <em>T</em>:<br /></dd>
+<dd>Denotes the number of bits read from or written to a stream by the default implementations of S'Read and S'Write. Hence, the number of stream elements required per item of elementary type <em>T</em> is:<br /></dd>
+</dl>
 <CodeBlock>
 T'Stream_Size / Ada.Streams.Stream_Element'Size{"\n"}
 
 </CodeBlock>
-<p>The value of this attribute is of type <em>universal_integer</em> and is a multiple of Stream_Element'Size. See 13.13.2.<br /></p>
-
-<p>S'SuccFor every scalar subtype S:<br /></p>
-
-<p>S'Succ denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>The value of this attribute is of type <em>universal_integer</em> and is a multiple of Stream_Element'Size. See 13.13.2.<br /></dd>
+<dt><br/>S'Succ</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Succ denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Succ(Arg : S'Base){"\n"}  return S'Base{"\n"}
 
 </CodeBlock>
-<p>For an enumeration type, the function returns the value whose position number is one more than that of the value of Arg; Constraint_Error is raised if there is no such value of the type. For an integer type, the function returns the result of adding one to the value of Arg. For a fixed point type, the function returns the result of adding <em>small</em> to the value of Arg. For a floating point type, the function returns the machine number (as defined in 3.5.7) immediately above the value of Arg; Constraint_Error is raised if there is no such machine number. See 3.5.<br /></p>
-
-<p>S'TagFor every subtype S of a tagged type <em>T</em> (specific or class-wide):<br /></p>
-
-<p>S'Tag denotes the tag of the type <em>T</em> (or if <em>T</em> is class-wide, the tag of the root type of the corresponding class). The value of this attribute is of type Tag. See 3.9.<br /></p>
-
-<p>X'TagFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that is of a class-wide tagged type (after any implicit dereference):<br /></p>
-
-<p>X'Tag denotes the tag of X. The value of this attribute is of type Tag. See 3.9.<br /></p>
-
-<p>T'TerminatedFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> T that is of a task type (after any implicit dereference):<br /></p>
-
-<p>Yields the value True if the task denoted by T is terminated, and False otherwise. The value of this attribute is of the predefined type Boolean. See 9.9.<br /></p>
-
-<p>S'TruncationFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Truncation denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>For an enumeration type, the function returns the value whose position number is one more than that of the value of Arg; Constraint_Error is raised if there is no such value of the type. For an integer type, the function returns the result of adding one to the value of Arg. For a fixed point type, the function returns the result of adding <em>small</em> to the value of Arg. For a floating point type, the function returns the machine number (as defined in 3.5.7) immediately above the value of Arg; Constraint_Error is raised if there is no such machine number. See 3.5.<br /></dd>
+<dt><br/>S'Tag</dt>
+<dd>For every subtype S of a tagged type <em>T</em> (specific or class-wide):<br /></dd>
+<dd>S'Tag denotes the tag of the type <em>T</em> (or if <em>T</em> is class-wide, the tag of the root type of the corresponding class). The value of this attribute is of type Tag. See 3.9.<br /></dd>
+<dt><br/>X'Tag</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that is of a class-wide tagged type (after any implicit dereference):<br /></dd>
+<dd>X'Tag denotes the tag of X. The value of this attribute is of type Tag. See 3.9.<br /></dd>
+<dt><br/>T'Terminated</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> T that is of a task type (after any implicit dereference):<br /></dd>
+<dd>Yields the value True if the task denoted by T is terminated, and False otherwise. The value of this attribute is of the predefined type Boolean. See 9.9.<br /></dd>
+<dt><br/>S'Truncation</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Truncation denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Truncation (X : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>The function yields the value X when X is negative, and X otherwise. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.<br /></p>
-
-<p>S'Unbiased_RoundingFor every subtype S of a floating point type T:<br /></p>
-
-<p>S'Unbiased_Rounding denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>The function yields the value X when X is negative, and X otherwise. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.<br /></dd>
+<dt><br/>S'Unbiased_Rounding</dt>
+<dd>For every subtype S of a floating point type T:<br /></dd>
+<dd>S'Unbiased_Rounding denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Unbiased_Rounding (X : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<p>The function yields the integral value nearest to X, rounding toward the even integer if X lies exactly halfway between two integers. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.<br /></p>
-
-<p>X'Unchecked_AccessFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an aliased view of an object:<br /></p>
-
-<p>All rules and semantics that apply to X'Access (see 3.10.2) apply also to X'Unchecked_Access, except that, for the purposes of accessibility rules and checks, it is as if X were declared immediately within a library package. See 13.10.<br /></p>
-
-<p>S'ValFor every discrete subtype S:<br /></p>
-
-<p>S'Val denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>The function yields the integral value nearest to X, rounding toward the even integer if X lies exactly halfway between two integers. A zero result has the sign of X when S'Signed_Zeros is True. See A.5.3.<br /></dd>
+<dt><br/>X'Unchecked_Access</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes an aliased view of an object:<br /></dd>
+<dd>All rules and semantics that apply to X'Access (see 3.10.2) apply also to X'Unchecked_Access, except that, for the purposes of accessibility rules and checks, it is as if X were declared immediately within a library package. See 13.10.<br /></dd>
+<dt><br/>S'Val</dt>
+<dd>For every discrete subtype S:<br /></dd>
+<dd>S'Val denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Val(Arg : universal_integer){"\n"}  return S'Base{"\n"}
 
 </CodeBlock>
-<p>This function returns a value of the type of S whose position number equals the value of Arg. See 3.5.5.<br /></p>
-
-<p>X'ValidFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes a scalar object (after any implicit dereference):<br /></p>
-
-<p>Yields True if and only if the object denoted by X is normal, has a valid representation, and then, if the preceding conditions hold, the value of X also satisfies the predicates of the nominal subtype of X. The value of this attribute is of the predefined type Boolean. See 13.9.2.<br /></p>
-
-<p>S'ValueFor every scalar subtype S:<br /></p>
-
-<p>S'Value denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>This function returns a value of the type of S whose position number equals the value of Arg. See 3.5.5.<br /></dd>
+<dt><br/>X'Valid</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that denotes a scalar object (after any implicit dereference):<br /></dd>
+<dd>Yields True if and only if the object denoted by X is normal, has a valid representation, and then, if the preceding conditions hold, the value of X also satisfies the predicates of the nominal subtype of X. The value of this attribute is of the predefined type Boolean. See 13.9.2.<br /></dd>
+<dt><br/>S'Value</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Value denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Value(Arg : String){"\n"}  return S'Base{"\n"}
 
 </CodeBlock>
-<p>This function returns a value given an image of the value as a String, ignoring any leading or trailing spaces. See 3.5.<br /></p>
-
-<p>P'VersionFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that statically denotes a program unit:<br /></p>
-
-<p>Yields a value of the predefined type String that identifies the version of the compilation unit that contains the declaration of the program unit. See E.3.<br /></p>
-
-<p>S'Wide_ImageFor every subtype S of a type T:<br /></p>
-
-<p>S'Wide_Image denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>This function returns a value given an image of the value as a String, ignoring any leading or trailing spaces. See 3.5.<br /></dd>
+<dt><br/>P'Version</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that statically denotes a program unit:<br /></dd>
+<dd>Yields a value of the predefined type String that identifies the version of the compilation unit that contains the declaration of the program unit. See E.3.<br /></dd>
+<dt><br/>S'Wide_Image</dt>
+<dd>For every subtype S of a type T:<br /></dd>
+<dd>S'Wide_Image denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Wide_Image(Arg : S'Base){"\n"}  return Wide_String{"\n"}
 
 </CodeBlock>
-<p>S'Wide_Image calls S'Put_Image passing Arg (which will typically store a sequence of character values in a text buffer) and then returns the result of retrieving the contents of that buffer with function Wide_Get. See 4.10.<br /></p>
-
-<p>X'Wide_ImageFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X of a type T other than <em>universal_real</em> or <em>universal_fixed</em>:<br /></p>
-
-<p>X'Wide_Image denotes the result of calling function S'Wide_Image with <em>Arg</em> being X, where S is the nominal subtype of X. See 4.10.<br /></p>
-
-<p>S'Wide_ValueFor every scalar subtype S:<br /></p>
-
-<p>S'Wide_Value denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>S'Wide_Image calls S'Put_Image passing Arg (which will typically store a sequence of character values in a text buffer) and then returns the result of retrieving the contents of that buffer with function Wide_Get. See 4.10.<br /></dd>
+<dt><br/>X'Wide_Image</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X of a type T other than <em>universal_real</em> or <em>universal_fixed</em>:<br /></dd>
+<dd>X'Wide_Image denotes the result of calling function S'Wide_Image with <em>Arg</em> being X, where S is the nominal subtype of X. See 4.10.<br /></dd>
+<dt><br/>S'Wide_Value</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Wide_Value denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Wide_Value(Arg : Wide_String){"\n"}  return S'Base{"\n"}
 
 </CodeBlock>
-<p>This function returns a value given an image of the value as a Wide_String, ignoring any leading or trailing spaces. See 3.5.<br /></p>
-
-<p>S'Wide_Wide_ImageFor every subtype S of a type T:<br /></p>
-
-<p>S'Wide_Wide_Image denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>This function returns a value given an image of the value as a Wide_String, ignoring any leading or trailing spaces. See 3.5.<br /></dd>
+<dt><br/>S'Wide_Wide_Image</dt>
+<dd>For every subtype S of a type T:<br /></dd>
+<dd>S'Wide_Wide_Image denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Wide_Wide_Image(Arg : S'Base){"\n"}  return Wide_Wide_String{"\n"}
 
 </CodeBlock>
-<p>S'Wide_Wide_Image calls S'Put_Image passing Arg (which will typically store a sequence of character values in a text buffer) and then returns the result of retrieving the contents of that buffer with function Wide_Wide_Get. See 4.10.<br /></p>
-
-<p>X'Wide_Wide_ImageFor a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X of a type T other than <em>universal_real</em> or <em>universal_fixed</em>:<br /></p>
-
-<p>X'Wide_Wide_Image denotes the result of calling function S'Wide_Wide_Image with <em>Arg</em> being X, where S is the nominal subtype of X. See 4.10.<br /></p>
-
-<p>S'Wide_Wide_ValueFor every scalar subtype S:<br /></p>
-
-<p>S'Wide_Wide_Value denotes a function with the following specification: <br /></p>
-
+<dl>
+<dd>S'Wide_Wide_Image calls S'Put_Image passing Arg (which will typically store a sequence of character values in a text buffer) and then returns the result of retrieving the contents of that buffer with function Wide_Wide_Get. See 4.10.<br /></dd>
+<dt><br/>X'Wide_Wide_Image</dt>
+<dd>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X of a type T other than <em>universal_real</em> or <em>universal_fixed</em>:<br /></dd>
+<dd>X'Wide_Wide_Image denotes the result of calling function S'Wide_Wide_Image with <em>Arg</em> being X, where S is the nominal subtype of X. See 4.10.<br /></dd>
+<dt><br/>S'Wide_Wide_Value</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Wide_Wide_Value denotes a function with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 function S'Wide_Wide_Value(Arg : Wide_Wide_String){"\n"}  return S'Base{"\n"}
 
 </CodeBlock>
-<p>This function returns a value given an image of the value as a Wide_Wide_String, ignoring any leading or trailing spaces. See 3.5.<br /></p>
-
-<p>S'Wide_Wide_WidthFor every scalar subtype S:<br /></p>
-
-<p>S'Wide_Wide_Width denotes the maximum length of a Wide_Wide_String returned by S'Wide_Wide_Image over all values of the subtype S, assuming a default implementation of S'Put_Image. It denotes zero for a subtype that has a null range. Its type is <em>universal_integer</em>. See 3.5.<br /></p>
-
-<p>S'Wide_WidthFor every scalar subtype S:<br /></p>
-
-<p>S'Wide_Width denotes the maximum length of a Wide_String returned by S'Wide_Image over all values of the subtype S, assuming a default implementation of S'Put_Image. It denotes zero for a subtype that has a null range. Its type is <em>universal_integer</em>. See 3.5.<br /></p>
-
-<p>S'WidthFor every scalar subtype S:<br /></p>
-
-<p>S'Width denotes the maximum length of a String returned by S'Image over all values of the subtype S, assuming a default implementation of S'Put_Image. It denotes zero for a subtype that has a null range. Its type is <em>universal_integer</em>. See 3.5.<br /></p>
-
-<p>S'Class'WriteFor every subtype S'Class of a class-wide type <em>T</em>'Class:<br /></p>
-
-<p>S'Class'Write denotes a procedure with the following specification: <br /></p>
-
+<dl>
+<dd>This function returns a value given an image of the value as a Wide_Wide_String, ignoring any leading or trailing spaces. See 3.5.<br /></dd>
+<dt><br/>S'Wide_Wide_Width</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Wide_Wide_Width denotes the maximum length of a Wide_Wide_String returned by S'Wide_Wide_Image over all values of the subtype S, assuming a default implementation of S'Put_Image. It denotes zero for a subtype that has a null range. Its type is <em>universal_integer</em>. See 3.5.<br /></dd>
+<dt><br/>S'Wide_Width</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Wide_Width denotes the maximum length of a Wide_String returned by S'Wide_Image over all values of the subtype S, assuming a default implementation of S'Put_Image. It denotes zero for a subtype that has a null range. Its type is <em>universal_integer</em>. See 3.5.<br /></dd>
+<dt><br/>S'Width</dt>
+<dd>For every scalar subtype S:<br /></dd>
+<dd>S'Width denotes the maximum length of a String returned by S'Image over all values of the subtype S, assuming a default implementation of S'Put_Image. It denotes zero for a subtype that has a null range. Its type is <em>universal_integer</em>. See 3.5.<br /></dd>
+<dt><br/>S'Class'Write</dt>
+<dd>For every subtype S'Class of a class-wide type <em>T</em>'Class:<br /></dd>
+<dd>S'Class'Write denotes a procedure with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 procedure S'Class'Write({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item   : in T'Class){"\n"}
 
 </CodeBlock>
-<p>Dispatches to the subprogram denoted by the Write attribute of the specific type identified by the tag of Item. See 13.13.2.<br /></p>
-
-<p>S'WriteFor every subtype S of a specific type <em>T</em>:<br /></p>
-
-<p>S'Write denotes a procedure with the following specification: <br /></p>
-
+<dl>
+<dd>Dispatches to the subprogram denoted by the Write attribute of the specific type identified by the tag of Item. See 13.13.2.<br /></dd>
+<dt><br/>S'Write</dt>
+<dd>For every subtype S of a specific type <em>T</em>:<br /></dd>
+<dd>S'Write denotes a procedure with the following specification: <br /></dd>
+</dl>
 <CodeBlock>
 procedure S'Write({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item : in T){"\n"}
 
 </CodeBlock>
-<p>S'Write writes the value of <em>Item</em> to <em>Stream</em>. See 13.13.2.<br /></p>
-
+<dl>
+<dd>S'Write writes the value of <em>Item</em> to <em>Stream</em>. See 13.13.2.<br /></dd>
+</dl>

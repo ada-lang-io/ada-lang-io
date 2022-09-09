@@ -5,9 +5,9 @@ sidebar_position:  84
 # 10.1 Separate Compilation
 
 :::warning
-We're still working on the Reference manual output.  Internal links are broken,
-as are a bunch of other things.
-See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
+This Reference Manual output has not been verified,
+and may contain omissions or errors.
+Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
 import CodeBlock from "@theme/CodeBlock";
@@ -76,7 +76,7 @@ In RM83, it was unclear which was the official definition of "program unit". Def
 
 <p><code>parent_unit_name</code><a id="S0291"></a><code> ::= </code><code><a href="../AA-4/AA-4.1#S0091">name</a></code><br /></p>
 
-<p>{"{"}<em>{"AI95-00397-01"}</em>{"}"} An <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code> is not allowed in a <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code>, <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>, or <code><a href="../AA-8/AA-8.5#S0242">subprogram_renaming_declaration</a></code> that declares a library unit.<br /></p>
+<p>{"{"}<em>{"AI95-00397-01"}</em>{"}"} <br />An <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code> is not allowed in a <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code>, <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>, or <code><a href="../AA-8/AA-8.5#S0242">subprogram_renaming_declaration</a></code> that declares a library unit.<br /></p>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>All of the listed items syntactically include <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code>, but a library unit can never override anything. A majority of the ARG thought that allowing <strong>not overriding</strong> in that case would be confusing instead of helpful. <br /></Admonition>
@@ -136,20 +136,20 @@ package A is{"\n"}private{"\n"}    package B is{"\n"}        package C is{"\n"} 
 <Admonition type="aarm" aarm="note" title="Note: ">
 Here, A.B.C is visible outside itself and outside A.B, but not outside A. (Note that this example is intended to illustrate the visibility of program units from the outside; the visibility within child units is not quite identical to that of physically nested units, since child units are nested after their parent's declaration.) <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} For each library <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code> in the environment, there is an implicit declaration of a <em>limited view</em> of that library package. The limited view of a package contains:<br /></p>
+<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />For each library <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code> in the environment, there is an implicit declaration of a <em>limited view</em> of that library package. The limited view of a package contains:<br /></p>
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0129-1"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} For each <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code> occurring immediately within the visible part, a declaration of the limited view of that package, with the same <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code>.<br /></p>
-
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI95-00326-01"}</em>{"}"} {"{"}<em>{"AI05-0108-1"}</em>{"}"} {"{"}<em>{"AI05-0129-1"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} For each <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code> occurring immediately within the visible part that is not an <code><a href="../AA-3/AA-3.10#S0085">incomplete_type_declaration</a></code>, an incomplete view of the type with no <code><a href="../AA-3/AA-3.7#S0059">discriminant_part</a></code>; if the <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code> is tagged, then the view is a tagged incomplete view. <br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0129-1"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />For each <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code> occurring immediately within the visible part, a declaration of the limited view of that package, with the same <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code>.<br /></li>
+<li>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI95-00326-01"}</em>{"}"} {"{"}<em>{"AI05-0108-1"}</em>{"}"} {"{"}<em>{"AI05-0129-1"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />For each <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code> occurring immediately within the visible part that is not an <code><a href="../AA-3/AA-3.10#S0085">incomplete_type_declaration</a></code>, an incomplete view of the type with no <code><a href="../AA-3/AA-3.7#S0059">discriminant_part</a></code>; if the <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code> is tagged, then the view is a tagged incomplete view. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI05-0108-1"}</em>{"}"} The incomplete view of a type does not have a discriminant_part even if the <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code> does have one. This is necessary because semantic analysis (and the associated dependence on <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s) would be necessary to determine the types of the discriminants.<br /></Admonition>
+<strong></strong>{"{"}<em>{"AI05-0108-1"}</em>{"}"} <br />The incomplete view of a type does not have a discriminant_part even if the <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code> does have one. This is necessary because semantic analysis (and the associated dependence on <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s) would be necessary to determine the types of the discriminants.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0129-1"}</em>{"}"} No incomplete views of incomplete types are included in the limited view. The rules of 3.10.1 ensure that the completion of any visible incomplete type is declared in the same visible part, so such an incomplete view would simply be redundant. <br /></Admonition>
+{"{"}<em>{"AI05-0129-1"}</em>{"}"} <br />No incomplete views of incomplete types are included in the limited view. The rules of 3.10.1 ensure that the completion of any visible incomplete type is declared in the same visible part, so such an incomplete view would simply be redundant. <br /></Admonition>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>{"AI95-00217-06"}</em>{"}"} The implementation model of a limited view is that it can be determined solely from the syntax of the source of the unit, without any semantic analysis. That allows it to be created without the semantic dependences of a full unit, which is necessary for it to break mutual dependences of units. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />The implementation model of a limited view is that it can be determined solely from the syntax of the source of the unit, without any semantic analysis. That allows it to be created without the semantic dependences of a full unit, which is necessary for it to break mutual dependences of units. <br /></Admonition>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>The limited view does not include package instances and their contents. Semantic analysis of a unit (and dependence on its <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s) would be needed to determine the contents of an instance. <br /></Admonition>
@@ -176,7 +176,7 @@ Here, A.B.C is visible outside itself and outside A.B, but not outside A. (Note 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>We could have allowed nested program units to be children of other program units; their semantics would make sense. We disallow them to keep things simpler and because they wouldn't be particularly useful. <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} A <code><a href="../AA-10/AA-10.1#S0291">parent_unit_name</a></code> [(which can be used within a <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code> of a <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> and in the <strong>separate</strong> clause of a <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code>)], and each of its <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>es, shall not denote a <code><a href="../AA-8/AA-8.5#S0238">renaming_declaration</a></code>. [On the other hand, a name that denotes a <code><a href="../AA-10/AA-10.1#S0289">library_unit_renaming_declaration</a></code> is allowed in a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code> and other places where the name of a library unit is allowed.]<br /></p>
+<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />A <code><a href="../AA-10/AA-10.1#S0291">parent_unit_name</a></code> [(which can be used within a <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code> of a <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> and in the <strong>separate</strong> clause of a <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code>)], and each of its <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>es, shall not denote a <code><a href="../AA-8/AA-8.5#S0238">renaming_declaration</a></code>. [On the other hand, a name that denotes a <code><a href="../AA-10/AA-10.1#S0289">library_unit_renaming_declaration</a></code> is allowed in a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code> and other places where the name of a library unit is allowed.]<br /></p>
 
 <p>If a library package is an instance of a generic package, then every child of the library package shall either be itself an instance or be a renaming of a library unit. <br /></p>
 
@@ -186,15 +186,17 @@ Here, A.B.C is visible outside itself and outside A.B, but not outside A. (Note 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>Instances are forbidden from having noninstance children for two reasons: <br /></Admonition>
 
-<p>a)We want all source code that can depend on information from the private part of a library unit to be inside the "subsystem" rooted at the library unit. If an instance of a generic unit were allowed to have a noninstance as a child, the source code of that child might depend on information from the private part of the generic unit, even though it is outside the subsystem rooted at the generic unit.<br /></p>
-
-<p>b)Disallowing noninstance children simplifies the description of the semantics of children of generic packages. <br /></p>
-
-<p>{"{"}<em>{"AI05-0004-1"}</em>{"}"} A child of a generic library package shall either be itself a generic unit or be a renaming of some other child of the same generic unit.<br /></p>
+<dt><br/>a)</dt>
+<dl>
+<dd>We want all source code that can depend on information from the private part of a library unit to be inside the "subsystem" rooted at the library unit. If an instance of a generic unit were allowed to have a noninstance as a child, the source code of that child might depend on information from the private part of the generic unit, even though it is outside the subsystem rooted at the generic unit.<br /></dd>
+<dt><br/>b)</dt>
+<dd>Disallowing noninstance children simplifies the description of the semantics of children of generic packages. <br /></dd>
+</dl>
+<p>{"{"}<em>{"AI05-0004-1"}</em>{"}"} <br />A child of a generic library package shall either be itself a generic unit or be a renaming of some other child of the same generic unit.<br /></p>
 
 <p>A child of a parent generic package shall be instantiated or renamed only within the declarative region of the parent generic.<br /></p>
 
-<p>{"{"}<em>{"AI95-00331-01"}</em>{"}"} For each child <em>C</em> of some parent generic package <em>P</em>, there is a corresponding declaration <em>C</em> nested immediately within each instance of <em>P</em>. For the purposes of this rule, if a child <em>C</em> itself has a child <em>D</em>, each corresponding declaration for <em>C</em> has a corresponding child <em>D</em>. [The corresponding declaration for a child within an instance is visible only within the scope of a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> that mentions the (original) child generic unit.]<br /></p>
+<p>{"{"}<em>{"AI95-00331-01"}</em>{"}"} <br />For each child <em>C</em> of some parent generic package <em>P</em>, there is a corresponding declaration <em>C</em> nested immediately within each instance of <em>P</em>. For the purposes of this rule, if a child <em>C</em> itself has a child <em>D</em>, each corresponding declaration for <em>C</em> has a corresponding child <em>D</em>. [The corresponding declaration for a child within an instance is visible only within the scope of a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> that mentions the (original) child generic unit.]<br /></p>
 
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>Within the child, like anything nested in a generic unit, one can make up-level references to the current instance of its parent, and thereby gain access to the formal parameters of the parent, to the types declared in the parent, etc. This "nesting" model applies even within the <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code> of the child, as it does for a generic child of a nongeneric unit. <br /></Admonition>
@@ -222,14 +224,14 @@ Note that even without this rule, such subprograms would be illegal for tagged t
 
 <p>[There are two kinds of dependences among compilation units:] <br /></p>
 
-<p>{"{"}<em>{"AI12-0445-1"}</em>{"}"} [The <em>semantic dependences</em> (see below) are the ones necessary to check the compile-time rules across compilation unit boundaries; a compilation unit depends semantically on the other compilation units necessary to determine its legality. The visibility rules are based on the semantic dependences.<br /></p>
-
-<p>The <em>elaboration dependences</em> (see 10.2) determine the order of elaboration of <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s.] <br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI12-0445-1"}</em>{"}"} <br />[The <em>semantic dependences</em> (see below) are the ones necessary to check the compile-time rules across compilation unit boundaries; a compilation unit depends semantically on the other compilation units necessary to determine its legality. The visibility rules are based on the semantic dependences.<br /></li>
+<li>The <em>elaboration dependences</em> (see 10.2) determine the order of elaboration of <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s.] <br /></li>
+</ul>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>Don't confuse these kinds of dependences with the run-time dependences among tasks and masters defined in 9.3, "Task Dependence - Termination of Tasks". <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} A <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> depends semantically upon its parent declaration. A subunit depends semantically upon its parent body. A <code><a href="../AA-10/AA-10.1#S0290">library_unit_body</a></code> depends semantically upon the corresponding <code><a href="../AA-10/AA-10.1#S0288">library_unit_declaration</a></code>, if any. The declaration of the limited view of a library package depends semantically upon the declaration of the limited view of its parent. The declaration of a library package depends semantically upon the declaration of its limited view. A compilation unit depends semantically upon each <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> mentioned in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> of the compilation unit. In addition, if a given compilation unit contains an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> of a type defined in another compilation unit, then the given compilation unit depends semantically upon the other compilation unit. The semantic dependence relationship is transitive.<br /></p>
+<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />A <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> depends semantically upon its parent declaration. A subunit depends semantically upon its parent body. A <code><a href="../AA-10/AA-10.1#S0290">library_unit_body</a></code> depends semantically upon the corresponding <code><a href="../AA-10/AA-10.1#S0288">library_unit_declaration</a></code>, if any. The declaration of the limited view of a library package depends semantically upon the declaration of the limited view of its parent. The declaration of a library package depends semantically upon the declaration of its limited view. A compilation unit depends semantically upon each <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> mentioned in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> of the compilation unit. In addition, if a given compilation unit contains an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> of a type defined in another compilation unit, then the given compilation unit depends semantically upon the other compilation unit. The semantic dependence relationship is transitive.<br /></p>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>The "if any" in the third sentence is necessary because library subprograms are not required to have a <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code>. <br /></Admonition>
@@ -253,15 +255,15 @@ Note that the semantic dependence does not have the same effect as a <code><a hr
 Note that no special rule is needed for an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>, since an expression after <strong>use</strong> will require semantic dependence upon the compilation unit containing the <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code> of interest.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00217-06"}</em>{"}"} Unlike a full view of a package, a limited view does not depend semantically on units mentioned in <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s of the <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code> that defines the package. Formally, this is achieved by saying that the limited view has an empty <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>. This is necessary so that they can be useful for their intended purpose: allowing mutual dependences between packages. The lack of semantic dependence limits the contents of a limited view to the items that can be determined solely from the syntax of the source of the package, without any semantic analysis. That allows it to be created without the semantic dependences of a full package. <br /></Admonition>
+{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />Unlike a full view of a package, a limited view does not depend semantically on units mentioned in <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s of the <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code> that defines the package. Formally, this is achieved by saying that the limited view has an empty <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>. This is necessary so that they can be useful for their intended purpose: allowing mutual dependences between packages. The lack of semantic dependence limits the contents of a limited view to the items that can be determined solely from the syntax of the source of the package, without any semantic analysis. That allows it to be created without the semantic dependences of a full package. <br /></Admonition>
 
 
 #### Dynamic Semantics
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} The elaboration of the declaration of the limited view of a package has no effect. <br /></p>
+<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />The elaboration of the declaration of the limited view of a package has no effect. <br /></p>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 1   {"{"}<em>{"AI12-0442-1"}</em>{"}"} A simple program can consist of a single compilation unit. A <code><a href="../AA-10/AA-10.1#S0285">compilation</a></code> can have no compilation units; for example, its text can consist of <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s. <br /></Admonition>
+NOTE 1   {"{"}<em>{"AI12-0442-1"}</em>{"}"} <br />A simple program can consist of a single compilation unit. A <code><a href="../AA-10/AA-10.1#S0285">compilation</a></code> can have no compilation units; for example, its text can consist of <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s. <br /></Admonition>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Such <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s cannot have any arguments that are <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s, by a previous rule of this subclause. A <code><a href="../AA-10/AA-10.1#S0285">compilation</a></code> can even be entirely empty, which is probably not useful.<br /></Admonition>
@@ -272,14 +274,12 @@ Some interesting properties of the three kinds of dependence: The elaboration de
 <Admonition type="aarm" aarm="note" title="Note: ">
 The model whereby a child is inside its parent's declarative region, after the parent's declaration, as explained in 8.1, has the following ramifications: <br /></Admonition>
 
-<p>The restrictions on "early" use of a private type (RM83-7.4.1(4)) or a deferred constant (RM83-7.4.3(2)) do not apply to uses in child units, because they follow the full declaration.<br /></p>
-
-<p>A library subprogram is never primitive, even if its profile includes a type declared immediately within the parent's <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, because the child is not declared immediately within the same <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> as the type (so it doesn't declare a new primitive subprogram), and because the child is forbidden from overriding an old primitive subprogram. It is immediately within the same declarative region, but not the same <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>. Thus, for a tagged type, it is not possible to call a child subprogram in a dispatching manner. (This is also forbidden by the freezing rules.) Similarly, it is not possible for the user to declare primitive subprograms of the types declared in the declaration of Standard, such as Integer (even if the rules were changed to allow a library unit whose name is an operator symbol).<br /></p>
-
-<p>When the parent unit is "used" the simple names of the with'd child units are directly visible (see 8.4, "Use Clauses").<br /></p>
-
-<p>When a parent body with's its own child, the defining name of the child is directly visible, and the parent body is not allowed to include a declaration of a homograph of the child unit immediately within the <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> of the body (RM83-8.3(17)). <br /></p>
-
+<ul>
+<li>The restrictions on "early" use of a private type (RM83-7.4.1(4)) or a deferred constant (RM83-7.4.3(2)) do not apply to uses in child units, because they follow the full declaration.<br /></li>
+<li>A library subprogram is never primitive, even if its profile includes a type declared immediately within the parent's <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, because the child is not declared immediately within the same <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> as the type (so it doesn't declare a new primitive subprogram), and because the child is forbidden from overriding an old primitive subprogram. It is immediately within the same declarative region, but not the same <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>. Thus, for a tagged type, it is not possible to call a child subprogram in a dispatching manner. (This is also forbidden by the freezing rules.) Similarly, it is not possible for the user to declare primitive subprograms of the types declared in the declaration of Standard, such as Integer (even if the rules were changed to allow a library unit whose name is an operator symbol).<br /></li>
+<li>When the parent unit is "used" the simple names of the with'd child units are directly visible (see 8.4, "Use Clauses").<br /></li>
+<li>When a parent body with's its own child, the defining name of the child is directly visible, and the parent body is not allowed to include a declaration of a homograph of the child unit immediately within the <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> of the body (RM83-8.3(17)). <br /></li>
+</ul>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Note that "declaration of a library unit" is different from "<code><a href="../AA-10/AA-10.1#S0288">library_unit_declaration</a></code>" - the former includes <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code>. Also, we sometimes really mean "declaration of a view of a library unit", which includes <code><a href="../AA-10/AA-10.1#S0289">library_unit_renaming_declaration</a></code>s.<br /></Admonition>
 
@@ -362,19 +362,19 @@ Standard is considered a library unit in Ada 95. This simplifies the description
 #### Extensions to Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00217-06"}</em>{"}"} The concept of a limited view is new. Combined with <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code>s (see 10.1.2), they facilitate construction of mutually recursive types in multiple packages. <br /></Admonition>
+{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />The concept of a limited view is new. Combined with <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code>s (see 10.1.2), they facilitate construction of mutually recursive types in multiple packages. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00331-01"}</em>{"}"} Clarified the wording so that a grandchild generic unit will work as expected. <br /></Admonition>
+{"{"}<em>{"AI95-00331-01"}</em>{"}"} <br />Clarified the wording so that a grandchild generic unit will work as expected. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0108-1"}</em>{"}"} {"{"}<em>{"AI05-0129-1"}</em>{"}"} <strong></strong> Clarified the wording so that it is clear that limited views of types never have discriminants and never are of incomplete types. <br /></Admonition>
+{"{"}<em>{"AI05-0108-1"}</em>{"}"} {"{"}<em>{"AI05-0129-1"}</em>{"}"} <strong><br /></strong> Clarified the wording so that it is clear that limited views of types never have discriminants and never are of incomplete types. <br /></Admonition>
 
 
 ## 10.1.2  Context Clauses - With Clauses
@@ -388,7 +388,7 @@ Standard is considered a library unit in Ada 95. This simplifies the description
 The reader should be able to understand a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> without looking ahead. Similarly, when compiling a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>, the compiler should not have to look ahead at subsequent <code><a href="../AA-10/AA-10.1#S0293">context_item</a></code>s, nor at the compilation unit to which the <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> is attached. (We have not completely achieved this.)<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00217-06"}</em>{"}"} A <em>ripple effect</em> occurs when the legality of a compilation unit could be affected by adding or removing an otherwise unneeded <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> on some compilation unit on which the unit depends, directly or indirectly. We try to avoid ripple effects because they make understanding and maintenance more difficult. However, ripple effects can occur because of direct visibility (as in child units); this seems impossible to eliminate. The ripple effect for <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s is somewhat similar to the Beaujolais effect (see 8.4) for <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s, which we also try to avoid. <br /></Admonition>
+{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />A <em>ripple effect</em> occurs when the legality of a compilation unit could be affected by adding or removing an otherwise unneeded <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> on some compilation unit on which the unit depends, directly or indirectly. We try to avoid ripple effects because they make understanding and maintenance more difficult. However, ripple effects can occur because of direct visibility (as in child units); this seems impossible to eliminate. The ripple effect for <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s is somewhat similar to the Beaujolais effect (see 8.4) for <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s, which we also try to avoid. <br /></Admonition>
 
 
 #### Syntax
@@ -397,17 +397,17 @@ The reader should be able to understand a <code><a href="../AA-10/AA-10.1#S0292"
 
 <p><code>context_item</code><a id="S0293"></a><code> ::= </code><code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> | <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code><br /></p>
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI95-00262-01"}</em>{"}"} <code>with_clause</code><a id="S0294"></a><code> ::= </code><code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> | <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code><br /></p>
+<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI95-00262-01"}</em>{"}"} <br /><code>with_clause</code><a id="S0294"></a><code> ::= </code><code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> | <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code><br /></p>
 
 <p><code>limited_with_clause</code><a id="S0295"></a><code> ::= </code><strong>limited</strong> [<strong>private</strong>] <strong>with</strong> <em>library_unit_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> {"{"}, <em>library_unit_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>{"}"};<br /></p>
 
 <p><code>nonlimited_with_clause</code><a id="S0296"></a><code> ::= </code>[<strong>private</strong>] <strong>with</strong> <em>library_unit_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> {"{"}, <em>library_unit_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>{"}"};<br /></p>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>{"AI95-00217-06"}</em>{"}"} A <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> makes a limited view of a unit visible.<br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />A <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> makes a limited view of a unit visible.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00262-01"}</em>{"}"} A <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> containing the reserved word <strong>private</strong> is called a <em>private with_clause</em>. It can be thought of as making items visible only in the private part, although it really makes items visible everywhere except the visible part. It can be used both for documentation purposes (to say that a unit is not used in the visible part), and to allow access to private units that otherwise would be prohibited. <br /></Admonition>
+{"{"}<em>{"AI95-00262-01"}</em>{"}"} <br />A <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> containing the reserved word <strong>private</strong> is called a <em>private with_clause</em>. It can be thought of as making items visible only in the private part, although it really makes items visible everywhere except the visible part. It can be used both for documentation purposes (to say that a unit is not used in the visible part), and to allow access to private units that otherwise would be prohibited. <br /></Admonition>
 
 
 #### Name Resolution Rules
@@ -415,34 +415,33 @@ The reader should be able to understand a <code><a href="../AA-10/AA-10.1#S0292"
 <p>The <em>scope</em> of a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> that appears on a <code><a href="../AA-10/AA-10.1#S0288">library_unit_declaration</a></code> or <code><a href="../AA-10/AA-10.1#S0289">library_unit_renaming_declaration</a></code> consists of the entire declarative region of the declaration[, which includes all children and subunits]. The scope of a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> that appears on a body consists of the body[, which includes all subunits]. <br /></p>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>{"AI95-00262-01"}</em>{"}"} Suppose a nonprivate  <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> of a public library unit mentions one of its private siblings. (This is only allowed on the body of the public library unit.) We considered making the scope of that <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> not include the visible part of the public library unit. (This would only matter for a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code>, since those are the only kinds of body that have a visible part, and only if the <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> completes a <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code>, since otherwise the <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> would be illegal.) We did not put in such a rule for two reasons: (1) It would complicate the wording of the rules, because we would have to split each <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> into pieces, in order to correctly handle "<strong>with</strong> P, Q;" where P is public and Q is private. (2) The conformance rules prevent any problems. It doesn't matter if a type name in the spec of the body denotes the completion of a <code><a href="../AA-7/AA-7.3#S0232">private_type_declaration</a></code>.<br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00262-01"}</em>{"}"} <br />Suppose a nonprivate  <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> of a public library unit mentions one of its private siblings. (This is only allowed on the body of the public library unit.) We considered making the scope of that <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> not include the visible part of the public library unit. (This would only matter for a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code>, since those are the only kinds of body that have a visible part, and only if the <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> completes a <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code>, since otherwise the <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> would be illegal.) We did not put in such a rule for two reasons: (1) It would complicate the wording of the rules, because we would have to split each <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> into pieces, in order to correctly handle "<strong>with</strong> P, Q;" where P is public and Q is private. (2) The conformance rules prevent any problems. It doesn't matter if a type name in the spec of the body denotes the completion of a <code><a href="../AA-7/AA-7.3#S0232">private_type_declaration</a></code>.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 A <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> also affects visibility within subsequent <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s and <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s of the same <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>, even though those are not in the scope of the <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>. <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} A <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> (and the corresponding library unit) is <em>named</em> in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> if it is denoted by a <em>library_unit_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> in the <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>. A <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> (and the corresponding library unit) is <em>mentioned</em> in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> if it is named in the <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> or if it is denoted by a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> in the <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>.<br /></p>
+<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />A <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> (and the corresponding library unit) is <em>named</em> in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> if it is denoted by a <em>library_unit_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> in the <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>. A <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> (and the corresponding library unit) is <em>mentioned</em> in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> if it is named in the <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> or if it is denoted by a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> in the <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>.<br /></p>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <code><a href="../AA-10/AA-10.1#S0294">With_clause</a></code>s control the visibility of declarations or renamings of library units. Mentioning a root library unit in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> makes its declaration directly visible. Mentioning a nonroot library unit makes its declaration visible. See Clause 8 for details.<br /></Admonition>
+<strong></strong>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br /><code><a href="../AA-10/AA-10.1#S0294">With_clause</a></code>s control the visibility of declarations or renamings of library units. Mentioning a root library unit in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> makes its declaration directly visible. Mentioning a nonroot library unit makes its declaration visible. See Clause 8 for details.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00114-01"}</em>{"}"} Note that this rule implies that "<strong>with</strong> A.B.C;" is almost equivalent to "<strong>with</strong> A, A.B, A.B.C;". The reason for making a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> apply to all the ancestor units is to avoid "visibility holes" - situations in which an inner program unit is visible while an outer one is not. Visibility holes would cause semantic complexity and implementation difficulty. (This is not exactly equivalent because the latter <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> names A and A.B, while the previous one does not. Whether a unit is "named" does not have any effect on visibility, however, so it is equivalent for visibility purposes.)<br /></Admonition>
+{"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />Note that this rule implies that "<strong>with</strong> A.B.C;" is almost equivalent to "<strong>with</strong> A, A.B, A.B.C;". The reason for making a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> apply to all the ancestor units is to avoid "visibility holes" - situations in which an inner program unit is visible while an outer one is not. Visibility holes would cause semantic complexity and implementation difficulty. (This is not exactly equivalent because the latter <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> names A and A.B, while the previous one does not. Whether a unit is "named" does not have any effect on visibility, however, so it is equivalent for visibility purposes.)<br /></Admonition>
 
 <p>[Outside its own declarative region, the declaration or renaming of a library unit can be visible only within the scope of a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> that mentions it. The visibility of the declaration or renaming of a library unit otherwise follows from its placement in the environment.] <br /></p>
 
 
 #### Legality Rules
 
-<p>{"{"}<em>{"AI95-00262-01"}</em>{"}"} If a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> of a given <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code> mentions a private child of some library unit, then the given <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code> shall be one of: <br /></p>
+<p>{"{"}<em>{"AI95-00262-01"}</em>{"}"} <br />If a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> of a given <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code> mentions a private child of some library unit, then the given <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code> shall be one of: <br /></p>
 
-<p>{"{"}<em>{"AI95-00262-01"}</em>{"}"} the declaration, body, or subunit of a private descendant of that library unit;<br /></p>
-
-<p>{"{"}<em>{"AI95-00220-01"}</em>{"}"} {"{"}<em>{"AI95-00262-01"}</em>{"}"} the body or subunit of a public descendant of that library unit, but not a subprogram body acting as a subprogram declaration (see 10.1.4); or<br /></p>
-
-<p>{"{"}<em>{"AI95-00262-01"}</em>{"}"} the declaration of a public descendant of that library unit, in which case the <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> shall include the reserved word <strong>private</strong>. <br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI95-00262-01"}</em>{"}"} <br />the declaration, body, or subunit of a private descendant of that library unit;<br /></li>
+<li>{"{"}<em>{"AI95-00220-01"}</em>{"}"} {"{"}<em>{"AI95-00262-01"}</em>{"}"} <br />the body or subunit of a public descendant of that library unit, but not a subprogram body acting as a subprogram declaration (see 10.1.4); or<br /></li>
+<li>{"{"}<em>{"AI95-00262-01"}</em>{"}"} <br />the declaration of a public descendant of that library unit, in which case the <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> shall include the reserved word <strong>private</strong>. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI95-00262-01"}</em>{"}"} The purpose of this rule is to prevent a private child from being visible from outside the subsystem rooted at its parent. A private child can be semantically depended-on without violating this principle if it is used in a private <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00262-01"}</em>{"}"} <br />The purpose of this rule is to prevent a private child from being visible from outside the subsystem rooted at its parent. A private child can be semantically depended-on without violating this principle if it is used in a private <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>. <br /></Admonition>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>This rule violates the one-pass <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>s Language Design Principle. We rationalize this by saying that at least that Language Design Principle works for legal compilation units.<br /></Admonition>
@@ -462,23 +461,21 @@ private with A.B.C; -- (3){"\n"}package A.B.Z is{"\n"}end A.B.Z;{"\n"}
 
 </CodeBlock>
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00262-01"}</em>{"}"} (1) is OK because it's a private child of A.B - it would be illegal if we made A.B.X a public child of A.B. (2) is OK because it's the body of a child of A.B. (3) is OK because it's a child of A.B, and it is a private <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>. It would be illegal to say "<strong>with</strong> A.B.C;" on any <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> whose name does not start with "A.B". Note that mentioning A.B.C.D in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> automatically mentions A.B.C as well, so "<strong>with</strong> A.B.C.D;" is illegal in the same places as "<strong>with</strong> A.B.C;". <br /></Admonition>
+{"{"}<em>{"AI95-00262-01"}</em>{"}"} <br />(1) is OK because it's a private child of A.B - it would be illegal if we made A.B.X a public child of A.B. (2) is OK because it's the body of a child of A.B. (3) is OK because it's a child of A.B, and it is a private <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>. It would be illegal to say "<strong>with</strong> A.B.C;" on any <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> whose name does not start with "A.B". Note that mentioning A.B.C.D in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> automatically mentions A.B.C as well, so "<strong>with</strong> A.B.C.D;" is illegal in the same places as "<strong>with</strong> A.B.C;". <br /></Admonition>
 
-<p>{"{"}<em>{"AI05-0005-1"}</em>{"}"} {"{"}<em>{"AI95-00262-01"}</em>{"}"} {"{"}<em>{"AI95-00262-01"}</em>{"}"} {"{"}<em>{"AI05-0077-1"}</em>{"}"} {"{"}<em>{"AI05-0122-1"}</em>{"}"} {"{"}<em>{"AI12-0261-1"}</em>{"}"} A <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denoting a <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> (or the corresponding declaration for a child of a generic within an instance - see 10.1.1), if it is visible only due to being mentioned in one or more <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s of a unit <em>U</em> that include the reserved word <strong>private</strong>, shall appear only within: <br /></p>
+<p>{"{"}<em>{"AI05-0005-1"}</em>{"}"} {"{"}<em>{"AI95-00262-01"}</em>{"}"} {"{"}<em>{"AI95-00262-01"}</em>{"}"} {"{"}<em>{"AI05-0077-1"}</em>{"}"} {"{"}<em>{"AI05-0122-1"}</em>{"}"} {"{"}<em>{"AI12-0261-1"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denoting a <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> (or the corresponding declaration for a child of a generic within an instance - see 10.1.1), if it is visible only due to being mentioned in one or more <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s of a unit <em>U</em> that include the reserved word <strong>private</strong>, shall appear only within: <br /></p>
 
-<p>a private part;<br /></p>
-
-<p>{"{"}<em>{"AI12-0261-1"}</em>{"}"} a body of a public descendant of <em>U</em>, but not within the <code><a href="../AA-6/AA-6.1#S0196">subprogram_specification</a></code> of a body of a subprogram that is a public descendant of <em>U</em>;<br /></p>
-
-<p>{"{"}<em>{"AI12-0261-1"}</em>{"}"} a private descendant of <em>U</em> or its body; or<br /></p>
-
-<p>a pragma within a context clause. <br /></p>
-
+<ul>
+<li>a private part;<br /></li>
+<li>{"{"}<em>{"AI12-0261-1"}</em>{"}"} <br />a body of a public descendant of <em>U</em>, but not within the <code><a href="../AA-6/AA-6.1#S0196">subprogram_specification</a></code> of a body of a subprogram that is a public descendant of <em>U</em>;<br /></li>
+<li>{"{"}<em>{"AI12-0261-1"}</em>{"}"} <br />a private descendant of <em>U</em> or its body; or<br /></li>
+<li>a pragma within a context clause. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>These rules apply only if all of the <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s that mention the name include the reserved word <strong>private</strong>. They do not apply if the name is mentioned in any <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> that does not include <strong>private</strong>. <br /></Admonition>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI05-0077-1"}</em>{"}"} These rules make the <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> visible anywhere that is not visible outside the subsystem rooted at the <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code> having the private <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>, including private parts of packages nested in the visible part, private parts of child packages, the visible part of private children, and context clause pragmas like Elaborate_All.<br /></Admonition>
+<strong></strong>{"{"}<em>{"AI05-0077-1"}</em>{"}"} <br />These rules make the <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> visible anywhere that is not visible outside the subsystem rooted at the <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code> having the private <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>, including private parts of packages nested in the visible part, private parts of child packages, the visible part of private children, and context clause pragmas like Elaborate_All.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 We considered having the scope of a private <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> not include the visible part. However, that rule would mean that moving a declaration between the visible part and the private part could change its meaning from one legal interpretation to a different legal interpretation. For example: <br /></Admonition>
@@ -492,20 +489,21 @@ with A;{"\n"}private with B;{"\n"}package C is{"\n"}    use A;{"\n"}    V1 : Int
 <Admonition type="aarm" aarm="note" title="Note: ">
 If we say that library subprogram B is not in scope in the visible part of C, then the B at (1) resolves to A.B, while (2) resolves to library unit B. Simply moving a declaration could silently change its meaning. With the legality rule defined above, the B at (1) is illegal. If the user really meant A.B, they still can say that. <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} [A <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> mentioned in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> shall be the implicit declaration of the limited view of a library package, not the declaration of a subprogram, generic unit, generic instance, or a renaming.]<br /></p>
+<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />[A <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> mentioned in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> shall be the implicit declaration of the limited view of a library package, not the declaration of a subprogram, generic unit, generic instance, or a renaming.]<br /></p>
 
 <Admonition type="aarm" aarm="proof" title="Proof: ">
 <strong></strong>This is redundant because only such implicit declarations are visible in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code>. See 10.1.6. <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI95-00412-01"}</em>{"}"} A <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> shall not appear on a <code><a href="../AA-10/AA-10.1#S0290">library_unit_body</a></code>, <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code>, or <code><a href="../AA-10/AA-10.1#S0289">library_unit_renaming_declaration</a></code>.<br /></p>
+<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI95-00412-01"}</em>{"}"} <br />A <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> shall not appear on a <code><a href="../AA-10/AA-10.1#S0290">library_unit_body</a></code>, <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code>, or <code><a href="../AA-10/AA-10.1#S0289">library_unit_renaming_declaration</a></code>.<br /></p>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI95-00412-01"}</em>{"}"} We don't allow a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> on a <code><a href="../AA-10/AA-10.1#S0289">library_unit_renaming_declaration</a></code> because it would be useless and therefore probably is a mistake. A renaming cannot appear in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> (by the rule prior to this one), and a renaming of a limited view cannot appear in a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code> (because the name would not be within the scope of a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> denoting the package, see 8.5.3). Nor could it be the parent of another unit. That doesn't leave anywhere that the name of such a renaming <strong>could</strong> appear, so we simply make writing it illegal. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00412-01"}</em>{"}"} <br />We don't allow a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> on a <code><a href="../AA-10/AA-10.1#S0289">library_unit_renaming_declaration</a></code> because it would be useless and therefore probably is a mistake. A renaming cannot appear in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> (by the rule prior to this one), and a renaming of a limited view cannot appear in a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code> (because the name would not be within the scope of a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> denoting the package, see 8.5.3). Nor could it be the parent of another unit. That doesn't leave anywhere that the name of such a renaming <strong>could</strong> appear, so we simply make writing it illegal. <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} A <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> that names a library package shall not appear:<br /></p>
+<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />A <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> that names a library package shall not appear:<br /></p>
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0040-1"}</em>{"}"} in the <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> for the explicit declaration of the named library package or any of its descendants;<br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0040-1"}</em>{"}"} <br />in the <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> for the explicit declaration of the named library package or any of its descendants;<br /></li>
+</ul>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>We have to explicitly disallow <br /></Admonition>
 
@@ -524,30 +522,32 @@ limited private with P.Child;{"\n"}package P is ...{"\n"}
 can be used to allow a mutual dependence between the private part of P and the private child P.Child, which occurs in interfacing and other problems. Since the child always semantically depends on the parent, this is the only way such a dependence can be broken.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0040-1"}</em>{"}"} The part about descendants catches examples like <br /></Admonition>
+{"{"}<em>{"AI05-0040-1"}</em>{"}"} <br />The part about descendants catches examples like <br /></Admonition>
 
 <CodeBlock>
 limited with P;{"\n"}package P.Child is ...{"\n"}
 
 </CodeBlock>
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0077-1"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} within a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> for a <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> that is within the scope of a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code> that mentions the same library package; or<br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0077-1"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />within a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> for a <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> that is within the scope of a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code> that mentions the same library package; or<br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI05-0077-1"}</em>{"}"} This applies to <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code>s found in the same <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>, as well as <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code>s found on parent units. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI05-0077-1"}</em>{"}"} <br />This applies to <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code>s found in the same <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>, as well as <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code>s found on parent units. <br /></Admonition>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI05-0077-1"}</em>{"}"} Such a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> could have no effect, and would be confusing. If a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code> for the same package is inherited from a parent unit or given in the <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>, the full view is available, which strictly provides more information than the limited view. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI05-0077-1"}</em>{"}"} <br />Such a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> could have no effect, and would be confusing. If a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code> for the same package is inherited from a parent unit or given in the <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>, the full view is available, which strictly provides more information than the limited view. <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0077-1"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} within a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> for a <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> that is within the scope of a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> that names an entity declared within the declarative region of the library package.<br /></p>
-
+<ul>
+<li>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0077-1"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />within a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> for a <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> that is within the scope of a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> that names an entity declared within the declarative region of the library package.<br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI05-0077-1"}</em>{"}"} This applies to <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s found in the same <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>, as well as <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s found in (or on) parent units. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI05-0077-1"}</em>{"}"} <br />This applies to <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s found in the same <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>, as well as <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s found in (or on) parent units. <br /></Admonition>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>This prevents visibility issues, where whether an entity is an incomplete or full view depends on how the name of the entity is written. The <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> cannot be useful, as we must have the full view available in the parent in order for the <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> to be legal. <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE   {"{"}<em>{"AI95-00217-06"}</em>{"}"} A <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> mentioned in a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code> of a compilation unit is visible within the compilation unit and hence acts just like an ordinary declaration. Thus, within a compilation unit that mentions its declaration, the name of a library package can be given in <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s and can be used to form expanded names, a library subprogram can be called, and instances of a generic library unit can be declared. If a child of a parent generic package is mentioned in a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code>, then the corresponding declaration nested within each visible instance is visible within the compilation unit. Similarly, a <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> mentioned in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> of a compilation unit is visible within the compilation unit and thus can be used to form expanded names.<br /></Admonition>
+NOTE   {"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />A <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> mentioned in a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code> of a compilation unit is visible within the compilation unit and hence acts just like an ordinary declaration. Thus, within a compilation unit that mentions its declaration, the name of a library package can be given in <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s and can be used to form expanded names, a library subprogram can be called, and instances of a generic library unit can be declared. If a child of a parent generic package is mentioned in a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code>, then the corresponding declaration nested within each visible instance is visible within the compilation unit. Similarly, a <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> mentioned in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> of a compilation unit is visible within the compilation unit and thus can be used to form expanded names.<br /></Admonition>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>The rules given for <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s are such that the same effect is obtained whether the name of a library unit is mentioned once or more than once by the applicable <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s, or even within a given <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>.<br /></Admonition>
@@ -558,7 +558,7 @@ If a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> mentions a <c
 
 #### Examples
 
-<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em>Examples of use of with clauses, limited with clauses, and private with clauses:</em> <br /></p>
+<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Examples of use of with clauses, limited with clauses, and private with clauses:</em> <br /></p>
 
 <CodeBlock>
 --  {"{"}{"AI95-00433-01"}{"}"}{"\n"} package Office is{"\n"}end Office;{"\n"}
@@ -570,7 +570,7 @@ If a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> mentions a <c
    function Manager_Of(Dept : Department) return access Employees.Employee;{"\n"}   procedure Assign_Manager(Dept : in out Department;{"\n"}                            Mgr  : access Employees.Employee);{"\n"}   ...{"\n"}end Office.Departments;{"\n"}
 
 </CodeBlock>
-<p>{"{"}<em>{"AI95-00433-01"}</em>{"}"} {"{"}<em>{"AI12-0429-1"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} <em>The</em> <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> <em>can be used to support mutually dependent abstractions that are split across multiple packages. In this case, an employee is assigned to a department, and a department has a manager who is an employee. If a</em> <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> <em>with the reserved word <strong>private</strong> appears on one library unit and mentions a second library unit, it provides visibility to the second library unit, but restricts that visibility to the private part and body of the first unit. The compiler checks that no use is made of the second unit in the visible part of the first unit.</em> <br /></p>
+<p>{"{"}<em>{"AI95-00433-01"}</em>{"}"} {"{"}<em>{"AI12-0429-1"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} <em><br />The</em> <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> <em>can be used to support mutually dependent abstractions that are split across multiple packages. In this case, an employee is assigned to a department, and a department has a manager who is an employee. If a</em> <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> <em>with the reserved word <strong>private</strong> appears on one library unit and mentions a second library unit, it provides visibility to the second library unit, but restricts that visibility to the private part and body of the first unit. The compiler checks that no use is made of the second unit in the visible part of the first unit.</em> <br /></p>
 
 
 #### Extensions to Ada 83
@@ -597,37 +597,37 @@ No need to define "apply to" for <code><a href="../AA-8/AA-8.4#S0235">use_clause
 #### Incompatibilities With Ada 95
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI95-00220-01"}</em>{"}"} <strong>Amendment </strong> A subprogram body acting as a declaration cannot <strong>with</strong> a private child unit. This would allow public export of types declared in private child packages, and thus cannot be allowed. This was allowed by mistake in Ada 95; a subprogram that does this will now be illegal. <br /></Admonition>
+{"{"}<em>{"AI95-00220-01"}</em>{"}"} <strong><br />Amendment </strong> A subprogram body acting as a declaration cannot <strong>with</strong> a private child unit. This would allow public export of types declared in private child packages, and thus cannot be allowed. This was allowed by mistake in Ada 95; a subprogram that does this will now be illegal. <br /></Admonition>
 
 
 #### Extensions to Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00217-06"}</em>{"}"} <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code>s are new. They make a limited view of a package visible, where all of the types in the package are incomplete. They facilitate construction of mutually recursive types in multiple packages.<br /></Admonition>
+{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br /><code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code>s are new. They make a limited view of a package visible, where all of the types in the package are incomplete. They facilitate construction of mutually recursive types in multiple packages.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00262-01"}</em>{"}"} {"{"}<em>{"AI05-0077-1"}</em>{"}"} The syntax rules for <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> are modified to allow the reserved word <strong>private</strong>. Private <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s do not allow the use of their <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> in the visible part of their <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code>. They also allow using private units in more locations than in Ada 95. <br /></Admonition>
+{"{"}<em>{"AI95-00262-01"}</em>{"}"} {"{"}<em>{"AI05-0077-1"}</em>{"}"} <br />The syntax rules for <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> are modified to allow the reserved word <strong>private</strong>. Private <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s do not allow the use of their <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> in the visible part of their <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code>. They also allow using private units in more locations than in Ada 95. <br /></Admonition>
 
 
 #### Incompatibilities With Ada 2005
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0040-1"}</em>{"}"} <strong></strong> Added missing rule that a limited with clause cannot name an ancestor unit. This is incompatible if an Ada 2005 program does this, but as this is a new Ada 2005 feature and the unintentionally allowed capability is not useful, the incompatibility is very unlikely to occur in practice. <br /></Admonition>
+{"{"}<em>{"AI05-0040-1"}</em>{"}"} <strong><br /></strong> Added missing rule that a limited with clause cannot name an ancestor unit. This is incompatible if an Ada 2005 program does this, but as this is a new Ada 2005 feature and the unintentionally allowed capability is not useful, the incompatibility is very unlikely to occur in practice. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0077-1"}</em>{"}"} <strong></strong> Fixed wording so that we are not checking whether something in a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> is "within the scope of" something, as <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>s are never included in anything's scope. The intended meaning is unchanged, however.<br /></Admonition>
+{"{"}<em>{"AI05-0077-1"}</em>{"}"} <strong><br /></strong> Fixed wording so that we are not checking whether something in a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> is "within the scope of" something, as <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>s are never included in anything's scope. The intended meaning is unchanged, however.<br /></Admonition>
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0122-1"}</em>{"}"} <strong></strong> Fixed wording so the rules for private with clauses also apply to "sprouted" generic child units. <br /></Admonition>
+{"{"}<em>{"AI05-0122-1"}</em>{"}"} <strong><br /></strong> Fixed wording so the rules for private with clauses also apply to "sprouted" generic child units. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI12-0261-1"}</em>{"}"} <strong></strong> Fixed wording so the privately withed units are visible in the subprogram specification of the body of a private descendant; otherwise, the private specification is legal but the completion is not. <br /></Admonition>
+{"{"}<em>{"AI12-0261-1"}</em>{"}"} <strong><br /></strong> Fixed wording so the privately withed units are visible in the subprogram specification of the body of a private descendant; otherwise, the private specification is legal but the completion is not. <br /></Admonition>
 
 
 ## 10.1.3  Subunits of Compilation Units
@@ -639,26 +639,26 @@ No need to define "apply to" for <code><a href="../AA-8/AA-8.4#S0235">use_clause
 
 <p><code>body_stub</code><a id="S0297"></a><code> ::= </code><br />   <code><a href="../AA-10/AA-10.1#S0298">subprogram_body_stub</a></code> | <code><a href="../AA-10/AA-10.1#S0299">package_body_stub</a></code> | <code><a href="../AA-10/AA-10.1#S0300">task_body_stub</a></code> | <code><a href="../AA-10/AA-10.1#S0301">protected_body_stub</a></code><br /></p>
 
-<p>{"{"}<em>{"AI95-00218-03"}</em>{"}"} {"{"}<em>{"AI05-0267-1"}</em>{"}"} <code>subprogram_body_stub</code><a id="S0298"></a><code> ::= </code><br />   [<code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code>]<br />   <code><a href="../AA-6/AA-6.1#S0196">subprogram_specification</a></code> <strong>is</strong> <strong>separate</strong><br />      [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br /></p>
+<p>{"{"}<em>{"AI95-00218-03"}</em>{"}"} {"{"}<em>{"AI05-0267-1"}</em>{"}"} <br /><code>subprogram_body_stub</code><a id="S0298"></a><code> ::= </code><br />   [<code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code>]<br />   <code><a href="../AA-6/AA-6.1#S0196">subprogram_specification</a></code> <strong>is</strong> <strong>separate</strong><br />      [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br /></p>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>Although this syntax allows a <code><a href="../AA-10/AA-10.1#S0291">parent_unit_name</a></code>, that is disallowed by 10.1.1, "Compilation Units - Library Units". <br /></Admonition>
 
-<p>{"{"}<em>{"AI05-0267-1"}</em>{"}"} <code>package_body_stub</code><a id="S0299"></a><code> ::= </code><br />   <strong>package</strong> <strong>body</strong> <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> <strong>is</strong> <strong>separate</strong><br />      [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br /></p>
+<p>{"{"}<em>{"AI05-0267-1"}</em>{"}"} <br /><code>package_body_stub</code><a id="S0299"></a><code> ::= </code><br />   <strong>package</strong> <strong>body</strong> <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> <strong>is</strong> <strong>separate</strong><br />      [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br /></p>
 
-<p>{"{"}<em>{"AI05-0267-1"}</em>{"}"} <code>task_body_stub</code><a id="S0300"></a><code> ::= </code><br />   <strong>task</strong> <strong>body</strong> <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> <strong>is</strong> <strong>separate</strong><br />      [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br /></p>
+<p>{"{"}<em>{"AI05-0267-1"}</em>{"}"} <br /><code>task_body_stub</code><a id="S0300"></a><code> ::= </code><br />   <strong>task</strong> <strong>body</strong> <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> <strong>is</strong> <strong>separate</strong><br />      [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br /></p>
 
-<p>{"{"}<em>{"AI05-0267-1"}</em>{"}"} <code>protected_body_stub</code><a id="S0301"></a><code> ::= </code><br />   <strong>protected</strong> <strong>body</strong> <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> <strong>is</strong> <strong>separate</strong><br />      [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br /></p>
+<p>{"{"}<em>{"AI05-0267-1"}</em>{"}"} <br /><code>protected_body_stub</code><a id="S0301"></a><code> ::= </code><br />   <strong>protected</strong> <strong>body</strong> <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> <strong>is</strong> <strong>separate</strong><br />      [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br /></p>
 
 <p><code>subunit</code><a id="S0302"></a><code> ::= </code><strong>separate</strong> (<code><a href="../AA-10/AA-10.1#S0291">parent_unit_name</a></code>) <code><a href="../AA-3/AA-3.11#S0090">proper_body</a></code><br /></p>
 
 
 #### Legality Rules
 
-<p>{"{"}<em>{"AI95-00243-01"}</em>{"}"} The <em>parent body</em> of a subunit is the body of the program unit denoted by its <code><a href="../AA-10/AA-10.1#S0291">parent_unit_name</a></code>.  The term <em>subunit</em> is used to refer to a <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code> and also to the <code><a href="../AA-3/AA-3.11#S0090">proper_body</a></code> of a <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code>. The <em>subunits of a program unit</em> include any subunit that names that program unit as its parent, as well as any subunit that names such a subunit as its parent (recursively). <br /></p>
+<p>{"{"}<em>{"AI95-00243-01"}</em>{"}"} <br />The <em>parent body</em> of a subunit is the body of the program unit denoted by its <code><a href="../AA-10/AA-10.1#S0291">parent_unit_name</a></code>.  The term <em>subunit</em> is used to refer to a <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code> and also to the <code><a href="../AA-3/AA-3.11#S0090">proper_body</a></code> of a <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code>. The <em>subunits of a program unit</em> include any subunit that names that program unit as its parent, as well as any subunit that names such a subunit as its parent (recursively). <br /></p>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI95-00243-01"}</em>{"}"} We want any rule that applies to a subunit to apply to a subunit of a subunit as well. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00243-01"}</em>{"}"} <br />We want any rule that applies to a subunit to apply to a subunit of a subunit as well. <br /></Admonition>
 
 <Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
 <strong></strong>A subunit is a body of a program unit that can be compiled separately from its enclosing program unit.<br /></Admonition>
@@ -668,9 +668,9 @@ No need to define "apply to" for <code><a href="../AA-8/AA-8.4#S0235">use_clause
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>This can't be a Name Resolution Rule, because a <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code> is not a complete context. <br /></Admonition>
 
-<p>{"{"}<em>{"AI05-0004-1"}</em>{"}"} A <code><a href="../AA-10/AA-10.1#S0299">package_body_stub</a></code> shall be the completion of a <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code> or <code><a href="../AA-12/AA-12.1#S0312">generic_package_declaration</a></code>; a <code><a href="../AA-10/AA-10.1#S0300">task_body_stub</a></code> shall be the completion of a task declaration; a <code><a href="../AA-10/AA-10.1#S0301">protected_body_stub</a></code> shall be the completion of a protected declaration.<br /></p>
+<p>{"{"}<em>{"AI05-0004-1"}</em>{"}"} <br />A <code><a href="../AA-10/AA-10.1#S0299">package_body_stub</a></code> shall be the completion of a <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code> or <code><a href="../AA-12/AA-12.1#S0312">generic_package_declaration</a></code>; a <code><a href="../AA-10/AA-10.1#S0300">task_body_stub</a></code> shall be the completion of a task declaration; a <code><a href="../AA-10/AA-10.1#S0301">protected_body_stub</a></code> shall be the completion of a protected declaration.<br /></p>
 
-<p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} In contrast, a <code><a href="../AA-10/AA-10.1#S0298">subprogram_body_stub</a></code> can be defined without it  being the completion of a previous declaration, [in which case the <code>_stub</code> declares the subprogram]. If the <code>_stub</code> is a completion, it shall be the completion of a <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code> or <code><a href="../AA-12/AA-12.1#S0311">generic_subprogram_declaration</a></code>. The profile of a <code><a href="../AA-10/AA-10.1#S0298">subprogram_body_stub</a></code> that completes a declaration shall conform fully to that of the declaration. <br /></p>
+<p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />In contrast, a <code><a href="../AA-10/AA-10.1#S0298">subprogram_body_stub</a></code> can be defined without it  being the completion of a previous declaration, [in which case the <code>_stub</code> declares the subprogram]. If the <code>_stub</code> is a completion, it shall be the completion of a <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code> or <code><a href="../AA-12/AA-12.1#S0311">generic_subprogram_declaration</a></code>. The profile of a <code><a href="../AA-10/AA-10.1#S0298">subprogram_body_stub</a></code> that completes a declaration shall conform fully to that of the declaration. <br /></p>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>The part about <code><a href="../AA-10/AA-10.1#S0298">subprogram_body_stub</a></code>s echoes the corresponding rule for <code>subprogram_bodies</code> in 6.3, "Subprogram Bodies". <br /></Admonition>
@@ -692,13 +692,15 @@ No need to define "apply to" for <code><a href="../AA-8/AA-8.4#S0235">use_clause
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE   The rules in 10.1.4, "The Compilation Process" say that a <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code> is equivalent to the corresponding <code><a href="../AA-3/AA-3.11#S0090">proper_body</a></code>. This implies: <br /></Admonition>
 
-<p>Visibility within a subunit is the visibility that would be obtained at the place of the corresponding <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code> (within the parent body) if the <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> of the subunit were appended to that of the parent body. <br /></p>
-
+<ul>
+<li>Visibility within a subunit is the visibility that would be obtained at the place of the corresponding <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code> (within the parent body) if the <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> of the subunit were appended to that of the parent body. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Recursively. Note that this transformation might make the parent illegal; hence it is not a true equivalence, but applies only to visibility within the subunit. <br /></Admonition>
 
-<p>The effect of the elaboration of a <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code> is to elaborate the subunit. <br /></p>
-
+<ul>
+<li>The effect of the elaboration of a <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code> is to elaborate the subunit. <br /></li>
+</ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>The elaboration of a subunit is part of its parent body's elaboration, whereas the elaboration of a child unit is not part of its parent declaration's elaboration. <br /></Admonition>
 
@@ -711,14 +713,14 @@ The body of a protected operation cannot be a subunit. This follows from the syn
 
 #### Examples
 
-<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em>Example that defines package Parent without subunits:</em> <br /></p>
+<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Example that defines package Parent without subunits:</em> <br /></p>
 
 <CodeBlock>
 package Parent is{"\n"}    procedure Inner;{"\n"}end Parent;{"\n"}
 with Ada.Text_IO;{"\n"}package body Parent is{"\n"}    Variable : String := "Hello, there.";{"\n"}    procedure Inner is{"\n"}    begin{"\n"}        Ada.Text_IO.Put_Line(Variable);{"\n"}    end Inner;{"\n"}end Parent;{"\n"}
 
 </CodeBlock>
-<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} <em>Example showing how the body of procedure Inner can be turned into a subunit by rewriting the package body as follows (with the declaration of Parent remaining the same):</em> <br /></p>
+<p>{"{"}<em>{"AI12-0429-1"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} <em><br />Example showing how the body of procedure Inner can be turned into a subunit by rewriting the package body as follows (with the declaration of Parent remaining the same):</em> <br /></p>
 
 <CodeBlock>
 package body Parent is{"\n"}    Variable : String := "Hello, there.";{"\n"}    procedure Inner is separate;{"\n"}end Parent;{"\n"}
@@ -735,19 +737,19 @@ Subunits of the same ancestor library unit are no longer restricted to have dist
 #### Extensions to Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00218-03"}</em>{"}"} An <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code> (see 8.3.1) is allowed on a subprogram stub. <br /></Admonition>
+{"{"}<em>{"AI95-00218-03"}</em>{"}"} <br />An <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code> (see 8.3.1) is allowed on a subprogram stub. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00243-01"}</em>{"}"} Clarified that a subunit of a subunit is still a subunit. <br /></Admonition>
+{"{"}<em>{"AI95-00243-01"}</em>{"}"} <br />Clarified that a subunit of a subunit is still a subunit. <br /></Admonition>
 
 
 #### Extensions to Ada 2005
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0267-1"}</em>{"}"} An optional <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> can be used in a <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code>. This is described in 13.1.1. <br /></Admonition>
+{"{"}<em>{"AI05-0267-1"}</em>{"}"} <br />An optional <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> can be used in a <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code>. This is described in 13.1.1. <br /></Admonition>
 
 
 ## 10.1.4  The Compilation Process
@@ -760,9 +762,9 @@ Subunits of the same ancestor library unit are no longer restricted to have dist
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>To be honest: </strong>The environment is really just a portion of a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, since there might, for example, be bodies that do not yet exist. <br /></Admonition>
 
-<p>{"{"}<em>{"AI12-0445-1"}</em>{"}"} The <code><a href="../AA-3/AA-3.11#S0087">declarative_item</a></code>s of the environment are <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s appearing in an order such that there are no forward semantic dependences. Each included subunit occurs in place of the corresponding stub. The visibility rules apply as if the environment were the outermost declarative region, except that <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s are necessary to make declarations of library units visible (see 10.1.2).<br /></p>
+<p>{"{"}<em>{"AI12-0445-1"}</em>{"}"} <br />The <code><a href="../AA-3/AA-3.11#S0087">declarative_item</a></code>s of the environment are <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s appearing in an order such that there are no forward semantic dependences. Each included subunit occurs in place of the corresponding stub. The visibility rules apply as if the environment were the outermost declarative region, except that <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s are necessary to make declarations of library units visible (see 10.1.2).<br /></p>
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} The mechanisms for creating an environment and for adding and replacing compilation units within an environment are implementation defined. The mechanisms for adding a compilation unit mentioned in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> to an environment are implementation defined. <br /></p>
+<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />The mechanisms for creating an environment and for adding and replacing compilation units within an environment are implementation defined. The mechanisms for adding a compilation unit mentioned in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> to an environment are implementation defined. <br /></p>
 
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>The mechanisms for creating an environment and for adding and replacing compilation units.<br /></Admonition>
@@ -776,7 +778,7 @@ Subunits of the same ancestor library unit are no longer restricted to have dist
 
 #### Name Resolution Rules
 
-<p>{"{"}<em>8652/0032</em>{"}"} {"{"}<em>{"AI95-00192-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} If a <code><a href="../AA-10/AA-10.1#S0290">library_unit_body</a></code> that is a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> is submitted to the compiler, it is interpreted only as a completion if a <code><a href="../AA-10/AA-10.1#S0288">library_unit_declaration</a></code> with the same <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code> already exists in the environment for a subprogram other than an instance of a generic subprogram or for a generic subprogram (even if the profile of the body is not type conformant with that of the declaration); otherwise, the <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> is interpreted as both the declaration and body of a library subprogram. <br /></p>
+<p>{"{"}<em>8652/0032</em>{"}"} {"{"}<em>{"AI95-00192-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />If a <code><a href="../AA-10/AA-10.1#S0290">library_unit_body</a></code> that is a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> is submitted to the compiler, it is interpreted only as a completion if a <code><a href="../AA-10/AA-10.1#S0288">library_unit_declaration</a></code> with the same <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code> already exists in the environment for a subprogram other than an instance of a generic subprogram or for a generic subprogram (even if the profile of the body is not type conformant with that of the declaration); otherwise, the <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> is interpreted as both the declaration and body of a library subprogram. <br /></p>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>The principle here is that a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> should be interpreted as only a completion if and only if it "might" be legal as the completion of some preexisting declaration, where "might" is defined in a way that does not require overload resolution to determine.<br /></Admonition>
@@ -802,20 +804,20 @@ See also AI83-00266/09. <br /></Admonition>
 Note that an implementation cannot require the existence of compilation units upon which the given one does not semantically depend. For example, an implementation is required to be able to compile a compilation unit that says "<strong>with</strong> A;" when A's body does not exist. It has to be able to detect errors without looking at A's body.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0229-1"}</em>{"}"} Similarly, the implementation has to be able to compile a call to a subprogram for which aspect Inline has been specified without seeing the body of that subprogram - inlining would not be achieved in this case, but the call is still legal.<br /></Admonition>
+{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />Similarly, the implementation has to be able to compile a call to a subprogram for which aspect Inline has been specified without seeing the body of that subprogram - inlining would not be achieved in this case, but the call is still legal.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0005-1"}</em>{"}"} The consistency rule applies to limited views as well as the full view of a compilation unit. That means that an implementation needs a way to enforce consistency of limited views, not just of full views. <br /></Admonition>
+{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />The consistency rule applies to limited views as well as the full view of a compilation unit. That means that an implementation needs a way to enforce consistency of limited views, not just of full views. <br /></Admonition>
 
 
 #### Implementation Permissions
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} The implementation may require that a compilation unit be legal before it can be mentioned in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> or it can be inserted into the environment.<br /></p>
+<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />The implementation may require that a compilation unit be legal before it can be mentioned in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> or it can be inserted into the environment.<br /></p>
 
-<p>{"{"}<em>{"AI95-00214-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} When a compilation unit that declares or renames a library unit is added to the environment, the implementation may remove from the environment any preexisting <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> or <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code> with the same full expanded name. When a compilation unit that is a subunit or the body of a library unit is added to the environment, the implementation may remove from the environment any preexisting version of the same compilation unit. When a compilation unit that contains a <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code> is added to the environment, the implementation may remove any preexisting <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> or <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code> with the same full expanded name as the <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code>. When a given compilation unit is removed from the environment, the implementation may also remove any compilation unit that depends semantically upon the given one. If the given compilation unit contains the body of a subprogram for which aspect Inline is True, the implementation may also remove any compilation unit containing a call to that subprogram. <br /></p>
+<p>{"{"}<em>{"AI95-00214-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />When a compilation unit that declares or renames a library unit is added to the environment, the implementation may remove from the environment any preexisting <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> or <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code> with the same full expanded name. When a compilation unit that is a subunit or the body of a library unit is added to the environment, the implementation may remove from the environment any preexisting version of the same compilation unit. When a compilation unit that contains a <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code> is added to the environment, the implementation may remove any preexisting <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> or <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code> with the same full expanded name as the <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code>. When a given compilation unit is removed from the environment, the implementation may also remove any compilation unit that depends semantically upon the given one. If the given compilation unit contains the body of a subprogram for which aspect Inline is True, the implementation may also remove any compilation unit containing a call to that subprogram. <br /></p>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} The permissions given in this paragraph correspond to the traditional model, where compilation units enter the environment by being compiled into it, and the compiler checks their legality at that time. An implementation model in which the environment consists of all source files in a given directory might not want to take advantage of these permissions. Compilation units would not be checked for legality as soon as they enter the environment; legality checking would happen later, when compilation units are compiled. In this model, compilation units might never be automatically removed from the environment; they would be removed when the user explicitly deletes a source file.<br /></Admonition>
+<strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />The permissions given in this paragraph correspond to the traditional model, where compilation units enter the environment by being compiled into it, and the compiler checks their legality at that time. An implementation model in which the environment consists of all source files in a given directory might not want to take advantage of these permissions. Compilation units would not be checked for legality as soon as they enter the environment; legality checking would happen later, when compilation units are compiled. In this model, compilation units might never be automatically removed from the environment; they would be removed when the user explicitly deletes a source file.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 Note that the rule is recursive: if the above permission is used to remove a compilation unit containing an inlined subprogram call, then compilation units that depend semantically upon the removed one may also be removed, and so on.<br /></Admonition>
@@ -824,22 +826,22 @@ Note that the rule is recursive: if the above permission is used to remove a com
 Note that here we are talking about dependences among existing compilation units in the environment; it doesn't matter what <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s are attached to the new compilation unit that triggered all this.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0229-1"}</em>{"}"} An implementation may have other modes in which compilation units in addition to the ones mentioned above are removed. For example, an implementation might inline subprogram calls without an explicit aspect Inline. If so, it either has to have a mode in which that optimization is turned off, or it has to automatically regenerate code for the inlined calls without requiring the user to resubmit them to the compiler. <br /></Admonition>
+{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />An implementation may have other modes in which compilation units in addition to the ones mentioned above are removed. For example, an implementation might inline subprogram calls without an explicit aspect Inline. If so, it either has to have a mode in which that optimization is turned off, or it has to automatically regenerate code for the inlined calls without requiring the user to resubmit them to the compiler. <br /></Admonition>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>8652/0108</em>{"}"} {"{"}<em>{"AI95-00077-01"}</em>{"}"} {"{"}<em>{"AI95-00114-01"}</em>{"}"} In the standard mode, implementations may only remove units from the environment for one of the reasons listed here, or in response to an explicit user command to modify the environment. It is not intended that the act of compiling a unit is one of the "mechanisms" for removing units other than those specified by this document.<br /></Admonition>
+<strong></strong>{"{"}<em>8652/0108</em>{"}"} {"{"}<em>{"AI95-00077-01"}</em>{"}"} {"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />In the standard mode, implementations may only remove units from the environment for one of the reasons listed here, or in response to an explicit user command to modify the environment. It is not intended that the act of compiling a unit is one of the "mechanisms" for removing units other than those specified by this document.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00214-01"}</em>{"}"} These rules are intended to ensure that an implementation never need keep more than one compilation unit with any full expanded name. In particular, it is not necessary to be able to have a subunit and a child unit with the same name in the environment at one time.<br /></Admonition>
+{"{"}<em>{"AI95-00214-01"}</em>{"}"} <br />These rules are intended to ensure that an implementation never need keep more than one compilation unit with any full expanded name. In particular, it is not necessary to be able to have a subunit and a child unit with the same name in the environment at one time.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   The rules of the language are enforced across <code><a href="../AA-10/AA-10.1#S0285">compilation</a></code> and compilation unit boundaries, just as they are enforced within a single compilation unit. <br /></Admonition>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI05-0299-1"}</em>{"}"} Note that Clause 1 requires an implementation to detect illegal compilation units at compile time. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />Note that Clause 1 requires an implementation to detect illegal compilation units at compile time. <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 2   {"{"}<em>{"AI12-0442-1"}</em>{"}"} An implementation can support a concept of a <em>library</em>, which contains <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s. If multiple libraries are supported, the implementation can document how a single environment is constructed when a compilation unit is submitted to the compiler. Naming conflicts between different libraries can, for example, be resolved by treating each library as the root of a hierarchy of child library units. <br /></Admonition>
+NOTE 2   {"{"}<em>{"AI12-0442-1"}</em>{"}"} <br />An implementation can support a concept of a <em>library</em>, which contains <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s. If multiple libraries are supported, the implementation can document how a single environment is constructed when a compilation unit is submitted to the compiler. Naming conflicts between different libraries can, for example, be resolved by treating each library as the root of a hierarchy of child library units. <br /></Admonition>
 
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>Alternatively, naming conflicts could be resolved via some sort of hiding rule. <br /></Admonition>
@@ -857,24 +859,24 @@ NOTE 3   A compilation unit containing an instantiation of a separately compiled
 #### Extensions to Ada 83
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00077-01"}</em>{"}"} {"{"}<em>{"AI95-00114-01"}</em>{"}"} Ada 83 allowed implementations to require that the body of a generic unit be available when the instantiation is compiled; that permission is dropped in Ada 95. This isn't really an extension (it doesn't allow Ada users to write anything that they couldn't in Ada 83), but there isn't a more appropriate category, and it does allow users more flexibility when developing programs. <br /></Admonition>
+{"{"}<em>{"AI95-00077-01"}</em>{"}"} {"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />Ada 83 allowed implementations to require that the body of a generic unit be available when the instantiation is compiled; that permission is dropped in Ada 95. This isn't really an extension (it doesn't allow Ada users to write anything that they couldn't in Ada 83), but there isn't a more appropriate category, and it does allow users more flexibility when developing programs. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0032</em>{"}"} {"{"}<em>{"AI95-00192-01"}</em>{"}"} <strong>Corrigendum:</strong> The wording was clarified to ensure that a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> is not considered a completion of an instance of a generic subprogram.<br /></Admonition>
+{"{"}<em>8652/0032</em>{"}"} {"{"}<em>{"AI95-00192-01"}</em>{"}"} <strong><br />Corrigendum:</strong> The wording was clarified to ensure that a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> is not considered a completion of an instance of a generic subprogram.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00214-01"}</em>{"}"} The permissions to remove a unit from the environment were clarified to ensure that it is never necessary to keep multiple (sub)units with the same full expanded name in the environment.<br /></Admonition>
+{"{"}<em>{"AI95-00214-01"}</em>{"}"} <br />The permissions to remove a unit from the environment were clarified to ensure that it is never necessary to keep multiple (sub)units with the same full expanded name in the environment.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00217-06"}</em>{"}"} Units mentioned in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> were added to several rules; limited views have the same presence in the environment as the corresponding full views. <br /></Admonition>
+{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />Units mentioned in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> were added to several rules; limited views have the same presence in the environment as the corresponding full views. <br /></Admonition>
 
 
 ## 10.1.5  Pragmas and Program Units
 
-<p>{"{"}<em>{"AI12-0417-1"}</em>{"}"} [This subclause discusses pragmas related to <code><a href="../AA-10/AA-10.1#S0285">compilation</a></code>s.] <br /></p>
+<p>{"{"}<em>{"AI12-0417-1"}</em>{"}"} <br />[This subclause discusses pragmas related to <code><a href="../AA-10/AA-10.1#S0285">compilation</a></code>s.] <br /></p>
 
 <p><em>Paragraphs 2 through 7 were moved to Annex J, "Obsolescent Features".</em> <br /></p>
 
@@ -886,7 +888,7 @@ NOTE 3   A compilation unit containing an instantiation of a separately compiled
 
 #### Implementation Permissions
 
-<p>{"{"}<em>{"AI95-00212-01"}</em>{"}"} An implementation may require that configuration pragmas that select partition-wide or system-wide options be compiled when the environment contains no <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s other than those of the predefined environment. In this case, the implementation shall still accept configuration pragmas in individual compilations that confirm the initially selected partition-wide or system-wide options.<br /></p>
+<p>{"{"}<em>{"AI95-00212-01"}</em>{"}"} <br />An implementation may require that configuration pragmas that select partition-wide or system-wide options be compiled when the environment contains no <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s other than those of the predefined environment. In this case, the implementation shall still accept configuration pragmas in individual compilations that confirm the initially selected partition-wide or system-wide options.<br /></p>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em><br /></Admonition>
@@ -906,12 +908,12 @@ NOTE 3   A compilation unit containing an instantiation of a separately compiled
 <em>This paragraph was deleted.</em>{"{"}<em>{"AI12-0417-1"}</em>{"}"} <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00212-01"}</em>{"}"} The permission to place restrictions was clarified to: <br /></Admonition>
+{"{"}<em>{"AI95-00212-01"}</em>{"}"} <br />The permission to place restrictions was clarified to: <br /></Admonition>
 
-<p>Ensure that it applies only to partition-wide configuration pragmas, not ones like Assertion_Policy (see 11.4.2), which can be different in different units; and<br /></p>
-
-<p>Ensure that confirming pragmas are always allowed. <br /></p>
-
+<ul>
+<li>Ensure that it applies only to partition-wide configuration pragmas, not ones like Assertion_Policy (see 11.4.2), which can be different in different units; and<br /></li>
+<li>Ensure that confirming pragmas are always allowed. <br /></li>
+</ul>
 
 #### Wording Changes from Ada 2005
 
@@ -922,7 +924,7 @@ NOTE 3   A compilation unit containing an instantiation of a separately compiled
 #### Wording Changes from Ada 2012
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0417-1"}</em>{"}"} The terms "program unit pragma" and "library unit pragma" were moved to Annex J, "Obsolescent Features" (specifically to J.15) as all of the <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s that use these terms are now in that annex. <br /></Admonition>
+{"{"}<em>{"AI12-0417-1"}</em>{"}"} <br />The terms "program unit pragma" and "library unit pragma" were moved to Annex J, "Obsolescent Features" (specifically to J.15) as all of the <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s that use these terms are now in that annex. <br /></Admonition>
 
 
 ## 10.1.6  Environment-Level Visibility Rules
@@ -932,7 +934,7 @@ NOTE 3   A compilation unit containing an instantiation of a separately compiled
 
 #### Static Semantics
 
-<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI95-00312-01"}</em>{"}"} Within the <code><a href="../AA-10/AA-10.1#S0291">parent_unit_name</a></code> at the beginning of an explicit <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>, and within a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code>, the only declarations that are visible are those that are explicit <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s of the environment, and the only declarations that are directly visible are those that are explicit root <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s of the environment. Within a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code>, the only declarations that are visible are those that are the implicit declaration of the limited view of a library package of the environment, and the only declarations that are directly visible are those that are the implicit declaration of the limited view of a root library package.<br /></p>
+<p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI95-00312-01"}</em>{"}"} <br />Within the <code><a href="../AA-10/AA-10.1#S0291">parent_unit_name</a></code> at the beginning of an explicit <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>, and within a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code>, the only declarations that are visible are those that are explicit <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s of the environment, and the only declarations that are directly visible are those that are explicit root <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s of the environment. Within a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code>, the only declarations that are visible are those that are the implicit declaration of the limited view of a library package of the environment, and the only declarations that are directly visible are those that are the implicit declaration of the limited view of a root library package.<br /></p>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>In "<strong>package</strong> P.Q.R <strong>is</strong> ... <strong>end</strong> P.Q.R;", this rule requires P to be a root library unit, and Q to be a library unit (because those are the things that are directly visible and visible). Note that visibility does not apply between the "<strong>end</strong>" and the ";".<br /></Admonition>
@@ -944,7 +946,7 @@ Physically nested declarations are not visible at these places.<br /></Admonitio
 Although Standard is visible at these places, it is impossible to name it, since it is not directly visible, and it has no parent.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00217-06"}</em>{"}"} Only compilation units defining limited views can be mentioned in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code>, while only compilation units defining full views (that is, the explicit declarations) can be mentioned in a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code>. This resolves the conflict inherent in having two compilation units with the same defining name. <br /></Admonition>
+{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />Only compilation units defining limited views can be mentioned in a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code>, while only compilation units defining full views (that is, the explicit declarations) can be mentioned in a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code>. This resolves the conflict inherent in having two compilation units with the same defining name. <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00312-01"}</em>{"}"} <br /></Admonition>
@@ -964,7 +966,7 @@ Note that the second part of the rule does not mention <code><a href="../AA-2/AA
 
 <p>Within a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> that appears at the place of a compilation unit, the immediately preceding <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> and each of its ancestors is visible. The ancestor root <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> is directly visible.<br /></p>
 
-<p>{"{"}<em>{"AI95-00312-01"}</em>{"}"} Notwithstanding the rules of 4.1.3, an expanded name in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>, a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> in a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>, or a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> that appears at the place of a compilation unit may consist of a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> that denotes a generic package and a <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> that denotes a child of that generic package. [(The child is necessarily a generic unit; see 10.1.1.)] <br /></p>
+<p>{"{"}<em>{"AI95-00312-01"}</em>{"}"} <br />Notwithstanding the rules of 4.1.3, an expanded name in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>, a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> in a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>, or a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> that appears at the place of a compilation unit may consist of a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> that denotes a generic package and a <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> that denotes a child of that generic package. [(The child is necessarily a generic unit; see 10.1.1.)] <br /></p>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>This rule allows <strong>with</strong> A.B; and <strong>pragma</strong> Elaborate(A.B); where A is a generic library package and B is one of its (generic) children. This is necessary because it is not normally legal to use an expanded name to reach inside a generic package. <br /></Admonition>
@@ -985,8 +987,8 @@ We considered making the visibility rules within <code><a href="../AA-10/AA-10.1
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00217-06"}</em>{"}"} Added separate visibility rules for <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code>s; the existing rules apply only to <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code>s.<br /></Admonition>
+{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />Added separate visibility rules for <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code>s; the existing rules apply only to <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code>s.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00312-01"}</em>{"}"} Clarified that the name of a generic child unit may appear in a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> in a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>. <br /></Admonition>
+{"{"}<em>{"AI95-00312-01"}</em>{"}"} <br />Clarified that the name of a generic child unit may appear in a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> in a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>. <br /></Admonition>
 
