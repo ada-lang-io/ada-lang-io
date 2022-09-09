@@ -37,13 +37,13 @@ const config = {
   // https://github.com/facebook/docusaurus/issues/4765#issuecomment-841135926
   webpack: {
     jsLoader: (isServer) => ({
-      loader: require.resolve('esbuild-loader'),
+      loader: require.resolve("esbuild-loader"),
       options: {
-        loader: 'tsx',
-        format: isServer ? 'cjs' : undefined,
-        target: isServer ? 'node12' : 'es2017',
-      },
-    }),
+        loader: "tsx",
+        format: isServer ? "cjs" : undefined,
+        target: isServer ? "node12" : "es2017"
+      }
+    })
   },
 
   plugins: ["docusaurus-plugin-sass"],
@@ -89,7 +89,7 @@ const config = {
             label: "Getting Started"
           },
           {
-            to: "/docs/arm/AA-TOC", 
+            to: "/docs/arm/AA-TOC",
             position: "left",
             label: "Reference Manual"
           },
