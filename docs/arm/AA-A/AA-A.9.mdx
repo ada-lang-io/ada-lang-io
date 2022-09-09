@@ -13,59 +13,44 @@ See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
 
-<p>The generic package Storage_IO provides for reading from and writing to an in-memory buffer. This generic package supports the construction of user-defined input-output packages. </p>
+<p>The generic package Storage_IO provides for reading from and writing to an in-memory buffer. This generic package supports the construction of user-defined input-output packages. <br /></p>
+
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<p><strong></strong>This package exists to allow the portable construction of user-defined direct-access-oriented input-output packages. The Write procedure writes a value of type Element_Type into a Storage_Array of size Buffer_Size, flattening out any implicit levels of indirection used in the representation of the type. The Read procedure reads a value of type Element_Type from the buffer, reconstructing any implicit levels of indirection used in the representation of the type. It also properly initializes any type tags that appear within the value, presuming that the buffer was written by a different program and that tag values for the"same" type might vary from one executable to another. </p></Admonition>
+<strong></strong>This package exists to allow the portable construction of user-defined direct-access-oriented input-output packages. The Write procedure writes a value of type Element_Type into a Storage_Array of size Buffer_Size, flattening out any implicit levels of indirection used in the representation of the type. The Read procedure reads a value of type Element_Type from the buffer, reconstructing any implicit levels of indirection used in the representation of the type. It also properly initializes any type tags that appear within the value, presuming that the buffer was written by a different program and that tag values for the"same" type might vary from one executable to another. <br /></Admonition>
 
 
 #### Static Semantics
 
-<p>The generic library package Storage_IO has the following declaration: </p>
-<CodeBlock>
-{"{"}{"AI12-0302-1"}{"}"} with Ada.IO_Exceptions;{"\n"}with System.Storage_Elements;{"\n"}generic{"\n"}   type Element_Type is private;{"\n"}package Ada.Storage_IO{"\n"}   with Preelaborate, Global ={">"} in out synchronized is{"\n"}
-</CodeBlock>
+<p>The generic library package Storage_IO has the following declaration: <br /></p>
 
 <CodeBlock>
+--  {"{"}{"AI12-0302-1"}{"}"}{"\n"} with Ada.IO_Exceptions;{"\n"}with System.Storage_Elements;{"\n"}generic{"\n"}   type Element_Type is private;{"\n"}package Ada.Storage_IO{"\n"}   with Preelaborate, Global ={">"} in out synchronized is{"\n"}
    Buffer_Size : constant System.Storage_Elements.Storage_Count :={"\n"}      implementation-defined;{"\n"}   subtype Buffer_Type is{"\n"}      System.Storage_Elements.Storage_Array(1..Buffer_Size);{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    -- Input and output operations{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    procedure Read (Buffer : in  Buffer_Type; Item : out Element_Type);{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    procedure Write(Buffer : out Buffer_Type; Item : in  Element_Type);{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    -- Exceptions{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    Data_Error   : exception renames IO_Exceptions.Data_Error;{"\n"}end Ada.Storage_IO;{"\n"}
-</CodeBlock>
 
-<p>In each instance, the constant Buffer_Size has a value that is the size (in storage elements) of the buffer required to represent the content of an object of subtype Element_Type, including any implicit levels of indirection used by the implementation. The Read and Write procedures of Storage_IO correspond to the Read and Write procedures of Direct_IO (see A.8.4), but with the content of the Item parameter being read from or written into the specified Buffer, rather than an external file.</p>
+</CodeBlock>
+<p>In each instance, the constant Buffer_Size has a value that is the size (in storage elements) of the buffer required to represent the content of an object of subtype Element_Type, including any implicit levels of indirection used by the implementation. The Read and Write procedures of Storage_IO correspond to the Read and Write procedures of Direct_IO (see A.8.4), but with the content of the Item parameter being read from or written into the specified Buffer, rather than an external file.<br /></p>
+
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<p><strong></strong>As with Direct_IO, the Element_Type formal of Storage_IO does not have an <code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code> so that there is a well-defined upper bound on the size of the buffer needed to hold the content of an object of the formal subtype (i.e. Buffer_Size). If there are no implicit levels of indirection, Buffer_Size will typically equal: </p></Admonition>
+<strong></strong>As with Direct_IO, the Element_Type formal of Storage_IO does not have an <code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code> so that there is a well-defined upper bound on the size of the buffer needed to hold the content of an object of the formal subtype (i.e. Buffer_Size). If there are no implicit levels of indirection, Buffer_Size will typically equal: <br /></Admonition>
 
 <CodeBlock>
 (Element_Type'Size + System.Storage_Unit - 1) / System.Storage_Unit{"\n"}
-</CodeBlock>
 
+</CodeBlock>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
-<p><strong></strong>The value of Buffer_Size in Storage_IO.</p></Admonition>
+<strong></strong>The value of Buffer_Size in Storage_IO.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>NOTE 1   A buffer used for Storage_IO holds only one element at a time; an external file used for Direct_IO holds a sequence of elements. </p></Admonition>
+NOTE 1   A buffer used for Storage_IO holds only one element at a time; an external file used for Direct_IO holds a sequence of elements. <br /></Admonition>
 
 
 #### Extensions to Ada 83
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI05-0005-1"}</em>{"}"} Storage_IO is new in Ada 95. </p></Admonition>
+{"{"}<em>{"AI05-0005-1"}</em>{"}"} Storage_IO is new in Ada 95. <br /></Admonition>
 

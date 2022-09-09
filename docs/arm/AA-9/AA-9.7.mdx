@@ -13,208 +13,257 @@ See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
 
-<p>[There are four forms of the <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code>. One form provides a selective wait for one or more <code><a href="../AA-9/AA-9.7#S0272">select_alternative</a></code>s. Two provide timed and conditional entry calls. The fourth provides asynchronous transfer of control.] </p>
+<p>[There are four forms of the <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code>. One form provides a selective wait for one or more <code><a href="../AA-9/AA-9.7#S0272">select_alternative</a></code>s. Two provide timed and conditional entry calls. The fourth provides asynchronous transfer of control.] <br /></p>
+
 
 #### Syntax
 
-<p><code>select_statement</code><a id="S0269"></a><code> ::= </code>   <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code>  | <code><a href="../AA-9/AA-9.7#S0276">timed_entry_call</a></code>  | <code><a href="../AA-9/AA-9.7#S0279">conditional_entry_call</a></code>  | <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code></p>
+<p><code>select_statement</code><a id="S0269"></a><code> ::= </code><br />   <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code><br />  | <code><a href="../AA-9/AA-9.7#S0276">timed_entry_call</a></code><br />  | <code><a href="../AA-9/AA-9.7#S0279">conditional_entry_call</a></code><br />  | <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code><br /></p>
+
 
 #### Examples
 
-<p><em>Example of a select statement:</em> </p>
+<p><em>Example of a select statement:</em> <br /></p>
+
 <CodeBlock>
 select{"\n"}   accept Driver_Awake_Signal;{"\n"}or{"\n"}   delay 30.0*Seconds;{"\n"}   Stop_The_Train;{"\n"}end select;{"\n"}
-</CodeBlock>
 
+</CodeBlock>
 
 #### Extensions to Ada 83
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p><code><a href="../AA-9/AA-9.7#S0280">Asynchronous_select</a></code> is new. </p></Admonition>
+<code><a href="../AA-9/AA-9.7#S0280">Asynchronous_select</a></code> is new. <br /></Admonition>
 
 
 ## 9.7.1  Selective Accept
 
-<p>[This form of the <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code> allows a combination of waiting for, and selecting from, one or more alternatives. The selection may depend on conditions associated with each alternative of the <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code>. ]</p>
+<p>[This form of the <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code> allows a combination of waiting for, and selecting from, one or more alternatives. The selection may depend on conditions associated with each alternative of the <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code>. ]<br /></p>
+
 
 #### Syntax
 
-<p><code>selective_accept</code><a id="S0270"></a><code> ::= </code>  <strong>select</strong>   [<code><a href="../AA-9/AA-9.7#S0271">guard</a></code>]     <code><a href="../AA-9/AA-9.7#S0272">select_alternative</a></code>{"{"} <strong>or</strong>   [<code><a href="../AA-9/AA-9.7#S0271">guard</a></code>]     <code><a href="../AA-9/AA-9.7#S0272">select_alternative</a></code> {"}"}[ <strong>else</strong>   <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> ]  <strong>end select</strong>;</p>
-<p><code>guard</code><a id="S0271"></a><code> ::= </code><strong>when</strong> <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> ={">"}</p>
-<p><code>select_alternative</code><a id="S0272"></a><code> ::= </code>   <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code>  | <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>  | <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code></p>
-<p><code>accept_alternative</code><a id="S0273"></a><code> ::= </code>  <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> [<code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>]</p>
-<p><code>delay_alternative</code><a id="S0274"></a><code> ::= </code>  <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code> [<code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>]</p>
-<p><code>terminate_alternative</code><a id="S0275"></a><code> ::= </code><strong>terminate</strong>;</p>
-<p>A <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code> shall contain at least one <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code>. In addition, it can contain: </p>
-<p>a <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> (only one); or</p>
-<p>one or more <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>s; or</p>
-<p>an <em>else part</em> (the reserved word <strong>else</strong> followed by a <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>). </p>
-<p>These three possibilities are mutually exclusive. </p>
+<p><code>selective_accept</code><a id="S0270"></a><code> ::= </code><br />  <strong>select</strong><br />   [<code><a href="../AA-9/AA-9.7#S0271">guard</a></code>]<br />     <code><a href="../AA-9/AA-9.7#S0272">select_alternative</a></code><br />{"{"} <strong>or</strong><br />   [<code><a href="../AA-9/AA-9.7#S0271">guard</a></code>]<br />     <code><a href="../AA-9/AA-9.7#S0272">select_alternative</a></code> {"}"}<br />[ <strong>else</strong><br />   <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> ]<br />  <strong>end select</strong>;<br /></p>
+
+<p><code>guard</code><a id="S0271"></a><code> ::= </code><strong>when</strong> <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> ={">"}<br /></p>
+
+<p><code>select_alternative</code><a id="S0272"></a><code> ::= </code><br />   <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code><br />  | <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code><br />  | <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code><br /></p>
+
+<p><code>accept_alternative</code><a id="S0273"></a><code> ::= </code><br />  <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> [<code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>]<br /></p>
+
+<p><code>delay_alternative</code><a id="S0274"></a><code> ::= </code><br />  <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code> [<code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>]<br /></p>
+
+<p><code>terminate_alternative</code><a id="S0275"></a><code> ::= </code><strong>terminate</strong>;<br /></p>
+
+<p>A <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code> shall contain at least one <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code>. In addition, it can contain: <br /></p>
+
+<p>a <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> (only one); or<br /></p>
+
+<p>one or more <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>s; or<br /></p>
+
+<p>an <em>else part</em> (the reserved word <strong>else</strong> followed by a <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>). <br /></p>
+
+<p>These three possibilities are mutually exclusive. <br /></p>
+
 
 #### Legality Rules
 
-<p>If a <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code> contains more than one <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>, then all shall be <code><a href="../AA-9/AA-9.6#S0268">delay_relative_statement</a></code>s, or all shall be <code><a href="../AA-9/AA-9.6#S0267">delay_until_statement</a></code>s for the same time type. </p>
+<p>If a <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code> contains more than one <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>, then all shall be <code><a href="../AA-9/AA-9.6#S0268">delay_relative_statement</a></code>s, or all shall be <code><a href="../AA-9/AA-9.6#S0267">delay_until_statement</a></code>s for the same time type. <br /></p>
+
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<p><strong></strong>This simplifies the implementation and the description of the semantics. </p></Admonition>
+<strong></strong>This simplifies the implementation and the description of the semantics. <br /></Admonition>
 
 
 #### Dynamic Semantics
 
-<p>A <code><a href="../AA-9/AA-9.7#S0272">select_alternative</a></code> is said to be <em>open</em> if it is not immediately preceded by a <code><a href="../AA-9/AA-9.7#S0271">guard</a></code>, or if the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> of its <code><a href="../AA-9/AA-9.7#S0271">guard</a></code> evaluates to True. It is said to be <em>closed</em> otherwise.</p>
-<p>For the execution of a <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code>, any <code><a href="../AA-9/AA-9.7#S0271">guard</a></code> <code><a href="../AA-4/AA-4.5#S0150">condition</a></code>s are evaluated; open alternatives are thus determined. For an open <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>, the <em>delay_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is also evaluated. Similarly, for an open <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code> for an entry of a family, the <code><a href="../AA-9/AA-9.5#S0259">entry_index</a></code> is also evaluated. These evaluations are performed in an arbitrary order, except that a <em>delay_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <code><a href="../AA-9/AA-9.5#S0259">entry_index</a></code> is not evaluated until after evaluating the corresponding <code><a href="../AA-4/AA-4.5#S0150">condition</a></code>, if any. Selection and execution of one open alternative, or of the else part, then completes the execution of the <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code>; the rules for this selection are described below.</p>
-<p>Open <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code>s are first considered. Selection of one such alternative takes place immediately if the corresponding entry already has queued calls. If several alternatives can thus be selected, one of them is selected according to the entry queuing policy in effect (see 9.5.3 and D.4). When such an alternative is selected, the selected call is removed from its entry queue and the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> (if any) of the corresponding <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> is executed; after the rendezvous completes any subsequent <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the alternative is executed. If no selection is immediately possible (in the above sense) and there is no else part, the task blocks until an open alternative can be selected.</p>
-<p>Selection of the other forms of alternative or of an else part is performed as follows: </p>
-<p>An open <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code> is selected when its expiration time is reached if no <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code> or other <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code> can be selected prior to the expiration time. If several <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>s have this same expiration time, one of them is selected according to the queuing policy in effect (see D.4); the default queuing policy chooses arbitrarily among the <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>s whose expiration time has passed.</p>
-<p>The else part is selected and its <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> is executed if no <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code> can immediately be selected; in particular, if all alternatives are closed.</p>
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} An open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> is selected if the conditions stated at the end of subclause 9.3 are satisfied. </p>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<p><strong></strong>In the absence of a <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code>, the conditions stated are such that a <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> cannot be selected while there is a queued entry call for any entry of the task. In the presence of requeues from a task to one of its subtasks, it is possible that when a <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> of the subtask is selected, requeued calls (for closed entries only) might still be queued on some entry of the subtask. Tasking_Error will be propagated to such callers, as is usual when a task completes while queued callers remain. </p></Admonition>
+<p>A <code><a href="../AA-9/AA-9.7#S0272">select_alternative</a></code> is said to be <em>open</em> if it is not immediately preceded by a <code><a href="../AA-9/AA-9.7#S0271">guard</a></code>, or if the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> of its <code><a href="../AA-9/AA-9.7#S0271">guard</a></code> evaluates to True. It is said to be <em>closed</em> otherwise.<br /></p>
 
-<p>The exception Program_Error is raised if all alternatives are closed and there is no else part.</p>
+<p>For the execution of a <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code>, any <code><a href="../AA-9/AA-9.7#S0271">guard</a></code> <code><a href="../AA-4/AA-4.5#S0150">condition</a></code>s are evaluated; open alternatives are thus determined. For an open <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>, the <em>delay_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is also evaluated. Similarly, for an open <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code> for an entry of a family, the <code><a href="../AA-9/AA-9.5#S0259">entry_index</a></code> is also evaluated. These evaluations are performed in an arbitrary order, except that a <em>delay_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <code><a href="../AA-9/AA-9.5#S0259">entry_index</a></code> is not evaluated until after evaluating the corresponding <code><a href="../AA-4/AA-4.5#S0150">condition</a></code>, if any. Selection and execution of one open alternative, or of the else part, then completes the execution of the <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code>; the rules for this selection are described below.<br /></p>
+
+<p>Open <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code>s are first considered. Selection of one such alternative takes place immediately if the corresponding entry already has queued calls. If several alternatives can thus be selected, one of them is selected according to the entry queuing policy in effect (see 9.5.3 and D.4). When such an alternative is selected, the selected call is removed from its entry queue and the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> (if any) of the corresponding <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> is executed; after the rendezvous completes any subsequent <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the alternative is executed. If no selection is immediately possible (in the above sense) and there is no else part, the task blocks until an open alternative can be selected.<br /></p>
+
+<p>Selection of the other forms of alternative or of an else part is performed as follows: <br /></p>
+
+<p>An open <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code> is selected when its expiration time is reached if no <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code> or other <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code> can be selected prior to the expiration time. If several <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>s have this same expiration time, one of them is selected according to the queuing policy in effect (see D.4); the default queuing policy chooses arbitrarily among the <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>s whose expiration time has passed.<br /></p>
+
+<p>The else part is selected and its <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> is executed if no <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code> can immediately be selected; in particular, if all alternatives are closed.<br /></p>
+
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} An open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> is selected if the conditions stated at the end of subclause 9.3 are satisfied. <br /></p>
+
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<strong></strong>In the absence of a <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code>, the conditions stated are such that a <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> cannot be selected while there is a queued entry call for any entry of the task. In the presence of requeues from a task to one of its subtasks, it is possible that when a <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> of the subtask is selected, requeued calls (for closed entries only) might still be queued on some entry of the subtask. Tasking_Error will be propagated to such callers, as is usual when a task completes while queued callers remain. <br /></Admonition>
+
+<p>The exception Program_Error is raised if all alternatives are closed and there is no else part.<br /></p>
+
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>NOTE 1   A <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code> is allowed to have several open <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>s. A <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code> is allowed to have several open <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code>s for the same entry.</p></Admonition>
+NOTE 1   A <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code> is allowed to have several open <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>s. A <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code> is allowed to have several open <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code>s for the same entry.<br /></Admonition>
 
 
 #### Examples
 
-<p><em>Example of a task body with a selective accept:</em> </p>
+<p><em>Example of a task body with a selective accept:</em> <br /></p>
+
 <CodeBlock>
 task body Server is{"\n"}   Current_Work_Item : Work_Item;{"\n"}begin{"\n"}   loop{"\n"}      select{"\n"}         accept Next_Work_Item(WI : in Work_Item) do{"\n"}            Current_Work_Item := WI;{"\n"}         end;{"\n"}         Process_Work_Item(Current_Work_Item);{"\n"}      or{"\n"}         accept Shut_Down;{"\n"}         exit;       -- Premature shut down requested{"\n"}      or{"\n"}         terminate;  -- Normal shutdown at end of scope{"\n"}      end select;{"\n"}   end loop;{"\n"}end Server;{"\n"}
-</CodeBlock>
 
+</CodeBlock>
 
 #### Wording Changes from Ada 83
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>The name of <code>selective_wait</code> was changed to <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code> to better describe what is being waited for. We kept <code><a href="../AA-9/AA-9.7#S0272">select_alternative</a></code> as is, because <code>selective_accept_alternative</code> was too easily confused with <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code>. </p></Admonition>
+The name of <code>selective_wait</code> was changed to <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code> to better describe what is being waited for. We kept <code><a href="../AA-9/AA-9.7#S0272">select_alternative</a></code> as is, because <code>selective_accept_alternative</code> was too easily confused with <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code>. <br /></Admonition>
 
 
 ## 9.7.2  Timed Entry Calls
 
-<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} [A <code><a href="../AA-9/AA-9.7#S0276">timed_entry_call</a></code> issues an entry call that is cancelled if the call (or a requeue-with-abort of the call) is not selected before the expiration time is reached. A procedure call may appear rather than an entry call for cases where the procedure can be implemented by an entry. ]</p>
+<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} [A <code><a href="../AA-9/AA-9.7#S0276">timed_entry_call</a></code> issues an entry call that is cancelled if the call (or a requeue-with-abort of the call) is not selected before the expiration time is reached. A procedure call may appear rather than an entry call for cases where the procedure can be implemented by an entry. ]<br /></p>
+
 
 #### Syntax
 
-<p><code>timed_entry_call</code><a id="S0276"></a><code> ::= </code>  <strong>select</strong>   <code><a href="../AA-9/AA-9.7#S0277">entry_call_alternative</a></code>  <strong>or</strong>   <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>  <strong>end select</strong>;</p>
-<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} <code>entry_call_alternative</code><a id="S0277"></a><code> ::= </code>  <code><a href="../AA-9/AA-9.7#S0278">procedure_or_entry_call</a></code> [<code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>]</p>
-<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} <code>procedure_or_entry_call</code><a id="S0278"></a><code> ::= </code>  <code><a href="../AA-6/AA-6.4#S0217">procedure_call_statement</a></code> | <code><a href="../AA-9/AA-9.5#S0264">entry_call_statement</a></code></p>
+<p><code>timed_entry_call</code><a id="S0276"></a><code> ::= </code><br />  <strong>select</strong><br />   <code><a href="../AA-9/AA-9.7#S0277">entry_call_alternative</a></code><br />  <strong>or</strong><br />   <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code><br />  <strong>end select</strong>;<br /></p>
+
+<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} <code>entry_call_alternative</code><a id="S0277"></a><code> ::= </code><br />  <code><a href="../AA-9/AA-9.7#S0278">procedure_or_entry_call</a></code> [<code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>]<br /></p>
+
+<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} <code>procedure_or_entry_call</code><a id="S0278"></a><code> ::= </code><br />  <code><a href="../AA-6/AA-6.4#S0217">procedure_call_statement</a></code> | <code><a href="../AA-9/AA-9.5#S0264">entry_call_statement</a></code><br /></p>
+
 
 #### Legality Rules
 
-<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} If a <code><a href="../AA-6/AA-6.4#S0217">procedure_call_statement</a></code> is used for a <code><a href="../AA-9/AA-9.7#S0278">procedure_or_entry_call</a></code>, the <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the <code><a href="../AA-6/AA-6.4#S0217">procedure_call_statement</a></code> shall statically denote an entry renamed as a procedure or (a view of) a primitive subprogram of a limited interface whose first parameter is a controlling parameter (see 3.9.2). </p>
+<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} If a <code><a href="../AA-6/AA-6.4#S0217">procedure_call_statement</a></code> is used for a <code><a href="../AA-9/AA-9.7#S0278">procedure_or_entry_call</a></code>, the <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the <code><a href="../AA-6/AA-6.4#S0217">procedure_call_statement</a></code> shall statically denote an entry renamed as a procedure or (a view of) a primitive subprogram of a limited interface whose first parameter is a controlling parameter (see 3.9.2). <br /></p>
+
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<p><strong></strong>This would be a confusing way to call a procedure, so we only allow it when it is possible that the procedure is actually an entry. We could have allowed formal subprograms here, but we didn't because we'd have to allow all formal subprograms, and it would increase the difficulty of generic code sharing.</p></Admonition>
+<strong></strong>This would be a confusing way to call a procedure, so we only allow it when it is possible that the procedure is actually an entry. We could have allowed formal subprograms here, but we didn't because we'd have to allow all formal subprograms, and it would increase the difficulty of generic code sharing.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>We say "statically denotes" because an access-to-subprogram cannot be primitive, and we don't have anything like access-to-entry. So only names of entries or procedures are possible. </p></Admonition>
+We say "statically denotes" because an access-to-subprogram cannot be primitive, and we don't have anything like access-to-entry. So only names of entries or procedures are possible. <br /></Admonition>
 
 
 #### Dynamic Semantics
 
-<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} For the execution of a <code><a href="../AA-9/AA-9.7#S0276">timed_entry_call</a></code>, the <em>entry_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>, <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>, or <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>, and any actual parameters are evaluated, as for a simple entry call (see 9.5.3) or procedure call (see 6.4). The expiration time (see 9.6) for the call is determined by evaluating the <em>delay_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of the <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>. If the call is an entry call or a call on a procedure implemented by an entry, the entry call is then issued. Otherwise, the call proceeds as described in 6.4 for a procedure call, followed by the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0277">entry_call_alternative</a></code>; the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code> is ignored.</p>
-<p>If the call is queued (including due to a requeue-with-abort), and not selected before the expiration time is reached, an attempt to cancel the call is made. If the call completes due to the cancellation, the optional <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code> is executed; if the entry call completes normally, the optional <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0277">entry_call_alternative</a></code> is executed. </p>
+<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} For the execution of a <code><a href="../AA-9/AA-9.7#S0276">timed_entry_call</a></code>, the <em>entry_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>, <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>, or <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>, and any actual parameters are evaluated, as for a simple entry call (see 9.5.3) or procedure call (see 6.4). The expiration time (see 9.6) for the call is determined by evaluating the <em>delay_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of the <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code>. If the call is an entry call or a call on a procedure implemented by an entry, the entry call is then issued. Otherwise, the call proceeds as described in 6.4 for a procedure call, followed by the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0277">entry_call_alternative</a></code>; the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code> is ignored.<br /></p>
+
+<p>If the call is queued (including due to a requeue-with-abort), and not selected before the expiration time is reached, an attempt to cancel the call is made. If the call completes due to the cancellation, the optional <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code> is executed; if the entry call completes normally, the optional <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0277">entry_call_alternative</a></code> is executed. <br /></p>
+
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p><em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00345-01"}</em>{"}"} </p></Admonition>
+<em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00345-01"}</em>{"}"} <br /></Admonition>
 
 
 #### Examples
 
-<p><em>Example of a timed entry call:</em> </p>
+<p><em>Example of a timed entry call:</em> <br /></p>
+
 <CodeBlock>
 select{"\n"}   Controller.Request(Medium)(Some_Item);{"\n"}or{"\n"}   delay 45.0;{"\n"}   --  controller too busy, try something else{"\n"}end select;{"\n"}
-</CodeBlock>
 
+</CodeBlock>
 
 #### Wording Changes from Ada 83
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause comes before the one for Conditional Entry Calls, so we can define conditional entry calls in terms of timed entry calls. </p></Admonition>
+{"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause comes before the one for Conditional Entry Calls, so we can define conditional entry calls in terms of timed entry calls. <br /></Admonition>
 
 
 #### Incompatibilities With Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} {"{"}<em>{"AI05-0005-1"}</em>{"}"} A procedure call can be used as the <code><a href="../AA-9/AA-9.7#S0277">entry_call_alternative</a></code> in a timed or conditional entry call, if the procedure might actually be an entry. Since the fact that something is an entry could be used in resolving these calls in Ada 95, it is possible for timed or conditional entry calls that resolved in Ada 95 to be ambiguous in Ada 2005. That could happen if both an entry and procedure with the same name and profile exist, which should be rare. </p></Admonition>
+{"{"}<em>{"AI95-00345-01"}</em>{"}"} {"{"}<em>{"AI05-0005-1"}</em>{"}"} A procedure call can be used as the <code><a href="../AA-9/AA-9.7#S0277">entry_call_alternative</a></code> in a timed or conditional entry call, if the procedure might actually be an entry. Since the fact that something is an entry could be used in resolving these calls in Ada 95, it is possible for timed or conditional entry calls that resolved in Ada 95 to be ambiguous in Ada 2005. That could happen if both an entry and procedure with the same name and profile exist, which should be rare. <br /></Admonition>
 
 
 ## 9.7.3  Conditional Entry Calls
 
-<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} [A <code><a href="../AA-9/AA-9.7#S0279">conditional_entry_call</a></code> issues an entry call that is then cancelled if it is not selected immediately (or if a requeue-with-abort of the call is not selected immediately). A procedure call may appear rather than an entry call for cases where the procedure can be implemented by an entry.] </p>
+<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} [A <code><a href="../AA-9/AA-9.7#S0279">conditional_entry_call</a></code> issues an entry call that is then cancelled if it is not selected immediately (or if a requeue-with-abort of the call is not selected immediately). A procedure call may appear rather than an entry call for cases where the procedure can be implemented by an entry.] <br /></p>
+
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p><strong>To be honest: </strong>In the case of an entry call on a protected object, it is OK if the entry is closed at the start of the corresponding protected action, so long as it opens and the call is selected before the end of that protected action (due to changes in the Count attribute). </p></Admonition>
+<strong>To be honest: </strong>In the case of an entry call on a protected object, it is OK if the entry is closed at the start of the corresponding protected action, so long as it opens and the call is selected before the end of that protected action (due to changes in the Count attribute). <br /></Admonition>
 
 
 #### Syntax
 
-<p><code>conditional_entry_call</code><a id="S0279"></a><code> ::= </code>  <strong>select</strong>   <code><a href="../AA-9/AA-9.7#S0277">entry_call_alternative</a></code>  <strong>else</strong>   <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>  <strong>end select</strong>;</p>
+<p><code>conditional_entry_call</code><a id="S0279"></a><code> ::= </code><br />  <strong>select</strong><br />   <code><a href="../AA-9/AA-9.7#S0277">entry_call_alternative</a></code><br />  <strong>else</strong><br />   <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code><br />  <strong>end select</strong>;<br /></p>
+
 
 #### Dynamic Semantics
 
-<p>The execution of a <code><a href="../AA-9/AA-9.7#S0279">conditional_entry_call</a></code> is defined to be equivalent to the execution of a <code><a href="../AA-9/AA-9.7#S0276">timed_entry_call</a></code> with a <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code> specifying an immediate expiration time and the same <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> as given after the reserved word <strong>else</strong>. </p>
+<p>The execution of a <code><a href="../AA-9/AA-9.7#S0279">conditional_entry_call</a></code> is defined to be equivalent to the execution of a <code><a href="../AA-9/AA-9.7#S0276">timed_entry_call</a></code> with a <code><a href="../AA-9/AA-9.7#S0274">delay_alternative</a></code> specifying an immediate expiration time and the same <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> as given after the reserved word <strong>else</strong>. <br /></p>
+
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>NOTE 1   {"{"}<em>{"AI12-0440-1"}</em>{"}"} A <code><a href="../AA-9/AA-9.7#S0279">conditional_entry_call</a></code> can briefly increase the Count attribute of the entry, even if the conditional call is not selected.</p></Admonition>
+NOTE 1   {"{"}<em>{"AI12-0440-1"}</em>{"}"} A <code><a href="../AA-9/AA-9.7#S0279">conditional_entry_call</a></code> can briefly increase the Count attribute of the entry, even if the conditional call is not selected.<br /></Admonition>
 
 
 #### Examples
 
-<p><em>Example of a conditional entry call:</em> </p>
-<CodeBlock>
-{"{"}{"AI12-0178-1"}{"}"} procedure Spin(R : in out Resource) is  -- see 9.4{"\n"}begin{"\n"}   loop{"\n"}      select{"\n"}         R.Seize;{"\n"}         return;{"\n"}      else{"\n"}         null;  --  busy waiting{"\n"}      end select;{"\n"}   end loop;{"\n"}end;{"\n"}
-</CodeBlock>
+<p><em>Example of a conditional entry call:</em> <br /></p>
 
+<CodeBlock>
+--  {"{"}{"AI12-0178-1"}{"}"}{"\n"} procedure Spin(R : in out Resource) is  -- see 9.4{"\n"}begin{"\n"}   loop{"\n"}      select{"\n"}         R.Seize;{"\n"}         return;{"\n"}      else{"\n"}         null;  --  busy waiting{"\n"}      end select;{"\n"}   end loop;{"\n"}end;{"\n"}
+
+</CodeBlock>
 
 #### Wording Changes from Ada 83
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause comes after the one for Timed Entry Calls, so we can define conditional entry calls in terms of timed entry calls. We do that so that an "expiration time" is defined for both, thereby simplifying the definition of what happens on a requeue-with-abort. </p></Admonition>
+{"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause comes after the one for Timed Entry Calls, so we can define conditional entry calls in terms of timed entry calls. We do that so that an "expiration time" is defined for both, thereby simplifying the definition of what happens on a requeue-with-abort. <br /></Admonition>
 
 
 ## 9.7.4  Asynchronous Transfer of Control
 
-<p>[An asynchronous <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code> provides asynchronous transfer of control upon completion of an entry call or the expiration of a delay.] </p>
+<p>[An asynchronous <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code> provides asynchronous transfer of control upon completion of an entry call or the expiration of a delay.] <br /></p>
+
 
 #### Syntax
 
-<p><code>asynchronous_select</code><a id="S0280"></a><code> ::= </code>  <strong>select</strong>   <code><a href="../AA-9/AA-9.7#S0281">triggering_alternative</a></code>  <strong>then abort</strong>   <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code>  <strong>end select</strong>;</p>
-<p><code>triggering_alternative</code><a id="S0281"></a><code> ::= </code><code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> [<code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>]</p>
-<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} <code>triggering_statement</code><a id="S0282"></a><code> ::= </code><code><a href="../AA-9/AA-9.7#S0278">procedure_or_entry_call</a></code> | <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code></p>
-<p><code>abortable_part</code><a id="S0283"></a><code> ::= </code><code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code></p>
+<p><code>asynchronous_select</code><a id="S0280"></a><code> ::= </code><br />  <strong>select</strong><br />   <code><a href="../AA-9/AA-9.7#S0281">triggering_alternative</a></code><br />  <strong>then abort</strong><br />   <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code><br />  <strong>end select</strong>;<br /></p>
+
+<p><code>triggering_alternative</code><a id="S0281"></a><code> ::= </code><code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> [<code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>]<br /></p>
+
+<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} <code>triggering_statement</code><a id="S0282"></a><code> ::= </code><code><a href="../AA-9/AA-9.7#S0278">procedure_or_entry_call</a></code> | <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code><br /></p>
+
+<p><code>abortable_part</code><a id="S0283"></a><code> ::= </code><code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code><br /></p>
+
 
 #### Dynamic Semantics
 
-<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} For the execution of an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> whose <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> is a <code><a href="../AA-9/AA-9.7#S0278">procedure_or_entry_call</a></code>, the <em>entry_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>, <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>, or <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>, and actual parameters are evaluated as for a simple entry call (see 9.5.3) or procedure call (see 6.4). If the call is an entry call or a call on a procedure implemented by an entry, the entry call is issued. If the entry call is queued (or requeued-with-abort), then the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is executed. [If the entry call is selected immediately, and never requeued-with-abort, then the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is never started.] If the call is on a procedure that is not implemented by an entry, the call proceeds as described in 6.4, followed by the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0281">triggering_alternative</a></code>[; the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is never started].</p>
-<p>For the execution of an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> whose <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> is a <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code>, the <em>delay_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is evaluated and the expiration time is determined, as for a normal <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code>. If the expiration time has not already passed, the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is executed.</p>
-<p>If the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> completes and is left prior to completion of the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code>, an attempt to cancel the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> is made. If the attempt to cancel succeeds (see 9.5.3 and 9.6), the <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> is complete.</p>
-<p>If the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> completes other than due to cancellation, the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is aborted (if started but not yet completed - see 9.8). If the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> completes normally, the optional <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0281">triggering_alternative</a></code> is executed after the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is left. </p>
+<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} For the execution of an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> whose <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> is a <code><a href="../AA-9/AA-9.7#S0278">procedure_or_entry_call</a></code>, the <em>entry_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>, <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>, or <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>, and actual parameters are evaluated as for a simple entry call (see 9.5.3) or procedure call (see 6.4). If the call is an entry call or a call on a procedure implemented by an entry, the entry call is issued. If the entry call is queued (or requeued-with-abort), then the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is executed. [If the entry call is selected immediately, and never requeued-with-abort, then the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is never started.] If the call is on a procedure that is not implemented by an entry, the call proceeds as described in 6.4, followed by the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0281">triggering_alternative</a></code>[; the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is never started].<br /></p>
+
+<p>For the execution of an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> whose <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> is a <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code>, the <em>delay_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is evaluated and the expiration time is determined, as for a normal <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code>. If the expiration time has not already passed, the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is executed.<br /></p>
+
+<p>If the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> completes and is left prior to completion of the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code>, an attempt to cancel the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> is made. If the attempt to cancel succeeds (see 9.5.3 and 9.6), the <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> is complete.<br /></p>
+
+<p>If the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> completes other than due to cancellation, the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is aborted (if started but not yet completed - see 9.8). If the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> completes normally, the optional <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0281">triggering_alternative</a></code> is executed after the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is left. <br /></p>
+
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<p><strong></strong>We currently don't specify when the by-copy [<strong>in</strong>] <strong>out</strong> parameters are assigned back into the actuals. We considered requiring that to happen after the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is left. However, that doesn't seem useful enough to justify possibly overspecifying the implementation approach, since some of the parameters are passed by reference anyway.</p></Admonition>
+<strong></strong>We currently don't specify when the by-copy [<strong>in</strong>] <strong>out</strong> parameters are assigned back into the actuals. We considered requiring that to happen after the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> is left. However, that doesn't seem useful enough to justify possibly overspecifying the implementation approach, since some of the parameters are passed by reference anyway.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>In an earlier description, we required that the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0281">triggering_alternative</a></code> execute after aborting the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code>, but before waiting for it to complete and finalize, to provide more rapid response to the triggering event in case the finalization was unbounded. However, various reviewers felt that this created unnecessary complexity in the description, and a potential for undesirable concurrency (and nondeterminism) within a single task. We have now reverted to simpler, more deterministic semantics, but anticipate that further discussion of this issue might be appropriate during subsequent reviews. One possibility is to leave this area implementation defined, so as to encourage experimentation. The user would then have to assume the worst about what kinds of actions are appropriate for the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0281">triggering_alternative</a></code> to achieve portability. </p></Admonition>
+In an earlier description, we required that the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0281">triggering_alternative</a></code> execute after aborting the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code>, but before waiting for it to complete and finalize, to provide more rapid response to the triggering event in case the finalization was unbounded. However, various reviewers felt that this created unnecessary complexity in the description, and a potential for undesirable concurrency (and nondeterminism) within a single task. We have now reverted to simpler, more deterministic semantics, but anticipate that further discussion of this issue might be appropriate during subsequent reviews. One possibility is to leave this area implementation defined, so as to encourage experimentation. The user would then have to assume the worst about what kinds of actions are appropriate for the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the <code><a href="../AA-9/AA-9.7#S0281">triggering_alternative</a></code> to achieve portability. <br /></Admonition>
 
 
 #### Examples
 
-<p><em>Example of a main command loop for a command interpreter:</em> </p>
+<p><em>Example of a main command loop for a command interpreter:</em> <br /></p>
+
 <CodeBlock>
 loop{"\n"}   select{"\n"}      Terminal.Wait_For_Interrupt;{"\n"}      Put_Line("Interrupted");{"\n"}   then abort{"\n"}      -- This will be abandoned upon terminal interrupt{"\n"}      Put_Line("-{">"} ");{"\n"}      Get_Line(Command, Last);{"\n"}      Process_Command(Command(1..Last));{"\n"}   end select;{"\n"}end loop;{"\n"}
-</CodeBlock>
 
-<p><em>Example of a time-limited calculation:</em> </p>
+</CodeBlock>
+<p><em>Example of a time-limited calculation:</em> <br /></p>
+
 <CodeBlock>
-{"{"}{"AI12-0442-1"}{"}"} select{"\n"}   delay 5.0;{"\n"}   Put_Line("Calculation does not converge");{"\n"}then abort{"\n"}   -- This calculation is expected to finish in 5.0 seconds;{"\n"}   --  if not, it is assumed to diverge.{"\n"}   Horribly_Complicated_Recursive_Function(X, Y);{"\n"}end select;{"\n"}
-</CodeBlock>
+--  {"{"}{"AI12-0442-1"}{"}"}{"\n"} select{"\n"}   delay 5.0;{"\n"}   Put_Line("Calculation does not converge");{"\n"}then abort{"\n"}   -- This calculation is expected to finish in 5.0 seconds;{"\n"}   --  if not, it is assumed to diverge.{"\n"}   Horribly_Complicated_Recursive_Function(X, Y);{"\n"}end select;{"\n"}
 
-<p>{"{"}<em>{"AI12-0098-1"}</em>{"}"} {"{"}<em>{"AI12-0418-1"}</em>{"}"} Note that these examples presume that there are abort completion points (see 9.8) within the execution of the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code>. </p>
+</CodeBlock>
+<p>{"{"}<em>{"AI12-0098-1"}</em>{"}"} {"{"}<em>{"AI12-0418-1"}</em>{"}"} Note that these examples presume that there are abort completion points (see 9.8) within the execution of the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code>. <br /></p>
+
 
 #### Extensions to Ada 83
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p><code><a href="../AA-9/AA-9.7#S0280">Asynchronous_select</a></code> is new. </p></Admonition>
+<code><a href="../AA-9/AA-9.7#S0280">Asynchronous_select</a></code> is new. <br /></Admonition>
 
 
 #### Extensions to Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI95-00345-01"}</em>{"}"} A procedure can be used as the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> of an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code>, if the procedure might actually be an entry. </p></Admonition>
+{"{"}<em>{"AI95-00345-01"}</em>{"}"} A procedure can be used as the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> of an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code>, if the procedure might actually be an entry. <br /></Admonition>
 

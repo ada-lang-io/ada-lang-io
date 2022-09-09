@@ -13,164 +13,175 @@ See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
 
-<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} [This subclause describes how the priority of an entity can be modified or queried at run time.] </p>
+<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} [This subclause describes how the priority of an entity can be modified or queried at run time.] <br /></p>
+
 
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause is turned into two subclauses. This subclause introduction is new. </p></Admonition>
+{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause is turned into two subclauses. This subclause introduction is new. <br /></Admonition>
 
 
 ## D.5.1  Dynamic Priorities for Tasks
 
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} [This subclause describes how the base priority of a task can be modified or queried at run time.] </p>
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} [This subclause describes how the base priority of a task can be modified or queried at run time.] <br /></p>
+
 
 #### Static Semantics
 
-<p>The following language-defined library package exists: </p>
-<CodeBlock>
-{"{"}{"AI95-00362-01"}{"}"} {"{"}{"AI12-0241-1"}{"}"} {"{"}{"AI12-0302-1"}{"}"} with System;{"\n"}with Ada.Task_Identification; -- See C.7.1{"\n"}package Ada.Dynamic_Priorities{"\n"}    with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
-</CodeBlock>
+<p>The following language-defined library package exists: <br /></p>
 
 <CodeBlock>
+--  {"{"}{"AI95-00362-01"}{"}"}{"\n"} --  {"{"}{"AI12-0241-1"}{"}"}{"\n"} --  {"{"}{"AI12-0302-1"}{"}"}{"\n"} with System;{"\n"}with Ada.Task_Identification; -- See C.7.1{"\n"}package Ada.Dynamic_Priorities{"\n"}    with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
     procedure Set_Priority(Priority : in System.Any_Priority;{"\n"}                           T : in Ada.Task_Identification.Task_Id :={"\n"}                           Ada.Task_Identification.Current_Task);{"\n"}
-</CodeBlock>
-
-<CodeBlock>
     function Get_Priority (T : Ada.Task_Identification.Task_Id :={"\n"}                           Ada.Task_Identification.Current_Task){"\n"}                           return System.Any_Priority;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
 end Ada.Dynamic_Priorities;{"\n"}
-</CodeBlock>
 
+</CodeBlock>
 
 #### Dynamic Semantics
 
-<p>The procedure Set_Priority sets the base priority of the specified task to the specified Priority value. Set_Priority has no effect if the task is terminated.</p>
-<p>The function Get_Priority returns T's current base priority. Tasking_Error is raised if the task is terminated. </p>
+<p>The procedure Set_Priority sets the base priority of the specified task to the specified Priority value. Set_Priority has no effect if the task is terminated.<br /></p>
+
+<p>The function Get_Priority returns T's current base priority. Tasking_Error is raised if the task is terminated. <br /></p>
+
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<p><strong></strong>There is no harm in setting the priority of a terminated task. A previous version of Ada 9X made this a run-time error. However, there is little difference between setting the priority of a terminated task, and setting the priority of a task that is about to terminate very soon; neither case should be an error. Furthermore, the runtime check is not necessarily feasible to implement on all systems, since priority changes might be deferred due to inter-processor communication overhead, so the error might not be detected until after Set_Priority has returned.</p></Admonition>
+<strong></strong>There is no harm in setting the priority of a terminated task. A previous version of Ada 9X made this a run-time error. However, there is little difference between setting the priority of a terminated task, and setting the priority of a task that is about to terminate very soon; neither case should be an error. Furthermore, the runtime check is not necessarily feasible to implement on all systems, since priority changes might be deferred due to inter-processor communication overhead, so the error might not be detected until after Set_Priority has returned.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>However, we wish to allow implementations to avoid storing "extra" information about terminated tasks. Therefore, we make Get_Priority of a terminated task raise an exception; the implementation need not continue to store the priority of a task that has terminated. </p></Admonition>
+However, we wish to allow implementations to avoid storing "extra" information about terminated tasks. Therefore, we make Get_Priority of a terminated task raise an exception; the implementation need not continue to store the priority of a task that has terminated. <br /></Admonition>
 
-<p>Program_Error is raised by Set_Priority and Get_Priority if T is equal to Null_Task_Id.</p>
-<p>{"{"}<em>{"AI95-00188-02"}</em>{"}"} On a system with a single processor, the setting of the base priority of a task <em>T</em> to the new value occurs immediately at the first point when <em>T</em> is outside the execution of a protected action.</p>
+<p>Program_Error is raised by Set_Priority and Get_Priority if T is equal to Null_Task_Id.<br /></p>
+
+<p>{"{"}<em>{"AI95-00188-02"}</em>{"}"} On a system with a single processor, the setting of the base priority of a task <em>T</em> to the new value occurs immediately at the first point when <em>T</em> is outside the execution of a protected action.<br /></p>
+
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
-<p><strong></strong>{"{"}<em>{"AI95-00188-02"}</em>{"}"} The priority change is immediate if the target task is on a delay queue or a ready queue outside of a protected action. However, consider when Set_Priority is called by a task T1 to set the priority of T2, if T2 is blocked, waiting on an entry call queued on a protected object, the entry queue needs to be reordered. Since T1 might have a priority that is higher than the ceiling of the protected object, T1 cannot, in general, do the reordering. One way to implement this is to wake T2 up and have T2 do the work. This is similar to the disentangling of queues that needs to happen when a high-priority task aborts a lower-priority task, which might have a call queued on a protected object with a low ceiling. We have an Implementation Permission in D.4 to allow this implementation. We could have required an immediate priority change if on a ready queue during a protected action, but that would have required extra checks for ceiling violations to meet Bounded (Run-Time) Error requirements of D.3 and potentially could cause a protected action to be abandoned in the middle (by raising Program_Error). That seems bad. </p></Admonition>
+<strong></strong>{"{"}<em>{"AI95-00188-02"}</em>{"}"} The priority change is immediate if the target task is on a delay queue or a ready queue outside of a protected action. However, consider when Set_Priority is called by a task T1 to set the priority of T2, if T2 is blocked, waiting on an entry call queued on a protected object, the entry queue needs to be reordered. Since T1 might have a priority that is higher than the ceiling of the protected object, T1 cannot, in general, do the reordering. One way to implement this is to wake T2 up and have T2 do the work. This is similar to the disentangling of queues that needs to happen when a high-priority task aborts a lower-priority task, which might have a call queued on a protected object with a low ceiling. We have an Implementation Permission in D.4 to allow this implementation. We could have required an immediate priority change if on a ready queue during a protected action, but that would have required extra checks for ceiling violations to meet Bounded (Run-Time) Error requirements of D.3 and potentially could cause a protected action to be abandoned in the middle (by raising Program_Error). That seems bad. <br /></Admonition>
 
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<p><strong></strong>A previous version of Ada 9X made it a run-time error for a high-priority task to set the priority of a lower-priority task that has a queued call on a protected object with a low ceiling. This was changed because: </p></Admonition>
+<strong></strong>A previous version of Ada 9X made it a run-time error for a high-priority task to set the priority of a lower-priority task that has a queued call on a protected object with a low ceiling. This was changed because: <br /></Admonition>
 
-<p>The check was not feasible to implement on all systems, since priority changes might be deferred due to inter-processor communication overhead. The calling task would continue to execute without finding out whether the operation succeeded or not.</p>
-<p>The runtime check would tend to cause intermittent system failures - how is the caller supposed to know whether the other task happens to have a queued call at any given time? Consider for example an interrupt that needs to trigger a priority change in some task. The interrupt handler could not safely call Set_Priority without knowing exactly what the other task is doing, or without severely restricting the ceilings used in the system. If the interrupt handler wants to hand the job off to a third task whose job is to call Set_Priority, this won't help, because one would normally want the third task to have high priority. </p>
-<p><em>Paragraph 11 was deleted.</em> </p>
+<p>The check was not feasible to implement on all systems, since priority changes might be deferred due to inter-processor communication overhead. The calling task would continue to execute without finding out whether the operation succeeded or not.<br /></p>
+
+<p>The runtime check would tend to cause intermittent system failures - how is the caller supposed to know whether the other task happens to have a queued call at any given time? Consider for example an interrupt that needs to trigger a priority change in some task. The interrupt handler could not safely call Set_Priority without knowing exactly what the other task is doing, or without severely restricting the ceilings used in the system. If the interrupt handler wants to hand the job off to a third task whose job is to call Set_Priority, this won't help, because one would normally want the third task to have high priority. <br /></p>
+
+<p><em>Paragraph 11 was deleted.</em> <br /></p>
+
 
 #### Erroneous Execution
 
-<p>If any subprogram in this package is called with a parameter T that specifies a task object that no longer exists, the execution of the program is erroneous. </p>
+<p>If any subprogram in this package is called with a parameter T that specifies a task object that no longer exists, the execution of the program is erroneous. <br /></p>
+
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<p><strong></strong>Note that this rule overrides the above rule saying that Program_Error is raised on Get_Priority of a terminated task. If the task object still exists, and the task is terminated, Get_Priority raises Program_Error. However, if the task object no longer exists, calling Get_Priority causes erroneous execution. </p></Admonition>
+<strong></strong>Note that this rule overrides the above rule saying that Program_Error is raised on Get_Priority of a terminated task. If the task object still exists, and the task is terminated, Get_Priority raises Program_Error. However, if the task object no longer exists, calling Get_Priority causes erroneous execution. <br /></Admonition>
 
 
 #### Documentation Requirements
 
-<p>{"{"}<em>{"AI95-00188-02"}</em>{"}"} On a multiprocessor, the implementation shall document any conditions that cause the completion of the setting of the priority of a task to be delayed later than what is specified for a single processor. </p>
+<p>{"{"}<em>{"AI95-00188-02"}</em>{"}"} On a multiprocessor, the implementation shall document any conditions that cause the completion of the setting of the priority of a task to be delayed later than what is specified for a single processor. <br /></p>
+
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p><strong>Documentation Requirement: </strong>Any conditions that cause the completion of the setting of the priority of a task to be delayed for a multiprocessor.</p></Admonition>
+<strong>Documentation Requirement: </strong>Any conditions that cause the completion of the setting of the priority of a task to be delayed for a multiprocessor.<br /></Admonition>
 
 
 #### Metrics
 
-<p>The implementation shall document the following metric: </p>
-<p>The execution time of a call to Set_Priority, for the nonpreempting case, in processor clock cycles. This is measured for a call that modifies the priority of a ready task that is not running (which cannot be the calling one), where the new base priority of the affected task is lower than the active priority of the calling task, and the affected task is not on any entry queue and is not executing a protected operation. </p>
-<Admonition type="aarm" aarm="note" title="Note: ">
-<p><strong>Documentation Requirement: </strong>The metrics for Set_Priority.</p></Admonition>
+<p>The implementation shall document the following metric: <br /></p>
+
+<p>The execution time of a call to Set_Priority, for the nonpreempting case, in processor clock cycles. This is measured for a call that modifies the priority of a ready task that is not running (which cannot be the calling one), where the new base priority of the affected task is lower than the active priority of the calling task, and the affected task is not on any entry queue and is not executing a protected operation. <br /></p>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>NOTE 1   {"{"}<em>{"AI95-00321-01"}</em>{"}"} Setting a task's base priority affects task dispatching. First, it can change the task's active priority. Second, under the FIFO_Within_Priorities policy it always causes the task to move to the tail of the ready queue corresponding to its active priority, even if the new base priority is unchanged.</p></Admonition>
+<strong>Documentation Requirement: </strong>The metrics for Set_Priority.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>NOTE 2   Under the priority queuing policy, setting a task's base priority has an effect on a queued entry call if the task is blocked waiting for the call. That is, setting the base priority of a task causes the priority of a queued entry call from that task to be updated and the call to be removed and then reinserted in the entry queue at the new priority (see D.4), unless the call originated from the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> of an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code>.</p></Admonition>
+NOTE 1   {"{"}<em>{"AI95-00321-01"}</em>{"}"} Setting a task's base priority affects task dispatching. First, it can change the task's active priority. Second, under the FIFO_Within_Priorities policy it always causes the task to move to the tail of the ready queue corresponding to its active priority, even if the new base priority is unchanged.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>NOTE 3   The effect of two or more Set_Priority calls executed in parallel on the same task is defined as executing these calls in some serial order.</p></Admonition>
+NOTE 2   Under the priority queuing policy, setting a task's base priority has an effect on a queued entry call if the task is blocked waiting for the call. That is, setting the base priority of a task causes the priority of a queued entry call from that task to be updated and the call to be removed and then reinserted in the entry queue at the new priority (see D.4), unless the call originated from the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> of an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code>.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p><strong>Proof: </strong>This follows from the general reentrancy requirements stated near the beginning of Annex A, "Predefined Language Environment". </p></Admonition>
+NOTE 3   The effect of two or more Set_Priority calls executed in parallel on the same task is defined as executing these calls in some serial order.<br /></Admonition>
+
+<Admonition type="aarm" aarm="proof" title="Proof: ">
+<strong></strong>This follows from the general reentrancy requirements stated near the beginning of Annex A, "Predefined Language Environment". <br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>NOTE 4   {"{"}<em>{"AI05-0092-1"}</em>{"}"} The rule for when Tasking_Error is raised for Set_Priority or Get_Priority is different from the rule for when Tasking_Error is raised on an entry call (see 9.5.3). In particular, querying the priority of a completed or an abnormal task is allowed, so long as the task is not yet terminated, and setting the priority of a task is allowed for any task state (including for terminated tasks).</p></Admonition>
+NOTE 4   {"{"}<em>{"AI05-0092-1"}</em>{"}"} The rule for when Tasking_Error is raised for Set_Priority or Get_Priority is different from the rule for when Tasking_Error is raised on an entry call (see 9.5.3). In particular, querying the priority of a completed or an abnormal task is allowed, so long as the task is not yet terminated, and setting the priority of a task is allowed for any task state (including for terminated tasks).<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>NOTE 5   {"{"}<em>{"AI12-0442-1"}</em>{"}"} Changing the priorities of a set of tasks can be performed by a series of calls to Set_Priority for each task separately. This can be done reliably within a protected operation that has high enough ceiling priority to guarantee that the operation completes without being preempted by any of the affected tasks.</p></Admonition>
+NOTE 5   {"{"}<em>{"AI12-0442-1"}</em>{"}"} Changing the priorities of a set of tasks can be performed by a series of calls to Set_Priority for each task separately. This can be done reliably within a protected operation that has high enough ceiling priority to guarantee that the operation completes without being preempted by any of the affected tasks.<br /></Admonition>
 
 
 #### Extensions to Ada 95
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-<p>{"{"}<em>{"AI95-00188-02"}</em>{"}"} <strong>Amendment </strong> Priority changes are now required to be done immediately so long as the target task is not on an entry queue.</p></Admonition>
+{"{"}<em>{"AI95-00188-02"}</em>{"}"} <strong>Amendment </strong> Priority changes are now required to be done immediately so long as the target task is not on an entry queue.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI95-00362-01"}</em>{"}"} Dynamic_Priorities is now Preelaborated, so it can be used in preelaborated units. </p></Admonition>
+{"{"}<em>{"AI95-00362-01"}</em>{"}"} Dynamic_Priorities is now Preelaborated, so it can be used in preelaborated units. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This Ada 95 subclause was moved down a level. The paragraph numbers are the same as those for D.5 in Ada 95.</p></Admonition>
+{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This Ada 95 subclause was moved down a level. The paragraph numbers are the same as those for D.5 in Ada 95.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI95-00321-01"}</em>{"}"} There is no "standard" policy anymore, so that phrase was replaced by the name of a specific policy in the notes.</p></Admonition>
+{"{"}<em>{"AI95-00321-01"}</em>{"}"} There is no "standard" policy anymore, so that phrase was replaced by the name of a specific policy in the notes.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} The bounded error for the priority of a task being higher than the ceiling of an object it is currently in was moved to D.3, so that it applies no matter how the situation arises. </p></Admonition>
+{"{"}<em>{"AI95-00327-01"}</em>{"}"} The bounded error for the priority of a task being higher than the ceiling of an object it is currently in was moved to D.3, so that it applies no matter how the situation arises. <br /></Admonition>
 
 
 ## D.5.2  Dynamic Priorities for Protected Objects
 
-<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause specifies how the priority of a protected object can be modified or queried at run time. </p>
+<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} This subclause specifies how the priority of a protected object can be modified or queried at run time. <br /></p>
+
 
 #### Static Semantics
 
-<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI12-0230-1"}</em>{"}"} The following attributes are defined for a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that denotes a protected object:</p>
-<p>P'Priority{"{"}<em>{"AI95-00327-01"}</em>{"}"} Denotes a non-aliased component of the protected object P. This component is of type System.Any_Priority and its value is the priority of P. P'Priority denotes a variable if and only if P denotes a variable. A reference to this attribute shall appear only within the body of P.</p>
-<p>P'Relative_Deadline{"{"}<em>{"AI12-0230-1"}</em>{"}"} Denotes a non-aliased component of the protected object P. This component is of type Ada.Real_Time.Time_Span and its value is the relative deadline of P. P'Relative_Deadline denotes a variable if and only if P denotes a variable. A reference to this attribute shall appear only within the body of P. </p>
-<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI12-0230-1"}</em>{"}"} The initial value of the attribute Priority is determined by the initial value of the priority of the protected object (see D.3)[, and can be changed by an assignment]. The initial value of the attribute Relative_Deadline is determined by the initial value of the relative deadline of the protected object (see D.3)[, and can be changed by an assignment]. </p>
+<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI12-0230-1"}</em>{"}"} The following attributes are defined for a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that denotes a protected object:<br /></p>
+
+<p>P'Priority{"{"}<em>{"AI95-00327-01"}</em>{"}"} Denotes a non-aliased component of the protected object P. This component is of type System.Any_Priority and its value is the priority of P. P'Priority denotes a variable if and only if P denotes a variable. A reference to this attribute shall appear only within the body of P.<br /></p>
+
+<p>P'Relative_Deadline{"{"}<em>{"AI12-0230-1"}</em>{"}"} Denotes a non-aliased component of the protected object P. This component is of type Ada.Real_Time.Time_Span and its value is the relative deadline of P. P'Relative_Deadline denotes a variable if and only if P denotes a variable. A reference to this attribute shall appear only within the body of P. <br /></p>
+
+<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI12-0230-1"}</em>{"}"} The initial value of the attribute Priority is determined by the initial value of the priority of the protected object (see D.3)[, and can be changed by an assignment]. The initial value of the attribute Relative_Deadline is determined by the initial value of the relative deadline of the protected object (see D.3)[, and can be changed by an assignment]. <br /></p>
+
 
 #### Dynamic Semantics
 
-<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} If the locking policy Ceiling_Locking (see D.3) is in effect, then the ceiling priority of a protected object <em>P</em> is set to the value of <em>P</em>'Priority at the end of each protected action of <em>P</em>.</p>
-<p>{"{"}<em>{"AI95-00445-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} If the locking policy Ceiling_Locking is in effect, then for a protected object <em>P</em> with either an Attach_Handler or Interrupt_Handler aspect specified for one of its procedures, a check is made that the value to be assigned to <em>P</em>'Priority is in the range System.Interrupt_Priority. If the check fails, Program_Error is raised. </p>
+<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} If the locking policy Ceiling_Locking (see D.3) is in effect, then the ceiling priority of a protected object <em>P</em> is set to the value of <em>P</em>'Priority at the end of each protected action of <em>P</em>.<br /></p>
+
+<p>{"{"}<em>{"AI95-00445-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} If the locking policy Ceiling_Locking is in effect, then for a protected object <em>P</em> with either an Attach_Handler or Interrupt_Handler aspect specified for one of its procedures, a check is made that the value to be assigned to <em>P</em>'Priority is in the range System.Interrupt_Priority. If the check fails, Program_Error is raised. <br /></p>
+
 
 #### Metrics
 
-<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} The implementation shall document the following metric:</p>
-<p>The difference in execution time of calls to the following procedures in protected object P:</p>
+<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} The implementation shall document the following metric:<br /></p>
+
+<p>The difference in execution time of calls to the following procedures in protected object P:<br /></p>
+
 <CodeBlock>
 protected P is{"\n"}   procedure Do_Not_Set_Ceiling (Pr : System.Any_Priority);{"\n"}   procedure Set_Ceiling (Pr : System.Any_Priority);{"\n"}end P;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
 protected body P is{"\n"}   procedure Do_Not_Set_Ceiling (Pr : System.Any_Priority) is{"\n"}   begin{"\n"}      null;{"\n"}   end;{"\n"}   procedure Set_Ceiling (Pr : System.Any_Priority) is{"\n"}   begin{"\n"}      P'Priority := Pr;{"\n"}   end;{"\n"}end P;{"\n"}
+
 </CodeBlock>
+<Admonition type="aarm" aarm="note" title="Note: ">
+<strong>Documentation Requirement: </strong>The metrics for setting the priority of a protected object.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p><strong>Documentation Requirement: </strong>The metrics for setting the priority of a protected object.</p></Admonition>
-
-<Admonition type="aarm" aarm="note" title="Note: ">
-<p>NOTE 1   {"{"}<em>{"AI95-00327-01"}</em>{"}"} Since P'Priority is a normal variable, the value following an assignment to the attribute immediately reflects the new value even though its impact on the ceiling priority of P is postponed until completion of the protected action in which it is executed. </p></Admonition>
+NOTE 1   {"{"}<em>{"AI95-00327-01"}</em>{"}"} Since P'Priority is a normal variable, the value following an assignment to the attribute immediately reflects the new value even though its impact on the ceiling priority of P is postponed until completion of the protected action in which it is executed. <br /></Admonition>
 
 
 #### Extensions to Ada 95
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI95-00445-01"}</em>{"}"} The ability to dynamically change and query the priority of a protected object is new. </p></Admonition>
+{"{"}<em>{"AI95-00327-01"}</em>{"}"} {"{"}<em>{"AI95-00445-01"}</em>{"}"} The ability to dynamically change and query the priority of a protected object is new. <br /></Admonition>
 
 
 #### Extensions to Ada 2012
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI12-0230-1"}</em>{"}"} The ability to dynamically change and query the relative deadline of a protected object is new. </p></Admonition>
+{"{"}<em>{"AI12-0230-1"}</em>{"}"} The ability to dynamically change and query the relative deadline of a protected object is new. <br /></Admonition>
 

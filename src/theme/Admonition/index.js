@@ -10,6 +10,7 @@ const aarmTypes = {
   discussion: "info",
   ramification: "note",
   "glossary-entry": "tip",
+  proof: "info",
   correction: "caution",
   "implementation-advice": "tip",
   "implementation-defined": "caution",

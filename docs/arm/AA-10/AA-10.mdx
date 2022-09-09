@@ -13,37 +13,39 @@ See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
 
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} [The overall structure of programs and the facilities for separate compilation are described in this clause. A <em>program</em> is a set of <em>partitions</em>, each of which may execute in a separate address space, possibly on a separate computer. </p>
-<Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
-<p><strong></strong>A <em>program</em> is a set of <em>partitions</em>, each of which may execute in a separate address space, possibly on a separate computer. A partition consists of a set of library units.</p></Admonition>
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} [The overall structure of programs and the facilities for separate compilation are described in this clause. A <em>program</em> is a set of <em>partitions</em>, each of which may execute in a separate address space, possibly on a separate computer. <br /></p>
 
 <Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
-<p><strong></strong>A <em>partition</em> is a part of a program. Each partition consists of a set of library units. Each partition may run in a separate address space, possibly on a separate computer. A program may contain just one partition. A distributed program typically contains multiple partitions, which can execute concurrently.</p></Admonition>
+<strong></strong>A <em>program</em> is a set of <em>partitions</em>, each of which may execute in a separate address space, possibly on a separate computer. A partition consists of a set of library units.<br /></Admonition>
 
-<p>Version=[5],Kind=(AddedNormal),Group=[C],Term=[program], Def=[a set of partitions, each of which can execute in a separate address space, possibly on a separate computer] Version=[5],Kind=(AddedNormal),Group=[C],Term=[partition], Def=[a part of a program, which consists of a set of interdependent library units], Note1=[Each partition can run in a separate address space, possibly on a separate computer. A program can contain just one partition, or it can be distributed across multiple partitions, which can execute concurrently.]</p>
-<p>As explained below, a partition is constructed from <em>library units</em>. Syntactically, the declaration of a library unit is a <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>, as is the body of a library unit. An implementation may support a concept of a <em>program library</em> (or simply, a "library"), which contains <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s and their subunits. Library units may be organized into a hierarchy of children, grandchildren, and so on.]</p>
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} This clause has two subclauses: 10.1, "Separate Compilation" discusses compile-time issues related to separate compilation. 10.2, "Program Execution" discusses issues related to what is traditionally known as "link time" and "run time" - building and executing partitions.</p>
+<Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
+<strong></strong>A <em>partition</em> is a part of a program. Each partition consists of a set of library units. Each partition may run in a separate address space, possibly on a separate computer. A program may contain just one partition. A distributed program typically contains multiple partitions, which can execute concurrently.<br /></Admonition>
+
+<p>As explained below, a partition is constructed from <em>library units</em>. Syntactically, the declaration of a library unit is a <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>, as is the body of a library unit. An implementation may support a concept of a <em>program library</em> (or simply, a "library"), which contains <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s and their subunits. Library units may be organized into a hierarchy of children, grandchildren, and so on.]<br /></p>
+
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} This clause has two subclauses: 10.1, "Separate Compilation" discusses compile-time issues related to separate compilation. 10.2, "Program Execution" discusses issues related to what is traditionally known as "link time" and "run time" - building and executing partitions.<br /></p>
+
 
 #### Language Design Principles
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>We should avoid specifying details that are outside the domain of the language itself. The standard is intended (at least in part) to promote portability of Ada programs at the source level. It is not intended to standardize extra-language issues such as how one invokes the compiler (or other tools), how one's source is represented and organized, version management, the format of error messages, etc.</p></Admonition>
+We should avoid specifying details that are outside the domain of the language itself. The standard is intended (at least in part) to promote portability of Ada programs at the source level. It is not intended to standardize extra-language issues such as how one invokes the compiler (or other tools), how one's source is represented and organized, version management, the format of error messages, etc.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>The rules of the language should be enforced even in the presence of separate compilation. Using separate compilation should not make a program less safe.</p></Admonition>
+The rules of the language should be enforced even in the presence of separate compilation. Using separate compilation should not make a program less safe.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>It should be possible to determine the legality of a compilation unit by looking only at the compilation unit itself and the compilation units upon which it depends semantically. As an example, it should be possible to analyze the legality of two compilation units in parallel if they do not depend semantically upon each other.</p></Admonition>
+It should be possible to determine the legality of a compilation unit by looking only at the compilation unit itself and the compilation units upon which it depends semantically. As an example, it should be possible to analyze the legality of two compilation units in parallel if they do not depend semantically upon each other.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>On the other hand, it may be necessary to look outside that set in order to generate code - this is generally true for generic instantiation and inlining, for example. Also on the other hand, it is generally necessary to look outside that set in order to check Post-Compilation Rules.</p></Admonition>
+On the other hand, it may be necessary to look outside that set in order to generate code - this is generally true for generic instantiation and inlining, for example. Also on the other hand, it is generally necessary to look outside that set in order to check Post-Compilation Rules.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>See also the "generic contract model" Language Design Principle of 12.3, "Generic Instantiation". </p></Admonition>
+See also the "generic contract model" Language Design Principle of 12.3, "Generic Instantiation". <br /></Admonition>
 
 
 #### Wording Changes from Ada 83
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} The clause organization mentioned above is different from that of RM83. </p></Admonition>
+{"{"}<em>{"AI05-0299-1"}</em>{"}"} The clause organization mentioned above is different from that of RM83. <br /></Admonition>
 

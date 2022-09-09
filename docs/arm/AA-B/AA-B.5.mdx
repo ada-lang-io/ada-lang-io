@@ -13,158 +13,102 @@ See the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
 
-<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} The facilities relevant to interfacing with the Fortran language are the package Interfaces.Fortran and support for specifying the Convention aspect with <em>convention_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> Fortran.</p>
-<p>The package Interfaces.Fortran defines Ada types whose representations are identical to the default representations of the Fortran intrinsic types Integer, Real, Double Precision, Complex, Logical, and Character in a supported Fortran implementation. These Ada types can therefore be used to pass objects between Ada and Fortran programs. </p>
+<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} The facilities relevant to interfacing with the Fortran language are the package Interfaces.Fortran and support for specifying the Convention aspect with <em>convention_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> Fortran.<br /></p>
+
+<p>The package Interfaces.Fortran defines Ada types whose representations are identical to the default representations of the Fortran intrinsic types Integer, Real, Double Precision, Complex, Logical, and Character in a supported Fortran implementation. These Ada types can therefore be used to pass objects between Ada and Fortran programs. <br /></p>
+
 
 #### Static Semantics
 
-<p>The library package Interfaces.Fortran has the following declaration: </p>
-<CodeBlock>
-{"{"}{"AI12-0414-1"}{"}"} with Ada.Numerics.Generic_Complex_Types;  -- see G.1.1{"\n"}pragma Elaborate_All(Ada.Numerics.Generic_Complex_Types);{"\n"}package Interfaces.Fortran{"\n"}   with Pure is{"\n"}
-</CodeBlock>
+<p>The library package Interfaces.Fortran has the following declaration: <br /></p>
 
 <CodeBlock>
+--  {"{"}{"AI12-0414-1"}{"}"}{"\n"} with Ada.Numerics.Generic_Complex_Types;  -- see G.1.1{"\n"}pragma Elaborate_All(Ada.Numerics.Generic_Complex_Types);{"\n"}package Interfaces.Fortran{"\n"}   with Pure is{"\n"}
    type Fortran_Integer is range implementation-defined;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    type Real             is digits implementation-defined;{"\n"}   type Double_Precision is digits implementation-defined;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    type Logical is new Boolean;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    package Single_Precision_Complex_Types is{"\n"}      new Ada.Numerics.Generic_Complex_Types (Real);{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    type Complex is new Single_Precision_Complex_Types.Complex;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    subtype Imaginary is Single_Precision_Complex_Types.Imaginary;{"\n"}   i : Imaginary renames Single_Precision_Complex_Types.i;{"\n"}   j : Imaginary renames Single_Precision_Complex_Types.j;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
-{"{"}{"AI12-0058-1"}{"}"}    package Double_Precision_Complex_Types is{"\n"}      new Ada.Numerics.Generic_Complex_Types (Double_Precision);{"\n"}
-</CodeBlock>
-
-<CodeBlock>
-{"{"}{"AI12-0058-1"}{"}"}    type Double_Complex is new Double_Precision_Complex_Types.Complex;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
-{"{"}{"AI12-0058-1"}{"}"}    subtype Double_Imaginary is Double_Precision_Complex_Types.Imaginary;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
+--  {"{"}{"AI12-0058-1"}{"}"}{"\n"}    package Double_Precision_Complex_Types is{"\n"}      new Ada.Numerics.Generic_Complex_Types (Double_Precision);{"\n"}
+--  {"{"}{"AI12-0058-1"}{"}"}{"\n"}    type Double_Complex is new Double_Precision_Complex_Types.Complex;{"\n"}
+--  {"{"}{"AI12-0058-1"}{"}"}{"\n"}    subtype Double_Imaginary is Double_Precision_Complex_Types.Imaginary;{"\n"}
    type Character_Set is implementation-defined character type;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
-{"{"}{"AI05-0229-1"}{"}"}    type Fortran_Character is array (Positive range {"<"}{">"}) of Character_Set{"\n"}      with Pack;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
+--  {"{"}{"AI05-0229-1"}{"}"}{"\n"}    type Fortran_Character is array (Positive range {"<"}{">"}) of Character_Set{"\n"}      with Pack;{"\n"}
    function To_Fortran (Item : in Character) return Character_Set;{"\n"}   function To_Ada (Item : in Character_Set) return Character;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    function To_Fortran (Item : in String) return Fortran_Character;{"\n"}   function To_Ada     (Item : in Fortran_Character) return String;{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    procedure To_Fortran (Item       : in String;{"\n"}                         Target     : out Fortran_Character;{"\n"}                         Last       : out Natural);{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    procedure To_Ada (Item     : in Fortran_Character;{"\n"}                     Target   : out String;{"\n"}                     Last     : out Natural);{"\n"}
-</CodeBlock>
-
-<CodeBlock>
 end Interfaces.Fortran;{"\n"}
-</CodeBlock>
 
+</CodeBlock>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
-<p><strong></strong>The types Fortran_Integer, Real, Double_Precision, and Character_Set in Interfaces.Fortran.</p></Admonition>
+<strong></strong>The types Fortran_Integer, Real, Double_Precision, and Character_Set in Interfaces.Fortran.<br /></Admonition>
 
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<p><strong></strong>{"{"}<em>{"AI12-0058-1"}</em>{"}"} The means by which the Complex and Double_Complex types are provided in Interfaces.Fortran creates a dependence of Interfaces.Fortran on Numerics.Generic_Complex_Types (see G.1.1). This dependence is intentional and unavoidable, if the Fortran-compatible Complex and Double_Complex types are to be useful in Ada code without duplicating facilities defined elsewhere. </p></Admonition>
+<strong></strong>{"{"}<em>{"AI12-0058-1"}</em>{"}"} The means by which the Complex and Double_Complex types are provided in Interfaces.Fortran creates a dependence of Interfaces.Fortran on Numerics.Generic_Complex_Types (see G.1.1). This dependence is intentional and unavoidable, if the Fortran-compatible Complex and Double_Complex types are to be useful in Ada code without duplicating facilities defined elsewhere. <br /></Admonition>
 
-<p>{"{"}<em>{"AI12-0058-1"}</em>{"}"} The types Fortran_Integer, Real, Double_Precision, Logical, Complex, Double_Complex, Character_Set, and Fortran_Character are Fortran-compatible.</p>
-<p>The To_Fortran and To_Ada functions map between the Ada type Character and the Fortran type Character_Set, and also between the Ada type String and the Fortran type Fortran_Character. The To_Fortran and To_Ada procedures have analogous effects to the string conversion subprograms found in Interfaces.COBOL. </p>
+<p>{"{"}<em>{"AI12-0058-1"}</em>{"}"} The types Fortran_Integer, Real, Double_Precision, Logical, Complex, Double_Complex, Character_Set, and Fortran_Character are Fortran-compatible.<br /></p>
+
+<p>The To_Fortran and To_Ada functions map between the Ada type Character and the Fortran type Character_Set, and also between the Ada type String and the Fortran type Fortran_Character. The To_Fortran and To_Ada procedures have analogous effects to the string conversion subprograms found in Interfaces.COBOL. <br /></p>
+
 
 #### Implementation Requirements
 
-<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} An implementation shall support specifying aspect Convention with a Fortran <em>convention</em>_<code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> for a Fortran-eligible type (see B.1). </p>
+<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} An implementation shall support specifying aspect Convention with a Fortran <em>convention</em>_<code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> for a Fortran-eligible type (see B.1). <br /></p>
+
 
 #### Implementation Permissions
 
-<p>{"{"}<em>{"AI12-0058-1"}</em>{"}"} {"{"}<em>{"AI12-0263-1"}</em>{"}"} An implementation may add additional declarations to the Fortran interface packages. For example, declarations are permitted for the character types corresponding to Fortran character kinds 'ascii' and 'iso_10646', which in turn correspond to ISO/IEC 646:1991 and to UCS-4 as specified in ISO/IEC 10646:2017. </p>
+<p>{"{"}<em>{"AI12-0058-1"}</em>{"}"} {"{"}<em>{"AI12-0263-1"}</em>{"}"} An implementation may add additional declarations to the Fortran interface packages. For example, declarations are permitted for the character types corresponding to Fortran character kinds 'ascii' and 'iso_10646', which in turn correspond to ISO/IEC 646:1991 and to UCS-4 as specified in ISO/IEC 10646:2017. <br /></p>
+
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<p><strong></strong>{"{"}<em>{"AI12-0058-1"}</em>{"}"} Fortran compilers are required to recognize 'ascii' and 'iso_10646' as arguments to the SELECTED_CHAR_KIND intrinsic function, but are not required to support those kinds. </p></Admonition>
+<strong></strong>{"{"}<em>{"AI12-0058-1"}</em>{"}"} Fortran compilers are required to recognize 'ascii' and 'iso_10646' as arguments to the SELECTED_CHAR_KIND intrinsic function, but are not required to support those kinds. <br /></Admonition>
 
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<p><strong></strong>{"{"}<em>{"AI12-0058-1"}</em>{"}"} Implementations may add auxiliary declarations as needed to assist in the declarations of additional Fortran-compatible types. For example,  if a wide character type is defined to match a Fortran 90 wide character type (accessible in Fortran 90 with the Kind attribute), then an auxiliary character set may be declared to serve as its component type. </p></Admonition>
+<strong></strong>{"{"}<em>{"AI12-0058-1"}</em>{"}"} Implementations may add auxiliary declarations as needed to assist in the declarations of additional Fortran-compatible types. For example,  if a wide character type is defined to match a Fortran 90 wide character type (accessible in Fortran 90 with the Kind attribute), then an auxiliary character set may be declared to serve as its component type. <br /></Admonition>
 
 
 #### Implementation Advice
 
-<p>An Ada implementation should support the following interface correspondences between Ada and Fortran: </p>
-<p>An Ada procedure corresponds to a Fortran subroutine.</p>
-<p>An Ada function corresponds to a Fortran function.</p>
-<p>An Ada parameter of an elementary, array, or record type T is passed as a TF argument to a Fortran procedure, where TF is the Fortran type corresponding to the Ada type T, and where the INTENT attribute of the corresponding dummy argument matches the Ada formal parameter mode; the Fortran implementation's parameter passing conventions are used. For elementary types, a local copy is used if necessary to ensure by-copy semantics.</p>
-<p>An Ada parameter of an access-to-subprogram type is passed as a reference to a Fortran procedure whose interface corresponds to the designated subprogram's specification. </p>
+<p>An Ada implementation should support the following interface correspondences between Ada and Fortran: <br /></p>
+
+<p>An Ada procedure corresponds to a Fortran subroutine.<br /></p>
+
+<p>An Ada function corresponds to a Fortran function.<br /></p>
+
+<p>An Ada parameter of an elementary, array, or record type T is passed as a TF argument to a Fortran procedure, where TF is the Fortran type corresponding to the Ada type T, and where the INTENT attribute of the corresponding dummy argument matches the Ada formal parameter mode; the Fortran implementation's parameter passing conventions are used. For elementary types, a local copy is used if necessary to ensure by-copy semantics.<br /></p>
+
+<p>An Ada parameter of an access-to-subprogram type is passed as a reference to a Fortran procedure whose interface corresponds to the designated subprogram's specification. <br /></p>
+
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
-<p><strong></strong>If Fortran interfacing is supported, the interface correspondences between Ada and Fortran should be supported.</p></Admonition>
+<strong></strong>If Fortran interfacing is supported, the interface correspondences between Ada and Fortran should be supported.<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>NOTE 1   An object of a Fortran-compatible record type, declared in a library package or subprogram, can correspond to a Fortran common block; the type also corresponds to a Fortran "derived type".</p></Admonition>
+NOTE 1   An object of a Fortran-compatible record type, declared in a library package or subprogram, can correspond to a Fortran common block; the type also corresponds to a Fortran "derived type".<br /></Admonition>
 
 <Admonition type="aarm" aarm="note" title="Note: ">
-<p>NOTE 2   {"{"}<em>{"AI12-0224-1"}</em>{"}"} For Fortran facilities not addressed by this subclause, consider using the Fortran to C interoperability features defined in ISO/IEC 1594-1:2018 along with the C interfacing features defined in B.3.</p></Admonition>
+NOTE 2   {"{"}<em>{"AI12-0224-1"}</em>{"}"} For Fortran facilities not addressed by this subclause, consider using the Fortran to C interoperability features defined in ISO/IEC 1594-1:2018 along with the C interfacing features defined in B.3.<br /></Admonition>
 
 
 #### Examples
 
-<p><em>Example of Interfaces.Fortran:</em> </p>
+<p><em>Example of Interfaces.Fortran:</em> <br /></p>
+
 <CodeBlock>
 with Interfaces.Fortran;{"\n"}use Interfaces.Fortran;{"\n"}procedure Ada_Application is{"\n"}
-</CodeBlock>
-
-<CodeBlock>
-{"{"}{"AI05-0229-1"}{"}"} {"{"}{"AI12-0178-1"}{"}"}    type Fortran_Matrix is {"\n"}      array (Fortran_Integer range {"<"}{">"},{"\n"}             Fortran_Integer range {"<"}{">"}) of Double_Precision{"\n"}      with Convention ={">"} Fortran;                  -- stored in Fortran's{"\n"}                                                   -- column-major order{"\n"}   procedure Invert (Rank : in Fortran_Integer; X : in out Fortran_Matrix){"\n"}      with Import ={">"} True, Convention ={">"} Fortran; -- a Fortran subroutine{"\n"}
-</CodeBlock>
-
-<CodeBlock>
+--  {"{"}{"AI05-0229-1"}{"}"}{"\n"} --  {"{"}{"AI12-0178-1"}{"}"}{"\n"}    type Fortran_Matrix is {"\n"}      array (Fortran_Integer range {"<"}{">"},{"\n"}             Fortran_Integer range {"<"}{">"}) of Double_Precision{"\n"}      with Convention ={">"} Fortran;                  -- stored in Fortran's{"\n"}                                                   -- column-major order{"\n"}   procedure Invert (Rank : in Fortran_Integer; X : in out Fortran_Matrix){"\n"}      with Import ={">"} True, Convention ={">"} Fortran; -- a Fortran subroutine{"\n"}
    Rank      : constant Fortran_Integer := 100;{"\n"}   My_Matrix : Fortran_Matrix (1 .. Rank, 1 .. Rank);{"\n"}
-</CodeBlock>
-
-<CodeBlock>
-{"{"}{"AI12-0058-1"}{"}"}    Precision: constant := 6;{"\n"}   type Standard_Deviation is digits Precision{"\n"}      with Convention ={">"} Fortran;{"\n"}   Deviation : Standard_Deviation;{"\n"}      -- Declarations to match the following Fortran declarations:{"\n"}      --   integer, parameter :: precision = selected_real_kind(p=6){"\n"}      --   real(precision) :: deviation{"\n"}
-</CodeBlock>
-
-<CodeBlock>
+--  {"{"}{"AI12-0058-1"}{"}"}{"\n"}    Precision: constant := 6;{"\n"}   type Standard_Deviation is digits Precision{"\n"}      with Convention ={">"} Fortran;{"\n"}   Deviation : Standard_Deviation;{"\n"}      -- Declarations to match the following Fortran declarations:{"\n"}      --   integer, parameter :: precision = selected_real_kind(p=6){"\n"}      --   real(precision) :: deviation{"\n"}
 begin{"\n"}
-</CodeBlock>
-
-<CodeBlock>
    ...{"\n"}   My_Matrix := ...;{"\n"}   ...{"\n"}   Invert (Rank, My_Matrix);{"\n"}   ...{"\n"}
-</CodeBlock>
-
-<CodeBlock>
-{"{"}{"AI12-0058-1"}{"}"}    Deviation := ...;{"\n"}   ...{"\n"}
-</CodeBlock>
-
-<CodeBlock>
+--  {"{"}{"AI12-0058-1"}{"}"}{"\n"}    Deviation := ...;{"\n"}   ...{"\n"}
 end Ada_Application;{"\n"}
-</CodeBlock>
 
+</CodeBlock>
 
 #### Wording Changes from Ada 2012
 
 <Admonition type="aarm" aarm="correction" title="Correction:">
-<p>{"{"}<em>{"AI12-0058-1"}</em>{"}"} <strong></strong> The package Double_Precision_Complex_Types and associated types are added to package Interfaces.Fortran. In unusual circumstances, this could cause an incompatibility; we don't document it as an incompatibility as implementations are allowed to add declarations to this package, so that risk of an incompatibility is present for any move from one version of an implementation to another (not to mention to another implementation). As such, the language-defined additions make no change in the risk of incompatibility. </p></Admonition>
+{"{"}<em>{"AI12-0058-1"}</em>{"}"} <strong></strong> The package Double_Precision_Complex_Types and associated types are added to package Interfaces.Fortran. In unusual circumstances, this could cause an incompatibility; we don't document it as an incompatibility as implementations are allowed to add declarations to this package, so that risk of an incompatibility is present for any move from one version of an implementation to another (not to mention to another implementation). As such, the language-defined additions make no change in the risk of incompatibility. <br /></Admonition>
 
