@@ -173,7 +173,7 @@ export default function HomepageFeatures() {
           <Card.Section className={classes.imageSparkGuidance}>
             <Image
               src={sparkGuidanceCover}
-              fit="contains"
+              fit="contain"
               alt={bookletSparkImageAlt}
               caption={
                 <div style={{ display: "flex" }}>
