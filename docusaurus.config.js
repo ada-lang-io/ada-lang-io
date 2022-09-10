@@ -94,6 +94,12 @@ const config = {
             label: "Reference Manual"
           },
           {
+            type: "doc",
+            docId: "style-guide/Ada_Style_Guide",
+            position: "left",
+            label: "Style Guide"
+          },
+          {
             href: `https://github.com/${gitHubUserName}/${gitHubProjectName}`,
             position: "right",
             className: "fa-icon header__image header-github-link",
