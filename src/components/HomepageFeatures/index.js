@@ -3,6 +3,7 @@ import React from "react"
 import Link from "@docusaurus/Link"
 import IconExternalLink from "@theme/Icon/ExternalLink"
 
+import InfoHover from "@site/src/components/InfoHover"
 import DownloadIcon from "@site/static/img/fontawesome/solid/download.svg"
 import sparkGuidanceCover from "@site/static/img/implementation-guidance-spark-cover.png"
 
@@ -11,6 +12,18 @@ import { Button, Card, Container, Image, SimpleGrid, Text, ThemeIcon, Title } fr
 import clsx from "clsx"
 
 import classes from "./index.module.scss"
+
+const licenseTextSparkGuidanceBooklet = [
+  "Image from booklet.",
+  "Copyright (C) 2016-2020, AdaCore and Thales",
+  "Licensed under Creative Commons Attribution 4.0 International"
+]
+
+const bookletSparkURL = "https://www.adacore.com/books/implementation-guidance-spark"
+
+const bookletSparkCaption = "A booklet providing guidance on how to reach the desired levels."
+
+const bookletSparkImageAlt = "Implementation Guidance for the Adoption of SPARK"
 
 function FeatureItem({ title, description, icon }) {
   return (
@@ -46,7 +59,7 @@ function Feature({ title, subTitle, description, items, className, children, col
           </Text>
         </Container>
 
-        <SimpleGrid cols={!!children ? 2 : 1} spacing={16}>
+        <SimpleGrid cols={!!children ? 2 : 1} spacing="md">
           {!!items && (
             <SimpleGrid
               cols={columns}
@@ -149,7 +162,7 @@ export default function HomepageFeatures() {
         items={itemsPerformance}
       />
       <Feature
-        title="SPARK 2014"
+        title="SPARK"
         subTitle="From memory safety to functional correctness. One level at a time"
         description="Gradually adopt the SPARK subset to reach various levels of assurance. Higher levels take more effort, but give more benefits and stronger guarantees."
         items={itemsSpark2014}
@@ -161,14 +174,19 @@ export default function HomepageFeatures() {
             <Image
               src={sparkGuidanceCover}
               fit="contains"
-              alt="Implementation Guidance for the Adoption of SPARK"
-              caption="A booklet providing guidance on how to reach the desired levels."
+              alt={bookletSparkImageAlt}
+              caption={
+                <div style={{ display: "flex" }}>
+                  <span>{bookletSparkCaption}</span>
+                  <InfoHover text={licenseTextSparkGuidanceBooklet} />
+                </div>
+              }
             />
           </Card.Section>
           <Button
             radius="md"
             component={Link}
-            href="https://www.adacore.com/books/implementation-guidance-spark"
+            href={bookletSparkURL}
             className={classes.linkSparkGuidance}
           >
             Visit page of booklet <IconExternalLink />
