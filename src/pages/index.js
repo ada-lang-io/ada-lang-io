@@ -27,6 +27,12 @@ import sampleA from "!!raw-loader!./code/code-basic.adb"
 import sampleC from "!!raw-loader!./code/code-rp2040.adb"
 import sampleB from "!!raw-loader!./code/code-spark.ads"
 
+const samples = [
+  { key: "ada", code: sampleA },
+  { key: "spark", code: sampleB },
+  { key: "embedded", code: sampleC }
+]
+
 // sampleB from src/xoshiro128.ads in https://github.com/onox/xoshiro
 //
 // Copyright (c) 2022 onox
@@ -60,7 +66,6 @@ function getInstallTarget(version, suffix) {
 }
 
 function CodeBlock({ showLineNumbers, children }) {
-  // <Prism> supports scrollAreaComponent="div" for native scroll area
   return (
     <Prism withLineNumbers={showLineNumbers} language="ada" showLineNumbers>
       {children}
@@ -134,7 +139,7 @@ export function HomepageHeader({ title, description }) {
           </div>
           <div>
             <div className={styles.heroTabs}>
-              <Tabs color="blue" variant="pills" defaultValue="embedded">
+              <Tabs color="blue" variant="pills" defaultValue="ada">
                 <Tabs.List>
                   <Tabs.Tab value="ada">Ada</Tabs.Tab>
                   <Tabs.Tab value="spark">SPARK</Tabs.Tab>
@@ -142,15 +147,11 @@ export function HomepageHeader({ title, description }) {
                 </Tabs.List>
 
                 <div className={styles.codeTabPanel}>
-                  <Tabs.Panel value="ada" pt="xs">
-                    <CodeBlock showLineNumbers>{sampleA}</CodeBlock>
-                  </Tabs.Panel>
-                  <Tabs.Panel value="spark" pt="xs">
-                    <CodeBlock showLineNumbers>{sampleB}</CodeBlock>
-                  </Tabs.Panel>
-                  <Tabs.Panel value="embedded" pt="xs">
-                    <CodeBlock showLineNumbers>{sampleC}</CodeBlock>
-                  </Tabs.Panel>
+                  {samples.map(({ key, code }) => (
+                    <Tabs.Panel value={key} pt="xs">
+                      <CodeBlock showLineNumbers>{code}</CodeBlock>
+                    </Tabs.Panel>
+                  ))}
                 </div>
               </Tabs>
             </div>
