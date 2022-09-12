@@ -166,7 +166,12 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext()
 
   return (
-    <MantineProvider theme={{ colorScheme: "dark" }}>
+    <MantineProvider
+      theme={{
+        colorScheme: "dark",
+        fontFamily: "var(--ada-lang-font-family)"
+      }}
+    >
       <Layout title={siteConfig.title} description={siteConfig.customFields.description}>
         <HomepageHeader
           title={siteConfig.title}
