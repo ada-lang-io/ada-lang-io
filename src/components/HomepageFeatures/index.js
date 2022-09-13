@@ -52,7 +52,7 @@ function FeatureItem({ title, description, icon }) {
         </Text>
         <Text className={classes.itemDescription} color="dimmed">
           {Array.isArray(description)
-            ? description.map((paragraph) => <p>{paragraph}</p>)
+            ? description.map((paragraph, i) => <p key={i}>{paragraph}</p>)
             : description}
         </Text>
       </div>
@@ -82,8 +82,8 @@ function Feature({ title, subTitle, description, items, className, children, col
               spacing={48}
               breakpoints={[{ maxWidth: 550, cols: 1, spacing: 32 }]}
             >
-              {items.map((item) => (
-                <FeatureItem {...item} />
+              {items.map((item, i) => (
+                <FeatureItem key={i} {...item} />
               ))}
             </SimpleGrid>
           )}
@@ -97,8 +97,8 @@ function Feature({ title, subTitle, description, items, className, children, col
 export default function HomepageFeatures() {
   return (
     <div className={classes.features}>
-      {features.map((feature) => (
-        <Feature {...feature} />
+      {features.map((feature, index) => (
+        <Feature key={index} {...feature} />
       ))}
     </div>
   )

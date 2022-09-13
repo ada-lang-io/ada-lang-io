@@ -67,7 +67,7 @@ function getInstallTarget(version, suffix) {
 
 function CodeBlock({ showLineNumbers, children }) {
   return (
-    <Prism withLineNumbers={showLineNumbers} language="ada" showLineNumbers>
+    <Prism withLineNumbers={showLineNumbers} language="ada">
       {children}
     </Prism>
   )
@@ -88,6 +88,7 @@ export function HomepageHeader({ title, description }) {
   const allPlatformLinks = Array.from(installTargets.values()).map(({ label, urlSuffix }) => (
     <Link to={getInstallTarget(alireVersion, urlSuffix)}>{label}</Link>
   ))
+  const platformLinks = join(allPlatformLinks, ", ")
 
   const linkOthers = <Link to={gitHubReleasePage}>others</Link>
 
@@ -134,7 +135,11 @@ export function HomepageHeader({ title, description }) {
             </Group>
 
             <Text size="xs" className={styles.textDownloadLinks}>
-              Download for {join(allPlatformLinks, <span>, </span>)}, or {linkOthers}
+              Download for{" "}
+              {platformLinks.map((item, i) => (
+                <span key={i}>{item}</span>
+              ))}
+              , or {linkOthers}
             </Text>
           </div>
           <div>
@@ -148,8 +153,8 @@ export function HomepageHeader({ title, description }) {
 
                 <div className={styles.codeTabPanel}>
                   {samples.map(({ key, code }) => (
-                    <Tabs.Panel value={key} pt="xs">
-                      <CodeBlock showLineNumbers>{code}</CodeBlock>
+                    <Tabs.Panel key={key} value={key} pt="xs">
+                      <CodeBlock showLineNumbers={true}>{code}</CodeBlock>
                     </Tabs.Panel>
                   ))}
                 </div>
