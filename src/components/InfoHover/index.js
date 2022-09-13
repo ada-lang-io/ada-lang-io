@@ -1,6 +1,5 @@
 import React from "react"
-
-import InfoIcon from "@site/static/img/fontawesome/solid/info.svg"
+import { FaInfo as InfoIcon } from "react-icons/fa"
 
 import { Badge, HoverCard, Stack, Text } from "@mantine/core"
 

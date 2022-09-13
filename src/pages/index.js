@@ -1,4 +1,5 @@
 import React from "react"
+import { FaDownload as DownloadIcon } from "react-icons/fa"
 
 import Link from "@docusaurus/Link"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
@@ -6,7 +7,6 @@ import useIsBrowser from "@docusaurus/useIsBrowser"
 import Layout from "@theme/Layout"
 
 import HomepageFeatures from "@site/src/components/HomepageFeatures"
-import DownloadIcon from "@site/static/img/fontawesome/solid/download.svg"
 
 import {
   Button,
