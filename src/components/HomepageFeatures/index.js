@@ -75,7 +75,7 @@ function Feature({ title, subTitle, description, items, className, children, col
           </Text>
         </Container>
 
-        <SimpleGrid cols={!!children ? 2 : 1} spacing="md">
+        <SimpleGrid cols={Number(!!items) + Number(!!children)} spacing="md">
           {!!items && (
             <SimpleGrid
               cols={columns}
