@@ -43,7 +43,7 @@ const samples = [
 // Copyright (c) 2021 Jeremy Grosser
 // SPDX-License-Identifier: BSD-3-Clause
 
-const installTargets = new Map([
+export const installTargets = new Map([
   ["windows", { label: "Windows", urlSuffix: "installer-x86_64-windows.exe" }],
   ["macos", { label: "macOS", urlSuffix: "bin-x86_64-macos.zip" }],
   ["linux", { label: "Linux", urlSuffix: "bin-x86_64-linux.zip" }],
@@ -56,12 +56,12 @@ const join = (values, sep) =>
 // TODO: This version number should come from a "latest Alire" note somewhere.
 // Version number and assets could be fetched from
 // https://api.github.com/repos/alire-project/alire/releases/latest
-const alireVersion = "1.2.1"
+export const alireVersion = "1.2.1"
 
-const gitHubProjectPage = "https://github.com/alire-project/alire"
-const gitHubReleasePage = `${gitHubProjectPage}/releases`
+export const gitHubProjectPage = "https://github.com/alire-project/alire"
+export const gitHubReleasePage = `${gitHubProjectPage}/releases`
 
-function getInstallTarget(version, suffix) {
+export function getInstallTarget(version, suffix) {
   return `${gitHubProjectPage}/releases/download/v${version}/alr-${version}-${suffix}`
 }
 
@@ -122,7 +122,8 @@ export function HomepageHeader({ title, description }) {
                 gradient={{ from: "blue", to: "cyan" }}
                 leftIcon={<DownloadIcon className={styles.downloadIcon} />}
               >
-                Download Alire {alireVersion.slice(0)} {platformLabel}
+                Download Alire {alireVersion.slice(0)}
+                {platformLabel}
               </Button>
               <Button
                 className={styles.controlSecondary}

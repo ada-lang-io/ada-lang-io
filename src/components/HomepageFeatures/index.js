@@ -1,13 +1,10 @@
-import React from "react"
-//import {
-//  BsBookHalf,
-//  BsFillPatchCheckFill,
-//  BsSkipForwardFill,
-//  BsSpeedometer2
-//} from "react-icons/bs"
-//import { FaBookReader, FaFastForward, FaGraduationCap } from "react-icons/fa"
+import React, { useState } from "react"
+import { FaTerminal } from "react-icons/fa"
 import {
   MdAutoStories,
+  MdCode,
+  MdDone,
+  MdFileDownload,
   MdLooks3,
   MdLooks4,
   MdLooks5,
@@ -17,15 +14,107 @@ import {
   MdVerified
 } from "react-icons/md"
 
-import { Container, SimpleGrid, Text, ThemeIcon, Title } from "@mantine/core"
+import Link from "@docusaurus/Link"
+import useIsBrowser from "@docusaurus/useIsBrowser"
+
+import { Container, SimpleGrid, Text, ThemeIcon, Timeline, Title } from "@mantine/core"
+import { useOs } from "@mantine/hooks"
+import { Prism } from "@mantine/prism"
 
 import clsx from "clsx"
 
 import classes from "./index.module.scss"
 
+import codeAlrInit from "!!raw-loader!./code/alr-init.sh"
+
+import {
+  alireVersion,
+  getInstallTarget,
+  gitHubReleasePage,
+  installTargets
+} from "../../pages/index.js"
 import features from "./features.json"
 
-features[1].className = classes.spark
+function TimelineItemText({ children }) {
+  return (
+    <Text size="sm" className={classes.timelineItemTitle}>
+      {children}
+    </Text>
+  )
+}
+
+function AlireInstallInstructions() {
+  const isBrowser = useIsBrowser()
+  const os = useOs()
+
+  const platformKey = isBrowser && installTargets.has(os) ? os : null
+
+  const platform = platformKey !== null ? installTargets.get(platformKey) : null
+  const platformLabel = platform !== null ? ` for ${platform.label}` : ""
+
+  const platformDownloadURL =
+    platform !== null ? getInstallTarget(alireVersion, platform.urlSuffix) : gitHubReleasePage
+
+  const [step, setStep] = useState(0)
+
+  const onClickDownloadLink = () => {
+    setStep(1)
+  }
+
+  const otherDownloadText = (
+    <span>
+      {" "}
+      or view other options on the{" "}
+      <Link onClick={onClickDownloadLink} to={gitHubReleasePage}>
+        release page
+      </Link>
+    </span>
+  )
+
+  return (
+    <Timeline active={step} bulletSize={32} lineWidth={3}>
+      <Timeline.Item
+        bullet={<MdFileDownload size={16} />}
+        title={<TimelineItemText>Download Alire</TimelineItemText>}
+      >
+        <Text color="dimmed">
+          Download{" "}
+          <Link onClick={onClickDownloadLink} to={platformDownloadURL}>
+            Alire {alireVersion.slice(0)}
+            {platformLabel}
+          </Link>
+          {platform !== null && otherDownloadText}.
+        </Text>
+      </Timeline.Item>
+
+      <Timeline.Item
+        bullet={<FaTerminal size={12} />}
+        title={<TimelineItemText>Install toolchain</TimelineItemText>}
+      >
+        <Prism language="shell">alr toolchain --select</Prism>
+      </Timeline.Item>
+
+      <Timeline.Item
+        bullet={<MdCode size={16} />}
+        title={<TimelineItemText>Start coding</TimelineItemText>}
+        lineVariant="dashed"
+      >
+        <Prism language="shell">{codeAlrInit}</Prism>
+      </Timeline.Item>
+
+      <Timeline.Item
+        bullet={<MdDone size={16} />}
+        title={<TimelineItemText>Run your application</TimelineItemText>}
+      >
+        <Prism language="shell">alr run</Prism>
+      </Timeline.Item>
+    </Timeline>
+  )
+}
+
+// TODO Getting these indices right is error-prone
+features[1].children = <AlireInstallInstructions />
+features[2].className = classes.spark
 
 // See https://react-icons.github.io/react-icons/ for all icons
 const icons = {
