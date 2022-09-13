@@ -77,7 +77,7 @@ export function HomepageHeader({ title, description }) {
   const isBrowser = useIsBrowser()
   const os = useOs()
 
-  const platformKey = isBrowser ? os : null
+  const platformKey = isBrowser && installTargets.has(os) ? os : null
 
   const platform = platformKey !== null ? installTargets.get(platformKey) : null
   const platformLabel = platform !== null ? ` for ${platform.label}` : ""
