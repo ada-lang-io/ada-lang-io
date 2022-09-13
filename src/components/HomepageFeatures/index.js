@@ -34,7 +34,7 @@ import features from "./features.json"
 
 function SparkGuidanceBooklet() {
   return (
-    <Card withBorder radius="md" p="md" className={classes.cardSparkGuidance}>
+    <Card withBorder shadow="sm" radius="md" p="md" className={classes.cardSparkGuidance}>
       <Card.Section className={classes.imageSparkGuidance}>
         <Image
           src={sparkGuidanceCover}
@@ -49,6 +49,7 @@ function SparkGuidanceBooklet() {
                   "Copyright (C) 2016-2020, AdaCore and Thales",
                   "Licensed under Creative Commons Attribution 4.0 International"
                 ]}
+                width={200}
               />
             </div>
           }
