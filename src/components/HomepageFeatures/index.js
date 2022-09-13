@@ -92,6 +92,7 @@ function AlireInstallInstructions() {
         title={<TimelineItemText>Install toolchain</TimelineItemText>}
       >
         <Prism language="shell">alr toolchain --select</Prism>
+        <Text color="dimmed">Select gnat_native and gprbuild.</Text>
       </Timeline.Item>
 
       <Timeline.Item
