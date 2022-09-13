@@ -17,14 +17,7 @@ import {
   MdVerified
 } from "react-icons/md"
 
-import Link from "@docusaurus/Link"
-import IconExternalLink from "@theme/Icon/ExternalLink"
-
-import InfoHover from "@site/src/components/InfoHover"
-import DownloadIcon from "@site/static/img/fontawesome/solid/download.svg"
-import sparkGuidanceCover from "@site/static/img/implementation-guidance-spark-cover.png"
-
-import { Button, Card, Container, Image, SimpleGrid, Text, ThemeIcon, Title } from "@mantine/core"
+import { Container, SimpleGrid, Text, ThemeIcon, Title } from "@mantine/core"
 
 import clsx from "clsx"
 
@@ -32,43 +25,7 @@ import classes from "./index.module.scss"
 
 import features from "./features.json"
 
-function SparkGuidanceBooklet() {
-  return (
-    <Card withBorder shadow="sm" radius="md" p="md" className={classes.cardSparkGuidance}>
-      <Card.Section className={classes.imageSparkGuidance}>
-        <Image
-          src={sparkGuidanceCover}
-          fit="contain"
-          alt={"Implementation Guidance for the Adoption of SPARK"}
-          caption={
-            <div style={{ display: "flex" }}>
-              <span>{"A booklet providing guidance on how to reach the desired levels."}</span>
-              <InfoHover
-                text={[
-                  "Image from booklet.",
-                  "Copyright (C) 2016-2020, AdaCore and Thales",
-                  "Licensed under Creative Commons Attribution 4.0 International"
-                ]}
-                width={200}
-              />
-            </div>
-          }
-        />
-      </Card.Section>
-      <Button
-        radius="md"
-        component={Link}
-        href={"https://www.adacore.com/books/implementation-guidance-spark"}
-        className={classes.linkSparkGuidance}
-      >
-        Visit page of booklet <IconExternalLink />
-      </Button>
-    </Card>
-  )
-}
-
 features[1].className = classes.spark
-features[1].children = <SparkGuidanceBooklet />
 
 // See https://react-icons.github.io/react-icons/ for all icons
 const icons = {
