@@ -72,7 +72,7 @@ function AlireInstallInstructions() {
   )
 
   return (
-    <Timeline active={step} bulletSize={32} lineWidth={3}>
+    <Timeline active={step} bulletSize={32} lineWidth={3} className={classes.timeline}>
       <Timeline.Item
         bullet={<MdFileDownload size={16} />}
         title={<TimelineItemText>Download Alire</TimelineItemText>}
@@ -98,7 +98,6 @@ function AlireInstallInstructions() {
       <Timeline.Item
         bullet={<MdCode size={16} />}
         title={<TimelineItemText>Start coding</TimelineItemText>}
-        lineVariant="dashed"
       >
         <Prism language="shell">{codeAlrInit}</Prism>
       </Timeline.Item>
