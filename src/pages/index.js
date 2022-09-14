@@ -1,4 +1,5 @@
 import React from "react"
+import { FaDownload as DownloadIcon } from "react-icons/fa"
 
 import Link from "@docusaurus/Link"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
@@ -6,7 +7,6 @@ import useIsBrowser from "@docusaurus/useIsBrowser"
 import Layout from "@theme/Layout"
 
 import HomepageFeatures from "@site/src/components/HomepageFeatures"
-import DownloadIcon from "@site/static/img/fontawesome/solid/download.svg"
 
 import {
   Button,
@@ -27,6 +27,12 @@ import sampleA from "!!raw-loader!./code/code-basic.adb"
 import sampleC from "!!raw-loader!./code/code-rp2040.adb"
 import sampleB from "!!raw-loader!./code/code-spark.ads"
 
+const samples = [
+  { key: "ada", code: sampleA },
+  { key: "spark", code: sampleB },
+  { key: "embedded", code: sampleC }
+]
+
 // sampleB from src/xoshiro128.ads in https://github.com/onox/xoshiro
 //
 // Copyright (c) 2022 onox
@@ -37,7 +43,7 @@ import sampleB from "!!raw-loader!./code/code-spark.ads"
 // Copyright (c) 2021 Jeremy Grosser
 // SPDX-License-Identifier: BSD-3-Clause
 
-const installTargets = new Map([
+export const installTargets = new Map([
   ["windows", { label: "Windows", urlSuffix: "installer-x86_64-windows.exe" }],
   ["macos", { label: "macOS", urlSuffix: "bin-x86_64-macos.zip" }],
   ["linux", { label: "Linux", urlSuffix: "bin-x86_64-linux.zip" }],
@@ -50,19 +56,18 @@ const join = (values, sep) =>
 // TODO: This version number should come from a "latest Alire" note somewhere.
 // Version number and assets could be fetched from
 // https://api.github.com/repos/alire-project/alire/releases/latest
-const alireVersion = "1.2.1"
+export const alireVersion = "1.2.1"
 
-const gitHubProjectPage = "https://github.com/alire-project/alire"
-const gitHubReleasePage = `${gitHubProjectPage}/releases`
+export const gitHubProjectPage = "https://github.com/alire-project/alire"
+export const gitHubReleasePage = `${gitHubProjectPage}/releases`
 
-function getInstallTarget(version, suffix) {
+export function getInstallTarget(version, suffix) {
   return `${gitHubProjectPage}/releases/download/v${version}/alr-${version}-${suffix}`
 }
 
 function CodeBlock({ showLineNumbers, children }) {
-  // <Prism> supports scrollAreaComponent="div" for native scroll area
   return (
-    <Prism withLineNumbers={showLineNumbers} language="ada" showLineNumbers>
+    <Prism withLineNumbers={showLineNumbers} language="ada">
       {children}
     </Prism>
   )
@@ -72,7 +77,7 @@ export function HomepageHeader({ title, description }) {
   const isBrowser = useIsBrowser()
   const os = useOs()
 
-  const platformKey = isBrowser ? os : null
+  const platformKey = isBrowser && installTargets.has(os) ? os : null
 
   const platform = platformKey !== null ? installTargets.get(platformKey) : null
   const platformLabel = platform !== null ? ` for ${platform.label}` : ""
@@ -83,6 +88,7 @@ export function HomepageHeader({ title, description }) {
   const allPlatformLinks = Array.from(installTargets.values()).map(({ label, urlSuffix }) => (
     <Link to={getInstallTarget(alireVersion, urlSuffix)}>{label}</Link>
   ))
+  const platformLinks = join(allPlatformLinks, ", ")
 
   const linkOthers = <Link to={gitHubReleasePage}>others</Link>
 
@@ -116,7 +122,8 @@ export function HomepageHeader({ title, description }) {
                 gradient={{ from: "blue", to: "cyan" }}
                 leftIcon={<DownloadIcon className={styles.downloadIcon} />}
               >
-                Download Alire {alireVersion.slice(0)} {platformLabel}
+                Download Alire {alireVersion.slice(0)}
+                {platformLabel}
               </Button>
               <Button
                 className={styles.controlSecondary}
@@ -129,12 +136,16 @@ export function HomepageHeader({ title, description }) {
             </Group>
 
             <Text size="xs" className={styles.textDownloadLinks}>
-              Download for {join(allPlatformLinks, <span>, </span>)}, or {linkOthers}
+              Download for{" "}
+              {platformLinks.map((item, i) => (
+                <span key={i}>{item}</span>
+              ))}
+              , or {linkOthers}
             </Text>
           </div>
           <div>
             <div className={styles.heroTabs}>
-              <Tabs color="blue" variant="pills" defaultValue="embedded">
+              <Tabs color="blue" variant="pills" defaultValue="ada">
                 <Tabs.List>
                   <Tabs.Tab value="ada">Ada</Tabs.Tab>
                   <Tabs.Tab value="spark">SPARK</Tabs.Tab>
@@ -142,15 +153,11 @@ export function HomepageHeader({ title, description }) {
                 </Tabs.List>
 
                 <div className={styles.codeTabPanel}>
-                  <Tabs.Panel value="ada" pt="xs">
-                    <CodeBlock showLineNumbers>{sampleA}</CodeBlock>
-                  </Tabs.Panel>
-                  <Tabs.Panel value="spark" pt="xs">
-                    <CodeBlock showLineNumbers>{sampleB}</CodeBlock>
-                  </Tabs.Panel>
-                  <Tabs.Panel value="embedded" pt="xs">
-                    <CodeBlock showLineNumbers>{sampleC}</CodeBlock>
-                  </Tabs.Panel>
+                  {samples.map(({ key, code }) => (
+                    <Tabs.Panel key={key} value={key} pt="xs">
+                      <CodeBlock showLineNumbers={true}>{code}</CodeBlock>
+                    </Tabs.Panel>
+                  ))}
                 </div>
               </Tabs>
             </div>
@@ -165,7 +172,12 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext()
 
   return (
-    <MantineProvider theme={{ colorScheme: "dark" }}>
+    <MantineProvider
+      theme={{
+        colorScheme: "dark",
+        fontFamily: "var(--ada-lang-font-family)"
+      }}
+    >
       <Layout title={siteConfig.title} description={siteConfig.customFields.description}>
         <HomepageHeader
           title={siteConfig.title}

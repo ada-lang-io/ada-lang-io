@@ -1,35 +1,176 @@
-import React from "react"
+import React, { useCallback, useState } from "react"
+import { FaTerminal } from "react-icons/fa"
+import {
+  MdAutoStories,
+  MdCode,
+  MdDone,
+  MdFileDownload,
+  MdLooks3,
+  MdLooks4,
+  MdLooks5,
+  MdLooksOne,
+  MdLooksTwo,
+  MdSpeed,
+  MdVerified
+} from "react-icons/md"
 
 import Link from "@docusaurus/Link"
-import IconExternalLink from "@theme/Icon/ExternalLink"
+import useIsBrowser from "@docusaurus/useIsBrowser"
 
-import InfoHover from "@site/src/components/InfoHover"
-import DownloadIcon from "@site/static/img/fontawesome/solid/download.svg"
-import sparkGuidanceCover from "@site/static/img/implementation-guidance-spark-cover.png"
-
-import { Button, Card, Container, Image, SimpleGrid, Text, ThemeIcon, Title } from "@mantine/core"
+import { Container, SimpleGrid, Text, ThemeIcon, Timeline, Title } from "@mantine/core"
+import { useEventListener, useOs } from "@mantine/hooks"
+import { Prism } from "@mantine/prism"
 
 import clsx from "clsx"
 
 import classes from "./index.module.scss"
 
-const licenseTextSparkGuidanceBooklet = [
-  "Image from booklet.",
-  "Copyright (C) 2016-2020, AdaCore and Thales",
-  "Licensed under Creative Commons Attribution 4.0 International"
-]
+import codeAlrInit from "!!raw-loader!./code/alr-init.sh"
 
-const bookletSparkURL = "https://www.adacore.com/books/implementation-guidance-spark"
+import {
+  alireVersion,
+  getInstallTarget,
+  gitHubReleasePage,
+  installTargets
+} from "../../pages/index.js"
+import features from "./features.json"
 
-const bookletSparkCaption = "A booklet providing guidance on how to reach the desired levels."
+function TimelineItemText({ children }) {
+  return (
+    <Text size="sm" className={classes.timelineItemTitle}>
+      {children}
+    </Text>
+  )
+}
 
-const bookletSparkImageAlt = "Implementation Guidance for the Adoption of SPARK"
+// Return a ref that listens for click events on a button
+function useCodeBlockClickRef(callback) {
+  const eventCallback = useCallback(
+    (e) => {
+      const isButton = (target) => target.type === "button" && target.onclick !== null
+      if (isButton(e.target) || isButton(e.target.parentNode)) {
+        callback()
+      }
+    },
+    [callback]
+  )
+  return useEventListener("click", eventCallback)
+}
+
+function AlireInstallInstructions() {
+  const isBrowser = useIsBrowser()
+  const os = useOs()
+
+  const platformKey = isBrowser && installTargets.has(os) ? os : null
+
+  const platform = platformKey !== null ? installTargets.get(platformKey) : null
+  const platformLabel = platform !== null ? ` for ${platform.label}` : ""
+
+  const platformDownloadURL =
+    platform !== null ? getInstallTarget(alireVersion, platform.urlSuffix) : gitHubReleasePage
+
+  const [step, setStep] = useState(-1)
+
+  const onClickDownloadLink = useCallback(() => {
+    setStep(0)
+  }, [setStep])
+
+  const onClickButtonStep2 = useCallback(() => {
+    setStep(1)
+  }, [setStep])
+
+  const onClickButtonStep3 = useCallback(() => {
+    setStep(2)
+  }, [setStep])
+
+  const onClickButtonStep4 = useCallback(() => {
+    setStep(3)
+  }, [setStep])
+
+  // Get some click event listeners. Assumes each <Prism> has only 1 button.
+  // This is needed because there is no other way to detect clicks on the "Copy code" button
+  const refStep2 = useCodeBlockClickRef(onClickButtonStep2)
+  const refStep3 = useCodeBlockClickRef(onClickButtonStep3)
+  const refStep4 = useCodeBlockClickRef(onClickButtonStep4)
+
+  const otherDownloadText = (
+    <span>
+      {" "}
+      or view other options on the{" "}
+      <Link onClick={onClickDownloadLink} to={gitHubReleasePage}>
+        release page
+      </Link>
+    </span>
+  )
+
+  return (
+    <Timeline active={step} bulletSize={32} lineWidth={3} className={classes.timeline}>
+      <Timeline.Item
+        bullet={<MdFileDownload size={16} />}
+        title={<TimelineItemText>Download Alire</TimelineItemText>}
+      >
+        <Text color="dimmed">
+          Download{" "}
+          <Link onClick={onClickDownloadLink} to={platformDownloadURL}>
+            Alire {alireVersion.slice(0)}
+            {platformLabel}
+          </Link>
+          {platform !== null && otherDownloadText}.
+        </Text>
+      </Timeline.Item>
+
+      <Timeline.Item
+        bullet={<FaTerminal size={12} />}
+        title={<TimelineItemText>Install toolchain</TimelineItemText>}
+      >
+        <Prism ref={refStep2} language="shell">
+          alr toolchain --select
+        </Prism>
+        <Text color="dimmed">Select gnat_native and gprbuild.</Text>
+      </Timeline.Item>
+
+      <Timeline.Item
+        bullet={<MdCode size={16} />}
+        title={<TimelineItemText>Start coding</TimelineItemText>}
+      >
+        <Prism ref={refStep3} language="shell">
+          {codeAlrInit}
+        </Prism>
+      </Timeline.Item>
+
+      <Timeline.Item
+        bullet={<MdDone size={16} />}
+        title={<TimelineItemText>Run your application</TimelineItemText>}
+      >
+        <Prism ref={refStep4} language="shell">
+          alr run
+        </Prism>
+      </Timeline.Item>
+    </Timeline>
+  )
+}
+
+// TODO Getting these indices right is error-prone
+features[1].children = <AlireInstallInstructions />
+features[2].className = classes.spark
+
+// See https://react-icons.github.io/react-icons/ for all icons
+const icons = {
+  "feat-readable": <MdAutoStories />,
+  "feat-correct": <MdVerified />,
+  "feat-performant": <MdSpeed />,
+  "spark-stone": <MdLooksOne />,
+  "spark-bronze": <MdLooksTwo />,
+  "spark-silver": <MdLooks3 />,
+  "spark-gold": <MdLooks4 />,
+  "spark-platinum": <MdLooks5 />
+}
 
 function FeatureItem({ title, description, icon }) {
   return (
     <div className={classes.itemWrapper}>
       <ThemeIcon variant="light" className={classes.itemIcon} size={60} radius="md">
-        {icon}
+        {icons[icon]}
       </ThemeIcon>
 
       <div>
@@ -37,7 +178,9 @@ function FeatureItem({ title, description, icon }) {
           {title}
         </Text>
         <Text className={classes.itemDescription} color="dimmed">
-          {description}
+          {Array.isArray(description)
+            ? description.map((paragraph, i) => <p key={i}>{paragraph}</p>)
+            : description}
         </Text>
       </div>
     </div>
@@ -59,14 +202,20 @@ function Feature({ title, subTitle, description, items, className, children, col
           </Text>
         </Container>
 
-        <SimpleGrid cols={!!children ? 2 : 1} spacing="md">
+        <SimpleGrid cols={Number(!!items) + Number(!!children)} spacing="md">
           {!!items && (
             <SimpleGrid
               cols={columns}
               spacing={48}
-              breakpoints={[{ maxWidth: 550, cols: 1, spacing: 32 }]}
+              breakpoints={[
+                { maxWidth: 475, cols: 1, spacing: 16 },
+                { maxWidth: 768, cols: 2, spacing: 24 },
+                { maxWidth: 996, cols: Math.min(3, columns), spacing: 32 }
+              ]}
             >
-              {items}
+              {items.map((item, i) => (
+                <FeatureItem key={i} {...item} />
+              ))}
             </SimpleGrid>
           )}
           {children}
@@ -77,122 +226,11 @@ function Feature({ title, subTitle, description, items, className, children, col
 }
 
 export default function HomepageFeatures() {
-  const itemsReadability = [
-    <FeatureItem
-      title="Separate specification and bodies"
-      description="Types and functions, and their properties and documentation, are separated from their implementation. Control which parts are visible and to whom."
-      icon={<DownloadIcon />}
-    />,
-    <FeatureItem
-      title="Ranges and precision"
-      description="Specify a valid range of a discrete type or the required precision for floating-point and fixed-point types."
-      icon={<DownloadIcon />}
-    />,
-    <FeatureItem
-      title="Predicates and contracts"
-      description="Add predicates in the form of boolean expressions to your types and pre/post-conditions to your functions."
-      icon={<DownloadIcon />}
-    />,
-    <FeatureItem
-      title="Representation clauses"
-      description="Separate the high-level specification of types and their properties from the representation at the bit level."
-      icon={<DownloadIcon />}
-    />
-  ]
-
-  const itemsCorrectness = [
-    <FeatureItem title="Title 1" description="TODO." icon={<DownloadIcon />} />,
-    <FeatureItem title="Title 2" description="TODO." icon={<DownloadIcon />} />,
-    <FeatureItem title="Title 3" description="TODO." icon={<DownloadIcon />} />
-  ]
-
-  const itemsPerformance = [
-    <FeatureItem title="Import from C/C++" description="TODO." icon={<DownloadIcon />} />,
-    <FeatureItem title="Intrinsics" description="TODO." icon={<DownloadIcon />} />,
-    <FeatureItem title="Assembly" description="TODO." icon={<DownloadIcon />} />
-  ]
-
-  const itemsSpark2014 = [
-    <FeatureItem
-      title="Stone - Valid SPARK"
-      description="Restrict Ada packages to the SPARK subset. Avoids side-effects in functions and parameter aliasing."
-      icon={<DownloadIcon />}
-    />,
-    <FeatureItem
-      title="Bronze - Initialization and correct data flow"
-      description="No uninitialized variables are read or undesired access to globals occurs."
-      icon={<DownloadIcon />}
-    />,
-    <FeatureItem
-      title="Silver - Absence of run-time errors"
-      description="No buffer and arithmetic overflow, division by zero, or values out of range, among others, can occur."
-      icon={<DownloadIcon />}
-    />,
-    //    <FeatureItem title="Gold - Key integrity properties" description="Proof maintaining type invariants and subprogram contracts." icon={<DownloadIcon />} />,
-    <FeatureItem
-      title="Gold - Key integrity properties"
-      description="Verify integrity of data and valid state transitions."
-      icon={<DownloadIcon />}
-    />,
-    <FeatureItem
-      title="Platinum - Functional correctness"
-      description="Full proof of functional correctness."
-      icon={<DownloadIcon />}
-    />
-  ]
-
   return (
     <div className={classes.features}>
-      <Feature
-        title="Readability"
-        subTitle="Express intent with explicitness and keywords over symbols and special structures"
-        description="Express concepts like meaning in integers. Use built-in design by contract with pre/post-conditions and invariants. Model problems with typechecks and range constraints."
-        items={itemsReadability}
-      />
-      <Feature
-        title="Correctness"
-        subTitle="Build with technology used in 40 years of reliability in planes, trains, and satellites"
-        description="Use the SPARK subset to formally verify part or all of your program, and integrate existing SPARK crates available in the Alire package manager."
-        items={itemsCorrectness}
-      />
-      <Feature
-        title="Performance"
-        subTitle="Build native applications and take advantage of other libraries through binding to C and C++"
-        description="Use inline assembly or compiler intrinsics when you need it. Control resources with scope-based resource control (RAII) and your own memory allocators."
-        items={itemsPerformance}
-      />
-      <Feature
-        title="SPARK"
-        subTitle="From memory safety to functional correctness. One level at a time"
-        description="Gradually adopt the SPARK subset to reach various levels of assurance. Higher levels take more effort, but give more benefits and stronger guarantees."
-        items={itemsSpark2014}
-        columns={1}
-        className={classes.spark}
-      >
-        <Card withBorder radius="md" p="md" className={classes.cardSparkGuidance}>
-          <Card.Section className={classes.imageSparkGuidance}>
-            <Image
-              src={sparkGuidanceCover}
-              fit="contain"
-              alt={bookletSparkImageAlt}
-              caption={
-                <div style={{ display: "flex" }}>
-                  <span>{bookletSparkCaption}</span>
-                  <InfoHover text={licenseTextSparkGuidanceBooklet} />
-                </div>
-              }
-            />
-          </Card.Section>
-          <Button
-            radius="md"
-            component={Link}
-            href={bookletSparkURL}
-            className={classes.linkSparkGuidance}
-          >
-            Visit page of booklet <IconExternalLink />
-          </Button>
-        </Card>
-      </Feature>
+      {features.map((feature, index) => (
+        <Feature key={index} {...feature} />
+      ))}
     </div>
   )
 }
