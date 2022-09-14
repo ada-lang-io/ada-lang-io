@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { FaTerminal } from "react-icons/fa"
 import {
   MdAutoStories,
@@ -18,7 +18,7 @@ import Link from "@docusaurus/Link"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 
 import { Container, SimpleGrid, Text, ThemeIcon, Timeline, Title } from "@mantine/core"
-import { useOs } from "@mantine/hooks"
+import { useEventListener, useOs } from "@mantine/hooks"
 import { Prism } from "@mantine/prism"
 
 import clsx from "clsx"
@@ -43,6 +43,20 @@ function TimelineItemText({ children }) {
   )
 }
 
+// Return a ref that listens for click events on a button
+function useCodeBlockClickRef(callback) {
+  const eventCallback = useCallback(
+    (e) => {
+      const isButton = (target) => target.type === "button" && target.onclick !== null
+      if (isButton(e.target) || isButton(e.target.parentNode)) {
+        callback()
+      }
+    },
+    [callback]
+  )
+  return useEventListener("click", eventCallback)
+}
+
 function AlireInstallInstructions() {
   const isBrowser = useIsBrowser()
   const os = useOs()
@@ -55,11 +69,29 @@ function AlireInstallInstructions() {
   const platformDownloadURL =
     platform !== null ? getInstallTarget(alireVersion, platform.urlSuffix) : gitHubReleasePage
 
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(-1)
 
-  const onClickDownloadLink = () => {
+  const onClickDownloadLink = useCallback(() => {
+    setStep(0)
+  }, [setStep])
+
+  const onClickButtonStep2 = useCallback(() => {
     setStep(1)
-  }
+  }, [setStep])
+
+  const onClickButtonStep3 = useCallback(() => {
+    setStep(2)
+  }, [setStep])
+
+  const onClickButtonStep4 = useCallback(() => {
+    setStep(3)
+  }, [setStep])
+
+  // Get some click event listeners. Assumes each <Prism> has only 1 button.
+  // This is needed because there is no other way to detect clicks on the "Copy code" button
+  const refStep2 = useCodeBlockClickRef(onClickButtonStep2)
+  const refStep3 = useCodeBlockClickRef(onClickButtonStep3)
+  const refStep4 = useCodeBlockClickRef(onClickButtonStep4)
 
   const otherDownloadText = (
     <span>
@@ -91,7 +123,9 @@ function AlireInstallInstructions() {
         bullet={<FaTerminal size={12} />}
         title={<TimelineItemText>Install toolchain</TimelineItemText>}
       >
-        <Prism language="shell">alr toolchain --select</Prism>
+        <Prism ref={refStep2} language="shell">
+          alr toolchain --select
+        </Prism>
         <Text color="dimmed">Select gnat_native and gprbuild.</Text>
       </Timeline.Item>
 
@@ -99,14 +133,18 @@ function AlireInstallInstructions() {
         bullet={<MdCode size={16} />}
         title={<TimelineItemText>Start coding</TimelineItemText>}
       >
-        <Prism language="shell">{codeAlrInit}</Prism>
+        <Prism ref={refStep3} language="shell">
+          {codeAlrInit}
+        </Prism>
       </Timeline.Item>
 
       <Timeline.Item
         bullet={<MdDone size={16} />}
         title={<TimelineItemText>Run your application</TimelineItemText>}
       >
-        <Prism language="shell">alr run</Prism>
+        <Prism ref={refStep4} language="shell">
+          alr run
+        </Prism>
       </Timeline.Item>
     </Timeline>
   )
