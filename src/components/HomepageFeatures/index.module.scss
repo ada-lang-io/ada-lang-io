@@ -6,8 +6,8 @@
 }
 
 .sectionWrapper {
-  padding-top: 80px;
-  padding-bottom: 50px;
+  padding: calc(5 * var(--ifm-spacing-vertical)) calc(2 * var(--ifm-spacing-horizontal));
+  padding-bottom: calc(4 * var(--ifm-spacing-vertical));
 
   & > * {
     max-width: var(--ifm-container-width);
@@ -17,9 +17,9 @@
     background-color: var(--ifm-code-background);
   }
 
-  @media (max-width: 996px) {
-    padding-left: 2rem;
-    padding-right: 2rem;
+  @media (max-width: 475px) {
+    padding: calc(4 * var(--ifm-spacing-vertical)) var(--ifm-spacing-horizontal);
+    padding-bottom: calc(3 * var(--ifm-spacing-vertical));
   }
 }
 
@@ -48,17 +48,17 @@
 
 .title {
   text-align: center;
-  text-transform: uppercase;
   font-weight: var(--ifm-font-weight-bold);
   font-size: var(--ifm-h5-font-size);
   color: var(--ifm-color-primary);
-  letter-spacing: 0.5px;
+  letter-spacing: 0.04em;
 }
 
 .subTitle {
   line-height: 1;
   text-align: center;
   margin-top: calc(24 / 16 * var(--ifm-spacing-vertical));
+  font-family: var(--ada-lang-font-family);
 }
 
 .description {
@@ -76,6 +76,18 @@
 .itemIcon {
   padding: calc(10 / 16 * var(--ifm-global-spacing));
   margin-right: var(--ifm-spacing-horizontal);
+
+  svg {
+    scale: 2;
+    fill-opacity: 0.8;
+  }
+}
+
+[data-theme="light"] .itemIcon svg {
+  fill: var(--ifm-color-primary);
+}
+
+[data-theme="dark"] .itemIcon svg {
   fill: var(--ifm-color-emphasis-700);
 }
 
@@ -83,25 +95,32 @@
   margin-bottom: calc(5 / 16 * var(--ifm-spacing-vertical));
 }
 
-.cardSparkGuidance {
-  height: fit-content;
-  max-width: 250px;
-  justify-self: center;
-
-  // Needed for <HoverCard> from <InfoHover>
-  overflow: visible;
+.timelineItemTitle {
+  font-weight: var(--ifm-font-weight-bold);
 }
 
-.imageSparkGuidance {
-  margin-bottom: var(--ifm-spacing-vertical);
+[data-theme="light"] .timelineItemTitle {
+  color: var(--ifm-color-gray-900);
+}
 
-  figcaption {
-    margin: var(--ifm-global-spacing);
-    text-align: left;
+.timeline {
+  $timeline-active-color: var(--ifm-color-primary);
+  $timeline-inactive-color: var(--ifm-color-emphasis-400);
+
+  [class*="mantine-Timeline-itemBullet"][data-active="true"] {
+    background-color: #{$timeline-active-color};
+    border-color: #{$timeline-active-color};
   }
-}
+  [class*="mantine-Timeline-item"][data-line-active="true"]::before {
+    border-left-color: #{$timeline-active-color};
+  }
 
-.linkSparkGuidance:hover {
-  text-decoration: none;
-  color: var(--ifm-color-gray-200);
+  [class*="mantine-Timeline-itemBullet"]:not([data-active="true"]) {
+    background-color: #{$timeline-inactive-color};
+    border-color: #{$timeline-inactive-color};
+    color: var(--ifm-color-white);
+  }
+  [class*="mantine-Timeline-item"]:not([data-line-active="true"])::before {
+    border-left-color: #{$timeline-inactive-color};
+  }
 }
