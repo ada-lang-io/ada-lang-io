@@ -169,7 +169,11 @@ function Feature({ title, subTitle, description, items, className, children, col
             <SimpleGrid
               cols={columns}
               spacing={48}
-              breakpoints={[{ maxWidth: 550, cols: 1, spacing: 32 }]}
+              breakpoints={[
+                { maxWidth: 475, cols: 1, spacing: 16 },
+                { maxWidth: 768, cols: 2, spacing: 24 },
+                { maxWidth: 996, cols: Math.min(3, columns), spacing: 32 }
+              ]}
             >
               {items.map((item, i) => (
                 <FeatureItem key={i} {...item} />
