@@ -1,4 +1,5 @@
 import React from "react"
+
 import {
   MdAutoStories,
   MdLooks3,
@@ -10,9 +11,9 @@ import {
   MdVerified
 } from "react-icons/md"
 
-import AlireInstallInstructions from "@site/src/components/AlireInstallInstructions"
-
 import { Container, SimpleGrid, Text, ThemeIcon, Title } from "@mantine/core"
+
+import AlireInstallInstructions from "@site/src/components/AlireInstallInstructions"
 
 import clsx from "clsx"
 

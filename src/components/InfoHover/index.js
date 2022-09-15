@@ -1,4 +1,5 @@
 import React from "react"
+
 import { FaInfo as InfoIcon } from "react-icons/fa"
 
 import { Badge, HoverCard, Stack, Text } from "@mantine/core"
