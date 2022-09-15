@@ -100,6 +100,11 @@ const config = {
             label: "Style Guide"
           },
           {
+            // See https://github.com/facebook/docusaurus/issues/7227 for custom components
+            type: "custom-armAnnotations",
+            position: "right"
+          },
+          {
             href: `https://github.com/${gitHubUserName}/${gitHubProjectName}`,
             position: "right",
             className: "fa-icon header__image header-github-link",
