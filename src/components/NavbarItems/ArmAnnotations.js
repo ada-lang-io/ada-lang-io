@@ -6,13 +6,13 @@ import { translate } from "@docusaurus/Translate"
 import { useLocation } from "@docusaurus/router"
 
 import { Switch } from "@mantine/core"
-import { useToggle } from "@mantine/hooks"
+import { useLocalStorage } from "@mantine/hooks"
 
 import classes from "./ArmAnnotations.module.scss"
 
 export default function ArmAnnotations() {
-  const [checked, toggleChecked] = useToggle()
   const location = useLocation()
+  const [checked, setChecked] = useLocalStorage({ key: "arm-annotations", defaultValue: false })
 
   const isOnReferenceManual = location.pathname.startsWith("/docs/arm")
 
@@ -47,7 +47,7 @@ export default function ArmAnnotations() {
             offLabel={<MdClose size={18} stroke={3} />}
             aria-label={title}
             checked={checked}
-            onChange={() => toggleChecked()}
+            onChange={() => setChecked((value) => !value)}
             className={classes.control}
           />
         </div>
