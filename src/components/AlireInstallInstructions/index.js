@@ -12,8 +12,6 @@ import { Prism } from "@mantine/prism"
 
 import classes from "./index.module.scss"
 
-import codeAlrInit from "!!raw-loader!./code/alr-init.sh"
-
 import {
   alireVersion,
   getInstallTarget,
@@ -80,7 +78,8 @@ export default function AlireInstallInstructions() {
   // Get some click event listeners. Assumes each <Prism> has only 1 button.
   // This is needed because there is no other way to detect clicks on the "Copy code" button
   const refStep2 = useCodeBlockClickRef(onClickButtonStep2)
-  const refStep3 = useCodeBlockClickRef(onClickButtonStep3)
+  const refStep31 = useCodeBlockClickRef(onClickButtonStep2)
+  const refStep32 = useCodeBlockClickRef(onClickButtonStep3)
   const refStep4 = useCodeBlockClickRef(onClickButtonStep4)
 
   const otherDownloadText = (
@@ -123,8 +122,13 @@ export default function AlireInstallInstructions() {
         bullet={<MdCode size={16} />}
         title={<TimelineItemText>Start coding</TimelineItemText>}
       >
-        <Prism ref={refStep3} language="shell">
-          {codeAlrInit}
+        Create a crate:
+        <Prism ref={refStep31} language="shell">
+          alr init --bin mycrate && cd mycrate
+        </Prism>
+        Build the crate:
+        <Prism ref={refStep32} language="shell">
+          alr build
         </Prism>
       </Timeline.Item>
 
