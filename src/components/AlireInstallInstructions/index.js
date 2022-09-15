@@ -34,7 +34,11 @@ function useCodeBlockClickRef(callback) {
   const eventCallback = useCallback(
     (e) => {
       const isButton = (target) => target.type === "button" && target.onclick !== null
-      if (isButton(e.target) || isButton(e.target.parentNode)) {
+      if (
+        isButton(e.target) ||
+        isButton(e.target.parentNode) ||
+        isButton(e.target.parentNode.parentNode)
+      ) {
         callback()
       }
     },
