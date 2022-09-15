@@ -17,7 +17,7 @@ export default function ArmAnnotations() {
   // (when scripting is enabled), annotations are hidden because they add
   // a lot of noise to the text.
   const defaultValue = ExecutionEnvironment.canUseDOM
-    ? document.documentElement.getAttribute("data-arm-annotations") || false
+    ? Boolean(document.documentElement.getAttribute("data-arm-annotations") || false)
     : true
 
   const location = useLocation()
@@ -58,8 +58,8 @@ export default function ArmAnnotations() {
             <div title={title}>
               <Switch
                 size="md"
-                onLabel={<MdOutlineInfo size={18} stroke={3} />}
-                offLabel={<MdClose size={18} stroke={3} />}
+                onLabel={<MdOutlineInfo size={18} />}
+                offLabel={<MdClose size={18} />}
                 aria-label={title}
                 checked={checked}
                 onChange={() => setChecked((value) => !value)}
