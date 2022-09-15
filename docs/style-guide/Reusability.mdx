@@ -61,24 +61,24 @@ design, testing, etc. Some research into reuse issues related
 specifically to the Ada language can be found in AIRMICS (1990), Edwards
 (1990), and Wheeler (1992).
 
-  - Regardless of development method, experience indicates that reusable
-    code has certain characteristics, and this chapter makes the
-    following assumptions:
-  - Reusable parts must be understandable. A reusable part should be a
-    model of clarity. The requirements for commenting reusable parts are
-    even more stringent than those for parts specific to a particular
-    application.
-  - Reusable parts must be of the highest possible quality. They must be
-    correct, reliable, and robust. An error or weakness in a reusable
-    part may have far-reaching consequences, and it is important that
-    other programmers can have a high degree of confidence in any parts
-    offered for reuse.
-  - Reusable parts must be adaptable. To maximize its reuse potential, a
-    reusable part must be able to adapt to the needs of a wide variety
-    of users.
-  - Reusable parts should be independent. It should be possible to reuse
-    a single part without also adopting many other parts that are
-    apparently unrelated.
+- Regardless of development method, experience indicates that reusable
+  code has certain characteristics, and this chapter makes the
+  following assumptions:
+- Reusable parts must be understandable. A reusable part should be a
+  model of clarity. The requirements for commenting reusable parts are
+  even more stringent than those for parts specific to a particular
+  application.
+- Reusable parts must be of the highest possible quality. They must be
+  correct, reliable, and robust. An error or weakness in a reusable
+  part may have far-reaching consequences, and it is important that
+  other programmers can have a high degree of confidence in any parts
+  offered for reuse.
+- Reusable parts must be adaptable. To maximize its reuse potential, a
+  reusable part must be able to adapt to the needs of a wide variety
+  of users.
+- Reusable parts should be independent. It should be possible to reuse
+  a single part without also adopting many other parts that are
+  apparently unrelated.
 
 In addition to these criteria, a reusable part must be easier to reuse
 than to reinvent, must be efficient, and must be portable. If it takes
@@ -112,18 +112,18 @@ guidelines in Chapter 3, some of which are repeated more strongly below.
 
 #### guideline
 
-  - Select the least restrictive names possible for reusable parts and
-    their identifiers .
-  - Select the generic name to avoid conflicting with the naming
-    conventions of instantiations of the generic.
-  - Use names that indicate the behavioral characteristics of the
-    reusable part, as well as its abstraction.
+- Select the least restrictive names possible for reusable parts and
+  their identifiers .
+- Select the generic name to avoid conflicting with the naming
+  conventions of instantiations of the generic.
+- Use names that indicate the behavioral characteristics of the
+  reusable part, as well as its abstraction.
 
 #### example
 
 General-purpose stack abstraction:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 generic
    type Item is private;
@@ -137,13 +137,13 @@ end Bounded_Stack;
 
 Renamed appropriately for use in current application:
 
-``` ada
+```ada
 with Bounded_Stack;
 
 ...
 
    type Tray is ...
-   package Tray_Stack is 
+   package Tray_Stack is
       new Bounded_Stack (Item => Tray);
 ```
 
@@ -157,7 +157,7 @@ name.
 When there is an obvious choice for the simplest, clearest name for a
 reusable part, it is a good idea to leave that name for use by the
 reuser of the part, choosing a longer, more descriptive name for the
-reusable part. Thus, Bounded\_Stack is a better name than Stack for a
+reusable part. Thus, Bounded_Stack is a better name than Stack for a
 generic stack package because it leaves the simpler name Stack available
 to be used by an instantiation.
 
@@ -172,11 +172,11 @@ program.
 
 #### guideline
 
-  - Do not use abbreviations in identifier or unit names.
+- Do not use abbreviations in identifier or unit names.
 
 #### example
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 with Ada.Calendar;
 package Greenwich_Mean_Time is
@@ -188,7 +188,7 @@ end Greenwich_Mean_Time;
 
 The following abbreviation may not be clear when used in an application:
 
-``` ada
+```ada
 with Ada.Calendar;
 with Greenwich_Mean_Time;
 ...
@@ -210,34 +210,34 @@ acronyms that are accepted in that domain will clarify the meaning of
 the application. When that same code is removed from its domain-specific
 context, those abbreviations may become meaningless.
 
-In the example above, the package, Greenwich\_Mean\_Time, could be used
-in any application without loss of meaning. But the function Get\_GMT
+In the example above, the package, Greenwich_Mean_Time, could be used
+in any application without loss of meaning. But the function Get_GMT
 could easily be confused with some other acronym in a different domain.
 
 #### notes
 
 See Guideline 5.7.2 concerning the proper use of the renames clause. If
 a particular application makes extensive use of the
-Greenwich\_Mean\_Time domain, it may be appropriate to rename the
+Greenwich_Mean_Time domain, it may be appropriate to rename the
 package GMT within that application:
 
-with Greenwich\_Mean\_Time; ...
+with Greenwich_Mean_Time; ...
 
-`  package GMT renames Greenwich_Mean_Time;`
+` package GMT renames Greenwich_Mean_Time;`
 
 ### Generic Formal Parameters
 
 #### guideline
 
-  - Document the expected behavior of generic formal parameters just as
-    you document any package specification.
+- Document the expected behavior of generic formal parameters just as
+  you document any package specification.
 
 #### example
 
 The following example shows how a very general algorithm can be
 developed but must be clearly documented to be used:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 generic
    -- Index provides access to values in a structure.  For example,
@@ -293,12 +293,12 @@ you about errors that Ada does not catch as soon as you might like.
 
 #### guideline
 
-  - Use named numbers and static expressions to allow multiple
-    dependencies to be linked to a small number of symbols.
+- Use named numbers and static expressions to allow multiple
+  dependencies to be linked to a small number of symbols.
 
 #### example
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 procedure Disk_Driver is
    -- In this procedure, a number of important disk parameters are
@@ -335,14 +335,14 @@ using error-prone comments.
 
 #### guideline
 
-  - Use unconstrained array types for array formal parameters and array
-    return values.
-  - Make the size of local variables depend on actual parameter size,
-    where appropriate.
+- Use unconstrained array types for array formal parameters and array
+  return values.
+- Make the size of local variables depend on actual parameter size,
+  where appropriate.
 
 #### example
 
-``` ada
+```ada
    ...
    type Vector is array (Vector_Index range <>) of Element;
    type Matrix is array
@@ -368,22 +368,22 @@ changes in local variables are taken care of automatically.
 
 #### guideline
 
-  - Minimize the number of assumptions made by a unit.
-  - For assumptions that cannot be avoided, use subtypes or constraints
-    to automatically enforce conformance.
-  - For assumptions that cannot be automatically enforced by subtypes,
-    add explicit checks to the code.
-  - Document all assumptions.
-  - If the code depends upon the implementation of a specific Special
-    Needs Annex for proper operation, document this assumption in the
-    code.
+- Minimize the number of assumptions made by a unit.
+- For assumptions that cannot be avoided, use subtypes or constraints
+  to automatically enforce conformance.
+- For assumptions that cannot be automatically enforced by subtypes,
+  add explicit checks to the code.
+- Document all assumptions.
+- If the code depends upon the implementation of a specific Special
+  Needs Annex for proper operation, document this assumption in the
+  code.
 
 #### example
 
 The following poorly written function documents but does not check its
 assumption:
 
-``` ada
+```ada
    -- Assumption:  BCD value is less than 4 digits.
    function Binary_To_BCD (Binary_Value : in     Natural)
      return BCD;
@@ -392,7 +392,7 @@ assumption:
 The next example enforces conformance with its assumption, making the
 checking automatic and the comment unnecessary:
 
-``` ada
+```ada
    subtype Binary_Values is Natural range 0 .. 9_999;
    function Binary_To_BCD (Binary_Value : in     Binary_Values)
      return BCD;
@@ -400,7 +400,7 @@ checking automatic and the comment unnecessary:
 
 The next example explicitly checks and documents its assumption:
 
-``` ada
+```ada
    ---------------------------------------------------------------------
    -- Out_Of_Range raised when BCD value exceeds 4  digits.
    function Binary_To_BCD (Binary_Value : in     Natural)
@@ -441,11 +441,11 @@ subtype the user may choose to select for an instantiation.
 
 #### guideline
 
-  - Use first subtypes when declaring generic formal objects of mode in
-    out.
-  - Beware of using subtypes as subtype marks when declaring parameters
-    or return values of generic formal subprograms.
-  - Use attributes rather than literal values.
+- Use first subtypes when declaring generic formal objects of mode in
+  out.
+- Beware of using subtypes as subtype marks when declaring parameters
+  or return values of generic formal subprograms.
+- Use attributes rather than literal values.
 
 #### example
 
@@ -455,7 +455,7 @@ also appears that parameters passed at run-time to the Put routine in
 any instantiation and values returned by the Get routine would be
 similarly constrained:
 
-``` ada
+```ada
    subtype Range_1_10 is Integer range 1 .. 10;
    ---------------------------------------------------------------------
    generic
@@ -470,7 +470,7 @@ similarly constrained:
 
 However, this is not the case. Given the following legal instantiation:
 
-``` ada
+```ada
    subtype Range_15_30 is Integer range 15 .. 30;
    Constrained_Object : Range_15_30 := 15;
    procedure Constrained_Put (Parameter : in     Range_15_30);
@@ -486,11 +486,11 @@ Object, Parameter, and the return value of Get are constrained to the
 range 15..30. Thus, for example, if the body of the generic package
 contains an assignment statement:
 
-``` ada
+```ada
 Object := 1;
 ```
 
-Constraint\_Error is raised when this instantiation is executed.
+Constraint_Error is raised when this instantiation is executed.
 
 #### rationale
 
@@ -528,7 +528,7 @@ constraint checking rule discussed in the above rationale. You can
 instantiate the generic formal type with any allowable subtype, and you
 are not guaranteed that this subtype is the first subtype:
 
-``` ada
+```ada
 generic
    type Object_Range is range <>;
    Objects : in out Object_Range;
@@ -538,7 +538,7 @@ package X is
 end X;
 ```
 
-You can instantiate the subtype Object\_Range with any Integer subtype,
+You can instantiate the subtype Object_Range with any Integer subtype,
 for example, Positive. However, the actual variable Object can be of
 Positive'Base, i.e., Integer and its value are not guaranteed to be
 greater than 0.
@@ -547,12 +547,12 @@ greater than 0.
 
 #### guideline
 
-  - Be careful about overloading the names of subprograms exported by
-    the same generic package.
+- Be careful about overloading the names of subprograms exported by
+  the same generic package.
 
 #### example
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 generic
    type Item is limited private;
@@ -577,12 +577,12 @@ unambiguous names to all subprograms. See the Ada Reference Manual
 
 #### guideline
 
-  - Within a specification , document any tasks that would be activated
-    by with'ing the specification and by using any part of the
-    specification.
-  - Document which generic formal parameters are accessed from a task
-    hidden inside the generic unit.
-  - Document any multithreaded components.
+- Within a specification , document any tasks that would be activated
+  by with'ing the specification and by using any part of the
+  specification.
+- Document which generic formal parameters are accessed from a task
+  hidden inside the generic unit.
+- Document any multithreaded components.
 
 #### rationale
 
@@ -608,18 +608,18 @@ specification.
 
 #### guideline
 
-  - Propagate exceptions out of reusable parts. Handle exceptions within
-    reusable parts only when you are certain that the handling is
-    appropriate in all circumstances.
-  - Propagate exceptions raised by generic formal subprograms after
-    performing any cleanup necessary to the correct operation of future
-    invocations of the generic instantiation.
-  - Leave state variables in a valid state when raising an exception.
-  - Leave parameters unmodified when raising an exception.
+- Propagate exceptions out of reusable parts. Handle exceptions within
+  reusable parts only when you are certain that the handling is
+  appropriate in all circumstances.
+- Propagate exceptions raised by generic formal subprograms after
+  performing any cleanup necessary to the correct operation of future
+  invocations of the generic instantiation.
+- Leave state variables in a valid state when raising an exception.
+- Leave parameters unmodified when raising an exception.
 
 #### example
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 generic
    type Number is limited private;
@@ -731,18 +731,18 @@ hiding, it is easier to adapt in unforeseen ways.
 
 #### guideline
 
-  - Provide core functionality in a reusable part or set of parts so
-    that the functionality in this abstraction can be meaningfully
-    extended by its reusers.
-  - More specifically, provide initialization and finalization
-    procedures for every data structure that may contain dynamic data.
-  - For data structures needing initialization and finalization,
-    consider deriving them, when possible, from the types
-    Ada.Finalization.Controlled or Ada.Finalization.Limited\_Controlled.
+- Provide core functionality in a reusable part or set of parts so
+  that the functionality in this abstraction can be meaningfully
+  extended by its reusers.
+- More specifically, provide initialization and finalization
+  procedures for every data structure that may contain dynamic data.
+- For data structures needing initialization and finalization,
+  consider deriving them, when possible, from the types
+  Ada.Finalization.Controlled or Ada.Finalization.Limited_Controlled.
 
 #### example
 
-``` ada
+```ada
    Incoming : Queue;
    ...
    Set_Initial (Incoming);     -- initialization operation
@@ -780,7 +780,7 @@ structures become dynamic, the applications that are sensitive to these
 concerns can be easily adapted.
 
 The predefined types Ada.Finalization.Controlled or
-Ada.Finalization.Limited\_Controlled provide automatic, user-definable
+Ada.Finalization.Limited_Controlled provide automatic, user-definable
 initialization, adjustment, and finalization procedures. When you
 declare controlled types and objects, you are guaranteed that the
 compiler will insert the necessary calls to initialization, adjustment,
@@ -797,7 +797,7 @@ When that is not possible, it should be supplied with initialization
 operations. In any case, it needs finalization operations. One way to
 supply the initialization and finalization operations is to derive the
 abstraction from the predefined types Ada.Finalization.Controlled or
-Ada.Finalization.Limited\_Controlled. Wherever possible, query
+Ada.Finalization.Limited_Controlled. Wherever possible, query
 operations should be provided to determine when limits are about to be
 exceeded, so that the user can avoid causing exceptions to be raised.
 
@@ -820,10 +820,10 @@ are redundant in this application.
 
 #### guideline
 
-  - Use generic units to avoid code duplication.
-  - Parameterize generic units for maximum adaptability.
-  - Reuse common instantiations of generic units, as well as the generic
-    units themselves.
+- Use generic units to avoid code duplication.
+- Parameterize generic units for maximum adaptability.
+- Reuse common instantiations of generic units, as well as the generic
+  units themselves.
 
 #### rationale
 
@@ -880,20 +880,20 @@ See also Guideline 9.3.5.
 
 #### guideline
 
-  - Consider using a limited private type for a generic formal type when
-    you do not need assignment on objects of the type inside the generic
-    body.
-  - Consider using a nonlimited private type for a generic formal type
-    when you need normal assignment on objects of the type inside the
-    body of the generic.
-  - Consider using a formal tagged type derived from
-    Ada.Finalization.Controlled when you need to enforce special
-    assignment semantics on objects of the type in the body of the
-    generic.
-  - Export the least restrictive type that maintains the integrity of
-    the data and abstraction while allowing alternate implementations.
-  - Consider using a limited private abstract type for generic formal
-    types of a generic that extends a formal private tagged type.
+- Consider using a limited private type for a generic formal type when
+  you do not need assignment on objects of the type inside the generic
+  body.
+- Consider using a nonlimited private type for a generic formal type
+  when you need normal assignment on objects of the type inside the
+  body of the generic.
+- Consider using a formal tagged type derived from
+  Ada.Finalization.Controlled when you need to enforce special
+  assignment semantics on objects of the type in the body of the
+  generic.
+- Export the least restrictive type that maintains the integrity of
+  the data and abstraction while allowing alternate implementations.
+- Consider using a limited private abstract type for generic formal
+  types of a generic that extends a formal private tagged type.
 
 #### example
 
@@ -901,7 +901,7 @@ The first example shows a case of a template providing only a data
 structure, a case in which assignment is clearly not needed in the body
 of the generic:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 generic
    type Element_Type is limited private;
@@ -920,7 +920,7 @@ end Generic_Doubly_Linked_Lists;
 The second example shows a template that composes new operations out of
 (nonassignment) operations passed as generic formal parameters:
 
-``` ada
+```ada
 generic
    type Element_Type is limited private;
    with procedure Process_Element (X : in out Element_Type);
@@ -950,7 +950,7 @@ end Generic_Composition;
 The third example shows how to use Ada's controlled types to provide
 special assignment semantics:
 
-``` ada
+```ada
 with Ada.Finalization;
 generic
    type Any_Element is new Ada.Finalization.Controlled with private;
@@ -1029,7 +1029,7 @@ again to achieve the desired mixin configuration.
 
 #### notes
 
-The predefined packages, Sequential\_IO and Direct\_IO, take private
+The predefined packages, Sequential_IO and Direct_IO, take private
 types. This will complicate I/O requirements for limited private types
 and should be considered during design.
 
@@ -1043,14 +1043,14 @@ the formal defines a new discriminant part with an access discriminant.
 
 #### guideline
 
-  - Use generic units to encapsulate algorithms independently of data
-    type.
+- Use generic units to encapsulate algorithms independently of data
+  type.
 
 #### example
 
 This is the specification of a generic sort procedure:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 generic
    type Element is private;
@@ -1068,7 +1068,7 @@ The generic body looks just like a regular procedure body and can make
 full use of the generic formal parameters in implementing the sort
 algorithm:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 procedure Generic_Sort (Data_To_Sort : in out Data) is
 begin
@@ -1089,7 +1089,7 @@ end Generic_Sort;
 
 The generic procedure can be instantiated as:
 
-``` ada
+```ada
    type Integer_Array is array (Positive range <>) of Integer;
    function Should_Precede (Left  : in     Integer;
                             Right : in     Integer)
@@ -1104,7 +1104,7 @@ The generic procedure can be instantiated as:
 
 or:
 
-``` ada
+```ada
    subtype String_80    is String (1 .. 80);
    type    String_Array is array (Positive range <>) of String_80;
    function Should_Precede (Left  : in     String_80;
@@ -1121,7 +1121,7 @@ or:
 
 and called as:
 
-``` ada
+```ada
    Integer_Array_1 : Integer_Array (1 .. 100);
    ...
    Sort (Integer_Array_1);
@@ -1129,7 +1129,7 @@ and called as:
 
 or:
 
-``` ada
+```ada
    String_Array_1  : String_Array  (1 .. 100);
    ...
    Sort (String_Array_1);
@@ -1143,17 +1143,17 @@ limited private type parameter so that it assumes as little as possible
 about the data type of the objects actually being operated on. It also
 takes Data as a generic formal parameter so that instantiations can have
 entire arrays passed to them for sorting. Finally, it explicitly
-requires the two operators that it needs to do the sort: Should\_Precede
+requires the two operators that it needs to do the sort: Should_Precede
 and Swap. The sort algorithm is encapsulated without reference to any
 data type. The generic can be instantiated to sort an array of any data
 type. 8.3.5 Using Generic Units for Data Abstraction
 
 #### guideline
 
-  - Consider using abstract data types (not to be confused with Ada's
-    abstract types) in preference to abstract data objects.
-  - Consider using generic units to implement abstract data types
-    independently of their component data type.
+- Consider using abstract data types (not to be confused with Ada's
+  abstract types) in preference to abstract data objects.
+- Consider using generic units to implement abstract data types
+  independently of their component data type.
 
 #### example
 
@@ -1163,7 +1163,7 @@ of each follows in the rationale section below. The first is an abstract
 data object (ADO), which can be used to encapsulate an abstract state
 machine. It encapsulates one stack of integers:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 package Bounded_Stack is
    subtype Element is Integer;
@@ -1182,7 +1182,7 @@ ADO by exporting the Stack type, which allows the user to declare any
 number of stacks of integers. Because multiple stacks may now exist, it
 is necessary to specify a Stack argument on calls to Push and Pop:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 package Bounded_Stack is
    subtype Element is Integer;
@@ -1207,7 +1207,7 @@ The third example is a parameterless generic abstract data object
 generic, so that the user can instantiate it multiple times to obtain
 multiple stacks of integers:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 generic
 package Bounded_Stack is
@@ -1225,11 +1225,11 @@ end Bounded_Stack;
 The fourth example is a slight variant on the third, still a GADO but
 with parameters. It differs from the third example by making the data
 type of the stack a generic parameter so that stacks of data types other
-than Integer can be created. Also, Maximum\_Stack\_Size has been made a
+than Integer can be created. Also, Maximum_Stack_Size has been made a
 generic parameter that defaults to 100 but can be specified by the user,
 rather than a constant defined by the package:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 generic
    type Element is private;
@@ -1249,7 +1249,7 @@ from the GADO in the fourth example in the same way that the ADT in the
 second example differed from the ADO in the first example; it exports
 the Stack type, which allows the user to declare any number of stacks:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 generic
    type Element is private;
@@ -1321,81 +1321,81 @@ nearly identical.
 
 Compare the body for the simplest version, the ADO:
 
------
+---
 
-package body Bounded\_Stack is
+package body Bounded_Stack is
 
-`  type Stack_Slots is array (Natural range <>) of Element;`  
-`  type Stack_Information is`  
-`     record`  
-`        Slots : Stack_Slots (1 .. Maximum_Stack_Size);`  
-`        Index : Natural := 0;`  
-`     end record;`  
-`  Stack : Stack_Information;`  
-`  ---------------------------------------------------------------------`  
-`  procedure Push (New_Element : in     Element) is`  
-`  begin`  
-`     if Stack.Index >= Maximum_Stack_Size then`  
-`        raise Overflow;`  
-`     end if;`  
-`     Stack.Index := Stack.Index + 1;`  
-`     Stack.Slots(Stack.Index) := New_Element;`  
-`  end Push;`  
-`  ---------------------------------------------------------------------`  
-`  procedure Pop (Top_Element :    out Element) is`  
-`  begin`  
-`     if Stack.Index <= 0 then`  
-`        raise Underflow;`  
-`     end if;`  
-`     Top_Element := Stack.Slots(Stack.Index);`  
-`     Stack.Index := Stack.Index - 1;`  
-`  end Pop;`  
-`  ---------------------------------------------------------------------`  
-`  ...`
+` type Stack_Slots is array (Natural range <>) of Element;`  
+` type Stack_Information is`  
+` record`  
+` Slots : Stack_Slots (1 .. Maximum_Stack_Size);`  
+` Index : Natural := 0;`  
+` end record;`  
+` Stack : Stack_Information;`  
+` ---------------------------------------------------------------------`  
+` procedure Push (New_Element : in Element) is`  
+` begin`  
+` if Stack.Index >= Maximum_Stack_Size then`  
+` raise Overflow;`  
+` end if;`  
+` Stack.Index := Stack.Index + 1;`  
+` Stack.Slots(Stack.Index) := New_Element;`  
+` end Push;`  
+` ---------------------------------------------------------------------`  
+` procedure Pop (Top_Element : out Element) is`  
+` begin`  
+` if Stack.Index <= 0 then`  
+` raise Underflow;`  
+` end if;`  
+` Top_Element := Stack.Slots(Stack.Index);`  
+` Stack.Index := Stack.Index - 1;`  
+` end Pop;`  
+` ---------------------------------------------------------------------`  
+` ...`
 
-end Bounded\_Stack;
+end Bounded_Stack;
 
------
+---
 
 with the body for the most powerful and flexible version, the GADT:
 
------
+---
 
-package body Bounded\_Stack is
+package body Bounded_Stack is
 
-`  type Stack_Slots is array (Natural range <>) of Element;`  
-`  type Stack_Information is`  
-`     record`  
-`        Slots : Stack_Slots (1 .. Maximum_Stack_Size);`  
-`        Index : Natural := 0;`  
-`     end record;`  
-`  ---------------------------------------------------------------------`  
-`  procedure Push (On_Top      : in out Stack;`  
-`                  New_Element : in     Element) is`  
-`  begin`  
-`     if On_Top.Index >= Maximum_Stack_Size then`  
-`        raise Overflow;`  
-`     end if;`  
-`     On_Top.Index := On_Top.Index + 1;`  
-`     On_Top.Slots(On_Top.Index) := New_Element;`  
-`  end Push;`  
-`  ---------------------------------------------------------------------`  
-`  procedure Pop (From_Top    : in out Stack;`  
-`                 Top_Element :    out Element) is`  
-`  begin`  
-`     if From_Top.Index <= 0 then`  
-`        raise Underflow;`  
-`     end if;`  
-`     Top_Element := From_Top.Slots(From_Top.Index);`
+` type Stack_Slots is array (Natural range <>) of Element;`  
+` type Stack_Information is`  
+` record`  
+` Slots : Stack_Slots (1 .. Maximum_Stack_Size);`  
+` Index : Natural := 0;`  
+` end record;`  
+` ---------------------------------------------------------------------`  
+` procedure Push (On_Top : in out Stack;`  
+` New_Element : in Element) is`  
+` begin`  
+` if On_Top.Index >= Maximum_Stack_Size then`  
+` raise Overflow;`  
+` end if;`  
+` On_Top.Index := On_Top.Index + 1;`  
+` On_Top.Slots(On_Top.Index) := New_Element;`  
+` end Push;`  
+` ---------------------------------------------------------------------`  
+` procedure Pop (From_Top : in out Stack;`  
+` Top_Element : out Element) is`  
+` begin`  
+` if From_Top.Index <= 0 then`  
+` raise Underflow;`  
+` end if;`  
+` Top_Element := From_Top.Slots(From_Top.Index);`
 
-`     From_Top.Index := From_Top.Index - 1;`  
-`  end Pop;`  
-`  ---------------------------------------------------------------------`  
-`  ...`
+` From_Top.Index := From_Top.Index - 1;`  
+` end Pop;`  
+` ---------------------------------------------------------------------`  
+` ...`
 
-end Bounded\_Stack;
+end Bounded_Stack;
 
------
+---
 
 There is only one difference. The ADO declares a local object called
 Stack, while the GADT has one additional parameter (called Stack) on
@@ -1405,13 +1405,13 @@ each of the exported procedures Push and Pop.
 
 #### guideline
 
-  - Provide iterators for traversing complex data structures within
-    reusable parts.
-  - Consider providing both active and passive iterators.
-  - Protect the iterators from errors due to modification of the data
-    structure during iteration.
-  - Document the behavior of the iterators when the data structure is
-    modified during traversal.
+- Provide iterators for traversing complex data structures within
+  reusable parts.
+- Consider providing both active and passive iterators.
+- Protect the iterators from errors due to modification of the data
+  structure during iteration.
+- Document the behavior of the iterators when the data structure is
+  modified during traversal.
 
 #### example
 
@@ -1429,7 +1429,7 @@ structure (Booch 1987).
 The first example shows a generic package that defines an abstract list
 data type, with both active and passive iterators for traversing a list:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 generic
    type Element is limited private;
@@ -1463,7 +1463,7 @@ end Unbounded_List;
 
 After instantiating the generic package and declaring a list as:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 with Unbounded_List;
 procedure List_User is
@@ -1476,7 +1476,7 @@ procedure List_User is
 the passive iterator is instantiated, specifying the name of the routine
 that should be called for each list element when the iterator is called.
 
-``` ada
+```ada
    ---------------------------------------------------------------------
    procedure Process_Employee (Each : in out Employee) is
    begin
@@ -1490,7 +1490,7 @@ that should be called for each list element when the iterator is called.
 
 The passive iterator can then be called as:
 
-``` ada
+```ada
 begin  -- List_User
    Process_All (Employee_List);
 end List_User;
@@ -1500,7 +1500,7 @@ end List_User;
 Alternatively, the active iterator can be used without the second
 instantiation required by the passive iterator:
 
-``` ada
+```ada
    Iterator         : Roster.Iterator;
    Current_Employee : Employee;
    procedure Process_Employee (Each : in     Employee) is separate;
@@ -1523,7 +1523,7 @@ end List_User;
 The second example shows a code excerpt from Rationale (1995, §3.7.1) on
 how to construct iterators using access discriminants:
 
-``` ada
+```ada
 generic
    type Element is private;
 package Sets is
@@ -1574,7 +1574,7 @@ which the current element belongs.
 The third example uses code fragments from Rationale (1995, §4.4.4) to
 show an iterator using type extension and dispatching:
 
-``` ada
+```ada
 type Element is ...
 package Sets is
    type Set is limited private;
@@ -1601,7 +1601,7 @@ end Sets;
 
 The general purpose iterator looks like this:
 
-``` ada
+```ada
 package Sets.Something is
    procedure Do_Something (S : Set; P : Parameters);
 end Sets.Something;
@@ -1711,14 +1711,14 @@ approach, however, because you cannot use it to create a general purpose
 iterator. Anonymous access to subprogram parameters is not allowed in
 Ada; thus, the following fragment is illegal:
 
-``` ada
+```ada
 procedure Iterate (C      : Collection;
                    Action : access procedure (E : in out Element));
 ```
 
 The formal parameter Action must be of a named access subtype, as in:
 
-``` ada
+```ada
 type Action_Type is access procedure (E : in out Element);
 procedure Iterate (C      : Collection;
                    Action : Action_Type);
@@ -1736,15 +1736,15 @@ Rationale (1995, §3.7.1 and §4.4.4), Ross (1989), and Booch (1987).
 
 #### guideline
 
-  - Localize the currency symbol, digits separator, radix mark, and fill
-    character in picture output.
-  - Consider using the \# character in picture layouts so that the
-    edited numeric output lengths are invariant across currency symbols
-    of different lengths.
+- Localize the currency symbol, digits separator, radix mark, and fill
+  character in picture output.
+- Consider using the \# character in picture layouts so that the
+  edited numeric output lengths are invariant across currency symbols
+  of different lengths.
 
 #### example
 
-``` ada
+```ada
 with Ada.Text_IO.Editing;
 package Currency is
 
@@ -1775,7 +1775,7 @@ procedure Test_Picture_Editing is
    DM_Amount     : Marks;
    Dollar_Amount : Dollars;
 
-   Amount_Picture : constant Ada.Text_IO.Editing.Picture 
+   Amount_Picture : constant Ada.Text_IO.Editing.Picture
       := Ada.Text_IO.Editing.To_Picture ("##ZZ_ZZZ_ZZ9.99");
 
 begin   -- Test_Picture_Editing
@@ -1788,7 +1788,7 @@ begin   -- Test_Picture_Editing
 
    Dollar_Output.Put (Item => Dollar_Amount,
                       Pic  => Amount_Picture);
-   
+
 end Test_Picture_Editing;
 ```
 
@@ -1809,9 +1809,9 @@ impact of change in adapting the financial package.
 
 #### guideline
 
-  - Consider using abstract tagged types and generics to define reusable
-    units of functionality that can be "mixed into" core abstractions
-    (also known as mixins).
+- Consider using abstract tagged types and generics to define reusable
+  units of functionality that can be "mixed into" core abstractions
+  (also known as mixins).
 
 #### example
 
@@ -1819,7 +1819,7 @@ Note the use of an abstract tagged type as a generic formal parameter
 and as the exported extended type in the pattern that follows, excerpted
 from the Rationale (1995, §4.6.2):
 
-``` ada
+```ada
 generic
    type S is abstract tagged private;
 package P is
@@ -1837,7 +1837,7 @@ The following code shows how the generic might be instantiated to
 "mixin" the desired features in the final type extension. See also
 Guideline 9.5.1 for a related example of code.
 
-``` ada
+```ada
 -- Assume that packages P1, P2, P3, and P4 are generic packages which take a tagged
 -- type as generic formal type parameter and which export a tagged type T
 package Q is
@@ -1898,11 +1898,11 @@ occur when it provides a strong benefit perceptible to the user.
 
 #### guideline
 
-  - Consider structuring subsystems so that operations that are only
-    used in a particular context are in different child packages than
-    operations used in a different context.
-  - Consider declaring context-independent functionality in the parent
-    package and context-dependent functionality in child packages.
+- Consider structuring subsystems so that operations that are only
+  used in a particular context are in different child packages than
+  operations used in a different context.
+- Consider declaring context-independent functionality in the parent
+  package and context-dependent functionality in child packages.
 
 #### rationale
 
@@ -1923,19 +1923,19 @@ See also Guidelines 4.1.6 and 8.3.1.
 
 #### guideline
 
-  - Minimize with clauses on reusable parts, especially on their
-    specifications.
-  - Consider using generic parameters instead of with statements to
-    reduce the number of context clauses on a reusable part.
-  - Consider using generic formal package parameters to import directly
-    all the types and operations defined in an instance of a preexisting
-    generic.
+- Minimize with clauses on reusable parts, especially on their
+  specifications.
+- Consider using generic parameters instead of with statements to
+  reduce the number of context clauses on a reusable part.
+- Consider using generic formal package parameters to import directly
+  all the types and operations defined in an instance of a preexisting
+  generic.
 
 #### example
 
 A procedure like the following:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 with Package_A;
 procedure Produce_And_Store_A is
@@ -1952,7 +1952,7 @@ end Produce_And_Store_A;
 
 can be rewritten as a generic unit:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 generic
    with procedure Produce (...);
@@ -1973,7 +1973,7 @@ end Produce_And_Store;
 
 and then instantiated:
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 with Package_A;
 with Produce_And_Store;
@@ -1999,22 +1999,22 @@ generic formal parameters instead of with statements, as shown in the
 example above. If the units in a library are too tightly coupled, then
 no single part can be reused without reusing most or all of the library.
 
-The first (nongeneric) version of Produce\_And\_Store\_A above is
-difficult to reuse because it depends on Package\_A that may not be
+The first (nongeneric) version of Produce_And_Store_A above is
+difficult to reuse because it depends on Package_A that may not be
 general purpose or generally available. If the operation
-Produce\_And\_Store has reuse potential that is reduced by this
+Produce_And_Store has reuse potential that is reduced by this
 dependency, a generic unit and an instantiation should be produced as
-shown above. The with clause for Package\_A has been moved from the
-Produce\_And\_Store generic procedure, which encapsulates the reusable
-algorithm to the Produce\_And\_Store\_A instantiation. Instead of naming
+shown above. The with clause for Package_A has been moved from the
+Produce_And_Store generic procedure, which encapsulates the reusable
+algorithm to the Produce_And_Store_A instantiation. Instead of naming
 the package that provides the required operations, the generic unit
 simply lists the required operations themselves. This increases the
 independence and reusability of the generic unit.
 
 This use of generic formal parameters in place of with clauses also
 allows visibility at a finer granularity. The with clause on the
-nongeneric version of Produce\_And\_Store\_A makes all of the contents
-of Package\_A visible to Produce\_And\_Store\_A, while the generic
+nongeneric version of Produce_And_Store_A makes all of the contents
+of Package_A visible to Produce_And_Store_A, while the generic
 parameters on the generic version make only the Produce and Store
 operations available to the generic instantiation.
 
@@ -2031,12 +2031,12 @@ another.
 
 #### guideline
 
-  - In the specification of a generic library unit, use pragma
-    Elaborate\_Body.
+- In the specification of a generic library unit, use pragma
+  Elaborate_Body.
 
 #### example
 
-``` ada
+```ada
 ---------------------------------------------------------------------------
 generic
    ...
@@ -2067,23 +2067,23 @@ that you elaborate the body of the generic being instantiated before
 elaborating the instantiation itself. Because a generic library unit
 body may be compiled after an instantiation of that generic, the body
 may not necessarily be elaborated at the time of the instantiation,
-causing a Program\_Error. Using pragma Elaborate\_Body avoids this by
+causing a Program_Error. Using pragma Elaborate_Body avoids this by
 requiring that the generic unit body be elaborated immediately after the
 specification, whatever the compilation order.
 
 When there is clear requirement for a recursive dependency, you should
-use pragma Elaborate\_Body. This situation arises, for example, when you
+use pragma Elaborate_Body. This situation arises, for example, when you
 have a recursive dependency (i.e., package A's body depends on package
 B's specification and package B's body depends on package A's
 specification).
 
 #### notes
 
-Pragma Elaborate\_All controls the order of elaboration of one unit with
+Pragma Elaborate_All controls the order of elaboration of one unit with
 respect to another. This is another way of coupling units and should be
 avoided when possible in reusable parts because it restricts the number
 of configurations in which the reusable parts can be combined.
-Recognize, however, that pragma Elaborate\_All provides a better
+Recognize, however, that pragma Elaborate_All provides a better
 guarantee of elaboration order because if using this pragma uncovers
 elaboration problems, they will be reported at link time (as opposed to
 a run-time execution error).
@@ -2091,15 +2091,15 @@ a run-time execution error).
 Any time you call a subprogram (typically a function) during the
 elaboration of a library unit, the body of the subprogram must have been
 elaborated before the library unit. You can ensure this elaboration
-happens by adding a pragma Elaborate\_Body for the unit containing the
+happens by adding a pragma Elaborate_Body for the unit containing the
 function. If, however, that function calls other functions, then it is
-safer to put a pragma Elaborate\_All on the unit containing the
+safer to put a pragma Elaborate_All on the unit containing the
 function.
 
 For a discussion of the pragmas Pure and Preelaborate, see also the Ada
 Reference Manual (1995, §10.2.1) and the Rationale (1995, §10.3). If you
 use either pragma Pure or Preelaborate, you will not need the pragma
-Elaborate\_Body.
+Elaborate_Body.
 
 The idea of a registry is fundamental to many object-oriented
 programming frameworks. Because other library units will need to call it
@@ -2114,8 +2114,8 @@ The root types should not themselves depend on the registry. See Chapter
 
 #### guideline
 
-  - Create families of generic or other parts with similar
-    specifications.
+- Create families of generic or other parts with similar
+  specifications.
 
 #### example
 
@@ -2147,12 +2147,12 @@ implementations).
 
 #### guideline
 
-  - Structure reusable code to take advantage of dead code removal by
-    the compiler.
+- Structure reusable code to take advantage of dead code removal by
+  the compiler.
 
 #### example
 
-``` ada
+```ada
 ------------------------------------------------------------------------
 package Matrix_Math is
    ...
@@ -2207,7 +2207,7 @@ code if necessary.
 
 #### guideline
 
-  - Write table-driven reusable parts wherever possible and appropriate.
+- Write table-driven reusable parts wherever possible and appropriate.
 
 #### example
 
@@ -2246,13 +2246,13 @@ being sought or looked up.
 
 #### guideline
 
-  - Use the predefined packages for string handling.
+- Use the predefined packages for string handling.
 
 #### example
 
 Writing code such as the following is no longer necessary in Ada 95:
 
-``` ada
+```ada
 function Upper_Case (S : String) return String is
 
    subtype Lower_Case_Range is Character range 'a'..'z';
@@ -2289,14 +2289,14 @@ end Trim;
 
 Assuming a variable S of type String, the following expression:
 
-``` ada
+```ada
 Upper_Case(Trim(S))
 ```
 
 can now be replaced by more portable and preexisting language-defined
 operations such as:
 
-``` ada
+```ada
 with Ada.Characters.Handling;  use Ada.Characters.Handling;
 with Ada.Strings;              use Ada.Strings;
 with Ada.Strings.Fixed;        use Ada.Strings.Fixed;
@@ -2319,14 +2319,14 @@ packages.
 
 #### guideline
 
-  - Consider using hierarchies of tagged types to promote generalization
-    of software for reuse.
-  - Consider using a tagged type hierarchy to decouple a generalized
-    algorithm from the details of dependency on specific types.
+- Consider using hierarchies of tagged types to promote generalization
+  of software for reuse.
+- Consider using a tagged type hierarchy to decouple a generalized
+  algorithm from the details of dependency on specific types.
 
 #### example
 
-``` ada
+```ada
 with Wage_Info;
 package Personnel is
    type Employee is abstract tagged limited private;
@@ -2359,19 +2359,19 @@ end Personnel.Full_Time;
 
 Given the following array declaration:
 
-``` ada
+```ada
 type Employee_List is array (Positive range <>) of Personnel.Employee_Ptr;
 ```
 
 you can write a procedure that computes the wage of each employee,
 regardless of the different types of employees that you create. The
-Employee\_List consists of an array of pointers to the various kinds of
-employees, each of which has an individual Compute\_Wage procedure. (The
-primitive Compute\_Wage is declared as an abstract procedure and,
+Employee_List consists of an array of pointers to the various kinds of
+employees, each of which has an individual Compute_Wage procedure. (The
+primitive Compute_Wage is declared as an abstract procedure and,
 therefore, must be overridden by all descendants.) You will not need to
 modify the payroll code as you specialize the kinds of employees:
 
-``` ada
+```ada
 procedure Compute_Payroll (Who : Employee_List) is
 begin -- Compute_Payroll
    for E in Who'Range loop
@@ -2407,138 +2407,138 @@ See also Guidelines 9.2, 9.3.1, 9.3.5, and 9.4.1.
 
 ### understanding and clarity
 
-  - Select the least restrictive names possible for reusable parts and
-    their identifiers.
-  - Select the generic name to avoid conflicting with the naming
-    conventions of instantiations of the generic.
-  - Use names that indicate the behavioral characteristics of the
-    reusable part, as well as its abstraction .
-  - Do not use abbreviations in identifier or unit names.
-  - Document the expected behavior of generic formal parameters just as
-    you document any package specification.
+- Select the least restrictive names possible for reusable parts and
+  their identifiers.
+- Select the generic name to avoid conflicting with the naming
+  conventions of instantiations of the generic.
+- Use names that indicate the behavioral characteristics of the
+  reusable part, as well as its abstraction .
+- Do not use abbreviations in identifier or unit names.
+- Document the expected behavior of generic formal parameters just as
+  you document any package specification.
 
 ### robustness
 
-  - Use named numbers and static expressions to allow multiple
-    dependencies to be linked to a small number of symbols.
-  - Use unconstrained array types for array formal parameters and array
-    return values.
-  - Make the size of local variables depend on actual parameter size,
-    where appropriate.
-  - Minimize the number of assumptions made by a unit.
-  - For assumptions that cannot be avoided, use subtypes or constraints
-    to automatically enforce conformance.
-  - For assumptions that cannot be automatically enforced by subtypes,
-    add explicit checks to the code.
-  - Document all assumptions.
-  - If the code depends upon the implementation of a specific Special
-    Needs Annex for proper operation, document this assumption in the
-    code.
-  - Use first subtypes when declaring generic formal objects of mode in
-    out.
-  - Beware of using subtypes as subtype marks when declaring parameters
-    or return values of generic formal subprograms.
-  - Use attributes rather than literal values.
-  - Be careful about overloading the names of subprograms exported by
-    the same generic package.
-  - Within a specification, document any tasks that would be activated
-    by with'ing the specification and by using any part of the
-    specification.
-  - Document which generic formal parameters are accessed from a task
-    hidden inside the generic unit.
-  - Document any multithreaded components.
-  - Propagate exceptions out of reusable parts. Handle exceptions within
-    reusable parts only when you are certain that the handling is
-    appropriate in all circumstances.
-  - Propagate exceptions raised by generic formal subprograms after
-    performing any cleanup necessary to the correct operation of future
-    invocations of the generic instantiation.
-  - Leave state variables in a valid state when raising an exception.
-  - Leave parameters unmodified when raising an exception.
+- Use named numbers and static expressions to allow multiple
+  dependencies to be linked to a small number of symbols.
+- Use unconstrained array types for array formal parameters and array
+  return values.
+- Make the size of local variables depend on actual parameter size,
+  where appropriate.
+- Minimize the number of assumptions made by a unit.
+- For assumptions that cannot be avoided, use subtypes or constraints
+  to automatically enforce conformance.
+- For assumptions that cannot be automatically enforced by subtypes,
+  add explicit checks to the code.
+- Document all assumptions.
+- If the code depends upon the implementation of a specific Special
+  Needs Annex for proper operation, document this assumption in the
+  code.
+- Use first subtypes when declaring generic formal objects of mode in
+  out.
+- Beware of using subtypes as subtype marks when declaring parameters
+  or return values of generic formal subprograms.
+- Use attributes rather than literal values.
+- Be careful about overloading the names of subprograms exported by
+  the same generic package.
+- Within a specification, document any tasks that would be activated
+  by with'ing the specification and by using any part of the
+  specification.
+- Document which generic formal parameters are accessed from a task
+  hidden inside the generic unit.
+- Document any multithreaded components.
+- Propagate exceptions out of reusable parts. Handle exceptions within
+  reusable parts only when you are certain that the handling is
+  appropriate in all circumstances.
+- Propagate exceptions raised by generic formal subprograms after
+  performing any cleanup necessary to the correct operation of future
+  invocations of the generic instantiation.
+- Leave state variables in a valid state when raising an exception.
+- Leave parameters unmodified when raising an exception.
 
 ### adaptability
 
-  - Provide core functionality in a reusable part or set of parts so
-    that the functionality in this abstraction can be meaningfully
-    extended by its reusers.
-  - More specifically, provide initialization and finalization
-    procedures for every data structure that may contain dynamic data.
-  - For data structures needing initialization and finalization,
-    consider deriving them, when possible, from the types
-    Ada.Finalization.Controlled or Ada.Finalization.Limited\_Controlled.
-  - Use generic units to avoid code duplication.
-  - Parameterize generic units for maximum adaptability.
-  - Reuse common instantiations of generic units, as well as the generic
-    units themselves.
-  - Consider using a limited private type for a generic formal type when
-    you do not need assignment on objects of the type inside the generic
-    body.
-  - Consider using a nonlimited private type for a generic formal type
-    when you need normal assignment on objects of the type inside the
-    body of the generic.
-  - Consider using a formal tagged type derived from
-    Ada.Finalization.Controlled when you need to enforce special
-    assignment semantics on objects of the type in the body of the
-    generic.
-  - Export the least restrictive type that maintains the integrity of
-    the data and abstraction while allowing alternate implementations.
-  - Consider using a limited private abstract type for generic formal
-    types of a generic that extends a formal private tagged type.
-  - Use generic units to encapsulate algorithms independently of data
-    type.
-  - Consider using abstract data types (not to be confused with Ada's
-    abstract types) in preference to abstract data objects.
-  - Consider using generic units to implement abstract data types
-    independently of their component data type.
-  - Provide iterators for traversing complex data structures within
-    reusable parts.
-  - Consider providing both active and passive iterators.
-  - Protect the iterators from errors due to modification of the data
-    structure during iteration.
-  - Document the behavior of the iterators when the data structure is
-    modified during traversal.
-  - Localize the currency symbol, digits separator, radix mark, and fill
-    character in picture output.
-  - Consider using the \# character in picture layouts so that the
-    edited numeric output lengths are invariant across currency symbols
-    of different lengths.
-  - Consider using abstract tagged types and generics to define reusable
-    units of functionality that can be "mixed into" core abstractions
-    (also known as mixins).
-  - Consider structuring subsystems so that operations that are only
-    used in a particular context are in different child packages than
-    operations used in a different context.
-  - Consider declaring context-independent functionality in the parent
-    package and context-dependent functionality in child packages.
+- Provide core functionality in a reusable part or set of parts so
+  that the functionality in this abstraction can be meaningfully
+  extended by its reusers.
+- More specifically, provide initialization and finalization
+  procedures for every data structure that may contain dynamic data.
+- For data structures needing initialization and finalization,
+  consider deriving them, when possible, from the types
+  Ada.Finalization.Controlled or Ada.Finalization.Limited_Controlled.
+- Use generic units to avoid code duplication.
+- Parameterize generic units for maximum adaptability.
+- Reuse common instantiations of generic units, as well as the generic
+  units themselves.
+- Consider using a limited private type for a generic formal type when
+  you do not need assignment on objects of the type inside the generic
+  body.
+- Consider using a nonlimited private type for a generic formal type
+  when you need normal assignment on objects of the type inside the
+  body of the generic.
+- Consider using a formal tagged type derived from
+  Ada.Finalization.Controlled when you need to enforce special
+  assignment semantics on objects of the type in the body of the
+  generic.
+- Export the least restrictive type that maintains the integrity of
+  the data and abstraction while allowing alternate implementations.
+- Consider using a limited private abstract type for generic formal
+  types of a generic that extends a formal private tagged type.
+- Use generic units to encapsulate algorithms independently of data
+  type.
+- Consider using abstract data types (not to be confused with Ada's
+  abstract types) in preference to abstract data objects.
+- Consider using generic units to implement abstract data types
+  independently of their component data type.
+- Provide iterators for traversing complex data structures within
+  reusable parts.
+- Consider providing both active and passive iterators.
+- Protect the iterators from errors due to modification of the data
+  structure during iteration.
+- Document the behavior of the iterators when the data structure is
+  modified during traversal.
+- Localize the currency symbol, digits separator, radix mark, and fill
+  character in picture output.
+- Consider using the \# character in picture layouts so that the
+  edited numeric output lengths are invariant across currency symbols
+  of different lengths.
+- Consider using abstract tagged types and generics to define reusable
+  units of functionality that can be "mixed into" core abstractions
+  (also known as mixins).
+- Consider structuring subsystems so that operations that are only
+  used in a particular context are in different child packages than
+  operations used in a different context.
+- Consider declaring context-independent functionality in the parent
+  package and context-dependent functionality in child packages.
 
 ### independence
 
-  - Minimize with clauses on reusable parts, especially on their
-    specifications.
-  - Consider using generic parameters instead of with statements to
-    reduce the number of context clauses on a reusable part.
-  - Consider using generic formal package parameters to import directly
-    all the types and operations defined in an instance of a preexisting
-    generic.
-  - In the specification of a generic library unit, use pragma
-    Elaborate\_Body.
-  - Create families of generic or other parts with similar
-    specifications.
-  - Structure reusable code to take advantage of dead code removal by
-    the compiler.
-  - Write table-driven reusable parts wherever possible and appropriate.
-  - Use the predefined packages for string handling.
-  - Consider using hierarchies of tagged types to promote generalization
-    of software for reuse.
-  - Consider using a tagged type hierarchy to decouple a generalized
-    algorithm from the details of dependency on specific types.
-:::note
+- Minimize with clauses on reusable parts, especially on their
+  specifications.
+- Consider using generic parameters instead of with statements to
+  reduce the number of context clauses on a reusable part.
+- Consider using generic formal package parameters to import directly
+  all the types and operations defined in an instance of a preexisting
+  generic.
+- In the specification of a generic library unit, use pragma
+  Elaborate_Body.
+- Create families of generic or other parts with similar
+  specifications.
+- Structure reusable code to take advantage of dead code removal by
+  the compiler.
+- Write table-driven reusable parts wherever possible and appropriate.
+- Use the predefined packages for string handling.
+- Consider using hierarchies of tagged types to promote generalization
+  of software for reuse.
+- Consider using a tagged type hierarchy to decouple a generalized
+  algorithm from the details of dependency on specific types.
+  :::note
 
 This page of the "Ada Quality and Style Guide" has been adapted from the
 original work at https://en.wikibooks.org/wiki/Ada_Style_Guide, which is
 licensed under the
 [Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/3.0/);
-additional terms may apply.  Page not endorsed by Wikibooks or the Ada
+additional terms may apply. Page not endorsed by Wikibooks or the Ada
 Style Guide Wikibook authors. This page is licensed under the same license
 as the original work.
 

@@ -36,14 +36,12 @@ yarn postinstall
 5. When you're satisfied with your work, send a [pull request][url-ghpr] to ask to
    have your work added.
 
-
 ## Ada Quality and Style Guide
 
 The guide is converted from [WiKi Book][style-guide].
 
 Don't edit `docs/style-guide/*.mdx` files.
 Use the [converter][style-converter] instead.
-
 
 [url-node]: https://nodejs.org/en/download/
 [url-yarn]: https://yarnpkg.com/getting-started/install

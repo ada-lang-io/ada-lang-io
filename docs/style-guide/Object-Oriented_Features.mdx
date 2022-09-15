@@ -15,36 +15,36 @@ more understandable. The essential characteristics of object-oriented
 programming are encapsulation, inheritance, and polymorphism. These are
 defined as follows in the Rationale (1995, §§4.1 and III.1.2):
 
-  - Inheritance  
-    A means for incrementally building new abstractions from an existing
-    one by "inheriting" their properties without disturbing the
-    implementation of the original abstraction or the existing clients.
-  - Multiple Inheritance  
-    The means of inheriting components and operations from two or more
-    parent abstractions.
-  - Mixin Inheritance  
-    Multiple inheritance in which one or more of the parent abstractions
-    cannot have instances of their own and exist only to provide a set
-    of properties for abstractions inheriting from them.
-  - Polymorphism  
-    A means of factoring out the differences among a collection of
-    abstractions, such that programs may be written in terms of the
-    common properties.
+- Inheritance  
+  A means for incrementally building new abstractions from an existing
+  one by "inheriting" their properties without disturbing the
+  implementation of the original abstraction or the existing clients.
+- Multiple Inheritance  
+  The means of inheriting components and operations from two or more
+  parent abstractions.
+- Mixin Inheritance  
+  Multiple inheritance in which one or more of the parent abstractions
+  cannot have instances of their own and exist only to provide a set
+  of properties for abstractions inheriting from them.
+- Polymorphism  
+  A means of factoring out the differences among a collection of
+  abstractions, such that programs may be written in terms of the
+  common properties.
 
 <!-- end list -->
 
-  - Static polymorphism is provided through the generic parameter
-    mechanism whereby a generic unit may be instantiated at compile time
-    with any type from a class of types.
-  - Dynamic polymorphism is provided through the use of so-called
-    class-wide types and the distinction is then made at runtime on the
-    basis of the value of the tag ("effectively a hidden discriminant
-    identifying the type" \[Rationale 1995, §II.1\]).
+- Static polymorphism is provided through the generic parameter
+  mechanism whereby a generic unit may be instantiated at compile time
+  with any type from a class of types.
+- Dynamic polymorphism is provided through the use of so-called
+  class-wide types and the distinction is then made at runtime on the
+  basis of the value of the tag ("effectively a hidden discriminant
+  identifying the type" \[Rationale 1995, §II.1\]).
 
 As stated in the Ada Reference Manual (1995, Annex N):
 
->A type has an associated set of values and a set of primitive
-operations that implement the fundamental aspects of its semantics.
+> A type has an associated set of values and a set of primitive
+> operations that implement the fundamental aspects of its semantics.
 
 A class is a set of types that is closed under derivation, which means
 that if a given type is in the class, then all types derived from that
@@ -106,14 +106,14 @@ then choose selectively whether to make only the name of the module
 
 #### guideline
 
-  - Consider using type extension when designing an is-a
-    (generalization/specialization) hierarchy.
-  - Use tagged types to preserve a common interface across differing
-    implementations (Taft 1995a).
-  - When defining a tagged type in a package, consider including a
-    definition of a general access type to the corresponding class-wide
-    type.
-  - In general, define only one tagged type per package.
+- Consider using type extension when designing an is-a
+  (generalization/specialization) hierarchy.
+- Use tagged types to preserve a common interface across differing
+  implementations (Taft 1995a).
+- When defining a tagged type in a package, consider including a
+  definition of a general access type to the corresponding class-wide
+  type.
+- In general, define only one tagged type per package.
 
 #### example
 
@@ -125,7 +125,7 @@ descendant types include points, circles, and arbitrary shapes. Except
 for points, these descendant types extend the root type with additional
 components; for example, the circle adds a radius component:
 
-``` ada
+```ada
 type Object is tagged
    record
       X_Coord : Float;
@@ -149,7 +149,7 @@ type Shape is new Object with
 The following is an example of general access type to the corresponding
 class-wide type:
 
-``` ada
+```ada
 package Employee is
    type Object is tagged limited private;
    type Reference is access all Object'class;
@@ -228,10 +228,10 @@ nonabstract operations on members of the hierarchy.
 
 #### guideline
 
-  - The implementation of the dispatching operations of each type in a
-    derivation class rooted in a tagged type T should conform to the
-    expected semantics of the corresponding dispatching operations of
-    the class-wide type T'Class.
+- The implementation of the dispatching operations of each type in a
+  derivation class rooted in a tagged type T should conform to the
+  expected semantics of the corresponding dispatching operations of
+  the class-wide type T'Class.
 
 #### example
 
@@ -244,7 +244,7 @@ derivation class without invalidating the existing transaction
 processing code. These are the important practical consequences of the
 design rule captured in the guideline:
 
-``` ada
+```ada
 with Database;
 package Transaction is
 
@@ -265,13 +265,13 @@ end Transaction;
 ```
 
 The precondition of Execute(T) for all T in Transaction.Object'Class is
-that Is\_Valid(T) is True. The postcondition is the T.Has\_Executed =
+that Is_Valid(T) is True. The postcondition is the T.Has_Executed =
 True. This model is trivially satisfied by the root type
 Transaction.Object.
 
 Consider the following derived type:
 
-``` ada
+```ada
 with Transaction;
 with Personnel;
 package Pay_Transaction is
@@ -289,17 +289,17 @@ package Pay_Transaction is
 end Pay_Transaction;
 ```
 
-The precondition for the specific operation Pay\_Transaction.Execute(T)
-is that Pay\_Transaction.Is\_Valid(T) is True, which is the same
+The precondition for the specific operation Pay_Transaction.Execute(T)
+is that Pay_Transaction.Is_Valid(T) is True, which is the same
 precondition as for the dispatching operation Execute on the class-wide
 type. (The actual validity check is different, but the statement of the
 "precondition" is the same.) The postcondition for
-Pay\_Transaction.Execute(T) includes T.Has\_Executed = True but also
+Pay_Transaction.Execute(T) includes T.Has_Executed = True but also
 includes the appropriate condition on T.Data for computation of pay.
 
 The class-wide transaction type can then be properly used as follows:
 
-``` ada
+```ada
 type Transaction_Reference is access all Transaction.Object'Class;
 type Transaction_List is array (Positive range <>) of Transaction_Reference;
 procedure Process (Action : in Transaction_List) is
@@ -320,10 +320,10 @@ begin
 end Process;
 ```
 
-If you had not defined the operation Is\_Valid on transactions, then the
+If you had not defined the operation Is_Valid on transactions, then the
 validity condition for pay computation (valid name and hours worked)
 would have to directly become the precondition for
-Pay\_Transaction.Execute. But this would be a "stronger" precondition
+Pay_Transaction.Execute. But this would be a "stronger" precondition
 than that on the class-wide dispatching operation, violating the
 guideline. As a result of this violation, there would be no way to
 guarantee the precondition of a dispatching call to Execute, leading to
@@ -334,8 +334,8 @@ be raised by an Execute operation when the transaction is not valid.
 This behavior becomes part of the semantic model for the class-wide
 type: the precondition for Execute(T) becomes simply True (i.e., always
 valid), but the postcondition becomes "either" the exception is not
-raised and Has\_Executed = True "or" the exception is raised and
-Has\_Executed = False. The implementations of Execute in all derived
+raised and Has_Executed = True "or" the exception is raised and
+Has_Executed = False. The implementations of Execute in all derived
 transaction types would then need to satisfy the new postcondition. It
 is important that the "same" exception be raised by "all"
 implementations because this is part of the expected semantic model of
@@ -343,7 +343,7 @@ the class-wide type.
 
 With the alternative approach, the above processing loop becomes:
 
-``` ada
+```ada
 procedure Process (Action : in Transaction_List) is
 begin
 
@@ -431,33 +431,33 @@ clients of the type.
 
 #### guideline
 
-  - Consider using a controlled type whenever a type allocates resources
-    that must be deallocated or otherwise "cleaned up" on destruction or
-    overwriting.
-  - Use a derivation from a controlled type in preference to providing
-    an explicit "cleanup" operation that must be called by clients of
-    the type.
-  - When overriding the adjustment and finalization procedures derived
-    from controlled types, define the finalization procedure to undo the
-    effects of the adjustment procedure.
-  - Derived type initialization procedures should call the
-    initialization procedure of their parent as part of their
-    type-specific initialization.
-  - Derived type finalization procedures should call the finalization
-    procedure of their parent as part of their type-specific
-    finalization.
-  - Consider deriving a data structure's components rather than the
-    enclosing data structure from a controlled type.
+- Consider using a controlled type whenever a type allocates resources
+  that must be deallocated or otherwise "cleaned up" on destruction or
+  overwriting.
+- Use a derivation from a controlled type in preference to providing
+  an explicit "cleanup" operation that must be called by clients of
+  the type.
+- When overriding the adjustment and finalization procedures derived
+  from controlled types, define the finalization procedure to undo the
+  effects of the adjustment procedure.
+- Derived type initialization procedures should call the
+  initialization procedure of their parent as part of their
+  type-specific initialization.
+- Derived type finalization procedures should call the finalization
+  procedure of their parent as part of their type-specific
+  finalization.
+- Consider deriving a data structure's components rather than the
+  enclosing data structure from a controlled type.
 
 #### example
 
 The following example demonstrates the use of controlled types in the
-implementation of a simple linked list. Because the Linked\_List type is
+implementation of a simple linked list. Because the Linked_List type is
 derived from Ada.Finalization.Controlled, the Finalize procedure will be
-called automatically when objects of the Linked\_List type complete
+called automatically when objects of the Linked_List type complete
 their scope of execution:
 
-``` ada
+```ada
 with Ada.Finalization;
 package Linked_List_Package is
    type Iterator is private;
@@ -549,14 +549,14 @@ the procedure.)
 
 #### guideline
 
-  - Consider using abstract types and operations in creating
-    classification schemes, for example, a taxonomy, in which only the
-    leaf objects will be meaningful in the application.
-  - Consider declaring root types and internal nodes in a type tree as
-    abstract.
-  - Consider using abstract types for generic formal derived types.
-  - Consider using abstract types to develop different implementations
-    of a single abstraction.
+- Consider using abstract types and operations in creating
+  classification schemes, for example, a taxonomy, in which only the
+  leaf objects will be meaningful in the application.
+- Consider declaring root types and internal nodes in a type tree as
+  abstract.
+- Consider using abstract types for generic formal derived types.
+- Consider using abstract types to develop different implementations
+  of a single abstraction.
 
 #### example
 
@@ -578,7 +578,7 @@ you ensure that any restrictions for a specialized account are
 implemented (e.g., how and when the account-specific fee structure is
 applied):
 
-``` ada
+```ada
 --------------------------------------------------------------------------
 package Bank_Account_Package is
 
@@ -655,7 +655,7 @@ See the abstract set package in Guideline 9.5.1 for an example of
 creating an abstraction with a single interface and the potential for
 multiple implementations. The example only shows one possible
 implementation; however, you could provide an alternate implementation
-of the Hashed\_Set abstraction using other data structures.
+of the Hashed_Set abstraction using other data structures.
 
 #### rationale
 
@@ -679,15 +679,15 @@ Abstract types and operations can help you resolve problems when your
 tagged type hierarchy violates the expected semantics of the class-wide
 type dispatching operations. The Rationale (1995, §4.2) explains:
 
->When building an abstraction that is to form the basis of a class
-of types, it is often convenient not to provide actual subprograms for
-the root type but just abstract subprograms which can be replaced when
-inherited. This is only allowed if the root type is declared as
-abstract; objects of an abstract type cannot exist. This technique
-enables common class-wide parts of a system to be written without being
-dependent on the properties of any specific type at all. Dispatching
-always works because it is known that there can never be any objects of
-the abstract type and so the abstract subprograms could never be called.
+> When building an abstraction that is to form the basis of a class
+> of types, it is often convenient not to provide actual subprograms for
+> the root type but just abstract subprograms which can be replaced when
+> inherited. This is only allowed if the root type is declared as
+> abstract; objects of an abstract type cannot exist. This technique
+> enables common class-wide parts of a system to be written without being
+> dependent on the properties of any specific type at all. Dispatching
+> always works because it is known that there can never be any objects of
+> the abstract type and so the abstract subprograms could never be called.
 
 See Guidelines 8.3.8 and 9.2.1.
 
@@ -733,22 +733,22 @@ semantics of the parent type.
 
 #### guideline
 
-  - Consider declaring a primitive abstract operation based on the
-    absence of a meaningful "default" behavior.
-  - Consider declaring a primitive nonabstract operation based on the
-    presence of a meaningful "default" behavior.
-  - When overriding an operation, the overriding subprogram should not
-    raise exceptions that are not known to the users of the overridden
-    subprogram.
-  - If redispatching is used in the implementation of the operations of
-    a type, with the specific intent that some of the redispatched-to
-    operations be overridden by specializations for the derived types,
-    then document this intent clearly in the specification as part of
-    the "interface" of a parent type with its derived types.
-  - When redispatching is used (for any reason) in the implementation of
-    a primitive operation of a tagged type, then document (in some
-    project-consistent way) this use in the body of the operation
-    subprogram so that it can be easily found during maintenance.
+- Consider declaring a primitive abstract operation based on the
+  absence of a meaningful "default" behavior.
+- Consider declaring a primitive nonabstract operation based on the
+  presence of a meaningful "default" behavior.
+- When overriding an operation, the overriding subprogram should not
+  raise exceptions that are not known to the users of the overridden
+  subprogram.
+- If redispatching is used in the implementation of the operations of
+  a type, with the specific intent that some of the redispatched-to
+  operations be overridden by specializations for the derived types,
+  then document this intent clearly in the specification as part of
+  the "interface" of a parent type with its derived types.
+- When redispatching is used (for any reason) in the implementation of
+  a primitive operation of a tagged type, then document (in some
+  project-consistent way) this use in the body of the operation
+  subprogram so that it can be easily found during maintenance.
 
 #### example
 
@@ -760,7 +760,7 @@ but you should not be able to make a square this way.) Instead, both
 Square and Rectangle should be derived from some common abstract type,
 such as:
 
-``` ada
+```ada
 Any_Rectangle:
 type Figure is abstract tagged
    record
@@ -907,12 +907,12 @@ about redispatching.
 
 #### guideline
 
-  - Consider using a class-wide operation (i.e., an operation with
-    parameter\[s\] of a class-wide type) when an operation can be
-    written, compiled, and tested without knowing all the possible
-    descendants of a given tagged type (Barnes 1996).
-  - Consider using a class-wide operation when you do not want an
-    operation to be inherited and/or overridden.
+- Consider using a class-wide operation (i.e., an operation with
+  parameter\[s\] of a class-wide type) when an operation can be
+  written, compiled, and tested without knowing all the possible
+  descendants of a given tagged type (Barnes 1996).
+- Consider using a class-wide operation when you do not want an
+  operation to be inherited and/or overridden.
 
 #### example
 
@@ -920,7 +920,7 @@ The following example is adapted from Barnes (1996) using the geometric
 objects from the example of Guideline 9.2.1 and declaring the following
 functions as primitives in the package specification:
 
-``` ada
+```ada
 
 function Area (O : in Object) return Float;
 
@@ -932,7 +932,7 @@ function Area (S : in Shape) return Float;
 A function for computing the moment of a force about a fulcrum can now
 be created using a class-wide type as follows:
 
-``` ada
+```ada
 
 function Moment (OC : Object'Class) return Float is
 begin
@@ -946,7 +946,7 @@ Object. Assuming that all derivations of type object have defined a
 function for Area, Moment will dispatch to the appropriate function when
 called. For example:
 
-``` ada
+```ada
 C : Circle;
 M : Float;
 
@@ -973,24 +973,24 @@ result a constructed object, i.e., an initialized instance of the type.
 
 #### guideline
 
-  - Avoid declaring a constructor as a primitive abstract operation.
-  - Use a primitive abstract operation to declare an initialization
-    function or constructor only when objects of the inheriting derived
-    types will not require additional parameters for initialization.
-  - Consider using access discriminants to provide parameters to default
-    initialization.
-  - Use constructors for explicit initialization.
-  - Consider splitting the initialization and construction of an object.
-  - Consider declaring a constructor operation in a child package.
-  - Consider declaring a constructor operation to return an access value
-    to the constructed object (Dewar 1995).
+- Avoid declaring a constructor as a primitive abstract operation.
+- Use a primitive abstract operation to declare an initialization
+  function or constructor only when objects of the inheriting derived
+  types will not require additional parameters for initialization.
+- Consider using access discriminants to provide parameters to default
+  initialization.
+- Use constructors for explicit initialization.
+- Consider splitting the initialization and construction of an object.
+- Consider declaring a constructor operation in a child package.
+- Consider declaring a constructor operation to return an access value
+  to the constructed object (Dewar 1995).
 
 #### example
 
 The following example illustrates the declaration of a constructor in a
 child package:
 
-``` ada
+```ada
 --------------------------------------------------------------------------
 package Game is
    type Game_Piece is tagged ...
@@ -1008,7 +1008,7 @@ end Game.Constructors;
 The following example shows how to split the initialization and
 construction of an object:
 
-``` ada
+```ada
 type Vehicle is tagged ...
 
 procedure Initialize (Self : in out Vehicle;
@@ -1090,16 +1090,16 @@ operation.
 
 #### guideline
 
-  - When you redefine the "=" operator on a tagged type, make sure that
-    it has the expected behavior in extensions of this type and override
-    it if necessary.
+- When you redefine the "=" operator on a tagged type, make sure that
+  it has the expected behavior in extensions of this type and override
+  it if necessary.
 
 #### example
 
 The following example is adapted from the discussion of equality and
 inheritance in Barnes (1996):
 
-``` ada
+```ada
 ----------------------------------------------------------------------------
 package Object_Package is
 
@@ -1226,22 +1226,22 @@ Equality, on the other hand, generally does the right thing.
 
 #### guideline
 
-  - Consider using class-wide programming to provide run-time, dynamic
-    polymorphism when constructing larger, reusable, extensible
-    frameworks.
-  - When possible, use class-wide programming rather than variant
-    records.
-  - Use class-wide programming to provide a consistent interface across
-    the set of types in the tagged type hierarchy (i.e., class).
-  - Consider using generics to define a new type in terms of an existing
-    type, either as an extension or as a container, collection, or
-    composite data structure.
-  - Avoid using type extensions for parameterized abstractions when
-    generics provide a more appropriate mechanism.
+- Consider using class-wide programming to provide run-time, dynamic
+  polymorphism when constructing larger, reusable, extensible
+  frameworks.
+- When possible, use class-wide programming rather than variant
+  records.
+- Use class-wide programming to provide a consistent interface across
+  the set of types in the tagged type hierarchy (i.e., class).
+- Consider using generics to define a new type in terms of an existing
+  type, either as an extension or as a container, collection, or
+  composite data structure.
+- Avoid using type extensions for parameterized abstractions when
+  generics provide a more appropriate mechanism.
 
 #### example
 
-``` ada
+```ada
   generic
      type Element is private;
   package Stack is
@@ -1293,12 +1293,12 @@ discussion of self-referential data structures.
 
 #### guideline
 
-  - Consider giving derived tagged types the same visibility to the
-    parent type as other clients of the parent.
-  - Define a derived tagged type in a child of the package that defines
-    the base type if the implementation of the derived type requires
-    greater visibility into the implementation of the base type than
-    other clients of the base type require.
+- Consider giving derived tagged types the same visibility to the
+  parent type as other clients of the parent.
+- Define a derived tagged type in a child of the package that defines
+  the base type if the implementation of the derived type requires
+  greater visibility into the implementation of the base type than
+  other clients of the base type require.
 
 #### example
 
@@ -1311,7 +1311,7 @@ greater visibility into the base types due to the differences in the
 data elements. This example is adapted from Barbey, Kempe, and
 Strohmeier (1994):
 
-``` ada
+```ada
 generic
    type Item_Type is private;
 package Generic_Stack is
@@ -1353,7 +1353,7 @@ private
    type Table_Type is array (Positive range <>) of Item_Type;
    type Stack_Type (Max : Positive) is new Abstract_Stack_Type with
       record
-         Table : Table_Type (1 .. Max); 
+         Table : Table_Type (1 .. Max);
       end record;
 end Generic_Stack.Generic_Bounded_Stack;
 ----------------------------------------------------------------------
@@ -1419,13 +1419,13 @@ packages, and access discriminants (Taft 1994).
 
 #### guideline
 
-  - Consider using type composition for implementation, as opposed to
-    interface, inheritance.
-  - Consider using a generic to "mix in" functionality to a derivative
-    of some core abstraction.
-  - Consider using access discriminants to support "full" multiple
-    inheritance where an object must be referenceable as an entity of
-    two or more distinct unrelated abstractions.
+- Consider using type composition for implementation, as opposed to
+  interface, inheritance.
+- Consider using a generic to "mix in" functionality to a derivative
+  of some core abstraction.
+- Consider using access discriminants to support "full" multiple
+  inheritance where an object must be referenceable as an entity of
+  two or more distinct unrelated abstractions.
 
 #### example
 
@@ -1435,9 +1435,9 @@ type whose interface inherits from one type and whose implementation
 inherits from another type. The second example shows how to enhance the
 functionality of a basic abstraction by mixing in new features.
 
-The abstract type Set\_Of\_Strings provides the interface to inherit:
+The abstract type Set_Of_Strings provides the interface to inherit:
 
-``` ada
+```ada
 
 type Set_Of_Strings is abstract tagged limited private;
 type Element_Index is new Natural;  -- Index within set.
@@ -1460,7 +1460,7 @@ procedure Intersect(
   -- Remove all elements of Removal_Set from Intersection_Set
   Intersection_Set : in out Set_Of_Strings;
   Removal_Set : Set_Of_Strings) is abstract;
-function Size(Set : Set_Of_Strings) return Element_Index 
+function Size(Set : Set_Of_Strings) return Element_Index
   is abstract;
   -- Return a count of the number of elements in the set
 function Index(
@@ -1498,12 +1498,12 @@ private
 
 In the package body, you define the bodies of the operations (i.e.,
 Enter, Remove,Combine, Size, etc.) using the operations available on
-Hash\_Table. You must also provide any necessary "glue" code.
+Hash_Table. You must also provide any necessary "glue" code.
 
-In this second example, the type Basic\_Window responds to various
+In this second example, the type Basic_Window responds to various
 events and calls:
 
-``` ada
+```ada
 
 type Basic_Window is tagged limited private;
 procedure Display(W : Basic_Window);
@@ -1514,7 +1514,7 @@ procedure Mouse_Click(W     : in out Basic_Window;
 
 You use mixins to add features such as labels, borders, menu bar, etc.:
 
-``` ada
+```ada
 generic
   type Some_Window is new Window with private;
   -- take in any descendant of Window
@@ -1540,7 +1540,7 @@ In the generic body, you implement any overridden operations as well as
 the new operations. For example, you could implement the overridden
 Display operation using some of the inherited operations:
 
-``` ada
+```ada
 procedure Display(W : Window_With_Label) is
 begin
     Display(Some_Window(W));
@@ -1560,7 +1560,7 @@ features, to create the desired window, you use a combination of generic
 instantiations and private type extension, as shown in the following
 code:
 
-``` ada
+```ada
 
   type My_Window is new Basic_Window with private;
   . . .
@@ -1580,11 +1580,11 @@ private
 
 The following example shows "full" multiple inheritance.
 
-Assume previous definition of packages for Savings\_Account and
-Checking\_Account. The following example shows the definition of an
+Assume previous definition of packages for Savings_Account and
+Checking_Account. The following example shows the definition of an
 interest-bearing checking account (NOW account):
 
-``` ada
+```ada
 with Savings_Account;
 with Checking_Account;
 package NOW_Account is
@@ -1632,7 +1632,7 @@ end NOW_Account;
 
 Another possibility is that the savings and checking accounts are both
 implemented based on a common Account abstraction, resulting in
-inheriting a Balance state twice for NOW\_Account.Object. To resolve
+inheriting a Balance state twice for NOW_Account.Object. To resolve
 this ambiguity, you need to use an abstract type hierarchy for the
 multiple inheritance of interface and separate mixins for the multiple
 inheritance of implementation.
@@ -1671,120 +1671,120 @@ heterogeneous data structuring techniques, discussed in Guideline 5.4.2.
 
 ### tagged type hierarchies
 
-  - Consider using type extension when designing an is-a
-    (generalization/specialization) hierarchy.
-  - Use tagged types to preserve a common interface across differing
-    implementations (Taft 1995a).
-  - When defining a tagged type in a package, consider including a
-    definition of a general access type to the corresponding class-wide
-    type.
-  - In general, define only one tagged type per package.
-  - The implementation of the dispatching operations of each type in a
-    derivation class rooted in a tagged type T should conform to the
-    expected semantics of the corresponding dispatching operations of
-    the class-wide type T'Class.
-  - Consider using a controlled type whenever a type allocates resources
-    that must be deallocated or otherwise "cleaned up" on destruction or
-    overwriting.
-  - Use a derivation from a controlled type in preference to providing
-    an explicit "cleanup" operation that must be called by clients of
-    the type.
-  - When overriding the adjustment and finalization procedures derived
-    from controlled types, define the finalization procedure to undo the
-    effects of the adjustment procedure.
-  - Derived type initialization procedures should call the
-    initialization procedure of their parent as part of their
-    type-specific initialization.
-  - Derived type finalization procedures should call the finalization
-    procedure of their parent as part of their type-specific
-    finalization.
-  - Consider deriving a data structure's components rather than the
-    enclosing data structure from a controlled type.
-  - Consider using abstract types and operations in creating
-    classification schemes, for example, a taxonomy, in which only the
-    leaf objects will be meaningful in the application.
-  - Consider declaring root types and internal nodes in a type tree as
-    abstract.
-  - Consider using abstract types for generic formal derived types.
-  - Consider using abstract types to develop different implementations
-    of a single abstraction.
+- Consider using type extension when designing an is-a
+  (generalization/specialization) hierarchy.
+- Use tagged types to preserve a common interface across differing
+  implementations (Taft 1995a).
+- When defining a tagged type in a package, consider including a
+  definition of a general access type to the corresponding class-wide
+  type.
+- In general, define only one tagged type per package.
+- The implementation of the dispatching operations of each type in a
+  derivation class rooted in a tagged type T should conform to the
+  expected semantics of the corresponding dispatching operations of
+  the class-wide type T'Class.
+- Consider using a controlled type whenever a type allocates resources
+  that must be deallocated or otherwise "cleaned up" on destruction or
+  overwriting.
+- Use a derivation from a controlled type in preference to providing
+  an explicit "cleanup" operation that must be called by clients of
+  the type.
+- When overriding the adjustment and finalization procedures derived
+  from controlled types, define the finalization procedure to undo the
+  effects of the adjustment procedure.
+- Derived type initialization procedures should call the
+  initialization procedure of their parent as part of their
+  type-specific initialization.
+- Derived type finalization procedures should call the finalization
+  procedure of their parent as part of their type-specific
+  finalization.
+- Consider deriving a data structure's components rather than the
+  enclosing data structure from a controlled type.
+- Consider using abstract types and operations in creating
+  classification schemes, for example, a taxonomy, in which only the
+  leaf objects will be meaningful in the application.
+- Consider declaring root types and internal nodes in a type tree as
+  abstract.
+- Consider using abstract types for generic formal derived types.
+- Consider using abstract types to develop different implementations
+  of a single abstraction.
 
 ### tagged type operations
 
-  - Consider declaring a primitive abstract operation based on the
-    absence of a meaningful "default" behavior.
-  - Consider declaring a primitive nonabstract operation based on the
-    presence of a meaningful "default" behavior.
-  - When overriding an operation, the overriding subprogram should not
-    raise exceptions that are not known to the users of the overridden
-    subprogram.
-  - If redispatching is used in the implementation of the operations of
-    a type, with the specific intent that some of the redispatched-to
-    operations be overridden by specializations for the derived types,
-    then document this intent clearly in the specification as part of
-    the "interface" of a parent type with its derived types.
-  - When redispatching is used (for any reason) in the implementation of
-    a primitive operation of a tagged type, then document (in some
-    project-consistent way) this use in the body of the operation
-    subprogram so that it can be easily found during maintenance.
-  - Consider using a class-wide operation (i.e., an operation with
-    parameter\[s\] of a class-wide type) when an operation can be
-    written, compiled, and tested without knowing all the possible
-    descendants of a given tagged type (Barnes 1996).
-  - Consider using a class-wide operation when you do not want an
-    operation to be inherited and/or overridden.
-  - Avoid declaring a constructor as a primitive abstract operation.
-  - Use a primitive abstract operation to declare an initialization
-    function or constructor only when objects of the inheriting derived
-    types will not require additional parameters for initialization.
-  - Consider using access discriminants to provide parameters to default
-    initialization.
-  - Use constructors for explicit initialization.
-  - Consider splitting the initialization and construction of an object.
-  - Consider declaring a constructor operation in a child package.
-  - Consider declaring a constructor operation to return an access value
-    to the constructed object (Dewar 1995).
-  - When you redefine the "=" operator on a tagged type, make sure that
-    it has the expected behavior in extensions of this type and override
-    it if necessary.
-  - Consider using class-wide programming to provide run-time, dynamic
-    polymorphism when constructing larger, reusable, extensible
-    frameworks.
-  - When possible, use class-wide programming rather than variant
-    records.
-  - Use class-wide programming to provide a consistent interface across
-    the set of types in the tagged type hierarchy (i.e., class).
-  - Consider using generics to define a new type in terms of an existing
-    type, either as an extension or as a container, collection, or
-    composite data structure.
-  - Avoid using type extensions for parameterized abstractions when
-    generics provide a more appropriate mechanism.
+- Consider declaring a primitive abstract operation based on the
+  absence of a meaningful "default" behavior.
+- Consider declaring a primitive nonabstract operation based on the
+  presence of a meaningful "default" behavior.
+- When overriding an operation, the overriding subprogram should not
+  raise exceptions that are not known to the users of the overridden
+  subprogram.
+- If redispatching is used in the implementation of the operations of
+  a type, with the specific intent that some of the redispatched-to
+  operations be overridden by specializations for the derived types,
+  then document this intent clearly in the specification as part of
+  the "interface" of a parent type with its derived types.
+- When redispatching is used (for any reason) in the implementation of
+  a primitive operation of a tagged type, then document (in some
+  project-consistent way) this use in the body of the operation
+  subprogram so that it can be easily found during maintenance.
+- Consider using a class-wide operation (i.e., an operation with
+  parameter\[s\] of a class-wide type) when an operation can be
+  written, compiled, and tested without knowing all the possible
+  descendants of a given tagged type (Barnes 1996).
+- Consider using a class-wide operation when you do not want an
+  operation to be inherited and/or overridden.
+- Avoid declaring a constructor as a primitive abstract operation.
+- Use a primitive abstract operation to declare an initialization
+  function or constructor only when objects of the inheriting derived
+  types will not require additional parameters for initialization.
+- Consider using access discriminants to provide parameters to default
+  initialization.
+- Use constructors for explicit initialization.
+- Consider splitting the initialization and construction of an object.
+- Consider declaring a constructor operation in a child package.
+- Consider declaring a constructor operation to return an access value
+  to the constructed object (Dewar 1995).
+- When you redefine the "=" operator on a tagged type, make sure that
+  it has the expected behavior in extensions of this type and override
+  it if necessary.
+- Consider using class-wide programming to provide run-time, dynamic
+  polymorphism when constructing larger, reusable, extensible
+  frameworks.
+- When possible, use class-wide programming rather than variant
+  records.
+- Use class-wide programming to provide a consistent interface across
+  the set of types in the tagged type hierarchy (i.e., class).
+- Consider using generics to define a new type in terms of an existing
+  type, either as an extension or as a container, collection, or
+  composite data structure.
+- Avoid using type extensions for parameterized abstractions when
+  generics provide a more appropriate mechanism.
 
 ### managing visibility
 
-  - Consider giving derived tagged types the same visibility to the
-    parent type as other clients of the parent.
-  - Define a derived tagged type in a child of the package that defines
-    the base type if the implementation of the derived type requires
-    greater visibility into the implementation of the base type than
-    other clients of the base type require.
+- Consider giving derived tagged types the same visibility to the
+  parent type as other clients of the parent.
+- Define a derived tagged type in a child of the package that defines
+  the base type if the implementation of the derived type requires
+  greater visibility into the implementation of the base type than
+  other clients of the base type require.
 
 ### multiple inheritance
 
-  - Consider using type composition for implementation, as opposed to
-    interface, inheritance.
-  - Consider using a generic to "mix in" functionality to a derivative
-    of some core abstraction.
-  - Consider using access discriminants to support "full" multiple
-    inheritance where an object must be referenceable as an entity of
-    two or more distinct unrelated abstractions.
-:::note
+- Consider using type composition for implementation, as opposed to
+  interface, inheritance.
+- Consider using a generic to "mix in" functionality to a derivative
+  of some core abstraction.
+- Consider using access discriminants to support "full" multiple
+  inheritance where an object must be referenceable as an entity of
+  two or more distinct unrelated abstractions.
+  :::note
 
 This page of the "Ada Quality and Style Guide" has been adapted from the
 original work at https://en.wikibooks.org/wiki/Ada_Style_Guide, which is
 licensed under the
 [Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/3.0/);
-additional terms may apply.  Page not endorsed by Wikibooks or the Ada
+additional terms may apply. Page not endorsed by Wikibooks or the Ada
 Style Guide Wikibook authors. This page is licensed under the same license
 as the original work.
 

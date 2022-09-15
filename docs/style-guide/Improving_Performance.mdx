@@ -82,12 +82,12 @@ Knight (1990); Newport (1995); and Weidermann (1990).
 
 #### guideline
 
-  - Use blocks (see Guideline 5.6.9) to introduce late initialization
-    when measured performance indicates.
+- Use blocks (see Guideline 5.6.9) to introduce late initialization
+  when measured performance indicates.
 
 #### example
 
-``` ada
+```ada
    ...
    Initial : Matrix;
 
@@ -140,7 +140,7 @@ particular implementation, performance can be improved.
 
 #### guideline
 
-  - Use constrained arrays when measured performance indicates.
+- Use constrained arrays when measured performance indicates.
 
 #### rationale
 
@@ -160,8 +160,8 @@ discussion of the tradeoffs and alternatives.
 
 #### guideline
 
-  - Use zero-based indexing for arrays when measured performance
-    indicates.
+- Use zero-based indexing for arrays when measured performance
+  indicates.
 
 #### rationale
 
@@ -174,12 +174,12 @@ lower bound is 1.
 
 #### guideline
 
-  - Use fixed-size components for records when measured performance
-    indicates.
+- Use fixed-size components for records when measured performance
+  indicates.
 
 #### example
 
-``` ada
+```ada
 subtype Line_Range   is Integer range 0 .. Max_Lines;
 subtype Length_Range is Integer range 0 .. Max_Length;
 
@@ -205,12 +205,12 @@ components.
 
 #### guideline
 
-  - Define arrays of records as parallel arrays when measured
-    performance indicates.
+- Define arrays of records as parallel arrays when measured
+  performance indicates.
 
 #### example
 
-``` ada
+```ada
     -- Array of records
     Process (Student (Index).Name, Student (Index).Grade);
     -- Record of arrays
@@ -229,8 +229,8 @@ show significant performance differences among these examples.
 
 #### guideline
 
-  - Use a sequence of assignments for an aggregation when measured
-    performance indicates.
+- Use a sequence of assignments for an aggregation when measured
+  performance indicates.
 
 #### rationale
 
@@ -254,12 +254,12 @@ See Guideline 10.6.1 for a discussion of extension aggregates.
 
 #### guideline
 
-  - Use incremental schemes instead of mod and rem when measured
-    performance indicates.
+- Use incremental schemes instead of mod and rem when measured
+  performance indicates.
 
 #### example
 
-``` ada
+```ada
    -- Using mod
    for I in 0 .. N loop
       Update (Arr (I mod Modulus));
@@ -285,12 +285,12 @@ above styles may be significantly more efficient than the other.
 
 #### guideline
 
-  - Use the short-circuit control form when measured performance
-    indicates.
+- Use the short-circuit control form when measured performance
+  indicates.
 
 #### example
 
-``` ada
+```ada
    -- Nested "if"
    if Last >= Target_Length then
       if Buffer (1 .. Target_Length) = Target then
@@ -306,19 +306,18 @@ above styles may be significantly more efficient than the other.
 
 #### rationale
 
-Determine the impact of using nested if statements versus using the `and
-then` or `or else` operator. One of the above may be significantly more
+Determine the impact of using nested if statements versus using the `and then` or `or else` operator. One of the above may be significantly more
 efficient than the other.
 
 ### Case Statement Versus elsif
 
 #### guideline
 
-  - Use the case statement when measured performance indicates.
+- Use the case statement when measured performance indicates.
 
 #### example
 
-``` ada
+```ada
    subtype Small_Int is Integer range 1 .. 5;
    Switch : Small_Int;
    ...
@@ -359,12 +358,12 @@ programming alternative.
 
 #### guideline
 
-  - Use hard-coded constraint checking when measured performance
-    indicates.
+- Use hard-coded constraint checking when measured performance
+  indicates.
 
 #### example
 
-``` ada
+```ada
    subtype Small_Int is Positive range Lower .. Upper;
    Var : Small_Int;
    ...
@@ -396,12 +395,12 @@ checking may be more efficient.
 
 #### guideline
 
-  - Use column-first processing of two-dimensional arrays when measured
-    performance indicates.
+- Use column-first processing of two-dimensional arrays when measured
+  performance indicates.
 
 #### example
 
-``` ada
+```ada
     type Table_Type is array (Row_Min .. Row_Max, Col_Min .. Col_Max) of ...
     Table : Table_Type;
     ...
@@ -432,12 +431,12 @@ here. See Guidelines 10.4.1 and 10.4.2.
 
 #### guideline
 
-  - Use overwriting for conditional assignment when measured performance
-    indicates.
+- Use overwriting for conditional assignment when measured performance
+  indicates.
 
 #### example
 
-``` ada
+```ada
    -- Using "if .. else"
    if Condition then
       Var := One_Value;
@@ -461,13 +460,13 @@ the performance difference is significant.
 
 #### guideline
 
-  - When measured performance indicates, perform packed Boolean array
-    shift operations by using slice assignments rather than repeated
-    bit-wise assignment.
+- When measured performance indicates, perform packed Boolean array
+  shift operations by using slice assignments rather than repeated
+  bit-wise assignment.
 
 #### example
 
-``` ada
+```ada
    subtype Word_Range is Integer range 0 .. 15;
    type Flag_Word is array (Word_Range) of Boolean;
    pragma Pack (Flag_Word);
@@ -497,8 +496,8 @@ consider using modular types instead (see Guideline 10.6.3).
 
 #### guideline
 
-  - Use static subprogram dispatching when measured performance
-    indicates.
+- Use static subprogram dispatching when measured performance
+  indicates.
 
 #### example
 
@@ -506,7 +505,7 @@ The term "static dispatching" in this example refers to the use of
 if/elsif sequences to explicitly determine which subprograms to call
 based on certain conditions:
 
-``` ada
+```ada
     -- (1) Dispatching where tag is not known at compile time
     --     (See ACES V2.0 test "a9_ob_class_wide_dynamic_01")
     -- Object_Type is a tagged type
@@ -576,11 +575,11 @@ situation.
 
 #### guideline
 
-  - Use only simple aggregates when measured performance indicates.
+- Use only simple aggregates when measured performance indicates.
 
 #### example
 
-``` ada
+```ada
    type Parent is tagged
       record
          C1 : Float;
@@ -615,14 +614,14 @@ aggregates and evaluation of extension aggregates.
 
 #### guideline
 
-  - For mutual exclusion, when measured performance indicates, use
-    protected types as an alternative to tasking rendezvous.
-  - To implement an interrupt handler, when performance measurement
-    indicates, use a protected procedure.
+- For mutual exclusion, when measured performance indicates, use
+  protected types as an alternative to tasking rendezvous.
+- To implement an interrupt handler, when performance measurement
+  indicates, use a protected procedure.
 
 #### example
 
-``` ada
+```ada
    -- (1) Using protected objects
    --     (See ACES V2.0, test "a9_pt_prot_access_02")
    protected Object is
@@ -701,12 +700,12 @@ concurrent program.
 
 #### guideline
 
-  - Use modular types rather than packed Boolean arrays when measured
-    performance indicates.
+- Use modular types rather than packed Boolean arrays when measured
+  performance indicates.
 
 #### example
 
-``` ada
+```ada
    -- (1) Packed Boolean arrays
    --     (See ACES V2.0, test "dr_ba_bool_arrays_11")
 
@@ -751,15 +750,15 @@ similar operations on packed Boolean arrays. See also Guideline 10.5.7.
 
 #### guideline
 
-  - Use the predefined bounded strings when predictable performance is
-    an issue and measured performance indicates.
+- Use the predefined bounded strings when predictable performance is
+  an issue and measured performance indicates.
 
 #### rationale
 
 The unbounded strings may be allocated on the heap. If bounded strings
 are not allocated on the heap, then they may provide better performance.
 Determine the impact of using the string type declared in instantiations
-of Ada.Strings.Bounded.Generic\_Bounded\_Length versus the type declared
+of Ada.Strings.Bounded.Generic_Bounded_Length versus the type declared
 in Ada.Strings.Unbounded.
 
 The predefined Ada 95 language environment defines packages that support
@@ -770,8 +769,8 @@ unpredictable duration of delays associated with using heap storage.
 
 #### guideline
 
-  - Use the procedural form of the string handling subprograms when
-    measured performance indicates.
+- Use the procedural form of the string handling subprograms when
+  measured performance indicates.
 
 #### rationale
 
@@ -787,18 +786,18 @@ the compiler to generate additional copying operations.
 
 #### guideline
 
-  - Use strong typing with carefully selected constraints to reduce
-    run-time constraint checking when measured performance indicates.
+- Use strong typing with carefully selected constraints to reduce
+  run-time constraint checking when measured performance indicates.
 
 #### example
 
 In this example, two potential constraint checks are eliminated. If the
-function Get\_Response returns String, then the initialization of the
+function Get_Response returns String, then the initialization of the
 variable Input would require constraint checking. If the variable Last
 is type Positive, then the assignment inside the loop would require
 constraint checking:
 
-``` ada
+```ada
    ...
    subtype Name_Index is Positive range 1 .. 32;
    subtype Name       is String (Name_Index);
@@ -834,7 +833,7 @@ predefined subtypes may need constraint checks. By consistently using
 constrained subtypes, many of the unnecessary run-time checking can be
 eliminated. Instead, the checking is usually moved to less frequently
 executed code involved in system input. In the example, the function
-Get\_Response may need to check the length of a user-supplied string and
+Get_Response may need to check the length of a user-supplied string and
 raise an exception.
 
 Some compilers can do additional optimizations based on the information
@@ -848,14 +847,14 @@ discussion on unconstrained arrays found in NASA (1992).
 
 #### guideline
 
-  - For cases where both rendezvous and protected types are inefficient,
-    consider the use of the Real-Time Systems Annex (Ada Reference
-    Manual 1995, Annex D).
+- For cases where both rendezvous and protected types are inefficient,
+  consider the use of the Real-Time Systems Annex (Ada Reference
+  Manual 1995, Annex D).
 
 #### rationale
 
-The packages Ada.Synchronous\_Task\_Control and
-Ada.Asynchronous\_Task\_Control have been defined to provide an
+The packages Ada.Synchronous_Task_Control and
+Ada.Asynchronous_Task_Control have been defined to provide an
 alternative to tasking and protected types for use in applications where
 a minimal run-time is desired (Ada Reference Manual 1995, Annex D).
 
@@ -865,12 +864,12 @@ a minimal run-time is desired (Ada Reference Manual 1995, Annex D).
 
 #### guideline
 
-  - When measured performance indicates, use pragma Inline when calling
-    overhead is a significant portion of the routine's execution time.
+- When measured performance indicates, use pragma Inline when calling
+  overhead is a significant portion of the routine's execution time.
 
 #### example
 
-``` ada
+```ada
 procedure Assign (Variable : in out Integer;
                   Value    : in     Integer);
 pragma Inline (Assign);
@@ -917,8 +916,8 @@ execution speed.
 
 #### guideline
 
-  - Use pragma Restrictions to express the user's intent to abide by
-    certain restrictions.
+- Use pragma Restrictions to express the user's intent to abide by
+  certain restrictions.
 
 #### rationale
 
@@ -929,7 +928,7 @@ This may facilitate the construction of simpler run-time environments
 
 #### guideline
 
-  - Use pragma Preelaborate where allowed.
+- Use pragma Preelaborate where allowed.
 
 #### rationale
 
@@ -940,7 +939,7 @@ Manual 1995, §§10.2.1 and C.4).
 
 #### guideline
 
-  - Use pragma Pure where allowed.
+- Use pragma Pure where allowed.
 
 #### rationale
 
@@ -948,12 +947,12 @@ This may permit the compiler to omit calls on library-level subprograms
 of the library unit if the results are not needed after the call (Ada
 Reference Manual 1995, §10.2.1).
 
-### Pragma Discard\_Names
+### Pragma Discard_Names
 
 #### guideline
 
-  - Use pragma Discard\_Names when the names are not needed by the
-    application and data space is at a premium.
+- Use pragma Discard_Names when the names are not needed by the
+  application and data space is at a premium.
 
 #### rationale
 
@@ -964,8 +963,8 @@ no operation uses those names (Ada Reference Manual 1995, §C.5).
 
 #### guideline
 
-  - Use pragma Suppress where necessary to achieve performance
-    requirements.
+- Use pragma Suppress where necessary to achieve performance
+  requirements.
 
 #### rationale
 
@@ -975,7 +974,7 @@ See Guideline 5.9.5.
 
 #### guideline
 
-  - Use pragma Reviewable to aid in the analysis of the generated code.
+- Use pragma Reviewable to aid in the analysis of the generated code.
 
 #### rationale
 
@@ -983,84 +982,84 @@ See the Ada Reference Manual (1995, Annex H).
 
 ## Summary
 
-  - Use the guidelines in this chapter with care; they may be hazardous
-    to your software.
+- Use the guidelines in this chapter with care; they may be hazardous
+  to your software.
 
 #### program structure
 
-  - Use blocks to introduce late initialization when measured
-    performance indicates .
+- Use blocks to introduce late initialization when measured
+  performance indicates .
 
 ### data structures
 
-  - Use constrained arrays when measured performance indicates.
-  - Use zero-based indexing for arrays when measured performance
-    indicates.
-  - Use fixed-size components for records when measured performance
-    indicates.
-  - Define arrays of records as parallel arrays when measured
-    performance indicates.
-  - Use a sequence of assignments for an aggregation when measured
-    performance indicates.
+- Use constrained arrays when measured performance indicates.
+- Use zero-based indexing for arrays when measured performance
+  indicates.
+- Use fixed-size components for records when measured performance
+  indicates.
+- Define arrays of records as parallel arrays when measured
+  performance indicates.
+- Use a sequence of assignments for an aggregation when measured
+  performance indicates.
 
 ### algorithms
 
-  - Use incremental schemes instead of mod and rem when measured
-    performance indicates.
-  - Use the short-circuit control form when measured performance
-    indicates.
-  - Use the case statement when measured performance indicates.
-  - Use hard-coded constraint checking when measured performance
-    indicates.
-  - Use column-first processing of two-dimensional arrays when measured
-    performance indicates.
-  - Use overwriting for conditional assignment when measured performance
-    indicates.
-  - When measured performance indicates, perform packed Boolean array
-    shift operations by using slice assignments rather than repeated
-    bit-wise assignment.
-  - Use static subprogram dispatching when measured performance
-    indicates.\<
+- Use incremental schemes instead of mod and rem when measured
+  performance indicates.
+- Use the short-circuit control form when measured performance
+  indicates.
+- Use the case statement when measured performance indicates.
+- Use hard-coded constraint checking when measured performance
+  indicates.
+- Use column-first processing of two-dimensional arrays when measured
+  performance indicates.
+- Use overwriting for conditional assignment when measured performance
+  indicates.
+- When measured performance indicates, perform packed Boolean array
+  shift operations by using slice assignments rather than repeated
+  bit-wise assignment.
+- Use static subprogram dispatching when measured performance
+  indicates.\<
 
 ### types
 
-  - Use only simple aggregates when measured performance indicates.
-  - For mutual exclusion, when measured performance indicates, use
-    protected types as an alternative to tasking rendezvous.
-  - To implement an interrupt handler, when measured performance
-    indicates, use a protected procedure.
-  - Use modular types rather than packed Boolean arrays when measured
-    performance indicates.
-  - Use the predefined bounded strings when predictable performance is
-    an issue and measured performance indicates.
-  - Use the procedural form of the string handling subprograms when
-    measured performance indicates.
-  - Use strong typing with carefully selected constraints to reduce
-    run-time constraint checking when measured performance indicates.
-  - For cases where both rendezvous and protected types are inefficient,
-    consider the use of the Real-Time Systems Annex (Ada Reference
-    Manual 1995, Annex D).
+- Use only simple aggregates when measured performance indicates.
+- For mutual exclusion, when measured performance indicates, use
+  protected types as an alternative to tasking rendezvous.
+- To implement an interrupt handler, when measured performance
+  indicates, use a protected procedure.
+- Use modular types rather than packed Boolean arrays when measured
+  performance indicates.
+- Use the predefined bounded strings when predictable performance is
+  an issue and measured performance indicates.
+- Use the procedural form of the string handling subprograms when
+  measured performance indicates.
+- Use strong typing with carefully selected constraints to reduce
+  run-time constraint checking when measured performance indicates.
+- For cases where both rendezvous and protected types are inefficient,
+  consider the use of the Real-Time Systems Annex (Ada Reference
+  Manual 1995, Annex D).
 
 ### pragmas
 
-  - When measured performance indicates, use pragma Inline when calling
-    overhead is a significant portion of the routine's execution time.
-  - Use pragma Restrictions to express the user's intent to abide by
-    certain restrictions.
-  - Use pragma Preelaborate where allowed.
-  - Use pragma Pure where allowed.
-  - Use pragma Discard\_Names when the names are not needed by the
-    application and data space is at a premium.
-  - Use pragma Suppress where necessary to achieve performance
-    requirements.
-  - Use pragma Reviewable to aid in the analysis of the generated code.
-:::note
+- When measured performance indicates, use pragma Inline when calling
+  overhead is a significant portion of the routine's execution time.
+- Use pragma Restrictions to express the user's intent to abide by
+  certain restrictions.
+- Use pragma Preelaborate where allowed.
+- Use pragma Pure where allowed.
+- Use pragma Discard_Names when the names are not needed by the
+  application and data space is at a premium.
+- Use pragma Suppress where necessary to achieve performance
+  requirements.
+- Use pragma Reviewable to aid in the analysis of the generated code.
+  :::note
 
 This page of the "Ada Quality and Style Guide" has been adapted from the
 original work at https://en.wikibooks.org/wiki/Ada_Style_Guide, which is
 licensed under the
 [Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/3.0/);
-additional terms may apply.  Page not endorsed by Wikibooks or the Ada
+additional terms may apply. Page not endorsed by Wikibooks or the Ada
 Style Guide Wikibook authors. This page is licensed under the same license
 as the original work.
 

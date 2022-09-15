@@ -13,20 +13,20 @@ to decide what is best, there is no single best or correct example of
 how to use Ada. Instead, you will find several styles that differ from
 your own that may deserve consideration.
 
-``` ada
+```ada
 --::::::::::
 --random_generic.ads
 --::::::::::
 generic
   type Result_Subtype is (<>);
 package Random_Generic is
- 
+
   -- Simple integer pseudo-random number generator package.
-  -- Michael B. Feldman, The George Washington University, 
+  -- Michael B. Feldman, The George Washington University,
   -- June 1995.
- 
-  function Random_Value return Result_Subtype;  
- 
+
+  function Random_Value return Result_Subtype;
+
 end Random_Generic;
 --::::::::::
 --screen.ads
@@ -48,19 +48,19 @@ package Screen is
     Column : Width  := 1;
   end record;
 
-  procedure Beep; 
+  procedure Beep;
   -- Pre:  none
   -- Post: the terminal beeps once
-  
-  procedure ClearScreen; 
+
+  procedure ClearScreen;
   -- Pre:  none
   -- Post: the terminal screen is cleared
-  
+
   procedure MoveCursor (To : in Position);
   -- Pre:  To is defined
   -- Post: the terminal cursor is moved to the given position
-  
-end Screen;   
+
+end Screen;
 --::::::::::
 --windows.ads
 --::::::::::
@@ -92,7 +92,7 @@ package Windows is
                      Down   : in     Character
                      Across : in     Character);
   -- Pre:  All parameters are defined
-  -- Post: Draw border around current writable area in window with 
+  -- Post: Draw border around current writable area in window with
   -- characters specified.  Call this BEFORE Title.
 
   procedure MoveCursor (W : in out Window;
@@ -105,7 +105,7 @@ package Windows is
   procedure Put (W  : in out Window;
                  Ch : in     Character);
   -- Pre:  W and Ch are defined.
-  -- Post: Ch is displayed in the window at 
+  -- Post: Ch is displayed in the window at
   --   the next available position.
   --   If end of column, go to the next row.
   --   If end of window, go to the top of the window.
@@ -160,12 +160,12 @@ package Picture is
   -- Pre:  An empty window
   -- Post: Name and a border is drawn.
 
-  procedure Put_Line (W : in out Root; 
+  procedure Put_Line (W : in out Root;
                       S : in     String);
 
-  procedure Left_Fork  (W    : in out Root; 
+  procedure Left_Fork  (W    : in out Root;
                         Pick : in     Boolean) is abstract;
-  procedure Right_Fork (W    : in out Root; 
+  procedure Right_Fork (W    : in out Root;
                         Pick : in     Boolean) is abstract;
   -- left and right relates to philosopher position around table
 
@@ -184,24 +184,24 @@ private
   type East  is new Root with null record;
   type West  is new Root with null record;
 
-  procedure Left_Fork  (W    : in out North; 
+  procedure Left_Fork  (W    : in out North;
                         Pick : in     Boolean);
-  procedure Right_Fork (W    : in out North; 
-                        Pick : in     Boolean);
-
-  procedure Left_Fork  (W    : in out South; 
-                        Pick : in     Boolean);
-  procedure Right_Fork (W    : in out South; 
+  procedure Right_Fork (W    : in out North;
                         Pick : in     Boolean);
 
-  procedure Left_Fork  (W    : in out East; 
+  procedure Left_Fork  (W    : in out South;
                         Pick : in     Boolean);
-  procedure Right_Fork (W    : in out East; 
+  procedure Right_Fork (W    : in out South;
                         Pick : in     Boolean);
 
-  procedure Left_Fork  (W    : in out West; 
+  procedure Left_Fork  (W    : in out East;
                         Pick : in     Boolean);
-  procedure Right_Fork (W    : in out West; 
+  procedure Right_Fork (W    : in out East;
+                        Pick : in     Boolean);
+
+  procedure Left_Fork  (W    : in out West;
+                        Pick : in     Boolean);
+  procedure Right_Fork (W    : in out West;
                         Pick : in     Boolean);
 
 end Picture;
@@ -214,14 +214,14 @@ package Chop is
   -- Chopstick is an Ada 95 protected type
   -- Michael B. Feldman, The George Washington University,
   -- July, 1995.
- 
+
   protected type Stick is
     entry Pick_Up;
     procedure Put_Down;
   private
     In_Use: Boolean := False;
   end Stick;
- 
+
 end Chop;
 
 --::::::::::
@@ -250,7 +250,7 @@ end Society;
 --::::::::::
 with Society;
 package Phil is
- 
+
   -- Dining Philosophers - Ada 95 edition
   -- Philosopher is an Ada 95 task type with discriminant
   -- Michael B. Feldman, The George Washington University,
@@ -261,13 +261,13 @@ package Phil is
   --            Reporting left or right instead of first stick
 
   task type Philosopher (My_ID : Society.Unique_DNA_Codes) is
- 
+
     entry Start_Eating (Chopstick1 : in Positive;
                         Chopstick2 : in Positive);
- 
+
   end Philosopher;
- 
-  type States is (Breathing, Thinking, Eating, Done_Eating, 
+
+  type States is (Breathing, Thinking, Eating, Done_Eating,
                   Got_Left_Stick, Got_Right_Stick, Got_Other_Stick, Dying);
 
 end Phil;
@@ -278,7 +278,7 @@ with Chop;
 with Phil;
 with Society;
 package Room is
- 
+
   -- Dining Philosophers - Ada 95 edition
 
   -- Room.Maitre_D is responsible for assigning seats at the
@@ -290,9 +290,9 @@ package Room is
 
   Table_Size : constant := 5;
   subtype Table_Type is Positive range 1 .. Table_Size;
- 
+
   Sticks : array (Table_Type) of Chop.Stick;
- 
+
   task Maitre_D is
     entry Start_Serving;
     entry Report_State (Which_Phil : in Society.Unique_DNA_Codes;
@@ -300,25 +300,25 @@ package Room is
                         How_Long   : in Natural := 0;
                         Which_Meal : in Natural := 0);
   end Maitre_D;
- 
+
 end Room;
 --::::::::::
 --random_generic.adb
 --::::::::::
 with Ada.Numerics.Discrete_Random;
 package body Random_Generic is
- 
+
   -- Body of random number generator package.
   -- Uses Ada 95 random number generator; hides generator parameters
-  -- Michael B. Feldman, The George Washington University, 
+  -- Michael B. Feldman, The George Washington University,
   -- June 1995.
- 
+
   package Ada95_Random is new Ada.Numerics.Discrete_Random
     (Result_Subtype => Result_Subtype);
 
   G : Ada95_Random.Generator;
 
-  function Random_Value return Result_Subtype is 
+  function Random_Value return Result_Subtype is
   begin
     return Ada95_Random.Random (Gen => G);
   end Random_Value;
@@ -356,7 +356,7 @@ package body Screen is
   end ClearScreen;
 
   procedure MoveCursor (To : in Position) is
-  begin                                                
+  begin
     Text_IO.New_Line;
     Text_IO.Put (Item => ASCII.ESC);
     Text_IO.Put ("[");
@@ -384,9 +384,9 @@ package body Windows is
   begin
     Result.Current := UpperLeft;
     Result.First   := UpperLeft;
-    Result.Last    := (Row    => UpperLeft.Row + Height - 1, 
+    Result.Last    := (Row    => UpperLeft.Row + Height - 1,
                        Column => UpperLeft.Column + Width - 1);
-    return Result; 
+    return Result;
   end Open;
 
   procedure EraseToEndOfLine (W : in out Window) is
@@ -402,7 +402,7 @@ package body Windows is
                  Ch : in     Character) is
   begin
 
-    -- If at end of current line, move to next line 
+    -- If at end of current line, move to next line
     if W.Current.Column > W.Last.Column then
       if W.Current.Row = W.Last.Row then
         W.Current.Row := W.First.Row;
@@ -422,7 +422,7 @@ package body Windows is
      -- here is where we actually write the character!
      Text_IO.Put (Ch);
      W.Current.Column := W.Current.Column + 1;
- 
+
   end Put;
 
   procedure Put (W : in out Window;
@@ -456,21 +456,21 @@ package body Windows is
     -- Underline name if desired, and reduce the writable area
     -- of the window by one line
     if Under = ' ' then   -- no underlining
-      W.First.Row := W.First.Row + 1;      
+      W.First.Row := W.First.Row + 1;
     else                  -- go across the row, underlining
-      for Count in W.First.Column .. W.Last.Column loop 
+      for Count in W.First.Column .. W.Last.Column loop
         Put (W, Under);
       end loop;
       New_Line (W);
       W.First.Row := W.First.Row + 2; -- reduce writable area
     end if;
   end Title;
- 
+
   procedure Borders (W       : in out Window;
                      Corner  : in     Character
                      Down    : in     Character
                      Across  : in     Character is
-, 
+,
   begin
     -- Put top line of border
     Screen.MoveCursor (W.First);
@@ -505,7 +505,7 @@ package body Windows is
   procedure MoveCursor (W : in out Window;
                         P : in     Screen.Position) is
     -- Relative to writable Window boundaries, of course
-  begin 
+  begin
     W.Current.Row    := W.First.Row + P.Row;
     W.Current.Column := W.First.Column + P.Column;
   end MoveCursor;
@@ -523,15 +523,15 @@ package Windows.Util is
   -- Child package to change the borders of an existing window
   -- Bjorn Kallberg, CelsiusTech Systems, Sweden
   -- July, 1995.
-  
+
   -- call these procedures after border and title
-  procedure Draw_Left   (W  : in out Window; 
+  procedure Draw_Left   (W  : in out Window;
                          C  : in     Character);
-  procedure Draw_Right  (W  : in out Window; 
+  procedure Draw_Right  (W  : in out Window;
                          C  : in     Character);
-  procedure Draw_Top    (W  : in out Window; 
+  procedure Draw_Top    (W  : in out Window;
                          C  : in     Character);
-  procedure Draw_Bottom (W  : in out Window; 
+  procedure Draw_Bottom (W  : in out Window;
                          C  : in     Character);
 
 end Windows.Util;
@@ -541,11 +541,11 @@ package body Windows.Util is
 
   -- Bjorn Kallberg, CelsiusTech Systems, Sweden
   -- July, 1995.
- 
+
   -- When making borders and titles, the size has shrunk, so
   -- we must now draw outside the First and Last points
 
-   procedure Draw_Left (W  : in out Window; 
+   procedure Draw_Left (W  : in out Window;
                         C  : in     Character) is
    begin
      for R in W.First.Row - 3  .. W.Last.Row + 1 loop
@@ -553,8 +553,8 @@ package body Windows.Util is
        Text_IO.Put (C);
       end loop;
    end;
- 
-   procedure Draw_Right (W  : in out Window; 
+
+   procedure Draw_Right (W  : in out Window;
                          C  : in     Character) is
    begin
      for R in W.First.Row - 3  .. W.Last.Row + 1 loop
@@ -563,7 +563,7 @@ package body Windows.Util is
      end loop;
    end;
 
-   procedure Draw_Top (W  : in out Window; 
+   procedure Draw_Top (W  : in out Window;
                        C  : in     Character) is
    begin
      for I in W.First.Column - 1 .. W.Last.Column + 1 loop
@@ -572,7 +572,7 @@ package body Windows.Util is
      end loop;
    end;
 
-   procedure Draw_Bottom (W  : in out Window; 
+   procedure Draw_Bottom (W  : in out Window;
                           C  : in     Character) is
    begin
      for I in W.First.Column - 1 .. W.Last.Column + 1 loop
@@ -588,25 +588,25 @@ end Windows.Util;
 --::::::::::
 with Windows.Util;
 package body Picture is
-  -- 
+  --
   -- Bjorn Kallberg, CelsiusTech Systems, Sweden
   -- July, 1995
 
   function Vertical_Char (Stick : Boolean) return Character is
   begin
-     if Stick then 
-        return '#'; 
-     else 
-       return ':'; 
+     if Stick then
+        return '#';
+     else
+       return ':';
      end if;
   end;
 
   function Horizontal_Char (Stick : Boolean) return Character is
   begin
-    if Stick then 
-       return '#'; 
-    else 
-       return '-'; 
+    if Stick then
+       return '#';
+    else
+       return '-';
     end if;
   end;
 
@@ -614,7 +614,7 @@ package body Picture is
                   UpperLeft : in     Screen.Position;
                   Height    : in     Screen.Height;
                   Width     : in     Screen.Width) is
-  begin 
+  begin
      W.W := Windows.Open (UpperLeft, Height, Width);
   end;
 
@@ -627,8 +627,8 @@ package body Picture is
       Windows.Borders (W.W, '+', ':', '-');
       Windows.Title (W.W, Name,'-');
   end;
- 
-  procedure Put_Line (W : in out Root; 
+
+  procedure Put_Line (W : in out Root;
                       S : in     String) is
   begin
      Windows.Put (W.W, S);
@@ -636,51 +636,51 @@ package body Picture is
   end;
 
   -- North
-  procedure Left_Fork  (W    : in out North; 
+  procedure Left_Fork  (W    : in out North;
                         Pick : in     Boolean) is
   begin
      Windows.Util.Draw_Right (W.W, Vertical_Char (Pick));
   end;
 
-  procedure Right_Fork  (W    : in out North; 
+  procedure Right_Fork  (W    : in out North;
                          Pick : in     Boolean) is
   begin
      Windows.Util.Draw_Left (W.W, Vertical_Char (Pick));
   end;
 
   -- South
-  procedure Left_Fork  (W    : in out South; 
+  procedure Left_Fork  (W    : in out South;
                         Pick : in     Boolean) is
   begin
      Windows.Util.Draw_Left (W.W, Vertical_Char (Pick));
   end;
 
-  procedure Right_Fork  (W    : in out South; 
+  procedure Right_Fork  (W    : in out South;
                          Pick : in     Boolean) is
   begin
      Windows.Util.Draw_Right (W.W, Vertical_Char (Pick));
   end;
 
   -- East
-  procedure Left_Fork  (W    : in out East; 
+  procedure Left_Fork  (W    : in out East;
                         Pick : in     Boolean) is
   begin
      Windows.Util.Draw_Bottom (W.W, Horizontal_Char (Pick));
   end;
-  procedure Right_Fork  (W    : in out East; 
+  procedure Right_Fork  (W    : in out East;
                          Pick : in     Boolean) is
   begin
      Windows.Util.Draw_Top (W.W, Horizontal_Char (Pick));
   end;
 
   -- West
-  procedure Left_Fork  (W    : in out West; 
+  procedure Left_Fork  (W    : in out West;
                         Pick : in     Boolean) is
   begin
      Windows.Util.Draw_Top (W.W, Horizontal_Char (Pick));
   end;
 
-  procedure Right_Fork  (W    : in out West; 
+  procedure Right_Fork  (W    : in out West;
                          Pick : in     Boolean) is
   begin
      Windows.Util.Draw_Bottom (W.W, Horizontal_Char (Pick));
@@ -697,7 +697,7 @@ package body Chop is
   -- Chopstick is an Ada 95 protected type
   -- Michael B. Feldman, The George Washington University,
   -- July, 1995.
- 
+
   protected body Stick is
 
     entry Pick_Up when not In_Use is
@@ -711,7 +711,7 @@ package body Chop is
     end Put_Down;
 
   end Stick;
- 
+
 end Chop;
 --::::::::::
 --phil.adb
@@ -720,7 +720,7 @@ with Society;
 with Room;
 with Random_Generic;
 package body Phil is
- 
+
   -- Dining Philosophers - Ada 95 edition
   -- Philosopher is an Ada 95 task type with discriminant.
 
@@ -738,7 +738,7 @@ package body Phil is
   -- July, 1995. Bjorn Kallberg, CelsiusTech
 
   subtype Think_Times is Positive range 1 .. 8;
-  package Think_Length is 
+  package Think_Length is
     new Random_Generic (Result_Subtype => Think_Times);
 
   subtype Meal_Times is Positive range 1 .. 10;
@@ -746,16 +746,16 @@ package body Phil is
     new Random_Generic (Result_Subtype => Meal_Times);
 
   task body Philosopher is  -- My_ID is discriminant
- 
+
     subtype Life_Time is Positive range 1 .. 5;
- 
+
     Who_Am_I    : Society.Unique_DNA_Codes := My_ID; -- discriminant
     First_Grab  : Positive;
     Second_Grab : Positive;
-    Meal_Time   : Meal_Times; 
+    Meal_Time   : Meal_Times;
     Think_Time  : Think_Times;
     First_Stick : States;
-     
+
   begin
       -- get assigned the first and second chopsticks here
     accept Start_Eating (Chopstick1 : in Positive;
@@ -769,7 +769,7 @@ package body Phil is
       end if;
     end Start_Eating;
     Room.Maitre_D.Report_State (Who_Am_I, Breathing);
- 
+
     for Meal in Life_Time loop
       Room.Sticks (First_Grab).Pick_Up;
       Room.Maitre_D.Report_State (Who_Am_I, First_Stick, First_Grab);
@@ -781,7 +781,7 @@ package body Phil is
       Room.Maitre_D.Report_State (Who_Am_I, Done_Eating);
       Room.Sticks (First_Grab).Put_Down;
       Room.Sticks (Second_Grab).Put_Down;
-      Think_Time := Think_Length.Random_Value; 
+      Think_Time := Think_Length.Random_Value;
       Room.Maitre_D.Report_State (Who_Am_I, Thinking, Think_Time);
       delay Duration (Think_Time);
     end loop;
@@ -798,23 +798,23 @@ with Society;
 with Calendar;
 pragma Elaborate (Phil);
 package body Room is
- 
+
   -- Dining Philosophers, Ada 95 edition
   -- A line-oriented version of the Room package
-  -- Michael B. Feldman, The George Washington University, 
+  -- Michael B. Feldman, The George Washington University,
   -- July, 1995.
   -- Revisions
   -- July, 1995. Bjorn Kallberg, CelsiusTech Systems, Sweden.
   --             Pictorial display of stick in use
 
   -- philosophers sign into dining room, giving Maitre_D their DNA code
- 
+
   Dijkstra   : aliased Phil.Philosopher (My_ID => 1);
   Stroustrup : aliased Phil.Philosopher (My_ID => 2);
   Anderson   : aliased Phil.Philosopher (My_ID => 3);
   Taft       : aliased Phil.Philosopher (My_ID => 4);
   Ichbiah    : aliased Phil.Philosopher (My_ID => 5);
- 
+
   type Philosopher_Ptr is access all Phil.Philosopher;
 
   Phils      : array (Table_Type) of Philosopher_Ptr;
@@ -822,17 +822,17 @@ package body Room is
   Phil_Seats : array (Society.Unique_DNA_Codes) of Table_Type;
 
   task body Maitre_D is
- 
+
     T          : Natural;
     Start_Time : Calendar.Time;
     Blanks     : constant String := "     ";
 
   begin
- 
+
     accept Start_Serving;
 
     Start_Time := Calendar.Clock;
- 
+
     -- now Maitre_D assigns phils to seats at the table
 
     Phils :=
@@ -841,19 +841,19 @@ package body Room is
        Ichbiah'Access,
        Taft'Access,
        Stroustrup'Access);
-  
+
     -- Which seat each phil occupies.
     for I in Table_Type loop
        Phil_Seats (Phils(I).My_Id) := I;
     end loop;
 
     Phil_Pics :=
-       (new Picture.North, 
-        new Picture.East, 
+       (new Picture.North,
+        new Picture.East,
         new Picture.South,
         new Picture.South,
         new Picture.West);
-  
+
     Picture.Open (Phil_Pics(1).all,( 1, 24), 7, 30);
     Picture.Open (Phil_Pics(2).all,( 9, 46), 7, 30);
     Picture.Open (Phil_Pics(3).all,(17, 41), 7, 30);
@@ -867,7 +867,7 @@ package body Room is
     Phils (2).Start_Eating (2, 3);
     Phils (5).Start_Eating (1, 5);
     Phils (4).Start_Eating (4, 5);
- 
+
     loop
       select
         accept Report_State (Which_Phil : in Society.Unique_DNA_Codes;
@@ -876,76 +876,76 @@ package body Room is
                              Which_Meal : in Natural := 0) do
 
           T := Natural (Calendar."-" (Calendar.Clock, Start_Time));
- 
+
           case State is
- 
+
             when Phil.Breathing =>
               Picture.Title (Phil_Pics (Phil_Seats (Which_Phil)).all,
                      Society.Name_Register (Which_Phil));
               Picture.Put_line (Phil_Pics (Phil_Seats (Which_Phil)).all,
-                     "T =" & Integer'Image (T) & " " 
+                     "T =" & Integer'Image (T) & " "
                       & "Breathing...");
 
             when Phil.Thinking =>
               Picture.Put_line (Phil_Pics (Phil_Seats (Which_Phil)).all,
-                     "T =" & Integer'Image (T) & " " 
-                      & "Thinking" 
+                     "T =" & Integer'Image (T) & " "
+                      & "Thinking"
                       & Integer'Image (How_Long) & " seconds.");
 
             when Phil.Eating =>
               Picture.Put_line (Phil_Pics (Phil_Seats (Which_Phil)).all,
-                     "T =" & Integer'Image (T) & " " 
-                      & "Meal"  
+                     "T =" & Integer'Image (T) & " "
+                      & "Meal"
                       & Integer'Image (Which_Meal)
-                      & ","  
+                      & ","
                       & Integer'Image (How_Long) & " seconds.");
 
             when Phil.Done_Eating =>
               Picture.Put_line (Phil_Pics (Phil_Seats (Which_Phil)).all,
-                     "T =" & Integer'Image (T) & " " 
+                     "T =" & Integer'Image (T) & " "
                       & "Yum-yum (burp)");
               Picture.Left_Fork (Phil_Pics (Phil_Seats (Which_Phil)).all, False);
               Picture.Right_Fork (Phil_Pics (Phil_Seats (Which_Phil)).all, False);
 
             when Phil.Got_Left_Stick =>
               Picture.Put_line (Phil_Pics (Phil_Seats (Which_Phil)).all,
-                     "T =" & Integer'Image (T) & " " 
-                      & "First chopstick" 
+                     "T =" & Integer'Image (T) & " "
+                      & "First chopstick"
                       & Integer'Image (How_Long));
               Picture.Left_Fork (Phil_Pics (Phil_Seats (Which_Phil)).all, True);
 
             when Phil.Got_Right_Stick =>
               Picture.Put_line (Phil_Pics (Phil_Seats (Which_Phil)).all,
-                     "T =" & Integer'Image (T) & " " 
-                      & "First chopstick" 
+                     "T =" & Integer'Image (T) & " "
+                      & "First chopstick"
                       & Integer'Image (How_Long));
               Picture.Right_Fork (Phil_Pics (Phil_Seats (Which_Phil)).all, True);
 
             when Phil.Got_Other_Stick =>
               Picture.Put_line (Phil_Pics (Phil_Seats (Which_Phil)).all,
-                     "T =" & Integer'Image (T) & " " 
-                      & "Second chopstick" 
+                     "T =" & Integer'Image (T) & " "
+                      & "Second chopstick"
                       & Integer'Image (How_Long));
               Picture.Left_Fork (Phil_Pics (Phil_Seats (Which_Phil)).all, True);
               Picture.Right_Fork (Phil_Pics (Phil_Seats (Which_Phil)).all, True);
 
             when Phil.Dying =>
               Picture.Put_line (Phil_Pics (Phil_Seats (Which_Phil)).all,
-                     "T =" & Integer'Image (T) & " " 
+                     "T =" & Integer'Image (T) & " "
                       & "Croak");
 
           end case; -- State
-          
+
         end Report_State;
- 
+
       or
         terminate;
       end select;
- 
+
     end loop;
- 
+
   end Maitre_D;
- 
+
 end Room;
 
 --::::::::::
@@ -962,7 +962,7 @@ procedure Diners is
 
   -- Michael B. Feldman, The George Washington University,
   -- July, 1995.
- 
+
 begin
   --Text_IO.New_Line;     -- artifice to flush output buffer
   Room.Maitre_D.Start_Serving;
@@ -979,7 +979,7 @@ This page of the "Ada Quality and Style Guide" has been adapted from the
 original work at https://en.wikibooks.org/wiki/Ada_Style_Guide, which is
 licensed under the
 [Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/3.0/);
-additional terms may apply.  Page not endorsed by Wikibooks or the Ada
+additional terms may apply. Page not endorsed by Wikibooks or the Ada
 Style Guide Wikibook authors. This page is licensed under the same license
 as the original work.
 

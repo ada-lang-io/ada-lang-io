@@ -64,25 +64,25 @@ and mutual exclusion.
 
 #### guideline
 
-  - Consider using protected objects to provide mutually exclusive
-    access to data.
-  - Consider using protected objects to control or synchronize access to
-    data shared by multiple tasks .
-  - Consider using protected objects to implement synchronization, such
-    as a passive resource monitor.
-  - Consider encapsulating protected objects in the private part or body
-    of a package.
-  - Consider using a protected procedure to implement an interrupt
-    handler.
-  - Do not attach a protected procedure handler to a hardware interrupt
-    if that interrupt has a maximum priority greater than the ceiling
-    priority assigned to the handler.
-  - Avoid the use of global variables in entry barriers.
-  - Avoid the use of barrier expressions with side effects.
+- Consider using protected objects to provide mutually exclusive
+  access to data.
+- Consider using protected objects to control or synchronize access to
+  data shared by multiple tasks .
+- Consider using protected objects to implement synchronization, such
+  as a passive resource monitor.
+- Consider encapsulating protected objects in the private part or body
+  of a package.
+- Consider using a protected procedure to implement an interrupt
+  handler.
+- Do not attach a protected procedure handler to a hardware interrupt
+  if that interrupt has a maximum priority greater than the ceiling
+  priority assigned to the handler.
+- Avoid the use of global variables in entry barriers.
+- Avoid the use of barrier expressions with side effects.
 
 #### example
 
-``` ada
+```ada
 generic
    type Item is private;
    Maximum_Buffer_Size : in Positive;
@@ -196,18 +196,18 @@ object on the package interface.
 
 #### guideline
 
-  - Use tasks to model selected asynchronous threads of control within
-    the problem domain.
-  - Consider using tasks to define concurrent algorithms.
-  - Consider using rendezvous when your application requires synchronous
-    unbuffered communication.
+- Use tasks to model selected asynchronous threads of control within
+  the problem domain.
+- Consider using tasks to define concurrent algorithms.
+- Consider using rendezvous when your application requires synchronous
+  unbuffered communication.
 
 #### example
 
 The naturally concurrent objects within the problem domain can be
 modeled as Ada tasks.
 
-``` ada
+```ada
 -- The following example of a stock exchange simulation shows how naturally
 -- concurrent objects within the problem domain can be modeled as Ada tasks.
 
@@ -265,7 +265,7 @@ begin
    end loop;
 end Ticker_Tape;
 
-task body Specialist is 
+task body Specialist is
    ...
 
    loop
@@ -357,27 +357,27 @@ these operations are complete.
 
 #### guideline
 
-  - Consider using discriminants to minimize the need for an explicit
-    initialization operation (Rationale 1995, §9.1).
-  - Consider using discriminants to control composite components of the
-    protected objects, including setting the size of an entry family
-    (Rationale 1995, §9.1).
-  - Consider using a discriminant to set the priority of a protected
-    object (Rationale 1995, §9.1).
-  - Consider using a discriminant to identify an interrupt to a
-    protected object (Rationale 1995, §9.1).
-  - Consider declaring a task type with a discriminant to indicate
-    (Rationale 1995, §9.6):
-      - Priority, storage size, and size of entry families of individual
-        tasks of a type
-      - Data associated with a task (through an access discriminant)
+- Consider using discriminants to minimize the need for an explicit
+  initialization operation (Rationale 1995, §9.1).
+- Consider using discriminants to control composite components of the
+  protected objects, including setting the size of an entry family
+  (Rationale 1995, §9.1).
+- Consider using a discriminant to set the priority of a protected
+  object (Rationale 1995, §9.1).
+- Consider using a discriminant to identify an interrupt to a
+  protected object (Rationale 1995, §9.1).
+- Consider declaring a task type with a discriminant to indicate
+  (Rationale 1995, §9.6):
+  - Priority, storage size, and size of entry families of individual
+    tasks of a type
+  - Data associated with a task (through an access discriminant)
 
 #### example
 
 The following code fragment shows how a task type with discriminant can
 be used to associate data with a task (Rationale 1995, §9.6):
 
-``` ada
+```ada
 type Task_Data is
    record
       ...  -- data for task to work on
@@ -396,7 +396,7 @@ with tasks, thus allowing the tasks to be parameterized when they are
 declared and eliminating the need for an initial rendezvous with the
 task:
 
-``` ada
+```ada
 task type Producer (Channel : Channel_Number; ID : ID_Number);
 
 task body Producer is
@@ -423,7 +423,7 @@ than the previous example. This method is no longer needed in Ada 95 due
 to the availability of discriminants with task types and protected
 types:
 
-``` ada
+```ada
 task type Producer is
    entry Initialize (Channel : in Channel_Number; ID : in ID_Number);
 end Producer;
@@ -490,10 +490,10 @@ on the data pointed to by the discriminant after initialization).
 
 #### guideline
 
-  - Consider using single task declarations to declare unique instances
-    of concurrent tasks.
-  - Consider using single protected declarations to declare unique
-    instances of protected objects.
+- Consider using single task declarations to declare unique instances
+  of concurrent tasks.
+- Consider using single protected declarations to declare unique
+  instances of protected objects.
 
 #### example
 
@@ -502,15 +502,15 @@ kinds of tasks and protected objects discussed here. Buffer is static,
 but its type is anonymous. No type name is declared to enable you to
 declare further objects of the same type.
 
-``` ada
+```ada
 task      Buffer;
 ```
 
-Because it is declared explicitly, the task type Buffer\_Manager is not
+Because it is declared explicitly, the task type Buffer_Manager is not
 anonymous. Channel is static and has a name, and its type is not
 anonymous.
 
-``` ada
+```ada
 task type Buffer_Manager;
 Channel : Buffer_Manager;
 ```
@@ -546,9 +546,9 @@ synchronizing tasks and protected objects.
 
 #### guideline
 
-  - Minimize dynamic creation of tasks because of the potentially high
-    startup overhead; reuse tasks by having them wait for new work on
-    some appropriate entry queue.
+- Minimize dynamic creation of tasks because of the potentially high
+  startup overhead; reuse tasks by having them wait for new work on
+  some appropriate entry queue.
 
 #### example
 
@@ -557,7 +557,7 @@ example shows why caution is required with dynamically allocated task
 and protected objects. It illustrates how a dynamic task can be
 disassociated from its name:
 
-``` ada
+```ada
 task type Radar_Track;
 type      Radar_Track_Pointer is access Radar_Track;
 Current_Track : Radar_Track_Pointer;
@@ -608,19 +608,19 @@ objects, you face the same issues as with any use of the heap.
 
 #### guideline
 
-  - Do not rely on pragma Priority unless your compiler supports the
-    Real-Time Annex (Ada Reference Manual 1995, Annex D) and priority
-    scheduling.
-  - Minimize risk of priority inversion by use of protected objects and
-    ceiling priority.
-  - Do not rely upon task priorities to achieve a particular sequence of
-    task execution.
+- Do not rely on pragma Priority unless your compiler supports the
+  Real-Time Annex (Ada Reference Manual 1995, Annex D) and priority
+  scheduling.
+- Minimize risk of priority inversion by use of protected objects and
+  ceiling priority.
+- Do not rely upon task priorities to achieve a particular sequence of
+  task execution.
 
 #### example
 
 For example, let the tasks have the following priorities:
 
-``` ada
+```ada
 task T1 is
    pragma Priority (High);
 end T1;
@@ -669,7 +669,7 @@ Server.Operation—Does Server accept the call from T1 or from T2?
 You might expect that, due to its higher priority, T1's call would be
 accepted by Server before that of T2. However, entry calls are queued in
 first-in-first-out (FIFO) order and not queued in order of priority
-(unless pragma Queueing\_Policy is used). Therefore, the synchronization
+(unless pragma Queueing_Policy is used). Therefore, the synchronization
 between T1 and Server is not affected by T1's priority. As a result, the
 call from T2 is accepted first. This is a form of priority inversion.
 (Annex D can change the default policy of FIFO queues.)
@@ -677,7 +677,7 @@ call from T2 is accepted first. This is a form of priority inversion.
 A solution might be to provide an entry for a High priority user and an
 entry for a Medium priority user.
 
-``` ada
+```ada
 ---------------------------------------------------------------------
 task Server is
    entry Operation_High_Priority;
@@ -776,17 +776,17 @@ longer periods. However, with Ada 95, it might be faster to raise the
 priorities of tasks whose jobs suddenly become critical than to wait for
 an executive task to reschedule them. In this case, priority inversion
 can be minimized using a protected object with pragma
-Locking\_Policy(Ceiling\_Locking) as the server instead of a task.
+Locking_Policy(Ceiling_Locking) as the server instead of a task.
 
 ### Delay Statements
 
 #### guideline
 
-  - Do not depend on a particular delay being achievable (Nissen and
-    Wallis 1984).
-  - Use a delay until not a delay statement to delay until a specific
-    time has been reached.
-  - Avoid using a busy waiting loop instead of a delay.
+- Do not depend on a particular delay being achievable (Nissen and
+  Wallis 1984).
+- Use a delay until not a delay statement to delay until a specific
+  time has been reached.
+- Avoid using a busy waiting loop instead of a delay.
 
 #### example
 
@@ -797,7 +797,7 @@ time (i.e., the task starts later and later in the cycle):
 
 Periodic:
 
-``` ada
+```ada
    loop
       delay Interval;
       ...
@@ -808,7 +808,7 @@ To avoid an inaccurate delay drift, you should use the delay until
 statement. The following example (Rationale 1995, §9.3) shows how to
 satisfy a periodic requirement with an average period:
 
-``` ada
+```ada
 task body Poll_Device is
    use type Ada.Real_Time.Time;
    use type Ada.Real_Time.Time_Span;
@@ -854,16 +854,16 @@ millisecond (Ada Reference Manual 1995, §D.8).
 #### notes
 
 You need to ensure the arithmetic precision of the calculation
-Poll\_Time := Poll\_Time + Period; to avoid drift.
+Poll_Time := Poll_Time + Period; to avoid drift.
 
 ### Extensibility and Concurrent Structures
 
 #### guideline
 
-  - Carefully consider the placement of components of protected types
-    within a tagged type inheritance hierarchy.
-  - Consider using generics to provide extensibility of data types
-    requiring the restrictions provided by protected objects.
+- Carefully consider the placement of components of protected types
+  within a tagged type inheritance hierarchy.
+- Consider using generics to provide extensibility of data types
+  requiring the restrictions provided by protected objects.
 
 #### rationale
 
@@ -887,20 +887,20 @@ individual applications.
 You can address synchronization within an inheritance hierarchy in one
 of three ways:
 
-  - You can declare the root as a limited tagged type with a component
-    that belongs to a protected type and give the tagged type primitive
-    operations that work by invoking the protected operations of that
-    component.
-  - Given a tagged type implementing an abstract data type (perhaps
-    resulting from several extensions), you can declare a protected type
-    with a component belonging to the tagged type. The body of each
-    protected operation would then invoke the corresponding operation of
-    the abstract data type. The protected operations provide mutual
-    exclusion.
-  - You can use a hybrid approach where you declare a protected type
-    with a component of some tagged type. You then use this protected
-    type to implement a new root tagged type (not a descendant of the
-    original tagged type).
+- You can declare the root as a limited tagged type with a component
+  that belongs to a protected type and give the tagged type primitive
+  operations that work by invoking the protected operations of that
+  component.
+- Given a tagged type implementing an abstract data type (perhaps
+  resulting from several extensions), you can declare a protected type
+  with a component belonging to the tagged type. The body of each
+  protected operation would then invoke the corresponding operation of
+  the abstract data type. The protected operations provide mutual
+  exclusion.
+- You can use a hybrid approach where you declare a protected type
+  with a component of some tagged type. You then use this protected
+  type to implement a new root tagged type (not a descendant of the
+  original tagged type).
 
 ## Communication
 
@@ -914,10 +914,10 @@ errors that can be difficult to detect and correct.
 
 #### guideline
 
-  - Minimize the work performed during a rendezvous.
-  - Minimize the work performed in the selective accept loop of a task.
-  - Consider using protected objects for data synchronization and
-    communication.
+- Minimize the work performed during a rendezvous.
+- Minimize the work performed in the selective accept loop of a task.
+- Consider using protected objects for data synchronization and
+  communication.
 
 #### example
 
@@ -927,7 +927,7 @@ Server, which contains Operation and Operation2. The statements after
 the accept body are executed before Server can accept additional calls
 to Operation or Operation2.
 
-``` ada
+```ada
    ...
    loop
       select
@@ -997,19 +997,19 @@ the application could ever be ported to a multiprocessor environment.
 
 #### guideline
 
-  - Provide a handler for exception Program\_Error whenever you cannot
-    avoid a selective accept statement whose alternatives can all be
-    closed (Honeywell 1986).
-  - Make systematic use of handlers for Tasking\_Error.
-  - Be prepared to handle exceptions during a rendezvous .
-  - Consider using a when others exception handler.
+- Provide a handler for exception Program_Error whenever you cannot
+  avoid a selective accept statement whose alternatives can all be
+  closed (Honeywell 1986).
+- Make systematic use of handlers for Tasking_Error.
+- Be prepared to handle exceptions during a rendezvous .
+- Consider using a when others exception handler.
 
 #### example
 
 This block allows recovery from exceptions raised while attempting to
 communicate a command to another task:
 
-``` ada
+```ada
 Accelerate:
    begin
       Throttle.Increase(Step);
@@ -1023,12 +1023,12 @@ Accelerate:
 
 In this select statement, if all the guards happen to be closed, the
 program can continue by executing the else part. There is no need for a
-handler for Program\_Error. Other exceptions can still be raised while
+handler for Program_Error. Other exceptions can still be raised while
 evaluating the guards or attempting to communicate. You will also need
 to include an exception handler in the task Throttle so that it can
 continue to execute after an exception is raised during the rendezvous:
 
-``` ada
+```ada
 ...
 Guarded:
    begin
@@ -1048,10 +1048,10 @@ Guarded:
 ```
 
 In this select statement, if all the guards happen to be closed,
-exception Program\_Error will be raised. Other exceptions can still be
+exception Program_Error will be raised. Other exceptions can still be
 raised while evaluating the guards or attempting to communicate:
 
-``` ada
+```ada
 Guarded:
    begin
       select
@@ -1070,7 +1070,7 @@ Guarded:
 
 #### rationale
 
-The exception Program\_Error is raised if a selective accept statement
+The exception Program_Error is raised if a selective accept statement
 (select statement containing accepts) is reached, all of whose
 alternatives are closed (i.e., the guards evaluate to False and there
 are no alternatives without guards), unless there is an else part. When
@@ -1079,13 +1079,13 @@ is by definition an error in its programming. You must be prepared to
 handle this error should it occur.
 
 Because an else part cannot have a guard, it can never be closed off as
-an alternative action; thus, its presence prevents Program\_Error.
+an alternative action; thus, its presence prevents Program_Error.
 However, an else part, a delay alternative, and a terminate alternative
 are all mutually exclusive, so you will not always be able to provide an
 else part. In these cases, you must be prepared to handle
-Program\_Error.
+Program_Error.
 
-The exception Tasking\_Error can be raised in the calling task whenever
+The exception Tasking_Error can be raised in the calling task whenever
 it attempts to communicate. There are many situations permitting this.
 Few of them are preventable by the calling task.
 
@@ -1101,7 +1101,7 @@ task body.
 
 #### notes
 
-There are other ways to prevent Program\_Error at a selective accept.
+There are other ways to prevent Program_Error at a selective accept.
 These involve leaving at least one alternative unguarded or proving that
 at least one guard will evaluate True under all circumstances. The point
 here is that you or your successors will make mistakes in trying to do
@@ -1111,19 +1111,19 @@ this, so you should prepare to handle the inevitable exception.
 
 #### guideline
 
-  - Do not depend on the values of the task attributes 'Callable or
-    'Terminated ( Nissen and Wallis 1984).
-  - Do not depend on attributes to avoid Tasking\_Error on an entry
-    call.
-  - For tasks, do not depend on the value of the entry attribute 'Count.
-  - Using the 'Count attribute with protected entries is more reliable
-    than using the 'Count attribute with task entries.
+- Do not depend on the values of the task attributes 'Callable or
+  'Terminated ( Nissen and Wallis 1984).
+- Do not depend on attributes to avoid Tasking_Error on an entry
+  call.
+- For tasks, do not depend on the value of the entry attribute 'Count.
+- Using the 'Count attribute with protected entries is more reliable
+  than using the 'Count attribute with task entries.
 
 #### example
 
 In the following examples, Dispatch'Callable is a Boolean expression,
 indicating whether a call can be made to the task Intercept without
-raising the exception Tasking\_Error. Dispatch'Count indicates the
+raising the exception Tasking_Error. Dispatch'Count indicates the
 number of callers currently waiting at entry Transmit.
 Dispatch'Terminated is a Boolean expression, indicating whether the task
 Dispatch is in a terminated state.
@@ -1131,7 +1131,7 @@ Dispatch is in a terminated state.
 This task is badly programmed because it relies upon the values of the
 'Count attributes not changing between evaluating and acting upon them:
 
-``` ada
+```ada
 ---------------------------------------------------------------------
 task body Dispatch is
 ...
@@ -1152,7 +1152,7 @@ If the following code is preempted between evaluating the condition and
 initiating the call, the assumption that the task is still callable
 might no longer be valid:
 
-``` ada
+```ada
 ...
 if Dispatch'Callable then
    Dispatch.Receive;
@@ -1190,13 +1190,13 @@ both before and after queueing a given caller.
 
 #### guideline
 
-  - Use calls on protected subprograms or entries to pass data between
-    tasks rather than unprotected shared variables.
-  - Do not use unprotected shared variables as a task synchronization
-    device.
-  - Do not reference nonlocal variables in a guard .
-  - If an unprotected shared variable is necessary, use the pragma
-    Volatile or Atomic.
+- Use calls on protected subprograms or entries to pass data between
+  tasks rather than unprotected shared variables.
+- Do not use unprotected shared variables as a task synchronization
+  device.
+- Do not reference nonlocal variables in a guard .
+- If an unprotected shared variable is necessary, use the pragma
+  Volatile or Atomic.
 
 #### example
 
@@ -1207,7 +1207,7 @@ synchronization or mutual exclusion between the task that reads a
 command and the one that acts on it. Without knowledge about their
 relative scheduling, the actual results cannot be predicted:
 
-``` ada
+```ada
 -----------------------------------------------------------------------
 task body Line_Printer_Driver is
    ...
@@ -1230,11 +1230,11 @@ end Spool_Server;
 
 The following example shows a vending machine that dispenses the amount
 requested into an appropriately sized container. The guards reference
-the global variables Num\_Requested and Item\_Count, leading to a
+the global variables Num_Requested and Item_Count, leading to a
 potential problem in the wrong amount being dispensed into an
 inappropriately sized container:
 
-``` ada
+```ada
 Num_Requested : Natural;
 Item_Count    : Natural := 1000;
 task type Request_Manager (Personal_Limit : Natural := 1) is
@@ -1267,22 +1267,22 @@ begin
    end loop;
 end Request_Manager;
 R1 : Request_Manager (Personal_Limit => 10);
-R2 : Request_Manager (Personal_Limit => 2);  
+R2 : Request_Manager (Personal_Limit => 2);
 ```
 
 The interleaving of the execution of R1 and R2 can lead to
-Num\_Requested being changed before the entry call to Dispense is
+Num_Requested being changed before the entry call to Dispense is
 accepted. Thus, R1 might receive fewer items than requested or R2's
 request might be bounced because the request manager thinks that what R2
 is requesting exceeds R2's personal limit. By using the local variable,
 you will dispense the correct amount. Furthermore, by using the pragma
 Volatile (Ada Reference Manual 1995, §C.6), you ensure that the
-Item\_Count is reevaluated when the guards are evaluated. Given that the
-variable Item\_Count is not updated in this task body, the compiler
+Item_Count is reevaluated when the guards are evaluated. Given that the
+variable Item_Count is not updated in this task body, the compiler
 might otherwise have optimized the code and not generated code to
-reevaluate Item\_Count every time it is read:
+reevaluate Item_Count every time it is read:
 
-``` ada
+```ada
 Item_Count : Natural := 1000;
 pragma Volatile (Item_Count);
 task body Request_Manager is
@@ -1302,7 +1302,7 @@ begin
             accept Dispense do
                ... -- output appropriate message if couldn't service request
             end Dispense;
-            Item_Count := Item_Count - Local_Num_Requested; 
+            Item_Count := Item_Count - Local_Num_Requested;
       end select;
    end loop;
 end Request_Manager;
@@ -1328,8 +1328,8 @@ variable are sequential (Ada Reference Manual 1995, §9.10; Rationale
 
 The first example above has a race condition requiring perfect
 interleaving of execution. This code can be made more reliable by
-introducing a flag that is set by Spool\_Server and reset by
-Line\_Printer\_Driver. An if (condition flag) then delay ... else would
+introducing a flag that is set by Spool_Server and reset by
+Line_Printer_Driver. An if (condition flag) then delay ... else would
 be added to each task loop in order to ensure that the interleaving is
 satisfied. However, notice that this approach requires a delay and the
 associated rescheduling. Presumably, this rescheduling overhead is what
@@ -1338,9 +1338,9 @@ is being avoided by not using the rendezvous.
 You might need to use an object in shared memory to communicate data
 between (Rationale 1995, §C.5):
 
-  - Ada tasks
-  - An Ada program and concurrent non-Ada processes
-  - An Ada program and hardware devices
+- Ada tasks
+- An Ada program and concurrent non-Ada processes
+- An Ada program and hardware devices
 
 If your environment supports the Systems Programming Annex (Ada
 Reference Manual 1995, Annex C), you should indicate whether loads and
@@ -1351,75 +1351,75 @@ predefined random number generator and certain input/output subprograms
 can lead to problems with unprotected updates to shared state. The Ada
 Reference Manual (1995, §A.5.2) points out the need for tasks to
 synchronize their access to the random number generators (packages
-Ada.Numerics.Float\_Random and Ada.Numerics.Discrete\_Random). See
+Ada.Numerics.Float_Random and Ada.Numerics.Discrete_Random). See
 Guideline 7.7.5 for the I/O issue.
 
 ### Selective Accepts and Entry Calls
 
 #### guideline
 
-  - Use caution with conditional entry calls to task entries.
-  - Use caution with selective accept with else parts.
-  - Do not depend upon a particular delay in timed entry calls to task
-    entries.
-  - Do not depend upon a particular delay in selective accepts with
-    delay alternatives.
-  - Consider using protected objects instead of the rendezvous for
-    data-oriented synchronization.
+- Use caution with conditional entry calls to task entries.
+- Use caution with selective accept with else parts.
+- Do not depend upon a particular delay in timed entry calls to task
+  entries.
+- Do not depend upon a particular delay in selective accepts with
+  delay alternatives.
+- Consider using protected objects instead of the rendezvous for
+  data-oriented synchronization.
 
 #### example
 
 The conditional entry call in the following code results in a potential
 race condition that might degenerate into a busy waiting loop (i.e.,
-perform the same calculation over and over). The task Current\_Position
-containing entry Request\_New\_Coordinates might never execute if the
+perform the same calculation over and over). The task Current_Position
+containing entry Request_New_Coordinates might never execute if the
 loop-containing task (shown in the following code fragment) has a higher
-priority than Current\_Position because it does not release the
+priority than Current_Position because it does not release the
 processing resource:
 
-``` ada
+```ada
 task body Calculate_Flightpath is
 begin
    ...
    loop
-  
+
       select
          Current_Position.Request_New_Coordinates (X, Y);
          -- calculate projected location based on new coordinates
          ...
-  
+
       else
          -- calculate projected location based on last locations
          ...
       end select;
-  
+
    end loop;
    ...
 end Calculate_Flightpath;
 ```
 
-The addition of a delay, as shown, may allow Current\_Position to
-execute until it reaches an accept for Request\_New\_Coordinates:
+The addition of a delay, as shown, may allow Current_Position to
+execute until it reaches an accept for Request_New_Coordinates:
 
-``` ada
+```ada
 task body Calculate_Flightpath is
 begin
    ...
    loop
-  
+
       select
          Current_Position.Request_New_Coordinates(X, Y);
          -- calculate projected location based on new coordinates
          ...
-  
+
       else
          -- calculate projected location based on last locations
          ...
-  
+
          delay until Time_To_Execute;
          Time_To_Execute := Time_To_Execute + Period;
       end select;
-  
+
    end loop;
    ...
 end Calculate_Flightpath;
@@ -1428,7 +1428,7 @@ end Calculate_Flightpath;
 The following selective accept with else again does not degenerate into
 a busy wait loop only because of the addition of a delay statement:
 
-``` ada
+```ada
 task body Buffer_Messages is
 
    ...
@@ -1462,22 +1462,22 @@ The following timed entry call might be considered an unacceptable
 implementation if lost communications with the reactor for over 25
 milliseconds results in a critical situation:
 
-``` ada
+```ada
 task body Monitor_Reactor is
    ...
 begin
    ...
    loop
-  
+
       select
          Reactor.Status(OK);
-  
+
       or
          delay 0.025;
          -- lost communication for more that 25 milliseconds
          Emergency_Shutdown;
       end select;
-  
+
       -- process reactor status
       ...
    end loop;
@@ -1491,23 +1491,23 @@ required accuracy cannot be obtained unless Period is within + or -
 0.005 seconds. This period cannot be guaranteed because of the
 inaccuracy of the delay statement:
 
-``` ada
+```ada
 task body Current_Position is
 begin
    ...
    loop
-  
+
       select
          accept Request_New_Coordinates (X :    out Integer;
                                          Y :    out Integer) do
             -- copy coordinates to parameters
             ...
          end Request_New_Coordinates;
-  
+
       or
          delay until Time_To_Execute;
       end select;
-  
+
       Time_To_Execute := Time_To_Execute + Period;
       -- Read Sensors
       -- execute coordinate transformations
@@ -1540,14 +1540,14 @@ this use of protected objects.
 
 #### guideline
 
-  - Minimize the number of accept and select statements per task .
-  - Minimize the number of accept statements per entry.
+- Minimize the number of accept and select statements per task .
+- Minimize the number of accept statements per entry.
 
 #### example
 
 Use:
 
-``` ada
+```ada
 accept A;
 if Mode_1 then
    -- do one thing
@@ -1558,7 +1558,7 @@ end if;
 
 rather than:
 
-``` ada
+```ada
 if Mode_1 then
    accept A;
    -- do one thing
@@ -1607,8 +1607,8 @@ associated with tasks.
 
 #### guideline
 
-  - Consider using an exception handler for a rendezvous within the main
-    loop inside each task.
+- Consider using an exception handler for a rendezvous within the main
+  loop inside each task.
 
 #### example
 
@@ -1616,7 +1616,7 @@ In the following example, an exception raised using the primary sensor
 is used to change Mode to Degraded still allowing execution of the
 system:
 
-``` ada
+```ada
 ...
 loop
 
@@ -1666,23 +1666,23 @@ the entry call (see Guideline 6.2.3).
 
 #### guideline
 
-  - Do not create nonterminating tasks unintentionally.
-  - Explicitly shut down tasks that depend on library packages.
-  - Confirm that a task is terminated before freeing it with
-    Ada.Unchecked\_Deallocation.
-  - Consider using a select statement with a terminate alternative
-    rather than an accept statement alone.
-  - Consider providing a terminate alternative for every selective
-    accept that does not require an else part or a delay .
-  - Do not declare or create a task within a user-defined Finalize
-    procedure after the environment task has finished waiting for other
-    tasks.
+- Do not create nonterminating tasks unintentionally.
+- Explicitly shut down tasks that depend on library packages.
+- Confirm that a task is terminated before freeing it with
+  Ada.Unchecked_Deallocation.
+- Consider using a select statement with a terminate alternative
+  rather than an accept statement alone.
+- Consider providing a terminate alternative for every selective
+  accept that does not require an else part or a delay .
+- Do not declare or create a task within a user-defined Finalize
+  procedure after the environment task has finished waiting for other
+  tasks.
 
 #### example
 
 This task will never terminate:
 
-``` ada
+```ada
 ---------------------------------------------------------------------
 task body Message_Buffer is
    ...
@@ -1693,7 +1693,7 @@ begin  -- Message_Buffer
             accept Retrieve (Value :    out Element) do
                ...
             end Retrieve;
-              
+
       or
          when not ((Head  = Index'First and then
                     Tail  = Index'Last) or else
@@ -1753,7 +1753,7 @@ activated during finalization of the controlled objects in a partition.
 While the environment task is waiting for all other tasks in the
 partition to complete, starting up a new task during finalization
 results in a bounded error (Ada Reference Manual 1995, §10.2). The
-exception Program\_Error can be raised during creation or activation of
+exception Program_Error can be raised during creation or activation of
 such a task.
 
 #### exceptions
@@ -1776,12 +1776,12 @@ Reference Manual (1995, §9.3) on "Task Dependence-Termination of Tasks."
 
 #### guideline
 
-  - Avoid using the abort statement.
-  - Consider using the asynchronous select statement rather than the
-    abort statement.
-  - Minimize uses of the asynchronous select statement.
-  - Avoid assigning nonatomic global objects from a task or from the
-    abortable part of an asynchronous select statement.
+- Avoid using the abort statement.
+- Consider using the asynchronous select statement rather than the
+  abort statement.
+- Minimize uses of the asynchronous select statement.
+- Avoid assigning nonatomic global objects from a task or from the
+  abortable part of an asynchronous select statement.
 
 #### example
 
@@ -1793,7 +1793,7 @@ database transaction. The database operation may be cancelled (through a
 special input key) unless the commit transaction has begun. The code is
 extracted from the Rationale (1995, §9.4):
 
-``` ada
+```ada
 with Ada.Finalization;
 package Txn_Pkg is
    type Txn_Status is (Incomplete, Failed, Succeeded);
@@ -1894,11 +1894,11 @@ global protected objects.
 
 #### guideline
 
-  - Place an exception handler for others at the end of a task body.
-  - Consider having each exception handler at the end of a task body
-    report the task's demise.
-  - Do not rely on the task status to determine whether a rendezvous can
-    be made with the task.
+- Place an exception handler for others at the end of a task body.
+- Consider having each exception handler at the end of a task body
+  report the task's demise.
+- Do not rely on the task status to determine whether a rendezvous can
+  be made with the task.
 
 #### example
 
@@ -1907,7 +1907,7 @@ screen. When started, it is given part of the name by which its parent
 knows it. Should it terminate due to an exception, it signals the fact
 in one of its parent's data structures:
 
-``` ada
+```ada
 task type Track (My_Index : Track_Index) is
    ...
 end Track;
@@ -1949,15 +1949,15 @@ be made with the task. If Task A depends on Task B and Task A checks the
 status flag before it rendezvouses with Task B, there is a potential
 that Task B fails between the status test and the rendezvous. In this
 case, Task A must provide an exception handler to handle the
-Tasking\_Error exception raised by the call to an entry of an abnormal
+Tasking_Error exception raised by the call to an entry of an abnormal
 task (see Guideline 6.3.1).
 
 ### Circular Task Calls
 
 #### guideline
 
-  - Do not call a task entry that directly or indirectly results in a
-    call to an entry of the original calling task.
+- Do not call a task entry that directly or indirectly results in a
+  call to an entry of the original calling task.
 
 #### rationale
 
@@ -1968,158 +1968,158 @@ of its own entries directly or indirectly via a circular chain of calls.
 
 #### guideline
 
-  - Avoid race conditions in setting an exit status code from the main
-    program when using the procedure
-    Ada.Command\_Line.Set\_Exit\_Status.
-  - In a program with multiple tasks, encapsulate, serialize, and check
-    calls to the procedure Ada.Command\_Line.Set\_Exit\_Status.
+- Avoid race conditions in setting an exit status code from the main
+  program when using the procedure
+  Ada.Command_Line.Set_Exit_Status.
+- In a program with multiple tasks, encapsulate, serialize, and check
+  calls to the procedure Ada.Command_Line.Set_Exit_Status.
 
 #### rationale
 
 In accordance with the rules of Ada, tasks in library-level packages may
 terminate after the main program task. If the program permits multiple
-tasks to use Set\_Exit\_Status, then there can be no guarantee that any
+tasks to use Set_Exit_Status, then there can be no guarantee that any
 particular status value is the one actually returned.
 
 ## Summary
 
 ### concurrency options
 
-  - Consider using protected objects to provide mutually exclusive
-    access to data.
-  - Consider using protected objects to control or synchronize access to
-    data shared by multiple tasks .
-  - Consider using protected objects to implement synchronization, such
-    as a passive resource monitor.
-  - Consider encapsulating protected objects in the private part or body
-    of a package.
-  - Consider using a protected procedure to implement an interrupt
-    handler.
-  - Do not attach a protected procedure handler to a hardware interrupt
-    if that interrupt has a maximum priority greater than the ceiling
-    priority assigned to the handler.
-  - Avoid the use of global variables in entry barriers.
-  - Avoid the use of barrier expressions with side effects.
-  - Use tasks to model selected asynchronous threads of control within
-    the problem domain.
-  - Consider using tasks to define concurrent algorithms.
-  - Consider using rendezvous when your application requires synchronous
-    unbuffered communication.
-  - Consider using discriminants to minimize the need for an explicit
-    initialization operation (Rationale 1995, §9.1).
-  - Consider using discriminants to control composite components of the
-    protected objects, including setting the size of an entry family
-    (Rationale 1995, §9.1).
-  - Consider using a discriminant to set the priority of a protected
-    object (Rationale 1995, §9.1).
-  - Consider using a discriminant to identify an interrupt to a
-    protected object (Rationale 1995, §9.1).
-  - Consider declaring a task type with a discriminant to indicate
-    (Rationale 1995, §9.6):
-      - Priority, storage size, and size of entry families of individual
-        tasks of a type
-      - Data associated with a task (through an access discriminant)
-  - Consider using single task declarations to declare unique instances
-    of concurrent tasks.
-  - Consider using single protected declarations to declare unique
-    instances of protected objects.
-  - Minimize dynamic creation of tasks because of the potentially high
-    startup overhead; reuse tasks by having them wait for new work on
-    some appropriate entry queue.
-  - Do not rely on pragma Priority unless your compiler supports the
-    Real-Time Annex (Ada Reference Manual 1995, Annex D) and priority
-    scheduling.
-  - Minimize risk of priority inversion by use of protected objects and
-    ceiling priority.
-  - Do not rely upon task priorities to achieve a particular sequence of
-    task execution.
-  - Do not depend on a particular delay being achievable (Nissen and
-    Wallis 1984).
-  - Use a delay until not a delay statement to delay until a specific
-    time has been reached.
-  - Avoid using a busy waiting loop instead of a delay.
-  - Carefully consider the placement of components of protected types
-    within a tagged type inheritance hierarchy.
-  - Consider using generics to provide extensibility of data types
-    requiring the restrictions provided by protected objects.
+- Consider using protected objects to provide mutually exclusive
+  access to data.
+- Consider using protected objects to control or synchronize access to
+  data shared by multiple tasks .
+- Consider using protected objects to implement synchronization, such
+  as a passive resource monitor.
+- Consider encapsulating protected objects in the private part or body
+  of a package.
+- Consider using a protected procedure to implement an interrupt
+  handler.
+- Do not attach a protected procedure handler to a hardware interrupt
+  if that interrupt has a maximum priority greater than the ceiling
+  priority assigned to the handler.
+- Avoid the use of global variables in entry barriers.
+- Avoid the use of barrier expressions with side effects.
+- Use tasks to model selected asynchronous threads of control within
+  the problem domain.
+- Consider using tasks to define concurrent algorithms.
+- Consider using rendezvous when your application requires synchronous
+  unbuffered communication.
+- Consider using discriminants to minimize the need for an explicit
+  initialization operation (Rationale 1995, §9.1).
+- Consider using discriminants to control composite components of the
+  protected objects, including setting the size of an entry family
+  (Rationale 1995, §9.1).
+- Consider using a discriminant to set the priority of a protected
+  object (Rationale 1995, §9.1).
+- Consider using a discriminant to identify an interrupt to a
+  protected object (Rationale 1995, §9.1).
+- Consider declaring a task type with a discriminant to indicate
+  (Rationale 1995, §9.6):
+  - Priority, storage size, and size of entry families of individual
+    tasks of a type
+  - Data associated with a task (through an access discriminant)
+- Consider using single task declarations to declare unique instances
+  of concurrent tasks.
+- Consider using single protected declarations to declare unique
+  instances of protected objects.
+- Minimize dynamic creation of tasks because of the potentially high
+  startup overhead; reuse tasks by having them wait for new work on
+  some appropriate entry queue.
+- Do not rely on pragma Priority unless your compiler supports the
+  Real-Time Annex (Ada Reference Manual 1995, Annex D) and priority
+  scheduling.
+- Minimize risk of priority inversion by use of protected objects and
+  ceiling priority.
+- Do not rely upon task priorities to achieve a particular sequence of
+  task execution.
+- Do not depend on a particular delay being achievable (Nissen and
+  Wallis 1984).
+- Use a delay until not a delay statement to delay until a specific
+  time has been reached.
+- Avoid using a busy waiting loop instead of a delay.
+- Carefully consider the placement of components of protected types
+  within a tagged type inheritance hierarchy.
+- Consider using generics to provide extensibility of data types
+  requiring the restrictions provided by protected objects.
 
 ### communication
 
-  - Minimize the work performed during a rendezvous .
-  - Minimize the work performed in the selective accept loop of a task.
-  - Consider using protected objects for data synchronization and
-    communication.
-  - Provide a handler for exception Program\_Error whenever you cannot
-    avoid a selectiveaccept statement whose alternatives can all be
-    closed (Honeywell 1986).
-  - Make systematic use of handlers for Tasking\_Error.
-  - Be prepared to handle exceptions during a rendezvous .
-  - Consider using a when others exception handler.
-  - Do not depend on the values of the task attributes 'Callable or
-    'Terminated (Nissen and Wallis 1984).
-  - Do not depend on attributes to avoid Tasking\_Error on an entry
-    call.
-  - For tasks, do not depend on the value of the entry attribute 'Count.
-  - Using the 'Count attribute with protected entries is more reliable
-    than using the 'Count attribute with task entries.
-  - Use calls on protected subprograms or entries to pass data between
-    tasks rather than unprotected shared variables.
-  - Do not use unprotected shared variables as a task synchronization
-    device.
-  - Do not reference nonlocal variables in a guard .
-  - If an unprotected shared variable is necessary, use the pragma
-    Volatile or Atomic.
-  - Use caution with conditional entry calls to task entries.
-  - Use caution with selective accepts with else parts.
-  - Do not depend upon a particular delay in timed entry calls to task
-    entries.
-  - Do not depend upon a particular delay in selective accepts with
-    delay alternatives.
-  - Consider using protected objects instead of the rendezvous for
-    data-oriented synchronization.
-  - Minimize the number of accept and select statements per task .
-  - Minimize the number of accept statements per entry.
+- Minimize the work performed during a rendezvous .
+- Minimize the work performed in the selective accept loop of a task.
+- Consider using protected objects for data synchronization and
+  communication.
+- Provide a handler for exception Program_Error whenever you cannot
+  avoid a selectiveaccept statement whose alternatives can all be
+  closed (Honeywell 1986).
+- Make systematic use of handlers for Tasking_Error.
+- Be prepared to handle exceptions during a rendezvous .
+- Consider using a when others exception handler.
+- Do not depend on the values of the task attributes 'Callable or
+  'Terminated (Nissen and Wallis 1984).
+- Do not depend on attributes to avoid Tasking_Error on an entry
+  call.
+- For tasks, do not depend on the value of the entry attribute 'Count.
+- Using the 'Count attribute with protected entries is more reliable
+  than using the 'Count attribute with task entries.
+- Use calls on protected subprograms or entries to pass data between
+  tasks rather than unprotected shared variables.
+- Do not use unprotected shared variables as a task synchronization
+  device.
+- Do not reference nonlocal variables in a guard .
+- If an unprotected shared variable is necessary, use the pragma
+  Volatile or Atomic.
+- Use caution with conditional entry calls to task entries.
+- Use caution with selective accepts with else parts.
+- Do not depend upon a particular delay in timed entry calls to task
+  entries.
+- Do not depend upon a particular delay in selective accepts with
+  delay alternatives.
+- Consider using protected objects instead of the rendezvous for
+  data-oriented synchronization.
+- Minimize the number of accept and select statements per task .
+- Minimize the number of accept statements per entry.
 
 ### termination
 
-  - Consider using an exception handler for a rendezvous within the main
-    loop inside each task.
-  - Do not create nonterminating tasks unintentionally.
-  - Explicitly shut down tasks that depend on library packages.
-  - Confirm that a task is terminated before freeing it with
-    Ada.Unchecked\_Deallocation.
-  - Consider using a select statement with a terminate alternative
-    rather than an accept statement alone.
-  - Consider providing a terminate alternative for every selective
-    accept that does not require an else part or a delay.
-  - Do not declare or create a task within a user-defined Finalize
-    procedure after the environment task has finished waiting for other
-    tasks.
-  - Avoid using the abort statement.
-  - Consider using the asynchronous select statement rather than the
-    abort statement.
-  - Minimize uses of the asynchronous select statement.
-  - Avoid assigning nonatomic global objects from a task or from the
-    abortable part of an asynchronous select statement.
-  - Place an exception handler for others at the end of a task body.
-  - Consider having each exception handler at the end of a task body
-    report the task's demise.
-  - Do not rely on the task status to determine whether a rendezvous can
-    be made with the task.
-  - Do not call a task entry that directly or indirectly results in a
-    call to an entry of the original calling task.
-  - Avoid race conditions in setting an exit status code from the main
-    program when using the procedure
-    Ada.Command\_Line.Set\_Exit\_Status.
-  - In a program with multiple tasks, encapsulate, serialize, and check
-    calls to the procedure Ada.Command\_Line.Set\_Exit\_Status.
-:::note
+- Consider using an exception handler for a rendezvous within the main
+  loop inside each task.
+- Do not create nonterminating tasks unintentionally.
+- Explicitly shut down tasks that depend on library packages.
+- Confirm that a task is terminated before freeing it with
+  Ada.Unchecked_Deallocation.
+- Consider using a select statement with a terminate alternative
+  rather than an accept statement alone.
+- Consider providing a terminate alternative for every selective
+  accept that does not require an else part or a delay.
+- Do not declare or create a task within a user-defined Finalize
+  procedure after the environment task has finished waiting for other
+  tasks.
+- Avoid using the abort statement.
+- Consider using the asynchronous select statement rather than the
+  abort statement.
+- Minimize uses of the asynchronous select statement.
+- Avoid assigning nonatomic global objects from a task or from the
+  abortable part of an asynchronous select statement.
+- Place an exception handler for others at the end of a task body.
+- Consider having each exception handler at the end of a task body
+  report the task's demise.
+- Do not rely on the task status to determine whether a rendezvous can
+  be made with the task.
+- Do not call a task entry that directly or indirectly results in a
+  call to an entry of the original calling task.
+- Avoid race conditions in setting an exit status code from the main
+  program when using the procedure
+  Ada.Command_Line.Set_Exit_Status.
+- In a program with multiple tasks, encapsulate, serialize, and check
+  calls to the procedure Ada.Command_Line.Set_Exit_Status.
+  :::note
 
 This page of the "Ada Quality and Style Guide" has been adapted from the
 original work at https://en.wikibooks.org/wiki/Ada_Style_Guide, which is
 licensed under the
 [Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/3.0/);
-additional terms may apply.  Page not endorsed by Wikibooks or the Ada
+additional terms may apply. Page not endorsed by Wikibooks or the Ada
 Style Guide Wikibook authors. This page is licensed under the same license
 as the original work.
 

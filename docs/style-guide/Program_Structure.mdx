@@ -34,22 +34,22 @@ listed below are often given as general program design guidelines.
 
 #### guideline
 
-  - Place the specification of each library unit package in a separate
-    file from its body.
-  - Avoid defining library unit subprograms that are not intended to be
-    used as main programs. If such subprograms are defined, then create
-    an explicit specification, in a separate file, for each library unit
-    subprogram.
-  - Minimize the use of subunits.
-  - In preference to subunits, use child library units to structure a
-    subsystem into manageable units.
-  - Place each subunit in a separate file.
-  - Use a consistent file naming convention.
-  - In preference to nesting in a package body, use a private child and
-    with it to the parent body.
-  - Use private child unit specifications for data and subprograms that
-    are required by (other) child units that extend a parent unit's
-    abstraction or services.
+- Place the specification of each library unit package in a separate
+  file from its body.
+- Avoid defining library unit subprograms that are not intended to be
+  used as main programs. If such subprograms are defined, then create
+  an explicit specification, in a separate file, for each library unit
+  subprogram.
+- Minimize the use of subunits.
+- In preference to subunits, use child library units to structure a
+  subsystem into manageable units.
+- Place each subunit in a separate file.
+- Use a consistent file naming convention.
+- In preference to nesting in a package body, use a private child and
+  with it to the parent body.
+- Use private child unit specifications for data and subprograms that
+  are required by (other) child units that extend a parent unit's
+  abstraction or services.
 
 #### example
 
@@ -59,12 +59,12 @@ adb suffix for the body. The suffix ads indicates the specification, and
 any files containing subunits use names constructed by separating the
 body name from the subunit name with an underscore:
 
-`text_io.ads                — the specification`  
-`text_io.adb                — the body`  
-`text_io_integer_io.adb     — a subunit`  
-`text_io_fixed_io.adb       — a subunit`  
-`text_io_float_io.adb       — a subunit`  
-`text_io_enumeration_io.adb — a subunit`
+`text_io.ads — the specification`  
+`text_io.adb — the body`  
+`text_io_integer_io.adb — a subunit`  
+`text_io_fixed_io.adb — a subunit`  
+`text_io_float_io.adb — a subunit`  
+`text_io_enumeration_io.adb — a subunit`
 
 Depending on what characters your file system allows you to use in file
 names, you could show the distinction between parent and subunit name
@@ -72,12 +72,12 @@ more clearly in the file name. If your file system allows the "\#"
 character, for example, you could separate the body name from the
 subunit name with a \#:
 
-`text_io.ads                — the specification`  
-`text_io.adb                — the body`  
-`text_io#integer_io.adb     — a subunit`  
-`text_io#fixed_io.adb       — a subunit`  
-`text_io#float_io.adb       — a subunit`  
-`text_io#enumeration_io.adb — a subunit`
+`text_io.ads — the specification`  
+`text_io.adb — the body`  
+`text_io#integer_io.adb — a subunit`  
+`text_io#fixed_io.adb — a subunit`  
+`text_io#float_io.adb — a subunit`  
+`text_io#enumeration_io.adb — a subunit`
 
 Some operating systems are case-sensitive, although Ada itself is not a
 case-sensitive language. For example, you could choose a convention of
@@ -193,18 +193,18 @@ child package of supporting subprograms.
 
 #### guideline
 
-  - When possible, express configuration pragmas through compiler
-    options or other means that do not require modifications to the
-    source code.
-  - When configuration pragmas must be placed in source code, consider
-    isolating them to one compilation unit per partition; if specified,
-    the main subprogram for the partition is recommended.
+- When possible, express configuration pragmas through compiler
+  options or other means that do not require modifications to the
+  source code.
+- When configuration pragmas must be placed in source code, consider
+  isolating them to one compilation unit per partition; if specified,
+  the main subprogram for the partition is recommended.
 
 #### rationale
 
 Configuration pragmas are generally used to select a partition-wide or
 system-wide option. Usually, they reflect either high-level software
-architecture decisions (e.g., pragma Task\_Dispatching\_Policy) or the
+architecture decisions (e.g., pragma Task_Dispatching_Policy) or the
 use of the software in a particular application domain (e.g.,
 safety-critical software). If a configuration pragma is embedded within
 a software component and that component is reused in a different context
@@ -236,8 +236,8 @@ such pragmas when they are not used as a configuration pragma.
 
 #### guideline
 
-  - Use subprograms to enhance abstraction.
-  - Restrict each subprogram to the performance of a single action.
+- Use subprograms to enhance abstraction.
+- Restrict each subprogram to the performance of a single action.
 
 #### example
 
@@ -248,7 +248,7 @@ a subprogram to draw the menu. This way, the output subprogram has one
 purpose and the way to determine the menu content is described
 elsewhere.
 
-``` ada
+```ada
 ...
 ----------------------------------------------------------------------
 procedure Draw_Menu
@@ -290,15 +290,15 @@ calls.
 
 #### guideline
 
-  - Use a function when the subprogram's primary purpose is to provide a
-    single value.
-  - Minimize the side effect of a function.
-  - Consider using a parameterless function when the value does not need
-    to be static.
-  - Use a parameterless function (instead of a constant) if the value
-    should be inherited by types derived from the type.
-  - Use a parameterless function if the value itself is subject to
-    change.
+- Use a function when the subprogram's primary purpose is to provide a
+  single value.
+- Minimize the side effect of a function.
+- Consider using a parameterless function when the value does not need
+  to be static.
+- Use a parameterless function (instead of a constant) if the value
+  should be inherited by types derived from the type.
+- Use a parameterless function if the value itself is subject to
+  change.
 
 #### example
 
@@ -306,7 +306,7 @@ Although reading a character from a file will change what character is
 read next, this is accepted as a minor side effect compared to the
 primary purpose of the following function:
 
-``` ada
+```ada
 function Next_Character return Character is separate;
 ```
 
@@ -315,10 +315,10 @@ Any time the order of evaluation is undefined, the order of the values
 returned by the function will effectively be undefined. In this example,
 the order of the characters placed in Word and the order that the
 following two characters are given to the Suffix parameters are unknown.
-No implementation of the Next\_Character function can guarantee which
+No implementation of the Next_Character function can guarantee which
 character will go where:
 
-``` ada
+```ada
    Word : constant String := String'(1 .. 5 => Next_Character);
 begin  -- Start_Parsing
    Parse(Keyword => Word,
@@ -333,7 +333,7 @@ generator), then the order of evaluation is unimportant.
 The following example shows the use of a parameterless function instead
 of a constant:
 
-``` ada
+```ada
 type T is private;
 function Nil return T;        -- This function is a derivable operation of type T
 function Default return T;    -- Also derivable, and the value can be changed by
@@ -342,7 +342,7 @@ function Default return T;    -- Also derivable, and the value can be changed by
 
 This same example could have been written using constants:
 
-``` ada
+```ada
 type T is private;
 Nil : constant T;
 Default : constant T;
@@ -364,20 +364,20 @@ occur is erroneous. Avoid using side effects anywhere.
 
 #### guideline
 
-  - Use packages for information hiding.
-  - Use packages with tagged types and private types for abstract data
-    types.
-  - Use packages to model abstract entities appropriate to the problem
-    domain.
-  - Use packages to group together related type and object declarations
-    (e.g., common declarations for two or more library units).
-  - Encapsulate machine dependencies in packages. Place a software
-    interface to a particular device in a package to facilitate a change
-    to a different device.
-  - Place low-level implementation decisions or interfaces in
-    subprograms within packages.
-  - Use packages and subprograms to encapsulate and hide program details
-    that may change (Nissen and Wallis 1984).
+- Use packages for information hiding.
+- Use packages with tagged types and private types for abstract data
+  types.
+- Use packages to model abstract entities appropriate to the problem
+  domain.
+- Use packages to group together related type and object declarations
+  (e.g., common declarations for two or more library units).
+- Encapsulate machine dependencies in packages. Place a software
+  interface to a particular device in a package to facilitate a change
+  to a different device.
+- Place low-level implementation decisions or interfaces in
+  subprograms within packages.
+- Use packages and subprograms to encapsulate and hide program details
+  that may change (Nissen and Wallis 1984).
 
 #### example
 
@@ -388,7 +388,7 @@ directory that contains external files. Its internals may, in turn,
 depend on other packages more specific to the hardware or operating
 system:
 
-``` ada
+```ada
 package Directory is
 
    type Directory_Listing is limited private;
@@ -452,20 +452,20 @@ subprogram overhead.
 
 #### guideline
 
-  - If a new library unit represents a logical extension to the original
-    abstraction, define it as a child library unit.
-  - If a new library unit is independent (e.g., introduces a new
-    abstraction that depends only in part on the existing one), then
-    encapsulate the new abstraction in a separate library unit.
-  - Use child packages to implement a subsystem.
-  - Use public child units for those parts of a subsystem that should be
-    visible to clients of the subsystem.
-  - Use private child units for those parts of a subsystem that should
-    not be visible to clients of the subsystem.
-  - Use private child units for local declarations used only in
-    implementing the package specification.
-  - Use child packages to implement constructors, even when they return
-    access values.
+- If a new library unit represents a logical extension to the original
+  abstraction, define it as a child library unit.
+- If a new library unit is independent (e.g., introduces a new
+  abstraction that depends only in part on the existing one), then
+  encapsulate the new abstraction in a separate library unit.
+- Use child packages to implement a subsystem.
+- Use public child units for those parts of a subsystem that should be
+  visible to clients of the subsystem.
+- Use private child units for those parts of a subsystem that should
+  not be visible to clients of the subsystem.
+- Use private child units for local declarations used only in
+  implementing the package specification.
+- Use child packages to implement constructors, even when they return
+  access values.
 
 #### example
 
@@ -476,7 +476,7 @@ constants that its clients and subsystems need. Individual child
 packages provide specific parts of the windowing abstraction, such as
 atoms, fonts, graphic output, cursors, and keyboard information:
 
-``` ada
+```ada
 package X_Windows is
    ...
 private
@@ -557,24 +557,24 @@ units in creating a tagged type hierarchy.
 
 #### guideline
 
-  - Make each package serve a single purpose.
-  - Use packages to group related data, types, and subprograms.
-  - Avoid collections of unrelated objects and subprograms (NASA 1987;
-    Nissen and Wallis 1984).
-  - Consider restructuring a system to move two highly related units
-    into the same package (or package hierarchy) or to move relatively
-    independent units into separate packages.
+- Make each package serve a single purpose.
+- Use packages to group related data, types, and subprograms.
+- Avoid collections of unrelated objects and subprograms (NASA 1987;
+  Nissen and Wallis 1984).
+- Consider restructuring a system to move two highly related units
+  into the same package (or package hierarchy) or to move relatively
+  independent units into separate packages.
 
 #### example
 
-As a bad example, a package named Project\_Definitions is obviously a
+As a bad example, a package named Project_Definitions is obviously a
 "catch all" for a particular project and is likely to be a jumbled mess.
 It probably has this form to permit project members to incorporate a
 single with clause into their software.
 
-Better examples are packages called Display\_Format\_Definitions,
+Better examples are packages called Display_Format_Definitions,
 containing all the types and constants needed by some specific display
-in a specific format, and Cartridge\_Tape\_Handler, containing all the
+in a specific format, and Cartridge_Tape_Handler, containing all the
 types, constants, and subprograms that provide an interface to a
 special-purpose device.
 
@@ -605,7 +605,7 @@ packages, each containing a logically cohesive set of subprograms.
 
 #### guideline
 
-  - Avoid declaring variables in package specifications.
+- Avoid declaring variables in package specifications.
 
 #### example
 
@@ -616,7 +616,7 @@ the information is stored in a package that hides the details of how
 such information is represented and makes it available with access
 routines:
 
-``` ada
+```ada
 -------------------------------------------------------------------------
 package Compilation_Status is
    type Line_Number is range 1 .. 2_500_000;
@@ -655,12 +655,12 @@ Guideline 10.7.1 for a discussion about subprogram overhead.
 
 #### guideline
 
-  - Use tasks to model abstract, asynchronous entities within the
-    problem domain.
-  - Use tasks to define concurrent algorithms for multiprocessor
-    architectures.
-  - Use tasks to perform concurrent, cyclic, or prioritized activities
-    (NASA 1987).
+- Use tasks to model abstract, asynchronous entities within the
+  problem domain.
+- Use tasks to define concurrent algorithms for multiprocessor
+  architectures.
+- Use tasks to perform concurrent, cyclic, or prioritized activities
+  (NASA 1987).
 
 #### rationale
 
@@ -671,10 +671,10 @@ The rationale for this guideline is given under Guideline 6.1.2. Chapter
 
 #### guideline
 
-  - Use protected types to control or synchronize access to data or
-    devices.
-  - Use protected types to implement synchronization tasks, such as a
-    passive resource monitor.
+- Use protected types to control or synchronize access to data or
+  devices.
+- Use protected types to implement synchronization tasks, such as a
+  passive resource monitor.
 
 #### example
 
@@ -698,30 +698,30 @@ also Guidelines 5.7 and 9.4.1.
 
 #### guideline
 
-  - Put only what is needed for the use of a package into its
-    specification.
-  - Minimize the number of declarations in package specifications.
-  - Do not include extra operations simply because they are easy to
-    build.
-  - Minimize the context (with) clauses in a package specification.
-  - Reconsider subprograms that seem to require large numbers of
-    parameters.
-  - Do not manipulate global data within a subprogram or package merely
-    to limit the number of parameters.
-  - Avoid unnecessary visibility; hide the implementation details of a
-    program unit from its users.
-  - Use child library units to control the visibility of parts of a
-    subsystem interface.
-  - Use private child packages for those declarations that should not be
-    used outside the subsystem.
-  - Use child library units present different views of an entity to
-    different clients.
-  - Design (and redesign) interfaces after having worked out the logic
-    of various expected clients of the interface.
+- Put only what is needed for the use of a package into its
+  specification.
+- Minimize the number of declarations in package specifications.
+- Do not include extra operations simply because they are easy to
+  build.
+- Minimize the context (with) clauses in a package specification.
+- Reconsider subprograms that seem to require large numbers of
+  parameters.
+- Do not manipulate global data within a subprogram or package merely
+  to limit the number of parameters.
+- Avoid unnecessary visibility; hide the implementation details of a
+  program unit from its users.
+- Use child library units to control the visibility of parts of a
+  subsystem interface.
+- Use private child packages for those declarations that should not be
+  used outside the subsystem.
+- Use child library units present different views of an entity to
+  different clients.
+- Design (and redesign) interfaces after having worked out the logic
+  of various expected clients of the interface.
 
 #### example
 
-``` ada
+```ada
 -------------------------------------------------------------------------
 package Telephone_Book is
    type Listing is limited private;
@@ -817,17 +817,17 @@ trigonometric functions).
 
 #### guideline
 
-  - Use child packages rather than nested packages to present different
-    views of the same abstraction.
-  - Nest package specifications within another package specification
-    only for grouping operations or hiding common implementation
-    details.
+- Use child packages rather than nested packages to present different
+  views of the same abstraction.
+- Nest package specifications within another package specification
+  only for grouping operations or hiding common implementation
+  details.
 
 #### example
 
 Annex A of the Ada Reference Manual (1995) gives an example of package
 specification nesting. The specification of the generic package
-Generic\_Bounded\_Length is nested inside the specification of package
+Generic_Bounded_Length is nested inside the specification of package
 Ada.Strings.Bounded. The nested package is a generic, grouping closely
 related operations.
 
@@ -855,26 +855,26 @@ See the rationale discussed in Guideline 4.2.1.
 
 #### guideline
 
-  - Consider using private child packages in lieu of nesting.
-  - Restrict the visibility of program units as much as possible by
-    nesting them inside package bodies (Nissen and Wallis 1984) if you
-    cannot use a private child package.
-  - Minimize nesting program units inside subprograms and tasks.
-  - Minimize the scope within which with clauses apply.
-  - Only with those units directly needed.
+- Consider using private child packages in lieu of nesting.
+- Restrict the visibility of program units as much as possible by
+  nesting them inside package bodies (Nissen and Wallis 1984) if you
+  cannot use a private child package.
+- Minimize nesting program units inside subprograms and tasks.
+- Minimize the scope within which with clauses apply.
+- Only with those units directly needed.
 
 #### example
 
 This program illustrates the use of child library units to restrict
-visibility. The procedure Rational\_Numbers.Reduce is nested inside the
-body of Rational\_Numbers to restrict its visibility to the
+visibility. The procedure Rational_Numbers.Reduce is nested inside the
+body of Rational_Numbers to restrict its visibility to the
 implementation of this abstraction. Rather than make the text
 input/output facilities visible to the entire rational number hierarchy,
 it is only available to the body of the child library
-Rational\_Numbers.IO. This example is adapted from the Ada Reference
+Rational_Numbers.IO. This example is adapted from the Ada Reference
 Manual (1995, §§7.1, 7.2, and 10.1.1):
 
-``` ada
+```ada
 -------------------------------------------------------------------------
 package Rational_Numbers is
    type Rational is private;
@@ -920,8 +920,8 @@ local change in that unit will not have an unforeseen global effect.
 
 Restricting visibility of a library unit by using with clauses on
 subunits rather than on the entire parent unit is useful in the same
-way. In the example above, it is clear that the package Text\_IO is used
-only by the Listing\_Facilities package of the compiler.
+way. In the example above, it is clear that the package Text_IO is used
+only by the Listing_Facilities package of the compiler.
 
 Nesting inside subprograms and tasks is discouraged because it leads to
 unreusable components. These components are essentially unreusable
@@ -943,11 +943,11 @@ restricted to a subprogram or two.
 
 #### guideline
 
-  - Carefully consider encapsulation of tasks.
+- Carefully consider encapsulation of tasks.
 
 #### example
 
-``` ada
+```ada
 -------------------------------------------------------------------------
 package Disk_Head_Scheduler is
    type Words        is ...
@@ -1033,35 +1033,35 @@ Guidelines on how to deal with portability issues are in Guideline 7.5.
 
 #### guideline
 
-  - For unavoidable internal errors for which no user recovery is
-    possible, declare a single user-visible exception. Inside the
-    abstraction, provide a way to distinguish between the different
-    internal errors.
-  - Do not borrow an exception name from another context.
-  - Export (declare visibly to the user) the names of all exceptions
-    that can be raised.
-  - In a package, document which exceptions can be raised by each
-    subprogram and task entry.
-  - Do not raise exceptions for internal errors that can be avoided or
-    corrected within the unit.
-  - Do not raise the same exception to report different kinds of errors
-    that are distinguishable by the user of the unit.
-  - Provide interrogative functions that allow the user of a unit to
-    avoid causing exceptions to be raised.
-  - When possible, avoid changing state information in a unit before
-    raising an exception.
-  - Catch and convert or handle all predefined and compiler-defined
-    exceptions at the earliest opportunity.
-  - Do not explicitly raise predefined or implementation-defined
-    exceptions.
-  - Never let an exception propagate beyond its scope.
+- For unavoidable internal errors for which no user recovery is
+  possible, declare a single user-visible exception. Inside the
+  abstraction, provide a way to distinguish between the different
+  internal errors.
+- Do not borrow an exception name from another context.
+- Export (declare visibly to the user) the names of all exceptions
+  that can be raised.
+- In a package, document which exceptions can be raised by each
+  subprogram and task entry.
+- Do not raise exceptions for internal errors that can be avoided or
+  corrected within the unit.
+- Do not raise the same exception to report different kinds of errors
+  that are distinguishable by the user of the unit.
+- Provide interrogative functions that allow the user of a unit to
+  avoid causing exceptions to be raised.
+- When possible, avoid changing state information in a unit before
+  raising an exception.
+- Catch and convert or handle all predefined and compiler-defined
+  exceptions at the earliest opportunity.
+- Do not explicitly raise predefined or implementation-defined
+  exceptions.
+- Never let an exception propagate beyond its scope.
 
 #### example
 
 This package specification defines two exceptions that enhance the
 abstraction:
 
-``` ada
+```ada
 -------------------------------------------------------------------------
 generic
    type Element is private;
@@ -1159,7 +1159,7 @@ internal errors that a unit was able to correct invisibly to the user.
 To provide the user with maximum flexibility, it is a good idea to
 provide interrogative functions that the user can call to determine
 whether an exception would be raised if a subprogram or task entry were
-invoked. The function Stack\_Empty in the above example is such a
+invoked. The function Stack_Empty in the above example is such a
 function. It indicates whether Underflow would be raised if Pop were
 called. Providing such functions makes it possible for the user to avoid
 triggering exceptions.
@@ -1202,153 +1202,153 @@ in terms of the application, it can be handled in those terms.
 
 ### high-level structure
 
-  - Place the specification of each library unit package in a separate
-    file from its body.
-  - Avoid defining library unit subprograms that are not intended to be
-    used as main programs. If such subprograms are defined, then create
-    an explicit specification, in a separate file, for each library unit
-    subprogram.
-  - Minimize the use of subunits.
-  - In preference to subunits, use child library units to structure a
-    subsystem into manageable units.
-  - Place each subunit in a separate file.
-  - Use a consistent file naming convention.
-  - In preference to nesting in a package body, use a private child and
-    with it to the parent body.
-  - Use private child unit specifications for data and subprograms that
-    are required by (other) child units that extend a parent unit's
-    abstraction or services.
-  - When possible, express configuration pragmas through compiler
-    options or other means that do not require modifications to the
-    source code. .
-  - When configuration pragmas must be placed in source code, consider
-    isolating them to one compilation unit per partition; if specified,
-    the main subprogram for the partition is recommended.
-  - Use subprograms to enhance abstraction.
-  - Restrict each subprogram to the performance of a single action.
-  - Use a function when the subprogram's primary purpose is to provide a
-    single value.
-  - Minimize the side effect of a function.
-  - Consider using a parameterless function when the value does not need
-    to be static.
-  - Use a parameterless function (instead of a constant) if the value
-    should be inherited by types derived from the type.
-  - Use a parameterless function if the value itself is subject to
-    change.
-  - Use packages for information hiding.
-  - Use packages with tagged types and private types for abstract data
-    types.
-  - Use packages to model abstract entities appropriate to the problem
-    domain.
-  - Use packages to group together related type and object declarations
-    (e.g., common declarations for two or more library units).
-  - Encapsulate machine dependencies in packages. Place a software
-    interface to a particular device in a package to facilitate a change
-    to a different device.
-  - Place low-level implementation decisions or interfaces in
-    subprograms within packages.
-  - Use packages and subprograms to encapsulate and hide program details
-    that may change (Nissen and Wallis 1984).
-  - If a new library unit represents a logical extension to the original
-    abstraction, define it as a child library unit.
-  - If a new library unit is independent (e.g., introduces a new
-    abstraction that depends only in part on the existing one), then
-    encapsulate the new abstraction in a separate library unit.
-  - Use child packages to implement a subsystem.
-  - Use public child units for those parts of a subsystem that should be
-    visible to clients of the subsystem.
-  - Use private child units for those parts of a subsystem that should
-    not be visible to clients of the subsystem.
-  - Use private child units for local declarations used only in
-    implementing the package specification.
-  - Use child packages to implement constructors, even when they return
-    access values.
-  - Make each package serve a single purpose.
-  - Use packages to group related data, types, and subprograms.
-  - Avoid collections of unrelated objects and subprograms (NASA 1987;
-    Nissen and Wallis 1984).
-  - Consider restructuring a system to move two highly related units
-    into the same package (or package hierarchy) or to move relatively
-    independent units into separate packages.
-  - Avoid declaring variables in package specifications.
-  - Use tasks to model abstract, asynchronous entities within the
-    problem domain.
-  - Use tasks to define concurrent algorithms for multiprocessor
-    architectures.
-  - Use tasks to perform concurrent, cyclic, or prioritized activities
-    (NASA 1987).
-  - Use protected types to control or synchronize access to data or
-    devices.
-  - Use protected types to implement synchronization tasks, such as a
-    passive resource monitor.
+- Place the specification of each library unit package in a separate
+  file from its body.
+- Avoid defining library unit subprograms that are not intended to be
+  used as main programs. If such subprograms are defined, then create
+  an explicit specification, in a separate file, for each library unit
+  subprogram.
+- Minimize the use of subunits.
+- In preference to subunits, use child library units to structure a
+  subsystem into manageable units.
+- Place each subunit in a separate file.
+- Use a consistent file naming convention.
+- In preference to nesting in a package body, use a private child and
+  with it to the parent body.
+- Use private child unit specifications for data and subprograms that
+  are required by (other) child units that extend a parent unit's
+  abstraction or services.
+- When possible, express configuration pragmas through compiler
+  options or other means that do not require modifications to the
+  source code. .
+- When configuration pragmas must be placed in source code, consider
+  isolating them to one compilation unit per partition; if specified,
+  the main subprogram for the partition is recommended.
+- Use subprograms to enhance abstraction.
+- Restrict each subprogram to the performance of a single action.
+- Use a function when the subprogram's primary purpose is to provide a
+  single value.
+- Minimize the side effect of a function.
+- Consider using a parameterless function when the value does not need
+  to be static.
+- Use a parameterless function (instead of a constant) if the value
+  should be inherited by types derived from the type.
+- Use a parameterless function if the value itself is subject to
+  change.
+- Use packages for information hiding.
+- Use packages with tagged types and private types for abstract data
+  types.
+- Use packages to model abstract entities appropriate to the problem
+  domain.
+- Use packages to group together related type and object declarations
+  (e.g., common declarations for two or more library units).
+- Encapsulate machine dependencies in packages. Place a software
+  interface to a particular device in a package to facilitate a change
+  to a different device.
+- Place low-level implementation decisions or interfaces in
+  subprograms within packages.
+- Use packages and subprograms to encapsulate and hide program details
+  that may change (Nissen and Wallis 1984).
+- If a new library unit represents a logical extension to the original
+  abstraction, define it as a child library unit.
+- If a new library unit is independent (e.g., introduces a new
+  abstraction that depends only in part on the existing one), then
+  encapsulate the new abstraction in a separate library unit.
+- Use child packages to implement a subsystem.
+- Use public child units for those parts of a subsystem that should be
+  visible to clients of the subsystem.
+- Use private child units for those parts of a subsystem that should
+  not be visible to clients of the subsystem.
+- Use private child units for local declarations used only in
+  implementing the package specification.
+- Use child packages to implement constructors, even when they return
+  access values.
+- Make each package serve a single purpose.
+- Use packages to group related data, types, and subprograms.
+- Avoid collections of unrelated objects and subprograms (NASA 1987;
+  Nissen and Wallis 1984).
+- Consider restructuring a system to move two highly related units
+  into the same package (or package hierarchy) or to move relatively
+  independent units into separate packages.
+- Avoid declaring variables in package specifications.
+- Use tasks to model abstract, asynchronous entities within the
+  problem domain.
+- Use tasks to define concurrent algorithms for multiprocessor
+  architectures.
+- Use tasks to perform concurrent, cyclic, or prioritized activities
+  (NASA 1987).
+- Use protected types to control or synchronize access to data or
+  devices.
+- Use protected types to implement synchronization tasks, such as a
+  passive resource monitor.
 
 ### visibility
 
-  - Put only what is needed for the use of a package into its
-    specification.
-  - Minimize the number of declarations in package specifications.
-  - Do not include extra operations simply because they are easy to
-    build.
-  - Minimize the context (with) clauses in a package specification.
-  - Reconsider subprograms that seem to require large numbers of
-    parameters.
-  - Do not manipulate global data within a subprogram or package merely
-    to limit the number of parameters.
-  - Avoid unnecessary visibility; hide the implementation details of a
-    program unit from its users.
-  - Use child library units to control the visibility of parts of a
-    subsystem interface.
-  - Use private child packages for those declarations that should not be
-    used outside the subsystem.
-  - Use child library units to present different views of an entity to
-    different clients.
-  - Design (and redesign) interfaces after having worked out the logic
-    of various expected clients of the interface.
-  - Use child packages rather than nested packages to present different
-    views of the same abstraction.
-  - Nest package specifications within another package specification
-    only for grouping operations or hiding common implementation
-    details.
-  - Consider using private child packages in lieu of nesting.
-  - Restrict the visibility of program units as much as possible by
-    nesting them inside package bodies (Nissen and Wallis 1984) if you
-    cannot use a private child package.
-  - Minimize nesting program units inside subprograms and tasks.
-  - Minimize the scope within which with clauses apply.
-  - Only with those units directly needed.
-  - Carefully consider encapsulation of tasks.
+- Put only what is needed for the use of a package into its
+  specification.
+- Minimize the number of declarations in package specifications.
+- Do not include extra operations simply because they are easy to
+  build.
+- Minimize the context (with) clauses in a package specification.
+- Reconsider subprograms that seem to require large numbers of
+  parameters.
+- Do not manipulate global data within a subprogram or package merely
+  to limit the number of parameters.
+- Avoid unnecessary visibility; hide the implementation details of a
+  program unit from its users.
+- Use child library units to control the visibility of parts of a
+  subsystem interface.
+- Use private child packages for those declarations that should not be
+  used outside the subsystem.
+- Use child library units to present different views of an entity to
+  different clients.
+- Design (and redesign) interfaces after having worked out the logic
+  of various expected clients of the interface.
+- Use child packages rather than nested packages to present different
+  views of the same abstraction.
+- Nest package specifications within another package specification
+  only for grouping operations or hiding common implementation
+  details.
+- Consider using private child packages in lieu of nesting.
+- Restrict the visibility of program units as much as possible by
+  nesting them inside package bodies (Nissen and Wallis 1984) if you
+  cannot use a private child package.
+- Minimize nesting program units inside subprograms and tasks.
+- Minimize the scope within which with clauses apply.
+- Only with those units directly needed.
+- Carefully consider encapsulation of tasks.
 
 #### exceptions
 
-  - For unavoidable internal errors for which no user recovery is
-    possible, declare a single user-visible exception. Inside the
-    abstraction, provide a way to distinguish between the different
-    internal errors.
-  - Do not borrow an exception name from another context.
-  - Export (declare visibly to the user) the names of all exceptions
-    that can be raised.
-  - In a package, document which exceptions can be raised by each
-    subprogram and task entry.
-  - Do not raise exceptions for internal errors that can be avoided or
-    corrected within the unit.
-  - Do not raise the same exception to report different kinds of errors
-    that are distinguishable by the user of the unit.
-  - Provide interrogative functions that allow the user of a unit to
-    avoid causing exceptions to be raised.
-  - When possible, avoid changing state information in a unit before
-    raising an exception.
-  - Catch and convert or handle all predefined and compiler-defined
-    exceptions at the earliest opportunity.
-  - Do not explicitly raise predefined or implementation-defined
-    exceptions.
-  - Never let an exception propagate beyond its scope.
-:::note
+- For unavoidable internal errors for which no user recovery is
+  possible, declare a single user-visible exception. Inside the
+  abstraction, provide a way to distinguish between the different
+  internal errors.
+- Do not borrow an exception name from another context.
+- Export (declare visibly to the user) the names of all exceptions
+  that can be raised.
+- In a package, document which exceptions can be raised by each
+  subprogram and task entry.
+- Do not raise exceptions for internal errors that can be avoided or
+  corrected within the unit.
+- Do not raise the same exception to report different kinds of errors
+  that are distinguishable by the user of the unit.
+- Provide interrogative functions that allow the user of a unit to
+  avoid causing exceptions to be raised.
+- When possible, avoid changing state information in a unit before
+  raising an exception.
+- Catch and convert or handle all predefined and compiler-defined
+  exceptions at the earliest opportunity.
+- Do not explicitly raise predefined or implementation-defined
+  exceptions.
+- Never let an exception propagate beyond its scope.
+  :::note
 
 This page of the "Ada Quality and Style Guide" has been adapted from the
 original work at https://en.wikibooks.org/wiki/Ada_Style_Guide, which is
 licensed under the
 [Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/3.0/);
-additional terms may apply.  Page not endorsed by Wikibooks or the Ada
+additional terms may apply. Page not endorsed by Wikibooks or the Ada
 Style Guide Wikibook authors. This page is licensed under the same license
 as the original work.
 
