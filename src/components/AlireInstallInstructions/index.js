@@ -10,14 +10,14 @@ import { Text, Timeline } from "@mantine/core"
 import { useEventListener, useOs } from "@mantine/hooks"
 import { Prism } from "@mantine/prism"
 
-import classes from "./index.module.scss"
-
 import {
   alireVersion,
   getInstallTarget,
   gitHubReleasePage,
   installTargets
-} from "../../pages/index.js"
+} from "@site/src/pages/index.js"
+
+import classes from "./index.module.scss"
 
 function TimelineItemText({ children }) {
   return (
