@@ -3,6 +3,7 @@ import React from "react"
 import { MdClose, MdOutlineInfo } from "react-icons/md"
 
 import { translate } from "@docusaurus/Translate"
+import { useLocation } from "@docusaurus/router"
 
 import { Switch } from "@mantine/core"
 import { useToggle } from "@mantine/hooks"
@@ -11,6 +12,9 @@ import classes from "./ArmAnnotations.module.scss"
 
 export default function ArmAnnotations() {
   const [checked, toggleChecked] = useToggle()
+  const location = useLocation()
+
+  const isOnReferenceManual = location.pathname.startsWith("/docs/arm")
 
   const title = translate(
     {
@@ -34,16 +38,20 @@ export default function ArmAnnotations() {
   )
 
   return (
-    <div title={title}>
-      <Switch
-        size="md"
-        onLabel={<MdOutlineInfo size={18} stroke={3} />}
-        offLabel={<MdClose size={18} stroke={3} />}
-        aria-label={title}
-        checked={checked}
-        onChange={() => toggleChecked()}
-        className={classes.control}
-      />
-    </div>
+    <>
+      {isOnReferenceManual && (
+        <div title={title}>
+          <Switch
+            size="md"
+            onLabel={<MdOutlineInfo size={18} stroke={3} />}
+            offLabel={<MdClose size={18} stroke={3} />}
+            aria-label={title}
+            checked={checked}
+            onChange={() => toggleChecked()}
+            className={classes.control}
+          />
+        </div>
+      )}
+    </>
   )
 }
