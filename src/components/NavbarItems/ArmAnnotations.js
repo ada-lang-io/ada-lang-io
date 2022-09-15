@@ -1,7 +1,9 @@
-import React from "react"
+import React, { useEffect } from "react"
 
 import { MdClose, MdOutlineInfo } from "react-icons/md"
 
+import BrowserOnly from "@docusaurus/BrowserOnly"
+import ExecutionEnvironment from "@docusaurus/ExecutionEnvironment"
 import { translate } from "@docusaurus/Translate"
 import { useLocation } from "@docusaurus/router"
 
@@ -11,8 +13,19 @@ import { useLocalStorage } from "@mantine/hooks"
 import classes from "./ArmAnnotations.module.scss"
 
 export default function ArmAnnotations() {
+  // On the server we want to render the annotations, but in the browser
+  // (when scripting is enabled), annotations are hidden because they add
+  // a lot of noise to the text.
+  const defaultValue = ExecutionEnvironment.canUseDOM
+    ? document.documentElement.getAttribute("data-arm-annotations") || false
+    : true
+
   const location = useLocation()
-  const [checked, setChecked] = useLocalStorage({ key: "arm-annotations", defaultValue: false })
+  const [checked, setChecked] = useLocalStorage({ key: "arm-annotations", defaultValue })
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-arm-annotations", checked)
+  }, [checked])
 
   const isOnReferenceManual = location.pathname.startsWith("/docs/arm")
 
@@ -38,20 +51,24 @@ export default function ArmAnnotations() {
   )
 
   return (
-    <>
-      {isOnReferenceManual && (
-        <div title={title}>
-          <Switch
-            size="md"
-            onLabel={<MdOutlineInfo size={18} stroke={3} />}
-            offLabel={<MdClose size={18} stroke={3} />}
-            aria-label={title}
-            checked={checked}
-            onChange={() => setChecked((value) => !value)}
-            className={classes.control}
-          />
-        </div>
+    <BrowserOnly>
+      {() => (
+        <>
+          {isOnReferenceManual && (
+            <div title={title}>
+              <Switch
+                size="md"
+                onLabel={<MdOutlineInfo size={18} stroke={3} />}
+                offLabel={<MdClose size={18} stroke={3} />}
+                aria-label={title}
+                checked={checked}
+                onChange={() => setChecked((value) => !value)}
+                className={classes.control}
+              />
+            </div>
+          )}
+        </>
       )}
-    </>
+    </BrowserOnly>
   )
 }
