@@ -141,7 +141,7 @@ const config = {
               },
               {
                 label: "Style Guide",
-                href: "https://en.wikibooks.org/wiki/Ada_Style_Guide"
+                href: "/docs/style-guide/Ada_Style_Guide"
               }
             ]
           },
