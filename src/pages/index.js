@@ -86,8 +86,10 @@ export function HomepageHeader({ title, description }) {
   const platformDownloadURL =
     platform !== null ? getInstallTarget(alireVersion, platform.urlSuffix) : gitHubReleasePage
 
-  const allPlatformLinks = Array.from(installTargets.values()).map(({ label, urlSuffix }) => (
-    <Link to={getInstallTarget(alireVersion, urlSuffix)}>{label}</Link>
+  const allPlatformLinks = Array.from(installTargets.values()).map(({ label, urlSuffix }, i) => (
+    <Link key={i} to={getInstallTarget(alireVersion, urlSuffix)}>
+      {label}
+    </Link>
   ))
   const platformLinks = join(allPlatformLinks, ", ")
 
@@ -114,7 +116,6 @@ export function HomepageHeader({ title, description }) {
             <Group position="center" className={styles.controls}>
               <Button
                 className={styles.controlPrimary}
-                variant="white"
                 size="md"
                 component={Link}
                 to={platformDownloadURL}

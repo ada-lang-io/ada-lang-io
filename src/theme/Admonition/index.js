@@ -24,7 +24,7 @@ export default function AdmonitionWrapper(props) {
         <Admonition
           {...props}
           type={aarmTypes[props.aarm] ?? "note"}
-          title={!!aarmTypes[props.aarm] ? props.aarm.replace("-", " ") : props.title}
+          title={aarmTypes[props.aarm] ? props.aarm.replace("-", " ") : props.title}
         />
       </div>
     )
