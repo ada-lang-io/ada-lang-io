@@ -97,7 +97,7 @@ const config = {
             label: "Getting Started"
           },
           {
-            to: "/docs/arm/AA-TOC",
+            to: "/docs/arm/AA-Title",
             position: "left",
             label: "Reference Manual"
           },
