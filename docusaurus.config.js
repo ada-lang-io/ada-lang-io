@@ -131,6 +131,10 @@ const config = {
                 to: "/docs/getting-started/why-ada"
               },
               {
+                label: "Books",
+                to: "/docs/getting-started/books",
+              },
+              {
                 label: "Learn Ada (by AdaCore)",
                 to: "https://learn.adacore.com"
               },
@@ -144,8 +148,8 @@ const config = {
             title: "Docs",
             items: [
               {
-                label: "Wikibook",
-                href: "https://en.wikibooks.org/wiki/Ada_Programming"
+                label: "Reference Manual",
+                to: "/docs/arm/AA-Title"
               },
               {
                 label: "Style Guide",
