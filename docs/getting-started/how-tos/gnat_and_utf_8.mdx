@@ -1,10 +1,15 @@
+---
+sidebar_position: 2
+title: UTF-8
+---
+
 # Using UTF-8 encoding in GNAT
 
 Nowadays UTF-8 is de facto standard for source code representation.
 So a newbie Ada developer could expect this as default for GNAT tools, but it's not.
 Let's see how things actually turn out.
 
-Although the 
+Although the
 [Ada language Standard](https://ada-lang.io/docs/arm/AA-2/AA-2.1#implementation-requirements)
 says that the compiler must understand texts in UTF-8 encoding:
 
@@ -71,7 +76,7 @@ the `Character` type includes only 256 values from the Latin-1 set:
 
 So, it does not contain any Cyrillic character.
 The compiler does not know that you have set the default encoding in the IDE
-to UTF-8. It still uses its default encoding. As 
+to UTF-8. It still uses its default encoding. As
 [GNAT User guide](https://docs.adacore.com/gnat_ugn-docs/html/gnat_ugn/gnat_ugn/the_gnat_compilation_model.html#source-representation)
 states:
 
@@ -91,10 +96,10 @@ end Main;
  here `_` indicates non-printable characters in Latin-1.
 
 :::note To be investigated
- 
+
  Shouldn't the compiler rise compilation error on
  non-printable characters in a sting literal??
- 
+
 :::
 
 You can tell the compiler the encoding of the input texts by passing
@@ -106,7 +111,7 @@ the `-gnatW8` option. Hre is the described in the options list
 ```
 
 The simplest way to specify this option is to change the project properties
-by selecting the menu "/Edit/Project Properties...", the tab 
+by selecting the menu "/Edit/Project Properties...", the tab
 "/Build/Switches/Ada" and write `-gnatW8` in the options bar at the bottom
 of the form.
 
@@ -138,15 +143,15 @@ Builder results
 And it is right. We need a different type of string here. Yes, there are
 several types of strings in Ada. There are even too many of them. And not
 one is good enough for all cases of real life. From the Ada string types
-you can trace how string encodings evolved. Before the first version of 
+you can trace how string encodings evolved. Before the first version of
 the language, only 127 characters of the ASCII set could fit into
 `Character`. But this was quickly corrected by expanding `Character`
-to 256 Latin-1 values. The next version of the standard, around the 
+to 256 Latin-1 values. The next version of the standard, around the
 time of Java appearance, where the character size was 16 bits,
 introduced `Wide_Character`, which contains 65536 characters, and
 it seemed to be enough for everyone. But Unicode came along, with
 a repertoire of 1,114,112 "code points". Then `Wide_Wide_Character`
-with 32 bits and 2 billion characters was introduced. 
+with 32 bits and 2 billion characters was introduced.
 Note that the "old" types `Character`/`String`, `Wide_Character`/`Wide_String`
 were not depricated at all. Moreover, `String` is widely used in the standard
 library! For example, in I/O file names, in `Ada.Environments`, and so on.
@@ -182,7 +187,7 @@ Now it works!
 ## Non-ASCII identifiers
 
 Another compiler option, `-gnatiw`, changes the way the compiler
-considers identifiers in a program. The 
+considers identifiers in a program. The
 [GNAT User's Guide](https://docs.adacore.com/gnat_ugn-docs/html/gnat_ugn/gnat_ugn/building_executable_programs_with_gnat.html#character-set-control)
  ays:
 
@@ -209,7 +214,7 @@ end Main;
 
 The use of such names is not particularly encouraged, but I found them very
 handy when I tried to write a type system for analyzing Russian morphology.
-My knowledge of English ends with the terms "noun" and "verb," so the 
+My knowledge of English ends with the terms "noun" and "verb," so the
 following text is more acceptable to me than in Latin:
 
 ```ada
@@ -338,7 +343,7 @@ project Default is
 end Default;
 ```
 
-Another way is to do this while opening a file with the parameter 
+Another way is to do this while opening a file with the parameter
 `Form => "WCEM=8"`:
 
 ```ada
@@ -369,24 +374,24 @@ Using other GNAT programs, look for their encoding flags:
 * `gnatpp` `--wide-character-encoding=8`
 * `gnatstub` `--wide-character-encoding=8`
 
-Alas, even the 
+Alas, even the
 [Ada Language Server](https://github.com/AdaCore/ada_language_server/)
 (part of the Ada extension for VS Code) uses `iso-8859-1` by default.
-Fix this in the settings via the 
+Fix this in the settings via the
 [parameter](https://github.com/AdaCore/ada_language_server/blob/master/doc/settings.md#defaultCharset)
 
     'defaultCharset': 'UTF-8'
 
 ## Environment variables
 
-Do not expect your program to pay attention to locale settings (like `LANG`), 
-but watch out for environment variables 
+Do not expect your program to pay attention to locale settings (like `LANG`),
+but watch out for environment variables
 `GNAT_CCS_ENCODING`, `GNAT_CODE_PAGE` on Windows.
 
 ## Matreshka and VSS Libraries
 
 For some time, the Ada standard was unambiguous in that `Character`/`String`
-could only contain Latin-1 characters. But at some point it faltered under 
+could only contain Latin-1 characters. But at some point it faltered under
 the onslaught of "lovers of simple solutions" and there appeared functions
 to convert `Wide_String`/`Wide_Wide_String` to UTF-8, which use `String`
 type instead of an array of bytes to represent UTF-8.
@@ -399,10 +404,10 @@ Introducing the `Wide_Wide_String` type does not really solve the problem of
 using Unicode, since this standard does not manipulate "characters", but
 combinations of characters. There are variants where several "code points"
 form a single glyph when printed/displayed. It is often more convenient for
-the user to work in such concepts. This is logical for specifying the 
+the user to work in such concepts. This is logical for specifying the
 "line/column" position in the text. `Wide_Wide_String` does not help here.
 
-The 
+The
 [VSS library](https://github.com/AdaCore/VSS)
 introduces its own type for Unicode string with handy methods to work
 with. It allows to find character boundaries, grapheme clusters, character
