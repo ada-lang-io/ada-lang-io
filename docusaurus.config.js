@@ -179,6 +179,10 @@ const config = {
                 label: "Stack Overflow",
                 href: "https://stackoverflow.com/questions/tagged/ada",
                 className: "fa-icon footer__image footer-stackoverflow-link"
+              },
+              {
+                label: "ARG Community Input",
+                href: "https://arg.adaic.org/community-input"
               }
             ]
           },
