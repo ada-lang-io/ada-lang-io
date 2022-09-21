@@ -72,12 +72,12 @@ const config = {
         respectPrefersColorScheme: true
       },
       announcementBar: {
-        id: 'wip',
+        id: "wip",
         content:
-          'Please thank Jay on HN or lobsters for announcing this website, which is still work in progress! Thanks Jay! 😂',
-        backgroundColor: '#fcb316',
-        textColor: '#fafbfc',
-        isCloseable: false,
+          "Please thank Jay on HN or lobsters for announcing this website, which is still work in progress! Thanks Jay! 😂",
+        backgroundColor: "#fcb316",
+        textColor: "#fafbfc",
+        isCloseable: false
       },
       navbar: {
         title: "Ada",
@@ -132,7 +132,7 @@ const config = {
               },
               {
                 label: "Books",
-                to: "/docs/getting-started/books",
+                to: "/docs/getting-started/books"
               },
               {
                 label: "Learn Ada (by AdaCore)",
@@ -183,7 +183,7 @@ const config = {
             ]
           },
           {
-            title: "More",
+            title: "Ecosystem",
             items: [
               {
                 label: "Alire (Ada package manager)",
@@ -196,6 +196,10 @@ const config = {
               {
                 label: "News, by Ada Planet",
                 href: "https://www.laeran.pl/adaplanet/i/"
+              },
+              {
+                label: "Ada Rapporteur Group",
+                href: "https://arg.adaic.org/home"
               },
               {
                 label: "GitHub",
@@ -221,12 +225,12 @@ const config = {
       },
       algolia: {
         // The application ID provided by Algolia
-        appId: 'L84ZBWQFIW',
+        appId: "L84ZBWQFIW",
 
         // Public API key: it is safe to commit it
-        apiKey: '3ef66437cc70666c01852b9d2f4fde7b',
+        apiKey: "3ef66437cc70666c01852b9d2f4fde7b",
 
-        indexName: 'ada-lang',
+        indexName: "ada-lang",
 
         // Optional: see doc section below
         contextualSearch: true,
@@ -236,8 +240,8 @@ const config = {
         searchParameters: {},
 
         // Optional: path for search page that enabled by default (`false` to disable it)
-        searchPagePath: 'search',
-      },
+        searchPagePath: "search"
+      }
     }
 }
 
