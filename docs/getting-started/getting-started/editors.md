@@ -27,6 +27,10 @@ TODO
 
 TODO
 
+```sh
+alr config --set editor.cmd "open -n -a emacs ${GPR_FILE}"
+```
+
 ## Configuring editor launch for Alire
 
 TODO
