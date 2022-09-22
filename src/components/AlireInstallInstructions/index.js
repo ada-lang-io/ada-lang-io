@@ -6,7 +6,7 @@ import { MdCode, MdDone, MdFileDownload } from "react-icons/md"
 import Link from "@docusaurus/Link"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 
-import { Text, Timeline } from "@mantine/core"
+import { Stack, Text, Timeline } from "@mantine/core"
 import { useEventListener, useOs } from "@mantine/hooks"
 import { Prism } from "@mantine/prism"
 
@@ -18,6 +18,23 @@ import {
 } from "@site/src/pages/index.js"
 
 import classes from "./index.module.scss"
+
+const targetInstructions = new Map([
+  [
+    "macos",
+    {
+      download: (
+        <>
+          <Text color="dimmed">
+            On macOS, remove the quarantine attribute to avoid getting a message suggesting to move
+            the file to the bin because the developer cannot be verified:
+          </Text>
+          <Prism language="shell">xattr -d com.apple.quarantine bin/alr</Prism>
+        </>
+      )
+    }
+  ]
+])
 
 function TimelineItemText({ children }) {
   return (
@@ -98,47 +115,56 @@ export default function AlireInstallInstructions() {
         bullet={<MdFileDownload size={16} />}
         title={<TimelineItemText>Download Alire</TimelineItemText>}
       >
-        <Text color="dimmed">
-          Download{" "}
-          <Link onClick={onClickDownloadLink} to={platformDownloadURL}>
-            Alire {alireVersion.slice(0)}
-            {platformLabel}
-          </Link>
-          {platform !== null && otherDownloadText}.
-        </Text>
+        <Stack spacing="sm">
+          <Text color="dimmed">
+            Download{" "}
+            <Link onClick={onClickDownloadLink} to={platformDownloadURL}>
+              Alire {alireVersion.slice(0)}
+              {platformLabel}
+            </Link>
+            {platform !== null && otherDownloadText}.
+          </Text>
+          {targetInstructions.has(platformKey) && targetInstructions.get(platformKey).download}
+        </Stack>
       </Timeline.Item>
 
       <Timeline.Item
         bullet={<FaTerminal size={12} />}
         title={<TimelineItemText>Install toolchain</TimelineItemText>}
       >
-        <Prism ref={refStep2} language="shell">
-          alr toolchain --select
-        </Prism>
-        <Text color="dimmed">Select gnat_native and gprbuild.</Text>
+        <Stack spacing="sm">
+          <Prism ref={refStep2} language="shell">
+            alr toolchain --select
+          </Prism>
+          <Text color="dimmed">Select gnat_native and gprbuild.</Text>
+        </Stack>
       </Timeline.Item>
 
       <Timeline.Item
         bullet={<MdCode size={16} />}
         title={<TimelineItemText>Start coding</TimelineItemText>}
       >
-        Create a crate:
-        <Prism ref={refStep31} language="shell">
-          alr init --bin mycrate && cd mycrate
-        </Prism>
-        Build the crate:
-        <Prism ref={refStep32} language="shell">
-          alr build
-        </Prism>
+        <Stack spacing="sm">
+          <Text color="dimmed">Create a crate:</Text>
+          <Prism ref={refStep31} language="shell">
+            alr init --bin mycrate && cd mycrate
+          </Prism>
+          <Text color="dimmed">Build the crate:</Text>
+          <Prism ref={refStep32} language="shell">
+            alr build
+          </Prism>
+        </Stack>
       </Timeline.Item>
 
       <Timeline.Item
         bullet={<MdDone size={16} />}
         title={<TimelineItemText>Run your application</TimelineItemText>}
       >
-        <Prism ref={refStep4} language="shell">
-          alr run
-        </Prism>
+        <Stack spacing="sm">
+          <Prism ref={refStep4} language="shell">
+            alr run
+          </Prism>
+        </Stack>
       </Timeline.Item>
     </Timeline>
   )
