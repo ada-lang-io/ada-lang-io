@@ -21,12 +21,8 @@ import classes from "./index.module.scss"
 
 import features from "./features.json"
 
-// TODO Getting these indices right is error-prone
-features[1].children = <AlireInstallInstructions />
-features[2].className = classes.spark
-
 // See https://react-icons.github.io/react-icons/ for all icons
-const icons = {
+const icons: Record<string, JSX.Element> = {
   "feat-readable": <MdAutoStories />,
   "feat-correct": <MdVerified />,
   "feat-performant": <MdSpeed />,
@@ -37,7 +33,13 @@ const icons = {
   "spark-platinum": <MdLooks5 />
 }
 
-function FeatureItem({ title, description, icon }) {
+interface FeatureItemProps {
+  readonly title: string
+  readonly description: string | string[]
+  readonly icon: string
+}
+
+function FeatureItem({ title, description, icon }: FeatureItemProps): JSX.Element {
   return (
     <div className={classes.itemWrapper}>
       <ThemeIcon variant="light" className={classes.itemIcon} size={60} radius="md">
@@ -50,7 +52,7 @@ function FeatureItem({ title, description, icon }) {
         </Text>
         <Text className={classes.itemDescription} color="dimmed">
           {Array.isArray(description)
-            ? description.map((paragraph, i) => <p key={i}>{paragraph}</p>)
+            ? description.map((paragraph: string, i: number) => <p key={i}>{paragraph}</p>)
             : description}
         </Text>
       </div>
@@ -58,9 +60,27 @@ function FeatureItem({ title, description, icon }) {
   )
 }
 
-function Feature({ title, subTitle, description, items, className, children, columns = 2 }) {
+interface FeatureProps {
+  readonly title: string
+  readonly subTitle: string
+  readonly description: string
+  readonly items?: FeatureItemProps[]
+  readonly columns?: number
+  className?: string
+  children?: JSX.Element
+}
+
+function Feature({
+  title,
+  subTitle,
+  description,
+  items,
+  className,
+  children,
+  columns = 2
+}: FeatureProps): JSX.Element {
   return (
-    <section className={clsx(classes.sectionWrapper, { [className]: !!className })}>
+    <section className={clsx(classes.sectionWrapper, { [className as string]: !!className })}>
       <Container size={700}>
         <Text className={classes.title}>{title}</Text>
         <Title className={classes.subTitle} order={2}>
@@ -84,7 +104,7 @@ function Feature({ title, subTitle, description, items, className, children, col
                 { maxWidth: 996, cols: Math.min(3, columns), spacing: 32 }
               ]}
             >
-              {items.map((item, i) => (
+              {items.map((item: FeatureItemProps, i: number) => (
                 <FeatureItem key={i} {...item} />
               ))}
             </SimpleGrid>
@@ -96,11 +116,17 @@ function Feature({ title, subTitle, description, items, className, children, col
   )
 }
 
-export default function HomepageFeatures() {
+export default function HomepageFeatures(): JSX.Element {
+  const feats: FeatureProps[] = features
+
+  // TODO Getting these indices right is error-prone
+  feats[1].children = <AlireInstallInstructions />
+  feats[2].className = classes.spark
+
   return (
     <div className={classes.features}>
-      {features.map((feature, index) => (
-        <Feature key={index} {...feature} />
+      {feats.map((feature: FeatureProps, i: number) => (
+        <Feature key={i} {...feature} />
       ))}
     </div>
   )

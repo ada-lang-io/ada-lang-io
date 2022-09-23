@@ -4,7 +4,11 @@ import InfoHover from "@site/src/components/InfoHover"
 
 import classes from "./index.module.scss"
 
-export default function MarginInfo({ items }) {
+interface MarginInfoProps {
+  readonly items: string[]
+}
+
+export default function MarginInfo({ items }: MarginInfoProps): JSX.Element {
   return (
     <div className={classes.wrapper}>
       <InfoHover text={items} width={150} />

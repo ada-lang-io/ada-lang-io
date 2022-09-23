@@ -8,6 +8,7 @@ import useIsBrowser from "@docusaurus/useIsBrowser"
 
 import { Stack, Text, Timeline } from "@mantine/core"
 import { useEventListener, useOs } from "@mantine/hooks"
+import type { OS } from "@mantine/hooks"
 import { Prism } from "@mantine/prism"
 
 import {
@@ -15,7 +16,8 @@ import {
   getInstallTarget,
   gitHubReleasePage,
   installTargets
-} from "@site/src/pages/index.js"
+} from "@site/src/pages/index"
+import type { Target } from "@site/src/pages/index"
 
 import classes from "./index.module.scss"
 
@@ -29,14 +31,18 @@ const targetInstructions = new Map([
             On macOS, remove the quarantine attribute to avoid getting a message suggesting to move
             the file to the bin because the developer cannot be verified:
           </Text>
-          <Prism language="shell">xattr -d com.apple.quarantine bin/alr</Prism>
+          <Prism language="bash">xattr -d com.apple.quarantine bin/alr</Prism>
         </>
       )
     }
   ]
 ])
 
-function TimelineItemText({ children }) {
+interface TimelineItemTextProps {
+  readonly children: string
+}
+
+function TimelineItemText({ children }: TimelineItemTextProps): JSX.Element {
   return (
     <Text size="sm" className={classes.timelineItemTitle}>
       {children}
@@ -45,15 +51,15 @@ function TimelineItemText({ children }) {
 }
 
 // Return a ref that listens for click events on a button
-function useCodeBlockClickRef(callback) {
+function useCodeBlockClickRef(callback: () => void) {
   const eventCallback = useCallback(
-    (e) => {
-      const isButton = (target) => target.type === "button" && target.onclick !== null
-      if (
-        isButton(e.target) ||
-        isButton(e.target.parentNode) ||
-        isButton(e.target.parentNode.parentNode)
-      ) {
+    (e: MouseEvent) => {
+      const isButton = (target: HTMLButtonElement, i: number): boolean =>
+        (target.type === "button" && target.onclick !== null) ||
+        (i > 0 &&
+          target.parentNode !== null &&
+          isButton(target.parentNode as HTMLButtonElement, i - 1))
+      if (e.target !== null && isButton(e.target as HTMLButtonElement, 2)) {
         callback()
       }
     },
@@ -62,16 +68,16 @@ function useCodeBlockClickRef(callback) {
   return useEventListener("click", eventCallback)
 }
 
-export default function AlireInstallInstructions() {
-  const isBrowser = useIsBrowser()
-  const os = useOs()
+export default function AlireInstallInstructions(): JSX.Element {
+  const isBrowser: boolean = useIsBrowser()
+  const os: OS = useOs()
 
-  const platformKey = isBrowser && installTargets.has(os) ? os : null
+  const platformKey: OS | null = isBrowser && installTargets.has(os) ? os : null
 
-  const platform = platformKey !== null ? installTargets.get(platformKey) : null
-  const platformLabel = platform !== null ? ` for ${platform.label}` : ""
+  const platform: Target | null = installTargets.get(platformKey as string) ?? null
+  const platformLabel: string = platform !== null ? ` for ${platform.label}` : ""
 
-  const platformDownloadURL =
+  const platformDownloadURL: string =
     platform !== null ? getInstallTarget(alireVersion, platform.urlSuffix) : gitHubReleasePage
 
   const [step, setStep] = useState(-1)
@@ -99,7 +105,7 @@ export default function AlireInstallInstructions() {
   const refStep32 = useCodeBlockClickRef(onClickButtonStep3)
   const refStep4 = useCodeBlockClickRef(onClickButtonStep4)
 
-  const otherDownloadText = (
+  const otherDownloadText: JSX.Element = (
     <span>
       {" "}
       or view other options on the{" "}
@@ -124,7 +130,7 @@ export default function AlireInstallInstructions() {
             </Link>
             {platform !== null && otherDownloadText}.
           </Text>
-          {targetInstructions.has(platformKey) && targetInstructions.get(platformKey).download}
+          {platformKey !== null && targetInstructions.get(platformKey as string)?.download}
         </Stack>
       </Timeline.Item>
 
@@ -133,7 +139,7 @@ export default function AlireInstallInstructions() {
         title={<TimelineItemText>Install toolchain</TimelineItemText>}
       >
         <Stack spacing="sm">
-          <Prism ref={refStep2} language="shell">
+          <Prism ref={refStep2} language="bash">
             alr toolchain --select
           </Prism>
           <Text color="dimmed">Select gnat_native and gprbuild.</Text>
@@ -146,11 +152,11 @@ export default function AlireInstallInstructions() {
       >
         <Stack spacing="sm">
           <Text color="dimmed">Create a crate:</Text>
-          <Prism ref={refStep31} language="shell">
+          <Prism ref={refStep31} language="bash">
             alr init --bin mycrate && cd mycrate
           </Prism>
           <Text color="dimmed">Build the crate:</Text>
-          <Prism ref={refStep32} language="shell">
+          <Prism ref={refStep32} language="bash">
             alr build
           </Prism>
         </Stack>
@@ -161,7 +167,7 @@ export default function AlireInstallInstructions() {
         title={<TimelineItemText>Run your application</TimelineItemText>}
       >
         <Stack spacing="sm">
-          <Prism ref={refStep4} language="shell">
+          <Prism ref={refStep4} language="bash">
             alr run
           </Prism>
         </Stack>

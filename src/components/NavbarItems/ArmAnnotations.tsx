@@ -12,11 +12,11 @@ import { useLocalStorage } from "@mantine/hooks"
 
 import classes from "./ArmAnnotations.module.scss"
 
-export default function ArmAnnotations() {
+export default function ArmAnnotations(): JSX.Element {
   // On the server we want to render the annotations, but in the browser
   // (when scripting is enabled), annotations are hidden because they add
   // a lot of noise to the text.
-  const defaultValue = ExecutionEnvironment.canUseDOM
+  const defaultValue: boolean = ExecutionEnvironment.canUseDOM
     ? Boolean(document.documentElement.getAttribute("data-arm-annotations") || false)
     : true
 
@@ -24,12 +24,12 @@ export default function ArmAnnotations() {
   const [checked, setChecked] = useLocalStorage({ key: "arm-annotations", defaultValue })
 
   useEffect(() => {
-    document.documentElement.setAttribute("data-arm-annotations", checked)
+    document.documentElement.setAttribute("data-arm-annotations", String(checked))
   }, [checked])
 
-  const isOnReferenceManual = location.pathname.startsWith("/docs/arm")
+  const isOnReferenceManual: boolean = location.pathname.startsWith("/docs/arm")
 
-  const title = translate(
+  const title: string = translate(
     {
       message: "Show or hide annotations in the reference manual (currently {mode})",
       id: "app.armAnnotations.ariaLabel",

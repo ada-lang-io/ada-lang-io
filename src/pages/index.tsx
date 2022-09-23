@@ -3,6 +3,7 @@ import React from "react"
 import { FaDownload as DownloadIcon } from "react-icons/fa"
 
 import Link from "@docusaurus/Link"
+import type { DocusaurusContext } from "@docusaurus/types"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import Layout from "@theme/Layout"
@@ -18,9 +19,12 @@ import {
   Title
 } from "@mantine/core"
 import { useOs } from "@mantine/hooks"
+import type { OS } from "@mantine/hooks"
 import { Prism } from "@mantine/prism"
 
 import HomepageFeatures from "@site/src/components/HomepageFeatures"
+
+import type { Language } from "prism-react-renderer"
 
 import styles from "./index.module.scss"
 
@@ -28,7 +32,12 @@ import sampleA from "!!raw-loader!./code/code-basic.adb"
 import sampleC from "!!raw-loader!./code/code-rp2040.adb"
 import sampleB from "!!raw-loader!./code/code-spark.ads"
 
-const samples = [
+type Sample = {
+  key: string
+  code: string
+}
+
+const samples: Sample[] = [
   { key: "ada", code: sampleA },
   { key: "spark", code: sampleB },
   { key: "embedded", code: sampleC }
@@ -44,15 +53,22 @@ const samples = [
 // Copyright (c) 2021 Jeremy Grosser
 // SPDX-License-Identifier: BSD-3-Clause
 
-export const installTargets = new Map([
+export type Target = {
+  label: string
+  urlSuffix: string
+}
+
+export const installTargets: Map<string, Target> = new Map([
   ["windows", { label: "Windows", urlSuffix: "installer-x86_64-windows.exe" }],
   ["macos", { label: "macOS", urlSuffix: "bin-x86_64-macos.zip" }],
   ["linux", { label: "Linux", urlSuffix: "bin-x86_64-linux.zip" }],
   ["appimage", { label: "AppImage", urlSuffix: "x86_64.AppImage" }]
 ])
 
-const join = (values, sep) =>
-  values.reduce((a, b) => (a.length > 0 ? a.concat([sep, b]) : [b]), [])
+function join<Type>(values: Type[], sep: string): (Type | string)[] {
+  const concat = (a: (Type | string)[], b: Type) => (a.length > 0 ? a.concat([sep, b]) : [b])
+  return values.reduce(concat, [])
+}
 
 // TODO: This version number should come from a "latest Alire" note somewhere.
 // Version number and assets could be fetched from
@@ -62,28 +78,39 @@ export const alireVersion = "1.2.1"
 export const gitHubProjectPage = "https://github.com/alire-project/alire"
 export const gitHubReleasePage = `${gitHubProjectPage}/releases`
 
-export function getInstallTarget(version, suffix) {
+export function getInstallTarget(version: string, suffix: string): string {
   return `${gitHubProjectPage}/releases/download/v${version}/alr-${version}-${suffix}`
 }
 
-function CodeBlock({ showLineNumbers, children }) {
+interface CodeBlockProps {
+  readonly showLineNumbers: boolean
+  readonly children: string
+}
+
+function CodeBlock({ showLineNumbers, children }: CodeBlockProps): JSX.Element {
   return (
-    <Prism withLineNumbers={showLineNumbers} language="ada">
+    <Prism withLineNumbers={showLineNumbers} language={"ada" as Language}>
       {children}
     </Prism>
   )
 }
 
-export function HomepageHeader({ title, description }) {
-  const isBrowser = useIsBrowser()
-  const os = useOs()
+interface HomepageHeaderProps {
+  readonly title: string
+  readonly description: string
+}
 
-  const platformKey = isBrowser && installTargets.has(os) ? os : null
+export function HomepageHeader({ title, description }: HomepageHeaderProps): JSX.Element {
+  const isBrowser: boolean = useIsBrowser()
+  const os: OS = useOs()
 
-  const platform = platformKey !== null ? installTargets.get(platformKey) : null
-  const platformLabel = platform !== null ? ` for ${platform.label}` : ""
+  const platformKey: OS | null = isBrowser && installTargets.has(os) ? os : null
 
-  const platformDownloadURL =
+  const platform: Target | null =
+    platformKey !== null ? (installTargets.get(platformKey) as Target) : null
+  const platformLabel: string = platform !== null ? ` for ${platform.label}` : ""
+
+  const platformDownloadURL: string =
     platform !== null ? getInstallTarget(alireVersion, platform.urlSuffix) : gitHubReleasePage
 
   const allPlatformLinks = Array.from(installTargets.values()).map(({ label, urlSuffix }, i) => (
@@ -91,9 +118,9 @@ export function HomepageHeader({ title, description }) {
       {label}
     </Link>
   ))
-  const platformLinks = join(allPlatformLinks, ", ")
+  const platformLinks = join(allPlatformLinks, ", ") as JSX.Element[]
 
-  const linkOthers = <Link to={gitHubReleasePage}>others</Link>
+  const linkOthers: JSX.Element = <Link to={gitHubReleasePage}>others</Link>
 
   return (
     <header className={styles.heroWrapper}>
@@ -139,7 +166,7 @@ export function HomepageHeader({ title, description }) {
 
             <Text size="xs" className={styles.textDownloadLinks}>
               Download for{" "}
-              {platformLinks.map((item, i) => (
+              {platformLinks.map((item: JSX.Element, i: number) => (
                 <span key={i}>{item}</span>
               ))}
               , or {linkOthers}
@@ -170,8 +197,10 @@ export function HomepageHeader({ title, description }) {
   )
 }
 
-export default function Home() {
-  const { siteConfig } = useDocusaurusContext()
+export default function Home(): JSX.Element {
+  const { siteConfig }: DocusaurusContext = useDocusaurusContext()
+
+  const description: string = siteConfig.customFields?.description as string
 
   return (
     <MantineProvider
@@ -180,11 +209,8 @@ export default function Home() {
         fontFamily: "var(--ada-lang-font-family)"
       }}
     >
-      <Layout title={siteConfig.title} description={siteConfig.customFields.description}>
-        <HomepageHeader
-          title={siteConfig.title}
-          description={siteConfig.customFields.description}
-        />
+      <Layout title={siteConfig.title} description={description}>
+        <HomepageHeader title={siteConfig.title} description={description} />
         <main>
           <HomepageFeatures />
         </main>

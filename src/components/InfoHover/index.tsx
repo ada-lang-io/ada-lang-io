@@ -6,7 +6,12 @@ import { Badge, HoverCard, Stack, Text } from "@mantine/core"
 
 import classes from "./index.module.scss"
 
-export default function InfoHover({ text, width = 300 }) {
+interface InfoHoverProps {
+  readonly text: string[]
+  readonly width: number
+}
+
+export default function InfoHover({ text, width = 300 }: InfoHoverProps): JSX.Element {
   return (
     <HoverCard width={width} shadow="md">
       <HoverCard.Target>
