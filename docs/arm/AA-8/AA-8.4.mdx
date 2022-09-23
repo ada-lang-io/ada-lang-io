@@ -10,31 +10,64 @@ and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
-import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
+import AnnotatedOnly from "@site/src/components/AnnotatedOnly";
+import CodeBlock from "@theme/CodeBlock";
+import MarginText from "@site/src/components/MarginText";
+import MarginInfo from "@site/src/components/MarginInfo";
 
+<AnnotatedOnly>
+<MarginText>
+1
+</MarginText>
+</AnnotatedOnly>
 <p>[A <code><a href="../AA-8/AA-8.4#S0236">use_package_clause</a></code> achieves direct visibility of declarations that appear in the visible part of a package; a <code><a href="../AA-8/AA-8.4#S0237">use_type_clause</a></code> achieves direct visibility of the primitive operators of a type.] <br /></p>
 
 
 #### Language Design Principles
 
+<AnnotatedOnly>
+<MarginText>
+1.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 If and only if the visibility rules allow P.A, "<strong>use</strong> P;" should make A directly visible (barring name conflicts). This means, for example, that child library units, and generic formals of a formal package whose <code><a href="../AA-12/AA-12.7#S0341">formal_package_actual_part</a></code> is ({"<"}{">"}), should be made visible by a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> for the appropriate package.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+1.b
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 The rules for <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s were carefully constructed to avoid so-called <em>Beaujolais</em> effects, where the addition or removal of a single <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, or a single declaration in a "use"d package, would change the meaning of a program from one legal interpretation to another. <br /></Admonition>
 
 
 #### Syntax
 
+<AnnotatedOnly>
+<MarginText>
+2
+</MarginText>
+</AnnotatedOnly>
 
 <CodeBlock>
 <code>use_clause</code><a id="S0235"></a><code> ::= </code><code><a href="../AA-8/AA-8.4#S0236">use_package_clause</a></code> | <code><a href="../AA-8/AA-8.4#S0237">use_type_clause</a></code><br />
+<AnnotatedOnly>
+<MarginText>
+3
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 
 <CodeBlock>
 <code>use_package_clause</code><a id="S0236"></a><code> ::= </code><strong>use</strong> <em>package_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> {"{"}, <em>package_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>{"}"};<br />
+<AnnotatedOnly>
+<MarginText>
+4/3
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 
@@ -45,57 +78,167 @@ The rules for <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s were c
 
 #### Legality Rules
 
+<AnnotatedOnly>
+<MarginText>
+5/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />A <em>package_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> of a <code><a href="../AA-8/AA-8.4#S0236">use_package_clause</a></code> shall denote a nonlimited view of a package. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+5.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>This includes formal packages. <br /></Admonition>
 
 
 #### Static Semantics
 
+<AnnotatedOnly>
+<MarginText>
+6
+</MarginText>
+</AnnotatedOnly>
 <p>For each <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, there is a certain region of text called the <em>scope</em> of the <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>. For a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> within a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> of a <code><a href="../AA-10/AA-10.1#S0288">library_unit_declaration</a></code> or <code><a href="../AA-10/AA-10.1#S0289">library_unit_renaming_declaration</a></code>, the scope is the entire declarative region of the declaration. For a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> within a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> of a body, the scope is the entire body [and any subunits (including multiply nested subunits). The scope does not include <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>s themselves.]<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+7
+</MarginText>
+</AnnotatedOnly>
 <p>For a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> immediately within a declarative region, the scope is the portion of the declarative region starting just after the <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> and extending to the end of the declarative region. However, the scope of a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> in the private part of a library unit does not include the visible part of any public descendant of that library unit. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+7.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>The exception echoes the similar exception for "immediate scope (of a declaration)" (see 8.2). It makes <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s work like this: <br /></Admonition>
+<strong></strong>The exception echoes the similar exception for "immediate scope (of a declaration)" (see <a href="../AA-8/AA-8.2">8.2</a>). It makes <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s work like this: <br /></Admonition>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+7.b
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 package P is{"\n"}    type T is range 1..10;{"\n"}end P;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+7.c
+</MarginText>
+</AnnotatedOnly>
 with P;{"\n"}package Parent is{"\n"}private{"\n"}    use P;{"\n"}    X : T;{"\n"}end Parent;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+7.d
+</MarginText>
+</AnnotatedOnly>
 package Parent.Child is{"\n"}    Y : T; -- Illegal!{"\n"}    Z : P.T;{"\n"}private{"\n"}    W : T;{"\n"}end Parent.Child;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+7.e
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <Admonition type="aarm" aarm="note" title="Note: ">
 The declaration of Y is illegal because the scope of the "<strong>use</strong> P" does not include that place, so T is not directly visible there. The declarations of X, Z, and W are legal. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+7.1/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />A package is <em>named</em> in a <code><a href="../AA-8/AA-8.4#S0236">use_package_clause</a></code> if it is denoted by a <em>package_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> of that clause. A type is <em>named</em> in a <code><a href="../AA-8/AA-8.4#S0237">use_type_clause</a></code> if it is determined by a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> of that clause.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+8/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00217-06"}</em>{"}"} {"{"}<em>{"AI05-0150-1"}</em>{"}"} <br />For each package named in a <code><a href="../AA-8/AA-8.4#S0236">use_package_clause</a></code> whose scope encloses a place, each declaration that occurs immediately within the declarative region of the package is <em>potentially use-visible</em> at this place if the declaration is visible at this place. For each type <em>T</em> or <em>T</em>'Class named in a <code><a href="../AA-8/AA-8.4#S0237">use_type_clause</a></code> whose scope encloses a place, the declaration of each primitive operator of type <em>T</em> is potentially use-visible at this place if its declaration is visible at this place. If a <code><a href="../AA-8/AA-8.4#S0237">use_type_clause</a></code> whose scope encloses a place includes the reserved word <strong>all</strong>, then the following entities are also potentially use-visible at this place if the declaration of the entity is visible at this place: <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+8.1/3
+</MarginText>
+</AnnotatedOnly>
 <ul>
 <li>{"{"}<em>{"AI05-0150-1"}</em>{"}"} <br />Each primitive subprogram of <em>T</em> including each enumeration literal (if any);<br /></li>
+<AnnotatedOnly>
+<MarginText>
+8.2/3
+</MarginText>
+</AnnotatedOnly>
 <li>{"{"}<em>{"AI05-0150-1"}</em>{"}"} <br />Each subprogram that is declared immediately within the declarative region in which an ancestor type of <em>T</em> is declared and that operates on a class-wide type that covers <em>T</em>. <br /></li>
+<AnnotatedOnly>
+<MarginText>
+8.a/3
+</MarginText>
+</AnnotatedOnly>
 </ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI05-0150-1"}</em>{"}"} <br />Primitive subprograms whose defining name is an <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> are <em>not</em> made potentially visible by a <code><a href="../AA-8/AA-8.4#S0237">use_type_clause</a></code> unless reserved word <strong>all</strong> is included. A <code><a href="../AA-8/AA-8.4#S0237">use_type_clause</a></code> without <strong>all</strong> is only for operators.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+8.b
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
-The semantics described here should be similar to the semantics for expanded names given in 4.1.3, "Selected Components" so as to achieve the effect requested by the "principle of equivalence of <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s and <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>s". Thus, child library units and generic formal parameters of a formal package are potentially use-visible when their enclosing package is use'd.<br /></Admonition>
+The semantics described here should be similar to the semantics for expanded names given in <a href="../AA-4/AA-4.1#Subclause_4.1.3">4.1.3</a>, "<a href="../AA-4/AA-4.1#Subclause_4.1.3">Selected Components</a>" so as to achieve the effect requested by the "principle of equivalence of <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s and <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>s". Thus, child library units and generic formal parameters of a formal package are potentially use-visible when their enclosing package is use'd.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+8.c
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 The "visible at that place" part implies that applying a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> to a parent unit does not make all of its children use-visible - only those that have been made visible by a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>. It also implies that we don't have to worry about hiding in the definition of "directly visible" - a declaration cannot be use-visible unless it is visible.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+8.d
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Note that "<strong>use type</strong> T'Class;" is equivalent to "<strong>use type</strong> T;", which helps avoid breaking the generic contract model. <br /></Admonition>
 
-<p>{"{"}<em>{"AI05-0131-1"}</em>{"}"} <br />Certain implicit declarations may become potentially use-visible in certain contexts as described in 12.6.<br /></p>
+<AnnotatedOnly>
+<MarginText>
+8.3/3
+</MarginText>
+</AnnotatedOnly>
+<p>{"{"}<em>{"AI05-0131-1"}</em>{"}"} <br />Certain implicit declarations may become potentially use-visible in certain contexts as described in <a href="../AA-12/AA-12.6">12.6</a>.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+9
+</MarginText>
+</AnnotatedOnly>
 <p>A declaration is <em>use-visible</em> if it is potentially use-visible, except in these naming-conflict cases: <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+10
+</MarginText>
+</AnnotatedOnly>
 <ul>
 <li>A potentially use-visible declaration is not use-visible if the place considered is within the immediate scope of a homograph of the declaration.<br /></li>
+<AnnotatedOnly>
+<MarginText>
+11
+</MarginText>
+</AnnotatedOnly>
 <li>Potentially use-visible declarations that have the same <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> are not use-visible unless each of them is an overloadable declaration. <br /></li>
+<AnnotatedOnly>
+<MarginText>
+11.a
+</MarginText>
+</AnnotatedOnly>
 </ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Overloadable declarations don't cancel each other out, even if they are homographs, though if they are not distinguishable by formal parameter names or the presence or absence of <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>s, any use will be ambiguous. We only mention <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s here, because declarations named by <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code>s are always overloadable, and hence never cancel each other. Direct visibility is irrelevant for <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>s. <br /></Admonition>
@@ -103,62 +246,132 @@ Note that "<strong>use type</strong> T'Class;" is equivalent to "<strong>use typ
 
 #### Dynamic Semantics
 
+<AnnotatedOnly>
+<MarginText>
+12
+</MarginText>
+</AnnotatedOnly>
 <p>The elaboration of a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> has no effect. <br /></p>
 
 
 #### Examples
 
+<AnnotatedOnly>
+<MarginText>
+13
+</MarginText>
+</AnnotatedOnly>
 <p><em>Example of a use clause in a context clause:</em> <br /></p>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+14
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 with Ada.Calendar; use Ada;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+15
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <p><em>Example of a use type clause:</em> <br /></p>
 
-<CodeBlock>
-use type Rational_Numbers.Rational; -- see 7.1{"\n"}Two_Thirds: Rational_Numbers.Rational := 2/3;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+16
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
+use type Rational_Numbers.Rational; -- see <a href="../AA-7/AA-7.1">7.1</a>{"\n"}Two_Thirds: Rational_Numbers.Rational := 2/3;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+16.a
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>In "<strong>use</strong> X, Y;", Y cannot refer to something made visible by the "<strong>use</strong>" of X. Thus, it's not (quite) equivalent to "<strong>use</strong> X; <strong>use</strong> Y;".<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+16.b
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 If a given declaration is already immediately visible, then a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> that makes it potentially use-visible has no effect. Therefore, a <code><a href="../AA-8/AA-8.4#S0237">use_type_clause</a></code> for a type whose declaration appears in a place other than the visible part of a package has no effect; it cannot make a declaration use-visible unless that declaration is already immediately visible.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+16.c
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 "<strong>Use</strong> <strong>type</strong> S1;" and "<strong>use</strong> <strong>type</strong> S2;" are equivalent if S1 and S2 are both subtypes of the same type. In particular, "<strong>use</strong> <strong>type</strong> S;" and "<strong>use</strong> <strong>type</strong> S'Base;" are equivalent. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+16.d
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>We considered adding a rule that prevented several declarations of views of the same entity that all have the same semantics from cancelling each other out. For example, if a (possibly implicit) <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code> for "+" is potentially use-visible, and a fully conformant renaming of it is also potentially use-visible, then they (annoyingly) cancel each other out; neither one is use-visible. The considered rule would have made just one of them use-visible. We gave up on this idea due to the complexity of the rule. It would have had to account for both overloadable and nonoverloadable <code><a href="../AA-8/AA-8.5#S0238">renaming_declaration</a></code>s, the case where the rule should apply only to some subset of the declarations with the same defining name, and the case of <code><a href="../AA-3/AA-3.2#S0026">subtype_declaration</a></code>s (since they are claimed to be sufficient for renaming of subtypes). <br /></Admonition>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
+<MarginText>
+16.e
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 The <code><a href="../AA-8/AA-8.4#S0237">use_type_clause</a></code> is new to Ada 95. <br /></Admonition>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
+<MarginText>
+16.f
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 The phrase "omitting from this set any packages that enclose this place" is no longer necessary to avoid making something visible outside its scope, because we explicitly state that the declaration has to be visible in order to be potentially use-visible. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
+<MarginText>
+16.g/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />Limited views of packages are not allowed in use clauses. Defined <em>named in a use clause</em> for use in other limited view rules (see 10.1.2). <br /></Admonition>
+{"{"}<em>{"AI95-00217-06"}</em>{"}"} <br />Limited views of packages are not allowed in use clauses. Defined <em>named in a use clause</em> for use in other limited view rules (see <a href="../AA-10/AA-10.1#Subclause_10.1.2">10.1.2</a>). <br /></Admonition>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
+<MarginText>
+16.h/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0150-1"}</em>{"}"} <br />The <strong>use all type</strong> version of the <code><a href="../AA-8/AA-8.4#S0237">use_type_clause</a></code> is new to Ada 2012. It works similarly to prefixed views. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
+<MarginText>
+16.i/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0131-1"}</em>{"}"} <strong><br /></strong> Added wording to allow other declarations to be potentially use-visible, to support corrections to formal subprograms. <br /></Admonition>
 

@@ -10,39 +10,127 @@ and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
-import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
+import AnnotatedOnly from "@site/src/components/AnnotatedOnly";
+import CodeBlock from "@theme/CodeBlock";
+import MarginText from "@site/src/components/MarginText";
+import MarginInfo from "@site/src/components/MarginInfo";
 
+<AnnotatedOnly>
+<MarginText>
+1/5
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0445-1"}</em>{"}"} <br />This subclause describes a language-defined package to allow user-defined protected procedures to be executed at a specified time without the use of a task or a delay statement. <br /></p>
 
 
 #### Static Semantics
 
+<AnnotatedOnly>
+<MarginText>
+2/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />The following language-defined library package exists: <br /></p>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+3/5
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 --  {"{"}{"AI12-0241-1"}{"}"}{"\n"} --  {"{"}{"AI12-0302-1"}{"}"}{"\n"} package Ada.Real_Time.Timing_Events{"\n"}  with Nonblocking, Global ={">"} in out synchronized is{"\n"}
+<AnnotatedOnly>
+<MarginText>
+4/5
+</MarginText>
+</AnnotatedOnly>
 --  {"{"}{"AI12-0241-1"}{"}"}{"\n"}   type Timing_Event is tagged limited private;{"\n"}  type Timing_Event_Handler{"\n"}       is access protected procedure (Event : in out Timing_Event){"\n"}       with Nonblocking ={">"} False;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+5/2
+</MarginText>
+</AnnotatedOnly>
   procedure Set_Handler (Event   : in out Timing_Event;{"\n"}                         At_Time : in Time;{"\n"}                         Handler : in Timing_Event_Handler);{"\n"}  procedure Set_Handler (Event   : in out Timing_Event;{"\n"}                         In_Time : in Time_Span;{"\n"}                         Handler : in Timing_Event_Handler);{"\n"}  function Current_Handler (Event : Timing_Event){"\n"}       return Timing_Event_Handler;{"\n"}  procedure Cancel_Handler (Event     : in out Timing_Event;{"\n"}                            Cancelled : out Boolean);{"\n"}
+<AnnotatedOnly>
+<MarginText>
+6/2
+</MarginText>
+</AnnotatedOnly>
   function Time_Of_Event (Event : Timing_Event) return Time;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+7/2
+</MarginText>
+</AnnotatedOnly>
 private{"\n"}  ... -- not specified by the language{"\n"}end Ada.Real_Time.Timing_Events;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+8/2
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
-<p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />The type Timing_Event represents a time in the future when an event is to occur. The type Timing_Event needs finalization (see 7.6).<br /></p>
+<p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />The type Timing_Event represents a time in the future when an event is to occur. The type Timing_Event needs finalization (see <a href="../AA-7/AA-7.6">7.6</a>).<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+9/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />An object of type Timing_Event is said to be <em>set</em> if it is associated with a nonnull value of type Timing_Event_Handler and <em>cleared</em> otherwise. All Timing_Event objects are initially cleared. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+10/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />The type Timing_Event_Handler identifies a protected procedure to be executed by the implementation when the timing event occurs. Such a protected procedure is called a <em>handler</em>. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+10.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>Type Timing_Event is tagged. This makes it possible to share a handler between several events. In simple cases, 'Access can be used to compare the parameter with a specific timing event object (this works because a tagged type is a by-reference type). In more complex cases, a type extension of type Timing_Event can be declared; a double type conversion can be used to access the extension data. For example:<br /></Admonition>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+10.b/2
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 type Toaster_Timing_Event is new Timing_Event with record{"\n"}   Slot : Natural;{"\n"}end record;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+10.c/2
+</MarginText>
+</AnnotatedOnly>
 ...{"\n"}
+<AnnotatedOnly>
+<MarginText>
+10.d/2
+</MarginText>
+</AnnotatedOnly>
 protected body Toaster is{"\n"}
+<AnnotatedOnly>
+<MarginText>
+10.e/2
+</MarginText>
+</AnnotatedOnly>
    procedure Timer (Event : in out Timing_Event) is{"\n"}   begin{"\n"}      Pop_Up_Toast (Toaster_Timing_Event(Timing_Event'Class(Event)).Slot);{"\n"}   end Timer;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+10.f/2
+</MarginText>
+</AnnotatedOnly>
    ...{"\n"}end Toaster;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+10.g/2
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <Admonition type="aarm" aarm="note" title="Note: ">
@@ -51,55 +139,155 @@ The extra conversion to the class-wide type is necessary to make the conversions
 
 #### Dynamic Semantics
 
+<AnnotatedOnly>
+<MarginText>
+11/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />The procedures Set_Handler associate the handler Handler with the event Event: if Handler is <strong>null</strong>, the event is cleared; otherwise, it is set. The first procedure Set_Handler sets the execution time for the event to be At_Time. The second procedure Set_Handler sets the execution time for the event to be Real_Time.Clock + In_Time.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+12/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />A call of a procedure Set_Handler for an event that is already set replaces the handler and the time of execution; if Handler is not <strong>null</strong>, the event remains set.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+13/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />As soon as possible after the time set for the event, the handler is executed, passing the event as parameter. The handler is only executed if the timing event is in the set state at the time of execution. The initial action of the execution of the handler is to clear the event.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+13.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>The second sentence of this paragraph is because of a potential race condition. The time might expire and yet before the handler is executed, some task could call Cancel_Handler (or equivalently call Set_Handler with a <strong>null</strong> parameter) and thus clear the handler. <br /></Admonition>
 
-<p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />If the Ceiling_Locking policy (see D.3) is in effect when a procedure Set_Handler is called, a check is made that the ceiling priority of Handler.<strong>all</strong> is Interrupt_Priority'Last. If the check fails, Program_Error is raised.<br /></p>
+<AnnotatedOnly>
+<MarginText>
+14/2
+</MarginText>
+</AnnotatedOnly>
+<p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />If the Ceiling_Locking policy (see <a href="../AA-D/AA-D.3">D.3</a>) is in effect when a procedure Set_Handler is called, a check is made that the ceiling priority of Handler.<strong>all</strong> is Interrupt_Priority'Last. If the check fails, Program_Error is raised.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+15/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} {"{"}<em>{"AI05-0094-1"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />If a procedure Set_Handler is called with zero or negative In_Time or with At_Time indicating a time in the past, then the handler is executed as soon as possible after the completion of the call of Set_Handler.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+15.a/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI05-0094-1"}</em>{"}"} <br />The handler will still be executed. Under no circumstances is a scheduled call of a handler lost. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+15.b/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>{"{"}<em>{"AI05-0094-1"}</em>{"}"} <br />We say "as soon as possible" so that we do not deadlock if we are executing the handler when Set_Handler is called. In that case, the current invocation of the handler must complete before the new handler can start executing. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+16/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />The function Current_Handler returns the handler associated with the event Event if that event is set; otherwise, it returns <strong>null</strong>.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+17/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />The procedure Cancel_Handler clears the event if it is set. Cancelled is assigned True if the event was set prior to it being cleared; otherwise, it is assigned False.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+18/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} {"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />The function Time_Of_Event returns the time of the event if the event is set; otherwise, it returns Real_Time.Time_First.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+19/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />As part of the finalization of an object of type Timing_Event, the Timing_Event is cleared.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+19.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>This is the only finalization defined by the language that has a visible effect; but an implementation may have other finalization that it needs to perform. Implementations need to ensure that the event is cleared before anything else is finalized that would prevent a set event from being triggered. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+20/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />If several timing events are set for the same time, they are executed in FIFO order of being set.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+21/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />An exception propagated from a handler invoked by a timing event has no effect.<br /></p>
 
 
 #### Implementation Requirements
 
+<AnnotatedOnly>
+<MarginText>
+22/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />For a given Timing_Event object, the implementation shall perform the operations declared in this package atomically with respect to any of these operations on the same Timing_Event object. The replacement of a handler by a call of Set_Handler shall be performed atomically with respect to the execution of the handler.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+22.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>This prevents various race conditions. In particular it ensures that if an event occurs when Set_Handler is changing the handler then either the new or old handler is executed in response to the appropriate event. It is never possible for a new handler to be executed in response to an old event. <br /></Admonition>
 
 
 #### Metrics
 
+<AnnotatedOnly>
+<MarginText>
+23/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />The implementation shall document the following metric: <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+24/3
+</MarginText>
+</AnnotatedOnly>
 <ul>
 <li>{"{"}<em>{"AI05-0210-1"}</em>{"}"} <br />An upper bound on the lateness of the execution of a handler. That is, the maximum time between the time specified for the event and when a handler is actually invoked assuming no other handler or task is executing during this interval.<br /></li>
+<AnnotatedOnly>
+<MarginText>
+24.a/2
+</MarginText>
+</AnnotatedOnly>
 </ul>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>Documentation Requirement: </strong>The metrics for timing events.<br /></Admonition>
@@ -107,29 +295,64 @@ The extra conversion to the class-wide type is necessary to make the conversions
 
 #### Implementation Advice
 
+<AnnotatedOnly>
+<MarginText>
+25/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />The protected handler procedure should be executed directly by the real-time clock interrupt mechanism.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+25.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
 <strong></strong>For a timing event, the handler should be executed directly by the real-time clock interrupt mechanism.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+26/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   {"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />Since a call of Set_Handler is not a potentially blocking operation, it can be called from within a handler.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+27/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 2   {"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />A Timing_Event_Handler can be associated with several Timing_Event objects.<br /></Admonition>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
+<MarginText>
+27.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00297-01"}</em>{"}"} <br />The package Real_Time.Timing_Events is new. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
+<MarginText>
+27.b/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0094-1"}</em>{"}"} <strong><br /></strong> Reworded to eliminate a deadlock condition if the event time is in the past and a handler is currently executing. This is technically an inconsistency, but only if a program is depending on deadlocking; since it is impossible to imagine how that could be useful, we have not documented this as an inconsistency.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+27.c/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0210-1"}</em>{"}"} <strong><br /></strong> Clarified the metric for lateness of a timing event to exclude interference from other handlers and tasks. This change might change the documentation of an implementation, but not the implementation itself, so there is no inconsistency. <br /></Admonition>
 

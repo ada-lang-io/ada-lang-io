@@ -10,28 +10,86 @@ and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
-import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
+import AnnotatedOnly from "@site/src/components/AnnotatedOnly";
+import CodeBlock from "@theme/CodeBlock";
+import MarginText from "@site/src/components/MarginText";
+import MarginInfo from "@site/src/components/MarginInfo";
 
-<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} {"{"}<em>{"AI12-0445-1"}</em>{"}"} <br />[ A <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> (see 4.6) can be used to convert between two different representations of the same array or record. To convert an array from one representation to another, two array types with matching component subtypes and convertible index types are required. If one type has Pack specified and the other does not, then explicit conversion can be used to pack or unpack an array.<br /></p>
+<AnnotatedOnly>
+<MarginText>
+1/5
+</MarginText>
+</AnnotatedOnly>
+<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} {"{"}<em>{"AI12-0445-1"}</em>{"}"} <br />[ A <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> (see <a href="../AA-4/AA-4.6">4.6</a>) can be used to convert between two different representations of the same array or record. To convert an array from one representation to another, two array types with matching component subtypes and convertible index types are required. If one type has Pack specified and the other does not, then explicit conversion can be used to pack or unpack an array.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+2/5
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI12-0425-1"}</em>{"}"} {"{"}<em>{"AI12-0445-1"}</em>{"}"} <br />To convert an untagged record from one representation to another, two record types with a common ancestor type are required. Distinct representations can then be specified for the record types, and explicit conversion between the types can be used to effect a change in representation.] <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+2.a/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI12-0425-1"}</em>{"}"} <br />The language does not allow implicit copying of by-reference types, so it also does not allow different representations of related by-reference types. Similarly, language rules prevent related tagged types from having different representations of the parent part. Therefore, this technique cannot be used for tagged or by-reference types. <br /></Admonition>
 
 
 #### Examples
 
+<AnnotatedOnly>
+<MarginText>
+3
+</MarginText>
+</AnnotatedOnly>
 <p><em>Example of change of representation:</em> <br /></p>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+4
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 -- Packed_Descriptor and Descriptor are two different types{"\n"}-- with identical characteristics, apart from their{"\n"}-- representation{"\n"}
+<AnnotatedOnly>
+<MarginText>
+5
+</MarginText>
+</AnnotatedOnly>
 type Descriptor is{"\n"}    record{"\n"}      -- components of a descriptor{"\n"}    end record;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+6
+</MarginText>
+</AnnotatedOnly>
 type Packed_Descriptor is new Descriptor;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+7
+</MarginText>
+</AnnotatedOnly>
 for Packed_Descriptor use{"\n"}    record{"\n"}      -- component clauses for some or for all components{"\n"}    end record;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+8
+</MarginText>
+</AnnotatedOnly>
 -- Change of representation can now be accomplished by explicit type conversions:{"\n"}
+<AnnotatedOnly>
+<MarginText>
+9
+</MarginText>
+</AnnotatedOnly>
 D : Descriptor;{"\n"}P : Packed_Descriptor;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+10
+</MarginText>
+</AnnotatedOnly>
 P := Packed_Descriptor(D);  -- pack D{"\n"}D := Descriptor(P);         -- unpack P{"\n"}
 
 </CodeBlock>

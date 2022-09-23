@@ -10,72 +10,205 @@ and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
-import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
+import AnnotatedOnly from "@site/src/components/AnnotatedOnly";
+import CodeBlock from "@theme/CodeBlock";
+import MarginText from "@site/src/components/MarginText";
+import MarginInfo from "@site/src/components/MarginInfo";
 
+<AnnotatedOnly>
+<MarginText>
+1/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />[This subclause specifies the language-defined model for hardware interrupts in addition to mechanisms for handling interrupts.] <br /></p>
 
 
 #### Dynamic Semantics
 
+<AnnotatedOnly>
+<MarginText>
+2
+</MarginText>
+</AnnotatedOnly>
 <p>[An <em>interrupt</em> represents a class of events that are detected by the hardware or the system software.] Interrupts are said to occur. An <em>occurrence</em> of an interrupt is separable into generation and delivery. <em>Generation</em> of an interrupt is the event in the underlying hardware or system that makes the interrupt available to the program. <em>Delivery</em> is the action that invokes part of the program as response to the interrupt occurrence. Between generation and delivery, the interrupt occurrence [(or interrupt)] is <em>pending</em>. Some or all interrupts may be <em>blocked</em>. When an interrupt is blocked, all occurrences of that interrupt are prevented from being delivered. Certain interrupts are <em>reserved</em>. The set of reserved interrupts is implementation defined. A reserved interrupt is either an interrupt for which user-defined handlers are not supported, or one which already has an attached handler by some other implementation-defined means. Program units can be connected to nonreserved interrupts. While connected, the program unit is said to be <em>attached</em> to that interrupt. The execution of that program unit, the <em>interrupt handler</em>, is invoked upon delivery of the interrupt occurrence. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+2.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em><br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+2.b
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
-<strong>To be honest: </strong>As an obsolescent feature, interrupts may be attached to task entries by an address clause. See J.7.1. <br /></Admonition>
+<strong>To be honest: </strong>As an obsolescent feature, interrupts may be attached to task entries by an address clause. See <a href="../AA-J/AA-J.7#Subclause_J.7.1">J.7.1</a>. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+3
+</MarginText>
+</AnnotatedOnly>
 <p>While a handler is attached to an interrupt, it is called once for each delivered occurrence of that interrupt. While the handler executes, the corresponding interrupt is blocked.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+4
+</MarginText>
+</AnnotatedOnly>
 <p>While an interrupt is blocked, all occurrences of that interrupt are prevented from being delivered. Whether such occurrences remain pending or are lost is implementation defined.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+5
+</MarginText>
+</AnnotatedOnly>
 <p>Each interrupt has a <em>default treatment</em> which determines the system's response to an occurrence of that interrupt when no user-defined handler is attached. The set of possible default treatments is implementation defined, as is the method (if one exists) for configuring the default treatments for interrupts.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+6
+</MarginText>
+</AnnotatedOnly>
 <p>An interrupt is delivered to the handler (or default treatment) that is in effect for that interrupt at the time of delivery.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+7
+</MarginText>
+</AnnotatedOnly>
 <p>An exception propagated from a handler that is invoked by an interrupt has no effect.<br /></p>
 
-<p>[If the Ceiling_Locking policy (see D.3) is in effect, the interrupt handler executes with the active priority that is the ceiling priority of the corresponding protected object.]<br /></p>
+<AnnotatedOnly>
+<MarginText>
+8
+</MarginText>
+</AnnotatedOnly>
+<p>[If the Ceiling_Locking policy (see <a href="../AA-D/AA-D.3">D.3</a>) is in effect, the interrupt handler executes with the active priority that is the ceiling priority of the corresponding protected object.]<br /></p>
 
 
 #### Implementation Requirements
 
+<AnnotatedOnly>
+<MarginText>
+9/5
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI12-0445-1"}</em>{"}"} <br />The implementation shall provide a mechanism to determine the minimum stack space that is necessary for each interrupt handler and to reserve that space for the execution of the handler. [This space should accommodate nested invocations of the handler where the system permits this.]<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+10
+</MarginText>
+</AnnotatedOnly>
 <p>If the hardware or the underlying system holds pending interrupt occurrences, the implementation shall provide for later delivery of these occurrences to the program.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+11
+</MarginText>
+</AnnotatedOnly>
 <p>If the Ceiling_Locking policy is not in effect, the implementation shall provide means for the application to specify whether interrupts are to be blocked during protected actions.<br /></p>
 
 
 #### Documentation Requirements
 
+<AnnotatedOnly>
+<MarginText>
+12
+</MarginText>
+</AnnotatedOnly>
 <p>The implementation shall document the following items: <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+12.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>This information may be different for different forms of interrupt handlers. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+13
+</MarginText>
+</AnnotatedOnly>
 <dt><br/>a)</dt>
 <dl>
 <dd>For each interrupt, which interrupts are blocked from delivery when a handler attached to that interrupt executes (either as a result of an interrupt delivery or of an ordinary call on a procedure of the corresponding protected object).<br /></dd>
+<AnnotatedOnly>
+<MarginText>
+14
+</MarginText>
+</AnnotatedOnly>
 <dt><br/>b)</dt>
 <dd>Any interrupts that cannot be blocked, and the effect of attaching handlers to such interrupts, if this is permitted.<br /></dd>
+<AnnotatedOnly>
+<MarginText>
+15
+</MarginText>
+</AnnotatedOnly>
 <dt><br/>c)</dt>
 <dd>Which run-time stack an interrupt handler uses when it executes as a result of an interrupt delivery; if this is configurable, what is the mechanism to do so; how to specify how much space to reserve on that stack.<br /></dd>
+<AnnotatedOnly>
+<MarginText>
+16
+</MarginText>
+</AnnotatedOnly>
 <dt><br/>d)</dt>
 <dd>Any implementation- or hardware-specific activity that happens before a user-defined interrupt handler gets control (e.g., reading device registers, acknowledging devices).<br /></dd>
+<AnnotatedOnly>
+<MarginText>
+17
+</MarginText>
+</AnnotatedOnly>
 <dt><br/>e)</dt>
 <dd>Any timing or other limitations imposed on the execution of interrupt handlers.<br /></dd>
+<AnnotatedOnly>
+<MarginText>
+18
+</MarginText>
+</AnnotatedOnly>
 <dt><br/>f)</dt>
 <dd>The state (blocked/unblocked) of the nonreserved interrupts when the program starts; if some interrupts are unblocked, what is the mechanism a program can use to protect itself before it can attach the corresponding handlers.<br /></dd>
+<AnnotatedOnly>
+<MarginText>
+19
+</MarginText>
+</AnnotatedOnly>
 <dt><br/>g)</dt>
 <dd>Whether the interrupted task is allowed to resume execution before the interrupt handler returns.<br /></dd>
+<AnnotatedOnly>
+<MarginText>
+20
+</MarginText>
+</AnnotatedOnly>
 <dt><br/>h)</dt>
 <dd>The treatment of interrupt occurrences that are generated while the interrupt is blocked; i.e., whether one or more occurrences are held for later delivery, or all are lost.<br /></dd>
+<AnnotatedOnly>
+<MarginText>
+21
+</MarginText>
+</AnnotatedOnly>
 <dt><br/>i)</dt>
 <dd>Whether predefined or implementation-defined exceptions are raised as a result of the occurrence of any interrupt, and the mapping between the machine interrupts (or traps) and the predefined exceptions.<br /></dd>
+<AnnotatedOnly>
+<MarginText>
+22
+</MarginText>
+</AnnotatedOnly>
 <dt><br/>j)</dt>
 <dd>On a multi-processor, the rules governing the delivery of an interrupt to a particular processor. <br /></dd>
+<AnnotatedOnly>
+<MarginText>
+22.a/2
+</MarginText>
+</AnnotatedOnly>
 </dl>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>Documentation Requirement: </strong>The treatment of interrupts.<br /></Admonition>
@@ -83,62 +216,158 @@ import Admonition from "@theme/Admonition";
 
 #### Implementation Permissions
 
+<AnnotatedOnly>
+<MarginText>
+23/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} <br />If the underlying system or hardware does not allow interrupts to be blocked, then no blocking is required [as part of the execution of subprograms of a protected object for which one of its subprograms is an interrupt handler].<br /></p>
 
-<p>In a multi-processor with more than one interrupt subsystem, it is implementation defined whether (and how) interrupt sources from separate subsystems share the same Interrupt_Id type (see C.3.2). In particular, the meaning of a blocked or pending interrupt may then be applicable to one processor only. <br /></p>
+<AnnotatedOnly>
+<MarginText>
+24
+</MarginText>
+</AnnotatedOnly>
+<p>In a multi-processor with more than one interrupt subsystem, it is implementation defined whether (and how) interrupt sources from separate subsystems share the same Interrupt_Id type (see <a href="../AA-C/AA-C.3#Subclause_C.3.2">C.3.2</a>). In particular, the meaning of a blocked or pending interrupt may then be applicable to one processor only. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+24.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>This issue is tightly related to the issue of scheduling on a multi-processor. In a sense, if a particular interrupt source is not available to all processors, the system is not truly homogeneous.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+24.b
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 One way to approach this problem is to assign sub-ranges within Interrupt_Id to each interrupt subsystem, such that "similar" interrupt sources (e.g. a timer) in different subsystems get a distinct id. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+25
+</MarginText>
+</AnnotatedOnly>
 <p>Implementations are allowed to impose timing or other limitations on the execution of interrupt handlers. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+25.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>These limitations are often necessary to ensure proper behavior of the implementation. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+26/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />Other forms of handlers are allowed to be supported, in which case the rules of this subclause should be adhered to.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+27
+</MarginText>
+</AnnotatedOnly>
 <p>The active priority of the execution of an interrupt handler is allowed to vary from one occurrence of the same interrupt to another.<br /></p>
 
 
 #### Implementation Advice
 
+<AnnotatedOnly>
+<MarginText>
+28/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} <br />If the Ceiling_Locking policy is not in effect, the implementation should provide means for the application to specify which interrupts are to be blocked during protected actions, if the underlying system allows for finer-grained control of interrupt blocking. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+28.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
 <strong></strong>If the Ceiling_Locking policy is not in effect and the target system allows for finer-grained control of interrupt blocking, a means for the application to specify which interrupts are to be blocked during protected actions should be provided.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+29
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   The default treatment for an interrupt can be to keep the interrupt pending or to deliver it to an implementation-defined handler. Examples of actions that an implementation-defined handler is allowed to perform include aborting the partition, ignoring (i.e., discarding occurrences of) the interrupt, or queuing one or more occurrences of the interrupt for possible later delivery when a user-defined handler is attached to that interrupt.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+30
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 2   It is a bounded error to call Task_Identification.Current_Task (see C.7.1) from an interrupt handler.<br /></Admonition>
+NOTE 2   It is a bounded error to call Task_Identification.Current_Task (see <a href="../AA-C/AA-C.7#Subclause_C.7.1">C.7.1</a>) from an interrupt handler.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+31
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 3   The rule that an exception propagated from an interrupt handler has no effect is modeled after the rule about exceptions propagated out of task bodies.<br /></Admonition>
 
+<a id="Subclause_C.3.1"></a>
 
 ## C.3.1  Protected Procedure Handlers
 
-<p><em>Paragraphs 1 through 6 were moved to Annex J, "Obsolescent Features".</em> <br /></p>
+<AnnotatedOnly>
+<MarginText>
+
+</MarginText>
+</AnnotatedOnly>
+<p><em>Paragraphs 1 through 6 were moved to <a href="../AA-J/">Annex J</a>, "<a href="../AA-J/">Obsolescent Features</a>".</em> <br /></p>
 
 
 #### Static Semantics
 
+<AnnotatedOnly>
+<MarginText>
+6.1/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />For a parameterless protected procedure, the following language-defined representation aspects may be specified: <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+6.2/3
+</MarginText>
+</AnnotatedOnly>
 <dt><br/>Interrupt_Handler</dt>
 <dl>
 <dd> The type of aspect Interrupt_Handler is Boolean. If directly specified, the aspect_definition shall be a static expression. [This aspect is never inherited;] if not directly specified, the aspect is False.<br /></dd>
+<AnnotatedOnly>
+<MarginText>
+6.a/3
+</MarginText>
+</AnnotatedOnly>
 </dl>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>Aspect Description for </strong><strong>Interrupt_Handler: </strong>Protected procedure may be attached to interrupts.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+6.3/3
+</MarginText>
+</AnnotatedOnly>
 <dt><br/>Attach_Handler</dt>
 <dl>
 <dd> The aspect Attach_Handler is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, which shall be of type Interrupts.Interrupt_Id. [This aspect is never inherited.]<br /></dd>
+<AnnotatedOnly>
+<MarginText>
+6.b/3
+</MarginText>
+</AnnotatedOnly>
 </dl>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>Aspect Description for </strong><strong>Attach_Handler: </strong>Protected procedure is attached to an interrupt.<br /></Admonition>
@@ -146,239 +375,625 @@ NOTE 3   The rule that an exception propagated from an interrupt handler has no 
 
 #### Legality Rules
 
-<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} {"{"}<em>{"AI05-0033-1"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />If either the Attach_Handler or Interrupt_Handler aspect are specified for a protected procedure, the corresponding <code><a href="../AA-9/AA-9.4#S0249">protected_type_declaration</a></code> or <code><a href="../AA-9/AA-9.4#S0250">single_protected_declaration</a></code> shall be a library-level declaration and shall not be declared within a generic body. In addition to the places where Legality Rules normally apply (see 12.3), this rule also applies in the private part of an instance of a generic unit.<br /></p>
+<AnnotatedOnly>
+<MarginText>
+7/3
+</MarginText>
+</AnnotatedOnly>
+<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} {"{"}<em>{"AI05-0033-1"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />If either the Attach_Handler or Interrupt_Handler aspect are specified for a protected procedure, the corresponding <code><a href="../AA-9/AA-9.4#S0249">protected_type_declaration</a></code> or <code><a href="../AA-9/AA-9.4#S0250">single_protected_declaration</a></code> shall be a library-level declaration and shall not be declared within a generic body. In addition to the places where Legality Rules normally apply (see <a href="../AA-12/AA-12.3">12.3</a>), this rule also applies in the private part of an instance of a generic unit.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+7.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>In the case of a <code><a href="../AA-9/AA-9.4#S0249">protected_type_declaration</a></code>, an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> of an object of that type need not be at library level.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+7.b/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0033-1"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />We cannot allow these aspects in protected declarations in a generic body, because legality rules are not checked for instance bodies, and these should not be allowed if the instance is not at the library level. The protected types can be declared in the private part if this is desired. Note that while the 'Access to use the handler would provide the check in the case of Interrupt_Handler, there is no other check for Attach_Handler. Since these aspects are so similar, we want the rules to be the same. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+8/3
+</MarginText>
+</AnnotatedOnly>
 <p><em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00253-01"}</em>{"}"} {"{"}<em>{"AI95-00303-01"}</em>{"}"} {"{"}<em>{"AI05-0033-1"}</em>{"}"} <br /></p>
 
 
 #### Dynamic Semantics
 
-<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />If the Interrupt_Handler aspect of a protected procedure is True, then the procedure may be attached dynamically, as a handler, to interrupts (see C.3.2). [Such procedures are allowed to be attached to multiple interrupts.]<br /></p>
+<AnnotatedOnly>
+<MarginText>
+9/3
+</MarginText>
+</AnnotatedOnly>
+<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />If the Interrupt_Handler aspect of a protected procedure is True, then the procedure may be attached dynamically, as a handler, to interrupts (see <a href="../AA-C/AA-C.3#Subclause_C.3.2">C.3.2</a>). [Such procedures are allowed to be attached to multiple interrupts.]<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+10/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />The <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> specified for the Attach_Handler aspect of a protected procedure <em>P</em> is evaluated as part of the creation of the protected object that contains <em>P</em>. The value of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> identifies an interrupt. As part of the initialization of that object, <em>P</em> (the <em>handler</em> procedure) is attached to the identified interrupt. A check is made that the corresponding interrupt is not reserved. Program_Error is raised if the check fails, and the existing treatment for the interrupt is not affected.<br /></p>
 
-<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />If the Ceiling_Locking policy (see D.3) is in effect, then upon the initialization of a protected object that contains a protected procedure for which either the Attach_Handler aspect is specified or the  Interrupt_Handler aspect is True, a check is made that the initial ceiling priority of the object is in the range of System.Interrupt_Priority. If the check fails, Program_Error is raised.<br /></p>
+<AnnotatedOnly>
+<MarginText>
+11/3
+</MarginText>
+</AnnotatedOnly>
+<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />If the Ceiling_Locking policy (see <a href="../AA-D/AA-D.3">D.3</a>) is in effect, then upon the initialization of a protected object that contains a protected procedure for which either the Attach_Handler aspect is specified or the  Interrupt_Handler aspect is True, a check is made that the initial ceiling priority of the object is in the range of System.Interrupt_Priority. If the check fails, Program_Error is raised.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+12/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>8652/0068</em>{"}"} {"{"}<em>{"AI95-00121-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />When a protected object is finalized, for any of its procedures that are attached to interrupts, the handler is detached. If the handler was attached by a procedure in the Interrupts package or if no user handler was previously attached to the interrupt, the default treatment is restored. If the Attach_Handler aspect was specified and the most recently attached handler for the same interrupt is the same as the one that was attached at the time the protected object was initialized, the previous handler is restored. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+12.a/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>{"{"}<em>8652/0068</em>{"}"} {"{"}<em>{"AI95-00121-01"}</em>{"}"} {"{"}<em>{"AI95-00303-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />If all protected objects for interrupt handlers are declared at the library level, the finalization discussed above occurs only as part of the finalization of all library-level packages in a partition. However, objects of a protected type containing procedures with an Attach_Handler aspect specified need not be at the library level. Thus, an implementation needs to be able to restore handlers during the execution of the program. (An object with an Interrupt_Handler aspect also need not be at the library level, but such a handler cannot be attached to an interrupt using the Interrupts package.) <br /></Admonition>
 
-<p>When a handler is attached to an interrupt, the interrupt is blocked [(subject to the Implementation Permission in C.3)] during the execution of every protected action on the protected object containing the handler.<br /></p>
+<AnnotatedOnly>
+<MarginText>
+13
+</MarginText>
+</AnnotatedOnly>
+<p>When a handler is attached to an interrupt, the interrupt is blocked [(subject to the Implementation Permission in <a href="../AA-C/AA-C.3">C.3</a>)] during the execution of every protected action on the protected object containing the handler.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+13.1/5
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI12-0252-1"}</em>{"}"} <br />If restriction No_Dynamic_Attachment is in effect, then a check is made that the interrupt identified by an Attach_Handler aspect does not appear in any previously elaborated Attach_Handler aspect; Program_Error is raised if this check fails.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+13.a/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>When No_Dynamic_Attachment is in effect, it is not possible to call any previous handler. Therefore, the only possibility is to replace the original handler, rendering it ineffective. Having an unused handler in a program is likely a bug, so we require an exception to be raised. <br /></Admonition>
 
 
 #### Erroneous Execution
 
-<p>If the Ceiling_Locking policy (see D.3) is in effect and an interrupt is delivered to a handler, and the interrupt hardware priority is higher than the ceiling priority of the corresponding protected object, the execution of the program is erroneous.<br /></p>
+<AnnotatedOnly>
+<MarginText>
+14
+</MarginText>
+</AnnotatedOnly>
+<p>If the Ceiling_Locking policy (see <a href="../AA-D/AA-D.3">D.3</a>) is in effect and an interrupt is delivered to a handler, and the interrupt hardware priority is higher than the ceiling priority of the corresponding protected object, the execution of the program is erroneous.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+14.1/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>8652/0068</em>{"}"} {"{"}<em>{"AI95-00121-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />If the handlers for a given interrupt attached via aspect Attach_Handler are not attached and detached in a stack-like (LIFO) order, program execution is erroneous. In particular, when a protected object is finalized, the execution is erroneous if any of the procedures of the protected object are attached to interrupts via aspect Attach_Handler and the most recently attached handler for the same interrupt is not the same as the one that was attached at the time the protected object was initialized. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+14.a/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>{"{"}<em>8652/0068</em>{"}"} {"{"}<em>{"AI95-00121-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />This simplifies implementation of the Attach_Handler aspect by not requiring a check that the current handler is the same as the one attached by the initialization of a protected object. <br /></Admonition>
 
 
 #### Metrics
 
+<AnnotatedOnly>
+<MarginText>
+15
+</MarginText>
+</AnnotatedOnly>
 <p>The following metric shall be documented by the implementation: <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+16/2
+</MarginText>
+</AnnotatedOnly>
 <ul>
 <li>{"{"}<em>{"AI95-00434-01"}</em>{"}"} <br />The worst-case overhead for an interrupt handler that is a parameterless protected procedure, in clock cycles. This is the execution time not directly attributable to the handler procedure or the interrupted execution. It is estimated as C  (A+B), where A is how long it takes to complete a given sequence of instructions without any interrupt, B is how long it takes to complete a normal call to a given protected procedure, and C is how long it takes to complete the same sequence of instructions when it is interrupted by one execution of the same procedure called via an interrupt. <br /></li>
+<AnnotatedOnly>
+<MarginText>
+16.a
+</MarginText>
+</AnnotatedOnly>
 </ul>
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>The instruction sequence and interrupt handler used to measure interrupt handling overhead should be chosen so as to maximize the execution time cost due to cache misses. For example, if the processor has cache memory and the activity of an interrupt handler could invalidate the contents of cache memory, the handler should be written such that it invalidates all of the cache memory. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+16.b/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>Documentation Requirement: </strong>The metrics for interrupt handlers.<br /></Admonition>
 
 
 #### Implementation Permissions
 
+<AnnotatedOnly>
+<MarginText>
+17/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />When the aspects Attach_Handler or Interrupt_Handler are specified for a protected procedure, the implementation is allowed to impose implementation-defined restrictions on the corresponding <code><a href="../AA-9/AA-9.4#S0249">protected_type_declaration</a></code> and <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code>. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+17.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>The restrictions may be on the constructs that are allowed within them, and on ordinary calls (i.e. not via interrupts) on protected operations in these protected objects. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+17.b/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>Any restrictions on a protected procedure or its containing type when an aspect Attach_handler or Interrupt_Handler is specified.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+18
+</MarginText>
+</AnnotatedOnly>
 <p>An implementation may use a different mechanism for invoking a protected procedure in response to a hardware interrupt than is used for a call to that protected procedure from a task. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+18.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>This is despite the fact that the priority of an interrupt handler (see D.1) is modeled after a hardware task calling the handler. <br /></Admonition>
+<strong></strong>This is despite the fact that the priority of an interrupt handler (see <a href="../AA-D/AA-D.1">D.1</a>) is modeled after a hardware task calling the handler. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+19/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />Notwithstanding what this subclause says elsewhere, the Attach_Handler and Interrupt_Handler aspects are allowed to be used for other, implementation defined, forms of interrupt handlers. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+19.a/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />For example, if an implementation wishes to allow interrupt handlers to have parameters, it is allowed to do so via these aspects; it need not invent implementation-defined aspects for the purpose. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+19.b/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>Any other forms of interrupt handler supported by the Attach_Handler and Interrupt_Handler aspects.<br /></Admonition>
 
 
 #### Implementation Advice
 
+<AnnotatedOnly>
+<MarginText>
+20
+</MarginText>
+</AnnotatedOnly>
 <p>Whenever possible, the implementation should allow interrupt handlers to be called directly by the hardware. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+20.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
 <strong></strong>Interrupt handlers should be called directly by the hardware.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+21
+</MarginText>
+</AnnotatedOnly>
 <p>Whenever practical, the implementation should detect violations of any implementation-defined restrictions before run time. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+21.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
 <strong></strong>Violations of any implementation-defined restrictions on interrupt handlers should be detected before run time.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+22/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 1   {"{"}<em>{"AI05-0229-1"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />The Attach_Handler aspect can provide static attachment of handlers to interrupts if the implementation supports preelaboration of protected objects. (See C.4.)<br /></Admonition>
+NOTE 1   {"{"}<em>{"AI05-0229-1"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />The Attach_Handler aspect can provide static attachment of handlers to interrupts if the implementation supports preelaboration of protected objects. (See <a href="../AA-C/AA-C.4">C.4</a>.)<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+23/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 2   {"{"}<em>{"AI95-00434-01"}</em>{"}"} {"{"}<em>{"AI12-0442-1"}</em>{"}"} <br />For a protected object that has a (protected) procedure attached to an interrupt, the correct ceiling priority is at least as high as the highest processor priority at which that interrupt will ever be delivered.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+24
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 3   Protected procedures can also be attached dynamically to interrupts via operations declared in the predefined package Interrupts.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+25
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 4   An example of a possible implementation-defined restriction is disallowing the use of the standard storage pools within the body of a protected procedure that is an interrupt handler.<br /></Admonition>
 
 
 #### Incompatibilities With Ada 95
 
+<AnnotatedOnly>
+<MarginText>
+25.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI95-00253-01"}</em>{"}"} <strong><br />Amendment </strong> Corrected the wording so that the rules for the use of Attach_Handler and Interrupt_Handler are identical. This means that uses of pragma Interrupt_Handler outside of the target protected type or single protected object are now illegal. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
+<MarginText>
+25.b/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>8652/0068</em>{"}"} {"{"}<em>{"AI95-00121-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Clarified the meaning of "the previous handler" when finalizing protected objects containing interrupt handlers.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+25.c/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00303-01"}</em>{"}"} <br />Dropped the requirement that an object of a type containing an Interrupt_Handler pragma must be declared at the library level. This was a generic contract model violation. This change is not an extension, as an attempt to attach such a handler with a routine in package Interrupts will fail an accessibility check anyway. Moreover, implementations can retain the rule as an implementation-defined restriction on the use of the type, as permitted by the Implementation Permissions above. <br /></Admonition>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
+<MarginText>
+25.d/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />Aspects Interrupt_Handler and Attach_Handler are new; <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s Interrupt_Handler and Attach_Handler are now obsolescent. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
+<MarginText>
+25.e/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0033-1"}</em>{"}"} <strong><br /></strong> Added missing generic contract wording for the aspects Attach_Handler and Interrupt_Handler. <br /></Admonition>
 
 
 #### Inconsistencies With Ada 2012
 
+<AnnotatedOnly>
+<MarginText>
+25.f/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI12-0252-1"}</em>{"}"} <strong><br /></strong> Program_Error might be raised if two handlers are attached when restriction No_Dynamic_Attachment is in effect (including as part of the Ravenscar profile). Original Ada 2012 would have just ignored the first handler. This is almost certainly a bug rather than an intended result. <br /></Admonition>
 
+<a id="Subclause_C.3.2"></a>
 
 ## C.3.2  The Package Interrupts
 
 
 #### Static Semantics
 
+<AnnotatedOnly>
+<MarginText>
+1
+</MarginText>
+</AnnotatedOnly>
 <p>The following language-defined packages exist: <br /></p>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+2/5
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 --  {"{"}{"AI05-0167-1"}{"}"}{"\n"} --  {"{"}{"AI12-0241-1"}{"}"}{"\n"} --  {"{"}{"AI12-0302-1"}{"}"}{"\n"} with System;{"\n"}with System.Multiprocessors;{"\n"}package Ada.Interrupts{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}   type Interrupt_Id is implementation-defined;{"\n"}   type Parameterless_Handler is{"\n"}      access protected procedure{"\n"}      with Nonblocking ={">"} False;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+3/1
+</MarginText>
+</AnnotatedOnly>
 This paragraph was deleted.{"\n"}
+<AnnotatedOnly>
+<MarginText>
+4
+</MarginText>
+</AnnotatedOnly>
    function Is_Reserved (Interrupt : Interrupt_Id){"\n"}      return Boolean;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+5
+</MarginText>
+</AnnotatedOnly>
    function Is_Attached (Interrupt : Interrupt_Id){"\n"}      return Boolean;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+6
+</MarginText>
+</AnnotatedOnly>
    function Current_Handler (Interrupt : Interrupt_Id){"\n"}      return Parameterless_Handler;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+7
+</MarginText>
+</AnnotatedOnly>
    procedure Attach_Handler{"\n"}      (New_Handler : in Parameterless_Handler;{"\n"}       Interrupt   : in Interrupt_Id);{"\n"}
+<AnnotatedOnly>
+<MarginText>
+8
+</MarginText>
+</AnnotatedOnly>
    procedure Exchange_Handler{"\n"}      (Old_Handler : out Parameterless_Handler;{"\n"}       New_Handler : in Parameterless_Handler;{"\n"}       Interrupt   : in Interrupt_Id);{"\n"}
+<AnnotatedOnly>
+<MarginText>
+9
+</MarginText>
+</AnnotatedOnly>
    procedure Detach_Handler{"\n"}      (Interrupt : in Interrupt_Id);{"\n"}
+<AnnotatedOnly>
+<MarginText>
+10
+</MarginText>
+</AnnotatedOnly>
    function Reference (Interrupt : Interrupt_Id){"\n"}      return System.Address;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+10.1/3
+</MarginText>
+</AnnotatedOnly>
 --  {"{"}{"AI05-0167-1"}{"}"}{"\n"}    function Get_CPU (Interrupt : Interrupt_Id){"\n"}      return System.Multiprocessors.CPU_Range;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+11
+</MarginText>
+</AnnotatedOnly>
 private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Interrupts;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+12/5
+</MarginText>
+</AnnotatedOnly>
 --  {"{"}{"AI12-0302-1"}{"}"}{"\n"} package Ada.Interrupts.Names {"\n"}   with Nonblocking, Global ={">"} null is{"\n"}   implementation-defined : constant Interrupt_Id :={"\n"}     implementation-defined;{"\n"}      . . .{"\n"}   implementation-defined : constant Interrupt_Id :={"\n"}     implementation-defined;{"\n"}end Ada.Interrupts.Names;{"\n"}
 
 </CodeBlock>
 
 #### Dynamic Semantics
 
+<AnnotatedOnly>
+<MarginText>
+13
+</MarginText>
+</AnnotatedOnly>
 <p>The Interrupt_Id type is an implementation-defined discrete type used to identify interrupts.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+14
+</MarginText>
+</AnnotatedOnly>
 <p>The Is_Reserved function returns True if and only if the specified interrupt is reserved.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+15
+</MarginText>
+</AnnotatedOnly>
 <p>The Is_Attached function returns True if and only if a user-specified interrupt handler is attached to the interrupt.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+16/1
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>8652/0069</em>{"}"} {"{"}<em>{"AI95-00166-01"}</em>{"}"} <br />The Current_Handler function returns a value that represents the attached handler of the interrupt. If no user-defined handler is attached to the interrupt, Current_Handler returns <strong>null</strong>.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+17/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />The Attach_Handler procedure attaches the specified handler to the interrupt, overriding any existing treatment (including a user handler) in effect for that interrupt. If New_Handler is <strong>null</strong>, the default treatment is restored. If New_Handler designates a protected procedure for which the aspect Interrupt_Handler is False, Program_Error is raised. In this case, the operation does not modify the existing interrupt treatment.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+18/1
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>8652/0069</em>{"}"} {"{"}<em>{"AI95-00166-01"}</em>{"}"} <br />The Exchange_Handler procedure operates in the same manner as Attach_Handler with the addition that the value returned in Old_Handler designates the previous treatment for the specified interrupt. If the previous treatment is not a user-defined handler, <strong>null</strong> is returned. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+18.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Calling Attach_Handler or Exchange_Handler with this value for New_Handler restores the previous handler.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+18.a.1/1
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>8652/0069</em>{"}"} {"{"}<em>{"AI95-00166-01"}</em>{"}"} <br />If the application uses only parameterless procedures as handlers (other types of handlers may be provided by the implementation, but are not required by the standard), then if Old_Handler is not <strong>null</strong>, it may be called to execute the previous handler. This provides a way to cascade application interrupt handlers. However, the default handler cannot be cascaded this way (Old_Handler must be <strong>null</strong> for the default handler). <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+19
+</MarginText>
+</AnnotatedOnly>
 <p>The Detach_Handler procedure restores the default treatment for the specified interrupt.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+20
+</MarginText>
+</AnnotatedOnly>
 <p>For all operations defined in this package that take a parameter of type Interrupt_Id, with the exception of Is_Reserved and Reference, a check is made that the specified interrupt is not reserved. Program_Error is raised if this check fails.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+21/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />If, by using the Attach_Handler, Detach_Handler, or Exchange_Handler procedures, an attempt is made to detach a handler that was attached statically (using the aspect Attach_Handler), the handler is not detached and Program_Error is raised.<br /></p>
 
-<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} <br />The Reference function returns a value of type System.Address that can be used to attach a task entry via an address clause (see J.7.1) to the interrupt specified by Interrupt. This function raises Program_Error if attaching task entries to interrupts (or to this particular interrupt) is not supported.<br /></p>
+<AnnotatedOnly>
+<MarginText>
+22/2
+</MarginText>
+</AnnotatedOnly>
+<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} <br />The Reference function returns a value of type System.Address that can be used to attach a task entry via an address clause (see <a href="../AA-J/AA-J.7#Subclause_J.7.1">J.7.1</a>) to the interrupt specified by Interrupt. This function raises Program_Error if attaching task entries to interrupts (or to this particular interrupt) is not supported.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+22.1/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI05-0153-3"}</em>{"}"} <br />The function Get_CPU returns the processor on which the handler for Interrupt is executed. If the handler can execute on more than one processor the value System.Multiprocessors.Not_A_Specific_CPU is returned.<br /></p>
 
 
 #### Implementation Requirements
 
+<AnnotatedOnly>
+<MarginText>
+23
+</MarginText>
+</AnnotatedOnly>
 <p>At no time during attachment or exchange of handlers shall the current handler of the corresponding interrupt be undefined.<br /></p>
 
 
 #### Documentation Requirements
 
-<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} {"{"}<em>{"AI12-0320-1"}</em>{"}"} {"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />The implementation shall document, when the Ceiling_Locking policy (see D.3) is in effect, the default ceiling priority assigned to a protected object that contains a protected procedure that specifies either the Attach_Handler or Interrupt_Handler aspects, but does not specify the Interrupt_Priority aspect. [This default can be different for different interrupts.] <br /></p>
+<AnnotatedOnly>
+<MarginText>
+24/5
+</MarginText>
+</AnnotatedOnly>
+<p>{"{"}<em>{"AI95-00434-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} {"{"}<em>{"AI12-0320-1"}</em>{"}"} {"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />The implementation shall document, when the Ceiling_Locking policy (see <a href="../AA-D/AA-D.3">D.3</a>) is in effect, the default ceiling priority assigned to a protected object that contains a protected procedure that specifies either the Attach_Handler or Interrupt_Handler aspects, but does not specify the Interrupt_Priority aspect. [This default can be different for different interrupts.] <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+24.a.1/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>Documentation Requirement: </strong>If the Ceiling_Locking policy is in effect, the default ceiling priority for a protected object that specifies an interrupt handler aspect.<br /></Admonition>
 
 
 #### Implementation Advice
 
+<AnnotatedOnly>
+<MarginText>
+25
+</MarginText>
+</AnnotatedOnly>
 <p>If implementation-defined forms of interrupt handler procedures are supported, such as protected procedures with parameters, then for each such form of a handler, a type analogous to Parameterless_Handler should be specified in a child package of Interrupts, with the same operations as in the predefined package Interrupts.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+25.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
 <strong></strong>If implementation-defined forms of interrupt handler procedures are supported, then for each such form of a handler, a type analogous to Parameterless_Handler should be specified in a child package of Interrupts, with the same operations as in the predefined package Interrupts.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+26
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   The package Interrupts.Names contains implementation-defined names (and constant values) for the interrupts that are supported by the implementation.<br /></Admonition>
 
 
 #### Examples
 
+<AnnotatedOnly>
+<MarginText>
+27
+</MarginText>
+</AnnotatedOnly>
 <p><em>Example of interrupt handlers:</em> <br /></p>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+28/5
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 --  {"{"}{"AI05-0229-1"}{"}"}{"\n"} --  {"{"}{"AI12-0178-1"}{"}"}{"\n"} Device_Priority : constant{"\n"}  array (Ada.Interrupts.Interrupt_Id range 1..5) of{"\n"}    System.Interrupt_Priority := ( ... );{"\n"}protected type Device_Interface{"\n"}  (Int_Id : Ada.Interrupts.Interrupt_Id) {"\n"}     with Interrupt_Priority ={">"} Device_Priority(Int_Id) is{"\n"}  procedure Handler{"\n"}     with Attach_Handler ={">"} Int_Id;{"\n"}  ...{"\n"}end Device_Interface;{"\n"}  ...{"\n"}Device_1_Driver : Device_Interface(1);{"\n"}  ...{"\n"}Device_5_Driver : Device_Interface(5);{"\n"}  ...{"\n"}
 
 </CodeBlock>
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
+<MarginText>
+28.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>8652/0069</em>{"}"} {"{"}<em>{"AI95-00166-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Clarified that the value returned by Current_Handler and Exchange_Handler for the default treatment is null. <br /></Admonition>
 
 
 #### Incompatibilities With Ada 2005
 
+<AnnotatedOnly>
+<MarginText>
+28.b/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0167-1"}</em>{"}"} <br />Function Get_CPU is added to Interrupts. If Interrupts is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with a <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> of Get_CPU is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. <br /></Admonition>
 

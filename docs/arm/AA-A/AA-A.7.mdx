@@ -10,59 +10,157 @@ and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
-import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
+import AnnotatedOnly from "@site/src/components/AnnotatedOnly";
+import CodeBlock from "@theme/CodeBlock";
+import MarginText from "@site/src/components/MarginText";
+import MarginInfo from "@site/src/components/MarginInfo";
 
 
 #### Static Semantics
 
+<AnnotatedOnly>
+<MarginText>
+1
+</MarginText>
+</AnnotatedOnly>
 <p>Values input from the external environment of the program, or output to the external environment, are considered to occupy <em>external files</em>. An external file can be anything external to the program that can produce a value to be read or receive a value to be written. An external file is identified by a string (the <em>name</em>). A second string (the <em>form</em>) gives further system-dependent characteristics that may be associated with the file, such as the physical organization or access rights. The conventions governing the interpretation of such strings shall be documented.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+2/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />Input and output operations are expressed as operations on objects of some <em>file type</em>, rather than directly in terms of the external files. In the remainder of this clause, the term <em>file</em> is always used to refer to a file object; the term <em>external file</em> is used otherwise.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+3
+</MarginText>
+</AnnotatedOnly>
 <p>Input-output for sequential files of values of a single element type is defined by means of the generic package Sequential_IO. In order to define sequential input-output for a given element type, an instantiation of this generic unit, with the given type as actual parameter, has to be declared. The resulting package contains the declaration of a file type (called File_Type) for files of such elements, as well as the operations applicable to these files, such as the Open, Read, and Write procedures.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+4/2
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00285-01"}</em>{"}"} <br />Input-output for direct access files is likewise defined by a generic package called Direct_IO. Input-output in human-readable form is defined by the (nongeneric) packages Text_IO for Character and String data, Wide_Text_IO for Wide_Character and Wide_String data, and Wide_Wide_Text_IO for Wide_Wide_Character and Wide_Wide_String data. Input-output for files containing streams of elements representing values of possibly different types is defined by means of the (nongeneric) package Streams.Stream_IO.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+5
+</MarginText>
+</AnnotatedOnly>
 <p>Before input or output operations can be performed on a file, the file first has to be associated with an external file. While such an association is in effect, the file is said to be <em>open</em>, and otherwise the file is said to be <em>closed</em>.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+6
+</MarginText>
+</AnnotatedOnly>
 <p>The language does not define what happens to external files after the completion of the main program and all the library tasks (in particular, if corresponding files have not been closed). The effect of input-output for access types is unspecified.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+7
+</MarginText>
+</AnnotatedOnly>
 <p>An open file has a <em>current mode</em>, which is a value of one of the following enumeration types: <br /></p>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+8
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 type File_Mode is (In_File, Inout_File, Out_File);  --  for Direct_IO{"\n"}
+<AnnotatedOnly>
+<MarginText>
+9
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <p>These values correspond respectively to the cases where only reading, both reading and writing, or only writing are to be performed. <br /></p>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+10/2
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 --  {"{"}{"AI95-00285-01"}{"}"}{"\n"} type File_Mode is (In_File, Out_File, Append_File);{"\n"}--  for Sequential_IO, Text_IO, Wide_Text_IO, Wide_Wide_Text_IO, and Stream_IO{"\n"}
+<AnnotatedOnly>
+<MarginText>
+11
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <p>These values correspond respectively to the cases where only reading, only writing, or only appending are to be performed.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+12
+</MarginText>
+</AnnotatedOnly>
 <p>The mode of a file can be changed. <br /></p>
 
-<p>{"{"}<em>{"AI95-00285-01"}</em>{"}"} <br />Several file management operations are common to Sequential_IO, Direct_IO, Text_IO, Wide_Text_IO, and Wide_Wide_Text_IO. These operations are described in subclause A.8.2 for sequential and direct files. Any additional effects concerning text input-output are described in subclause A.10.2.<br /></p>
+<AnnotatedOnly>
+<MarginText>
+13/2
+</MarginText>
+</AnnotatedOnly>
+<p>{"{"}<em>{"AI95-00285-01"}</em>{"}"} <br />Several file management operations are common to Sequential_IO, Direct_IO, Text_IO, Wide_Text_IO, and Wide_Wide_Text_IO. These operations are described in subclause <a href="../AA-A/AA-A.8#Subclause_A.8.2">A.8.2</a> for sequential and direct files. Any additional effects concerning text input-output are described in subclause <a href="../AA-A/AA-A.10#Subclause_A.10.2">A.10.2</a>.<br /></p>
 
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />The exceptions that can be propagated by the execution of an input-output subprogram are defined in the package IO_Exceptions; the situations in which they can be propagated are described following the description of the subprogram (and in subclause A.13). The exceptions Storage_Error and Program_Error may be propagated. (Program_Error can only be propagated due to errors made by the caller of the subprogram.) Finally, exceptions can be propagated in certain implementation-defined situations. <br /></p>
+<AnnotatedOnly>
+<MarginText>
+14/3
+</MarginText>
+</AnnotatedOnly>
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />The exceptions that can be propagated by the execution of an input-output subprogram are defined in the package IO_Exceptions; the situations in which they can be propagated are described following the description of the subprogram (and in subclause <a href="../AA-A/AA-A.13">A.13</a>). The exceptions Storage_Error and Program_Error may be propagated. (Program_Error can only be propagated due to errors made by the caller of the subprogram.) Finally, exceptions can be propagated in certain implementation-defined situations. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+14.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em><br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+14.b/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>The last sentence here is referring to the documentation requirements in A.13, "Exceptions in Input-Output", and the documentation summary item is provided there. <br /></Admonition>
+<strong></strong>The last sentence here is referring to the documentation requirements in <a href="../AA-A/AA-A.13">A.13</a>, "<a href="../AA-A/AA-A.13">Exceptions in Input-Output</a>", and the documentation summary item is provided there. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+15/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   {"{"}<em>{"AI95-00285-01"}</em>{"}"} <br />Each instantiation of the generic packages Sequential_IO and Direct_IO declares a different type File_Type. In the case of Text_IO, Wide_Text_IO, Wide_Wide_Text_IO, and Streams.Stream_IO, the corresponding type File_Type is unique.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+16/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 2   {"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />A bidirectional device can often be modeled as two sequential files associated with the device, one of mode In_File, and one of mode Out_File. An implementation can restrict the number of files that can be associated with a given external file. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
+<MarginText>
+16.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00285-01"}</em>{"}"} <br />Included package Wide_Wide_Text_IO in this description. <br /></Admonition>
 

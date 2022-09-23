@@ -10,100 +10,264 @@ and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
-import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
+import AnnotatedOnly from "@site/src/components/AnnotatedOnly";
+import CodeBlock from "@theme/CodeBlock";
+import MarginText from "@site/src/components/MarginText";
+import MarginInfo from "@site/src/components/MarginInfo";
 
+<AnnotatedOnly>
+<MarginText>
+1
+</MarginText>
+</AnnotatedOnly>
 <p>The package Command_Line allows a program to obtain the values of its arguments and to set the exit status code to be returned on normal termination. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+1.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>The meaning of Argument_Count, Argument, and Command_Name for package Command_Line. The bounds of type Command_Line.Exit_Status.<br /></Admonition>
 
 
 #### Static Semantics
 
+<AnnotatedOnly>
+<MarginText>
+2
+</MarginText>
+</AnnotatedOnly>
 <p>The library package Ada.Command_Line has the following declaration: <br /></p>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+3/5
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 --  {"{"}{"AI12-0241-1"}{"}"}{"\n"} package Ada.Command_Line{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
+<AnnotatedOnly>
+<MarginText>
+4
+</MarginText>
+</AnnotatedOnly>
   function Argument_Count return Natural;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+5
+</MarginText>
+</AnnotatedOnly>
   function Argument (Number : in Positive) return String;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+6
+</MarginText>
+</AnnotatedOnly>
   function Command_Name return String;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+7
+</MarginText>
+</AnnotatedOnly>
   type Exit_Status is implementation-defined integer type;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+8
+</MarginText>
+</AnnotatedOnly>
   Success : constant Exit_Status;{"\n"}  Failure : constant Exit_Status;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+9
+</MarginText>
+</AnnotatedOnly>
   procedure Set_Exit_Status (Code : in Exit_Status);{"\n"}
+<AnnotatedOnly>
+<MarginText>
+10
+</MarginText>
+</AnnotatedOnly>
 private{"\n"}  ... -- not specified by the language{"\n"}end Ada.Command_Line;{"\n"}{"\n"}
+<AnnotatedOnly>
+<MarginText>
+11
+</MarginText>
+</AnnotatedOnly>
 function Argument_Count return Natural;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+12/3
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <p>{"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />If the external execution environment supports passing arguments to a program, then Argument_Count returns the number of arguments passed to the program invoking the function. Otherwise, it returns 0. The meaning of "number of arguments" is implementation defined.<br /></p>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+13
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 function Argument (Number : in Positive) return String;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+14/5
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <p>{"{"}<em>{"AI12-0259-1"}</em>{"}"} <br />If the external execution environment supports passing arguments to a program, then Argument returns an implementation-defined value with lower bound 1 corresponding to the argument at relative position Number. If Number is outside the range 1..Argument_Count, then Constraint_Error is propagated. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+14.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>If the external execution environment does not support passing arguments to a program, then Argument(N) for any N will raise Constraint_Error, since Argument_Count is 0.<br /></Admonition>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+15
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 function Command_Name return String;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+16/5
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <p>{"{"}<em>{"AI05-0264-1"}</em>{"}"} {"{"}<em>{"AI12-0259-1"}</em>{"}"} <br />If the external execution environment supports passing arguments to a program, then Command_Name returns an implementation-defined value with lower bound 1 corresponding to the name of the command invoking the program; otherwise, Command_Name returns the null string.<br /></p>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+16.1/1
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 type Exit_Status is implementation-defined integer type;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+17
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <p>The type Exit_Status represents the range of exit status values supported by the external execution environment. The constants Success and Failure correspond to success and failure, respectively.<br /></p>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+18
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 procedure Set_Exit_Status (Code : in Exit_Status);{"\n"}
+<AnnotatedOnly>
+<MarginText>
+19
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <p>If the external execution environment supports returning an exit status from a program, then Set_Exit_Status sets Code as the status. Normal termination of a program returns as the exit status the value most recently set by Set_Exit_Status, or, if no such value has been set, then the value Success. If a program terminates abnormally, the status set by Set_Exit_Status is ignored, and an implementation-defined exit status value is set.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+20
+</MarginText>
+</AnnotatedOnly>
 <p>If the external execution environment does not support returning an exit value from a program, then Set_Exit_Status does nothing. <br /></p>
 
 
 #### Implementation Permissions
 
+<AnnotatedOnly>
+<MarginText>
+21
+</MarginText>
+</AnnotatedOnly>
 <p>An alternative declaration is allowed for package Command_Line if different functionality is appropriate for the external execution environment. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+22
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE   Argument_Count, Argument, and Command_Name correspond to the C language's argc, argv[n] (for n{">"}0) and argv[0], respectively. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+22.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>To be honest: </strong>The correspondence of Argument_Count to argc is not direct - argc would be one more than Argument_Count, since the argc count includes the command name, whereas Argument_Count does not. <br /></Admonition>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
+<MarginText>
+22.b/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />This subclause is new in Ada 95. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
+<MarginText>
+22.c/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI12-0259-1"}</em>{"}"} <strong><br /></strong> Defined the lower bound of functions Argument and Command_Name. This could be inconsistent if someone depended on the lower bound of these routines (and it wasn't 1), but such code was never portable (even to later versions of the same implementation). Thus we don't document it as an inconsistency. <br /></Admonition>
 
+<a id="Subclause_A.15.1"></a>
 
 ## A.15.1  The Packages Wide_Command_Line and Wide_Wide_Command_Line
 
+<AnnotatedOnly>
+<MarginText>
+1/5
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI12-0021-1"}</em>{"}"} <br />The packages Wide_Command_Line and Wide_Wide_Command_Line allow a program to obtain the values of its arguments and to set the exit status code to be returned on normal termination. <br /></p>
 
 
 #### Static Semantics
 
+<AnnotatedOnly>
+<MarginText>
+2/5
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI12-0021-1"}</em>{"}"} <br />The specification of package Wide_Command_Line is the same as for Command_Line, except that each occurrence of String is replaced by Wide_String.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+3/5
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI12-0021-1"}</em>{"}"} <br />The specification of package Wide_Wide_Command_Line is the same as for Command_Line, except that each occurrence of String is replaced by Wide_Wide_String.<br /></p>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
+<MarginText>
+3.a/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0021-1"}</em>{"}"} <br />These packages are new. <br /></Admonition>
 

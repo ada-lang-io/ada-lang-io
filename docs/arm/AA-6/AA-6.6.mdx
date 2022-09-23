@@ -10,66 +10,149 @@ and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
-import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
+import AnnotatedOnly from "@site/src/components/AnnotatedOnly";
+import CodeBlock from "@theme/CodeBlock";
+import MarginText from "@site/src/components/MarginText";
+import MarginInfo from "@site/src/components/MarginInfo";
 
+<AnnotatedOnly>
+<MarginText>
+1
+</MarginText>
+</AnnotatedOnly>
 <p>An <em>operator</em> is a function whose <code><a href="../AA-6/AA-6.1#S0199">designator</a></code> is an <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code>. [Operators, like other functions, may be overloaded.] <br /></p>
 
 
 #### Name Resolution Rules
 
+<AnnotatedOnly>
+<MarginText>
+2
+</MarginText>
+</AnnotatedOnly>
 <p>Each use of a unary or binary operator is equivalent to a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> with <em>function_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> being the corresponding <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code>, and with (respectively) one or two positional actual parameters being the operand(s) of the operator (in order). <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+2.a/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
-<strong>To be honest: </strong>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />We also use the term operator (in Clause 4 and in 6.1) to refer to one of the syntactic categories defined in 4.5, "Operators and Expression Evaluation" whose names end with "_operator:" <code><a href="../AA-4/AA-4.5#S0142">logical_operator</a></code>, <code><a href="../AA-4/AA-4.5#S0143">relational_operator</a></code>, <code><a href="../AA-4/AA-4.5#S0144">binary_adding_operator</a></code>, <code><a href="../AA-4/AA-4.5#S0145">unary_adding_operator</a></code>, <code><a href="../AA-4/AA-4.5#S0146">multiplying_operator</a></code>, and <code><a href="../AA-4/AA-4.5#S0147">highest_precedence_operator</a></code>. <br /></Admonition>
+<strong>To be honest: </strong>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />We also use the term operator (in Clause 4 and in <a href="../AA-6/AA-6.1">6.1</a>) to refer to one of the syntactic categories defined in <a href="../AA-4/AA-4.5">4.5</a>, "<a href="../AA-4/AA-4.5">Operators and Expression Evaluation</a>" whose names end with "_operator:" <code><a href="../AA-4/AA-4.5#S0142">logical_operator</a></code>, <code><a href="../AA-4/AA-4.5#S0143">relational_operator</a></code>, <code><a href="../AA-4/AA-4.5#S0144">binary_adding_operator</a></code>, <code><a href="../AA-4/AA-4.5#S0145">unary_adding_operator</a></code>, <code><a href="../AA-4/AA-4.5#S0146">multiplying_operator</a></code>, and <code><a href="../AA-4/AA-4.5#S0147">highest_precedence_operator</a></code>. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+2.b/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />This equivalence extends to uses of <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> in most other language rules. However, as often happens, the equivalence is not perfect, as operator calls are not a <code><a href="../AA-4/AA-4.1#S0091">name</a></code>, while a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> is a <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. Thus, operator calls cannot be used in contexts that require a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> (such as a rename of an object). A direct fix for this problem would be very disruptive, and thus we have not done that. However, qualifying an operator call can be used as a workaround in contexts that require a <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. <br /></Admonition>
 
 
 #### Legality Rules
 
+<AnnotatedOnly>
+<MarginText>
+3/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI05-0143-1"}</em>{"}"} <br />The <code><a href="../AA-6/AA-6.1#S0196">subprogram_specification</a></code> of a unary or binary operator shall have one or two parameters, respectively. The parameters shall be of mode <strong>in</strong>. A generic function instantiation whose <code><a href="../AA-6/AA-6.1#S0199">designator</a></code> is an <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code> is only allowed if the specification of the generic function has the corresponding number of parameters, and they are all of mode <strong>in</strong>.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+4
+</MarginText>
+</AnnotatedOnly>
 <p><code><a href="../AA-3/AA-3.7#S0063">Default_expression</a></code>s are not allowed for the parameters of an operator (whether the operator is declared with an explicit <code><a href="../AA-6/AA-6.1#S0196">subprogram_specification</a></code> or by a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>).<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+5
+</MarginText>
+</AnnotatedOnly>
 <p>An explicit declaration of "/=" shall not have a result type of the predefined type Boolean. <br /></p>
 
 
 #### Static Semantics
 
+<AnnotatedOnly>
+<MarginText>
+6/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI05-0128-1"}</em>{"}"} <br />An explicit declaration of "=" whose result type is Boolean implicitly declares an operator "/=" that gives the complementary result. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+6.a/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>{"{"}<em>{"AI05-0128-1"}</em>{"}"} <br />A "/=" defined by this rule is considered user-defined, which means that it will be inherited by a derived type. "User-defined" means "not language-defined" for the purposes of inheritance, that is anything other than predefined operators. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+7/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   {"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />The operators "+" and "" are both unary and binary operators, and hence can be overloaded with both one- and two-parameter functions. <br /></Admonition>
 
 
 #### Examples
 
+<AnnotatedOnly>
+<MarginText>
+8
+</MarginText>
+</AnnotatedOnly>
 <p><em>Examples of user-defined operators:</em> <br /></p>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+9
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 function "+" (Left, Right : Matrix) return Matrix;{"\n"}function "+" (Left, Right : Vector) return Vector;{"\n"}{"\n"}--  assuming that A, B, and C are of the type Vector{"\n"}--  the following two statements are equivalent:{"\n"}{"\n"}A := B + C;{"\n"}A := "+"(B, C);{"\n"}
 
 </CodeBlock>
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
+<MarginText>
+9.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Explicit declarations of "=" are now permitted for any combination of parameter and result types.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+9.b
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Explicit declarations of "/=" are now permitted, so long as the result type is not Boolean. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
+<MarginText>
+9.c/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0128-1"}</em>{"}"} <strong><br /></strong> Corrected the wording so that only explicit declarations of "=" cause an implicit declaration of "/="; otherwise, we could get multiple implicit definitions of "/=" without an obvious way to chose between them.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+9.d/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0143-1"}</em>{"}"} <br />Added wording so that operators only allow parameters of mode <strong>in</strong>. This was made necessary by the elimination elsewhere of the restriction that function parameters be only of mode <strong>in</strong>. <br /></Admonition>
 

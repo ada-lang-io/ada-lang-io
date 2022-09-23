@@ -10,142 +10,320 @@ and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
-import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
+import AnnotatedOnly from "@site/src/components/AnnotatedOnly";
+import CodeBlock from "@theme/CodeBlock";
+import MarginText from "@site/src/components/MarginText";
+import MarginInfo from "@site/src/components/MarginInfo";
 
+<AnnotatedOnly>
+<MarginText>
+1
+</MarginText>
+</AnnotatedOnly>
 <p><code><a href="../AA-2/AA-2.3#S0002">Identifier</a></code>s are used as names. <br /></p>
 
 
 #### Syntax
 
+<AnnotatedOnly>
+<MarginText>
+2/2
+</MarginText>
+</AnnotatedOnly>
 
 <CodeBlock>
 {"{"}<em>{"AI95-00285-01"}</em>{"}"} {"{"}<em>{"AI95-00395-01"}</em>{"}"} <br /><code>identifier</code><a id="S0002"></a><code> ::= </code><br />   <code><a href="../AA-2/AA-2.3#S0003">identifier_start</a></code> {"{"}<code><a href="../AA-2/AA-2.3#S0003">identifier_start</a></code> | <code><a href="../AA-2/AA-2.3#S0005">identifier_extend</a></code>{"}"}<br />
+<AnnotatedOnly>
+<MarginText>
+3/2
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 
 <CodeBlock>
 {"{"}<em>{"AI95-00285-01"}</em>{"}"} {"{"}<em>{"AI95-00395-01"}</em>{"}"} <br /><code>identifier_start</code><a id="S0003"></a><a id="S0004"></a><code> ::= </code><br />     <code>letter_uppercase</code><br />   | <code>letter_lowercase</code><br />   | <code>letter_titlecase</code><br />   | <code>letter_modifier</code><br />   | <code>letter_other</code><br />   | <code>number_letter</code><br />
+<AnnotatedOnly>
+<MarginText>
+3.1/3
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 
 <CodeBlock>
 {"{"}<em>{"AI95-00285-01"}</em>{"}"} {"{"}<em>{"AI95-00395-01"}</em>{"}"} {"{"}<em>{"AI05-0091-1"}</em>{"}"} <br /><code>identifier_extend</code><a id="S0005"></a><code> ::= </code><br />     <code>mark_non_spacing</code><br />   | <code>mark_spacing_combining</code><br />   | <code>number_decimal</code><br />   | <code>punctuation_connector</code><br />
+<AnnotatedOnly>
+<MarginText>
+4/3
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <p>{"{"}<em>{"AI95-00395-01"}</em>{"}"} {"{"}<em>{"AI05-0091-1"}</em>{"}"} <br />An <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> shall not contain two consecutive characters in category <code>punctuation_connector</code>, or end with a character in that category. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+4.a/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>This rule was stated in the syntax in Ada 95, but that has gotten too complex in Ada 2005. <br /></Admonition>
 
 
 #### Legality Rules
 
+<AnnotatedOnly>
+<MarginText>
+4.1/5
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI12-0004-1"}</em>{"}"} {"{"}<em>{"AI12-0263-1"}</em>{"}"} <br />An identifier shall only contain characters that may be present in Normalization Form KC (as defined by Clause 21 of ISO/IEC 10646:2017).<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+4.b/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>{"{"}<em>{"AI12-0004-1"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />An implementation can usually detect this during lexical processing. The code points not allowed are those for which Unicode property NFKC_QC (Normalization Form KC Quick_Check) has the value No. We say "may be present" so that characters for which the value is Maybe (really, one of the possible values is Maybe) are allowed (these are mainly combining marks). The necessary tables can be found in <a href="http://www.unicode.org/Public/UCD/latest/ucd/DerivedNormalizationProps.txt">http://www.unicode.org/Public/UCD/latest/ucd/DerivedNormalizationProps.txt</a>. Versions for older Unicode versions can be found on this site as well; start at <a href="http://www.unicode.org/Public/">http://www.unicode.org/Public/</a> and find the appropriate version number. <br /></Admonition>
 
 
 #### Static Semantics
 
+<AnnotatedOnly>
+<MarginText>
+5/5
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00285-01"}</em>{"}"} {"{"}<em>{"AI05-0091-1"}</em>{"}"} {"{"}<em>{"AI05-0227-1"}</em>{"}"} {"{"}<em>{"AI05-0266-1"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0263-1"}</em>{"}"} <br />Two <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s are considered the same if they consist of the same sequence of characters after applying locale-independent simple case folding, as defined by documents referenced in Clause 2 of ISO/IEC 10646:2017. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+5.a/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>{"{"}<em>{"AI05-0227-1"}</em>{"}"} <br />Simple case folding is a mapping to lower case, so this is matching the defining (lower case) version of a reserved word. We could have mentioned case folding of the reserved words, but as that is an identity function, it would have no effect.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+5.a.1/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0227-1"}</em>{"}"} {"{"}<em>{"AI12-0263-1"}</em>{"}"} <br />The "documents referenced" means Unicode, Chapter 4 (specifically, section 4.2 - Case). Note that simple case folding is supposed to be compatible between Unicode versions, so the Unicode version used doesn't matter. A machine-readable version of the needed mapping can be found at: <a href="http://www.unicode.org/Public/UCD/latest/ucd/CaseFolding.txt">http://www.unicode.org/Public/UCD/latest/ucd/CaseFolding.txt</a>. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+5.3/3
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI95-00395-01"}</em>{"}"} {"{"}<em>{"AI05-0091-1"}</em>{"}"} {"{"}<em>{"AI05-0227-1"}</em>{"}"} <br />After applying simple case folding, an <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> shall not be identical to a reserved word. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+5.b/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>We match the reserved words after applying case folding so that the rules for <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s and reserved words are the same. Since a compiler usually will lexically process <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s and reserved words the same way (often with the same code), this will prevent a lot of headaches. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+5.c/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI05-0227-1"}</em>{"}"} <br />The rules for reserved words differ in one way: they define case conversion on letters rather than sequences. This means that it is possible that there exist some unusual sequences that are neither <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s nor reserved words. We are not aware of any such sequences so long as we use simple case folding (as opposed to full case folding), but we have defined the rules in case any are introduced in future character set standards. This originally was a problem when converting to upper case: "f" and "acceﬂ" have upper case conversions of "IF" and "ACCESS" respectively. We would not want these to be treated as reserved words. But neither of these cases exist when using simple case folding. <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI05-0227-1"}</em>{"}"} <br />The rules for reserved words differ in one way: they define case conversion on letters rather than sequences. This means that it is possible that there exist some unusual sequences that are neither <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s nor reserved words. We are not aware of any such sequences so long as we use simple case folding (as opposed to full case folding), but we have defined the rules in case any are introduced in future character set standards. This originally was a problem when converting to upper case: "f" and "acce√ü" have upper case conversions of "IF" and "ACCESS" respectively. We would not want these to be treated as reserved words. But neither of these cases exist when using simple case folding. <br /></Admonition>
 
 
 #### Implementation Permissions
 
+<AnnotatedOnly>
+<MarginText>
+6
+</MarginText>
+</AnnotatedOnly>
 <p>In a nonstandard mode, an implementation may support other upper/lower case equivalence rules for <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s[, to accommodate local conventions]. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+6.a/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>{"{"}<em>{"AI95-00285-01"}</em>{"}"} {"{"}<em>{"AI05-0227-1"}</em>{"}"} <br />For instance, in most languages, the simple case folded equivalent of LATIN CAPITAL LETTER I (an upper case letter without a dot above) is LATIN SMALL LETTER I (a lower case letter with a dot above). In Turkish, though, LATIN CAPITAL LETTER I and LATIN CAPITAL LETTER I WITH DOT ABOVE are two distinct letters, so the case folded equivalent of LATIN CAPITAL LETTER I is LATIN SMALL LETTER DOTLESS I, and the case folded equivalent of LATIN CAPITAL LETTER I WITH DOT ABOVE is LATIN SMALL LETTER I. Take for instance the following identifier (which is the name of a city on the Tigris river in Eastern Anatolia):<br /></Admonition>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+6.b/3
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 DYARBAKIR -- The first i is dotted, the second isn't.{"\n"}
+<AnnotatedOnly>
+<MarginText>
+6.c/3
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <Admonition type="aarm" aarm="note" title="Note: ">
 A Turkish reader would expect that the above identifier is equivalent to: <br /></Admonition>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+6.d/3
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 diyarbakr{"\n"}
+<AnnotatedOnly>
+<MarginText>
+6.d.1/3
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <Admonition type="aarm" aarm="note" title="Note: ">
 However, locale-independent simple case folding (and thus Ada) maps this to: <br /></Admonition>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+6.d.2/3
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 dyarbakir{"\n"}
+<AnnotatedOnly>
+<MarginText>
+6.e/3
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <Admonition type="aarm" aarm="note" title="Note: ">
 which is different from any of the following identifiers: <br /></Admonition>
 
-<CodeBlock>
+<AnnotatedOnly>
+<MarginText>
+6.f/2
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
 diyarbakir{"\n"}diyarbakr{"\n"}dyarbakir{"\n"}dyarbakr{"\n"}
+<AnnotatedOnly>
+<MarginText>
+6.f.1/3
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <Admonition type="aarm" aarm="note" title="Note: ">
 including the "correct" matching identifier for Turkish. Upper case conversion (used in '[Wide_]Wide_Image) introduces additional problems.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+6.g/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 An implementation targeting the Turkish market is allowed (in fact, expected) to provide a nonstandard mode where case folding is appropriate for Turkish. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+6.j/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Lithuanian and Azeri are two other languages that present similar idiosyncrasies. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+6.1/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   {"{"}<em>{"AI95-00285-01"}</em>{"}"} <br /><code><a href="../AA-2/AA-2.3#S0002">Identifier</a></code>s differing only in the use of corresponding upper and lower case letters are considered the same. <br /></Admonition>
 
 
 #### Examples
 
+<AnnotatedOnly>
+<MarginText>
+7
+</MarginText>
+</AnnotatedOnly>
 <p><em>Examples of identifiers:</em> <br /></p>
 
-<CodeBlock>
---  {"{"}{"AI95-00433-01"}{"}"}{"\n"} Count      X    Get_Symbol   Ethelyn   Marion{"\n"}Snobol_4   X1   Page_Count   Store_Next_Item{"\n"}      -- Plato{"\n"}  -- Tchaikovsky{"\n"}          -- Angles{"\n"}
+<AnnotatedOnly>
+<MarginText>
+8/2
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
+--  {"{"}{"AI95-00433-01"}{"}"}{"\n"} Count      X    Get_Symbol   Ethelyn   Marion{"\n"}Snobol_4   X1   Page_Count   Store_Next_Item{"\n"}&#928;&#955;&#940;&#964;&#969;&#957;      -- Plato{"\n"}&#1063;&#1072;&#1081;&#1082;&#1086;&#1074;&#1089;&#1082;&#1080;&#1081;  -- Tchaikovsky{"\n"}&#952;  &#966;        -- Angles{"\n"}
 
 </CodeBlock>
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
+<MarginText>
+8.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 We no longer include reserved words as <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s. This is not a language change. In Ada 83, <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> included reserved words. However, this complicated several other rules (for example, regarding implementation-defined attributes and pragmas, etc.). We now explicitly allow certain reserved words for attribute designators, to make up for the loss. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+8.b
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Because syntax rules are relevant to overload resolution, it means that if it looks like a reserved word, it is not an <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>. As a side effect, implementations cannot use reserved words as implementation-defined attributes or pragma names. <br /></Admonition>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
+<MarginText>
+8.c/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00285-01"}</em>{"}"} <br />An <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> can use any letter defined by ISO-10646:2003, along with several other categories. This should ease programming in languages other than English. <br /></Admonition>
 
 
 #### Incompatibilities With Ada 2005
 
+<AnnotatedOnly>
+<MarginText>
+8.d/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0091-1"}</em>{"}"} <strong><br /></strong> <code>other_format</code> characters were removed from identifiers as the Unicode recommendations have changed. This change can only affect programs written for the original Ada 2005, so there should be few such programs.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+8.e/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0227-1"}</em>{"}"} <strong><br /></strong> We now specify simple case folding rather than full case folding. That potentially could change identifier equivalence, although it is more likely that identifiers that are considered the same in original Ada 2005 will now be considered different. This change was made because the original Ada 2005 definition was incompatible (and even inconsistent in unusual cases) with the Ada 95 identifier equivalence rules. As such, the Ada 2005 rules were rarely fully implemented, and in any case, only Ada 2005 identifiers containing wide characters could be affected. <br /></Admonition>
 
 
 #### Incompatibilities With Ada 2012
 
+<AnnotatedOnly>
+<MarginText>
+8.f/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI12-0004-1"}</em>{"}"} <strong><br /></strong> An identifier that contains any characters not permitted in Normalization Form KC is now illegal. Ada 2012 allowed such identifiers, but their interpretation was implementation-defined (so the use of such identifiers was not portable). Identifiers that may be interpreted differently by different compilers are a safety and security hazard, so we no longer allow them. <br /></Admonition>
 

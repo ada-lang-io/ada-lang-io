@@ -10,55 +10,148 @@ and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
-import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
+import AnnotatedOnly from "@site/src/components/AnnotatedOnly";
+import CodeBlock from "@theme/CodeBlock";
+import MarginText from "@site/src/components/MarginText";
+import MarginInfo from "@site/src/components/MarginInfo";
 
+<AnnotatedOnly>
+<MarginText>
+1/5
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0330-1"}</em>{"}"} <br />The execution of an Ada program consists of the execution of one or more <em>tasks</em>. Each task represents a separable activity that proceeds independently and concurrently between the points where it <em>interacts</em> with other tasks. A single task, when within the context of a parallel construct, can represent multiple <em>logical threads of control</em> which can proceed in parallel; in other contexts, each task represents one logical thread of control. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+1.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
-<strong>To be honest: </strong>The execution of an Ada program consists of the execution of one or more partitions (see 10.2), each of which in turn consists of the execution of an environment task and zero or more subtasks. <br /></Admonition>
+<strong>To be honest: </strong>The execution of an Ada program consists of the execution of one or more partitions (see <a href="../AA-10/AA-10.2">10.2</a>), each of which in turn consists of the execution of an environment task and zero or more subtasks. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+1.a.1/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
 <strong></strong>A logical thread of control is an activity within the execution of a program that can proceed in parallel with other activities of the same task, or of separate tasks.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+2
+</MarginText>
+</AnnotatedOnly>
+<AnnotatedOnly>
+<MarginText>
+2.1/5
+</MarginText>
+</AnnotatedOnly>
 <ul>
 <li>{"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />the activation and termination of a task;<br /></li>
+<AnnotatedOnly>
+<MarginText>
+3
+</MarginText>
+</AnnotatedOnly>
 <li>a call on a protected subprogram of a <em>protected object</em>, providing exclusive read-write access, or concurrent read-only access to shared data;<br /></li>
+<AnnotatedOnly>
+<MarginText>
+4
+</MarginText>
+</AnnotatedOnly>
 <li>a call on an entry, either of another task, allowing for synchronous communication with that task, or of a protected object, allowing for asynchronous communication with one or more other tasks using that same protected object;<br /></li>
+<AnnotatedOnly>
+<MarginText>
+5
+</MarginText>
+</AnnotatedOnly>
 <li>a timed operation, including a simple delay statement, a timed entry call or accept, or a timed asynchronous select statement (see next item);<br /></li>
+<AnnotatedOnly>
+<MarginText>
+6
+</MarginText>
+</AnnotatedOnly>
 <li>an asynchronous transfer of control as part of an asynchronous select statement, where a task stops what it is doing and begins execution at a different point in response to the completion of an entry call or the expiration of a delay;<br /></li>
+<AnnotatedOnly>
+<MarginText>
+7
+</MarginText>
+</AnnotatedOnly>
 <li>an abort statement, allowing one task to cause the termination of another task. <br /></li>
+<AnnotatedOnly>
+<MarginText>
+8
+</MarginText>
+</AnnotatedOnly>
 </ul>
 <p>In addition, tasks can communicate indirectly by reading and updating (unprotected) shared variables, presuming the access is properly synchronized through some other kind of task interaction.<br /></p>
 
 
 #### Static Semantics
 
+<AnnotatedOnly>
+<MarginText>
+9
+</MarginText>
+</AnnotatedOnly>
 <p>The properties of a task are defined by a corresponding task declaration and <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>, which together define a program unit called a <em>task unit</em>. <br /></p>
 
 
 #### Dynamic Semantics
 
+<AnnotatedOnly>
+<MarginText>
+10/5
+</MarginText>
+</AnnotatedOnly>
 <p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />Over time, tasks proceed through various <em>states</em>. A task is initially <em>inactive</em>; upon activation, and prior to its <em>termination</em> it is either <em>blocked</em> (as part of some task interaction) or <em>ready</em> to run. While ready, a task competes for the available <em>execution resources</em> that it requires to run. In the context of a parallel construct, a single task can utilize multiple processing resources simultaneously. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+10.a/3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />The means for selecting which of the ready tasks to run, given the currently available execution resources, is determined by the <em>task dispatching policy</em> in effect, which is generally implementation defined, but may be controlled by aspects, pragmas, and operations defined in the Real-Time Annex (see D.2 and D.5). <br /></Admonition>
+<strong></strong>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />The means for selecting which of the ready tasks to run, given the currently available execution resources, is determined by the <em>task dispatching policy</em> in effect, which is generally implementation defined, but may be controlled by aspects, pragmas, and operations defined in the Real-Time Annex (see <a href="../AA-D/AA-D.2">D.2</a> and <a href="../AA-D/AA-D.5">D.5</a>). <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+11/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   {"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />Concurrent task execution can be implemented on multicomputers, multiprocessors, or with interleaved execution on a single physical processor. On the other hand, whenever an implementation can determine that the required semantic effects can be achieved when parts of the execution of a single logical thread of control are performed by different physical processors acting in parallel, it can choose to perform them in this way.<br /></Admonition>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
+<MarginText>
+11.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 The introduction has been rewritten.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+11.b
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 We use the term "concurrent" rather than "parallel" when talking about logically independent execution of threads of control. The term "parallel" is reserved for referring to the situation where multiple physical processors run simultaneously. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
+<MarginText>
+11.c/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />Rewrote the introduction to emphasize that threads of control can be generated by parallel constructs as well as tasks. <br /></Admonition>
 

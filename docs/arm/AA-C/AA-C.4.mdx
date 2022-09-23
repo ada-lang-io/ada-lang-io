@@ -10,46 +10,134 @@ and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
-import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
+import AnnotatedOnly from "@site/src/components/AnnotatedOnly";
+import CodeBlock from "@theme/CodeBlock";
+import MarginText from "@site/src/components/MarginText";
+import MarginInfo from "@site/src/components/MarginInfo";
 
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0417-1"}</em>{"}"} <br />[This subclause specifies additional implementation and documentation requirements for the Preelaborate aspect (see 10.2.1).] <br /></p>
+<AnnotatedOnly>
+<MarginText>
+1/5
+</MarginText>
+</AnnotatedOnly>
+<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0417-1"}</em>{"}"} <br />[This subclause specifies additional implementation and documentation requirements for the Preelaborate aspect (see <a href="../AA-10/AA-10.2#Subclause_10.2.1">10.2.1</a>).] <br /></p>
 
 
 #### Implementation Requirements
 
+<AnnotatedOnly>
+<MarginText>
+2
+</MarginText>
+</AnnotatedOnly>
 <p>The implementation shall not incur any run-time overhead for the elaboration checks of subprograms and <code>protected_bodies</code> declared in preelaborated library units. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+3
+</MarginText>
+</AnnotatedOnly>
 <p>The implementation shall not execute any memory write operations after load time for the elaboration of constant objects declared immediately within the declarative region of a preelaborated library package, so long as the subtype and initial expression (or default initial expressions if initialized by default) of the <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> satisfy the following restrictions. The meaning of <em>load time</em> is implementation defined. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+3.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>On systems where the image of the partition is initially copied from disk to RAM, or from ROM to RAM, prior to starting execution of the partition, the intention is that "load time" consist of this initial copying step. On other systems, load time and run time might actually be interspersed. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+4
+</MarginText>
+</AnnotatedOnly>
 <ul>
 <li>Any <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> denotes a statically constrained subtype, with statically constrained subcomponents, if any;<br /></li>
+<AnnotatedOnly>
+<MarginText>
+4.1/2
+</MarginText>
+</AnnotatedOnly>
 <li>{"{"}<em>{"AI95-00161-01"}</em>{"}"} <br />no <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> denotes a controlled type, a private type, a private extension, a generic formal private type, a generic formal derived type, or a descendant of such a type;<br /></li>
+<AnnotatedOnly>
+<MarginText>
+4.a.1/2
+</MarginText>
+</AnnotatedOnly>
 </ul>
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
 <strong></strong>For an implementation that uses the registration method of finalization, a controlled object will require some code executed to register the object at the appropriate point. The other types are those that <em>might</em> have a controlled component. None of these types were allowed in preelaborated units in Ada 95. These types are covered by the , of course, so they should still execute as little code as possible. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+5
+</MarginText>
+</AnnotatedOnly>
 <ul>
 <li>any <code><a href="../AA-3/AA-3.2#S0029">constraint</a></code> is a static constraint;<br /></li>
+<AnnotatedOnly>
+<MarginText>
+6
+</MarginText>
+</AnnotatedOnly>
 <li>any <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> is for an access-to-constant type;<br /></li>
+<AnnotatedOnly>
+<MarginText>
+7
+</MarginText>
+</AnnotatedOnly>
 <li>any uses of predefined operators appear only within static expressions;<br /></li>
+<AnnotatedOnly>
+<MarginText>
+8
+</MarginText>
+</AnnotatedOnly>
 <li>any <code>primaries</code> that are <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s, other than <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>s for the Access or Address attributes, appear only within static expressions; <br /></li>
+<AnnotatedOnly>
+<MarginText>
+8.a
+</MarginText>
+</AnnotatedOnly>
 </ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>This cuts out <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>s that are not static, except for Access and Address. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+9/5
+</MarginText>
+</AnnotatedOnly>
 <ul>
 <li>{"{"}<em>{"AI12-0368-1"}</em>{"}"} <br />any <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that is not part of a static expression is an expanded name or <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> that statically names some entity; <br /></li>
+<AnnotatedOnly>
+<MarginText>
+9.a/5
+</MarginText>
+</AnnotatedOnly>
 </ul>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI12-0368-1"}</em>{"}"} <br />This cuts out <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s and <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>s that are not static, including calls on attribute functions like 'Image and 'Value. We do allow components if those components don't require any evaluation or checks. <br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+10
+</MarginText>
+</AnnotatedOnly>
 <ul>
 <li>any <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> of an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> is static;<br /></li>
+<AnnotatedOnly>
+<MarginText>
+11
+</MarginText>
+</AnnotatedOnly>
 <li>no language-defined check associated with the elaboration of the <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> can fail. <br /></li>
+<AnnotatedOnly>
+<MarginText>
+11.a/2
+</MarginText>
+</AnnotatedOnly>
 </ul>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />The intent is that aggregates all of whose scalar subcomponents are static and all of whose access subcomponents are <strong>null</strong>, allocators for access-to-constant types, or X'Access, will be supported with no run-time code generated. <br /></Admonition>
@@ -57,39 +145,89 @@ import Admonition from "@theme/Admonition";
 
 #### Documentation Requirements
 
+<AnnotatedOnly>
+<MarginText>
+12
+</MarginText>
+</AnnotatedOnly>
 <p>The implementation shall document any circumstances under which the elaboration of a preelaborated package causes code to be executed at run time. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+12.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>Documentation Requirement: </strong>Any circumstances when the elaboration of a preelaborated package causes code to be executed.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+13
+</MarginText>
+</AnnotatedOnly>
 <p>The implementation shall document whether the method used for initialization of preelaborated variables allows a partition to be restarted without reloading. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+13.a.1/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>Documentation Requirement: </strong>Whether a partition can be restarted without reloading.<br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+13.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em><br /></Admonition>
 
+<AnnotatedOnly>
+<MarginText>
+13.b/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />This covers the issue of the run-time system itself being restartable, so that need not be a separate Documentation Requirement. <br /></Admonition>
 
 
 #### Implementation Advice
 
+<AnnotatedOnly>
+<MarginText>
+14
+</MarginText>
+</AnnotatedOnly>
 <p>It is recommended that preelaborated packages be implemented in such a way that there should be little or no code executed at run time for the elaboration of entities not already covered by the Implementation Requirements.<br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+14.a/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
 <strong></strong>Preelaborated packages should be implemented such that little or no code is executed at run time for the elaboration of entities.<br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
+<MarginText>
+14.b/2
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00161-01"}</em>{"}"} <br />Added wording to exclude the additional kinds of types allowed in preelaborated units from the Implementation Requirements. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
+<MarginText>
+14.c/5
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0368-1"}</em>{"}"} <br />Added wording to allow components so long as no evaluation or checks are required for the reference. <br /></Admonition>
 

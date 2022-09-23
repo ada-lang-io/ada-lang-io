@@ -10,43 +10,111 @@ and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
 :::
 
-import CodeBlock from "@theme/CodeBlock";
 import Admonition from "@theme/Admonition";
+import AnnotatedOnly from "@site/src/components/AnnotatedOnly";
+import CodeBlock from "@theme/CodeBlock";
+import MarginText from "@site/src/components/MarginText";
+import MarginInfo from "@site/src/components/MarginInfo";
 
+<AnnotatedOnly>
+<MarginText>
+1
+</MarginText>
+</AnnotatedOnly>
 <p>The body of a generic unit (a <em>generic body</em>) [is a template for the instance bodies. The syntax of a generic body is identical to that of a nongeneric body]. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+1.a
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>We also use terms like "generic function body" and "nongeneric package body". <br /></Admonition>
 
 
 #### Dynamic Semantics
 
-<p>The elaboration of a generic body has no other effect than to establish that the generic unit can from then on be instantiated without failing the Elaboration_Check. If the generic body is a child of a generic package, then its elaboration establishes that each corresponding declaration nested in an instance of the parent (see 10.1.1) can from then on be instantiated without failing the Elaboration_Check. <br /></p>
+<AnnotatedOnly>
+<MarginText>
+2
+</MarginText>
+</AnnotatedOnly>
+<p>The elaboration of a generic body has no other effect than to establish that the generic unit can from then on be instantiated without failing the Elaboration_Check. If the generic body is a child of a generic package, then its elaboration establishes that each corresponding declaration nested in an instance of the parent (see <a href="../AA-10/AA-10.1#Subclause_10.1.1">10.1.1</a>) can from then on be instantiated without failing the Elaboration_Check. <br /></p>
 
+<AnnotatedOnly>
+<MarginText>
+3
+</MarginText>
+</AnnotatedOnly>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   The syntax of generic subprograms implies that a generic subprogram body is always the completion of a declaration. <br /></Admonition>
 
 
 #### Examples
 
+<AnnotatedOnly>
+<MarginText>
+4
+</MarginText>
+</AnnotatedOnly>
 <p><em>Example of a generic procedure body:</em> <br /></p>
 
-<CodeBlock>
-procedure Exchange(U, V : in out Elem) is  -- see 12.1{"\n"}   T : Elem;  --  the generic formal type{"\n"}begin{"\n"}   T := U;{"\n"}   U := V;{"\n"}   V := T;{"\n"}end Exchange;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+5
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
+procedure Exchange(U, V : in out Elem) is  -- see <a href="../AA-12/AA-12.1">12.1</a>{"\n"}   T : Elem;  --  the generic formal type{"\n"}begin{"\n"}   T := U;{"\n"}   U := V;{"\n"}   V := T;{"\n"}end Exchange;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+6
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <p><em>Example of a generic function body:</em> <br /></p>
 
-<CodeBlock>
-function Squaring(X : Item) return Item is  --  see 12.1{"\n"}begin{"\n"}   return X*X;  --  the formal operator "*"{"\n"}end Squaring;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+7
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
+function Squaring(X : Item) return Item is  --  see <a href="../AA-12/AA-12.1">12.1</a>{"\n"}begin{"\n"}   return X*X;  --  the formal operator "*"{"\n"}end Squaring;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+8
+</MarginText>
+</AnnotatedOnly>
 
 </CodeBlock>
 <p><em>Example of a generic package body:</em> <br /></p>
 
-<CodeBlock>
-package body On_Vectors is  --  see 12.1{"\n"}
+<AnnotatedOnly>
+<MarginText>
+9
+</MarginText>
+</AnnotatedOnly>
+<CodeBlock language="ada">
+package body On_Vectors is  --  see <a href="../AA-12/AA-12.1">12.1</a>{"\n"}
+<AnnotatedOnly>
+<MarginText>
+10
+</MarginText>
+</AnnotatedOnly>
    function Sum(A, B : Vector) return Vector is{"\n"}      Result : Vector(A'Range); --  the formal type Vector{"\n"}      Bias   : constant Integer := B'First - A'First;{"\n"}   begin{"\n"}      if A'Length /= B'Length then{"\n"}         raise Length_Error;{"\n"}      end if;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+11
+</MarginText>
+</AnnotatedOnly>
       for N in A'Range loop{"\n"}         Result(N) := Sum(A(N), B(N + Bias)); -- the formal function Sum{"\n"}      end loop;{"\n"}      return Result;{"\n"}   end Sum;{"\n"}
+<AnnotatedOnly>
+<MarginText>
+12
+</MarginText>
+</AnnotatedOnly>
    function Sigma(A : Vector) return Item is{"\n"}      Total : Item := A(A'First); --  the formal type Item{"\n"}   begin{"\n"}      for N in A'First + 1 .. A'Last loop{"\n"}         Total := Sum(Total, A(N)); --  the formal function Sum{"\n"}      end loop;{"\n"}      return Total;{"\n"}   end Sigma;{"\n"}end On_Vectors;{"\n"}
 
 </CodeBlock>
