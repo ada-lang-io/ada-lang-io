@@ -6,22 +6,22 @@ sidebar_position: 1
 
 Ada provides five major elements for program organization.
 
-Unline many languages, general types are not used as namespaces for writing
-functions or procedures. While type are important in Ada, they play a
+Unlike many languages, general types are not used as namespaces for writing
+functions or procedures. While types are important in Ada, they play a
 different role, and are not used as a way to structure program text. Instead
 related types and their operations go into a package.
 
-- packages
+- **Packages**
   - group entities
   - unit of compilation
-- subprogram
-  - reusable sequences of instructions (algorithms)
-- generics
-  - Allow writing a package or subprogram across arbitrary types, packages
-    and subprograms which meet given specifications.
-- tasks
+- **Subprograms**
+  - reusable sequences of instructions (functions, procedures)
+- **Generics**
+  - Writing a package or subprogram for arbitrary types which meet certain
+    requirements.
+- **Tasks**
   - define operations done in parallel
-- protected objects
+- **Protected objects**
   - coordinate access to shared data behind possibly complex guard conditions
 
 |             | **Linear**  | **Concurrent**    |
@@ -33,7 +33,7 @@ Packages and protected objects are passive, whereas tasks and subprograms are
 active program behavior.
 
 Packages provide separation into compilation units and act as
-container for all entitites. Subprograms, whether procedures functions provide
+container for all entities. Subprograms, whether procedures functions provide
 reusable algorithms and behaviors.
 
 It is sometimes useful to write a package around unknown types and subprograms
