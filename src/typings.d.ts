@@ -9,3 +9,7 @@ declare module "*.adb" {
   const content: string
   export default content
 }
+
+type PluginDataAlireVersion = {
+  readonly alireVersion: string
+}

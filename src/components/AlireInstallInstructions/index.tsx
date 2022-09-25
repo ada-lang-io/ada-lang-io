@@ -67,7 +67,7 @@ function useCodeBlockClickRef(callback: () => void) {
 export default function AlireInstallInstructions(): JSX.Element {
   const isBrowser: boolean = useIsBrowser()
   const os: OS = useOs()
-  const { alireVersion } = usePluginData("ada-lang-alire-version")
+  const { alireVersion } = usePluginData("ada-lang-alire-version") as PluginDataAlireVersion
 
   const platformKey: OS | null = isBrowser && installTargets.has(os) ? os : null
 

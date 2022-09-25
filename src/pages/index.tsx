@@ -99,7 +99,7 @@ interface HomepageHeaderProps {
 export function HomepageHeader({ title, description }: HomepageHeaderProps): JSX.Element {
   const isBrowser: boolean = useIsBrowser()
   const os: OS = useOs()
-  const { alireVersion } = usePluginData("ada-lang-alire-version")
+  const { alireVersion } = usePluginData("ada-lang-alire-version") as PluginDataAlireVersion
 
   const platformKey: OS | null = isBrowser && installTargets.has(os) ? os : null
 
