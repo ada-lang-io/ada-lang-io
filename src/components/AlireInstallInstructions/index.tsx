@@ -4,6 +4,7 @@ import { FaTerminal } from "react-icons/fa"
 import { MdCode, MdDone, MdFileDownload } from "react-icons/md"
 
 import Link from "@docusaurus/Link"
+import { usePluginData } from "@docusaurus/useGlobalData"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 
 import { Stack, Text, Timeline } from "@mantine/core"
@@ -11,12 +12,7 @@ import { useEventListener, useOs } from "@mantine/hooks"
 import type { OS } from "@mantine/hooks"
 import { Prism } from "@mantine/prism"
 
-import {
-  alireVersion,
-  getInstallTarget,
-  gitHubReleasePage,
-  installTargets
-} from "@site/src/pages/index"
+import { getInstallTarget, gitHubReleasePage, installTargets } from "@site/src/pages/index"
 import type { Target } from "@site/src/pages/index"
 
 import classes from "./index.module.scss"
@@ -71,6 +67,7 @@ function useCodeBlockClickRef(callback: () => void) {
 export default function AlireInstallInstructions(): JSX.Element {
   const isBrowser: boolean = useIsBrowser()
   const os: OS = useOs()
+  const { alireVersion } = usePluginData("ada-lang-alire-version")
 
   const platformKey: OS | null = isBrowser && installTargets.has(os) ? os : null
 

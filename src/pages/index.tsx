@@ -5,6 +5,7 @@ import { FaDownload as DownloadIcon } from "react-icons/fa"
 import Link from "@docusaurus/Link"
 import type { DocusaurusContext } from "@docusaurus/types"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
+import { usePluginData } from "@docusaurus/useGlobalData"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import Layout from "@theme/Layout"
 
@@ -70,11 +71,6 @@ function join<Type>(values: Type[], sep: string): (Type | string)[] {
   return values.reduce(concat, [])
 }
 
-// TODO: This version number should come from a "latest Alire" note somewhere.
-// Version number and assets could be fetched from
-// https://api.github.com/repos/alire-project/alire/releases/latest
-export const alireVersion = "1.2.1"
-
 export const gitHubProjectPage = "https://github.com/alire-project/alire"
 export const gitHubReleasePage = `${gitHubProjectPage}/releases`
 
@@ -103,6 +99,7 @@ interface HomepageHeaderProps {
 export function HomepageHeader({ title, description }: HomepageHeaderProps): JSX.Element {
   const isBrowser: boolean = useIsBrowser()
   const os: OS = useOs()
+  const { alireVersion } = usePluginData("ada-lang-alire-version")
 
   const platformKey: OS | null = isBrowser && installTargets.has(os) ? os : null
 

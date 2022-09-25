@@ -7,6 +7,9 @@ const darkCodeTheme = require("prism-react-renderer/themes/okaidia")
 const gitHubUserName = "ada-lang-io"
 const gitHubProjectName = "ada-lang-io"
 
+const alireDefaultVersion = "1.2.1"
+const alireGitHubLatestRelease = "https://api.github.com/repos/alire-project/alire/releases/latest"
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Ada Programming Language",
@@ -46,7 +49,27 @@ const config = {
     })
   },
 
-  plugins: ["docusaurus-plugin-sass"],
+  plugins: [
+    "docusaurus-plugin-sass",
+    (context, options) => ({
+      name: "ada-lang-alire-version",
+      async loadContent() {
+        const req = await fetch(alireGitHubLatestRelease)
+
+        if (req.ok) {
+          const res = await req.json()
+          return res.tag_name ?? alireDefaultVersion
+        }
+        else {
+          return alireDefaultVersion
+        }
+      },
+      async contentLoaded({content, actions}) {
+        const {setGlobalData} = actions
+        setGlobalData({alireVersion: content})
+      }
+    })
+  ],
 
   presets: [
     [
