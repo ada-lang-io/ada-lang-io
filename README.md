@@ -7,4 +7,4 @@ way to help people learn about the language
 
 # Contribute
 
-See the docs for [how to contribute.](docs/getting-started/contribute.md)
+See the docs for [how to contribute.](docs/learn/contribute.md)

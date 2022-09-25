@@ -44,7 +44,7 @@ Don't edit `docs/style-guide/*.mdx` files.
 Use the [converter][style-converter] instead.
 
 [url-node]: https://nodejs.org/en/download/
-[url-yarn]: https://yarnpkg.com/getting-started/install
+[url-yarn]: https://yarnpkg.com/learn/install
 [url-ghpr]: https://github.com/ada-lang-io/ada-lang-io/pulls
 [style-guide]: https://en.wikibooks.org/wiki/Ada_Style_Guide
 [style-converter]: https://github.com/ada-lang-io/import-style-guide
