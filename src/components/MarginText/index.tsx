@@ -14,7 +14,7 @@ export default function MarginText({ children }: MarginTextProps): JSX.Element |
   const id = `p${children.split("/", 1)[0]}`
   return (
     <a id={id} href={`#${id}`} className={classes.text}>
-      <small>{children}</small>
+      {children}
     </a>
   )
 }
