@@ -74,7 +74,8 @@ Dynamically enclosing is only defined for executions that are occurring at a giv
 <p>When an occurrence is <em>handled</em> by a given handler, the <code><a href="../AA-11/AA-11.2#S0306">choice_parameter_specification</a></code>, if any, is first elaborated, which creates the choice parameter and initializes it to the occurrence. Then, the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the handler is executed; this execution replaces the abandoned portion of the execution of the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>. <br /></p>
 
 <MarginText>7.a/2</MarginText>
-<MarginInfo items={["AI95-00318-02"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginInfo items={["AI95-00318-02"]} />
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI95-00318-02"}</em>{"}"} <br />This &ldquo;replacement&rdquo; semantics implies that the handler can do pretty much anything the abandoned sequence could do; for example, in a function, the handler can execute a return statement that applies to the function. <br /></Admonition>
 
 <MarginText>7.b</MarginText>
@@ -97,22 +98,30 @@ NOTE 1   Note that exceptions raised in a <code><a href="../AA-3/AA-3.11#S0086">
 <p>The following language-defined library package exists: <br /></p>
 
 <MarginText>2/5</MarginText>
-<MarginInfo items={["AI95-00362-01", "AI95-00400-01", "AI95-00438-01", "AI12-0241-1", "AI12-0302-1", "AI12-0399-1"]} /><CodeBlock language="ada">
+<MarginInfo items={["AI95-00362-01", "AI95-00400-01", "AI95-00438-01", "AI12-0241-1", "AI12-0302-1", "AI12-0399-1"]} />
+<CodeBlock language="ada">
 --  {"{"}{"AI95-00362-01"}{"}"}{"\n"} --  {"{"}{"AI95-00400-01"}{"}"}{"\n"} --  {"{"}{"AI95-00438-01"}{"}"}{"\n"} --  {"{"}{"AI12-0241-1"}{"}"}{"\n"} --  {"{"}{"AI12-0302-1"}{"}"}{"\n"} --  {"{"}{"AI12-0399-1"}{"}"}{"\n"} with Ada.Streams;{"\n"}package Ada.Exceptions  {"\n"}    with  Preelaborate, Nonblocking, Global ={">"} in out synchronized is {"\n"}    type Exception_Id is private {"\n"}        with  Preelaborable_Initialization ;{"\n"}    Null_Id : constant Exception_Id;{"\n"}    function Exception_Name(Id : Exception_Id) return String;{"\n"}    function Wide_Exception_Name(Id : Exception_Id) return Wide_String;{"\n"}    function Wide_Wide_Exception_Name(Id : Exception_Id){"\n"}        return Wide_Wide_String;{"\n"}
 <MarginText>3/5</MarginText>
-<MarginInfo items={["AI95-00362-01", "AI12-0399-1"]} />--  {"{"}{"AI95-00362-01"}{"}"}{"\n"} --  {"{"}{"AI12-0399-1"}{"}"}{"\n"}     type Exception_Occurrence is limited private {"\n"}        with  Preelaborable_Initialization ;{"\n"}    type Exception_Occurrence_Access is access all Exception_Occurrence;{"\n"}    Null_Occurrence : constant Exception_Occurrence;{"\n"}
+<MarginInfo items={["AI95-00362-01", "AI12-0399-1"]} />
+--  {"{"}{"AI95-00362-01"}{"}"}{"\n"} --  {"{"}{"AI12-0399-1"}{"}"}{"\n"}     type Exception_Occurrence is limited private {"\n"}        with  Preelaborable_Initialization ;{"\n"}    type Exception_Occurrence_Access is access all Exception_Occurrence;{"\n"}    Null_Occurrence : constant Exception_Occurrence;{"\n"}
 <MarginText>4/3</MarginText>
-<MarginInfo items={["AI95-00329-01", "AI05-0229-1"]} />--  {"{"}{"AI95-00329-01"}{"}"}{"\n"} --  {"{"}{"AI05-0229-1"}{"}"}{"\n"}     procedure Raise_Exception(E : in Exception_Id;{"\n"}                              Message : in String := ""){"\n"}        with No_Return;{"\n"}    function Exception_Message(X : Exception_Occurrence) return String;{"\n"}    procedure Reraise_Occurrence(X : in Exception_Occurrence);{"\n"}
+<MarginInfo items={["AI95-00329-01", "AI05-0229-1"]} />
+--  {"{"}{"AI95-00329-01"}{"}"}{"\n"} --  {"{"}{"AI05-0229-1"}{"}"}{"\n"}     procedure Raise_Exception(E : in Exception_Id;{"\n"}                              Message : in String := ""){"\n"}        with No_Return;{"\n"}    function Exception_Message(X : Exception_Occurrence) return String;{"\n"}    procedure Reraise_Occurrence(X : in Exception_Occurrence);{"\n"}
 <MarginText>5/2</MarginText>
-<MarginInfo items={["AI95-00400-01"]} />--  {"{"}{"AI95-00400-01"}{"}"}{"\n"}     function Exception_Identity(X : Exception_Occurrence){"\n"}                                return Exception_Id;{"\n"}    function Exception_Name(X : Exception_Occurrence) return String;{"\n"}        -- Same as Exception_Name(Exception_Identity(X)).{"\n"}    function Wide_Exception_Name(X : Exception_Occurrence){"\n"}        return Wide_String;{"\n"}        -- Same as Wide_Exception_Name(Exception_Identity(X)).{"\n"}    function Wide_Wide_Exception_Name(X : Exception_Occurrence){"\n"}        return Wide_Wide_String;{"\n"}        -- Same as Wide_Wide_Exception_Name(Exception_Identity(X)).{"\n"}    function Exception_Information(X : Exception_Occurrence) return String;{"\n"}
+<MarginInfo items={["AI95-00400-01"]} />
+--  {"{"}{"AI95-00400-01"}{"}"}{"\n"}     function Exception_Identity(X : Exception_Occurrence){"\n"}                                return Exception_Id;{"\n"}    function Exception_Name(X : Exception_Occurrence) return String;{"\n"}        -- Same as Exception_Name(Exception_Identity(X)).{"\n"}    function Wide_Exception_Name(X : Exception_Occurrence){"\n"}        return Wide_String;{"\n"}        -- Same as Wide_Exception_Name(Exception_Identity(X)).{"\n"}    function Wide_Wide_Exception_Name(X : Exception_Occurrence){"\n"}        return Wide_Wide_String;{"\n"}        -- Same as Wide_Wide_Exception_Name(Exception_Identity(X)).{"\n"}    function Exception_Information(X : Exception_Occurrence) return String;{"\n"}
 <MarginText>6/2</MarginText>
-<MarginInfo items={["AI95-00438-01"]} />--  {"{"}{"AI95-00438-01"}{"}"}{"\n"}     procedure Save_Occurrence(Target : out Exception_Occurrence;{"\n"}                              Source : in Exception_Occurrence);{"\n"}    function Save_Occurrence(Source : Exception_Occurrence){"\n"}                             return Exception_Occurrence_Access;{"\n"}
+<MarginInfo items={["AI95-00438-01"]} />
+--  {"{"}{"AI95-00438-01"}{"}"}{"\n"}     procedure Save_Occurrence(Target : out Exception_Occurrence;{"\n"}                              Source : in Exception_Occurrence);{"\n"}    function Save_Occurrence(Source : Exception_Occurrence){"\n"}                             return Exception_Occurrence_Access;{"\n"}
 <MarginText>6.1/2</MarginText>
-<MarginInfo items={["AI95-00438-01"]} />--  {"{"}{"AI95-00438-01"}{"}"}{"\n"}     procedure Read_Exception_Occurrence{"\n"}       (Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}        Item   : out Exception_Occurrence);{"\n"}    procedure Write_Exception_Occurrence{"\n"}       (Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}        Item   : in Exception_Occurrence);{"\n"}
+<MarginInfo items={["AI95-00438-01"]} />
+--  {"{"}{"AI95-00438-01"}{"}"}{"\n"}     procedure Read_Exception_Occurrence{"\n"}       (Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}        Item   : out Exception_Occurrence);{"\n"}    procedure Write_Exception_Occurrence{"\n"}       (Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}        Item   : in Exception_Occurrence);{"\n"}
 <MarginText>6.2/2</MarginText>
-<MarginInfo items={["AI95-00438-01"]} />--  {"{"}{"AI95-00438-01"}{"}"}{"\n"}     for Exception_Occurrence'Read use Read_Exception_Occurrence;{"\n"}    for Exception_Occurrence'Write use Write_Exception_Occurrence;{"\n"}
+<MarginInfo items={["AI95-00438-01"]} />
+--  {"{"}{"AI95-00438-01"}{"}"}{"\n"}     for Exception_Occurrence'Read use Read_Exception_Occurrence;{"\n"}    for Exception_Occurrence'Write use Write_Exception_Occurrence;{"\n"}
 <MarginText>6.3/2</MarginText>
-<MarginInfo items={["AI95-00438-01"]} />--  {"{"}{"AI95-00438-01"}{"}"}{"\n"} private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Exceptions;{"\n"}
+<MarginInfo items={["AI95-00438-01"]} />
+--  {"{"}{"AI95-00438-01"}{"}"}{"\n"} private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Exceptions;{"\n"}
 
 </CodeBlock>
 <MarginText>7</MarginText>
@@ -131,17 +140,20 @@ NOTE 1   Note that exceptions raised in a <code><a href="../AA-3/AA-3.11#S0086">
 <strong></strong>In a distributed program, the identity is unique across an entire program, not just across a single partition. Exception propagation works properly across RPC's. An exception can be propagated from one partition to another, and then back to the first, where its identity is known. <br /></Admonition>
 
 <MarginText>10/2</MarginText>
-<MarginInfo items={["AI95-00361-01"]} /><p>{"{"}<em>{"AI95-00361-01"}</em>{"}"} <br />Raise_Exception raises a new occurrence of the identified exception.<br /></p>
+<MarginInfo items={["AI95-00361-01"]} />
+<p>{"{"}<em>{"AI95-00361-01"}</em>{"}"} <br />Raise_Exception raises a new occurrence of the identified exception.<br /></p>
 
 <MarginText>10.1/4</MarginText>
-<MarginInfo items={["AI95-00361-01", "AI95-00378-01", "AI05-0043-1", "AI05-0248-1", "AI12-0022-1", "AI12-0152-1"]} /><p>{"{"}<em>{"AI95-00361-01"}</em>{"}"} {"{"}<em>{"AI95-00378-01"}</em>{"}"} {"{"}<em>{"AI05-0043-1"}</em>{"}"} {"{"}<em>{"AI05-0248-1"}</em>{"}"} {"{"}<em>{"AI12-0022-1"}</em>{"}"} {"{"}<em>{"AI12-0152-1"}</em>{"}"} <br />Exception_Message returns the message associated with the given Exception_Occurrence. For an occurrence raised by a call to Raise_Exception, the message is the Message parameter passed to Raise_Exception. For the occurrence raised by a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> or <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> with an <em>exception_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> and a <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>, the message is the <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>. For the occurrence raised by a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> or <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> with an <em>exception_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> but without a <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>, the message is a string giving implementation-defined information about the exception occurrence. For an occurrence originally raised in some other manner (including by the failure of a language-defined check), the message is an unspecified string. In all cases, Exception_Message returns a string with lower bound 1. <br /></p>
+<MarginInfo items={["AI95-00361-01", "AI95-00378-01", "AI05-0043-1", "AI05-0248-1", "AI12-0022-1", "AI12-0152-1"]} />
+<p>{"{"}<em>{"AI95-00361-01"}</em>{"}"} {"{"}<em>{"AI95-00378-01"}</em>{"}"} {"{"}<em>{"AI05-0043-1"}</em>{"}"} {"{"}<em>{"AI05-0248-1"}</em>{"}"} {"{"}<em>{"AI12-0022-1"}</em>{"}"} {"{"}<em>{"AI12-0152-1"}</em>{"}"} <br />Exception_Message returns the message associated with the given Exception_Occurrence. For an occurrence raised by a call to Raise_Exception, the message is the Message parameter passed to Raise_Exception. For the occurrence raised by a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> or <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> with an <em>exception_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> and a <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>, the message is the <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>. For the occurrence raised by a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> or <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> with an <em>exception_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> but without a <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>, the message is a string giving implementation-defined information about the exception occurrence. For an occurrence originally raised in some other manner (including by the failure of a language-defined check), the message is an unspecified string. In all cases, Exception_Message returns a string with lower bound 1. <br /></p>
 
 <MarginText>10.a</MarginText>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>The information returned by Exception_Message.<br /></Admonition>
 
 <MarginText>10.a.1/3</MarginText>
-<MarginInfo items={["AI05-0043-1"]} /><Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<MarginInfo items={["AI05-0043-1"]} />
+<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
 <strong></strong>{"{"}<em>{"AI05-0043-1"}</em>{"}"} <br />There is  about the contents of this string for language-defined checks. <br /></Admonition>
 
 <MarginText>10.b</MarginText>
@@ -163,7 +175,8 @@ Raise_Exception(E'Identity, Message ={">"} implementation-defined-string);{"\n"}
 
 </CodeBlock>
 <MarginText>10.e.1/2</MarginText>
-<MarginInfo items={["AI95-00361-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00361-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00361-01"}</em>{"}"} <br />Similarly, the <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code>: <br /></Admonition>
 
 <MarginText>10.e.2/2</MarginText>
@@ -181,7 +194,8 @@ Raise_Exception(E'Identity, Message ={">"} "some information");{"\n"}
 
 </CodeBlock>
 <MarginText>10.2/2</MarginText>
-<MarginInfo items={["AI95-00361-01"]} /><p>{"{"}<em>{"AI95-00361-01"}</em>{"}"} <br />Reraise_Occurrence reraises the specified exception occurrence.<br /></p>
+<MarginInfo items={["AI95-00361-01"]} />
+<p>{"{"}<em>{"AI95-00361-01"}</em>{"}"} <br />Reraise_Occurrence reraises the specified exception occurrence.<br /></p>
 
 <MarginText>10.f</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -205,7 +219,8 @@ when X : others ={">"}{"\n"}    Cleanup;{"\n"}    Reraise_Occurrence(X);{"\n"}
 <p>Exception_Identity returns the identity of the exception of the occurrence.<br /></p>
 
 <MarginText>12/2</MarginText>
-<MarginInfo items={["AI95-00400-01"]} /><p>{"{"}<em>{"AI95-00400-01"}</em>{"}"} <br />The Wide_Wide_Exception_Name functions return the full expanded name of the exception, in upper case, starting with a root library unit. For an exception declared immediately within package Standard, the <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> is returned. The result is implementation defined if the exception is declared within an unnamed <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></code>. <br /></p>
+<MarginInfo items={["AI95-00400-01"]} />
+<p>{"{"}<em>{"AI95-00400-01"}</em>{"}"} <br />The Wide_Wide_Exception_Name functions return the full expanded name of the exception, in upper case, starting with a root library unit. For an exception declared immediately within package Standard, the <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> is returned. The result is implementation defined if the exception is declared within an unnamed <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></code>. <br /></p>
 
 <MarginText>12.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -224,31 +239,37 @@ when X : others ={">"}{"\n"}    Cleanup;{"\n"}    Reraise_Occurrence(X);{"\n"}
 <strong></strong>Note that we're talking about the name of the exception, not the name of the occurrence. <br /></Admonition>
 
 <MarginText>12.1/2</MarginText>
-<MarginInfo items={["AI95-00400-01"]} /><p>{"{"}<em>{"AI95-00400-01"}</em>{"}"} <br />The Exception_Name functions (respectively, Wide_Exception_Name) return the same sequence of graphic characters as that defined for Wide_Wide_Exception_Name, if all the graphic characters are defined in Character (respectively, Wide_Character); otherwise, the sequence of characters is implementation defined, but no shorter than that returned by Wide_Wide_Exception_Name for the same value of the argument. <br /></p>
+<MarginInfo items={["AI95-00400-01"]} />
+<p>{"{"}<em>{"AI95-00400-01"}</em>{"}"} <br />The Exception_Name functions (respectively, Wide_Exception_Name) return the same sequence of graphic characters as that defined for Wide_Wide_Exception_Name, if all the graphic characters are defined in Character (respectively, Wide_Character); otherwise, the sequence of characters is implementation defined, but no shorter than that returned by Wide_Wide_Exception_Name for the same value of the argument. <br /></p>
 
 <MarginText>12.e/2</MarginText>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>The sequence of characters of the value returned by Exceptions.Exception_Name (respectively, Exceptions.Wide_Exception_Name) when some of the graphic characters of Exceptions.Wide_Wide_Exception_Name are not defined in Character (respectively, Wide_Character).<br /></Admonition>
 
 <MarginText>12.2/2</MarginText>
-<MarginInfo items={["AI95-00378-01", "AI95-00417-01"]} /><p>{"{"}<em>{"AI95-00378-01"}</em>{"}"} {"{"}<em>{"AI95-00417-01"}</em>{"}"} <br />The string returned by the Exception_Name, Wide_Exception_Name, and Wide_Wide_Exception_Name functions has lower bound 1.<br /></p>
+<MarginInfo items={["AI95-00378-01", "AI95-00417-01"]} />
+<p>{"{"}<em>{"AI95-00378-01"}</em>{"}"} {"{"}<em>{"AI95-00417-01"}</em>{"}"} <br />The string returned by the Exception_Name, Wide_Exception_Name, and Wide_Wide_Exception_Name functions has lower bound 1.<br /></p>
 
 <MarginText>13/2</MarginText>
-<MarginInfo items={["AI95-00378-01"]} /><p>{"{"}<em>{"AI95-00378-01"}</em>{"}"} <br />Exception_Information returns implementation-defined information about the exception occurrence. The returned string has lower bound 1. <br /></p>
+<MarginInfo items={["AI95-00378-01"]} />
+<p>{"{"}<em>{"AI95-00378-01"}</em>{"}"} <br />Exception_Information returns implementation-defined information about the exception occurrence. The returned string has lower bound 1. <br /></p>
 
 <MarginText>13.a</MarginText>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>The information returned by Exception_Information.<br /></Admonition>
 
 <MarginText>14/2</MarginText>
-<MarginInfo items={["AI95-00241-01", "AI95-00446-01"]} /><p>{"{"}<em>{"AI95-00241-01"}</em>{"}"} {"{"}<em>{"AI95-00446-01"}</em>{"}"} <br />Reraise_Occurrence has no effect in the case of Null_Occurrence. Raise_Exception and Exception_Name raise Constraint_Error for a Null_Id. Exception_Message, Exception_Name, and Exception_Information raise Constraint_Error for a Null_Occurrence. Exception_Identity applied to Null_Occurrence returns Null_Id.<br /></p>
+<MarginInfo items={["AI95-00241-01", "AI95-00446-01"]} />
+<p>{"{"}<em>{"AI95-00241-01"}</em>{"}"} {"{"}<em>{"AI95-00446-01"}</em>{"}"} <br />Reraise_Occurrence has no effect in the case of Null_Occurrence. Raise_Exception and Exception_Name raise Constraint_Error for a Null_Id. Exception_Message, Exception_Name, and Exception_Information raise Constraint_Error for a Null_Occurrence. Exception_Identity applied to Null_Occurrence returns Null_Id.<br /></p>
 
 <MarginText>14.a.1/2</MarginText>
-<MarginInfo items={["AI95-00241-01"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginInfo items={["AI95-00241-01"]} />
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI95-00241-01"}</em>{"}"} <br />Null_Occurrence can be tested for by comparing Exception_Identity(Occurrence) to Null_Id. <br /></Admonition>
 
 <MarginText>14.a.2/2</MarginText>
-<MarginInfo items={["AI95-00446-01"]} /><Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<MarginInfo items={["AI95-00446-01"]} />
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>{"{"}<em>{"AI95-00446-01"}</em>{"}"} <br />Raise_Exception was changed so that it always raises an exception and thus can be a No_Return procedure. A similar change was not made for Reraise_Occurrence, as doing so was determined to be a significant incompatibility. It is not unusual to pass an Exception_Occurrence to other code to delay raising it. If there was no exception, passing Null_Occurrence works fine (nothing is raised). Moreover, as there is no test for Null_Occurrence in Ada 95, this is the only way to write such code without using additional flags. Breaking this sort of code is unacceptable. <br /></Admonition>
 
 <MarginText>15</MarginText>
@@ -259,10 +280,12 @@ when X : others ={">"}{"\n"}    Cleanup;{"\n"}    Reraise_Occurrence(X);{"\n"}
 <strong></strong>It's OK to pass Null_Occurrence to the Save_Occurrence subprograms; they don't raise an exception, but simply save the Null_Occurrence. <br /></Admonition>
 
 <MarginText>15.1/2</MarginText>
-<MarginInfo items={["AI95-00438-01"]} /><p>{"{"}<em>{"AI95-00438-01"}</em>{"}"} <br />Write_Exception_Occurrence writes a representation of an exception occurrence to a stream; Read_Exception_Occurrence reconstructs an exception occurrence from a stream (including one written in a different partition). <br /></p>
+<MarginInfo items={["AI95-00438-01"]} />
+<p>{"{"}<em>{"AI95-00438-01"}</em>{"}"} <br />Write_Exception_Occurrence writes a representation of an exception occurrence to a stream; Read_Exception_Occurrence reconstructs an exception occurrence from a stream (including one written in a different partition). <br /></p>
 
 <MarginText>15.b/5</MarginText>
-<MarginInfo items={["AI12-0005-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginInfo items={["AI12-0005-1"]} />
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />These  routines are used to define the stream attributes (see <a href="../AA-13/AA-13.13#Subclause_13.13.2">13.13.2</a>) for Exception_Occurrence.<br /></Admonition>
 
 <MarginText>15.c/2</MarginText>
@@ -397,11 +420,13 @@ However, some implementations may wish to retain more information across a re-ra
 <strong></strong>Note that Exception_Occurrence is a definite subtype. Hence, values of type Exception_Occurrence may be written to an error log for later analysis, or may be passed to subprograms for immediate error analysis. <br /></Admonition>
 
 <MarginText>19.w/2</MarginText>
-<MarginInfo items={["AI95-00400-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00400-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00400-01"}</em>{"}"} <br /></Admonition>
 
 <MarginText>20/5</MarginText>
-<MarginInfo items={["AI12-0021-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0021-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   {"{"}<em>{"AI12-0021-1"}</em>{"}"} <br />UTF-8 encoding (see <a href="../AA-A/AA-A.4#Subclause_A.4.11">A.4.11</a>) can be used to represent non-ASCII characters in exception messages. <br /></Admonition>
 
 
@@ -415,47 +440,55 @@ The Identity attribute of exceptions is new, as is the package Exceptions. <br /
 #### Inconsistencies With Ada 95
 
 <MarginText>20.b/2</MarginText>
-<MarginInfo items={["AI95-00241-01"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI95-00241-01"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI95-00241-01"}</em>{"}"} <strong><br />Amendment </strong> Exception_Identity of an Exception_Occurrence now is defined to return Null_Id for Null_Occurrence, rather than raising Constraint_Error. This provides a simple way to test for Null_Occurrence. We expect that programs that need Constraint_Error raised will be very rare; they can be easily fixed by explicitly testing for Null_Id or by using Exception_Name instead.<br /></Admonition>
 
 <MarginText>20.c/2</MarginText>
-<MarginInfo items={["AI95-00378-01", "AI95-00417-01"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI95-00378-01", "AI95-00417-01"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI95-00378-01"}</em>{"}"} {"{"}<em>{"AI95-00417-01"}</em>{"}"} <strong><br />Amendment </strong> We now define the lower bound of the string returned from [[Wide_]Wide_]Exception_Name, Exception_Message, and Exception_Information. This makes working with the returned string easier, and is consistent with many other string-returning functions in Ada. This is technically an inconsistency; if a program depended on some other lower bound for the string returned from one of these functions, it could fail when compiled with Ada 2005. Such code is not portable even between Ada 95 implementations, so it should be very rare.<br /></Admonition>
 
 <MarginText>20.d/2</MarginText>
-<MarginInfo items={["AI95-00446-01"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI95-00446-01"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI95-00446-01"}</em>{"}"} <strong><br />Amendment </strong> Raise_Exception now raises Constraint_Error if passed Null_Id. This means that it always raises an exception, and thus we can apply pragma No_Return to it. We expect that programs that call Raise_Exception with Null_Id will be rare, and programs that do that and expect no exception to be raised will be rarer; such programs can be easily fixed by explicitly testing for Null_Id before calling Raise_Exception. <br /></Admonition>
 
 
 #### Incompatibilities With Ada 95
 
 <MarginText>20.e/3</MarginText>
-<MarginInfo items={["AI95-00400-01", "AI95-00438-01", "AI05-0005-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00400-01", "AI95-00438-01", "AI05-0005-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00400-01"}</em>{"}"} {"{"}<em>{"AI95-00438-01"}</em>{"}"} {"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />Functions Wide_Exception_Name and Wide_Wide_Exception_Name, and procedures Read_Exception_Occurrence and Write_Exception_Occurrence are added to Exceptions. If Exceptions is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with the same <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> as a new entity in Exceptions is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. <br /></Admonition>
 
 
 #### Extensions to Ada 95
 
 <MarginText>20.f/2</MarginText>
-<MarginInfo items={["AI95-00362-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00362-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00362-01"}</em>{"}"} <br />The package Exceptions is preelaborated, and types Exception_Id and Exception_Occurrence have preelaborable initialization, allowing this package to be used in preelaborated units. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
 <MarginText>20.g/2</MarginText>
-<MarginInfo items={["AI95-00361-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00361-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00361-01"}</em>{"}"} <br />The meaning of Exception_Message is reworded to reflect that the string can come from a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> as well as a call of Raise_Exception.<br /></Admonition>
 
 <MarginText>20.h/2</MarginText>
-<MarginInfo items={["AI95-00400-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00400-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00400-01"}</em>{"}"} <br />Added Wide_Exception_Name and Wide_Wide_Exception_Name because identifiers can now contain characters outside of Latin-1. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
 <MarginText>20.i/3</MarginText>
-<MarginInfo items={["AI05-0043-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI05-0043-1"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0043-1"}</em>{"}"} <strong><br /></strong> Added explicit wording that the exception message for language-defined checks is unspecified. The old wording appeared inclusive, but it was not. <br /></Admonition>
 
 <a id="Subclause_11.4.2"></a>
@@ -463,10 +496,12 @@ The Identity attribute of exceptions is new, as is the package Exceptions. <br /
 ## 11.4.2  Pragmas Assert and Assertion_Policy
 
 <MarginText>1/3</MarginText>
-<MarginInfo items={["AI95-00286-01", "AI05-0274-1"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI05-0274-1"}</em>{"}"} <br />Pragma Assert is used to assert the truth of a boolean expression at a point within a sequence of declarations or statements.<br /></p>
+<MarginInfo items={["AI95-00286-01", "AI05-0274-1"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI05-0274-1"}</em>{"}"} <br />Pragma Assert is used to assert the truth of a boolean expression at a point within a sequence of declarations or statements.<br /></p>
 
 <MarginText>1.1/5</MarginText>
-<MarginInfo items={["AI05-0274-1", "AI12-0265-1"]} /><p>{"{"}<em>{"AI05-0274-1"}</em>{"}"} {"{"}<em>{"AI12-0265-1"}</em>{"}"} <br />Assert pragmas, subtype predicates (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>), preconditions and postconditions (see <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>),  type invariants (see <a href="../AA-7/AA-7.3#Subclause_7.3.2">7.3.2</a>), and default initial conditions (see <a href="../AA-7/AA-7.3#Subclause_7.3.3">7.3.3</a>) are collectively referred to as <em>assertions</em>; their boolean expressions are referred to as <em>assertion expressions</em>.<br /></p>
+<MarginInfo items={["AI05-0274-1", "AI12-0265-1"]} />
+<p>{"{"}<em>{"AI05-0274-1"}</em>{"}"} {"{"}<em>{"AI12-0265-1"}</em>{"}"} <br />Assert pragmas, subtype predicates (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>), preconditions and postconditions (see <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>),  type invariants (see <a href="../AA-7/AA-7.3#Subclause_7.3.2">7.3.2</a>), and default initial conditions (see <a href="../AA-7/AA-7.3#Subclause_7.3.3">7.3.3</a>) are collectively referred to as <em>assertions</em>; their boolean expressions are referred to as <em>assertion expressions</em>.<br /></p>
 
 <MarginText>1.a.1/3</MarginText>
 <Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
@@ -494,13 +529,15 @@ The Identity attribute of exceptions is new, as is the package Exceptions. <br /
 
 <MarginText>2</MarginText>
 <MarginText>2.1/3</MarginText>
-<MarginInfo items={["AI05-0274-1"]} /><p>{"{"}<em>{"AI05-0274-1"}</em>{"}"} <br />Pragma Assertion_Policy is used to control whether assertions are to be ignored by the implementation, checked at run time, or handled in some implementation-defined manner. <br /></p>
+<MarginInfo items={["AI05-0274-1"]} />
+<p>{"{"}<em>{"AI05-0274-1"}</em>{"}"} <br />Pragma Assertion_Policy is used to control whether assertions are to be ignored by the implementation, checked at run time, or handled in some implementation-defined manner. <br /></p>
 
 
 #### Syntax
 
 <MarginText>3/2</MarginText>
-<MarginInfo items={["AI95-00286-01"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />The form of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is as follows: <br /></p>
+<MarginInfo items={["AI95-00286-01"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />The form of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is as follows: <br /></p>
 
 <MarginText>4/2</MarginText>
 <p>  <strong>pragma</strong> Assert([Check ={">"}] <em>boolean_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>[, [Message ={">"}] <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>]);<br /></p>
@@ -509,22 +546,26 @@ The Identity attribute of exceptions is new, as is the package Exceptions. <br /
 <p>A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is allowed at the place where a <code><a href="../AA-3/AA-3.11#S0087">declarative_item</a></code> or a <code><a href="../AA-5/AA-5.1#S0167">statement</a></code> is allowed.<br /></p>
 
 <MarginText>6/2</MarginText>
-<MarginInfo items={["AI95-00286-01"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />The form of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy is as follows: <br /></p>
+<MarginInfo items={["AI95-00286-01"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />The form of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy is as follows: <br /></p>
 
 <MarginText>7/2</MarginText>
 <p>  <strong>pragma</strong> Assertion_Policy(<em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>);<br /></p>
 
 <MarginText>7.1/3</MarginText>
-<MarginInfo items={["AI05-0290-1"]} /><p>{"{"}<em>{"AI05-0290-1"}</em>{"}"}   <strong>pragma</strong> Assertion_Policy(<br />         <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code> ={">"} <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code><br />     {"{"}, <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code> ={">"} <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>{"}"});<br /></p>
+<MarginInfo items={["AI05-0290-1"]} />
+<p>{"{"}<em>{"AI05-0290-1"}</em>{"}"}   <strong>pragma</strong> Assertion_Policy(<br />         <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code> ={">"} <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code><br />     {"{"}, <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code> ={">"} <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>{"}"});<br /></p>
 
 <MarginText>8/3</MarginText>
-<MarginInfo items={["AI05-0290-1"]} /><p>{"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy is allowed only immediately within a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, immediately within a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, or as a configuration pragma.<br /></p>
+<MarginInfo items={["AI05-0290-1"]} />
+<p>{"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy is allowed only immediately within a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, immediately within a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, or as a configuration pragma.<br /></p>
 
 
 #### Name Resolution Rules
 
 <MarginText>9/2</MarginText>
-<MarginInfo items={["AI95-00286-01"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />The expected type for the <em>boolean_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is any boolean type. The expected type for the <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is type String. <br /></p>
+<MarginInfo items={["AI95-00286-01"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />The expected type for the <em>boolean_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is any boolean type. The expected type for the <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is type String. <br /></p>
 
 <MarginText>9.a/2</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
@@ -534,47 +575,56 @@ The Identity attribute of exceptions is new, as is the package Exceptions. <br /
 #### Legality Rules
 
 <MarginText>10/5</MarginText>
-<MarginInfo items={["AI95-00286-01", "AI05-0290-1", "AI12-0265-1", "AI12-0396-1"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI05-0290-1"}</em>{"}"} {"{"}<em>{"AI12-0265-1"}</em>{"}"} {"{"}<em>{"AI12-0396-1"}</em>{"}"} <br />The <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code> of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy shall identify an <em>assertion aspect</em>, namely   one of Assert, Static_Predicate, Dynamic_Predicate, Pre, Pre'Class, Post, Post'Class, Type_Invariant, Type_Invariant'Class, Default_Initial_Condition, or some implementation-defined (assertion)  <code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code>. The <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> shall be either Check, Ignore, or some implementation-defined <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>. <br /></p>
+<MarginInfo items={["AI95-00286-01", "AI05-0290-1", "AI12-0265-1", "AI12-0396-1"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI05-0290-1"}</em>{"}"} {"{"}<em>{"AI12-0265-1"}</em>{"}"} {"{"}<em>{"AI12-0396-1"}</em>{"}"} <br />The <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code> of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy shall identify an <em>assertion aspect</em>, namely   one of Assert, Static_Predicate, Dynamic_Predicate, Pre, Pre'Class, Post, Post'Class, Type_Invariant, Type_Invariant'Class, Default_Initial_Condition, or some implementation-defined (assertion)  <code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code>. The <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> shall be either Check, Ignore, or some implementation-defined <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>. <br /></p>
 
 <MarginText>10.a/3</MarginText>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>Implementation-defined <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s and <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code>s allowed in a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy.<br /></Admonition>
 
 <MarginText>10.b/5</MarginText>
-<MarginInfo items={["AI12-0396-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0396-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 <strong>To be honest: </strong>{"{"}<em>{"AI12-0396-1"}</em>{"}"} &ldquo;<br />Assert&rdquo; is considered an &ldquo;assertion aspect&rdquo; for the purposes of this rule, even though there is no sort of entity that has an Assert aspect. It can only be specified using an Assert pragma, and applies to a particular point in the execution of a logical thread of control. <br /></Admonition>
 
 
 #### Static Semantics
 
 <MarginText>11/3</MarginText>
-<MarginInfo items={["AI95-00286-01", "AI05-0290-1"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy determines for each assertion aspect named in the <code><a href="../AA-2/AA-2.8#S0020">pragma_argument_association</a></code>s whether assertions of the given aspect are to be enforced by a runtime check. The <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> Check requires that assertion expressions of the given aspect be checked that they evaluate to True at the points specified for the given aspect; the <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> Ignore requires that the assertion expression not be evaluated at these points, and the runtime checks not be performed. [Note that for subtype predicate aspects (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>), even when the applicable Assertion_Policy is Ignore, the predicate will still be evaluated as part of membership tests and Valid <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>s, and if static, will still have an effect on loop iteration over the subtype, and the selection of <code><a href="../AA-5/AA-5.4#S0177">case_statement_alternative</a></code>s and <code><a href="../AA-3/AA-3.8#S0072">variant</a></code>s.]<br /></p>
+<MarginInfo items={["AI95-00286-01", "AI05-0290-1"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy determines for each assertion aspect named in the <code><a href="../AA-2/AA-2.8#S0020">pragma_argument_association</a></code>s whether assertions of the given aspect are to be enforced by a runtime check. The <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> Check requires that assertion expressions of the given aspect be checked that they evaluate to True at the points specified for the given aspect; the <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> Ignore requires that the assertion expression not be evaluated at these points, and the runtime checks not be performed. [Note that for subtype predicate aspects (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>), even when the applicable Assertion_Policy is Ignore, the predicate will still be evaluated as part of membership tests and Valid <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>s, and if static, will still have an effect on loop iteration over the subtype, and the selection of <code><a href="../AA-5/AA-5.4#S0177">case_statement_alternative</a></code>s and <code><a href="../AA-3/AA-3.8#S0072">variant</a></code>s.]<br /></p>
 
 <MarginText>11.1/3</MarginText>
-<MarginInfo items={["AI05-0290-1"]} /><p>{"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />If no <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code>s are specified in the pragma, the specified policy applies to all assertion aspects.<br /></p>
+<MarginInfo items={["AI05-0290-1"]} />
+<p>{"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />If no <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code>s are specified in the pragma, the specified policy applies to all assertion aspects.<br /></p>
 
 <MarginText>11.2/5</MarginText>
-<MarginInfo items={["AI05-0290-1", "AI12-0396-1"]} /><p>{"{"}<em>{"AI05-0290-1"}</em>{"}"} {"{"}<em>{"AI12-0396-1"}</em>{"}"} <br />A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy applies to the named assertion aspects in a specific region, and applies to all assertion expressions associated with those aspects specified in that region. A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy given in a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> or immediately within a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> applies from the place of the pragma to the end of the innermost enclosing declarative region. The region for a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy given as a configuration pragma is the declarative region for the entire compilation unit (or units) to which it applies.<br /></p>
+<MarginInfo items={["AI05-0290-1", "AI12-0396-1"]} />
+<p>{"{"}<em>{"AI05-0290-1"}</em>{"}"} {"{"}<em>{"AI12-0396-1"}</em>{"}"} <br />A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy applies to the named assertion aspects in a specific region, and applies to all assertion expressions associated with those aspects specified in that region. A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy given in a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> or immediately within a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> applies from the place of the pragma to the end of the innermost enclosing declarative region. The region for a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy given as a configuration pragma is the declarative region for the entire compilation unit (or units) to which it applies.<br /></p>
 
 <MarginText>11.3/3</MarginText>
-<MarginInfo items={["AI05-0290-1"]} /><p>{"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />If a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy applies to a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>, then the <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy applies to the entire instance.<br /></p>
+<MarginInfo items={["AI05-0290-1"]} />
+<p>{"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />If a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy applies to a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>, then the <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy applies to the entire instance.<br /></p>
 
 <MarginText>11.a.1/3</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>This means that an Assertion_Policy pragma that occurs in a scope enclosing the declaration of a generic unit but not also enclosing the declaration of a given instance of that generic unit will not apply to assertion expressions occurring within the given instance. <br /></Admonition>
 
 <MarginText>11.4/3</MarginText>
-<MarginInfo items={["AI05-0290-1"]} /><p>{"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />If multiple Assertion_Policy pragmas apply to a given construct for a given assertion aspect, the assertion policy is determined by the one in the innermost enclosing region of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy specifying a policy for the assertion aspect. If no such Assertion_Policy pragma exists, the policy is implementation defined.<br /></p>
+<MarginInfo items={["AI05-0290-1"]} />
+<p>{"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />If multiple Assertion_Policy pragmas apply to a given construct for a given assertion aspect, the assertion policy is determined by the one in the innermost enclosing region of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy specifying a policy for the assertion aspect. If no such Assertion_Policy pragma exists, the policy is implementation defined.<br /></p>
 
 <MarginText>11.a/2</MarginText>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>The default assertion policy.<br /></Admonition>
 
 <MarginText>12/2</MarginText>
-<MarginInfo items={["AI95-00286-01"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />The following language-defined library package exists:<br /></p>
+<MarginInfo items={["AI95-00286-01"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />The following language-defined library package exists:<br /></p>
 
 <MarginText>13/5</MarginText>
-<MarginInfo items={["AI12-0414-1"]} /><CodeBlock language="ada">
+<MarginInfo items={["AI12-0414-1"]} />
+<CodeBlock language="ada">
 --  {"{"}{"AI12-0414-1"}{"}"}{"\n"} package Ada.Assertions {"\n"}    with  Pure is {"\n"}
 <MarginText>14/2</MarginText>
    Assertion_Error : exception;{"\n"}
@@ -585,19 +635,23 @@ end Ada.Assertions;{"\n"}
 
 </CodeBlock>
 <MarginText>17/3</MarginText>
-<MarginInfo items={["AI95-00286-01", "AI05-0290-1"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />A compilation unit containing a check for an assertion (including a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert) has a semantic dependence on the Assertions library unit.<br /></p>
+<MarginInfo items={["AI95-00286-01", "AI05-0290-1"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />A compilation unit containing a check for an assertion (including a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert) has a semantic dependence on the Assertions library unit.<br /></p>
 
 <MarginText>18/3</MarginText>
-<MarginInfo items={["AI95-00286-01", "AI05-0290-1"]} /><p><em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI05-0290-1"}</em>{"}"} <br /></p>
+<MarginInfo items={["AI95-00286-01", "AI05-0290-1"]} />
+<p><em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI05-0290-1"}</em>{"}"} <br /></p>
 
 
 #### Dynamic Semantics
 
 <MarginText>19/3</MarginText>
-<MarginInfo items={["AI95-00286-01", "AI05-0290-1"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />If performing checks is required by the Assert assertion policy in effect at the place of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert, the elaboration of the pragma consists of evaluating the boolean expression, and if the result is False, evaluating the Message argument, if any, and raising the exception Assertions.Assertion_Error, with a message if the Message argument is provided.<br /></p>
+<MarginInfo items={["AI95-00286-01", "AI05-0290-1"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />If performing checks is required by the Assert assertion policy in effect at the place of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert, the elaboration of the pragma consists of evaluating the boolean expression, and if the result is False, evaluating the Message argument, if any, and raising the exception Assertions.Assertion_Error, with a message if the Message argument is provided.<br /></p>
 
 <MarginText>20/2</MarginText>
-<MarginInfo items={["AI95-00286-01"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />Calling the procedure Assertions.Assert without a Message parameter is equivalent to:<br /></p>
+<MarginInfo items={["AI95-00286-01"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />Calling the procedure Assertions.Assert without a Message parameter is equivalent to:<br /></p>
 
 <MarginText>21/2</MarginText>
 <CodeBlock language="ada">
@@ -605,7 +659,8 @@ if Check = False then{"\n"}   raise Ada.Assertions.Assertion_Error;{"\n"}end if;
 
 </CodeBlock>
 <MarginText>22/2</MarginText>
-<MarginInfo items={["AI95-00286-01"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />Calling the procedure Assertions.Assert with a Message parameter is equivalent to:<br /></p>
+<MarginInfo items={["AI95-00286-01"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />Calling the procedure Assertions.Assert with a Message parameter is equivalent to:<br /></p>
 
 <MarginText>23/2</MarginText>
 <CodeBlock language="ada">
@@ -613,26 +668,30 @@ if Check = False then{"\n"}   raise Ada.Assertions.Assertion_Error with Message;
 
 </CodeBlock>
 <MarginText>24/2</MarginText>
-<MarginInfo items={["AI95-00286-01"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />The procedures Assertions.Assert have these effects independently of the assertion policy in effect.<br /></p>
+<MarginInfo items={["AI95-00286-01"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />The procedures Assertions.Assert have these effects independently of the assertion policy in effect.<br /></p>
 
 
 #### Bounded (Run-Time) Errors
 
 <MarginText>24.1/5</MarginText>
-<MarginInfo items={["AI05-0274-1", "AI12-0439-1"]} /><p>{"{"}<em>{"AI05-0274-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} <br />It is a bounded error to invoke a potentially blocking operation (see <a href="../AA-9/AA-9.5#Subclause_9.5.1">9.5.1</a>) during the evaluation of an assertion expression associated with a call on, or return from, a protected operation. If the bounded error is detected, Program_Error is raised. If not detected, execution proceeds normally, but if it is invoked within a protected action, it can  result in deadlock or a (nested) protected action. <br /></p>
+<MarginInfo items={["AI05-0274-1", "AI12-0439-1"]} />
+<p>{"{"}<em>{"AI05-0274-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} <br />It is a bounded error to invoke a potentially blocking operation (see <a href="../AA-9/AA-9.5#Subclause_9.5.1">9.5.1</a>) during the evaluation of an assertion expression associated with a call on, or return from, a protected operation. If the bounded error is detected, Program_Error is raised. If not detected, execution proceeds normally, but if it is invoked within a protected action, it can  result in deadlock or a (nested) protected action. <br /></p>
 
 
 #### Implementation Requirements
 
 <MarginText>24.2/5</MarginText>
-<MarginInfo items={["AI12-0179-1", "AI12-0265-1"]} /><p>{"{"}<em>{"AI12-0179-1"}</em>{"}"} {"{"}<em>{"AI12-0265-1"}</em>{"}"} <br />Any postcondition expression, type invariant expression, or default initial condition expression occurring in the specification of a language-defined unit is enabled (see <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>, <a href="../AA-7/AA-7.3#Subclause_7.3.2">7.3.2</a>, and <a href="../AA-7/AA-7.3#Subclause_7.3.3">7.3.3</a>).<br /></p>
+<MarginInfo items={["AI12-0179-1", "AI12-0265-1"]} />
+<p>{"{"}<em>{"AI12-0179-1"}</em>{"}"} {"{"}<em>{"AI12-0265-1"}</em>{"}"} <br />Any postcondition expression, type invariant expression, or default initial condition expression occurring in the specification of a language-defined unit is enabled (see <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>, <a href="../AA-7/AA-7.3#Subclause_7.3.2">7.3.2</a>, and <a href="../AA-7/AA-7.3#Subclause_7.3.3">7.3.3</a>).<br /></p>
 
 <MarginText>24.a/5</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>The Assertion_Policy does not have an effect on such postconditions, invariants, and default initial conditions. This has no execution impact since such assertions shouldn't fail anyway (see the next rule). <br /></Admonition>
 
 <MarginText>24.3/5</MarginText>
-<MarginInfo items={["AI12-0179-1", "AI12-0265-1"]} /><p>{"{"}<em>{"AI12-0179-1"}</em>{"}"} {"{"}<em>{"AI12-0265-1"}</em>{"}"} <br />The evaluation of any such postcondition, type invariant, or default initial condition expression shall either yield True or propagate an exception from a <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> that appears within the assertion expression.<br /></p>
+<MarginInfo items={["AI12-0179-1", "AI12-0265-1"]} />
+<p>{"{"}<em>{"AI12-0179-1"}</em>{"}"} {"{"}<em>{"AI12-0265-1"}</em>{"}"} <br />The evaluation of any such postcondition, type invariant, or default initial condition expression shall either yield True or propagate an exception from a <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> that appears within the assertion expression.<br /></p>
 
 <MarginText>24.b/5</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -647,30 +706,36 @@ if Check = False then{"\n"}   raise Ada.Assertions.Assertion_Error with Message;
 <strong></strong>This allows the Reference Manual to express semantic requirements as postconditions, invariants, or default initial conditions (which are invariably clearer than English prose would be) while keeping it clear that failing the assertion check (or any other run time check) is not conforming behavior. <br /></Admonition>
 
 <MarginText>24.4/5</MarginText>
-<MarginInfo items={["AI12-0112-1"]} /><p>{"{"}<em>{"AI12-0112-1"}</em>{"}"} <br />Any precondition expression occurring in the specification of a language-defined unit is enabled (see <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>) unless suppressed (see <a href="../AA-11/AA-11.5">11.5</a>). Similarly, any predicate checks for a subtype occurring in the specification of a language-defined unit are enabled (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>) unless suppressed.<br /></p>
+<MarginInfo items={["AI12-0112-1"]} />
+<p>{"{"}<em>{"AI12-0112-1"}</em>{"}"} <br />Any precondition expression occurring in the specification of a language-defined unit is enabled (see <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>) unless suppressed (see <a href="../AA-11/AA-11.5">11.5</a>). Similarly, any predicate checks for a subtype occurring in the specification of a language-defined unit are enabled (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>) unless suppressed.<br /></p>
 
 <MarginText>24.e/5</MarginText>
-<MarginInfo items={["AI12-0005-1", "AI12-0112-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginInfo items={["AI12-0005-1", "AI12-0112-1"]} />
+<Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} {"{"}<em>{"AI12-0112-1"}</em>{"}"} <br />This allows the Reference Manual to express runtime requirements on the client of a language-defined unit as preconditions or predicates (which are clearer than English prose would be). Some such requirements can be suppressed with pragma Suppress. Ada 2012 and earlier versions did not provide a mechanism to suppress such code. <br /></Admonition>
 
 
 #### Implementation Permissions
 
 <MarginText>25/2</MarginText>
-<MarginInfo items={["AI95-00286-01"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />Assertion_Error may be declared by renaming an implementation-defined exception from another package. <br /></p>
+<MarginInfo items={["AI95-00286-01"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />Assertion_Error may be declared by renaming an implementation-defined exception from another package. <br /></p>
 
 <MarginText>25.a/2</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>This permission is intended to allow implementations which had an implementation-defined Assert pragma to continue to use their originally defined exception. Without this permission, such an implementation would be incorrect, as Exception_Name would return the wrong name. <br /></Admonition>
 
 <MarginText>26/2</MarginText>
-<MarginInfo items={["AI95-00286-01"]} /><p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />Implementations may define their own assertion policies.<br /></p>
+<MarginInfo items={["AI95-00286-01"]} />
+<p>{"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />Implementations may define their own assertion policies.<br /></p>
 
 <MarginText>27/5</MarginText>
-<MarginInfo items={["AI05-0274-1", "AI12-0445-1"]} /><p>{"{"}<em>{"AI05-0274-1"}</em>{"}"} {"{"}<em>{"AI12-0445-1"}</em>{"}"} <br />If the result of a function call in an assertion is not used  to determine the value of the assertion expression, an implementation is permitted to omit the function call. [This permission applies even if the function has side effects.]<br /></p>
+<MarginInfo items={["AI05-0274-1", "AI12-0445-1"]} />
+<p>{"{"}<em>{"AI05-0274-1"}</em>{"}"} {"{"}<em>{"AI12-0445-1"}</em>{"}"} <br />If the result of a function call in an assertion is not used  to determine the value of the assertion expression, an implementation is permitted to omit the function call. [This permission applies even if the function has side effects.]<br /></p>
 
 <MarginText>28/5</MarginText>
-<MarginInfo items={["AI05-0274-1", "AI12-0444-1"]} /><p>{"{"}<em>{"AI05-0274-1"}</em>{"}"} {"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />An implementation may disallow  the specification of an assertion expression if the evaluation of the expression has a side effect such that an immediate reevaluation of the expression can  produce a different value. Similarly, an implementation may disallow  the specification of an assertion expression that is checked as part of a call on or return from a callable entity <em>C</em>, if the evaluation of the expression has a side effect such that the evaluation of some other assertion expression associated with the same call of (or return from) <em>C</em> can  produce a different value than in the case when  the first expression had not been evaluated. <br /></p>
+<MarginInfo items={["AI05-0274-1", "AI12-0444-1"]} />
+<p>{"{"}<em>{"AI05-0274-1"}</em>{"}"} {"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />An implementation may disallow  the specification of an assertion expression if the evaluation of the expression has a side effect such that an immediate reevaluation of the expression can  produce a different value. Similarly, an implementation may disallow  the specification of an assertion expression that is checked as part of a call on or return from a callable entity <em>C</em>, if the evaluation of the expression has a side effect such that the evaluation of some other assertion expression associated with the same call of (or return from) <em>C</em> can  produce a different value than in the case when  the first expression had not been evaluated. <br /></p>
 
 <MarginText>28.a/3</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -688,51 +753,60 @@ The rule is intended to apply to all of the assertion expressions that are evalu
 #### Language Design Principles
 
 <MarginText>28.d/4</MarginText>
-<MarginInfo items={["AI12-0005-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0005-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />Our intent is that any assertion expression that violates this Implementation Permission is considered pathological. We definitely want compilers to be able to assume that if you evaluate an assertion expression once and it is True, you don't need to evaluate it again if all you are doing in the meantime is evaluating assertion expressions. We were unable to find wording that had this effect that didn't throw out important other cases (logging, memo functions), so we settled for a strong warning that compilers can reject such pathologies. Perhaps in a future version of Ada we'll be able to tighten this up. <br /></Admonition>
 
 <MarginText>29/5</MarginText>
-<MarginInfo items={["AI95-00286-01", "AI12-0442-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00286-01", "AI12-0442-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   {"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI12-0442-1"}</em>{"}"} <br />Normally, the boolean expression in a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert does  not call functions that have significant side effects when the result of the expression is True, so that the particular assertion policy in effect will not affect normal operation of the program. <br /></Admonition>
 
 
 #### Extensions to Ada 95
 
 <MarginText>29.a/2</MarginText>
-<MarginInfo items={["AI95-00286-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00286-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00286-01"}</em>{"}"} <br />Pragmas Assert and Assertion_Policy, and package Assertions are new. <br /></Admonition>
 
 
 #### Incompatibilities With Ada 2005
 
 <MarginText>29.b/3</MarginText>
-<MarginInfo items={["AI05-0274-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI05-0274-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0274-1"}</em>{"}"} <br />There now is an Implementation Permission to reject an assertion expression that calls a function that has a side effect such that an immediate reevalution of the expression could produce a different value. This means that a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert that works in Ada 2005 might be illegal in Ada 2012 in the unlikely event that the compiler detected such an error. This should be unlikely to occur in practice and it is considered a good thing, as the original expression was tricky and probably was not portable (as order of evaluation is unspecified within an expression). Moreover, no compiler is <em>required</em> to reject such expressions, so there is no need for any compiler to change behavior. <br /></Admonition>
 
 
 #### Extensions to Ada 2005
 
 <MarginText>29.c/3</MarginText>
-<MarginInfo items={["AI05-0290-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI05-0290-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0290-1"}</em>{"}"} <br />Assertion_Policy pragmas are now allowed in more places and can specify behavior for individual kinds of assertions. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
 <MarginText>29.d/5</MarginText>
-<MarginInfo items={["AI12-0112-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0112-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0112-1"}</em>{"}"} <br />Added wording that preconditions and predicates given on language-defined units are always checked unless suppressed (that is, they act like language-defined checks). This is not considered an inconsistency, since there are no such preconditions or predicates in Ada 2012.<br /></Admonition>
 
 <MarginText>29.e/5</MarginText>
-<MarginInfo items={["AI12-0179-1", "AI12-0265-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI12-0179-1", "AI12-0265-1"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI12-0179-1"}</em>{"}"} {"{"}<em>{"AI12-0265-1"}</em>{"}"} <strong><br /></strong> Added wording that postconditions, type invariants, and default initial conditions given on language-defined units cannot fail. This is not considered an inconsistency, since there are no such postconditions, invariants, or default initial conditions in Ada 2012.<br /></Admonition>
 
 <MarginText>29.f/5</MarginText>
-<MarginInfo items={["AI12-0265-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0265-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0265-1"}</em>{"}"} <br />Added default initial conditions to the kinds of assertions (see <a href="../AA-7/AA-7.3#Subclause_7.3.3">7.3.3</a>).<br /></Admonition>
 
 <MarginText>29.g/5</MarginText>
-<MarginInfo items={["AI12-0396-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI12-0396-1"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI12-0396-1"}</em>{"}"} <strong><br /></strong> Added a definition of assertion aspects, used in some freezing rules (see <a href="../AA-13/AA-13.14">13.14</a>). <br /></Admonition>
 
 <a id="Subclause_11.4.3"></a>
@@ -743,34 +817,41 @@ NOTE 1   {"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI12-0442-1"}</em>{"}"}
 #### Examples
 
 <MarginText>1/5</MarginText>
-<MarginInfo items={["AI12-0440-1"]} /><p>{"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />Exception handling can  be used to separate the detection of an error from the response to that error: <br /></p>
+<MarginInfo items={["AI12-0440-1"]} />
+<p>{"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />Exception handling can  be used to separate the detection of an error from the response to that error: <br /></p>
 
 <MarginText>2/5</MarginText>
-<MarginInfo items={["AI95-00433-01", "AI12-0178-1"]} /><CodeBlock language="ada">
+<MarginInfo items={["AI95-00433-01", "AI12-0178-1"]} />
+<CodeBlock language="ada">
 --  {"{"}{"AI95-00433-01"}{"}"}{"\n"} --  {"{"}{"AI12-0178-1"}{"}"}{"\n"} package File_System is{"\n"}    type Data_Type is ...;{"\n"}    type File_Handle is limited private;{"\n"}
 <MarginText>3</MarginText>
     File_Not_Found : exception;{"\n"}    procedure Open(F : in out File_Handle; Name : String);{"\n"}        -- raises File_Not_Found if named file does not exist{"\n"}
 <MarginText>4</MarginText>
     End_Of_File : exception;{"\n"}    procedure Read(F : in out File_Handle; Data : out Data_Type);{"\n"}        -- raises End_Of_File if the file is not open{"\n"}
 <MarginText>5/5</MarginText>
-<MarginInfo items={["AI12-0178-1"]} />--  {"{"}{"AI12-0178-1"}{"}"}{"\n"}     ...{"\n"}private{"\n"}    ...{"\n"}end File_System;{"\n"}
+<MarginInfo items={["AI12-0178-1"]} />
+--  {"{"}{"AI12-0178-1"}{"}"}{"\n"}     ...{"\n"}private{"\n"}    ...{"\n"}end File_System;{"\n"}
 
 </CodeBlock>
 <MarginText>5.a/5</MarginText>
-<MarginInfo items={["AI12-0178-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginInfo items={["AI12-0178-1"]} />
+<Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI12-0178-1"}</em>{"}"} <br />The first ... provides a place for Close to be declared, and the second ... provides a place for File_Handle to be completed. <br /></Admonition>
 
 <MarginText>5.1/5</MarginText>
-<MarginInfo items={["AI12-0178-1"]} /><CodeBlock language="ada">
+<MarginInfo items={["AI12-0178-1"]} />
+<CodeBlock language="ada">
 --  {"{"}{"AI12-0178-1"}{"}"}{"\n"} package body File_System is{"\n"}    ...{"\n"}
 
 </CodeBlock>
 <MarginText>5.b/5</MarginText>
-<MarginInfo items={["AI12-0178-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginInfo items={["AI12-0178-1"]} />
+<Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI12-0178-1"}</em>{"}"} <br />This ... provides a place for File_Exists and the body of Close to be declared. <br /></Admonition>
 
 <MarginText>6/5</MarginText>
-<MarginInfo items={["AI95-00433-01", "AI12-0178-1"]} /><CodeBlock language="ada">
+<MarginInfo items={["AI95-00433-01", "AI12-0178-1"]} />
+<CodeBlock language="ada">
 --  {"{"}{"AI95-00433-01"}{"}"}{"\n"} --  {"{"}{"AI12-0178-1"}{"}"}{"\n"}  {"\n"}    procedure Open(F : in out File_Handle; Name : String) is{"\n"}    begin{"\n"}        if File_Exists(Name) then{"\n"}            ...{"\n"}        else{"\n"}            raise File_Not_Found with "File not found: " & Name & ".";{"\n"}        end if;{"\n"}    end Open;{"\n"}
 <MarginText>7</MarginText>
     procedure Read(F : in out File_Handle; Data : out Data_Type) is{"\n"}    begin{"\n"}        if F.Current_Position {"<"}= F.Last_Position then{"\n"}            ...{"\n"}        else{"\n"}            raise End_Of_File;{"\n"}        end if;{"\n"}    end Read;{"\n"}
@@ -779,16 +860,19 @@ NOTE 1   {"{"}<em>{"AI95-00286-01"}</em>{"}"} {"{"}<em>{"AI12-0442-1"}</em>{"}"}
 <MarginText>9</MarginText>
 end File_System;{"\n"}
 <MarginText>10/5</MarginText>
-<MarginInfo items={["AI12-0178-1"]} />--  {"{"}{"AI12-0178-1"}{"}"}{"\n"} with Ada.Text_IO;{"\n"}with Ada.Exceptions;{"\n"}with File_System; use File_System;{"\n"}use Ada;{"\n"}procedure Main is{"\n"}    Verbosity_Desired : Boolean := ...;{"\n"}begin{"\n"}    ... -- call operations in File_System{"\n"}exception{"\n"}    when End_Of_File ={">"}{"\n"}        Close(Some_File);{"\n"}    when Not_Found_Error : File_Not_Found ={">"}{"\n"}        Text_IO.Put_Line(Exceptions.Exception_Message(Not_Found_Error));{"\n"}    when The_Error : others ={">"}{"\n"}        Text_IO.Put_Line("Unknown error:");{"\n"}        if Verbosity_Desired then{"\n"}            Text_IO.Put_Line(Exceptions.Exception_Information(The_Error));{"\n"}        else{"\n"}            Text_IO.Put_Line(Exceptions.Exception_Name(The_Error));{"\n"}            Text_IO.Put_Line(Exceptions.Exception_Message(The_Error));{"\n"}        end if;{"\n"}        raise;{"\n"}end Main;{"\n"}
+<MarginInfo items={["AI12-0178-1"]} />
+--  {"{"}{"AI12-0178-1"}{"}"}{"\n"} with Ada.Text_IO;{"\n"}with Ada.Exceptions;{"\n"}with File_System; use File_System;{"\n"}use Ada;{"\n"}procedure Main is{"\n"}    Verbosity_Desired : Boolean := ...;{"\n"}begin{"\n"}    ... -- call operations in File_System{"\n"}exception{"\n"}    when End_Of_File ={">"}{"\n"}        Close(Some_File);{"\n"}    when Not_Found_Error : File_Not_Found ={">"}{"\n"}        Text_IO.Put_Line(Exceptions.Exception_Message(Not_Found_Error));{"\n"}    when The_Error : others ={">"}{"\n"}        Text_IO.Put_Line("Unknown error:");{"\n"}        if Verbosity_Desired then{"\n"}            Text_IO.Put_Line(Exceptions.Exception_Information(The_Error));{"\n"}        else{"\n"}            Text_IO.Put_Line(Exceptions.Exception_Name(The_Error));{"\n"}            Text_IO.Put_Line(Exceptions.Exception_Message(The_Error));{"\n"}        end if;{"\n"}        raise;{"\n"}end Main;{"\n"}
 
 </CodeBlock>
 <MarginText>11/5</MarginText>
-<MarginInfo items={["AI12-0440-1"]} /><p>{"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />In the above example, the File_System package contains information about detecting certain exceptional situations, but it does not specify how to handle those situations. Procedure Main specifies how to handle them; other clients of File_System can  have different handlers, even though the exceptional situations arise from the same basic causes. <br /></p>
+<MarginInfo items={["AI12-0440-1"]} />
+<p>{"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />In the above example, the File_System package contains information about detecting certain exceptional situations, but it does not specify how to handle those situations. Procedure Main specifies how to handle them; other clients of File_System can  have different handlers, even though the exceptional situations arise from the same basic causes. <br /></p>
 
 
 #### Wording Changes from Ada 83
 
 <MarginText>11.a/3</MarginText>
-<MarginInfo items={["AI05-0299-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI05-0299-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />The sections labeled &ldquo;Exceptions Raised During ...&rdquo; are subsumed by this subclause, and by parts of Clause <a href="../AA-9/">9</a>. <br /></Admonition>
 

@@ -29,6 +29,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 
 <MarginText>3/5</MarginText>
 <MarginInfo items={["AI12-0127-1", "AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>aggregate</code><a id="S0106"></a><code> ::= </code><br />    <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> | <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> | <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code><br />  | <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> | <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code><br />
 
@@ -37,25 +38,29 @@ import MarginInfo from "@site/src/components/MarginInfo";
 #### Name Resolution Rules
 
 <MarginText>4/5</MarginText>
-<MarginInfo items={["AI95-00287-01", "AI12-0127-1", "AI12-0212-1", "AI12-0307-1"]} /><p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0307-1"}</em>{"}"} <br />The expected type for an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> shall be a single array type, a single type with the Aggregate aspect specified, or a single descendant of a record type  or of a record extension. <br /></p>
+<MarginInfo items={["AI95-00287-01", "AI12-0127-1", "AI12-0212-1", "AI12-0307-1"]} />
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0307-1"}</em>{"}"} <br />The expected type for an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> shall be a single array type, a single type with the Aggregate aspect specified, or a single descendant of a record type  or of a record extension. <br /></p>
 
 <MarginText>4.a</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>See <a href="../AA-8/AA-8.6">8.6</a>, &ldquo;<a href="../AA-8/AA-8.6">The Context of Overload Resolution</a>&rdquo; for the meaning of &ldquo;shall be a single ... type&rdquo;. <br /></Admonition>
 
 <MarginText>4.b/3</MarginText>
-<MarginInfo items={["AI05-0005-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginInfo items={["AI05-0005-1"]} />
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />There are additional rules for each kind of aggregate. These aggregate rules are additive; a legal expression needs to satisfy all of the applicable rules. That means the rule given here must be satisfied even when it is syntactically possible to tell which specific kind of aggregate is being used. <br /></Admonition>
 
 <MarginText>4.c/5</MarginText>
-<MarginInfo items={["AI12-0005-1", "AI12-0127-1", "AI12-0212-1", "AI12-0307-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginInfo items={["AI12-0005-1", "AI12-0127-1", "AI12-0212-1", "AI12-0307-1"]} />
+<Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0307-1"}</em>{"}"} <br />Generally, we don't want to look in <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s to resolve them. For instance, Ada 95 allowed array types to match <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>s, even though those have to be record types. Thus, we allow any record type with any visible (nondiscriminant) components to match an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>, even though only <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>s allow private types or private extensions. Similarly, we allow any container type to match an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>, even though only <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code>s allow container types. <br /></Admonition>
 
 
 #### Legality Rules
 
 <MarginText>5/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> or <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>  shall not be of a class-wide type. <br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> or <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>  shall not be of a class-wide type. <br /></p>
 
 <MarginText>5.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -66,7 +71,8 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <strong></strong>We used to disallow <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s of a type with unknown discriminants. However, that was unnecessarily restrictive in the case of an extension aggregate, and irrelevant to a record aggregate (since a type that is legal for a record aggregate could not possibly have unknown discriminants) and to an array aggregate (the only specific types that can have unknown discriminants are private types, private extensions, and types derived from them). <br /></Admonition>
 
 <MarginText>5.c/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginInfo items={["AI12-0127-1"]} />
+<Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />We don't mention <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>s, as those can get the specific type from the object represented by the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> (possibly at run time). We don't mention <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>s, as those cannot even be of a tagged type, so being class-wide is impossible. <br /></Admonition>
 
 
@@ -116,7 +122,8 @@ An <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> now creates an anon
 #### Incompatibilities With Ada 95
 
 <MarginText>7.e/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00287-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />In Ada 95, a limited type is not considered when resolving an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>. Since Ada 2005 now allows limited <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s, we can have incompatibilities. For example: <br /></Admonition>
 
 <MarginText>7.f/2</MarginText>
@@ -138,14 +145,16 @@ The call to P is ambiguous in Ada 2005, while it would not be ambiguous in Ada 9
 #### Extensions to Ada 95
 
 <MarginText>7.k/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00287-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00287-01"}</em>{"}"} <br /><code><a href="../AA-4/AA-4.3#S0106">Aggregate</a></code>s can be of a limited type. <br /></Admonition>
 
 
 #### Incompatibilities With Ada 2012
 
 <MarginText>7.l/5</MarginText>
-<MarginInfo items={["AI12-0005-1", "AI12-0127-1", "AI12-0212-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0005-1", "AI12-0127-1", "AI12-0212-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0005-1"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />We now allow types with the Aggregate aspect specified ("container types"), as well as private types and extensions descended from a record type or extension, to match all forms of <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>. These types are only allowed for new types of <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> (<code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code>s for the Aggregate aspect, and <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>s for private types), but, consistent with other forms of <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>, we do not look at the form of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> to determine resolution. This can be incompatible in usually unlikely cases, where overloading of a container or private type with a type that was previously allowed in <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s makes an existing call ambiguous. Unfortunately, Ada.Containers.Vectors has a number of such overloadings for Insert, Append, Prepend, and "&", so the problem may appear for any element type of a Vector that allows aggregates. For instance, if My_Vector is an instance of Ada.Containers.Vectors with an element type of Not_Lim as defined above, and V is an object of My_Vector.Vector, then My_Vector.Append (V, (Comp ={">"} 123)); will be illegal in Ada 2022 and legal in Ada 2012. This can easily be fixed by qualifying the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> with the correct type. <br /></Admonition>
 
 <a id="Subclause_4.3.1"></a>
@@ -172,12 +181,14 @@ The call to P is ambiguous in Ada 2005, while it would not be ambiguous in Ada 9
 </CodeBlock>
 <MarginText>4/2</MarginText>
 <MarginInfo items={["AI95-00287-01"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI95-00287-01"}</em>{"}"} <br /><code>record_component_association</code><a id="S0109"></a><code> ::= </code><br />    [<code><a href="../AA-4/AA-4.3#S0110">component_choice_list</a></code> ={">"}] <code><a href="../AA-4/AA-4.4#S0132">expression</a></code><br />   | <code><a href="../AA-4/AA-4.3#S0110">component_choice_list</a></code> ={">"} {"<"}{">"}<br />
 
 </CodeBlock>
 <MarginText>5/5</MarginText>
 <MarginInfo items={["AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>component_choice_list</code><a id="S0110"></a><code> ::= </code><br />     <em>component_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> {"{"}'|'  <em>component_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>{"}"}<br />   | <strong>others</strong><br />
 
@@ -193,7 +204,8 @@ The call to P is ambiguous in Ada 2005, while it would not be ambiguous in Ada 9
 <p>In the <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code> for a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code>, if there is only one association, it shall be a named association. <br /></p>
 
 <MarginText>7.a/3</MarginText>
-<MarginInfo items={["AI05-0264-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginInfo items={["AI05-0264-1"]} />
+<Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI05-0264-1"}</em>{"}"} <br />Otherwise, the construct would be interpreted as a parenthesized expression. This is considered a syntax rule, since it is relevant to overload resolution. We choose not to express it with BNF so we can share the definition of <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code> in both <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> and <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>. <br /></Admonition>
 
 <MarginText>7.b</MarginText>
@@ -204,14 +216,16 @@ The call to P is ambiguous in Ada 2005, while it would not be ambiguous in Ada 9
 #### Name Resolution Rules
 
 <MarginText>8/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />The expected type for a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> shall be a single record type or record extension. <br /></p>
+<MarginInfo items={["AI95-00287-01"]} />
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />The expected type for a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> shall be a single record type or record extension. <br /></p>
 
 <MarginText>8.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>This rule is used to resolve whether an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> is an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> or a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code>. The presence of a <strong>with</strong> is used to resolve between a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> and an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>. <br /></Admonition>
 
 <MarginText>9/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For the <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code> of a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code>, all components of the composite value defined by the aggregate are <em>needed</em>[; for the association list of an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, only those components not determined by the ancestor expression or subtype are needed (see <a href="../AA-4/AA-4.3#Subclause_4.3.2">4.3.2</a>).] Each <em>component_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>  in a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> of a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> or <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> shall denote a needed component [(including possibly a discriminant)]. Each <em>component_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> in a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> of a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> (see <a href="../AA-4/AA-4.3#Subclause_4.3.4">4.3.4</a>) shall denote a nondiscriminant component of the type of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>.<br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For the <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code> of a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code>, all components of the composite value defined by the aggregate are <em>needed</em>[; for the association list of an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, only those components not determined by the ancestor expression or subtype are needed (see <a href="../AA-4/AA-4.3#Subclause_4.3.2">4.3.2</a>).] Each <em>component_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>  in a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> of a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> or <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> shall denote a needed component [(including possibly a discriminant)]. Each <em>component_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> in a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> of a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> (see <a href="../AA-4/AA-4.3#Subclause_4.3.4">4.3.4</a>) shall denote a nondiscriminant component of the type of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>.<br /></p>
 
 <MarginText>9.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -238,7 +252,8 @@ If an extension defines a new <code><a href="../AA-3/AA-3.7#S0061">known_discrim
 <strong></strong>This means that for an association list of an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, only noninherited components are counted to determine the position.<br /></Admonition>
 
 <MarginText>12.b/3</MarginText>
-<MarginInfo items={["AI05-0005-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI05-0005-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />For a derived type (including type extensions), the order of declaration is defined in <a href="../AA-3/AA-3.4">3.4</a>, &ldquo;<a href="../AA-3/AA-3.4">Derived Types and Classes</a>&rdquo;. In particular, all discriminants come first, regardless of whether they are defined for the parent type or are newly added to the derived type. <br /></Admonition>
 
 <MarginText>13</MarginText>
@@ -254,29 +269,35 @@ If an extension defines a new <code><a href="../AA-3/AA-3.7#S0061">known_discrim
 <p>If the type of a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> is a record extension, then it shall be a descendant of a record type, through one or more record extensions (and no private extensions).<br /></p>
 
 <MarginText>16/5</MarginText>
-<MarginInfo items={["AI05-0016-1", "AI12-0127-1"]} /><p>{"{"}<em>{"AI05-0016-1"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code> shall be  <strong>null record</strong> only if the list occurs in a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> or <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, and  there are no components needed for that list .<br /></p>
+<MarginInfo items={["AI05-0016-1", "AI12-0127-1"]} />
+<p>{"{"}<em>{"AI05-0016-1"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code> shall be  <strong>null record</strong> only if the list occurs in a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> or <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, and  there are no components needed for that list .<br /></p>
 
 <MarginText>16.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>For example, "(<strong>null record</strong>)" is a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> for a null record type. Similarly, "(T'(A) <strong>with null record</strong>)" is an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> for a type defined as a null record extension of T.<br /></Admonition>
 
 <MarginText>16.b/3</MarginText>
-<MarginInfo items={["AI05-0016-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI05-0016-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0016-1"}</em>{"}"} <br />If no components are needed and <strong>null record</strong> is not used, the <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> must necessarily be <strong>others</strong> ={">"} {"<"}{">"}, as that is the only <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> that does not require an associated component. <br /></Admonition>
 
 <MarginText>17/5</MarginText>
-<MarginInfo items={["AI95-00287-01", "AI05-0199-1", "AI12-0046-1", "AI12-0127-1"]} /><p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI05-0199-1"}</em>{"}"} {"{"}<em>{"AI12-0046-1"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> or <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, each  <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> other than an <strong>others</strong> choice with a {"<"}{">"} shall have at least one associated component, and each needed component shall be associated with exactly one <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code>. For a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code>, each <em>component_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> of each <code><a href="../AA-4/AA-4.3#S0110">component_choice_list</a></code> shall denote a distinct nondiscriminant component of the type of the aggregate. <br /></p>
+<MarginInfo items={["AI95-00287-01", "AI05-0199-1", "AI12-0046-1", "AI12-0127-1"]} />
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI05-0199-1"}</em>{"}"} {"{"}<em>{"AI12-0046-1"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> or <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, each  <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> other than an <strong>others</strong> choice with a {"<"}{">"} shall have at least one associated component, and each needed component shall be associated with exactly one <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code>. For a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code>, each <em>component_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> of each <code><a href="../AA-4/AA-4.3#S0110">component_choice_list</a></code> shall denote a distinct nondiscriminant component of the type of the aggregate. <br /></p>
 
 <MarginText>17.a/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginInfo items={["AI95-00287-01"]} />
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />These rules apply to an association with an <strong>others</strong> choice with an expression. An <strong>others</strong> choice with a {"<"}{">"} can match zero components or several components with different types. <br /></Admonition>
 
 <MarginText>17.b/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginInfo items={["AI95-00287-01"]} />
+<Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />Without these rules, there would be no way to know what was the expected type for the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of the association. Note that some of the rules do not apply to {"<"}{">"} associations, as we do not need to resolve anything. We allow <strong>others</strong> ={">"} {"<"}{">"} to match no components as this is similar to array aggregates. That means that (<strong>others</strong> ={">"} {"<"}{">"}) always represents a default-initialized record or array value. <br /></Admonition>
 
 <MarginText>17.c/4</MarginText>
-<MarginInfo items={["AI12-0046-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0046-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em>{"{"}<em>{"AI12-0046-1"}</em>{"}"} <br /></Admonition>
 
 <MarginText>17.d</MarginText>
@@ -288,10 +309,12 @@ If an extension defines a new <code><a href="../AA-3/AA-3.7#S0061">known_discrim
 The second part of the first sentence ensures that no needed components are left out, nor specified twice. <br /></Admonition>
 
 <MarginText>17.1/5</MarginText>
-<MarginInfo items={["AI12-0046-1", "AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0046-1"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />If a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> with an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> has two or more associated components, all of them shall be of the same type, or all of them shall be of anonymous access types whose subtypes statically match. In addition, Legality Rules are enforced separately for each associated component.<br /></p>
+<MarginInfo items={["AI12-0046-1", "AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0046-1"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />If a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> with an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> has two or more associated components, all of them shall be of the same type, or all of them shall be of anonymous access types whose subtypes statically match. In addition, Legality Rules are enforced separately for each associated component.<br /></p>
 
 <MarginText>17.f/4</MarginText>
-<MarginInfo items={["AI12-0046-1"]} /><Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<MarginInfo items={["AI12-0046-1"]} />
+<Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>{"{"}<em>{"AI12-0046-1"}</em>{"}"} <br />AI83-00244 also requires that the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> shall be legal for each associated component. Ada 95 omitted this wording, as it was thought that all cases of difference had been eliminated. That probably was true, but Ada 2005 reintroduced cases where the types match but the legality differs. For example:<br /></Admonition>
 
 <MarginText>17.g/4</MarginText>
@@ -306,28 +329,33 @@ begin{"\n"}   declare{"\n"}      X : aliased Integer;{"\n"}      R : Rec := (D |
 There are additional ways for this to happen; because of cases like the above we require that the Legality Rules are checked individually for each associated component. <br /></Admonition>
 
 <MarginText>18/5</MarginText>
-<MarginInfo items={["AI05-0220-1", "AI12-0086-1", "AI12-0127-1"]} /><p>{"{"}<em>{"AI05-0220-1"}</em>{"}"} {"{"}<em>{"AI12-0086-1"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> or <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, if a <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code> <em>P</em> is nested within a <code><a href="../AA-3/AA-3.8#S0072">variant</a></code> <em>V</em> that is not selected by the discriminant value governing the <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code> enclosing <em>V</em>, then there is no restriction on the discriminant governing <em>P</em>. Otherwise, the value of the  discriminant that governs  <em>P</em> shall be given by a static expression, or by a nonstatic expression having a constrained static nominal subtype. In this latter case of a nonstatic expression, there shall be exactly one <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code> of <em>P</em> that covers each value that belongs to the nominal subtype and satisfies the predicates of the subtype, and there shall be at least one such value.  <br /></p>
+<MarginInfo items={["AI05-0220-1", "AI12-0086-1", "AI12-0127-1"]} />
+<p>{"{"}<em>{"AI05-0220-1"}</em>{"}"} {"{"}<em>{"AI12-0086-1"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> or <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, if a <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code> <em>P</em> is nested within a <code><a href="../AA-3/AA-3.8#S0072">variant</a></code> <em>V</em> that is not selected by the discriminant value governing the <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code> enclosing <em>V</em>, then there is no restriction on the discriminant governing <em>P</em>. Otherwise, the value of the  discriminant that governs  <em>P</em> shall be given by a static expression, or by a nonstatic expression having a constrained static nominal subtype. In this latter case of a nonstatic expression, there shall be exactly one <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code> of <em>P</em> that covers each value that belongs to the nominal subtype and satisfies the predicates of the subtype, and there shall be at least one such value.  <br /></p>
 
 <MarginText>18.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>This expression might either be given within the aggregate itself, or in a constraint on the parent subtype in a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> for some ancestor of the type of the aggregate.<br /></Admonition>
 
 <MarginText>18.a.1/5</MarginText>
-<MarginInfo items={["AI12-0086-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0086-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0086-1"}</em>{"}"} <br />This means that in the nonstatic value case, the (static) subtype cannot have a null range. <br /></Admonition>
 
 <MarginText>18.1/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> for a discriminant without a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> shall have an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> rather than {"<"}{">"}. <br /></p>
+<MarginInfo items={["AI95-00287-01"]} />
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> for a discriminant without a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> shall have an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> rather than {"<"}{">"}. <br /></p>
 
 <MarginText>18.b/2</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>A discriminant must always have a defined value, but {"<"}{">"} means uninitialized for a discrete type unless the component has a default value. <br /></Admonition>
 
 <MarginText>18.2/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> of the <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code> of a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> shall not:<br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> of the <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code> of a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> shall not:<br /></p>
 
 <MarginText>18.3/5</MarginText>
-<MarginInfo items={["AI12-0418-1"]} /><ul>
+<MarginInfo items={["AI12-0418-1"]} />
+<ul>
 <li>{"{"}<em>{"AI12-0418-1"}</em>{"}"} <br />use the box compound delimiter {"<"}{">"} rather than an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>;<br /></li>
 <MarginText>18.4/5</MarginText>
 <li>have an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a limited type;<br /></li>
@@ -335,7 +363,8 @@ There are additional ways for this to happen; because of cases like the above we
 <li>omit the <code><a href="../AA-4/AA-4.3#S0110">component_choice_list</a></code>; or<br /></li>
 </ul>
 <MarginText>18.c/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginInfo items={["AI12-0127-1"]} />
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> cannot use positional notation; all choices shall be named choices. <br /></Admonition>
 
 <MarginText>18.6/5</MarginText>
@@ -343,7 +372,8 @@ There are additional ways for this to happen; because of cases like the above we
 <li>have a <code><a href="../AA-4/AA-4.3#S0110">component_choice_list</a></code> that is an <strong>others</strong> choice. <br /></li>
 </ul>
 <MarginText>18.7/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code>, no two <em>component_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>s shall denote components declared within different <code><a href="../AA-3/AA-3.8#S0072">variant</a></code>s of the same <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code>.<br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code>, no two <em>component_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>s shall denote components declared within different <code><a href="../AA-3/AA-3.8#S0072">variant</a></code>s of the same <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code>.<br /></p>
 
 
 #### Dynamic Semantics
@@ -352,7 +382,8 @@ There are additional ways for this to happen; because of cases like the above we
 <p>The evaluation of a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> consists of the evaluation of the <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code>.<br /></p>
 
 <MarginText>20/5</MarginText>
-<MarginInfo items={["AI12-0086-1"]} /><p>{"{"}<em>{"AI12-0086-1"}</em>{"}"} <br />For the evaluation of a <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code>, any per-object constraints (see <a href="../AA-3/AA-3.8">3.8</a>) for components specified in the association list are elaborated and any <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s are evaluated and converted to the subtype of the associated component. Any constraint elaborations and <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> evaluations (and conversions) occur in an arbitrary order, except that the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> for a discriminant is evaluated (and converted) prior to the elaboration of any per-object constraint that depends on it, which in turn occurs prior to the evaluation and conversion of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> for the component with the per-object constraint. If the value of a discriminant that governs a selected <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code>  <em>P</em> is given by a nonstatic <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, and the evaluation of that <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> yields a value that does not belong to the nominal subtype of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, then Constraint_Error is raised.<br /></p>
+<MarginInfo items={["AI12-0086-1"]} />
+<p>{"{"}<em>{"AI12-0086-1"}</em>{"}"} <br />For the evaluation of a <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code>, any per-object constraints (see <a href="../AA-3/AA-3.8">3.8</a>) for components specified in the association list are elaborated and any <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s are evaluated and converted to the subtype of the associated component. Any constraint elaborations and <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> evaluations (and conversions) occur in an arbitrary order, except that the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> for a discriminant is evaluated (and converted) prior to the elaboration of any per-object constraint that depends on it, which in turn occurs prior to the evaluation and conversion of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> for the component with the per-object constraint. If the value of a discriminant that governs a selected <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code>  <em>P</em> is given by a nonstatic <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, and the evaluation of that <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> yields a value that does not belong to the nominal subtype of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, then Constraint_Error is raised.<br /></p>
 
 <MarginText>20.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -363,17 +394,20 @@ There are additional ways for this to happen; because of cases like the above we
 <strong></strong>This check in the first rule presumably happened as part of the dependent compatibility check in Ada 83. <br /></Admonition>
 
 <MarginText>20.c/5</MarginText>
-<MarginInfo items={["AI12-0086-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginInfo items={["AI12-0086-1"]} />
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI12-0086-1"}</em>{"}"} <br />The test on the value of the discriminant can only fail if the value is outside the base range of its type, does not satisfy the (static) predicates of the subtype (possible when the predicate is disabled), or is an invalid representation. This is a rule similar to that used for case statements. As with case statements, this is not a &ldquo;check&rdquo;; it cannot be Suppressed. <br /></Admonition>
 
 <MarginText>20.1/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> with an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> defines the value for the associated component(s). For a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> with {"<"}{">"}, if the <code><a href="../AA-3/AA-3.8#S0070">component_declaration</a></code> has a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>, that <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> defines the value for the associated component(s); otherwise, the associated component(s) are initialized by default as for a stand-alone object of the component subtype (see <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>).<br /></p>
+<MarginInfo items={["AI95-00287-01"]} />
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> with an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> defines the value for the associated component(s). For a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> with {"<"}{">"}, if the <code><a href="../AA-3/AA-3.8#S0070">component_declaration</a></code> has a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>, that <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> defines the value for the associated component(s); otherwise, the associated component(s) are initialized by default as for a stand-alone object of the component subtype (see <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>).<br /></p>
 
 <MarginText>21</MarginText>
 <p>The <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> is evaluated (and converted) once for each associated component.<br /></p>
 
 <MarginText>21.a/3</MarginText>
-<MarginInfo items={["AI05-0005-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginInfo items={["AI05-0005-1"]} />
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />We don't need similar language for {"<"}{">"}, as we're considering the value of {"<"}{">"} for each individual component. Each component has its own default expression or its own default initialization (they can be different for each component; the components even could have different types), and each one has to be evaluated. So there is no need to repeat that. <br /></Admonition>
 
 <MarginText>22</MarginText>
@@ -402,7 +436,8 @@ NOTE 1   For a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code> 
 
 </CodeBlock>
 <MarginText>28/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <em><br />Examples of component associations with several choices:</em> <br /></p>
+<MarginInfo items={["AI95-00287-01"]} />
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <em><br />Examples of component associations with several choices:</em> <br /></p>
 
 <MarginText>29</MarginText>
 <CodeBlock language="ada">
@@ -441,50 +476,58 @@ Various AIs have been incorporated (AI83-00189, AI83-00244, and AI83-00309). In 
 #### Extensions to Ada 95
 
 <MarginText>32.c/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00287-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />{"<"}{">"} can be used in place of an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in a <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code>, default initializing the component. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
 <MarginText>32.d/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00287-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />Limited <code><a href="../AA-4/AA-4.3#S0107">record_aggregate</a></code>s are allowed (since all kinds of aggregates can now be limited, see <a href="../AA-4/AA-4.3">4.3</a>). <br /></Admonition>
 
 
 #### Incompatibilities With Ada 2005
 
 <MarginText>32.e/3</MarginText>
-<MarginInfo items={["AI05-0220-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI05-0220-1"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0220-1"}</em>{"}"} <strong><br /></strong> Corrected wording so that the rule for discriminants governing <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code>s was not effectively circular. The change makes a few <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s where a nonstatic discriminant governs an empty <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code> illegal. However, most Ada implementations already enforce some version of the new rule and already reject these <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s. So it is unlikely that any incompatibility will be noticed in practice. <br /></Admonition>
 
 
 #### Extensions to Ada 2005
 
 <MarginText>32.f/3</MarginText>
-<MarginInfo items={["AI05-0016-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI05-0016-1"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0016-1"}</em>{"}"} <strong><br /></strong> Fixed the wording so that <strong>others</strong> ={">"} {"<"}{">"} can be used in place of <strong>null record</strong>. This is needed to avoid a generic contract issue for generic bodies: we do not want to have to assume the worst to disallow <strong>others</strong> ={">"} {"<"}{">"} if the record type <em>might</em> be a null record.<br /></Admonition>
 
 <MarginText>32.g/3</MarginText>
-<MarginInfo items={["AI05-0199-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI05-0199-1"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0199-1"}</em>{"}"} <strong><br /></strong> We now allow multiple components with anonymous access types to be specified with a single component association. This is to be consistent with the capabilities of a named access type. <br /></Admonition>
 
 
 #### Extensions to Ada 2012
 
 <MarginText>32.h/5</MarginText>
-<MarginInfo items={["AI12-0086-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0086-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0086-1"}</em>{"}"} <br />The value of a discriminant that governs a <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code> in an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> can be nonstatic if the nominal subtype of the discriminant expression is static and all possible values select a single <code><a href="../AA-3/AA-3.8#S0072">variant</a></code>. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
 <MarginText>32.i/4</MarginText>
-<MarginInfo items={["AI12-0046-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0046-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0046-1"}</em>{"}"} <strong><br />Corrigendum:</strong> We explicitly say that the Legality Rules have to be rechecked for each component individually. This <em>seems</em> obvious, but as the AARM note <a href="../AA-4/AA-4.3#Subclause_4.3.1">4.3.1</a> (16.c) appeared to say that this was not necessary, and since we explicitly state this sort of thing for generic instances, it seemed better to be explicit.<br /></Admonition>
 
 <MarginText>32.j/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0127-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />Made wording changes for <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>s.<br /></Admonition>
 
 <a id="Subclause_4.3.2"></a>
@@ -520,47 +563,58 @@ The model underlying this syntax is that a record extension can also be viewed a
 #### Name Resolution Rules
 
 <MarginText>4/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />The expected type for an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> shall be a single type that is a record extension. If the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, it is expected to be of any tagged type. <br /></p>
+<MarginInfo items={["AI95-00287-01"]} />
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />The expected type for an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> shall be a single type that is a record extension. If the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, it is expected to be of any tagged type. <br /></p>
 
 <MarginText>4.a</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>We could have made the expected type <em>T'</em>Class where <em>T</em> is the ultimate ancestor of the type of the aggregate, or we could have made it even more specific than that. However, if the overload resolution rules get too complicated, the implementation gets more difficult and it becomes harder to produce good error messages. <br /></Admonition>
 
 <MarginText>4.b/3</MarginText>
-<MarginInfo items={["AI05-0005-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginInfo items={["AI05-0005-1"]} />
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />This rule is additive with the rule given in <a href="../AA-4/AA-4.3">4.3</a>. That means the <a href="../AA-4/AA-4.3">4.3</a> rule must be satisfied even though it is always syntactically possible to tell that something is an extension aggregate rather than another kind of aggregate. Specifically, that means that an extension aggregate is ambiguous if the context is overloaded on array and/or untagged record types, even though those are never legal contexts for an extension aggregate. Thus, this rule acts more like a Legality Rule than a Name Resolution Rule. <br /></Admonition>
 
 
 #### Legality Rules
 
 <MarginText>5/3</MarginText>
-<MarginInfo items={["AI95-00306-01", "AI05-0115-1"]} /><p>{"{"}<em>{"AI95-00306-01"}</em>{"}"} {"{"}<em>{"AI05-0115-1"}</em>{"}"} <br />If the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>, it shall denote a specific tagged subtype. If the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, it shall not be dynamically tagged. The type of the <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> shall be a descendant of the type of the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> (the <em>ancestor</em> type), through one or more record extensions (and no private extensions). If the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>, the view of the ancestor type from which the type is descended (see <a href="../AA-7/AA-7.3#Subclause_7.3.1">7.3.1</a>) shall not have unknown discriminants. <br /></p>
+<MarginInfo items={["AI95-00306-01", "AI05-0115-1"]} />
+<p>{"{"}<em>{"AI95-00306-01"}</em>{"}"} {"{"}<em>{"AI05-0115-1"}</em>{"}"} <br />If the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>, it shall denote a specific tagged subtype. If the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, it shall not be dynamically tagged. The type of the <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> shall be a descendant of the type of the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> (the <em>ancestor</em> type), through one or more record extensions (and no private extensions). If the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>, the view of the ancestor type from which the type is descended (see <a href="../AA-7/AA-7.3#Subclause_7.3.1">7.3.1</a>) shall not have unknown discriminants. <br /></p>
 
 <MarginText>5.a/2</MarginText>
-<MarginInfo items={["AI95-00306-01"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginInfo items={["AI95-00306-01"]} />
+<Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI95-00306-01"}</em>{"}"} <br />The expression cannot be dynamically tagged to prevent implicit "truncation" of a dynamically-tagged value to the specific ancestor type. This is similar to the rules in <a href="../AA-3/AA-3.9#Subclause_3.9.2">3.9.2</a>. <br /></Admonition>
 
 <MarginText>5.1/5</MarginText>
-<MarginInfo items={["AI05-0067-1", "AI05-0244-1", "AI12-0236-1", "AI12-0317-1"]} /><p>{"{"}<em>{"AI05-0067-1"}</em>{"}"} {"{"}<em>{"AI05-0244-1"}</em>{"}"} {"{"}<em>{"AI12-0236-1"}</em>{"}"} {"{"}<em>{"AI12-0317-1"}</em>{"}"} <br />If the type of the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is limited and at least one component is needed in the <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code>, then the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> shall not have an operative constituent expression (see <a href="../AA-4/AA-4.4">4.4</a>) that is a call to a function with an unconstrained result subtype.  <br /></p>
+<MarginInfo items={["AI05-0067-1", "AI05-0244-1", "AI12-0236-1", "AI12-0317-1"]} />
+<p>{"{"}<em>{"AI05-0067-1"}</em>{"}"} {"{"}<em>{"AI05-0244-1"}</em>{"}"} {"{"}<em>{"AI12-0236-1"}</em>{"}"} {"{"}<em>{"AI12-0317-1"}</em>{"}"} <br />If the type of the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is limited and at least one component is needed in the <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code>, then the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> shall not have an operative constituent expression (see <a href="../AA-4/AA-4.4">4.4</a>) that is a call to a function with an unconstrained result subtype.  <br /></p>
 
 <MarginText>5.2/5</MarginText>
-<MarginInfo items={["AI12-0317-1"]} /><ul>
+<MarginInfo items={["AI12-0317-1"]} />
+<ul>
 <li>{"{"}<em>{"AI12-0317-1"}</em>{"}"}  <br /></li>
 <MarginText>5.3/5</MarginText>
-<MarginInfo items={["AI12-0317-1"]} /><li>{"{"}<em>{"AI12-0317-1"}</em>{"}"}  <br /></li>
+<MarginInfo items={["AI12-0317-1"]} />
+<li>{"{"}<em>{"AI12-0317-1"}</em>{"}"}  <br /></li>
 <MarginText>5.4/5</MarginText>
-<MarginInfo items={["AI12-0317-1"]} /><li>{"{"}<em>{"AI12-0317-1"}</em>{"}"}  <br /></li>
+<MarginInfo items={["AI12-0317-1"]} />
+<li>{"{"}<em>{"AI12-0317-1"}</em>{"}"}  <br /></li>
 </ul>
 <MarginText>5.b/3</MarginText>
-<MarginInfo items={["AI05-0067-1", "AI05-0244-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginInfo items={["AI05-0067-1", "AI05-0244-1"]} />
+<Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI05-0067-1"}</em>{"}"} {"{"}<em>{"AI05-0244-1"}</em>{"}"} <br />This restriction simplifies implementation, because it ensures that either the caller or the callee knows the size to allocate for the aggregate. Without this restriction, information from both caller and callee would have to be combined to determine the appropriate size.<br /></Admonition>
 
 <MarginText>5.c/3</MarginText>
-<MarginInfo items={["AI05-0067-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI05-0067-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0067-1"}</em>{"}"} <br />The (F(...) with null record) case is exempt from this rule, because such extension aggregates are created internally for inherited functions returning null-extension types &mdash; we can't very well make those illegal. Moreover, we don't need the rule for null extensions, as the result can simply use the space returned by the function call.<br /></Admonition>
 
 <MarginText>5.d/5</MarginText>
-<MarginInfo items={["AI12-0317-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0317-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0317-1"}</em>{"}"} <br />The mention of &ldquo;operative constituents&rdquo; means that constructs like parenthesized expressions, <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code>s, and <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code>s are ignored when enforcing this rule. <br /></Admonition>
 
 
@@ -576,14 +630,16 @@ The model underlying this syntax is that a record extension can also be viewed a
 <p>For the evaluation of an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, the <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code> is evaluated. If the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, it is also evaluated; if the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>, the components of the value of the aggregate not given by the <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code> are initialized by default as for an object of the ancestor type. Any implicit initializations or evaluations are performed in an arbitrary order, except that the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> for a discriminant is evaluated prior to any other evaluation or initialization that depends on it.<br /></p>
 
 <MarginText>8/3</MarginText>
-<MarginInfo items={["AI05-0282-1"]} /><p>{"{"}<em>{"AI05-0282-1"}</em>{"}"} <br />If the type of the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> has discriminants and the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is not a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> that denotes an unconstrained subtype, then a check is made that each discriminant determined by the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> has the value specified for a corresponding discriminant, if any, either in the <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code>, or in the <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> for some ancestor of the type of the <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>. Constraint_Error is raised if this check fails. <br /></p>
+<MarginInfo items={["AI05-0282-1"]} />
+<p>{"{"}<em>{"AI05-0282-1"}</em>{"}"} <br />If the type of the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> has discriminants and the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is not a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> that denotes an unconstrained subtype, then a check is made that each discriminant determined by the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> has the value specified for a corresponding discriminant, if any, either in the <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code>, or in the <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> for some ancestor of the type of the <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>. Constraint_Error is raised if this check fails. <br /></p>
 
 <MarginText>8.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Corresponding and specified discriminants are defined in <a href="../AA-3/AA-3.7">3.7</a>. The rules requiring static compatibility between new discriminants of a derived type and the parent discriminant(s) they constrain ensure that at most one check is required per discriminant of the ancestor expression.<br /></Admonition>
 
 <MarginText>8.b/3</MarginText>
-<MarginInfo items={["AI05-0282-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI05-0282-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0282-1"}</em>{"}"} <br />The check needs to be made any time that the ancestor is constrained; the source of the discriminants or the constraints is irrelevant. <br /></Admonition>
 
 <MarginText>9</MarginText>
@@ -604,7 +660,8 @@ NOTE 2   If the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is
 <CodeBlock language="ada">
 Painted_Point'(Point with Red){"\n"}(Point'(P) with Paint ={">"} Black){"\n"}
 <MarginText>13/5</MarginText>
-<MarginInfo items={["AI12-0178-1"]} />--  {"{"}{"AI12-0178-1"}{"}"}{"\n"} (Expression with Left ={">"}  new Literal'(Value ={">"} 1.2),{"\n"}                 Right ={">"} new Literal'(Value ={">"} 3.4)){"\n"}Addition'(Binop with null record){"\n"}             -- presuming Binop is of type Binary_Operation{"\n"}
+<MarginInfo items={["AI12-0178-1"]} />
+--  {"{"}{"AI12-0178-1"}{"}"}{"\n"} (Expression with Left ={">"}  new Literal'(Value ={">"} 1.2),{"\n"}                 Right ={">"} new Literal'(Value ={">"} 3.4)){"\n"}Addition'(Binop with null record){"\n"}             -- presuming Binop is of type Binary_Operation{"\n"}
 
 </CodeBlock>
 
@@ -618,39 +675,45 @@ The extension aggregate syntax is new. <br /></Admonition>
 #### Incompatibilities With Ada 95
 
 <MarginText>13.b/2</MarginText>
-<MarginInfo items={["AI95-00306-01"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI95-00306-01"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI95-00306-01"}</em>{"}"} <strong><br />Amendment </strong> Eliminated implicit &ldquo;truncation&rdquo; of a dynamically tagged value when it is used as an ancestor <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>. If an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> includes such an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, it is illegal in Ada 2005. Such <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s are thought to be rare; the problem can be fixed with a type conversion to the appropriate specific type if it occurs. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
 <MarginText>13.c/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00287-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />Limited <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>s are allowed (since all kinds of aggregates can now be limited, see <a href="../AA-4/AA-4.3">4.3</a>). <br /></Admonition>
 
 
 #### Inconsistencies With Ada 2005
 
 <MarginText>13.d/3</MarginText>
-<MarginInfo items={["AI05-0282-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI05-0282-1"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0282-1"}</em>{"}"} <strong><br /></strong> An <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> with an <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> whose discriminants are constrained and inherited might now raise Constraint_Error if the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>'s type is constrained, while it was OK in Ada 2005. In almost all cases, this will make no difference as the constraint will be checked by the immediately following use of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>, but it is possible to compare such an aggregate for equality; in this case, no exception would be raised by Ada 2005, while Ada 2012 will raise Constraint_Error. This should be very rare, and having the possibility means that the representation of the aggregate type has to be able to support unconstrained values of the type, even if the first subtype is constrained and no such objects can be created any other way. <br /></Admonition>
 
 
 #### Incompatibilities With Ada 2005
 
 <MarginText>13.e/3</MarginText>
-<MarginInfo items={["AI05-0067-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI05-0067-1"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0067-1"}</em>{"}"} <strong><br /></strong> A limited unconstrained ancestor expression that is a function call is now illegal unless the extension part is null. Such <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s were first introduced in Ada 2005 and are very complex to implement as they must be built-in-place with an unknown size; as such, it is unlikely that they are implemented correctly in existing compilers and thus not often used in existing code.<br /></Admonition>
 
 <MarginText>13.f/3</MarginText>
-<MarginInfo items={["AI05-0115-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI05-0115-1"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0115-1"}</em>{"}"} <strong><br /></strong> An <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> that is a subtype with unknown discriminants is now explicitly illegal. Such a subtype should not be used to declare an object, and the <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> acts like an object. The Ada 95 rules did not disallow such cases, so it is possible that code exists that uses such an ancestor, but this should be rare. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
 <MarginText>13.g/5</MarginText>
-<MarginInfo items={["AI12-0317-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0317-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0317-1"}</em>{"}"} <br />Rewrote a Legality Rule to use the new term &ldquo;operative constituent&rdquo; in order to reduce duplication of text about ignoring parenthesized expressions and similar constructs. <br /></Admonition>
 
 <a id="Subclause_4.3.3"></a>
@@ -672,42 +735,49 @@ The rules in this subclause are based on terms and rules for <code><a href="../A
 
 <MarginText>2/5</MarginText>
 <MarginInfo items={["AI12-0306-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0306-1"}</em>{"}"} <br /><code>array_aggregate</code><a id="S0113"></a><code> ::= </code><br />    <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code> | <code><a href="../AA-4/AA-4.3#S0115">null_array_aggregate</a></code> | <code><a href="../AA-4/AA-4.3#S0116">named_array_aggregate</a></code><br />
 
 </CodeBlock>
 <MarginText>3/5</MarginText>
 <MarginInfo items={["AI95-00287-01", "AI12-0212-1", "AI12-0306-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0306-1"}</em>{"}"} <br /><code>positional_array_aggregate</code><a id="S0114"></a><code> ::= </code><br />    (<code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> {"{"}, <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>{"}"})<br />  | (<code><a href="../AA-4/AA-4.4#S0132">expression</a></code> {"{"}, <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>{"}"}, <strong>others</strong> ={">"} <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>)<br />  | (<code><a href="../AA-4/AA-4.4#S0132">expression</a></code> {"{"}, <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>{"}"}, <strong>others</strong> ={">"} {"<"}{">"})<br />  | '[' <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> {"{"}, <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>{"}"}[, <strong>others</strong> ={">"} <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>] ']'<br />  | '[' <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> {"{"}, <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>{"}"}, <strong>others</strong> ={">"} {"<"}{">"} ']'<br />
 
 </CodeBlock>
 <MarginText>3.1/5</MarginText>
 <MarginInfo items={["AI12-0306-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0306-1"}</em>{"}"} <br /><code>null_array_aggregate</code><a id="S0115"></a><code> ::= </code>'[' ']'<br />
 
 </CodeBlock>
 <MarginText>4/5</MarginText>
 <MarginInfo items={["AI12-0127-1", "AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>named_array_aggregate</code><a id="S0116"></a><code> ::= </code><br />    (<code><a href="../AA-4/AA-4.3#S0117">array_component_association_list</a></code>)<br />  | '[' <code><a href="../AA-4/AA-4.3#S0117">array_component_association_list</a></code> ']' <br />
 
 </CodeBlock>
 <MarginText>4.1/5</MarginText>
 <MarginInfo items={["AI12-0127-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br /><code>array_component_association_list</code><a id="S0117"></a><code> ::= </code><br />    <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> {"{"}, <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code>{"}"}<br />
 
 </CodeBlock>
 <MarginText>5/5</MarginText>
 <MarginInfo items={["AI95-00287-01", "AI12-0061-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI12-0061-1"}</em>{"}"} <br /><code>array_component_association</code><a id="S0118"></a><code> ::= </code><br />    <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code> ={">"} <code><a href="../AA-4/AA-4.4#S0132">expression</a></code><br />  | <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code> ={">"} {"<"}{">"}<br />  | <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code><br />
 
 </CodeBlock>
 <MarginText>5.1/5</MarginText>
 <MarginInfo items={["AI12-0061-1", "AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0061-1"}</em>{"}"} {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>iterated_component_association</code><a id="S0119"></a><code> ::= </code><br />    <strong>for</strong> <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> <strong>in</strong> <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code> ={">"} <code><a href="../AA-4/AA-4.4#S0132">expression</a></code><br />  | <strong>for</strong> <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code> ={">"} <code><a href="../AA-4/AA-4.4#S0132">expression</a></code><br />
 
@@ -724,16 +794,19 @@ The rules in this subclause are based on terms and rules for <code><a href="../A
 <strong>To be honest: </strong>An <em><strong>others</strong> choice</em> is the reserved word <strong>others</strong> as it appears in a <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code> or as the <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> of the <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code> in an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code>. <br /></Admonition>
 
 <MarginText>6.1/5</MarginText>
-<MarginInfo items={["AI12-0061-1"]} /><p>{"{"}<em>{"AI12-0061-1"}</em>{"}"} <br />The <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> of an <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code> declares an <em>index parameter</em>, an object of the corresponding index type.<br /></p>
+<MarginInfo items={["AI12-0061-1"]} />
+<p>{"{"}<em>{"AI12-0061-1"}</em>{"}"} <br />The <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> of an <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code> declares an <em>index parameter</em>, an object of the corresponding index type.<br /></p>
 
 
 #### Name Resolution Rules
 
 <MarginText>7/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />The expected type for an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> (that is not a subaggregate) shall be a single array type. The component type of this array type is the expected type for each array component expression of the <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>. <br /></p>
+<MarginInfo items={["AI95-00287-01"]} />
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />The expected type for an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> (that is not a subaggregate) shall be a single array type. The component type of this array type is the expected type for each array component expression of the <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>. <br /></p>
 
 <MarginText>7.a/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginInfo items={["AI95-00287-01"]} />
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />We already require a single array or record type or record extension for an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>. The above rule requiring a single array type (and similar ones for record and extension aggregates) resolves which kind of aggregate you have. <br /></Admonition>
 
 <MarginText>8</MarginText>
@@ -743,17 +816,20 @@ The rules in this subclause are based on terms and rules for <code><a href="../A
 #### Legality Rules
 
 <MarginText>9/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />An <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> of an n-dimensional array type shall be written as an n-dimensional <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>, or as a <code><a href="../AA-4/AA-4.3#S0115">null_array_aggregate</a></code>. <br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />An <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> of an n-dimensional array type shall be written as an n-dimensional <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>, or as a <code><a href="../AA-4/AA-4.3#S0115">null_array_aggregate</a></code>. <br /></p>
 
 <MarginText>9.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>In an m-dimensional <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> [(including a subaggregate)], where m {">"}= 2, each of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s has to be an (m&ndash;1)-dimensional subaggregate. <br /></Admonition>
 
 <MarginText>10/5</MarginText>
-<MarginInfo items={["AI12-0418-1"]} /><p>{"{"}<em>{"AI12-0418-1"}</em>{"}"} <br />An <strong>others</strong> choice is allowed for an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> only if an <em>applicable index constraint</em> applies to the <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>. [An applicable index constraint is a constraint provided by certain contexts  that can be used to determine the bounds of the array value specified by an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> .] Each of the following contexts (and none other) defines an applicable index constraint: <br /></p>
+<MarginInfo items={["AI12-0418-1"]} />
+<p>{"{"}<em>{"AI12-0418-1"}</em>{"}"} <br />An <strong>others</strong> choice is allowed for an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> only if an <em>applicable index constraint</em> applies to the <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>. [An applicable index constraint is a constraint provided by certain contexts  that can be used to determine the bounds of the array value specified by an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> .] Each of the following contexts (and none other) defines an applicable index constraint: <br /></p>
 
 <MarginText>11/4</MarginText>
-<MarginInfo items={["AI95-00318-02", "AI12-0157-1"]} /><ul>
+<MarginInfo items={["AI95-00318-02", "AI12-0157-1"]} />
+<ul>
 <li>{"{"}<em>{"AI95-00318-02"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} <br />For an <code><a href="../AA-6/AA-6.4#S0221">explicit_actual_parameter</a></code>, an <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code>, the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a return statement, the return expression of an expression function, the initialization expression in an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>, or a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> [(for a parameter or a component)], when the nominal subtype of the corresponding formal parameter, generic formal parameter, function return object, expression function return object, object, or component is a constrained array subtype, the applicable index constraint is the constraint of the subtype;<br /></li>
 <MarginText>12</MarginText>
 <li>For the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> where the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes an array variable, the applicable index constraint is the constraint of the array variable; <br /></li>
@@ -773,20 +849,24 @@ The rules in this subclause are based on terms and rules for <code><a href="../A
 <strong></strong>Here, the <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> with <strong>others</strong> is being used within a larger aggregate. <br /></Admonition>
 
 <MarginText>14.1/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><ul>
+<MarginInfo items={["AI12-0127-1"]} />
+<ul>
 <li>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>, if the nominal subtype of the <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> is a constrained array subtype, the applicable index constraint is the constraint of the subtype;<br /></li>
 <MarginText>15/3</MarginText>
-<MarginInfo items={["AI05-0147-1"]} /><li>{"{"}<em>{"AI05-0147-1"}</em>{"}"} <br />For a parenthesized <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, the applicable index constraint is that, if any, defined for the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>; <br /></li>
+<MarginInfo items={["AI05-0147-1"]} />
+<li>{"{"}<em>{"AI05-0147-1"}</em>{"}"} <br />For a parenthesized <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, the applicable index constraint is that, if any, defined for the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>; <br /></li>
 </ul>
 <MarginText>15.a</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>RM83 omitted this case, presumably as an oversight. We want to minimize situations where an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> becomes illegal if parenthesized. <br /></Admonition>
 
 <MarginText>15.1/5</MarginText>
-<MarginInfo items={["AI05-0147-1", "AI12-0236-1"]} /><ul>
+<MarginInfo items={["AI05-0147-1", "AI12-0236-1"]} />
+<ul>
 <li>{"{"}<em>{"AI05-0147-1"}</em>{"}"} {"{"}<em>{"AI12-0236-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code> (see <a href="../AA-4/AA-4.5#Subclause_4.5.7">4.5.7</a>), the applicable index constraint for each <em>dependent_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is that, if any, defined for the <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code>; <br /></li>
 <MarginText>15.2/5</MarginText>
-<MarginInfo items={["AI05-0147-1"]} /><li>{"{"}<em>{"AI05-0147-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.5#S0156">declare_expression</a></code> (see <a href="../AA-4/AA-4.5#Subclause_4.5.9">4.5.9</a>), the applicable index constraint for the <em>body_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is that, if any, defined for the <code><a href="../AA-4/AA-4.5#S0156">declare_expression</a></code>. <br /></li>
+<MarginInfo items={["AI05-0147-1"]} />
+<li>{"{"}<em>{"AI05-0147-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.5#S0156">declare_expression</a></code> (see <a href="../AA-4/AA-4.5#Subclause_4.5.9">4.5.9</a>), the applicable index constraint for the <em>body_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is that, if any, defined for the <code><a href="../AA-4/AA-4.5#S0156">declare_expression</a></code>. <br /></li>
 </ul>
 <MarginText>16</MarginText>
 <p>The applicable index constraint <em>applies</em> to an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> that appears in such a context, as well as to any subaggregates thereof. In the case of an <code><a href="../AA-6/AA-6.4#S0221">explicit_actual_parameter</a></code> (or <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>) for a call on a generic formal subprogram, no applicable index constraint is defined. <br /></p>
@@ -796,28 +876,33 @@ The rules in this subclause are based on terms and rules for <code><a href="../A
 <strong></strong>This avoids generic contract model problems, because only mode conformance is required when matching actual subprograms with generic formal subprograms. <br /></Admonition>
 
 <MarginText>17/5</MarginText>
-<MarginInfo items={["AI05-0153-3", "AI12-0061-1", "AI12-0127-1"]} /><p>{"{"}<em>{"AI05-0153-3"}</em>{"}"} {"{"}<em>{"AI12-0061-1"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />The <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code> of an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> (including an <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>) is allowed to have a <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> that is a nonstatic <code><a href="../AA-4/AA-4.4#S0133">choice_expression</a></code> or that is a <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> or <code><a href="../AA-3/AA-3.5#S0037">range</a></code> that defines a nonstatic or null range, only if it is the single <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> of its <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code>, and either there is only one <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> in the enclosing <code><a href="../AA-4/AA-4.3#S0117">array_component_association_list</a></code> or the enclosing <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> is an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>[, not an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>] .<br /></p>
+<MarginInfo items={["AI05-0153-3", "AI12-0061-1", "AI12-0127-1"]} />
+<p>{"{"}<em>{"AI05-0153-3"}</em>{"}"} {"{"}<em>{"AI12-0061-1"}</em>{"}"} {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />The <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code> of an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> (including an <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>) is allowed to have a <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> that is a nonstatic <code><a href="../AA-4/AA-4.4#S0133">choice_expression</a></code> or that is a <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> or <code><a href="../AA-3/AA-3.5#S0037">range</a></code> that defines a nonstatic or null range, only if it is the single <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> of its <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code>, and either there is only one <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> in the enclosing <code><a href="../AA-4/AA-4.3#S0117">array_component_association_list</a></code> or the enclosing <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> is an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>[, not an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>] .<br /></p>
 
 <MarginText>17.a</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>We now allow a nonstatic <strong>others</strong> choice even if there are other array component expressions as well. <br /></Admonition>
 
 <MarginText>17.b/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginInfo items={["AI12-0127-1"]} />
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />We allow multiple dynamic choices in <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>s, but only one dynamic choice per association even in that case. <br /></Admonition>
 
 <MarginText>17.1/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />Either all or none of the <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code>s of an <code><a href="../AA-4/AA-4.3#S0117">array_component_association_list</a></code> shall be <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>s with an <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>.<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />Either all or none of the <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code>s of an <code><a href="../AA-4/AA-4.3#S0117">array_component_association_list</a></code> shall be <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>s with an <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>.<br /></p>
 
 <MarginText>18/3</MarginText>
-<MarginInfo items={["AI05-0262-1"]} /><p>{"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />In a <code><a href="../AA-4/AA-4.3#S0116">named_array_aggregate</a></code> where all <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code>s are static, no two <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code>s are allowed to cover the same value (see <a href="../AA-3/AA-3.8#Subclause_3.8.1">3.8.1</a>); if there is no <strong>others</strong> choice, the <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code>s taken together shall exactly cover a contiguous sequence of values of the corresponding index type. <br /></p>
+<MarginInfo items={["AI05-0262-1"]} />
+<p>{"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />In a <code><a href="../AA-4/AA-4.3#S0116">named_array_aggregate</a></code> where all <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code>s are static, no two <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code>s are allowed to cover the same value (see <a href="../AA-3/AA-3.8#Subclause_3.8.1">3.8.1</a>); if there is no <strong>others</strong> choice, the <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code>s taken together shall exactly cover a contiguous sequence of values of the corresponding index type. <br /></p>
 
 <MarginText>18.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>This implies that each component must be specified exactly once. See AI83-309. <br /></Admonition>
 
 <MarginText>18.b/3</MarginText>
-<MarginInfo items={["AI05-0262-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginInfo items={["AI05-0262-1"]} />
+<Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />This has to apply even if there is only one static <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code>; a single choice has to represent a contiguous range (a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> with a static predicate might represent a discontiguous set of values). If the (single) choice is a dynamic subtype, we don't need to make this check as no predicates are allowed (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>) and thus the range has to be contiguous. <br /></Admonition>
 
 <MarginText>19</MarginText>
@@ -830,32 +915,39 @@ The rules in this subclause are based on terms and rules for <code><a href="../A
 <p>A subaggregate that is a <code><a href="../AA-2/AA-2.6#S0016">string_literal</a></code> is equivalent to one that is a <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code> of the same length, with each <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> being the <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> for the corresponding character of the <code><a href="../AA-2/AA-2.6#S0016">string_literal</a></code>.<br /></p>
 
 <MarginText>20.a/5</MarginText>
-<MarginInfo items={["AI12-0306-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0306-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 <strong>To be honest: </strong>{"{"}<em>{"AI12-0306-1"}</em>{"}"} <br />This is true even in cases where there is no corresponding legal <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code>. <br /></Admonition>
 
 <MarginText>20.1/5</MarginText>
-<MarginInfo items={["AI12-0061-1"]} /><p>{"{"}<em>{"AI12-0061-1"}</em>{"}"} <br />The subtype (and nominal subtype) of an index parameter is the corresponding index subtype. <br /></p>
+<MarginInfo items={["AI12-0061-1"]} />
+<p>{"{"}<em>{"AI12-0061-1"}</em>{"}"} <br />The subtype (and nominal subtype) of an index parameter is the corresponding index subtype. <br /></p>
 
 
 #### Dynamic Semantics
 
 <MarginText>20.2/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> that contains only <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code>s that are <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>s with <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>s, evaluation proceeds in two steps: <br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> that contains only <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code>s that are <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>s with <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>s, evaluation proceeds in two steps: <br /></p>
 
 <MarginText>20.3/5</MarginText>
 <dt><br/>a)</dt>
-<MarginInfo items={["AI12-0212-1", "AI12-0250-1"]} /><dl>
+<MarginInfo items={["AI12-0212-1", "AI12-0250-1"]} />
+<dl>
 <dd>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0250-1"}</em>{"}"} <br />Each <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code> is elaborated (in an arbitrary order) and an iteration is performed solely to determine a maximum count for the number of values produced by the iteration; all of these counts are combined to determine the overall length of the array, and ultimately the limits on the bounds of the array (defined below);<br /></dd>
 <MarginText>20.4/5</MarginText>
 <dt><br/>b)</dt>
-<MarginInfo items={["AI12-0212-1", "AI12-0250-1", "AI12-0327-1"]} /><dd>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0250-1"}</em>{"}"} {"{"}<em>{"AI12-0327-1"}</em>{"}"} <br />A second iteration is performed for each of the <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>s, in the order given in the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>, and for each value conditionally produced by the iteration (see <a href="../AA-5/AA-5.5">5.5</a> and <a href="../AA-5/AA-5.5#Subclause_5.5.2">5.5.2</a>), the associated <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is evaluated, its value is converted to the component subtype of the array type, and used to define the value of the next component of the array starting at the low bound and proceeding sequentially toward the high bound. A check is made that the second iteration results in an array length no greater than the maximum determined by the first iteration; Constraint_Error is raised if this check fails.<br /></dd>
+<MarginInfo items={["AI12-0212-1", "AI12-0250-1", "AI12-0327-1"]} />
+<dd>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0250-1"}</em>{"}"} {"{"}<em>{"AI12-0327-1"}</em>{"}"} <br />A second iteration is performed for each of the <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>s, in the order given in the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>, and for each value conditionally produced by the iteration (see <a href="../AA-5/AA-5.5">5.5</a> and <a href="../AA-5/AA-5.5#Subclause_5.5.2">5.5.2</a>), the associated <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is evaluated, its value is converted to the component subtype of the array type, and used to define the value of the next component of the array starting at the low bound and proceeding sequentially toward the high bound. A check is made that the second iteration results in an array length no greater than the maximum determined by the first iteration; Constraint_Error is raised if this check fails.<br /></dd>
 </dl>
 <MarginText>20.b/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0250-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0212-1", "AI12-0250-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 <strong>To be honest: </strong>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0250-1"}</em>{"}"} <br />Constraint_Error should be raised no later than when the iterations exceed the maximum array length; memory that doesn't belong to the aggregate temporary should not be overwritten. <br /></Admonition>
 
 <MarginText>21/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The evaluation of any other  <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> of a given array type proceeds in two steps: <br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The evaluation of any other  <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> of a given array type proceeds in two steps: <br /></p>
 
 <MarginText>22</MarginText>
 <dt><br/>a)</dt>
@@ -870,14 +962,17 @@ The rules in this subclause are based on terms and rules for <code><a href="../A
 <strong></strong>Subaggregates are not separately evaluated. The conversion of the value of the component expressions to the component subtype might raise Constraint_Error.<br /></Admonition>
 
 <MarginText>23.b/3</MarginText>
-<MarginInfo items={["AI05-0005-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI05-0005-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />We don't need to say that {"<"}{">"} is evaluated once for each component, as {"<"}{">"} means that each component is <em>initialized by default</em>. That means that the actions defined for default initialization are applied to each component individually. Initializing one component by default and copying that to the others would be an incorrect implementation in general (although it might be OK if the default initialization is known to be constant). <br /></Admonition>
 
 <MarginText>23.1/4</MarginText>
-<MarginInfo items={["AI95-00287-01", "AI12-0084-1"]} /><p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI12-0084-1"}</em>{"}"} <br />Each <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> defines the value for the associated component(s). For an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> with {"<"}{">"}, the associated component(s) are initialized to the Default_Component_Value of the array type if this aspect has been specified for the array type; otherwise, they are initialized by default as for a stand-alone object of the component subtype (see <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>).<br /></p>
+<MarginInfo items={["AI95-00287-01", "AI12-0084-1"]} />
+<p>{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI12-0084-1"}</em>{"}"} <br />Each <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> defines the value for the associated component(s). For an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> with {"<"}{">"}, the associated component(s) are initialized to the Default_Component_Value of the array type if this aspect has been specified for the array type; otherwise, they are initialized by default as for a stand-alone object of the component subtype (see <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>).<br /></p>
 
 <MarginText>23.2/5</MarginText>
-<MarginInfo items={["AI12-0061-1", "AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0061-1"}</em>{"}"} {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />During an evaluation of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code> with a <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code>, the value of the corresponding index parameter is that of the corresponding index of the corresponding array component. During an evaluation of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code> with an <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>, the value of the loop parameter of the <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code> is the value produced by the iteration (as described in <a href="../AA-5/AA-5.5#Subclause_5.5.2">5.5.2</a>).<br /></p>
+<MarginInfo items={["AI12-0061-1", "AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0061-1"}</em>{"}"} {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />During an evaluation of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code> with a <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code>, the value of the corresponding index parameter is that of the corresponding index of the corresponding array component. During an evaluation of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code> with an <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>, the value of the loop parameter of the <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code> is the value produced by the iteration (as described in <a href="../AA-5/AA-5.5#Subclause_5.5.2">5.5.2</a>).<br /></p>
 
 <MarginText>23.c/5</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -892,17 +987,20 @@ The rules in this subclause are based on terms and rules for <code><a href="../A
 <MarginText>26</MarginText>
 <li>For a <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code> [(or equivalent <code><a href="../AA-2/AA-2.6#S0016">string_literal</a></code>)] without an <strong>others</strong> choice, the lower bound is that of the corresponding index range in the applicable index constraint, if defined, or that of the corresponding index subtype, if not; in either case, the upper bound is determined from the lower bound and the number of <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s [(or the length of the <code><a href="../AA-2/AA-2.6#S0016">string_literal</a></code>)];<br /></li>
 <MarginText>26.1/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0306-1"]} /><li>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0306-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0115">null_array_aggregate</a></code>, bounds for each dimension are determined as for a <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code> without an <strong>others</strong> choice that has no expressions for each dimension;<br /></li>
+<MarginInfo items={["AI12-0212-1", "AI12-0306-1"]} />
+<li>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0306-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0115">null_array_aggregate</a></code>, bounds for each dimension are determined as for a <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code> without an <strong>others</strong> choice that has no expressions for each dimension;<br /></li>
 </ul>
 <MarginText>26.a/5</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>We need a separate rule to describe what happens for a multidimensional <code><a href="../AA-4/AA-4.3#S0115">null_array_aggregate</a></code>; we could've combined the single-dimension case with the <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code> rule. <br /></Admonition>
 
 <MarginText>26.2/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0250-1"]} /><ul>
+<MarginInfo items={["AI12-0212-1", "AI12-0250-1"]} />
+<ul>
 <li>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0250-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0116">named_array_aggregate</a></code> containing only <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>s with an <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>, the lower bound is determined as for a <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code> without an <strong>others</strong> choice, and the upper bound is determined from the lower bound and the total number of values produced by the second set of iterations;<br /></li>
 <MarginText>27/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><li>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />For any other  <code><a href="../AA-4/AA-4.3#S0116">named_array_aggregate</a></code> without an <strong>others</strong> choice, the bounds are determined by the smallest and largest index values covered by any <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code>. <br /></li>
+<MarginInfo items={["AI12-0212-1"]} />
+<li>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />For any other  <code><a href="../AA-4/AA-4.3#S0116">named_array_aggregate</a></code> without an <strong>others</strong> choice, the bounds are determined by the smallest and largest index values covered by any <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code>. <br /></li>
 </ul>
 <MarginText>27.a</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
@@ -920,7 +1018,8 @@ The rules in this subclause are based on terms and rules for <code><a href="../A
 <strong></strong>The definition of compatibility handles the special case of a null range, which is always compatible with a subtype. See AI83-00313. <br /></Admonition>
 
 <MarginText>29/3</MarginText>
-<MarginInfo items={["AI05-0037-1"]} /><p>{"{"}<em>{"AI05-0037-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> with an <strong>others</strong> choice, a check is made that no <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or {"<"}{">"} is specified for an index value outside the bounds determined by the applicable index constraint. <br /></p>
+<MarginInfo items={["AI05-0037-1"]} />
+<p>{"{"}<em>{"AI05-0037-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> with an <strong>others</strong> choice, a check is made that no <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or {"<"}{">"} is specified for an index value outside the bounds determined by the applicable index constraint. <br /></p>
 
 <MarginText>29.a</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
@@ -944,18 +1043,21 @@ The rules in this subclause are based on terms and rules for <code><a href="../A
 #### Implementation Permissions
 
 <MarginText>32/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0250-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0250-1"}</em>{"}"} <br />When evaluating <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>s for an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> that contains only <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>s with <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>s, the first step of evaluating an <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code> can be omitted if the implementation can determine the maximum number of values by some other means.<br /></p>
+<MarginInfo items={["AI12-0212-1", "AI12-0250-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0250-1"}</em>{"}"} <br />When evaluating <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>s for an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> that contains only <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code>s with <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>s, the first step of evaluating an <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code> can be omitted if the implementation can determine the maximum number of values by some other means.<br /></p>
 
 <MarginText>32.a/5</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>For instance, if the type of the aggregate is constrained, the implementation can (but does not have to) calculate the expected length from the constraint. <br /></Admonition>
 
 <MarginText>33/5</MarginText>
-<MarginInfo items={["AI05-0004-1", "AI12-0306-1", "AI12-0440-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI05-0004-1", "AI12-0306-1", "AI12-0440-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   {"{"}<em>{"AI05-0004-1"}</em>{"}"} {"{"}<em>{"AI12-0306-1"}</em>{"}"} {"{"}<em>{"AI12-0440-1"}</em>{"}"} <br />In an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> delimited by parentheses, positional notation can  only be used with two or more <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s; a single <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in parentheses is interpreted as a parenthesized expression. An <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> delimited by square brackets  can  be used to specify an array with a single component.<br /></Admonition>
 
 <MarginText>34/5</MarginText>
-<MarginInfo items={["AI12-0061-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0061-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 2   {"{"}<em>{"AI12-0061-1"}</em>{"}"} <br />An index parameter is a constant object (see <a href="../AA-3/AA-3.3">3.3</a>). <br /></Admonition>
 
 
@@ -973,10 +1075,12 @@ NOTE 2   {"{"}<em>{"AI12-0061-1"}</em>{"}"} <br />An index parameter is a consta
 <p><em>Examples of array aggregates with named associations:</em> <br /></p>
 
 <MarginText>38/5</MarginText>
-<MarginInfo items={["AI12-0306-1"]} /><CodeBlock language="ada">
+<MarginInfo items={["AI12-0306-1"]} />
+<CodeBlock language="ada">
 --  {"{"}{"AI12-0306-1"}{"}"}{"\n"} (1 .. 5 ={">"} (1 .. 8 ={">"} 0.0))      --  two-dimensional{"\n"}[ 1 .. N ={">"} new Cell]              --  N new cells, in particular for N = 0{"\n"}
 <MarginText>39/5</MarginText>
-<MarginInfo items={["AI12-0306-1"]} />--  {"{"}{"AI12-0306-1"}{"}"}{"\n"} Table'(2 | 4 | 10 ={">"} 1, others ={">"} 0){"\n"}Schedule'(Mon .. Fri ={">"} True,  others ={">"} False)  --  see <a href="../AA-3/AA-3.6">3.6</a>{"\n"}Schedule'[ Wed | Sun  ={">"} False, others ={">"} True] {"\n"}Vector'(1 ={">"} 2.5)                                --  single-component vector{"\n"}
+<MarginInfo items={["AI12-0306-1"]} />
+--  {"{"}{"AI12-0306-1"}{"}"}{"\n"} Table'(2 | 4 | 10 ={">"} 1, others ={">"} 0){"\n"}Schedule'(Mon .. Fri ={">"} True,  others ={">"} False)  --  see <a href="../AA-3/AA-3.6">3.6</a>{"\n"}Schedule'[ Wed | Sun  ={">"} False, others ={">"} True] {"\n"}Vector'(1 ={">"} 2.5)                                --  single-component vector{"\n"}
 
 </CodeBlock>
 <MarginText>40</MarginText>
@@ -986,7 +1090,8 @@ NOTE 2   {"{"}<em>{"AI12-0061-1"}</em>{"}"} <br />An index parameter is a consta
 <CodeBlock language="ada">
 -- Three aggregates for the same value of subtype Matrix(1..2,1..3) (see <a href="../AA-3/AA-3.6">3.6</a>):{"\n"}
 <MarginText>42/5</MarginText>
-<MarginInfo items={["AI12-0306-1"]} />--  {"{"}{"AI12-0306-1"}{"}"}{"\n"} ((1.1, 1.2, 1.3), (2.1, 2.2, 2.3)){"\n"}(1 ={">"} [ 1.1, 1.2, 1.3] , 2 ={">"} [ 2.1, 2.2, 2.3] ){"\n"}[ 1 ={">"} (1 ={">"} 1.1, 2 ={">"} 1.2, 3 ={">"} 1.3), 2 ={">"} (1 ={">"} 2.1, 2 ={">"} 2.2, 3 ={">"} 2.3)] {"\n"}
+<MarginInfo items={["AI12-0306-1"]} />
+--  {"{"}{"AI12-0306-1"}{"}"}{"\n"} ((1.1, 1.2, 1.3), (2.1, 2.2, 2.3)){"\n"}(1 ={">"} [ 1.1, 1.2, 1.3] , 2 ={">"} [ 2.1, 2.2, 2.3] ){"\n"}[ 1 ={">"} (1 ={">"} 1.1, 2 ={">"} 1.2, 3 ={">"} 1.3), 2 ={">"} (1 ={">"} 2.1, 2 ={">"} 2.2, 3 ={">"} 2.3)] {"\n"}
 
 </CodeBlock>
 <MarginText>43</MarginText>
@@ -998,16 +1103,20 @@ A : Table := (7, 9, 5, 1, 3, 2, 4, 8, 6, 0);        -- A(1)=7, A(10)=0{"\n"}B : 
 <MarginText>45</MarginText>
 D : Bit_Vector(M .. N) := (M .. N ={">"} True);         -- see <a href="../AA-3/AA-3.6">3.6</a>{"\n"}E : Bit_Vector(M .. N) := (others ={">"} True);{"\n"}F : String(1 .. 1) := (1 ={">"} 'F');  -- a one component aggregate: same as "F"{"\n"}
 <MarginText>46/5</MarginText>
-<MarginInfo items={["AI12-0061-1"]} />--  {"{"}{"AI12-0061-1"}{"}"}{"\n"} G : constant Matrix :={"\n"}    (for I in 1 .. 4 ={">"}{"\n"}       (for J in 1 .. 4 ={">"}{"\n"}          (if I=J then 1.0 else 0.0))); -- Identity matrix{"\n"}
+<MarginInfo items={["AI12-0061-1"]} />
+--  {"{"}{"AI12-0061-1"}{"}"}{"\n"} G : constant Matrix :={"\n"}    (for I in 1 .. 4 ={">"}{"\n"}       (for J in 1 .. 4 ={">"}{"\n"}          (if I=J then 1.0 else 0.0))); -- Identity matrix{"\n"}
 <MarginText>47/5</MarginText>
-<MarginInfo items={["AI12-0312-1"]} />--  {"{"}{"AI12-0312-1"}{"}"}{"\n"} Empty_Matrix : constant Matrix := []; -- A matrix without elements{"\n"}
+<MarginInfo items={["AI12-0312-1"]} />
+--  {"{"}{"AI12-0312-1"}{"}"}{"\n"} Empty_Matrix : constant Matrix := []; -- A matrix without elements{"\n"}
 
 </CodeBlock>
 <MarginText>48/2</MarginText>
-<MarginInfo items={["AI95-00433-01"]} /><p>{"{"}<em>{"AI95-00433-01"}</em>{"}"} <em><br />Example of an array aggregate with defaulted others choice and with an applicable index constraint provided by an enclosing record aggregate:</em><br /></p>
+<MarginInfo items={["AI95-00433-01"]} />
+<p>{"{"}<em>{"AI95-00433-01"}</em>{"}"} <em><br />Example of an array aggregate with defaulted others choice and with an applicable index constraint provided by an enclosing record aggregate:</em><br /></p>
 
 <MarginText>49/5</MarginText>
-<MarginInfo items={["AI12-0178-1"]} /><CodeBlock language="ada">
+<MarginInfo items={["AI12-0178-1"]} />
+<CodeBlock language="ada">
 --  {"{"}{"AI12-0178-1"}{"}"}{"\n"} Buffer'(Size ={">"} 50, Pos ={">"} 1, Value ={">"}  ('x', others ={">"} {"<"}{">"}))  -- see <a href="../AA-3/AA-3.7">3.7</a>{"\n"}
 
 </CodeBlock>
@@ -1057,69 +1166,81 @@ We have also reorganized the presentation to handle multidimensional and one-dim
 #### Extensions to Ada 95
 
 <MarginText>49.f/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00287-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />{"<"}{">"} can be used in place of an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>, default-initializing the component. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
 <MarginText>49.g/2</MarginText>
-<MarginInfo items={["AI95-00287-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00287-01"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />Limited <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code>s are allowed (since all kinds of aggregates can now be limited, see <a href="../AA-4/AA-4.3">4.3</a>).<br /></Admonition>
 
 <MarginText>49.h/2</MarginText>
-<MarginInfo items={["AI95-00318-02"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI95-00318-02"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00318-02"}</em>{"}"} <br />Fixed <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s to use the subtype of the return object of a function, rather than the result subtype, because they can be different for an <code><a href="../AA-6/AA-6.5#S0225">extended_return_statement</a></code>, and we want to use the subtype that's explicitly in the code at the point of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>. <br /></Admonition>
 
 
 #### Inconsistencies With Ada 2005
 
 <MarginText>49.i/3</MarginText>
-<MarginInfo items={["AI05-0037-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginInfo items={["AI05-0037-1"]} />
+<Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0037-1"}</em>{"}"} <strong><br /></strong> Fixed so the check for components outside of the array applies to both <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s and {"<"}{">"}s. As {"<"}{">"} was a new feature in Ada 2005, there should be little existing code that depends on a {"<"}{">"} component that is specified outside of the array (and that is nonsense anyway, that a compiler is likely to detect even without an explicit language rule disallowing it). <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
 <MarginText>49.j/3</MarginText>
-<MarginInfo items={["AI05-0147-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI05-0147-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0147-1"}</em>{"}"} <br />Added a definition of the applicable index constraint for <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code>s (which are new). <br /></Admonition>
 
 
 #### Inconsistencies With Ada 2012
 
 <MarginText>49.k/4</MarginText>
-<MarginInfo items={["AI05-0084-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI05-0084-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0084-1"}</em>{"}"} <strong><br />Corrigendum:</strong> Fixed so that the Default_Component_Value (if any) is used to initialize components specified with {"<"}{">"}. This is what users would expect, and all Ada 2012 implementation known at the time of this writing initialize with the Default_Component_Value, so it is unlikely that anyone will be affected by this inconsistency. <br /></Admonition>
 
 
 #### Extensions to Ada 2012
 
 <MarginText>49.l/5</MarginText>
-<MarginInfo items={["AI12-0061-1", "AI12-0212-1", "AI12-0250-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0061-1", "AI12-0212-1", "AI12-0250-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0061-1"}</em>{"}"} {"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0250-1"}</em>{"}"} <br />The <code><a href="../AA-4/AA-4.3#S0119">iterated_component_association</a></code> is new (more than 25 years after it was originally proposed). It has been extended to allow container iterators as well as the basic index iterators.<br /></Admonition>
 
 <MarginText>49.m/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0212-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />An <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> can be surrounded by brackets rather than parentheses. This allows consistent writing of zero- and one-component positional array aggregates, and is consistent with the syntax for writing container aggregates.<br /></Admonition>
 
 <MarginText>49.n/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0306-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0212-1", "AI12-0306-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0306-1"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.3#S0115">null_array_aggregate</a></code> is new. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
 <MarginText>49.o/4</MarginText>
-<MarginInfo items={["AI05-0157-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI05-0157-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0157-1"}</em>{"}"} <strong><br />Corrigendum:</strong> Added expression functions to the contexts that provide an applicable index constraint, because expression functions are handled separately in static semantics and legality rules.<br /></Admonition>
 
 <MarginText>49.p/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0127-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />Made syntax and wording changes for <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>s.<br /></Admonition>
 
 <MarginText>49.q/5</MarginText>
-<MarginInfo items={["AI12-0236-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0236-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0236-1"}</em>{"}"} <br />Added a definition of the applicable index constraint for <code><a href="../AA-4/AA-4.5#S0156">declare_expression</a></code>s (which are new). This allows <strong>others</strong> in array aggregates inside of <code><a href="../AA-4/AA-4.5#S0156">declare_expression</a></code>s. <br /></Admonition>
 
 <a id="Subclause_4.3.4"></a>
@@ -1127,25 +1248,29 @@ We have also reorganized the presentation to handle multidimensional and one-dim
 ## 4.3.4  Delta Aggregates
 
 <MarginText>1/5</MarginText>
-<MarginInfo items={["AI12-0127-1", "AI12-0324-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0324-1"}</em>{"}"} <br />Evaluating a (record or array) delta aggregate yields a composite value that starts with a copy of another value of the same type and then assigns to some (but typically not all) components of the copy. <br /></p>
+<MarginInfo items={["AI12-0127-1", "AI12-0324-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0324-1"}</em>{"}"} <br />Evaluating a (record or array) delta aggregate yields a composite value that starts with a copy of another value of the same type and then assigns to some (but typically not all) components of the copy. <br /></p>
 
 
 #### Syntax
 
 <MarginText>2/5</MarginText>
 <MarginInfo items={["AI12-0127-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br /><code>delta_aggregate</code><a id="S0120"></a><code> ::= </code><code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> | <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code><br />
 
 </CodeBlock>
 <MarginText>3/5</MarginText>
 <MarginInfo items={["AI12-0127-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br /><code>record_delta_aggregate</code><a id="S0121"></a><code> ::= </code><br />    (<em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> <strong>with</strong> <strong>delta</strong> <code><a href="../AA-4/AA-4.3#S0108">record_component_association_list</a></code>)<br />
 
 </CodeBlock>
 <MarginText>4/5</MarginText>
 <MarginInfo items={["AI12-0127-1", "AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>array_delta_aggregate</code><a id="S0122"></a><code> ::= </code><br />    (<em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> <strong>with</strong> <strong>delta</strong> <code><a href="../AA-4/AA-4.3#S0117">array_component_association_list</a></code>)<br />  | '[' <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> <strong>with</strong> <strong>delta</strong> <code><a href="../AA-4/AA-4.3#S0117">array_component_association_list</a></code> ']'<br />
 
@@ -1154,34 +1279,43 @@ We have also reorganized the presentation to handle multidimensional and one-dim
 #### Name Resolution Rules
 
 <MarginText>5/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />The expected type for a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> shall be a single descendant of a record type or record extension.<br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />The expected type for a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> shall be a single descendant of a record type or record extension.<br /></p>
 
 <MarginText>6/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />The expected type for an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code> shall be a single array type.<br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />The expected type for an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code> shall be a single array type.<br /></p>
 
 <MarginText>7/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />The expected type for the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of any <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> is the type of the enclosing <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>. <br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />The expected type for the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of any <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> is the type of the enclosing <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>. <br /></p>
 
 <MarginText>8/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />[The Name Resolution Rules and Legality Rules for each <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> of a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> are as defined in <a href="../AA-4/AA-4.3#Subclause_4.3.1">4.3.1</a>.]<br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />[The Name Resolution Rules and Legality Rules for each <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> of a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> are as defined in <a href="../AA-4/AA-4.3#Subclause_4.3.1">4.3.1</a>.]<br /></p>
 
 <MarginText>9/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>, the expected type for each <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> in an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> is the index type of the type of the <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>.<br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>, the expected type for each <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> in an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> is the index type of the type of the <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>.<br /></p>
 
 <MarginText>10/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />The expected type of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> is defined as for an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> occurring within an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> of the type of the <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>.<br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />The expected type of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> is defined as for an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> occurring within an <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> of the type of the <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>.<br /></p>
 
 
 #### Legality Rules
 
 <MarginText>11/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>, the <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> shall not use the box symbol {"<"}{">"}, and the <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> shall not be <strong>others</strong>.<br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>, the <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> shall not use the box symbol {"<"}{">"}, and the <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> shall not be <strong>others</strong>.<br /></p>
 
 <MarginText>12/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>, the dimensionality of the type of the <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> shall be 1.<br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>, the dimensionality of the type of the <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> shall be 1.<br /></p>
 
 <MarginText>13/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>, the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> and each <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in every <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> shall be of a nonlimited type.<br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>, the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> and each <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in every <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> shall be of a nonlimited type.<br /></p>
 
 <MarginText>13.a/5</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -1191,7 +1325,8 @@ We have also reorganized the presentation to handle multidimensional and one-dim
 #### Dynamic Semantics
 
 <MarginText>14/5</MarginText>
-<MarginInfo items={["AI12-0127-1", "AI12-0324-1", "AI12-0381-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0324-1"}</em>{"}"} {"{"}<em>{"AI12-0381-1"}</em>{"}"} <br />The evaluation of a <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> begins with the evaluation of the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of the <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>; then that value is used to create and initialize the anonymous object of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>. The bounds of the anonymous object of an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code> and the discriminants (if any) of the anonymous object of a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> are those of the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>. If a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> is of a specific tagged type, its tag is that of the specific type; if it is of a class-wide type, its tag is that of the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>.<br /></p>
+<MarginInfo items={["AI12-0127-1", "AI12-0324-1", "AI12-0381-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0324-1"}</em>{"}"} {"{"}<em>{"AI12-0381-1"}</em>{"}"} <br />The evaluation of a <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> begins with the evaluation of the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of the <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code>; then that value is used to create and initialize the anonymous object of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>. The bounds of the anonymous object of an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code> and the discriminants (if any) of the anonymous object of a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> are those of the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>. If a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> is of a specific tagged type, its tag is that of the specific type; if it is of a class-wide type, its tag is that of the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>.<br /></p>
 
 <MarginText>14.a/5</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -1206,7 +1341,8 @@ For a specific tagged type, any extension components that the actual object unde
 <strong>To be honest: </strong>The anonymous object associated with the evaluation of a <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> begins its life as a variable, not a constant (<a href="../AA-3/AA-3.3">3.3</a> notwithstanding). This must be the case because the object is initialized and then subsequently modified. After evaluation of the <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> is complete, the object is a constant object. This is similar to the way that an extended return statement can provide a variable view of an object that will eventually be a constant object after the function returns its result. <br /></Admonition>
 
 <MarginText>15/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code>, for each component associated with each <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> (in an unspecified order): <br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code>, for each component associated with each <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> (in an unspecified order): <br /></p>
 
 <MarginText>16/5</MarginText>
 <ul>
@@ -1215,7 +1351,8 @@ For a specific tagged type, any extension components that the actual object unde
 <li>the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of the <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> is evaluated, converted to the nominal subtype of the associated component, and assigned to the component of the anonymous object.<br /></li>
 </ul>
 <MarginText>18/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>, for each <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> of each <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> (in the order given in the enclosing <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code> and <code><a href="../AA-4/AA-4.3#S0117">array_component_association_list</a></code>, respectively) the <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> is evaluated; for each represented index value (in ascending order, if the <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> represents a range): <br /></p>
+<MarginInfo items={["AI12-0127-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code>, for each <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> of each <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> (in the order given in the enclosing <code><a href="../AA-3/AA-3.8#S0073">discrete_choice_list</a></code> and <code><a href="../AA-4/AA-4.3#S0117">array_component_association_list</a></code>, respectively) the <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> is evaluated; for each represented index value (in ascending order, if the <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> represents a range): <br /></p>
 
 <MarginText>19/5</MarginText>
 <ul>
@@ -1233,7 +1370,8 @@ For a specific tagged type, any extension components that the actual object unde
 #### Examples
 
 <MarginText>22/5</MarginText>
-<MarginInfo items={["AI12-0127-1", "AI12-0429-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Examples of use of delta aggregates in a postcondition:</em><br /></p>
+<MarginInfo items={["AI12-0127-1", "AI12-0429-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Examples of use of delta aggregates in a postcondition:</em><br /></p>
 
 <MarginText>23/5</MarginText>
 <CodeBlock language="ada">
@@ -1243,7 +1381,8 @@ procedure The_Answer (V : in out Vector;{"\n"}                      A, B : in In
 
 </CodeBlock>
 <MarginText>25/5</MarginText>
-<MarginInfo items={["AI12-0127-1", "AI12-0324-1", "AI12-0379-1", "AI12-0386-1", "AI12-0429-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0324-1"}</em>{"}"} {"{"}<em>{"AI12-0379-1"}</em>{"}"} {"{"}<em>{"AI12-0386-1"}</em>{"}"} {"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Examples where the base expression is nontrivial:</em><br /></p>
+<MarginInfo items={["AI12-0127-1", "AI12-0324-1", "AI12-0379-1", "AI12-0386-1", "AI12-0429-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0324-1"}</em>{"}"} {"{"}<em>{"AI12-0379-1"}</em>{"}"} {"{"}<em>{"AI12-0386-1"}</em>{"}"} {"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Examples where the base expression is nontrivial:</em><br /></p>
 
 <MarginText>26/5</MarginText>
 <CodeBlock language="ada">
@@ -1255,7 +1394,8 @@ Tomorrow := ((Yesterday with delta Day ={">"} 12){"\n"}                  with de
 
 </CodeBlock>
 <MarginText>29/5</MarginText>
-<MarginInfo items={["AI12-0127-1", "AI12-0379-1", "AI12-0429-1"]} /><p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0379-1"}</em>{"}"} {"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Example where the base expression is class-wide:</em><br /></p>
+<MarginInfo items={["AI12-0127-1", "AI12-0379-1", "AI12-0429-1"]} />
+<p>{"{"}<em>{"AI12-0127-1"}</em>{"}"} {"{"}<em>{"AI12-0379-1"}</em>{"}"} {"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Example where the base expression is class-wide:</em><br /></p>
 
 <MarginText>30/5</MarginText>
 <CodeBlock language="ada">
@@ -1266,7 +1406,8 @@ function Translate (P : Point'Class; X, Y : Real) return Point'Class is{"\n"}   
 #### Extensions to Ada 2012
 
 <MarginText>30.a/5</MarginText>
-<MarginInfo items={["AI12-0127-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0127-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0127-1"}</em>{"}"} <br />Delta aggregates are new. <br /></Admonition>
 
 <a id="Subclause_4.3.5"></a>
@@ -1274,7 +1415,8 @@ function Translate (P : Point'Class; X, Y : Real) return Point'Class is{"\n"}   
 ## 4.3.5  Container Aggregates
 
 <MarginText>1/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />In a <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code>, values are specified for elements of a container; for a <code><a href="../AA-4/AA-4.3#S0125">positional_container_aggregate</a></code>, the elements are given sequentially; for a <code><a href="../AA-4/AA-4.3#S0126">named_container_aggregate</a></code>, the elements are specified by a sequence of key/value pairs, or using an iterator. The Aggregate aspect of the type of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> determines how the elements are combined to form the container.<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />In a <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code>, values are specified for elements of a container; for a <code><a href="../AA-4/AA-4.3#S0125">positional_container_aggregate</a></code>, the elements are given sequentially; for a <code><a href="../AA-4/AA-4.3#S0126">named_container_aggregate</a></code>, the elements are specified by a sequence of key/value pairs, or using an iterator. The Aggregate aspect of the type of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> determines how the elements are combined to form the container.<br /></p>
 
 <MarginText>1.a.1/5</MarginText>
 <Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
@@ -1282,7 +1424,8 @@ function Translate (P : Point'Class; X, Y : Real) return Point'Class is{"\n"}   
 
 <MarginText>2</MarginText>
 <MarginText>3/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />For a type other than an array type, the following type-related operational aspect may be specified:<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />For a type other than an array type, the following type-related operational aspect may be specified:<br /></p>
 
 <MarginText>4/5</MarginText>
 <dt><br/>Aggregate</dt>
@@ -1297,108 +1440,127 @@ function Translate (P : Point'Class; X, Y : Real) return Point'Class is{"\n"}   
 <p>   (Empty ={">"} <code><a href="../AA-4/AA-4.1#S0091">name</a></code>[,<br />    Add_Named ={">"} <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>][,<br />    Add_Unnamed ={">"} <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>][,<br />    New_Indexed ={">"} <em>function_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>,<br />    Assign_Indexed ={">"} <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>])<br /></p>
 
 <MarginText>5.a/5</MarginText>
-<MarginInfo items={["AI22-0020-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginInfo items={["AI22-0020-1"]} />
+<Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI22-0020-1"}</em>{"}"} <br />As this aspect is described with syntax, it has to be given exactly as specified here. That means it cannot be given as a positional aggregate, nor can the order of the elements be changed. For instance, New_Indexed always has to occur before Assign_Indexed, and Empty always has to be first. <br /></Admonition>
 
 <MarginText>6/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><dl>
+<MarginInfo items={["AI12-0212-1"]} />
+<dl>
 <dd>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The type for which this aspect is specified is known as the <em>container type</em> of the Aggregate aspect. A <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> shall be specified for at least one of Add_Named, Add_Unnamed, or Assign_Indexed. If Add_Named is specified, neither Add_Unnamed nor Assign_Indexed shall be specified. Either both or neither of New_Indexed and Assign_Indexed shall be specified.<br /></dd>
 </dl>
 
 #### Name Resolution Rules
 
 <MarginText>7/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The <code><a href="../AA-4/AA-4.1#S0091">name</a></code> specified for Empty for an Aggregate aspect shall denote a constant of the container type, or denote exactly one function with a result type of the container type that has no parameters, or that has one <strong>in</strong> parameter of a signed integer type.<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The <code><a href="../AA-4/AA-4.1#S0091">name</a></code> specified for Empty for an Aggregate aspect shall denote a constant of the container type, or denote exactly one function with a result type of the container type that has no parameters, or that has one <strong>in</strong> parameter of a signed integer type.<br /></p>
 
 <MarginText>7.a/5</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>In the function case, the parameter, if present may be used to specify an initial size for the container, in anticipation of adding elements to it. For a positional aggregate, or a named aggregate that doesn't use an iterator, it will be initialized with the number of elements. For a named aggregate that uses an iterator, the implementation is permitted to estimate the number of elements that the iterator will produce, but it is not required to do so. <br /></Admonition>
 
 <MarginText>8/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0437-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0437-1"}</em>{"}"} <br />The <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> specified for Add_Unnamed for an Aggregate aspect shall denote exactly one procedure that has two parameters, the first an <strong>in out</strong> parameter of the container type, and the second an <strong>in</strong> parameter of some nonlimited type, called the <em>element type</em> of the container type.<br /></p>
+<MarginInfo items={["AI12-0212-1", "AI12-0437-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0437-1"}</em>{"}"} <br />The <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> specified for Add_Unnamed for an Aggregate aspect shall denote exactly one procedure that has two parameters, the first an <strong>in out</strong> parameter of the container type, and the second an <strong>in</strong> parameter of some nonlimited type, called the <em>element type</em> of the container type.<br /></p>
 
 <MarginText>9/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0437-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0437-1"}</em>{"}"} <br />The <em>function_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> specified for New_Indexed for an Aggregate aspect shall denote exactly one function with a result type of the container type, and two parameters of the same discrete type, with that type being the <em>key type</em> of the container type.<br /></p>
+<MarginInfo items={["AI12-0212-1", "AI12-0437-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0437-1"}</em>{"}"} <br />The <em>function_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> specified for New_Indexed for an Aggregate aspect shall denote exactly one function with a result type of the container type, and two parameters of the same discrete type, with that type being the <em>key type</em> of the container type.<br /></p>
 
 <MarginText>9.a/5</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>The New_Indexed function is used instead of Empty as the first step of creating an aggregate that is initialized using the Assign_Indexed procedure. <br /></Admonition>
 
 <MarginText>10/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0437-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0437-1"}</em>{"}"} <br />The <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> specified for Add_Named or Assign_Indexed for an Aggregate aspect shall denote exactly one procedure that has three parameters, the first an <strong>in out</strong> parameter of the container type, the second an <strong>in</strong> parameter of a nonlimited type (the <em>key type</em> of the container type), and the third, an <strong>in</strong> parameter of a nonlimited type that is called the <em>element type</em> of the container type.<br /></p>
+<MarginInfo items={["AI12-0212-1", "AI12-0437-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0437-1"}</em>{"}"} <br />The <em>procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> specified for Add_Named or Assign_Indexed for an Aggregate aspect shall denote exactly one procedure that has three parameters, the first an <strong>in out</strong> parameter of the container type, the second an <strong>in</strong> parameter of a nonlimited type (the <em>key type</em> of the container type), and the third, an <strong>in</strong> parameter of a nonlimited type that is called the <em>element type</em> of the container type.<br /></p>
 
 
 #### Legality Rules
 
 <MarginText>11/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />If the container type of an Aggregate aspect is a private type, the full type of the container type shall not be an array type. If the container type is limited, the name specified for Empty shall denote a function rather than a constant object.<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />If the container type of an Aggregate aspect is a private type, the full type of the container type shall not be an array type. If the container type is limited, the name specified for Empty shall denote a function rather than a constant object.<br /></p>
 
 <MarginText>12/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />For an Aggregate aspect, the key type of Assign_Indexed shall be the same type as that of the parameters of New_Indexed. Additionally, if both Add_Unnamed and Assign_Indexed are specified, the final parameters shall be of the same type &mdash; the element type of the container type.<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />For an Aggregate aspect, the key type of Assign_Indexed shall be the same type as that of the parameters of New_Indexed. Additionally, if both Add_Unnamed and Assign_Indexed are specified, the final parameters shall be of the same type &mdash; the element type of the container type.<br /></p>
 
 
 #### Static Semantics
 
 <MarginText>13/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0388-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0388-1"}</em>{"}"} <br />The Aggregate aspect is nonoverridable (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>). <br /></p>
+<MarginInfo items={["AI12-0212-1", "AI12-0388-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0388-1"}</em>{"}"} <br />The Aggregate aspect is nonoverridable (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>). <br /></p>
 
 
 #### Syntax
 
 <MarginText>14/5</MarginText>
 <MarginInfo items={["AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>container_aggregate</code><a id="S0123"></a><code> ::= </code><br />    <code><a href="../AA-4/AA-4.3#S0124">null_container_aggregate</a></code><br />  | <code><a href="../AA-4/AA-4.3#S0125">positional_container_aggregate</a></code><br />  | <code><a href="../AA-4/AA-4.3#S0126">named_container_aggregate</a></code><br />
 
 </CodeBlock>
 <MarginText>15/5</MarginText>
 <MarginInfo items={["AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>null_container_aggregate</code><a id="S0124"></a><code> ::= </code>'[' ']'<br />
 
 </CodeBlock>
 <MarginText>16/5</MarginText>
 <MarginInfo items={["AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>positional_container_aggregate</code><a id="S0125"></a><code> ::= </code>'[' <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>{"{"}, <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>{"}"} ']'<br />
 
 </CodeBlock>
 <MarginText>17/5</MarginText>
 <MarginInfo items={["AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>named_container_aggregate</code><a id="S0126"></a><code> ::= </code>'[' <code><a href="../AA-4/AA-4.3#S0127">container_element_association_list</a></code> ']'<br />
 
 </CodeBlock>
 <MarginText>17.a/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginInfo items={["AI12-0212-1"]} />
+<Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />Unlike other <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s, container aggregates have to be surrounded with brackets rather than parentheses. Using brackets allows writing zero- and one-element positional <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s. (Were we to use parentheses, a one-element positional aggregate would look the same as and would always be interpreted as a parenthesized expression.) Unlike the case for arrays, where it is always possible to give bounds to work around this gap, such an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> could not be written at all for a sequence type (such as a list) where there is no index or key to use. <br /></Admonition>
 
 <MarginText>18/5</MarginText>
 <MarginInfo items={["AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>container_element_association_list</code><a id="S0127"></a><code> ::= </code><br />    <code><a href="../AA-4/AA-4.3#S0128">container_element_association</a></code> {"{"}, <code><a href="../AA-4/AA-4.3#S0128">container_element_association</a></code>{"}"}<br />
 
 </CodeBlock>
 <MarginText>19/5</MarginText>
 <MarginInfo items={["AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>container_element_association</code><a id="S0128"></a><code> ::= </code><br />    <code><a href="../AA-4/AA-4.3#S0129">key_choice_list</a></code> ={">"} <code><a href="../AA-4/AA-4.4#S0132">expression</a></code><br />  | <code><a href="../AA-4/AA-4.3#S0129">key_choice_list</a></code> ={">"} {"<"}{">"}<br />  | <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code><br />
 
 </CodeBlock>
 <MarginText>20/5</MarginText>
 <MarginInfo items={["AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>key_choice_list</code><a id="S0129"></a><code> ::= </code><code><a href="../AA-4/AA-4.3#S0130">key_choice</a></code> {"{"}'|' <code><a href="../AA-4/AA-4.3#S0130">key_choice</a></code>{"}"}<br />
 
 </CodeBlock>
 <MarginText>21/5</MarginText>
 <MarginInfo items={["AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>key_choice</code><a id="S0130"></a><code> ::= </code><em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> | <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code><br />
 
 </CodeBlock>
 <MarginText>22/5</MarginText>
 <MarginInfo items={["AI12-0212-1"]} />
+
 <CodeBlock>
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br /><code>iterated_element_association</code><a id="S0131"></a><code> ::= </code><br />    <strong>for</strong> <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code>[ <strong>use</strong> <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>] ={">"} <code><a href="../AA-4/AA-4.4#S0132">expression</a></code><br />  | <strong>for</strong> <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>[ <strong>use</strong> <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>] ={">"} <code><a href="../AA-4/AA-4.4#S0132">expression</a></code><br />
 
@@ -1407,36 +1569,43 @@ function Translate (P : Point'Class; X, Y : Real) return Point'Class is{"\n"}   
 #### Name Resolution Rules
 
 <MarginText>23/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0437-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0437-1"}</em>{"}"} <br />The expected type for a <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code> shall be a single type for which the Aggregate aspect has been specified. The expected type for each <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code> is the element type of the expected type.<br /></p>
+<MarginInfo items={["AI12-0212-1", "AI12-0437-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0437-1"}</em>{"}"} <br />The expected type for a <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code> shall be a single type for which the Aggregate aspect has been specified. The expected type for each <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code> is the element type of the expected type.<br /></p>
 
 <MarginText>24/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The expected type for a <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, or a <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code> of a <code><a href="../AA-4/AA-4.3#S0130">key_choice</a></code>, is the key type of the expected type of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>.<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The expected type for a <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, or a <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code> of a <code><a href="../AA-4/AA-4.3#S0130">key_choice</a></code>, is the key type of the expected type of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>.<br /></p>
 
 
 #### Legality Rules
 
 <MarginText>25/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The expected type for a <code><a href="../AA-4/AA-4.3#S0125">positional_container_aggregate</a></code> shall have an Aggregate aspect that includes a specification for an Add_Unnamed procedure or an Assign_Indexed procedure. The expected type for a <code><a href="../AA-4/AA-4.3#S0126">named_container_aggregate</a></code> that contains one or more <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code>s with a <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> shall have an Aggregate aspect that includes a specification for the Add_Named procedure. The expected type for a <code><a href="../AA-4/AA-4.3#S0126">named_container_aggregate</a></code> that contains one or more <code><a href="../AA-4/AA-4.3#S0129">key_choice_list</a></code>s shall have an Aggregate aspect that includes a specification for the Add_Named or Assign_Indexed procedure. [A <code><a href="../AA-4/AA-4.3#S0124">null_container_aggregate</a></code> can be of any type with an Aggregate aspect.]<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The expected type for a <code><a href="../AA-4/AA-4.3#S0125">positional_container_aggregate</a></code> shall have an Aggregate aspect that includes a specification for an Add_Unnamed procedure or an Assign_Indexed procedure. The expected type for a <code><a href="../AA-4/AA-4.3#S0126">named_container_aggregate</a></code> that contains one or more <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code>s with a <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> shall have an Aggregate aspect that includes a specification for the Add_Named procedure. The expected type for a <code><a href="../AA-4/AA-4.3#S0126">named_container_aggregate</a></code> that contains one or more <code><a href="../AA-4/AA-4.3#S0129">key_choice_list</a></code>s shall have an Aggregate aspect that includes a specification for the Add_Named or Assign_Indexed procedure. [A <code><a href="../AA-4/AA-4.3#S0124">null_container_aggregate</a></code> can be of any type with an Aggregate aspect.]<br /></p>
 
 <MarginText>26/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />A non-null container aggregate is called an <em>indexed aggregate</em> if the expected type <em>T</em> of the aggregate specifies an Assign_Indexed procedure in its Aggregate aspect, and either there is no Add_Unnamed procedure specified for the type, or the aggregate is a <code><a href="../AA-4/AA-4.3#S0126">named_container_aggregate</a></code> with a <code><a href="../AA-4/AA-4.3#S0128">container_element_association</a></code> that contains a <code><a href="../AA-4/AA-4.3#S0129">key_choice_list</a></code> or a <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code>. The key type of an indexed aggregate is also called the <em>index type</em> of the aggregate.<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />A non-null container aggregate is called an <em>indexed aggregate</em> if the expected type <em>T</em> of the aggregate specifies an Assign_Indexed procedure in its Aggregate aspect, and either there is no Add_Unnamed procedure specified for the type, or the aggregate is a <code><a href="../AA-4/AA-4.3#S0126">named_container_aggregate</a></code> with a <code><a href="../AA-4/AA-4.3#S0128">container_element_association</a></code> that contains a <code><a href="../AA-4/AA-4.3#S0129">key_choice_list</a></code> or a <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code>. The key type of an indexed aggregate is also called the <em>index type</em> of the aggregate.<br /></p>
 
 <MarginText>27/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.3#S0128">container_element_association</a></code> with a {"<"}{">"} rather than an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, or with a <code><a href="../AA-4/AA-4.3#S0130">key_choice</a></code> that is a <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code>, is permitted only in an indexed aggregate.<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />A <code><a href="../AA-4/AA-4.3#S0128">container_element_association</a></code> with a {"<"}{">"} rather than an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, or with a <code><a href="../AA-4/AA-4.3#S0130">key_choice</a></code> that is a <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code>, is permitted only in an indexed aggregate.<br /></p>
 
 <MarginText>27.a/5</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>Only an element of an indexed aggregate can be left uninitialized, because the compiler can simply omit producing an Assign_Indexed operation for the given index. For other kinds of aggregates, there are no operations that add an element without giving it a value. We could have defined such (optional) operations, but they would have added significant complication to an already complex feature without adding much additional expressive power. Note that, to be consistent with array aggregates, we do not support specifying {"<"}{">"} in an <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code>. <br /></Admonition>
 
 <MarginText>28/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code> without a <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, if the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> is an indexed aggregate or the expected type of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> specifies an Add_Named procedure in its Aggregate aspect, then the type of the loop parameter of the <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code> shall be the same as the key type of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>.<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code> without a <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, if the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> is an indexed aggregate or the expected type of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> specifies an Add_Named procedure in its Aggregate aspect, then the type of the loop parameter of the <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code> shall be the same as the key type of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>.<br /></p>
 
 <MarginText>28.a/5</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>If there is a <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in an <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code>, it determines the key of each added key/value pair, rather than the loop parameter. But if there is no <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, the loop parameter itself is used as the key. <br /></Admonition>
 
 <MarginText>29/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0250-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0250-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0126">named_container_aggregate</a></code> that is an indexed aggregate, all <code><a href="../AA-4/AA-4.3#S0128">container_element_association</a></code>s shall contain either a <code><a href="../AA-4/AA-4.3#S0129">key_choice_list</a></code>, or a <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code> without a <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <code><a href="../AA-5/AA-5.5#S0182">iterator_filter</a></code>. Furthermore, for such an aggregate, either: <br /></p>
+<MarginInfo items={["AI12-0212-1", "AI12-0250-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0250-1"}</em>{"}"} <br />For a <code><a href="../AA-4/AA-4.3#S0126">named_container_aggregate</a></code> that is an indexed aggregate, all <code><a href="../AA-4/AA-4.3#S0128">container_element_association</a></code>s shall contain either a <code><a href="../AA-4/AA-4.3#S0129">key_choice_list</a></code>, or a <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code> without a <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <code><a href="../AA-5/AA-5.5#S0182">iterator_filter</a></code>. Furthermore, for such an aggregate, either: <br /></p>
 
 <MarginText>30/5</MarginText>
 <ul>
@@ -1452,7 +1621,8 @@ function Translate (P : Point'Class; X, Y : Real) return Point'Class is{"\n"}   
 #### Dynamic Semantics
 
 <MarginText>32/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The evaluation of a <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code> starts by creating an anonymous object <em>A</em> of the expected type <em>T</em>, initialized as follows:<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The evaluation of a <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code> starts by creating an anonymous object <em>A</em> of the expected type <em>T</em>, initialized as follows:<br /></p>
 
 <MarginText>33/5</MarginText>
 <ul>
@@ -1483,7 +1653,8 @@ function Translate (P : Point'Class; X, Y : Real) return Point'Class is{"\n"}   
 <strong></strong>The value of the parameter to Empty for some <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code>s.<br /></Admonition>
 
 <MarginText>42/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The evaluation then proceeds as follows:<br /></p>
+<MarginInfo items={["AI12-0212-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />The evaluation then proceeds as follows:<br /></p>
 
 <MarginText>43/5</MarginText>
 <ul>
@@ -1497,7 +1668,8 @@ function Translate (P : Point'Class; X, Y : Real) return Point'Class is{"\n"}   
 <MarginText>47/5</MarginText>
 <li>for a <code><a href="../AA-4/AA-4.3#S0128">container_element_association</a></code> with a <code><a href="../AA-4/AA-4.3#S0129">key_choice_list</a></code>, for each <code><a href="../AA-4/AA-4.3#S0130">key_choice</a></code> of the list in an arbitrary order, the <code><a href="../AA-4/AA-4.3#S0130">key_choice</a></code> is evaluated as is the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of the <code><a href="../AA-4/AA-4.3#S0128">container_element_association</a></code> (in an arbitrary order), and the Add_Named procedure is invoked once for each value covered by the <code><a href="../AA-4/AA-4.3#S0130">key_choice</a></code>, with the anonymous object <em>A</em> as the first parameter, the value from the <code><a href="../AA-4/AA-4.3#S0130">key_choice</a></code> as the second parameter, and the result of evaluating the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> as the third parameter;<br /></li>
 <MarginText>48/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0327-1"]} /><li>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0327-1"}</em>{"}"} <br />for a <code><a href="../AA-4/AA-4.3#S0128">container_element_association</a></code> with an <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code>, first the <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code> is elaborated, then an iteration is performed, and for each value conditionally produced by the iteration (see <a href="../AA-5/AA-5.5">5.5</a> and <a href="../AA-5/AA-5.5#Subclause_5.5.2">5.5.2</a>) the Add_Named procedure is invoked with the anonymous object <em>A</em> as the first parameter, the result of evaluating the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> as the third parameter, and:<br /></li>
+<MarginInfo items={["AI12-0212-1", "AI12-0327-1"]} />
+<li>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0327-1"}</em>{"}"} <br />for a <code><a href="../AA-4/AA-4.3#S0128">container_element_association</a></code> with an <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code>, first the <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code> is elaborated, then an iteration is performed, and for each value conditionally produced by the iteration (see <a href="../AA-5/AA-5.5">5.5</a> and <a href="../AA-5/AA-5.5#Subclause_5.5.2">5.5.2</a>) the Add_Named procedure is invoked with the anonymous object <em>A</em> as the first parameter, the result of evaluating the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> as the third parameter, and:<br /></li>
 <MarginText>49/5</MarginText>
 <li>if there is a <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, the result of evaluating the <em>key_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> as the second parameter;<br /></li>
 <MarginText>50/5</MarginText>
@@ -1513,7 +1685,8 @@ function Translate (P : Point'Class; X, Y : Real) return Point'Class is{"\n"}   
 <dd>the <code><a href="../AA-4/AA-4.3#S0131">iterated_element_association</a></code> is elaborated;<br /></dd>
 <MarginText>54/5</MarginText>
 <dt><br/>b)</dt>
-<MarginInfo items={["AI12-0212-1", "AI12-0327-1"]} /><dd>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0327-1"}</em>{"}"} <br />an iteration is performed, and for each value conditionally produced by the iteration (see <a href="../AA-5/AA-5.5">5.5</a> and <a href="../AA-5/AA-5.5#Subclause_5.5.2">5.5.2</a>) the Add_Unnamed procedure is invoked, with the anonymous object <em>A</em> as the first parameter and the result of evaluating the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> as the second parameter.<br /></dd>
+<MarginInfo items={["AI12-0212-1", "AI12-0327-1"]} />
+<dd>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0327-1"}</em>{"}"} <br />an iteration is performed, and for each value conditionally produced by the iteration (see <a href="../AA-5/AA-5.5">5.5</a> and <a href="../AA-5/AA-5.5#Subclause_5.5.2">5.5.2</a>) the Add_Unnamed procedure is invoked, with the anonymous object <em>A</em> as the first parameter and the result of evaluating the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> as the second parameter.<br /></dd>
 </dl>
 <MarginText>54.a/5</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -1523,7 +1696,8 @@ function Translate (P : Point'Class; X, Y : Real) return Point'Class is{"\n"}   
 #### Examples
 
 <MarginText>55/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0429-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Examples of specifying the Aggregate aspect for a Set_Type, a Map_Type, and a Vector_Type:</em><br /></p>
+<MarginInfo items={["AI12-0212-1", "AI12-0429-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Examples of specifying the Aggregate aspect for a Set_Type, a Map_Type, and a Vector_Type:</em><br /></p>
 
 <MarginText>56/5</MarginText>
 <CodeBlock language="ada">
@@ -1553,7 +1727,8 @@ function Translate (P : Point'Class; X, Y : Real) return Point'Class is{"\n"}   
 
 </CodeBlock>
 <MarginText>68/5</MarginText>
-<MarginInfo items={["AI12-0212-1", "AI12-0429-1"]} /><p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Examples of container aggregates for Set_Type, Map_Type, and Vector_Type:</em><br /></p>
+<MarginInfo items={["AI12-0212-1", "AI12-0429-1"]} />
+<p>{"{"}<em>{"AI12-0212-1"}</em>{"}"} {"{"}<em>{"AI12-0429-1"}</em>{"}"} <em><br />Examples of container aggregates for Set_Type, Map_Type, and Vector_Type:</em><br /></p>
 
 <MarginText>69/5</MarginText>
 <CodeBlock language="ada">
@@ -1573,7 +1748,8 @@ function Translate (P : Point'Class; X, Y : Real) return Point'Class is{"\n"}   
 <MarginText>76/5</MarginText>
 --  A set aggregate consisting of two <a href="../AA-4/AA-4.3#S0131">iterated_element_association</a>s:{"\n"}S := [for Item in 1 .. 5 ={">"} Item,{"\n"}      for Item in 1 .. 5 ={">"} -Item];{"\n"}
 <MarginText>77/5</MarginText>
-<MarginInfo items={["AI12-0379-1"]} />--  {"{"}{"AI12-0379-1"}{"}"}{"\n"} --  Is equivalent (assuming set semantics) to:{"\n"}S := Empty_Set;{"\n"}for Item in 1 .. 5 loop{"\n"}   Include (S, Item);{"\n"}end loop;{"\n"}for Item in -5 .. -1 loop{"\n"}   Include (S, Item);{"\n"}end loop;{"\n"}
+<MarginInfo items={["AI12-0379-1"]} />
+--  {"{"}{"AI12-0379-1"}{"}"}{"\n"} --  Is equivalent (assuming set semantics) to:{"\n"}S := Empty_Set;{"\n"}for Item in 1 .. 5 loop{"\n"}   Include (S, Item);{"\n"}end loop;{"\n"}for Item in -5 .. -1 loop{"\n"}   Include (S, Item);{"\n"}end loop;{"\n"}
 <MarginText>78/5</MarginText>
 --  Example aggregates using Map_Type.{"\n"}M : Map_Type;{"\n"}
 <MarginText>79/5</MarginText>
@@ -1610,6 +1786,7 @@ Table : constant array(Positive range {"<"}{">"}) of Pair :={"\n"}   [(Key ={">"
 #### Extensions to Ada 2012
 
 <MarginText>92.a/5</MarginText>
-<MarginInfo items={["AI12-0212-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<MarginInfo items={["AI12-0212-1"]} />
+<Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0212-1"}</em>{"}"} <br />Container aggregates are new. <br /></Admonition>
 
