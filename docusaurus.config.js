@@ -7,7 +7,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/okaidia")
 const gitHubUserName = "ada-lang-io"
 const gitHubProjectName = "ada-lang-io"
 
-const alireDefaultVersion = "1.2.1"
+const alireDefaultVersion = "v1.2.1"
 const alireGitHubLatestRelease = "https://api.github.com/repos/alire-project/alire/releases/latest"
 
 /** @type {import('@docusaurus/types').Config} */
@@ -54,19 +54,21 @@ const config = {
     (context, options) => ({
       name: "ada-lang-alire-version",
       async loadContent() {
-        const req = await fetch(alireGitHubLatestRelease)
+        try {
+          const req = await fetch(alireGitHubLatestRelease)
 
-        if (req.ok) {
-          const res = await req.json()
-          return res.tag_name ?? alireDefaultVersion
+          if (req.ok) {
+            const res = await req.json()
+            return res.tag_name
+          }
         }
-        else {
+        catch {
           return alireDefaultVersion
         }
       },
       async contentLoaded({content, actions}) {
         const {setGlobalData} = actions
-        setGlobalData({alireVersion: content})
+        setGlobalData({alireVersion: content ?? alireDefaultVersion})
       }
     })
   ],
