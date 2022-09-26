@@ -23,7 +23,7 @@ export default function InfoHover({ text, width = 300 }: InfoHoverProps): JSX.El
         <Text size="sm">
           <Stack spacing={8}>
             {text.map((line, i) => (
-              <span key={i}>{line}</span>
+              <div key={i}>{line}</div>
             ))}
           </Stack>
         </Text>
