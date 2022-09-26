@@ -16,252 +16,124 @@ import CodeBlock from "@theme/CodeBlock";
 import MarginText from "@site/src/components/MarginText";
 import MarginInfo from "@site/src/components/MarginInfo";
 
-<AnnotatedOnly>
-<MarginText>
-1
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1</MarginText>
 <p>Package Interfaces is the parent of several library packages that declare types and other entities useful for interfacing to foreign languages. It also contains some implementation-defined types that are useful across more than one language (in particular for interfacing to assembly language). <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-1.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.a</MarginText>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>The contents of the visible part of package Interfaces and its language-defined descendants.<br /></Admonition>
 
 
 #### Static Semantics
 
-<AnnotatedOnly>
-<MarginText>
-2
-</MarginText>
-</AnnotatedOnly>
+<MarginText>2</MarginText>
 <p>The library package Interfaces has the following skeletal declaration: <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-3/5
-</MarginText>
-</AnnotatedOnly>
-<CodeBlock language="ada">
---  {"{"}{"AI12-0414-1"}{"}"}{"\n"} package Interfaces{"\n"}   with Pure is{"\n"}
-<AnnotatedOnly>
-<MarginText>
-4
-</MarginText>
-</AnnotatedOnly>
+<MarginText>3/5</MarginText>
+<MarginInfo items={["AI12-0414-1"]} /><CodeBlock language="ada">
+--  {"{"}{"AI12-0414-1"}{"}"}{"\n"} package Interfaces {"\n"}   with  Pure is {"\n"}
+<MarginText>4</MarginText>
    type Integer_n is range -2**(n-1) .. 2**(n-1) - 1;  --2's complement{"\n"}
-<AnnotatedOnly>
-<MarginText>
-5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>5</MarginText>
    type Unsigned_n is mod 2**n;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-6
-</MarginText>
-</AnnotatedOnly>
+<MarginText>6</MarginText>
    function Shift_Left  (Value : Unsigned_n; Amount : Natural){"\n"}      return Unsigned_n;{"\n"}   function Shift_Right (Value : Unsigned_n; Amount : Natural){"\n"}      return Unsigned_n;{"\n"}   function Shift_Right_Arithmetic (Value : Unsigned_n; Amount : Natural){"\n"}      return Unsigned_n;{"\n"}   function Rotate_Left  (Value : Unsigned_n; Amount : Natural){"\n"}      return Unsigned_n;{"\n"}   function Rotate_Right (Value : Unsigned_n; Amount : Natural){"\n"}      return Unsigned_n;{"\n"}   ...{"\n"}end Interfaces;{"\n"}
 
 </CodeBlock>
 
 #### Implementation Requirements
 
-<AnnotatedOnly>
-<MarginText>
-7
-</MarginText>
-</AnnotatedOnly>
+<MarginText>7</MarginText>
 <p>An implementation shall provide the following declarations in the visible part of package Interfaces: <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-8
-</MarginText>
-</AnnotatedOnly>
+<MarginText>8</MarginText>
 <ul>
 <li>Signed and modular integer types of <em>n</em> bits, if supported by the target architecture, for each <em>n</em> that is at least the size of a storage element and that is a factor of the word size. The names of these types are of the form Integer_<em>n</em> for the signed types, and Unsigned_<em>n</em> for the modular types; <br /></li>
-<AnnotatedOnly>
-<MarginText>
-8.a
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>8.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>For example, for a typical 32-bit machine the corresponding types might be Integer_8, Unsigned_8, Integer_16, Unsigned_16, Integer_32, and Unsigned_32.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-8.b
-</MarginText>
-</AnnotatedOnly>
+<MarginText>8.b</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 The wording above implies, for example, that Integer_16'Size = Unsigned_16'Size = 16. Unchecked conversions between same-Sized types will work as expected. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-9
-</MarginText>
-</AnnotatedOnly>
+<MarginText>9</MarginText>
 <ul>
 <li>For each such modular type in Interfaces, shifting and rotating subprograms as specified in the declaration of Interfaces above. These subprograms are Intrinsic. They operate on a bit-by-bit basis, using the binary representation of the value of the operands to yield a binary representation for the result. The Amount parameter gives the number of bits by which to shift or rotate. For shifting, zero bits are shifted in, except in the case of Shift_Right_Arithmetic, where one bits are shifted in if Value is at least half the modulus. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-9.a
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>9.a</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>We considered making shifting and rotating be primitive operations of all modular types. However, it is a design principle of Ada that all predefined operations should be operators (not functions named by identifiers). (Note that an early version of Ada had "<strong>abs</strong>" as an identifier, but it was changed to a reserved word operator before standardization of Ada 83.) This is important because the implicit declarations would hide nonoverloadable declarations with the same name, whereas operators are always overloadable. Therefore, we would have had to make shift and rotate into reserved words, which would have been upward incompatible, or else invent new operator symbols, which seemed like too much mechanism. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-9.b/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
-<strong>To be honest: </strong>{"{"}<em>{"AI12-0264-1"}</em>{"}"} <br />"Shifting" and "rotating" have the conventional meaning. Neither of these terms is usefully defined by the usual normative references of the Reference Manual, so we provide pseudo-code here to describe the intended semantics of the above wording (all operations in these examples are using modular semantics).<br /></Admonition>
+<MarginText>9.b/5</MarginText>
+<MarginInfo items={["AI12-0264-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<strong>To be honest: </strong>{"{"}<em>{"AI12-0264-1"}</em>{"}"} &ldquo;<br />Shifting&rdquo; and &ldquo;rotating&rdquo; have the conventional meaning. Neither of these terms is usefully defined by the usual normative references of the Reference Manual, so we provide pseudo-code here to describe the intended semantics of the above wording (all operations in these examples are using modular semantics).<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-9.c/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>9.c/5</MarginText>
 <CodeBlock language="ada">
 function Rotate_Left (Value : Unsigned_n; Amount : Natural){"\n"}   return Unsigned_n is{"\n"}   Result : Unsigned_n := Value;{"\n"}   Bit : Unsigned_n range 0 .. 1;{"\n"}begin{"\n"}   for Count in 1 .. Amount loop{"\n"}      Bit := Result/2**(n-1); -- High-bit of Result{"\n"}      Result := Result*2 + Bit;{"\n"}   end loop;{"\n"}   return Result;{"\n"}end Rotate_Left;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-9.d/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>9.d/5</MarginText>
 function Rotate_Right (Value : Unsigned_n; Amount : Natural){"\n"}   return Unsigned_n is{"\n"}   Result : Unsigned_n := Value;{"\n"}   Bit : Unsigned_n range 0 .. 1;{"\n"}begin{"\n"}   for Count in 1 .. Amount loop{"\n"}      Bit := Result mod 2; -- Low-bit of Result{"\n"}      Result := Result/2 + (Bit * 2**(n-1));{"\n"}   end loop;{"\n"}   return Result;{"\n"}end Rotate_Right;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-9.e/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>9.e/5</MarginText>
 function Shift_Left (Value : Unsigned_n; Amount : Natural){"\n"}   return Unsigned_n is{"\n"}   Result : Unsigned_n := Value;{"\n"}begin{"\n"}   for Count in 1 .. Amount loop{"\n"}      Result := Result * 2;{"\n"}   end loop;{"\n"}   return Result;{"\n"}end Shift_Left;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-9.f/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>9.f/5</MarginText>
 function Shift_Right (Value : Unsigned_n; Amount : Natural){"\n"}   return Unsigned_n is{"\n"}   Result : Unsigned_n := Value;{"\n"}begin{"\n"}   for Count in 1 .. Amount loop{"\n"}      Result := Result / 2;{"\n"}   end loop;{"\n"}   return Result;{"\n"}end Shift_Right;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-9.g/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>9.g/5</MarginText>
 function Shift_Right_Arithmetic (Value : Unsigned_n; Amount : Natural){"\n"}   return Unsigned_n is{"\n"}   Result : Unsigned_n := Value;{"\n"}   Neg : constant Boolean :={"\n"}      Result/2**(n-1) = 1; -- High-bit of Result{"\n"}begin{"\n"}   for Count in 1 .. Amount loop{"\n"}      if Neg then{"\n"}         Result := Result / 2 + 2**(n-1);{"\n"}      else{"\n"}         Result := Result / 2;{"\n"}      end if;{"\n"}   end loop;{"\n"}   return Result;{"\n"}end Shift_Right_Arithmetic;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-9.h/5
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>9.h/5</MarginText>
+<MarginInfo items={["AI12-0264-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0264-1"}</em>{"}"} <br />These generally correspond to machine instructions, although there may not be an exact match in terms of boundary conditions, as Ada requires the correct result to be produced for all values of Amount. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-10
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10</MarginText>
 <ul>
 <li>Floating point types corresponding to each floating point format fully supported by the hardware. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-10.a
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>10.a</MarginText>
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>The names for these floating point types are not specified. However, if IEEE arithmetic is supported, then the names should be IEEE_Float_32 and IEEE_Float_64 for single and double precision, respectively.<br /></Admonition>
 
 
 #### Implementation Permissions
 
-<AnnotatedOnly>
-<MarginText>
-11
-</MarginText>
-</AnnotatedOnly>
+<MarginText>11</MarginText>
 <p>An implementation may provide implementation-defined library units that are children of Interfaces, and may add declarations to the visible part of Interfaces in addition to the ones defined above. <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-11.a/2
-</MarginText>
-</AnnotatedOnly>
+<MarginText>11.a/2</MarginText>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>Implementation-defined children of package Interfaces.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-11.1/3
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI95-00204-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />A child package of package Interfaces with the name of a convention may be provided independently of whether the convention is supported by the Convention aspect and vice versa. Such a child package should contain any declarations that would be useful for interfacing to the language (implementation) represented by the convention. Any declarations useful for interfacing to any language on the given hardware architecture should be provided directly in Interfaces. <br /></p>
+<MarginText>11.1/3</MarginText>
+<MarginInfo items={["AI95-00204-01", "AI05-0229-1"]} /><p>{"{"}<em>{"AI95-00204-01"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />A child package of package Interfaces with the name of a convention may be provided independently of whether the convention is supported by the Convention aspect and vice versa. Such a child package should contain any declarations that would be useful for interfacing to the language (implementation) represented by the convention. Any declarations useful for interfacing to any language on the given hardware architecture should be provided directly in Interfaces. <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-11.b/2
-</MarginText>
-</AnnotatedOnly>
+<MarginText>11.b/2</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>For example, package Interfaces.XYZ_Pascal might contain declarations of types that match the data types provided by the XYZ implementation of Pascal, so that it will be more convenient to pass parameters to a subprogram whose convention is XYZ_Pascal. <br /></Admonition>
 
 
 #### Implementation Advice
 
-<AnnotatedOnly>
-<MarginText>
-12/2
-</MarginText>
-</AnnotatedOnly>
-<p><em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00204-01"}</em>{"}"} <br /></p>
+<MarginText>12/2</MarginText>
+<MarginInfo items={["AI95-00204-01"]} /><p><em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00204-01"}</em>{"}"} <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-12.a/2
-</MarginText>
-</AnnotatedOnly>
+<MarginText>12.a/2</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em><br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-13/3
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />An implementation supporting an interface to C, COBOL, or Fortran should provide the corresponding package or packages described in the following subclauses. <br /></p>
+<MarginText>13/3</MarginText>
+<MarginInfo items={["AI05-0299-1"]} /><p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />An implementation supporting an interface to C, COBOL, or Fortran should provide the corresponding package or packages described in the following subclauses. <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-13.a.1/2
-</MarginText>
-</AnnotatedOnly>
+<MarginText>13.a.1/2</MarginText>
 <Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
-<strong></strong>If an interface to C, COBOL, or Fortran is provided, the corresponding package or packages described in <a href="../AA-B/">Annex B</a>, "<a href="../AA-B/">Interface to Other Languages</a>" should also be provided.<br /></Admonition>
+<strong></strong>If an interface to C, COBOL, or Fortran is provided, the corresponding package or packages described in <a href="../AA-B/">Annex B</a>, &ldquo;<a href="../AA-B/">Interface to Other Languages</a>&rdquo; should also be provided.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-13.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>13.a</MarginText>
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
-<strong></strong>The intention is that an implementation might support several implementations of the foreign language: Interfaces.This_Fortran and Interfaces.That_Fortran might both exist. The "default" implementation, overridable by the user, should be declared as a renaming: <br /></Admonition>
+<strong></strong>The intention is that an implementation might support several implementations of the foreign language: Interfaces.This_Fortran and Interfaces.That_Fortran might both exist. The &ldquo;default&rdquo; implementation, overridable by the user, should be declared as a renaming: <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-13.b
-</MarginText>
-</AnnotatedOnly>
+<MarginText>13.b</MarginText>
 <CodeBlock language="ada">
 package Interfaces.Fortran renames Interfaces.This_Fortran;{"\n"}
 
@@ -269,22 +141,14 @@ package Interfaces.Fortran renames Interfaces.This_Fortran;{"\n"}
 
 #### Wording Changes from Ada 95
 
-<AnnotatedOnly>
-<MarginText>
-13.c/2
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>13.c/2</MarginText>
+<MarginInfo items={["AI95-00204-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00204-01"}</em>{"}"} <br />Clarified that interfacing to foreign languages is optional and has the same restrictions as a Specialized Needs Annex. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
-<AnnotatedOnly>
-<MarginText>
-13.d/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>13.d/3</MarginText>
+<MarginInfo items={["AI05-0262-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />Move the restrictions on implementations of optional features to the start of this Annex. <br /></Admonition>
 

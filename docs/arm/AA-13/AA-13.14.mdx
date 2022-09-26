@@ -16,1263 +16,635 @@ import CodeBlock from "@theme/CodeBlock";
 import MarginText from "@site/src/components/MarginText";
 import MarginInfo from "@site/src/components/MarginInfo";
 
-<AnnotatedOnly>
-<MarginText>
-1/3
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />[This subclause defines a place in the program text where each declared entity becomes "frozen". A use of an entity, such as a reference to it by name, or (for a type) an expression of the type, causes freezing of the entity in some contexts, as described below. The Legality Rules forbid certain kinds of uses of an entity in the region of text where it is frozen.] <br /></p>
+<MarginText>1/3</MarginText>
+<MarginInfo items={["AI05-0299-1"]} /><p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />[This subclause defines a place in the program text where each declared entity becomes &ldquo;frozen&rdquo;. A use of an entity, such as a reference to it by name, or (for a type) an expression of the type, causes freezing of the entity in some contexts, as described below. The Legality Rules forbid certain kinds of uses of an entity in the region of text where it is frozen.] <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-1.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.a</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>This concept has two purposes: a compile-time one and a run-time one.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.b
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.b</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 The compile-time purpose of the freezing rules comes from the fact that the evaluation of static expressions depends on overload resolution, and overload resolution sometimes depends on the value of a static expression. (The dependence of static evaluation upon overload resolution is obvious. The dependence in the other direction is more subtle. There are three rules that require static expressions in contexts that can appear in declarative places: The expression in an <code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code> shall be static. In a record aggregate, variant-controlling discriminants shall be static. In an array aggregate with more than one named association, the choices shall be static. The compiler needs to know the value of these expressions in order to perform overload resolution and legality checking.) We wish to allow a compiler to evaluate static expressions when it sees them in a single pass over the <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code>. The freezing rules ensure that.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.c
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.c</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
-The run-time purpose of the freezing rules is called the "linear elaboration model". This means that declarations are elaborated in the order in which they appear in the program text, and later elaborations can depend on the results of earlier ones. The elaboration of the declarations of certain entities requires run-time information about the implementation details of other entities. The freezing rules ensure that this information has been calculated by the time it is used. For example, suppose the initial value of a constant is the result of a function call that takes a parameter of type <em>T</em>. In order to pass that parameter, the size of type <em>T</em> has to be known. If <em>T</em> is composite, that size might be known only at run time.<br /></Admonition>
+The run-time purpose of the freezing rules is called the &ldquo;linear elaboration model&rdquo;. This means that declarations are elaborated in the order in which they appear in the program text, and later elaborations can depend on the results of earlier ones. The elaboration of the declarations of certain entities requires run-time information about the implementation details of other entities. The freezing rules ensure that this information has been calculated by the time it is used. For example, suppose the initial value of a constant is the result of a function call that takes a parameter of type <em>T</em>. In order to pass that parameter, the size of type <em>T</em> has to be known. If <em>T</em> is composite, that size might be known only at run time.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.d
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.d</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
-(Note that in these discussions, words like "before" and "after" generally refer to places in the program text, as opposed to times at run time.) <br /></Admonition>
+(Note that in these discussions, words like &ldquo;before&rdquo; and &ldquo;after&rdquo; generally refer to places in the program text, as opposed to times at run time.) <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.e
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.e</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>The "implementation details" we're talking about above are: <br /></Admonition>
+<strong></strong>The &ldquo;implementation details&rdquo; we're talking about above are: <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.f
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.f</MarginText>
 <ul>
-<li>For a tagged type, the implementations of all the primitive subprograms of the type - that is (in the canonical implementation model), the contents of the type descriptor, which contains pointers to the code for each primitive subprogram.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-1.g
-</MarginText>
-</AnnotatedOnly>
+<li>For a tagged type, the implementations of all the primitive subprograms of the type &mdash; that is (in the canonical implementation model), the contents of the type descriptor, which contains pointers to the code for each primitive subprogram.<br /></li>
+<MarginText>1.g</MarginText>
 <li>For a type, the full type declaration of any parts (including the type itself) that are private.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-1.h
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.h</MarginText>
 <li>For a deferred constant, the full constant declaration, which gives the constant's value. (Since this information necessarily comes after the constant's type and subtype are fully known, there's no need to worry about its type or subtype.)<br /></li>
-<AnnotatedOnly>
-<MarginText>
-1.i
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.i</MarginText>
 <li>For any entity, representation information specified by the user via representation items. Most representation items are for types or subtypes; however, various other kinds of entities, such as objects and subprograms, are possible. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-1.j/3
-</MarginText>
-</AnnotatedOnly>
 </ul>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>1.j/3</MarginText>
+<MarginInfo items={["AI05-0005-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />Similar issues arise for incomplete types. However, we do not use freezing to prevent premature access; incomplete types have different, more severe, restrictions. Similar issues also arise for subprograms, protected operations, tasks and generic units. However, we do not use freezing to prevent premature access for those, either; <a href="../AA-3/AA-3.11">3.11</a> prevents problems with run-time Elaboration_Checks. Even so, freezing is used for these entities to prevent giving representation items too late (that is, after uses that require representation information, such as calls). <br /></Admonition>
 
 
 #### Language Design Principles
 
-<AnnotatedOnly>
-<MarginText>
-1.k
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.k</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 An evaluable construct should freeze anything that's needed to evaluate it.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.l
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.l</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 However, if the construct is not evaluated where it appears, let it cause freezing later, when it is evaluated. This is the case for <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>s and <code><a href="../AA-12/AA-12.6#S0339">default_name</a></code>s. (Formal parameters, generic formal parameters, and components can have <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>s or <code><a href="../AA-12/AA-12.6#S0339">default_name</a></code>s.)<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.m
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.m</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 The compiler should be allowed to evaluate static expressions without knowledge of their context. (I.e. there should not be any special rules for static expressions that happen to occur in a context that requires a static expression.)<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.n
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.n</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Compilers should be allowed to evaluate static expressions (and record the results) using the run-time representation of the type. For example, suppose Color'Pos(Red) = 1, but the internal code for Red is 37. If the value of a static expression is Red, some compilers might store 1 in their symbol table, and other compilers might store 37. Either compiler design should be feasible.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.o
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.o</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Compilers should never be required to detect erroneousness or exceptions at compile time (although it's very nice if they do). This implies that we should not require code-generation for a nonstatic expression of type <em>T</em> too early, even if we can prove that that expression will be erroneous, or will raise an exception.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.p
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.p</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Here's an example (modified from AI83-00039, Example 3): <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.q
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.q</MarginText>
 <CodeBlock language="ada">
 type T is{"\n"}    record{"\n"}        ...{"\n"}    end record;{"\n"}function F return T;{"\n"}function G(X : T) return Boolean;{"\n"}Y : Boolean := G(F); -- doesn't force T in Ada 83{"\n"}for T use{"\n"}    record{"\n"}        ...{"\n"}    end record;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-1.r
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
+<MarginText>1.r</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 AI83-00039 says this is legal. Of course, it raises Program_Error because the function bodies aren't elaborated yet. A one-pass compiler has to generate code for an expression of type T before it knows the representation of T. Here's a similar example, which AI83-00039 also says is legal: <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.s
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.s</MarginText>
 <CodeBlock language="ada">
 package P is{"\n"}    type T is private;{"\n"}    function F return T;{"\n"}    function G(X : T) return Boolean;{"\n"}    Y : Boolean := G(F); -- doesn't force T in Ada 83{"\n"}private{"\n"}    type T is{"\n"}        record{"\n"}            ...{"\n"}        end record;{"\n"}end P;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-1.t
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
+<MarginText>1.t</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 If T's size were dynamic, that size would be stored in some compiler-generated dope; this dope would be initialized at the place of the full type declaration. However, the generated code for the function calls would most likely allocate a temp of the size specified by the dope <em>before</em> checking for Program_Error. That dope would contain uninitialized junk, resulting in disaster. To avoid doing that, the compiler would have to determine, at compile time, that the expression will raise Program_Error.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.u
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.u</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 This is silly. If we're going to require compilers to detect the exception at compile time, we might as well formulate the rule as a legality rule.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.v
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.v</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Compilers should not be required to generate code to load the value of a variable before the address of the variable has been determined.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.w
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.w</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 After an entity has been frozen, no further requirements may be placed on its representation (such as by a representation item or a <code><a href="../AA-3/AA-3.2#S0024">full_type_declaration</a></code>). <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-2
-</MarginText>
-</AnnotatedOnly>
+<MarginText>2</MarginText>
 <p>The <em>freezing</em> of an entity occurs at one or more places (<em>freezing points</em>) in the program text where the representation for the entity has to be fully determined. Each entity is frozen from its first freezing point to the end of the program text (given the ordering of compilation units defined in <a href="../AA-10/AA-10.1#Subclause_10.1.4">10.1.4</a>). <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-2.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>2.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>The "representation" for a subprogram includes its calling convention and means for referencing the subprogram body, either a "link-name" or specified address. It does not include the code for the subprogram body itself, nor its address if a link-name is used to reference the body. <br /></Admonition>
+<strong></strong>The &ldquo;representation&rdquo; for a subprogram includes its calling convention and means for referencing the subprogram body, either a &ldquo;link-name&rdquo; or specified address. It does not include the code for the subprogram body itself, nor its address if a link-name is used to reference the body. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-2.1/3
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI05-0019-1"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />This subclause also defines a place in the program text where the profile of each declared callable entity becomes <em>frozen</em>. A use of a callable entity causes freezing of its profile in some contexts, as described below. At the place where the profile of a callable entity becomes frozen, the entity itself becomes frozen.<br /></p>
+<MarginText>2.1/3</MarginText>
+<MarginInfo items={["AI05-0019-1", "AI05-0299-1"]} /><p>{"{"}<em>{"AI05-0019-1"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />This subclause also defines a place in the program text where the profile of each declared callable entity becomes <em>frozen</em>. A use of a callable entity causes freezing of its profile in some contexts, as described below. At the place where the profile of a callable entity becomes frozen, the entity itself becomes frozen.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-3/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>8652/0014</em>{"}"} {"{"}<em>{"AI05-0017-1"}</em>{"}"} {"{"}<em>{"AI05-0019-1"}</em>{"}"} {"{"}<em>{"AI12-0103-1"}</em>{"}"} {"{"}<em>{"AI12-0155-1"}</em>{"}"} {"{"}<em>{"AI12-0168-1"}</em>{"}"} {"{"}<em>{"AI12-0373-1"}</em>{"}"} <br />The end of a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code>, or a declaration of a library package or generic library package, causes <em>freezing</em> of each entity and profile declared within it, as well as the entity itself in the case of the declaration of a library unit. A noninstance <code><a href="../AA-3/AA-3.11#S0090">proper_body</a></code>, <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code>, or <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> causes freezing of each entity and profile declared before it within the same <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>. <br /></p>
+<MarginText>3/5</MarginText>
+<MarginInfo items={["AI05-0017-1", "AI05-0019-1", "AI12-0103-1", "AI12-0155-1", "AI12-0168-1", "AI12-0373-1"]} /><p>{"{"}<em>8652/0014</em>{"}"} {"{"}<em>{"AI05-0017-1"}</em>{"}"} {"{"}<em>{"AI05-0019-1"}</em>{"}"} {"{"}<em>{"AI12-0103-1"}</em>{"}"} {"{"}<em>{"AI12-0155-1"}</em>{"}"} {"{"}<em>{"AI12-0168-1"}</em>{"}"} {"{"}<em>{"AI12-0373-1"}</em>{"}"} <br />The end of a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code>, or a declaration of a library package or generic library package, causes <em>freezing</em> of each entity and profile declared within it, as well as the entity itself in the case of the declaration of a library unit . A noninstance <code><a href="../AA-3/AA-3.11#S0090">proper_body</a></code>, <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code>, or <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> causes freezing of each entity and profile declared before it within the same <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> . <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-3.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>3.a</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>This is worded carefully to handle nested packages and private types. Entities declared in a nested <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> will be frozen by some containing construct.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-3.b/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0017-1"}</em>{"}"} {"{"}<em>{"AI12-0155-1"}</em>{"}"} <br />An incomplete type declared in the private part of a library <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> can be completed in the body. For other incomplete types (and in the bodies of library packages), the completion of the type will be frozen at the end of the package or <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>.<br /></Admonition>
+<MarginText>3.b/5</MarginText>
+<MarginInfo items={["AI05-0017-1", "AI12-0155-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+{"{"}<em>{"AI05-0017-1"}</em>{"}"} {"{"}<em>{"AI12-0155-1"}</em>{"}"} <br />An incomplete type declared in the private part of a library <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> can be completed in the body. For other incomplete types (and in the bodies of library packages), the completion of the type will be frozen at the end of the package or <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> .<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-3.c/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginText>3.b.1/5</MarginText>
+<MarginInfo items={["AI05-0017-1", "AI12-0155-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+{"{"}<em>{"AI05-0017-1"}</em>{"}"} {"{"}<em>{"AI12-0155-1"}</em>{"}"}  <br /></Admonition>
+
+<MarginText>3.c/3</MarginText>
+<MarginInfo items={["AI05-0229-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />The part about bodies does not say <em>immediately</em> within. A renaming-as-body does not have this property. Nor does an imported body <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-3.d/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI12-0300-1"}</em>{"}"} <br />The reason bodies cause freezing is because we want <code>proper_bodies</code> and <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code>s to be interchangeable - one should be able to move a <code><a href="../AA-3/AA-3.11#S0090">proper_body</a></code> to a <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code>, and vice versa, without changing the semantics. Clearly, anything that should cause freezing should do so even if it's inside a <code><a href="../AA-3/AA-3.11#S0090">proper_body</a></code>. However, if we make it a <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code>, then the compiler can't see that thing that should cause freezing. So we make <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code>s cause freezing, just in case they contain something that should cause freezing. But that means we need to do the same for <code>proper_bodies</code>.<br /></Admonition>
+<MarginText>3.d/5</MarginText>
+<MarginInfo items={["AI12-0300-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<strong></strong>{"{"}<em>{"AI12-0300-1"}</em>{"}"} <br />The reason bodies cause freezing is because we want <code>proper_bodies</code> and <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code>s to be interchangeable &mdash; one should be able to move a <code><a href="../AA-3/AA-3.11#S0090">proper_body</a></code> to a <code><a href="../AA-10/AA-10.1#S0302">subunit</a></code>, and vice  versa, without changing the semantics. Clearly, anything that should cause freezing should do so even if it's inside a <code><a href="../AA-3/AA-3.11#S0090">proper_body</a></code>. However, if we make it a <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code>, then the compiler can't see that thing that should cause freezing. So we make <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code>s cause freezing, just in case they contain something that should cause freezing. But that means we need to do the same for <code>proper_bodies</code>.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-3.e
-</MarginText>
-</AnnotatedOnly>
+<MarginText>3.e</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Another reason for bodies to cause freezing, there could be an added implementation burden if an entity declared in an enclosing <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> is frozen within a nested body, since some compilers look at bodies after looking at the containing <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-3.f/4
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>3.f/4</MarginText>
+<MarginInfo items={["AI05-0177-1", "AI12-0103-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI12-0103-1"}</em>{"}"} <br />Note that <code><a href="../AA-6/AA-6.7#S0227">null_procedure_declaration</a></code>s and <code><a href="../AA-6/AA-6.8#S0228">expression_function_declaration</a></code>s (even when those are used as completions), as well as <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>s and renames-as-bodies do not necessarily cause freezing; each have their own specific rules. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-3.g/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>3.g/5</MarginText>
+<MarginInfo items={["AI12-0103-1", "AI12-0005-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<strong></strong>{"{"}<em>{"AI12-0103-1"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />Note that the rule about proper bodies causing  freezing only applies in <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>s. All of the kinds of bodies (see <a href="../AA-3/AA-3.11#Subclause_3.11.1">3.11.1</a> &ndash; keep in mind the difference from <code><a href="../AA-3/AA-3.11#S0089">body</a></code>s) that are allowed in a package specification have their own freezing rules, so they don't need to be covered by the above rule. <br /></Admonition>
+
+<MarginText>4/1</MarginText>
+<MarginInfo items={["AI95-00106-01"]} /><p>{"{"}<em>8652/0046</em>{"}"} {"{"}<em>{"AI95-00106-01"}</em>{"}"} <br />A construct that (explicitly or implicitly) references an entity can cause the <em>freezing</em> of the entity, as defined by subsequent paragraphs. At the place where a construct causes freezing, each <code><a href="../AA-4/AA-4.1#S0091">name</a></code>, <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code>[, or <code><a href="../AA-3/AA-3.5#S0037">range</a></code>] within the construct causes freezing: <br /></p>
+
+<MarginText>4.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI12-0103-1"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />Note that the rule about proper bodies causing freezing only applies in <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>s. All of the kinds of bodies (see <a href="../AA-3/AA-3.11#Subclause_3.11.1">3.11.1</a>  keep in mind the difference from <code><a href="../AA-3/AA-3.11#S0089">body</a></code>s) that are allowed in a package specification have their own freezing rules, so they don't need to be covered by the above rule. <br /></Admonition>
+<strong></strong>Note that in the sense of this paragraph, a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> &ldquo;references&rdquo; the denoted subtype, but not the type. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-4/1
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>8652/0046</em>{"}"} {"{"}<em>{"AI95-00106-01"}</em>{"}"} <br />A construct that (explicitly or implicitly) references an entity can cause the <em>freezing</em> of the entity, as defined by subsequent paragraphs. At the place where a construct causes freezing, each <code><a href="../AA-4/AA-4.1#S0091">name</a></code>, <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code>[, or <code><a href="../AA-3/AA-3.5#S0037">range</a></code>] within the construct causes freezing: <br /></p>
-
-<AnnotatedOnly>
-<MarginText>
-4.a
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>Note that in the sense of this paragraph, a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> "references" the denoted subtype, but not the type. <br /></Admonition>
-
-<AnnotatedOnly>
-<MarginText>
-5/3
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>5/3</MarginText>
+<MarginInfo items={["AI05-0213-1"]} /><ul>
 <li>{"{"}<em>{"AI05-0213-1"}</em>{"}"} <br />The occurrence of a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> causes freezing, except that a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> which is a generic actual parameter whose corresponding generic formal parameter is a formal incomplete type (see <a href="../AA-12/AA-12.5#Subclause_12.5.1">12.5.1</a>) does not cause freezing. In addition, if a parameter of the instantiation is defaulted, the <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> or <code><a href="../AA-12/AA-12.6#S0339">default_name</a></code> for that parameter causes freezing.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-5.a/3
-</MarginText>
-</AnnotatedOnly>
 </ul>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginText>5.a/3</MarginText>
+<MarginInfo items={["AI05-0213-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI05-0213-1"}</em>{"}"} <br />Thus, an actual parameter corresponding to a formal incomplete type parameter may denote an incomplete or private type which is not completely defined at the point of the <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-5.1/4
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>5.1/4</MarginText>
+<MarginInfo items={["AI12-0103-1", "AI12-0157-1"]} /><ul>
 <li>{"{"}<em>{"AI12-0103-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} <br />At the occurrence of an <code><a href="../AA-6/AA-6.8#S0228">expression_function_declaration</a></code> that is a completion, the return expression of the expression function causes freezing.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-5.b/4
-</MarginText>
-</AnnotatedOnly>
 </ul>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginText>5.b/4</MarginText>
+<MarginInfo items={["AI12-0103-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI12-0103-1"}</em>{"}"} <br />This rule prevents calls through access values to an expression that might have unfrozen parts. Typically, elaboration checks and other freezing rules prevent this, but in this case the completion is elaborated and since this is not a <code><a href="../AA-3/AA-3.11#S0089">body</a></code> it does not by itself freeze anything that precedes it. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-5.2/4
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>5.2/4</MarginText>
+<MarginInfo items={["AI12-0132-1", "AI12-0157-1"]} /><ul>
 <li>{"{"}<em>{"AI12-0132-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} <br />At the occurrence of a renames-as-body whose <em>callable_entity_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes an expression function, the return expression of the expression function causes freezing.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-6
-</MarginText>
-</AnnotatedOnly>
+<MarginText>6</MarginText>
 <li>The occurrence of an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> that has no corresponding completion causes freezing. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-6.a
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>6.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Note that this does not include a <code><a href="../AA-12/AA-12.4#S0319">formal_object_declaration</a></code>. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-7
-</MarginText>
-</AnnotatedOnly>
+<MarginText>7</MarginText>
 <ul>
 <li>The declaration of a record extension causes freezing of the parent subtype. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-7.a
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>7.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>This combined with another rule specifying that primitive subprogram declarations shall precede freezing ensures that all descendants of a tagged type implement all of its dispatching operations.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-7.b/2
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>7.b/2</MarginText>
+<MarginInfo items={["AI95-00251-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00251-01"}</em>{"}"} <br />The declaration of a private extension does not cause freezing. The freezing is deferred until the full type declaration, which will necessarily be for a record extension, task, or protected type (the latter only for a limited private extension derived from an interface). <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-7.1/2
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>7.1/2</MarginText>
+<MarginInfo items={["AI95-00251-01"]} /><ul>
 <li>{"{"}<em>{"AI95-00251-01"}</em>{"}"} <br />The declaration of a record extension, interface type, task unit, or protected unit causes freezing of any progenitor types specified in the declaration. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-7.b.1/2
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>7.b.1/2</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>This rule has the same purpose as the one above: ensuring that all descendants of an interface tagged type implement all of its dispatching operations. As with the previous rule, a private extension does not freeze its progenitors; the full type declaration (which must have the same progenitors) will do that. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-7.b.2/2
-</MarginText>
-</AnnotatedOnly>
+<MarginText>7.b.2/2</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>An interface type can be a parent as well as a progenitor; these rules are similar so that the location of an interface in a record extension does not have an effect on the freezing of the interface type. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-7.2/5
-</MarginText>
-</AnnotatedOnly>
-<ul>
-<li>{"{"}<em>{"AI05-0183-1"}</em>{"}"} {"{"}<em>{"AI12-0396-1"}</em>{"}"} {"{"}<em>{"AI12-0407-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} <br />At the freezing point of the entity associated with an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>, any static expressions within the <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> cause freezing, as do <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s or <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s in <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code>s for representation aspects, or operational aspects that have a corresponding operational attribute. Similarly, if an <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> for an operational aspect, other than an assertion aspect, can affect the Name Resolution, Static Semantics, or Legality Rules of a subsequent construct, then any <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s or <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s within the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> cause freezing at the freezing point of the associated entity. Any static expressions within an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> also cause freezing at the end of the immediately enclosing declaration list. For the purposes of this rule, if there is no declared entity associated with an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>, the freezing point is considered to occur immediately following the <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-8/4
-</MarginText>
-</AnnotatedOnly>
+<MarginText>7.2/5</MarginText>
+<MarginInfo items={["AI05-0183-1", "AI12-0396-1", "AI12-0407-1", "AI12-0439-1"]} /><ul>
+<li>{"{"}<em>{"AI05-0183-1"}</em>{"}"} {"{"}<em>{"AI12-0396-1"}</em>{"}"} {"{"}<em>{"AI12-0407-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} <br />At the freezing point of the entity associated with an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>, any static expressions  within the <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> cause freezing, as do <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s or <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s in <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code>s for representation aspects, or operational aspects that have a corresponding operational attribute. Similarly, if an <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> for an operational aspect, other than an assertion aspect, can affect the Name Resolution, Static Semantics, or Legality Rules of a subsequent construct, then any <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s or <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s within the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> cause freezing at the freezing point of the associated entity. Any static expressions within an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> also cause freezing at the end of the immediately enclosing declaration list. For the purposes of this rule, if there is no declared entity associated with an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>, the freezing point is considered to occur immediately following the <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>. <br /></li>
 </ul>
-<p>{"{"}<em>8652/0046</em>{"}"} {"{"}<em>{"AI95-00106-01"}</em>{"}"} {"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI05-0183-1"}</em>{"}"} {"{"}<em>{"AI05-0157-1"}</em>{"}"} <br />A static expression (other than within an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>) causes freezing where it occurs. An object name or nonstatic expression causes freezing where it occurs, unless the name or expression is part of a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>, a <code><a href="../AA-12/AA-12.6#S0339">default_name</a></code>, the return expression of an expression function, an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>, or a per-object expression of a component's <code><a href="../AA-3/AA-3.2#S0029">constraint</a></code>, in which case, the freezing occurs later as part of another construct or at the freezing point of an associated entity.<br /></p>
+<MarginText>8/4</MarginText>
+<MarginInfo items={["AI95-00106-01", "AI05-0177-1", "AI05-0183-1", "AI05-0157-1"]} /><p>{"{"}<em>8652/0046</em>{"}"} {"{"}<em>{"AI95-00106-01"}</em>{"}"} {"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI05-0183-1"}</em>{"}"} {"{"}<em>{"AI05-0157-1"}</em>{"}"} <br />A static expression (other than within an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>) causes freezing where it occurs. An object name or nonstatic expression causes freezing where it occurs, unless the name or expression is part of a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>, a <code><a href="../AA-12/AA-12.6#S0339">default_name</a></code>, the return expression of an expression function, an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>, or a per-object expression of a component's <code><a href="../AA-3/AA-3.2#S0029">constraint</a></code>, in which case, the freezing occurs later as part of another construct or at the freezing point of an associated entity.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-8.1/3
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>8652/0046</em>{"}"} {"{"}<em>{"AI95-00106-01"}</em>{"}"} {"{"}<em>{"AI05-0019-1"}</em>{"}"} <br />An implicit call freezes the same entities and profiles that would be frozen by an explicit call. This is true even if the implicit call is removed via implementation permissions.<br /></p>
+<MarginText>8.1/3</MarginText>
+<MarginInfo items={["AI95-00106-01", "AI05-0019-1"]} /><p>{"{"}<em>8652/0046</em>{"}"} {"{"}<em>{"AI95-00106-01"}</em>{"}"} {"{"}<em>{"AI05-0019-1"}</em>{"}"} <br />An implicit call freezes the same entities and profiles that would be frozen by an explicit call. This is true even if the implicit call is removed via implementation permissions.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-8.2/1
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>8652/0046</em>{"}"} {"{"}<em>{"AI95-00106-01"}</em>{"}"} <br />If an expression is implicitly converted to a type or subtype <em>T</em>, then at the place where the expression causes freezing, <em>T</em> is frozen.<br /></p>
+<MarginText>8.2/1</MarginText>
+<MarginInfo items={["AI95-00106-01"]} /><p>{"{"}<em>8652/0046</em>{"}"} {"{"}<em>{"AI95-00106-01"}</em>{"}"} <br />If an expression is implicitly converted to a type or subtype <em>T</em>, then at the place where the expression causes freezing, <em>T</em> is frozen.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-9
-</MarginText>
-</AnnotatedOnly>
+<MarginText>9</MarginText>
 <p>The following rules define which entities are frozen at the place where a construct causes freezing: <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-10/5
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>10/5</MarginText>
+<MarginInfo items={["AI12-0367-1"]} /><ul>
 <li>{"{"}<em>{"AI12-0367-1"}</em>{"}"} <br />At the place where an expression causes freezing, the type of the expression is frozen, unless the expression is an enumeration literal used as a <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> of the <code><a href="../AA-4/AA-4.3#S0113">array_aggregate</a></code> of an <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code> or as the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> of a specification for aspect Default_Value. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-10.a
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>10.a</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>We considered making enumeration literals never cause freezing, which would be more upward compatible, but examples like the variant record aggregate (Discrim ={">"} Red, ...) caused us to change our mind. Furthermore, an enumeration literal is a static expression, so the implementation should be allowed to represent it using its representation.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-10.a.1/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>10.a.1/5</MarginText>
+<MarginInfo items={["AI12-0367-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0367-1"}</em>{"}"} <br />We exclude uses of enumeration literals that are used in part for setting the representation of the type (aspect Default_Value is defined to be a representation aspect) so we don't freeze the type while determining its representation. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-10.b
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10.b</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>The following pathological example was legal in Ada 83, but is illegal in Ada 95: <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-10.c
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10.c</MarginText>
 <CodeBlock language="ada">
 package P1 is{"\n"}    type T is private;{"\n"}    package P2 is{"\n"}        type Composite(D : Boolean) is{"\n"}            record{"\n"}                case D is{"\n"}                    when False ={">"} Cf : Integer;{"\n"}                    when True  ={">"} Ct : T;{"\n"}                end case;{"\n"}            end record;{"\n"}    end P2;{"\n"}    X : Boolean := P2."="( (False,1), (False,1) );{"\n"}private{"\n"}    type T is array(1..Func_Call) of Integer;{"\n"}end;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-10.d
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
+<MarginText>10.d</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 In Ada 95, the declaration of X freezes Composite (because it contains an expression of that type), which in turn freezes T (even though Ct does not exist in this particular case). But type T is not completely defined at that point, violating the rule that a type shall be completely defined before it is frozen. In Ada 83, on the other hand, there is no occurrence of the name T, hence no forcing occurrence of T. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-10.1/4
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>10.1/4</MarginText>
+<MarginInfo items={["AI05-0019-1", "AI05-0177-1", "AI12-0157-1"]} /><ul>
 <li>{"{"}<em>{"AI05-0019-1"}</em>{"}"} {"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} <br />At the place where a function call causes freezing, the profile of the function is frozen. Furthermore, if a parameter of the call is defaulted, the <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> for that parameter causes freezing. If the function call is to an expression function, the return expression of the expression function causes freezing.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-10.e/3
-</MarginText>
-</AnnotatedOnly>
 </ul>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginText>10.e/3</MarginText>
+<MarginInfo items={["AI05-0019-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI05-0019-1"}</em>{"}"} <br />This is the important rule for profile freezing: a call freezes the profile. That's because generating the call will need to know how the parameters are passed, and that will require knowing details of the types. Other uses of subprograms do not need to know about the parameters, and thus only freeze the subprogram, and not the profile.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-10.f/3
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10.f/3</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Note that we don't need to consider procedure or entry calls, since a body freezes everything that precedes it, and the end of a declarative part freezes everything in the declarative part. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-10.g/4
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginText>10.g/4</MarginText>
+<MarginInfo items={["AI05-0177-1", "AI12-0103-1", "AI12-0157-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI12-0103-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} <br />Freezing of the return expression of an expression function only needs to be considered when the expression function is in the same compilation unit and there are no intervening <code><a href="../AA-3/AA-3.11#S0089">body</a></code>s; the end of a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> or library package freezes everything in it, and a <code><a href="../AA-3/AA-3.11#S0089">body</a></code> freezes everything declared before it. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-10.2/4
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>10.2/4</MarginText>
+<MarginInfo items={["AI05-0019-1", "AI05-0177-1", "AI05-0296-1", "AI12-0157-1"]} /><ul>
 <li>{"{"}<em>{"AI05-0019-1"}</em>{"}"} {"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI05-0296-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} <br />At the place where a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> causes freezing of a callable entity, the profile of that entity is frozen unless the formal subprogram corresponding to the callable entity has a parameter or result of a formal untagged incomplete type; if the callable entity is an expression function, the return expression of the expression function causes freezing.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-10.h/3
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>10.h/3</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>Elaboration of the generic might call the actual for one of its formal subprograms, so we need to know the profile and (for an expression function) <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-10.3/4
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>10.3/4</MarginText>
+<MarginInfo items={["AI05-0177-1", "AI12-0157-1"]} /><ul>
 <li>{"{"}<em>{"AI05-0177-1"}</em>{"}"} {"{"}<em>{"AI12-0157-1"}</em>{"}"} <br />At the place where a use of the Access or Unchecked_Access attribute whose <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes an expression function causes freezing, the return expression of the expression function causes freezing.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-10.i/3
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>10.i/3</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>This is needed to avoid calls to unfrozen expressions. Consider: <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-10.j/3
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10.j/3</MarginText>
 <CodeBlock language="ada">
 package Pack is{"\n"}
-<AnnotatedOnly>
-<MarginText>
-10.k/3
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10.k/3</MarginText>
    type Flub is range 0 .. 100;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-10.l/3
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10.l/3</MarginText>
    function Foo (A : in Natural) return Natural is{"\n"}      (A + Flub'Size); -- The expression is not frozen here.{"\n"}
-<AnnotatedOnly>
-<MarginText>
-10.m/4
-</MarginText>
-</AnnotatedOnly>
---  {"{"}{"AI12-0005-1"}{"}"}{"\n"}    type Bar is access function (A : in Natural) return Natural;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-10.n/3
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10.m/4</MarginText>
+<MarginInfo items={["AI12-0005-1"]} />--  {"{"}{"AI12-0005-1"}{"}"}{"\n"}    type Bar is access function (A : in Natural) return Natural;{"\n"}
+<MarginText>10.n/3</MarginText>
    P : Bar := Foo'Access; -- (A){"\n"}
-<AnnotatedOnly>
-<MarginText>
-10.o/3
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10.o/3</MarginText>
    Val : Natural := P.all(5); -- (B){"\n"}
-<AnnotatedOnly>
-<MarginText>
-10.p/3
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10.p/3</MarginText>
 end Pack;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-10.q/3
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
+<MarginText>10.q/3</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 If point (A) did not freeze the expression of Foo (which freezes Flub), then the call at point (B) would be depending on the aspects of the unfrozen type Flub. That would be bad. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-11
-</MarginText>
-</AnnotatedOnly>
+<MarginText>11</MarginText>
 <ul>
 <li>At the place where a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> causes freezing, the entity denoted by the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> is frozen, unless the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> is a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an expanded name; at the place where an object <code><a href="../AA-4/AA-4.1#S0091">name</a></code> causes freezing, the nominal subtype associated with the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> is frozen. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-11.a/2
-</MarginText>
-</AnnotatedOnly>
 </ul>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginText>11.a/2</MarginText>
+<MarginInfo items={["AI95-00114-01"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />This only matters in the presence of deferred constants or access types; an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> other than a deferred constant declaration causes freezing of the nominal subtype, plus all component junk.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-11.b/1
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>11.b/1</MarginText>
+<MarginInfo items={["AI95-00106-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em>{"{"}<em>8652/0046</em>{"}"} {"{"}<em>{"AI95-00106-01"}</em>{"}"} <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-11.1/1
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>11.1/1</MarginText>
+<MarginInfo items={["AI95-00106-01"]} /><ul>
 <li>{"{"}<em>8652/0046</em>{"}"} {"{"}<em>{"AI95-00106-01"}</em>{"}"} <br />At the place where an <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code> causes freezing, the nominal subtype associated with the <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code> is frozen.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-11.c/2
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>11.c/2</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>This rule ensures that X.D freezes the same entities that X.<strong>all</strong>.D does. Note that an <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code> is neither a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> nor <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> by itself, so it isn't covered by other rules. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-12
-</MarginText>
-</AnnotatedOnly>
+<MarginText>12</MarginText>
 <ul>
 <li>[ At the place where a <code><a href="../AA-3/AA-3.5#S0037">range</a></code> causes freezing, the type of the <code><a href="../AA-3/AA-3.5#S0037">range</a></code> is frozen.] <br /></li>
-<AnnotatedOnly>
-<MarginText>
-12.a
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>12.a</MarginText>
 <Admonition type="aarm" aarm="proof" title="Proof: ">
-<strong></strong>This is consequence of the facts that expressions freeze their type, and the Range attribute is defined to be equivalent to a pair of expressions separated by "..".{"}"} <br /></Admonition>
+<strong></strong>This is consequence of the facts that expressions freeze their type, and the Range attribute is defined to be equivalent to a pair of expressions separated by &ldquo;..&rdquo;.{"}"} <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-13
-</MarginText>
-</AnnotatedOnly>
+<MarginText>13</MarginText>
 <ul>
 <li>At the place where an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> causes freezing, the designated subtype of its type is frozen. If the type of the <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> is a derived type, then all ancestor types are also frozen. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-13.a
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>13.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong><code><a href="../AA-4/AA-4.8#S0164">Allocator</a></code>s also freeze the named subtype, as a consequence of other rules.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-13.b
-</MarginText>
-</AnnotatedOnly>
+<MarginText>13.b</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 The ancestor types are frozen to prevent things like this: <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-13.c
-</MarginText>
-</AnnotatedOnly>
+<MarginText>13.c</MarginText>
 <CodeBlock language="ada">
 type Pool_Ptr is access System.Storage_Pools.Root_Storage_Pool'Class;{"\n"}function F return Pool_Ptr;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-13.d
-</MarginText>
-</AnnotatedOnly>
+<MarginText>13.d</MarginText>
 package P is{"\n"}    type A1 is access Boolean;{"\n"}    type A2 is new A1;{"\n"}    type A3 is new A2;{"\n"}    X : A3 := new Boolean; -- Don't know what pool yet!{"\n"}    for A1'Storage_Pool use F.all;{"\n"}end P;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-13.e
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
+<MarginText>13.e</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 This is necessary because derived access types share their parent's pool. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-14/3
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>14/3</MarginText>
+<MarginInfo items={["AI05-0019-1"]} /><ul>
 <li>{"{"}<em>{"AI05-0019-1"}</em>{"}"} <br />At the place where a profile is frozen, each subtype of the profile is frozen. If the corresponding callable entity is a member of an entry family, the index subtype of the family is frozen. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-14.a/3
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>14.a/3</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em><br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-15/5
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>15/5</MarginText>
+<MarginInfo items={["AI12-0186-1"]} /><ul>
 <li>{"{"}<em>{"AI12-0186-1"}</em>{"}"} <br />At the place where a subtype is frozen, its type is frozen. At the place where a type is frozen, any expressions or <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s within the full type definition cause freezing, other than those that occur within an <code><a href="../AA-3/AA-3.10#S0079">access_type_definition</a></code> or an <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code>; the first subtype, and any component subtypes, index subtypes, and parent subtype of the type are frozen as well. For a specific tagged type, the corresponding class-wide type is frozen as well. For a class-wide type, the corresponding specific type is frozen as well. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-15.a
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>15.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Freezing a type needs to freeze its first subtype in order to preserve the property that the subtype-specific aspects of statically matching subtypes are the same.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-15.b
-</MarginText>
-</AnnotatedOnly>
+<MarginText>15.b</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Freezing an access type does not freeze its designated subtype. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-15.1/3
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>15.1/3</MarginText>
+<MarginInfo items={["AI95-00341-01", "AI05-0019-1"]} /><ul>
 <li>{"{"}<em>{"AI95-00341-01"}</em>{"}"} {"{"}<em>{"AI05-0019-1"}</em>{"}"} <br />At the place where a specific tagged type is frozen, the primitive subprograms of the type are frozen. At the place where a type is frozen, any subprogram named in an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> for the type is frozen. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-15.c/2
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>15.c/2</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>We have a language design principle that all of the details of a specific tagged type are known at its freezing point. But that is only true if the primitive subprograms are frozen at this point as well. Late changes of Import and address clauses violate the principle. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-15.d/2
-</MarginText>
-</AnnotatedOnly>
+<MarginText>15.d/2</MarginText>
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>This rule means that no implicit call to Initialize or Adjust can freeze a subprogram (the type and thus subprograms would have been frozen at worst at the same point). <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-15.e/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<MarginText>15.e/3</MarginText>
+<MarginInfo items={["AI05-0019-1"]} /><Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>{"{"}<em>{"AI05-0019-1"}</em>{"}"} <br />The second sentence is the rule that makes it possible to check that only subprograms with convention Ada are specified in <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>s without jumping through hoops. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-15.2/5
-</MarginText>
-</AnnotatedOnly>
-<ul>
+<MarginText>15.2/5</MarginText>
+<MarginInfo items={["AI12-0396-1"]} /><ul>
 <li>{"{"}<em>{"AI12-0396-1"}</em>{"}"} <br />At the place where a construct causes freezing, if the construct includes a check associated with some assertion aspect [(independent of whether the check is enabled)], or depends on the definition of some operational aspect as part of its Dynamic Semantics, any <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s or <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s in the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> for the aspect cause freezing. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-15.f/5
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>15.f/5</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>Aspects such as Constant_Indexing cause freezing when they are used - the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> in a Constant_Indexing would cause freezing when a <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> that makes use of it causes freezing. <br /></Admonition>
+<strong></strong>Aspects such as Constant_Indexing cause freezing when they are used &mdash; the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> in a Constant_Indexing would cause freezing when a <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> that makes use of it causes freezing. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-15.3/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0155-1"}</em>{"}"} <br />Notwithstanding the rest of this subclause, freezing an incomplete view has no effect.<br /></p>
+<MarginText>15.3/5</MarginText>
+<MarginInfo items={["AI12-0155-1"]} /><p>{"{"}<em>{"AI12-0155-1"}</em>{"}"} <br />Notwithstanding the rest of this subclause, freezing an incomplete view has no effect.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-15.g/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>15.g/5</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>In particular, freezing an incomplete view does not freeze the completion of the view. For an incomplete type, once the completion of the incomplete type is seen, any further references to the type will be of the complete type, which will be frozen in the normal way. Legality Rules prevent all problems for incomplete types themselves.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-15.h/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>15.h/5</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 In contrast, freezing a partial view does have an effect (the completion of the view is frozen and the program is illegal if it hasn't occurred yet). <br /></Admonition>
 
 
 #### Legality Rules
 
-<AnnotatedOnly>
-<MarginText>
-16
-</MarginText>
-</AnnotatedOnly>
+<MarginText>16</MarginText>
 <p>[The explicit declaration of a primitive subprogram of a tagged type shall occur before the type is frozen (see <a href="../AA-3/AA-3.9#Subclause_3.9.2">3.9.2</a>).] <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-16.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>16.a</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>This rule is needed because (1) we don't want people dispatching to things that haven't been declared yet, and (2) we want to allow tagged type descriptors to be static (allocated statically, and initialized to link-time-known symbols). Suppose T2 inherits primitive P from T1, and then overrides P. Suppose P is called <em>before</em> the declaration of the overriding P. What should it dispatch to? If the answer is the new P, we've violated the first principle above. If the answer is the old P, we've violated the second principle. (A call to the new one necessarily raises Program_Error, but that's beside the point.)<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-16.b
-</MarginText>
-</AnnotatedOnly>
+<MarginText>16.b</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Note that a call upon a dispatching operation of type <em>T</em> will freeze <em>T</em>.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-16.c
-</MarginText>
-</AnnotatedOnly>
+<MarginText>16.c</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 We considered applying this rule to all derived types, for uniformity. However, that would be upward incompatible, so we rejected the idea. As in Ada 83, for an untagged type, the above call upon P will call the old P (which is arguably confusing). <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-16.d/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>16.d/3</MarginText>
+<MarginInfo items={["AI05-0222-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 <strong>To be honest: </strong>{"{"}<em>{"AI05-0222-1"}</em>{"}"} <br />This rule only applies to "original" declarations and not to the completion of a primitive subprogram, even though a completion is technically an explicit declaration, and it may declare a primitive subprogram. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-17
-</MarginText>
-</AnnotatedOnly>
+<MarginText>17</MarginText>
 <p>[A type shall be completely defined before it is frozen (see <a href="../AA-3/AA-3.11#Subclause_3.11.1">3.11.1</a> and <a href="../AA-7/AA-7.3">7.3</a>).]<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-18
-</MarginText>
-</AnnotatedOnly>
+<MarginText>18</MarginText>
 <p>[The completion of a deferred constant declaration shall occur before the constant is frozen (see <a href="../AA-7/AA-7.4">7.4</a>).]<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-18.a/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
-<em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00114-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0181-1"}</em>{"}"} <br /></Admonition>
+<MarginText>18.a/5</MarginText>
+<MarginInfo items={["AI95-00114-01", "AI05-0299-1", "AI12-0181-1"]} /><Admonition type="aarm" aarm="proof" title="Proof: ">
+<em>This paragraph was deleted.</em><strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} {"{"}<em>{"AI05-0299-1"}</em>{"}"} {"{"}<em>{"AI12-0181-1"}</em>{"}"}  <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19/1
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} <br />[An operational or representation item that directly specifies an aspect of an entity shall appear before the entity is frozen (see <a href="../AA-13/AA-13.1">13.1</a>).] <br /></p>
+<MarginText>19/1</MarginText>
+<MarginInfo items={["AI95-00137-01"]} /><p>{"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} <br />[An operational or representation item that directly specifies an aspect of an entity shall appear before the entity is frozen (see <a href="../AA-13/AA-13.1">13.1</a>).] <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-19.a/1
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<MarginText>19.a/1</MarginText>
+<MarginInfo items={["AI95-00137-01"]} /><Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>{"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} <br />From RM83-13.1(7). The wording here forbids freezing within the <code><a href="../AA-13/AA-13.1#S0343">aspect_clause</a></code> itself, which was not true of the Ada 83 wording. The wording of this rule is carefully written to work properly for type-related representation items. For example, an <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code> is illegal after the type is frozen, even though the <code>_clause</code> refers to the first subtype.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.a.1/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
-<em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00114-01"}</em>{"}"} {"{"}<em>{"AI12-0181-1"}</em>{"}"} <br /></Admonition>
+<MarginText>19.a.1/5</MarginText>
+<MarginInfo items={["AI95-00114-01", "AI12-0181-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+<em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00114-01"}</em>{"}"} {"{"}<em>{"AI12-0181-1"}</em>{"}"}  <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.b/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="proof" title="Proof: ">
-<strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} {"{"}<em>{"AI12-0181-1"}</em>{"}"} <br />The above Legality Rules are stated "officially" in the referenced subclauses. <br /></Admonition>
+<MarginText>19.b/5</MarginText>
+<MarginInfo items={["AI95-00114-01", "AI12-0181-1"]} /><Admonition type="aarm" aarm="proof" title="Proof: ">
+<strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} {"{"}<em>{"AI12-0181-1"}</em>{"}"} <br />The above Legality Rules are stated &ldquo;officially&rdquo; in the referenced subclauses.  <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.c
-</MarginText>
-</AnnotatedOnly>
+<MarginText>19.c</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>Here's an example that illustrates when freezing occurs in the presence of defaults: <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.d
-</MarginText>
-</AnnotatedOnly>
+<MarginText>19.d</MarginText>
 <CodeBlock language="ada">
 type T is ...;{"\n"}function F return T;{"\n"}type R is{"\n"}    record{"\n"}        C : T := F;{"\n"}        D : Boolean := F = F;{"\n"}    end record;{"\n"}X : R;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-19.e
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
+<MarginText>19.e</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
-Since the elaboration of R's declaration does not allocate component C, there is no need to freeze C's subtype at that place. Similarly, since the elaboration of R does not evaluate the <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> "F = F", there is no need to freeze the types involved at that point. However, the declaration of X <em>does</em> need to freeze these things. Note that even if component C did not exist, the elaboration of the declaration of X would still need information about T - even though D is not of type T, its <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> requires that information. <br /></Admonition>
+Since the elaboration of R's declaration does not allocate component C, there is no need to freeze C's subtype at that place. Similarly, since the elaboration of R does not evaluate the <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> &ldquo;F = F&rdquo;, there is no need to freeze the types involved at that point. However, the declaration of X <em>does</em> need to freeze these things. Note that even if component C did not exist, the elaboration of the declaration of X would still need information about T &mdash; even though D is not of type T, its <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> requires that information. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.f/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginText>19.f/3</MarginText>
+<MarginInfo items={["AI05-0299-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />Although we define freezing in terms of the program text as a whole (i.e. after applying the rules of Clause <a href="../AA-10/">10</a>), the freezing rules actually have no effect beyond compilation unit boundaries. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.g/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginText>19.g/3</MarginText>
+<MarginInfo items={["AI05-0299-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />That is important, because Clause <a href="../AA-10/">10</a> allows some implementation definedness in the order of things, and we don't want the freezing rules to be implementation defined. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.h
-</MarginText>
-</AnnotatedOnly>
+<MarginText>19.h</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>These rules also have no effect in <code><a href="../AA-5/AA-5.1#S0167">statement</a></code>s - they only apply within a single <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, <code><a href="../AA-9/AA-9.1#S0246">task_definition</a></code>, <code><a href="../AA-9/AA-9.4#S0251">protected_definition</a></code>, or <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code>. <br /></Admonition>
+<strong></strong>These rules also have no effect in <code><a href="../AA-5/AA-5.1#S0167">statement</a></code>s &mdash; they only apply within a single <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, <code><a href="../AA-9/AA-9.1#S0246">task_definition</a></code>, <code><a href="../AA-9/AA-9.4#S0251">protected_definition</a></code>, or <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code>. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.i
-</MarginText>
-</AnnotatedOnly>
+<MarginText>19.i</MarginText>
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
-<strong></strong>An implementation may choose to generate code for <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>s and <code><a href="../AA-12/AA-12.6#S0339">default_name</a></code>s in line at the place of use. Alternatively, an implementation may choose to generate thunks (subprograms implicitly generated by the compiler) for evaluation of defaults. Thunk generation cannot, in general, be done at the place of the declaration that includes the default. Instead, they can be generated at the first freezing point of the type(s) involved. (It is impossible to write a purely one-pass Ada compiler, for various reasons. This is one of them - the compiler needs to store a representation of defaults in its symbol table, and then walk that representation later, no earlier than the first freezing point.)<br /></Admonition>
+<strong></strong>An implementation may choose to generate code for <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>s and <code><a href="../AA-12/AA-12.6#S0339">default_name</a></code>s in line at the place of use. Alternatively, an implementation may choose to generate thunks (subprograms implicitly generated by the compiler) for evaluation of defaults. Thunk generation cannot, in general, be done at the place of the declaration that includes the default. Instead, they can be generated at the first freezing point of the type(s) involved. (It is impossible to write a purely one-pass Ada compiler, for various reasons. This is one of them &mdash; the compiler needs to store a representation of defaults in its symbol table, and then walk that representation later, no earlier than the first freezing point.)<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.j
-</MarginText>
-</AnnotatedOnly>
+<MarginText>19.j</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 In implementation terms, the linear elaboration model can be thought of as preventing uninitialized dope. For example, the implementation might generate dope to contain the size of a private type. This dope is initialized at the place where the type becomes completely defined. It cannot be initialized earlier, because of the order-of-elaboration rules. The freezing rules prevent elaboration of earlier declarations from accessing the size dope for a private type before it is initialized.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.k/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>19.k/3</MarginText>
+<MarginInfo items={["AI05-0299-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0299-1"}</em>{"}"} <a href="../AA-2/AA-2.8">2.8</a> <br />overrides the freezing rules in the case of unrecognized <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s; similarly <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a> overrides the freezing rules in the case of a specification of an unrecognized aspect.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.l/1
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>19.l/1</MarginText>
+<MarginInfo items={["AI95-00137-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} <br />An <code><a href="../AA-13/AA-13.1#S0343">aspect_clause</a></code> for an entity should most certainly <em>not</em> be a freezing point for the entity. <br /></Admonition>
 
 
 #### Dynamic Semantics
 
-<AnnotatedOnly>
-<MarginText>
-20/2
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI95-00279-01"}</em>{"}"} <br />The tag (see <a href="../AA-3/AA-3.9">3.9</a>) of a tagged type T is created at the point where T is frozen. <br /></p>
+<MarginText>20/2</MarginText>
+<MarginInfo items={["AI95-00279-01"]} /><p>{"{"}<em>{"AI95-00279-01"}</em>{"}"} <br />The tag (see <a href="../AA-3/AA-3.9">3.9</a>) of a tagged type T is created at the point where T is frozen. <br /></p>
 
 
 #### Incompatibilities With Ada 83
 
-<AnnotatedOnly>
-<MarginText>
-20.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>20.a</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
-RM83 defines a forcing occurrence of a type as follows: "A forcing occurrence is any occurrence [of the name of the type, subtypes of the type, or types or subtypes with subcomponents of the type] other than in a type or subtype declaration, a subprogram specification, an entry declaration, a deferred constant declaration, a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>, or a <code>representation_clause</code> for the type itself. In any case, an occurrence within an expression is always forcing."<br /></Admonition>
+RM83 defines a forcing occurrence of a type as follows: &ldquo;A forcing occurrence is any occurrence [of the name of the type, subtypes of the type, or types or subtypes with subcomponents of the type] other than in a type or subtype declaration, a subprogram specification, an entry declaration, a deferred constant declaration, a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>, or a <code>representation_clause</code> for the type itself. In any case, an occurrence within an expression is always forcing.&rdquo;<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.b
-</MarginText>
-</AnnotatedOnly>
+<MarginText>20.b</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 It seems like the wording allows things like this: <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.c
-</MarginText>
-</AnnotatedOnly>
+<MarginText>20.c</MarginText>
 <CodeBlock language="ada">
 type A is array(Integer range 1..10) of Boolean;{"\n"}subtype S is Integer range A'Range;{"\n"}    -- not forcing for A{"\n"}
-<AnnotatedOnly>
-<MarginText>
-20.d
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
+<MarginText>20.d</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Occurrences within <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s can cause freezing in Ada 95. (Since such <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s are ignored in Ada 83, this will probably fix more bugs than it causes.) <br /></Admonition>
 
 
 #### Extensions to Ada 83
 
-<AnnotatedOnly>
-<MarginText>
-20.e
-</MarginText>
-</AnnotatedOnly>
+<MarginText>20.e</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 In Ada 95, <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code>s do not normally freeze the entities from which they are defined. For example: <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.f
-</MarginText>
-</AnnotatedOnly>
+<MarginText>20.f</MarginText>
 <CodeBlock language="ada">
 package Outer is{"\n"}    type T is tagged limited private;{"\n"}    generic{"\n"}        type T2 is{"\n"}            new T with private; -- Does not freeze T{"\n"}                                -- in Ada 95.{"\n"}    package Inner is{"\n"}        ...{"\n"}    end Inner;{"\n"}private{"\n"}    type T is ...;{"\n"}end Outer;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-20.g
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
+<MarginText>20.g</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 This is important for the usability of generics. The above example uses the Ada 95 feature of formal derived types. Examples using the kinds of formal parameters already allowed in Ada 83 are well known. See, for example, comments 83-00627 and 83-00688. The extensive use expected for formal derived types makes this issue even more compelling than described by those comments. Unfortunately, we are unable to solve the problem that <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code>s cause freezing, even though a package equivalent to the instance would not cause freezing. This is primarily because such an equivalent package would have its body in the body of the containing program unit, whereas an instance has its body right there. <br /></Admonition>
 
 
 #### Wording Changes from Ada 83
 
-<AnnotatedOnly>
-<MarginText>
-20.h
-</MarginText>
-</AnnotatedOnly>
+<MarginText>20.h</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
-The concept of freezing is based on Ada 83's concept of "forcing occurrences". The first freezing point of an entity corresponds roughly to the place of the first forcing occurrence, in Ada 83 terms. The reason for changing the terminology is that the new rules do not refer to any particular "occurrence" of a name of an entity. Instead, we refer to "uses" of an entity, which are sometimes implicit.<br /></Admonition>
+The concept of freezing is based on Ada 83's concept of &ldquo;forcing occurrences&rdquo;. The first freezing point of an entity corresponds roughly to the place of the first forcing occurrence, in Ada 83 terms. The reason for changing the terminology is that the new rules do not refer to any particular &ldquo;occurrence&rdquo; of a name of an entity. Instead, we refer to &ldquo;uses&rdquo; of an entity, which are sometimes implicit.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.i
-</MarginText>
-</AnnotatedOnly>
+<MarginText>20.i</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 In Ada 83, forcing occurrences were used only in rules about <code>representation_clause</code>s. We have expanded the concept to cover private types, because the rules stated in RM83-7.4.1(4) are almost identical to the forcing occurrence rules.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.j
-</MarginText>
-</AnnotatedOnly>
+<MarginText>20.j</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 The Ada 83 rules are changed in Ada 95 for the following reasons: <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.k
-</MarginText>
-</AnnotatedOnly>
+<MarginText>20.k</MarginText>
 <ul>
 <li>The Ada 83 rules do not work right for subtype-specific aspects. In an earlier version of Ada 9X, we considered allowing representation items to apply to subtypes other than the first subtype. This was part of the reason for changing the Ada 83 rules. However, now that we have dropped that functionality, we still need the rules to be different from the Ada 83 rules.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-20.l
-</MarginText>
-</AnnotatedOnly>
+<MarginText>20.l</MarginText>
 <li>The Ada 83 rules do not achieve the intended effect. In Ada 83, either with or without the AIs, it is possible to force the compiler to generate code that references uninitialized dope, or force it to detect erroneousness and exception raising at compile time.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-20.m
-</MarginText>
-</AnnotatedOnly>
+<MarginText>20.m</MarginText>
 <li>It was a goal of Ada 83 to avoid uninitialized access values. However, in the case of deferred constants, this goal was not achieved.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-20.n
-</MarginText>
-</AnnotatedOnly>
-<li>The Ada 83 rules are not only too weak - they are also too strong. They allow loopholes (as described above), but they also prevent certain kinds of <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>s that are harmless, and certain kinds of <code><a href="../AA-12/AA-12.1#S0310">generic_declaration</a></code>s that are both harmless and very useful.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-20.o/2
-</MarginText>
-</AnnotatedOnly>
-<li>{"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />Ada 83 had a case where an <code><a href="../AA-13/AA-13.1#S0343">aspect_clause</a></code> had a strong effect on the semantics of the program - 'Small. This caused certain semantic anomalies. There are more cases in Ada 95, because the <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> has been generalized. <br /></li>
+<MarginText>20.n</MarginText>
+<li>The Ada 83 rules are not only too weak &mdash; they are also too strong. They allow loopholes (as described above), but they also prevent certain kinds of <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>s that are harmless, and certain kinds of <code><a href="../AA-12/AA-12.1#S0310">generic_declaration</a></code>s that are both harmless and very useful.<br /></li>
+<MarginText>20.o/2</MarginText>
+<MarginInfo items={["AI95-00114-01"]} /><li>{"{"}<em>{"AI95-00114-01"}</em>{"}"} <br />Ada 83 had a case where an <code><a href="../AA-13/AA-13.1#S0343">aspect_clause</a></code> had a strong effect on the semantics of the program &mdash; 'Small. This caused certain semantic anomalies. There are more cases in Ada 95, because the <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> has been generalized. <br /></li>
 </ul>
 
 #### Incompatibilities With Ada 95
 
-<AnnotatedOnly>
-<MarginText>
-20.p/2
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginText>20.p/2</MarginText>
+<MarginInfo items={["AI95-00106-01", "AI95-00341-01"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>8652/0046</em>{"}"} {"{"}<em>{"AI95-00106-01"}</em>{"}"} {"{"}<em>{"AI95-00341-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Various freezing rules were added to fix holes in the rules. Most importantly, implicit calls are now freezing, which make some representation clauses illegal in Ada 2005 that were legal (but dubious) in Ada 95. <strong>Amendment </strong> Similarly, the primitive subprograms of a specific tagged type are frozen when the type is frozen, preventing dubious convention changes (and address clauses) after the freezing point. In both cases, the code is dubious and the workaround is easy. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
-<AnnotatedOnly>
-<MarginText>
-20.q/2
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>20.q/2</MarginText>
+<MarginInfo items={["AI95-00137-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>8652/0009</em>{"}"} {"{"}<em>{"AI95-00137-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Added wording to specify that both operational and representation attributes must be specified before the type is frozen.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.r/2
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>20.r/2</MarginText>
+<MarginInfo items={["AI95-00251-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00251-01"}</em>{"}"} <br />Added wording that declaring a specific descendant of an interface type freezes the interface type.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.s/2
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>20.s/2</MarginText>
+<MarginInfo items={["AI95-00279-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00279-01"}</em>{"}"} <br />Added wording that defines when a tag is created for a type (at the freezing point of the type). This is used to specify checking for uncreated tags (see <a href="../AA-3/AA-3.9">3.9</a>). <br /></Admonition>
 
 
 #### Incompatibilities With Ada 2005
 
-<AnnotatedOnly>
-<MarginText>
-20.t/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginText>20.t/3</MarginText>
+<MarginInfo items={["AI05-0019-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0019-1"}</em>{"}"} <strong><br /></strong> Separated the freezing of the profile from the rest of a subprogram, in order to reduce the impact of the Ada 95 incompatibility noted above. (The effects were much more limiting than expected.) <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
-<AnnotatedOnly>
-<MarginText>
-20.u/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginText>20.u/3</MarginText>
+<MarginInfo items={["AI05-0017-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0017-1"}</em>{"}"} <strong><br /></strong> Reworded so that incomplete types with a deferred completion aren't prematurely frozen.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.v/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>20.v/3</MarginText>
+<MarginInfo items={["AI05-0177-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0177-1"}</em>{"}"} <br />Added freezing rules for expression functions; these are frozen at the point of call, not the point of declaration, like default expressions.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.w/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>20.w/3</MarginText>
+<MarginInfo items={["AI05-0183-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0183-1"}</em>{"}"} <br />Added freezing rules for <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>s; these are frozen at the freezing point of the associated entity, not the point of declaration.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.x/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>20.x/3</MarginText>
+<MarginInfo items={["AI05-0213-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0213-1"}</em>{"}"} <br />Added freezing rules for formal incomplete types; the corresponding actual is not frozen. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
-<AnnotatedOnly>
-<MarginText>
-20.y/4
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>20.y/4</MarginText>
+<MarginInfo items={["AI12-0103-1", "AI12-0132-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0103-1"}</em>{"}"} {"{"}<em>{"AI12-0132-1"}</em>{"}"} <strong><br />Corrigendum:</strong> Clarified when and what an <code><a href="../AA-6/AA-6.8#S0228">expression_function_declaration</a></code> that is a completion or that is the target of a renames-as-body freezes. This is formally an incompatibility, but as all known implementations freeze expression functions more aggressively than allowed by either the old or new wording, practically this will be an extension.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.z/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginText>20.z/5</MarginText>
+<MarginInfo items={["AI12-0168-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI12-0168-1"}</em>{"}"} <strong><br /></strong> Clarified that the implicit body created by an instance doesn't have any freezing effect. This was an unintentional change caused by the Technical Corrigendum 1 oversimplifying wording.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.aa/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginText>20.aa/5</MarginText>
+<MarginInfo items={["AI12-0155-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI12-0155-1"}</em>{"}"} <strong><br /></strong> Clarified that incomplete types do not freeze in any case. The one known case where incomplete freezing was necessary has been plugged with a new Legality Rules (see <a href="../AA-3/AA-3.10#Subclause_3.10.1">3.10.1</a>). This matches the original intent (see Language Design Principles above) and eliminates whack-a-mole trying to allow such freezing without it having (almost) any effects.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.bb/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginText>20.bb/5</MarginText>
+<MarginInfo items={["AI12-0186-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI12-0186-1"}</em>{"}"} <strong><br /></strong> Clarified that the subtype names in an access type are not frozen at the point of the type declaration. This has always been true (there is an Ada 95-era AARM note that says so) but it didn't follow from the actual wording. Since the ACATS requires the AARM note to be true, no compiler could actually get this wrong, so no incompatibility is possible.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.cc/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginText>20.cc/5</MarginText>
+<MarginInfo items={["AI12-0367-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI12-0367-1"}</em>{"}"} <strong><br /></strong> Added a freezing exclusion for enumeration literals in the expression of a Default_Value aspect; otherwise, one could not set a default value for an enumeration type.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.dd/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>20.dd/5</MarginText>
+<MarginInfo items={["AI12-0373-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0373-1"}</em>{"}"} <br />Added missing definition of freezing of library units.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20.ee/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginText>20.ee/5</MarginText>
+<MarginInfo items={["AI12-0396-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI12-0396-1"}</em>{"}"} <strong><br /></strong> Improved and clarified the freezing rules for <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>s; these now depend on the kind of aspect. <br /></Admonition>
 

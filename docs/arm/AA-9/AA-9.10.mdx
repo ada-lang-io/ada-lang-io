@@ -19,577 +19,285 @@ import MarginInfo from "@site/src/components/MarginInfo";
 
 #### Static Semantics
 
-<AnnotatedOnly>
-<MarginText>
-1/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI05-0009-1"}</em>{"}"} {"{"}<em>{"AI05-0201-1"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} {"{"}<em>{"AI05-0295-1"}</em>{"}"} {"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0363-1"}</em>{"}"} <br />If two different objects, including nonoverlapping parts of the same object, are <em>independently addressable</em>, they can be manipulated concurrently by two different logical threads of control without synchronization, unless both are subcomponents of the same full access object, and either is nonatomic (see <a href="../AA-C/AA-C.6">C.6</a>). Any two nonoverlapping objects are independently addressable if either object is specified as independently addressable (see <a href="../AA-C/AA-C.6">C.6</a>). Otherwise, two nonoverlapping objects are independently addressable except when they are both parts of a composite object for which a nonconfirming value is specified for any of the following representation aspects: (record) Layout, Component_Size, Pack, Atomic, or Convention; in this case it is unspecified whether the parts are independently addressable. <br /></p>
+<MarginText>1/5</MarginText>
+<MarginInfo items={["AI05-0009-1", "AI05-0201-1", "AI05-0229-1", "AI05-0295-1", "AI12-0119-1", "AI12-0363-1"]} /><p>{"{"}<em>{"AI05-0009-1"}</em>{"}"} {"{"}<em>{"AI05-0201-1"}</em>{"}"} {"{"}<em>{"AI05-0229-1"}</em>{"}"} {"{"}<em>{"AI05-0295-1"}</em>{"}"} {"{"}<em>{"AI12-0119-1"}</em>{"}"} {"{"}<em>{"AI12-0363-1"}</em>{"}"} <br />If two different objects, including nonoverlapping parts of the same object, are <em>independently addressable</em>, they can be manipulated concurrently by two different logical threads of control  without synchronization, unless both are subcomponents of the same full access object, and either is nonatomic (see <a href="../AA-C/AA-C.6">C.6</a>). Any two nonoverlapping objects are independently addressable if either object is specified as independently addressable (see <a href="../AA-C/AA-C.6">C.6</a>). Otherwise, two nonoverlapping objects are independently addressable except when they are both parts of a composite object for which a nonconfirming value is specified for any of the following representation aspects: (record) Layout, Component_Size, Pack, Atomic, or Convention; in this case it is unspecified whether the parts are independently addressable. <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-1.a/3
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1.a/3</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em><br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.b/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<MarginText>1.b/3</MarginText>
+<MarginInfo items={["AI05-0229-1"]} /><Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
 <strong></strong>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />Independent addressability is the only high level semantic effect of aspect Pack. If two objects are independently addressable, the implementation should allocate them in such a way that each can be written by the hardware without writing the other. For example, unless the user asks for it, it is generally not feasible to choose a bit-packed representation on a machine without an atomic bit field insertion instruction, because there might be tasks that update neighboring subcomponents concurrently, and locking operations on all subcomponents is generally not a good idea.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.c/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>1.c/3</MarginText>
+<MarginInfo items={["AI05-0229-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />Even if Pack or one of the other above-mentioned aspects is specified, subcomponents should still be updated independently if the hardware efficiently supports it. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-1.d/4
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<MarginText>1.d/4</MarginText>
+<MarginInfo items={["AI05-0009-1", "AI05-0201-1", "AI12-0001-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>{"{"}<em>{"AI05-0009-1"}</em>{"}"} {"{"}<em>{"AI05-0201-1"}</em>{"}"} {"{"}<em>{"AI12-0001-1"}</em>{"}"} <br />An atomic object (including atomic components) is always independently addressable from any other nonoverlapping object. <code><a href="../AA-13/AA-13.1#S0346">Aspect_specification</a></code>s and representation items cannot change that fact. Note, however, that the components of an atomic object are not necessarily atomic. <br /></Admonition>
 
 
 #### Dynamic Semantics
 
-<AnnotatedOnly>
-<MarginText>
-2/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />[Separate logical threads of control normally proceed independently and concurrently with one another. However, task interactions can be used to synchronize the actions of two or more logical threads of control to allow, for example, meaningful communication by the direct updating and reading of variables shared between them.] The actions of two different logical threads of control are synchronized in this sense when an action of one <em>signals</em> an action of the other; an action A1 is defined to signal an action A2 under the following circumstances: <br /></p>
+<MarginText>2/5</MarginText>
+<MarginInfo items={["AI12-0119-1"]} /><p>{"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />[Separate logical threads of control  normally proceed independently and concurrently with one another. However, task interactions can be used to synchronize the actions of two or more logical threads of control  to allow, for example, meaningful communication by the direct updating and reading of variables shared between them .] The actions of two different logical threads of control  are synchronized in this sense when an action of one  <em>signals</em> an action of the other ; an action A1 is defined to signal an action A2 under the following circumstances: <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-3
-</MarginText>
-</AnnotatedOnly>
+<MarginText>3</MarginText>
 <ul>
 <li>If A1 and A2 are part of the execution of the same task, and the language rules require A1 to be performed before A2;<br /></li>
-<AnnotatedOnly>
-<MarginText>
-4
-</MarginText>
-</AnnotatedOnly>
+<MarginText>4</MarginText>
 <li>If A1 is the action of an activator that initiates the activation of a task, and A2 is part of the execution of the task that is activated;<br /></li>
-<AnnotatedOnly>
-<MarginText>
-5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>5</MarginText>
 <li>If A1 is part of the activation of a task, and A2 is the action of waiting for completion of the activation;<br /></li>
-<AnnotatedOnly>
-<MarginText>
-6
-</MarginText>
-</AnnotatedOnly>
+<MarginText>6</MarginText>
 <li>If A1 is part of the execution of a task, and A2 is the action of waiting for the termination of the task;<br /></li>
-<AnnotatedOnly>
-<MarginText>
-6.1/3
-</MarginText>
-</AnnotatedOnly>
-<li>{"{"}<em>8652/0031</em>{"}"} {"{"}<em>{"AI95-00118-01"}</em>{"}"} {"{"}<em>{"AI05-0072-1"}</em>{"}"} <br />If A1 is the termination of a task T, and A2 is either an evaluation of the expression T'Terminated that results in True, or a call to Ada.Task_Identification.Is_Terminated with an actual parameter that identifies T and a result of True (see <a href="../AA-C/AA-C.7#Subclause_C.7.1">C.7.1</a>);<br /></li>
-<AnnotatedOnly>
-<MarginText>
-7/3
-</MarginText>
-</AnnotatedOnly>
-<li>{"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />If A1 is the action of issuing an entry call, and A2 is part of the corresponding execution of the appropriate <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> or <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>; <br /></li>
-<AnnotatedOnly>
-<MarginText>
-7.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>6.1/3</MarginText>
+<MarginInfo items={["AI95-00118-01", "AI05-0072-1"]} /><li>{"{"}<em>8652/0031</em>{"}"} {"{"}<em>{"AI95-00118-01"}</em>{"}"} {"{"}<em>{"AI05-0072-1"}</em>{"}"} <br />If A1 is the termination of a task T, and A2 is either an evaluation of the expression T'Terminated that results in True, or a call to Ada.Task_Identification.Is_Terminated with an actual parameter that identifies T and a result of True (see <a href="../AA-C/AA-C.7#Subclause_C.7.1">C.7.1</a>);<br /></li>
+<MarginText>7/3</MarginText>
+<MarginInfo items={["AI05-0262-1"]} /><li>{"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />If A1 is the action of issuing an entry call, and A2 is part of the corresponding execution of the appropriate <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> or <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>; <br /></li>
 </ul>
+<MarginText>7.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Evaluating the <code><a href="../AA-9/AA-9.5#S0259">entry_index</a></code> of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> is not synchronized with a corresponding entry call, nor is evaluating the entry barrier of an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-8
-</MarginText>
-</AnnotatedOnly>
+<MarginText>8</MarginText>
 <ul>
 <li>If A1 is part of the execution of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> or <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, and A2 is the action of returning from the corresponding entry call;<br /></li>
-<AnnotatedOnly>
-<MarginText>
-9
-</MarginText>
-</AnnotatedOnly>
+<MarginText>9</MarginText>
 <li>If A1 is part of the execution of a protected procedure body or <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> for a given protected object, and A2 is part of a later execution of an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> for the same protected object; <br /></li>
-<AnnotatedOnly>
-<MarginText>
-9.a
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>9.a</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>The underlying principle here is that for one action to "signal" a second, the second action has to follow a potentially blocking operation, whose blocking is dependent on the first action in some way. Protected procedures are not potentially blocking, so they can only be "signalers", they cannot be signaled. <br /></Admonition>
+<strong></strong>The underlying principle here is that for one action to &ldquo;signal&rdquo; a second, the second action has to follow a potentially blocking operation, whose blocking is dependent on the first action in some way. Protected procedures are not potentially blocking, so they can only be "signalers", they cannot be signaled. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-9.b
-</MarginText>
-</AnnotatedOnly>
+<MarginText>9.b</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Protected subprogram calls are not defined to signal one another, which means that such calls alone cannot be used to synchronize access to shared data outside of a protected object. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-9.c
-</MarginText>
-</AnnotatedOnly>
+<MarginText>9.c</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>The point of this distinction is so that on multiprocessors with inconsistent caches, the caches only need to be refreshed at the beginning of an entry body, and forced out at the end of an entry body or protected procedure that leaves an entry open. Protected function calls, and protected subprogram calls for entryless protected objects do not require full cache consistency. Entryless protected objects are intended to be treated roughly like atomic objects - each operation is indivisible with respect to other operations (unless both are reads), but such operations cannot be used to synchronize access to other nonvolatile shared variables. <br /></Admonition>
+<strong></strong>The point of this distinction is so that on multiprocessors with inconsistent caches, the caches only need to be refreshed at the beginning of an entry body, and forced out at the end of an entry body or protected procedure that leaves an entry open. Protected function calls, and protected subprogram calls for entryless protected objects do not require full cache consistency. Entryless protected objects are intended to be treated roughly like atomic objects &mdash; each operation is indivisible with respect to other operations (unless both are reads), but such operations cannot be used to synchronize access to other nonvolatile shared variables. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-10
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10</MarginText>
 <ul>
 <li>If A1 signals some action that in turn signals A2. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-10.1/5
-</MarginText>
-</AnnotatedOnly>
 </ul>
-<p>{"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />Action A1 is defined to <em>potentially signal</em> action A2 if A1 signals A2, if action A1 and A2 occur as part of the execution of the same logical thread of control, and the language rules permit action A1 to precede action A2, or if action A1 potentially signals some action that in turn potentially signals A2.<br /></p>
+<MarginText>10.1/5</MarginText>
+<MarginInfo items={["AI12-0298-1"]} /><p>{"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />Action A1 is defined to <em>potentially signal</em> action A2 if A1 signals A2, if action A1 and A2 occur as part of the execution of the same logical thread of control, and the language rules permit action A1 to precede action A2, or if action A1 potentially signals some action that in turn potentially signals A2.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-11/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />Two actions are defined to be <em>sequential</em> if one of the following is true: <br /></p>
+<MarginText>11/5</MarginText>
+<MarginInfo items={["AI12-0267-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"}  <br />Two actions are defined to be <em>sequential</em>  if one of the following is true: <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-12
-</MarginText>
-</AnnotatedOnly>
+<MarginText>12</MarginText>
 <ul>
 <li>One action signals the other;<br /></li>
-<AnnotatedOnly>
-<MarginText>
-13/5
-</MarginText>
-</AnnotatedOnly>
-<li>{"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />Both actions occur as part of the execution of the same logical thread of control; <br /></li>
-<AnnotatedOnly>
-<MarginText>
-13.a/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>13/5</MarginText>
+<MarginInfo items={["AI12-0119-1"]} /><li>{"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />Both actions occur as part of the execution of the same logical thread of control ; <br /></li>
 </ul>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} {"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />Any two actions of the same logical thread of control are sequential, even if one does not signal the other because they can be executed in an "arbitrary" (but necessarily equivalent to some "sequential") order. <br /></Admonition>
+<MarginText>13.a/5</MarginText>
+<MarginInfo items={["AI12-0005-1", "AI12-0119-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
+<strong></strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} {"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />Any two actions of the same logical thread of control  are sequential, even if one does not signal the other because they can be executed in an &ldquo;arbitrary&rdquo; (but necessarily equivalent to some &ldquo;sequential&rdquo;) order. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-14/5
-</MarginText>
-</AnnotatedOnly>
-<ul>
-<li>{"{"}<em>{"AI12-0292-1"}</em>{"}"} <br />Both actions occur as part of protected actions on the same protected object, and at least one of the actions is part of a call on an exclusive protected operation of the protected object. <br /></li>
-<AnnotatedOnly>
-<MarginText>
-14.a/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>14/5</MarginText>
+<MarginInfo items={["AI12-0292-1"]} /><ul>
+<li>{"{"}<em>{"AI12-0292-1"}</em>{"}"} <br />Both actions occur as part of protected actions on the same protected object, and at least  one of the actions is part of a call on an exclusive  protected operation  of the protected object. <br /></li>
 </ul>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<MarginText>14.a/5</MarginText>
+<MarginInfo items={["AI12-0292-1"]} /><Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>{"{"}<em>{"AI12-0292-1"}</em>{"}"} <br />Because actions within protected actions do not always imply signaling, we have to mention them here explicitly to make sure that actions occurring within different protected actions of the same protected object are sequential with respect to one another (unless both are part of calls on nonexclusive protected functions). <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-14.b/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI12-0292-1"}</em>{"}"} <br />It doesn't matter whether or not the variable being assigned is actually a subcomponent of the protected object; globals can be safely updated from within the bodies of protected procedures, protected entries, or exclusive protected functions. <br /></Admonition>
+<MarginText>14.b/5</MarginText>
+<MarginInfo items={["AI12-0292-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<strong></strong>{"{"}<em>{"AI12-0292-1"}</em>{"}"} <br />It doesn't matter whether or not the variable being assigned is actually a subcomponent of the protected object; globals can be safely updated from within the bodies of protected procedures, protected  entries, or exclusive protected functions. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-15/3
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />Aspect Atomic or aspect Atomic_Components may also be specified to ensure that certain reads and updates are sequential - see <a href="../AA-C/AA-C.6">C.6</a>. <br /></p>
+<MarginText>15/3</MarginText>
+<MarginInfo items={["AI05-0229-1"]} /><p>{"{"}<em>{"AI05-0229-1"}</em>{"}"} <br />Aspect Atomic or aspect Atomic_Components may also be specified to ensure that certain reads and updates are sequential &mdash; see <a href="../AA-C/AA-C.6">C.6</a>. <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-15.a/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />If two actions are "sequential" it is known that their executions don't overlap in time, but it is not necessarily specified which occurs first. For example, all actions of a single logical thread of control are sequential, even though the exact order of execution is not fully specified for all constructs. <br /></Admonition>
+<MarginText>15.a/5</MarginText>
+<MarginInfo items={["AI12-0119-1"]} /><Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<strong></strong>{"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />If two actions are &ldquo;sequential&rdquo; it is known that their executions don't overlap in time, but it is not necessarily specified which occurs first. For example, all actions of a single logical thread of control  are sequential, even though the exact order of execution is not fully specified for all constructs. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-15.b
-</MarginText>
-</AnnotatedOnly>
+<MarginText>15.b</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>Note that if two assignments to the same variable are sequential, but neither signals the other, then the program is not erroneous, but it is not specified which assignment ultimately prevails. Such a situation usually corresponds to a programming mistake, but in some (rare) cases, the order makes no difference, and for this reason this situation is not considered erroneous nor even a bounded error. In Ada 83, this was considered an "incorrect order dependence" if the "effect" of the program was affected, but "effect" was never fully defined. In Ada 95, this situation represents a potential nonportability, and a friendly compiler might want to warn the programmer about the situation, but it is not considered an error. An example where this would come up would be in gathering statistics as part of referencing some information, where the assignments associated with statistics gathering don't need to be ordered since they are just accumulating aggregate counts, sums, products, etc. <br /></Admonition>
+<strong></strong>Note that if two assignments to the same variable are sequential, but neither signals the other, then the program is not erroneous, but it is not specified which assignment ultimately prevails. Such a situation usually corresponds to a programming mistake, but in some (rare) cases, the order makes no difference, and for this reason this situation is not considered erroneous nor even a bounded error. In Ada 83, this was considered an &ldquo;incorrect order dependence&rdquo; if the &ldquo;effect&rdquo; of the program was affected, but &ldquo;effect&rdquo; was never fully defined. In Ada 95, this situation represents a potential nonportability, and a friendly compiler might want to warn the programmer about the situation, but it is not considered an error. An example where this would come up would be in gathering statistics as part of referencing some information, where the assignments associated with statistics gathering don't need to be ordered since they are just accumulating aggregate counts, sums, products, etc. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-16/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />Two actions that are not sequential are defined to be <em>concurrent</em> actions.<br /></p>
+<MarginText>16/5</MarginText>
+<MarginInfo items={["AI12-0267-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />Two actions that are not sequential are defined to be <em>concurrent</em> actions.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-17/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} {"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />Two actions are defined to <em>conflict</em> if one action assigns to an object, and the other action reads or assigns to a part of the same object (or of a neighboring object if the two are not independently addressable).  The action comprising a call on a subprogram or an entry is defined to <em>potentially conflict</em> with another action if the Global aspect (or Global'Class aspect in the case of a dispatching call) of the called subprogram or entry is such that a conflicting action would be possible during the execution of the call. Similarly, two calls are considered to potentially conflict if they each have Global (or Global'Class in the case of a dispatching call) aspects such that conflicting actions would be possible during the execution of the calls. Finally, two actions that conflict are also considered to potentially conflict.<br /></p>
+<MarginText>17/5</MarginText>
+<MarginInfo items={["AI12-0267-1", "AI12-0298-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} {"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />Two actions are defined to <em>conflict</em> if one action assigns to an object, and the other action reads or assigns to a part of the same object (or of a neighboring object if the two are not independently addressable).  The action comprising a call on a subprogram or an entry is defined to <em>potentially conflict</em> with another action if the Global aspect (or Global'Class aspect in the case of a dispatching call) of the called subprogram or entry is such that a conflicting action would be possible during the execution of the call. Similarly, two calls are considered to potentially conflict if they each have Global (or Global'Class in the case of a dispatching call) aspects such that conflicting actions would be possible during the execution of the calls. Finally, two actions that conflict are also considered to potentially conflict.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-18/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />A <em>synchronized</em> object is an object of a task or protected type, an atomic object (see <a href="../AA-C/AA-C.6">C.6</a>), a suspension object (see <a href="../AA-D/AA-D.10">D.10</a>), or a synchronous barrier (see <a href="../AA-D/AA-D.10#Subclause_D.10.1">D.10.1</a>). [Operations on such objects are necessarily sequential with respect to one another, and hence are never considered to conflict.]<br /></p>
+<MarginText>18/5</MarginText>
+<MarginInfo items={["AI12-0267-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />A <em>synchronized</em> object is an object of a task or protected type, an atomic object (see <a href="../AA-C/AA-C.6">C.6</a>), a suspension object (see <a href="../AA-D/AA-D.10">D.10</a>), or a synchronous barrier (see <a href="../AA-D/AA-D.10#Subclause_D.10.1">D.10.1</a>). [Operations on such objects are necessarily sequential with respect to one another, and hence are never considered to conflict.]<br /></p>
 
 
 #### Erroneous Execution
 
-<AnnotatedOnly>
-<MarginText>
-19/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />The execution of two concurrent actions is erroneous if the actions make conflicting uses of a shared variable (or neighboring variables that are not independently addressable).<br /></p>
+<MarginText>19/5</MarginText>
+<MarginInfo items={["AI12-0267-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />The execution of two concurrent actions is erroneous if the actions make conflicting uses of a shared variable (or neighboring variables that are not independently addressable).<br /></p>
 
 
 #### Wording Changes from Ada 95
 
-<AnnotatedOnly>
-<MarginText>
-19.a/2
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>19.a/2</MarginText>
+<MarginInfo items={["AI95-00118-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>8652/0031</em>{"}"} {"{"}<em>{"AI95-00118-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Clarified that a task T2 can rely on values of variables that are updated by another task T1, if task T2 first verifies that T1'Terminated is True. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
 
-<AnnotatedOnly>
-<MarginText>
-19.b/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginText>19.b/3</MarginText>
+<MarginInfo items={["AI05-0009-1", "AI05-0201-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0009-1"}</em>{"}"} {"{"}<em>{"AI05-0201-1"}</em>{"}"} <strong><br /></strong> Revised the definition of independent addressability to exclude conforming representation clauses and to require that atomic and independent objects always have independent addressability. This should not change behavior that the user sees for any Ada program, so it is not an inconsistency.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.c/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<MarginText>19.c/3</MarginText>
+<MarginInfo items={["AI05-0072-1"]} /><Admonition type="aarm" aarm="correction" title="Correction:">
 {"{"}<em>{"AI05-0072-1"}</em>{"}"} <strong><br /></strong> Corrected the wording of AI95-00118-01 to actually say what was intended (as described above). <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
 
-<AnnotatedOnly>
-<MarginText>
-19.d/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>19.d/5</MarginText>
+<MarginInfo items={["AI12-0119-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0119-1"}</em>{"}"} <br />Added wording to support interaction of parallel constructs with tasks by changing various wording to talk about logical threads of control rather than purely about tasks.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.e/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>19.e/5</MarginText>
+<MarginInfo items={["AI12-0267-1", "AI12-0298-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0267-1"}</em>{"}"} {"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />Added wording to define potentially signalling actions and conflicting actions; these are used to define conflict policies. <br /></Admonition>
 
 <a id="Subclause_9.10.1"></a>
 
 ## 9.10.1  Conflict Check Policies
 
-<AnnotatedOnly>
-<MarginText>
-1/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />This subclause determines what checks are performed relating to possible concurrent conflicting actions (see <a href="../AA-9/AA-9.10">9.10</a>). <br /></p>
+<MarginText>1/5</MarginText>
+<MarginInfo items={["AI12-0267-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />This subclause determines what checks are performed relating to possible concurrent conflicting actions (see <a href="../AA-9/AA-9.10">9.10</a>). <br /></p>
 
 
 #### Syntax
 
-<AnnotatedOnly>
-<MarginText>
-2/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} {"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />The form of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Conflict_Check_Policy is as follows:<br /></p>
+<MarginText>2/5</MarginText>
+<MarginInfo items={["AI12-0267-1", "AI12-0298-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} {"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />The form of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Conflict_Check_Policy is as follows:<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-3/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>3/5</MarginText>
 <p>  <strong>pragma</strong> Conflict_Check_Policy (<em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>[, <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>]);<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-4/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Conflict_Check_Policy is allowed only immediately within a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, or as a configuration pragma.<br /></p>
+<MarginText>4/5</MarginText>
+<MarginInfo items={["AI12-0267-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Conflict_Check_Policy is allowed only immediately within a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, or as a configuration pragma.<br /></p>
 
 
 #### Legality Rules
 
-<AnnotatedOnly>
-<MarginText>
-5/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />Each <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> shall be one of No_Parallel_Conflict_Checks, Known_Parallel_Conflict_Checks, All_Parallel_Conflict_Checks, No_Tasking_Conflict_Checks, Known_Tasking_Conflict_Checks, All_Tasking_Conflict_Checks, No_Conflict_Checks, Known_Conflict_Checks, All_Conflict_Checks, or an implementation-defined conflict check policy. If two <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s are given, one shall include the word Parallel and one shall include the word Tasking. If only one <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> is given, it shall not include the word Parallel or Tasking.<br /></p>
+<MarginText>5/5</MarginText>
+<MarginInfo items={["AI12-0267-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />Each <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> shall be one of No_Parallel_Conflict_Checks, Known_Parallel_Conflict_Checks, All_Parallel_Conflict_Checks, No_Tasking_Conflict_Checks, Known_Tasking_Conflict_Checks, All_Tasking_Conflict_Checks, No_Conflict_Checks, Known_Conflict_Checks, All_Conflict_Checks, or an implementation-defined conflict check policy. If two <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s are given, one shall include the word Parallel and one shall include the word Tasking. If only one <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> is given, it shall not include the word Parallel or Tasking.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-5.a.1/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>5.a.1/5</MarginText>
 <Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
 <strong></strong>Implementation-defined conflict check policies.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-6/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Conflict_Check_Policy given in a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> or immediately within a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> applies from the place of the pragma to the end of the innermost enclosing declarative region. The region for a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Conflict_Check_Policy given as a configuration pragma is the declarative region for the entire compilation unit (or units) to which it applies.<br /></p>
+<MarginText>6/5</MarginText>
+<MarginInfo items={["AI12-0267-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Conflict_Check_Policy given in a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> or immediately within a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> applies from the place of the pragma to the end of the innermost enclosing declarative region. The region for a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Conflict_Check_Policy given as a configuration pragma is the declarative region for the entire compilation unit (or units) to which it applies.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-7/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />If a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Conflict_Check_Policy applies to a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>, then the <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Conflict_Check_Policy applies to the entire instance.<br /></p>
+<MarginText>7/5</MarginText>
+<MarginInfo items={["AI12-0267-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />If a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Conflict_Check_Policy applies to a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>, then the <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Conflict_Check_Policy applies to the entire instance.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-8/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} {"{"}<em>{"AI12-0294-1"}</em>{"}"} {"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />If multiple Conflict_Check_Policy pragmas apply to a given construct, the conflict check policy is determined by the one in the innermost enclosing region. If no Conflict_Check_Policy pragma applies to a construct, the policy is (All_Parallel_Conflict_Checks, No_Tasking_Conflict_Checks) (see below).<br /></p>
+<MarginText>8/5</MarginText>
+<MarginInfo items={["AI12-0267-1", "AI12-0294-1", "AI12-0298-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} {"{"}<em>{"AI12-0294-1"}</em>{"}"} {"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />If multiple Conflict_Check_Policy pragmas apply to a given construct, the conflict check policy is determined by the one in the innermost enclosing region. If no Conflict_Check_Policy pragma applies to a construct, the policy is (All_Parallel_Conflict_Checks, No_Tasking_Conflict_Checks) (see below).<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-8.a/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>8.a/5</MarginText>
+<MarginInfo items={["AI12-0294-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 <strong>To be honest: </strong>{"{"}<em>{"AI12-0294-1"}</em>{"}"} <br />The region mentioned in this rule is the region to which the policy pragma applies, and not the declarative region in which the policy pragma appears. This distinction matters when there are multiple policy pragmas in a single declarative region. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-9/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} {"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />Certain potentially conflicting actions are disallowed according to which conflict check policies apply at the place where the action or actions occur, as follows:<br /></p>
+<MarginText>9/5</MarginText>
+<MarginInfo items={["AI12-0267-1", "AI12-0298-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} {"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />Certain potentially conflicting actions are disallowed according to which conflict check policies apply at the place where the action or actions occur, as follows:<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-10/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10/5</MarginText>
 <dt><br/>No_Parallel_Conflict_Checks</dt>
 <dl>
 <dd>This policy imposes no restrictions on concurrent actions arising from parallel constructs.<br /></dd>
-<AnnotatedOnly>
-<MarginText>
-11/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>11/5</MarginText>
 <dt><br/>No_Tasking_Conflict_Checks</dt>
 <dd>This policy imposes no restrictions on concurrent actions arising from tasking constructs.<br /></dd>
-<AnnotatedOnly>
-<MarginText>
-12/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>12/5</MarginText>
 <dt><br/>Known_Parallel_Conflict_Checks</dt>
 <dd>If this policy applies to two concurrent actions appearing within parallel constructs, they are disallowed if they are known to denote the same object (see <a href="../AA-6/AA-6.4#Subclause_6.4.1">6.4.1</a>) with uses that conflict. For the purposes of this check, any parallel loop may be presumed to involve multiple concurrent iterations. Also, for the purposes of deciding whether two actions are concurrent, it is enough for the logical threads of control in which they occur to be concurrent at any point in their execution, unless all of the following are true:<br /></dd>
-<AnnotatedOnly>
-<MarginText>
-13/5
-</MarginText>
-</AnnotatedOnly>
 </dl>
+<MarginText>13/5</MarginText>
 <ul>
 <li>the shared object is volatile;<br /></li>
-<AnnotatedOnly>
-<MarginText>
-14/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>14/5</MarginText>
 <li>the two logical threads of control are both known to also refer to a shared synchronized object; and<br /></li>
-<AnnotatedOnly>
-<MarginText>
-15/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>15/5</MarginText>
 <li>each thread whose potentially conflicting action updates the shared volatile object, also updates this shared synchronized object.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-15.a/5
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>15.a/5</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>To properly synchronize two actions to prevent concurrency, a thread that does an update of a volatile object must update a synchronized object afterwards to indicate it has completed its update, and the other thread needs to test the value of the synchronized object before it reads the updated volatile object. In a parallel construct, "signaling" cannot be used to prevent concurrency, since that generally requires some blocking, so testing the value of the synchronized object would probably need to use a busy-wait loop. <br /></Admonition>
+<strong></strong>To properly synchronize two actions to prevent concurrency, a thread that does an update of a volatile object must update a synchronized object afterwards to indicate it has completed its update, and the other thread needs to test the value of the synchronized object before it reads the updated volatile object. In a parallel construct, &ldquo;signaling&rdquo; cannot be used to prevent concurrency, since that generally requires some blocking, so testing the value of the synchronized object would probably need to use a busy-wait loop. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-16/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>16/5</MarginText>
 <dt><br/>Known_Tasking_Conflict_Checks</dt>
 <dl>
 <dd>If this policy applies to two concurrent actions appearing within the same compilation unit, at least one of which appears within a task body but not within a parallel construct, they are disallowed if they are known to denote the same object (see <a href="../AA-6/AA-6.4#Subclause_6.4.1">6.4.1</a>) with uses that conflict, and neither potentially signals the other (see <a href="../AA-9/AA-9.10">9.10</a>). For the purposes of this check, any named task type may be presumed to have multiple instances. Also, for the purposes of deciding whether two actions are concurrent, it is enough for the tasks in which they occur to be concurrent at any point in their execution, unless all of the following are true:<br /></dd>
-<AnnotatedOnly>
-<MarginText>
-17/5
-</MarginText>
-</AnnotatedOnly>
 </dl>
+<MarginText>17/5</MarginText>
 <ul>
 <li>the shared object is volatile;<br /></li>
-<AnnotatedOnly>
-<MarginText>
-18/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>18/5</MarginText>
 <li>the two tasks are both known to also refer to a shared synchronized object; and<br /></li>
-<AnnotatedOnly>
-<MarginText>
-19/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>19/5</MarginText>
 <li>each task whose potentially conflicting action updates the shared volatile object, also updates this shared synchronized object.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-19.a/5
-</MarginText>
-</AnnotatedOnly>
 </ul>
+<MarginText>19.a/5</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
 <strong></strong>To properly synchronize two actions to prevent concurrency, a task that does an update of a <em>non</em>volatile object must use signaling via a synchronized object to indicate it has completed its update, and the other task needs to be signaled by this action on the synchronized object before it reads the updated nonvolatile object. In other words, to synchronize communication via a nonvolatile object, signaling must be used. To synchronize communication via a volatile object, an update of a shared synchronized object followed by a read of the synchronized object in the other task can be sufficient. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-20/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>20/5</MarginText>
 <dt><br/>All_Parallel_Conflict_Checks</dt>
 <dl>
 <dd>This policy includes the restrictions imposed by the Known_Parallel_Conflict_Checks policy, and in addition disallows a parallel construct from reading or updating a variable that is global to the construct, unless it is a synchronized object, or unless the construct is a parallel loop, and the global variable is a part of a component of an array denoted by an indexed component with at least one index expression that statically denotes the loop parameter of the <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code> or the chunk parameter of the parallel loop.<br /></dd>
-<AnnotatedOnly>
-<MarginText>
-21/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>21/5</MarginText>
 <dt><br/>All_Tasking_Conflict_Checks</dt>
 <dd>This policy includes the restrictions imposed by the Known_Tasking_Conflict_Checks policy, and in addition disallows a task body from reading or updating a variable that is global to the task body, unless it is a synchronized object.<br /></dd>
-<AnnotatedOnly>
-<MarginText>
-22/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>22/5</MarginText>
 <dt><br/>No_Conflict_Checks, Known_Conflict_Checks, All_Conflict_Checks</dt>
 <dd>These are shorthands for (No_Parallel_Conflict_Checks, No_Tasking_Conflict_Checks), (Known_Parallel_Conflict_Checks, Known_Tasking_Conflict_Checks), and (All_Parallel_Conflict_Checks, All_Tasking_Conflict_Checks), respectively.<br /></dd>
 </dl>
 
 #### Static Semantics
 
-<AnnotatedOnly>
-<MarginText>
-23/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0344-1"}</em>{"}"} <br />For a subprogram, the following language-defined representation aspect may be specified:<br /></p>
+<MarginText>23/5</MarginText>
+<MarginInfo items={["AI12-0344-1"]} /><p>{"{"}<em>{"AI12-0344-1"}</em>{"}"} <br />For a subprogram, the following language-defined representation aspect may be specified:<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-24/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>24/5</MarginText>
 <dt><br/>Parallel_Calls</dt>
 <dl>
 <dd>The Parallel_Calls aspect is of type Boolean. The specified value shall be static. The Parallel_Calls aspect of an inherited primitive subprogram is True if Parallel_Calls is True either for the corresponding subprogram of the progenitor type or for any other inherited subprogram that it overrides. If not specified or inherited as True, the Parallel_Calls aspect of a subprogram is False.<br /></dd>
-<AnnotatedOnly>
-<MarginText>
-25/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>25/5</MarginText>
 <dd>Specifying the Parallel_Calls aspect to be True for a subprogram indicates that the subprogram can be safely called in parallel. Conflict checks (if required by the Conflict_Check_Policy in effect) are made on the subprogram assuming that multiple concurrent calls exist.[ Such checks can then be omitted on a call of the subprogram in a parallel iteration context.]<br /></dd>
-<AnnotatedOnly>
-<MarginText>
-25.a/5
-</MarginText>
-</AnnotatedOnly>
 </dl>
+<MarginText>25.a/5</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>Aspect Description for </strong><strong>Parallel_Calls: </strong>Specifies whether a given subprogram is expected to be called in parallel.<br /></Admonition>
 
 
 #### Implementation Permissions
 
-<AnnotatedOnly>
-<MarginText>
-26/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} {"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />When the conflict check policy Known_Parallel_Conflict_Checks or All_Parallel_Conflict_Checks applies, the implementation may disallow two concurrent actions appearing within parallel constructs if the implementation can prove they will at run-time denote the same object with uses that conflict. Similarly, when the conflict check policy Known_Tasking_Conflict_Checks or All_Tasking_Conflict_Checks applies, the implementation may disallow two concurrent actions, at least one of which appears within a task body but not within a parallel construct, if the implementation can prove they will at run-time denote the same object with uses that conflict.<br /></p>
+<MarginText>26/5</MarginText>
+<MarginInfo items={["AI12-0267-1", "AI12-0298-1"]} /><p>{"{"}<em>{"AI12-0267-1"}</em>{"}"} {"{"}<em>{"AI12-0298-1"}</em>{"}"} <br />When the conflict check policy Known_Parallel_Conflict_Checks or All_Parallel_Conflict_Checks applies, the implementation may disallow two concurrent actions appearing within parallel constructs if the implementation can prove they will at run-time denote the same object with uses that conflict. Similarly, when the conflict check policy Known_Tasking_Conflict_Checks or All_Tasking_Conflict_Checks applies, the implementation may disallow two concurrent actions, at least one of which appears within a task body but not within a parallel construct, if the implementation can prove they will at run-time denote the same object with uses that conflict.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-26.a/5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>26.a/5</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>This permission allows additional enforcement in instance bodies (where Legality Rules aren't usually enforced), in subunits and their parents, and across compilation units, if the implementation wishes. <br /></Admonition>
 
 
 #### Extensions to Ada 2012
 
-<AnnotatedOnly>
-<MarginText>
-26.b/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>26.b/5</MarginText>
+<MarginInfo items={["AI12-0267-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0267-1"}</em>{"}"} <br />Conflict check policies (and the associated checks) are new.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-26.c/5
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>26.c/5</MarginText>
+<MarginInfo items={["AI12-0344-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI12-0344-1"}</em>{"}"} <br />Aspect Parallel_Calls is new. <br /></Admonition>
 

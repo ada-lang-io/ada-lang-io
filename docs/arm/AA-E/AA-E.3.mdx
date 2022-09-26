@@ -16,106 +16,58 @@ import CodeBlock from "@theme/CodeBlock";
 import MarginText from "@site/src/components/MarginText";
 import MarginInfo from "@site/src/components/MarginInfo";
 
-<AnnotatedOnly>
-<MarginText>
-1/3
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />[This subclause defines attributes and rules associated with verifying the consistency of a distributed program.] <br /></p>
+<MarginText>1/3</MarginText>
+<MarginInfo items={["AI05-0299-1"]} /><p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />[This subclause defines attributes and rules associated with verifying the consistency of a distributed program.] <br /></p>
 
 
 #### Language Design Principles
 
-<AnnotatedOnly>
-<MarginText>
-1.a/3
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>1.a/3</MarginText>
+<MarginInfo items={["AI05-0248-1"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI05-0248-1"}</em>{"}"} <br />The rules guarantee that remote call interface and shared passive library units are consistent among all partitions prior to the execution of a distributed program, so that the semantics of the distributed program are well defined.<br /></Admonition>
 
 
 #### Static Semantics
 
-<AnnotatedOnly>
-<MarginText>
-2/1
-</MarginText>
-</AnnotatedOnly>
+<MarginText>2/1</MarginText>
 <p>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that statically denotes a program unit, the following attributes are defined: <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-3
-</MarginText>
-</AnnotatedOnly>
+<MarginText>3</MarginText>
 <dt><br/>P'Version</dt>
 <dl>
 <dd>Yields a value of the predefined type String that identifies the version of the compilation unit that contains the declaration of the program unit.<br /></dd>
-<AnnotatedOnly>
-<MarginText>
-4
-</MarginText>
-</AnnotatedOnly>
+<MarginText>4</MarginText>
 <dt><br/>P'Body_Version</dt>
 <dd>Yields a value of the predefined type String that identifies the version of the compilation unit that contains the body (but not any subunits) of the program unit. <br /></dd>
-<AnnotatedOnly>
-<MarginText>
-5/1
-</MarginText>
-</AnnotatedOnly>
 </dl>
-<p>{"{"}<em>8652/0084</em>{"}"} {"{"}<em>{"AI95-00104-01"}</em>{"}"} <br />The <em>version</em> of a compilation unit changes whenever the compilation unit changes in a semantically significant way. This document does not define the exact meaning of "semantically significant". It is unspecified whether there are other events (such as recompilation) that result in the version of a compilation unit changing. <br /></p>
+<MarginText>5/1</MarginText>
+<MarginInfo items={["AI95-00104-01"]} /><p>{"{"}<em>8652/0084</em>{"}"} {"{"}<em>{"AI95-00104-01"}</em>{"}"} <br />The <em>version</em> of a compilation unit changes whenever the compilation unit changes in a semantically significant way. This document does not define the exact meaning of "semantically significant". It is unspecified whether there are other events (such as recompilation) that result in the version of a compilation unit changing. <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-5.a/1
-</MarginText>
-</AnnotatedOnly>
+<MarginText>5.a/1</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <em>This paragraph was deleted.</em><br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-5.1/1
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>8652/0084</em>{"}"} {"{"}<em>{"AI95-00104-01"}</em>{"}"} <br />If P is not a library unit, and P has no completion, then P'Body_Version returns the Body_Version of the innermost program unit enclosing the declaration of P. If P is a library unit, and P has no completion, then P'Body_Version returns a value that is different from Body_Version of any version of P that has a completion. <br /></p>
+<MarginText>5.1/1</MarginText>
+<MarginInfo items={["AI95-00104-01"]} /><p>{"{"}<em>8652/0084</em>{"}"} {"{"}<em>{"AI95-00104-01"}</em>{"}"} <br />If P is not a library unit, and P has no completion, then P'Body_Version returns the Body_Version of the innermost program unit enclosing the declaration of P. If P is a library unit, and P has no completion, then P'Body_Version returns a value that is different from Body_Version of any version of P that has a completion. <br /></p>
 
 
 #### Bounded (Run-Time) Errors
 
-<AnnotatedOnly>
-<MarginText>
-6
-</MarginText>
-</AnnotatedOnly>
+<MarginText>6</MarginText>
 <p>In a distributed program, a library unit is <em>consistent</em> if the same version of its declaration is used throughout. It is a bounded error to elaborate a partition of a distributed program that contains a compilation unit that depends on a different version of the declaration of a shared passive or RCI library unit than that included in the partition to which the shared passive or RCI library unit was assigned. As a result of this error, Program_Error can be raised in one or both partitions during elaboration; in any case, the partitions become inaccessible to one another. <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-6.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>6.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>Because a version changes if anything on which it depends undergoes a version change, requiring consistency for shared passive and remote call interface library units is sufficient to ensure consistency for the declared pure and remote types library units that define the types used for the objects and parameters through which interpartition communication takes place.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-6.b
-</MarginText>
-</AnnotatedOnly>
+<MarginText>6.b</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 Note that we do not require matching Body_Versions; it is irrelevant for shared passive and remote call interface packages, since only one copy of their body exists in a distributed program (in the absence of implicit replication), and we allow the bodies to differ for declared pure and remote types packages from partition to partition, presuming that the differences are due to required error corrections that took place during the execution of a long-running distributed program. The Body_Version attribute provides a means for performing stricter consistency checks. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
-<AnnotatedOnly>
-<MarginText>
-6.c/2
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>6.c/2</MarginText>
+<MarginInfo items={["AI95-00104-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>8652/0084</em>{"}"} {"{"}<em>{"AI95-00104-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Clarified the meaning of 'Version and 'Body_Version. <br /></Admonition>
 

@@ -16,236 +16,120 @@ import CodeBlock from "@theme/CodeBlock";
 import MarginText from "@site/src/components/MarginText";
 import MarginInfo from "@site/src/components/MarginInfo";
 
-<AnnotatedOnly>
-<MarginText>
-1/3
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />[This subclause introduces a language-defined package to do asynchronous suspend/resume on tasks. It uses a conceptual <em>held priority</em> value to represent the task's <em>held</em> state.] <br /></p>
+<MarginText>1/3</MarginText>
+<MarginInfo items={["AI05-0299-1"]} /><p>{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />[This subclause introduces a language-defined package to do asynchronous suspend/resume on tasks. It uses a conceptual <em>held priority</em> value to represent the task's <em>held</em> state.] <br /></p>
 
 
 #### Static Semantics
 
-<AnnotatedOnly>
-<MarginText>
-2
-</MarginText>
-</AnnotatedOnly>
+<MarginText>2</MarginText>
 <p>The following language-defined library package exists: <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-3/5
-</MarginText>
-</AnnotatedOnly>
-<CodeBlock language="ada">
---  {"{"}{"AI95-00362-01"}{"}"}{"\n"} --  {"{"}{"AI12-0241-1"}{"}"}{"\n"} --  {"{"}{"AI12-0302-1"}{"}"}{"\n"} with Ada.Task_Identification;{"\n"}package Ada.Asynchronous_Task_Control{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}  procedure Hold(T : in Ada.Task_Identification.Task_Id);{"\n"}  procedure Continue(T : in Ada.Task_Identification.Task_Id);{"\n"}  function Is_Held(T : Ada.Task_Identification.Task_Id){"\n"}   return Boolean;{"\n"}end Ada.Asynchronous_Task_Control;{"\n"}
+<MarginText>3/5</MarginText>
+<MarginInfo items={["AI95-00362-01", "AI12-0241-1", "AI12-0302-1"]} /><CodeBlock language="ada">
+--  {"{"}{"AI95-00362-01"}{"}"}{"\n"} --  {"{"}{"AI12-0241-1"}{"}"}{"\n"} --  {"{"}{"AI12-0302-1"}{"}"}{"\n"} with Ada.Task_Identification;{"\n"}package Ada.Asynchronous_Task_Control {"\n"}  with  Preelaborate, Nonblocking, Global ={">"} in out synchronized is {"\n"}  procedure Hold(T : in Ada.Task_Identification.Task_Id);{"\n"}  procedure Continue(T : in Ada.Task_Identification.Task_Id);{"\n"}  function Is_Held(T : Ada.Task_Identification.Task_Id){"\n"}   return Boolean;{"\n"}end Ada.Asynchronous_Task_Control;{"\n"}
 
 </CodeBlock>
 
 #### Dynamic Semantics
 
-<AnnotatedOnly>
-<MarginText>
-4/2
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI95-00357-01"}</em>{"}"} <br />After the Hold operation has been applied to a task, the task becomes <em>held</em>. For each processor there is a conceptual <em>idle task</em>, which is always ready. The base priority of the idle task is below System.Any_Priority'First. The <em>held priority</em> is a constant of the type Integer whose value is below the base priority of the idle task. <br /></p>
+<MarginText>4/2</MarginText>
+<MarginInfo items={["AI95-00357-01"]} /><p>{"{"}<em>{"AI95-00357-01"}</em>{"}"} <br />After the Hold operation has been applied to a task, the task becomes <em>held</em>. For each processor there is a conceptual <em>idle task</em>, which is always ready. The base priority of the idle task is below System.Any_Priority'First. The <em>held priority</em> is a constant of the type Integer whose value is below the base priority of the idle task. <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-4.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>4.a</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>The held state should not be confused with the blocked state as defined in <a href="../AA-9/AA-9.2">9.2</a>; the task is still ready. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-4.1/2
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI95-00357-01"}</em>{"}"} <br />For any priority below System.Any_Priority'First, the task dispatching policy is FIFO_Within_Priorities. <br /></p>
+<MarginText>4.1/2</MarginText>
+<MarginInfo items={["AI95-00357-01"]} /><p>{"{"}<em>{"AI95-00357-01"}</em>{"}"} <br />For any priority below System.Any_Priority'First, the task dispatching policy is FIFO_Within_Priorities. <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-4.b/2
-</MarginText>
-</AnnotatedOnly>
+<MarginText>4.b/2</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 <strong>To be honest: </strong>This applies even if a Task_Dispatching_Policy specifies the policy for all of the priorities of the partition. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-4.c/2
-</MarginText>
-</AnnotatedOnly>
+<MarginText>4.c/2</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>A task at the held priority never runs, so it is not necessary to implement FIFO_Within_Priorities for systems that have only one policy (such as EDF_Across_Priorities). <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-5/2
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI95-00357-01"}</em>{"}"} <br />The Hold operation sets the state of T to held. For a held task, the active priority is reevaluated as if the base priority of the task were the held priority. <br /></p>
+<MarginText>5/2</MarginText>
+<MarginInfo items={["AI95-00357-01"]} /><p>{"{"}<em>{"AI95-00357-01"}</em>{"}"} <br />The Hold operation sets the state of T to held. For a held task, the active priority is reevaluated as if the base priority of the task were the held priority. <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-5.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>5.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
 <strong></strong>For example, if T is currently inheriting priorities from other sources (e.g. it is executing in a protected action), its active priority does not change, and it continues to execute until it leaves the protected action. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-6/2
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI95-00357-01"}</em>{"}"} <br />The Continue operation resets the state of T to not-held; its active priority is then reevaluated as determined by the task dispatching policy associated with its base priority.<br /></p>
+<MarginText>6/2</MarginText>
+<MarginInfo items={["AI95-00357-01"]} /><p>{"{"}<em>{"AI95-00357-01"}</em>{"}"} <br />The Continue operation resets the state of T to not-held; its active priority is then reevaluated as determined by the task dispatching policy associated with its base priority.<br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-7
-</MarginText>
-</AnnotatedOnly>
+<MarginText>7</MarginText>
 <p>The Is_Held function returns True if and only if T is in the held state. <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-7.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>7.a</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
 <strong></strong>Note that the state of T can be changed immediately after Is_Held returns. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-8
-</MarginText>
-</AnnotatedOnly>
+<MarginText>8</MarginText>
 <p>As part of these operations, a check is made that the task identified by T is not terminated. Tasking_Error is raised if the check fails. Program_Error is raised if the value of T is Null_Task_Id.<br /></p>
 
 
 #### Erroneous Execution
 
-<AnnotatedOnly>
-<MarginText>
-9
-</MarginText>
-</AnnotatedOnly>
+<MarginText>9</MarginText>
 <p>If any operation in this package is called with a parameter T that specifies a task object that no longer exists, the execution of the program is erroneous. <br /></p>
 
 
 #### Implementation Permissions
 
-<AnnotatedOnly>
-<MarginText>
-10/5
-</MarginText>
-</AnnotatedOnly>
-<p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />An implementation may omit support for Asynchronous_Task_Control if it is infeasible to support it in the target environment. <br /></p>
+<MarginText>10/5</MarginText>
+<MarginInfo items={["AI12-0444-1"]} /><p>{"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />An implementation may omit  support for Asynchronous_Task_Control if it is infeasible to support it in the target environment. <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-10.a
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10.a</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>A direct implementation of the Asynchronous_Task_Control semantics using priorities is not necessarily efficient enough. Thus, we envision implementations that use some other mechanism to set the "held" state. If there is no other such mechanism, support for Asynchronous_Task_Control might be infeasible, because an implementation in terms of priority would require one idle task per processor. On some systems, programs are not supposed to know how many processors are available, so creating enough idle tasks would be problematic. <br /></Admonition>
+<strong></strong>A direct implementation of the Asynchronous_Task_Control semantics using priorities is not necessarily efficient enough. Thus, we envision implementations that use some other mechanism to set the &ldquo;held&rdquo; state. If there is no other such mechanism, support for Asynchronous_Task_Control might be infeasible, because an implementation in terms of priority would require one idle task per processor. On some systems, programs are not supposed to know how many processors are available, so creating enough idle tasks would be problematic. <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-11
-</MarginText>
-</AnnotatedOnly>
+<MarginText>11</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 1   It is a consequence of the priority rules that held tasks cannot be dispatched on any processor in a partition (unless they are inheriting priorities) since their priorities are defined to be below the priority of any idle task.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-12
-</MarginText>
-</AnnotatedOnly>
+<MarginText>12</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 2   The effect of calling Get_Priority and Set_Priority on a Held task is the same as on any other task.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-13
-</MarginText>
-</AnnotatedOnly>
+<MarginText>13</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 3   Calling Hold on a held task or Continue on a non-held task has no effect.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-14
-</MarginText>
-</AnnotatedOnly>
+<MarginText>14</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
 NOTE 4   The rules affecting queuing are derived from the above rules, in addition to the normal priority rules: <br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-15
-</MarginText>
-</AnnotatedOnly>
+<MarginText>15</MarginText>
 <ul>
 <li>When a held task is on the ready queue, its priority is so low as to never reach the top of the queue as long as there are other tasks on that queue.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-16
-</MarginText>
-</AnnotatedOnly>
+<MarginText>16</MarginText>
 <li>If a task is executing in a protected action, inside a rendezvous, or is inheriting priorities from other sources (e.g. when activated), it continues to execute until it is no longer executing the corresponding construct.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-17
-</MarginText>
-</AnnotatedOnly>
+<MarginText>17</MarginText>
 <li>If a task becomes held while waiting (as a caller) for a rendezvous to complete, the active priority of the accepting task is not affected.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-18/1
-</MarginText>
-</AnnotatedOnly>
-<li>{"{"}<em>8652/0077</em>{"}"} {"{"}<em>{"AI95-00111-01"}</em>{"}"} <br />If a task becomes held while waiting in a <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code>, and an entry call is issued to one of the open entries, the corresponding <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code> executes. When the rendezvous completes, the active priority of the accepting task is lowered to the held priority (unless it is still inheriting from other sources), and the task does not execute until another Continue.<br /></li>
-<AnnotatedOnly>
-<MarginText>
-19
-</MarginText>
-</AnnotatedOnly>
+<MarginText>18/1</MarginText>
+<MarginInfo items={["AI95-00111-01"]} /><li>{"{"}<em>8652/0077</em>{"}"} {"{"}<em>{"AI95-00111-01"}</em>{"}"} <br />If a task becomes held while waiting in a <code><a href="../AA-9/AA-9.7#S0270">selective_accept</a></code>, and an entry call is issued to one of the open entries, the corresponding <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code> executes. When the rendezvous completes, the active priority of the accepting task is lowered to the held priority (unless it is still inheriting from other sources), and the task does not execute until another Continue.<br /></li>
+<MarginText>19</MarginText>
 <li>The same holds if the held task is the only task on a protected entry queue whose barrier becomes open. The corresponding entry body executes.<br /></li>
 </ul>
 
 #### Extensions to Ada 95
 
-<AnnotatedOnly>
-<MarginText>
-19.a/2
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>19.a/2</MarginText>
+<MarginInfo items={["AI95-00362-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00362-01"}</em>{"}"} <br />Asynchronous_Task_Control is now Preelaborated, so it can be used in preelaborated units. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
 
-<AnnotatedOnly>
-<MarginText>
-19.b/2
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0077</em>{"}"} {"{"}<em>{"AI95-00111-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Corrected to eliminate the use of the undefined term "accept body".<br /></Admonition>
+<MarginText>19.b/2</MarginText>
+<MarginInfo items={["AI95-00111-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
+{"{"}<em>8652/0077</em>{"}"} {"{"}<em>{"AI95-00111-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Corrected to eliminate the use of the undefined term &ldquo;accept body&rdquo;.<br /></Admonition>
 
-<AnnotatedOnly>
-<MarginText>
-19.c/2
-</MarginText>
-</AnnotatedOnly>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<MarginText>19.c/2</MarginText>
+<MarginInfo items={["AI95-00357-01"]} /><Admonition type="aarm" aarm="note" title="Note: ">
 {"{"}<em>{"AI95-00357-01"}</em>{"}"} <br />The description of held tasks was changed to reflect that the calculation of active priorities depends on the dispatching policy of the base priority. Thus, the policy of the held priority was specified in order to avoid surprises (especially when using the EDF policy). <br /></Admonition>
 

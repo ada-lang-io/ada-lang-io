@@ -16,122 +16,58 @@ import CodeBlock from "@theme/CodeBlock";
 import MarginText from "@site/src/components/MarginText";
 import MarginInfo from "@site/src/components/MarginInfo";
 
-<AnnotatedOnly>
-<MarginText>
-1
-</MarginText>
-</AnnotatedOnly>
+<MarginText>1</MarginText>
 <p>The following example provides a possible formulation of stacks by means of a generic package. The size of each stack and the type of the stack elements are provided as generic formal parameters. <br /></p>
 
 
 #### Examples
 
-<AnnotatedOnly>
-<MarginText>
-2/1
-</MarginText>
-</AnnotatedOnly>
+<MarginText>2/1</MarginText>
 <p><em>This paragraph was deleted.</em><br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-3
-</MarginText>
-</AnnotatedOnly>
+<MarginText>3</MarginText>
 <CodeBlock language="ada">
 generic{"\n"}   Size : Positive;{"\n"}   type Item is private;{"\n"}package Stack is{"\n"}   procedure Push(E : in  Item);{"\n"}   procedure Pop (E : out Item);{"\n"}   Overflow, Underflow : exception;{"\n"}end Stack;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-4
-</MarginText>
-</AnnotatedOnly>
+<MarginText>4</MarginText>
 package body Stack is{"\n"}
-<AnnotatedOnly>
-<MarginText>
-5
-</MarginText>
-</AnnotatedOnly>
+<MarginText>5</MarginText>
    type Table is array (Positive range {"<"}{">"}) of Item;{"\n"}   Space : Table(1 .. Size);{"\n"}   Index : Natural := 0;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-6
-</MarginText>
-</AnnotatedOnly>
+<MarginText>6</MarginText>
    procedure Push(E : in Item) is{"\n"}   begin{"\n"}      if Index {">"}= Size then{"\n"}         raise Overflow;{"\n"}      end if;{"\n"}      Index := Index + 1;{"\n"}      Space(Index) := E;{"\n"}   end Push;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-7
-</MarginText>
-</AnnotatedOnly>
+<MarginText>7</MarginText>
    procedure Pop(E : out Item) is{"\n"}   begin{"\n"}      if Index = 0 then{"\n"}         raise Underflow;{"\n"}      end if;{"\n"}      E := Space(Index);{"\n"}      Index := Index - 1;{"\n"}   end Pop;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-8
-</MarginText>
-</AnnotatedOnly>
+<MarginText>8</MarginText>
 end Stack;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-9
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
+<MarginText>9</MarginText>
 <p>Instances of this generic package can be obtained as follows: <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-10
-</MarginText>
-</AnnotatedOnly>
+<MarginText>10</MarginText>
 <CodeBlock language="ada">
 package Stack_Int  is new Stack(Size ={">"} 200, Item ={">"} Integer);{"\n"}package Stack_Bool is new Stack(100, Boolean);{"\n"}
-<AnnotatedOnly>
-<MarginText>
-11
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
+<MarginText>11</MarginText>
 <p>Thereafter, the procedures of the instantiated packages can be called as follows: <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-12
-</MarginText>
-</AnnotatedOnly>
+<MarginText>12</MarginText>
 <CodeBlock language="ada">
 Stack_Int.Push(N);{"\n"}Stack_Bool.Push(True);{"\n"}
-<AnnotatedOnly>
-<MarginText>
-13
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
+<MarginText>13</MarginText>
 <p>Alternatively, a generic formulation of the type Stack can be given as follows (package body omitted): <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-14
-</MarginText>
-</AnnotatedOnly>
+<MarginText>14</MarginText>
 <CodeBlock language="ada">
 generic{"\n"}   type Item is private;{"\n"}package On_Stacks is{"\n"}   type Stack(Size : Positive) is limited private;{"\n"}   procedure Push(S : in out Stack; E : in  Item);{"\n"}   procedure Pop (S : in out Stack; E : out Item);{"\n"}   Overflow, Underflow : exception;{"\n"}private{"\n"}   type Table is array (Positive range {"<"}{">"}) of Item;{"\n"}   type Stack(Size : Positive) is{"\n"}      record{"\n"}         Space : Table(1 .. Size);{"\n"}         Index : Natural := 0;{"\n"}      end record;{"\n"}end On_Stacks;{"\n"}
-<AnnotatedOnly>
-<MarginText>
-15
-</MarginText>
-</AnnotatedOnly>
 
 </CodeBlock>
+<MarginText>15</MarginText>
 <p>In order to use such a package, an instance has to be created and thereafter stacks of the corresponding type can be declared: <br /></p>
 
-<AnnotatedOnly>
-<MarginText>
-16
-</MarginText>
-</AnnotatedOnly>
+<MarginText>16</MarginText>
 <CodeBlock language="ada">
 declare{"\n"}   package Stack_Real is new On_Stacks(Real); use Stack_Real;{"\n"}   S : Stack(100);{"\n"}begin{"\n"}   ...{"\n"}   Push(S, 2.54);{"\n"}   ...{"\n"}end;{"\n"}
 
