@@ -1,8 +1,11 @@
+$ada-lang-margin-text-right-small: calc(var(--ifm-spacing-horizontal) + 5px);
+$ada-lang-margin-text-min-width: 1770px;
+
 .text {
   font-size: smaller;
-  line-height: 1.5em;
+  line-height: 1.3em;
+  margin-top: 5px;
 
-  height: 2em;
   display: flex;
   align-items: center;
 
@@ -10,22 +13,36 @@
   list-style-type: none;
   position: absolute;
 
-  background-color: var(--ifm-color-secondary-contrast-background);
+  // Blurred background (needed when overlap with TOC in right sidebar)
+  backdrop-filter: blur(5px);
+  background-color: var(--ifm-hover-overlay);
+  z-index: 1;
+
   border-radius: var(--ifm-global-radius);
   padding-inline: calc(0.5 * var(--ifm-global-radius));
-
-  $ada-lang-margin-text-min-width: 1770px;
 
   @media (min-width: #{$ada-lang-margin-text-min-width}) {
     left: calc(var(--doc-sidebar-width) + 1rem);
   }
 
   @media (min-width: 997px) and (max-width: #{$ada-lang-margin-text-min-width - 1}) {
-    --ada-lang-content-width: calc(0.75 * (100% - var(--doc-sidebar-width)));
-    left: calc(var(--doc-sidebar-width) + var(--ada-lang-content-width) + 0.5rem);
+    // Some extra spacing between the margin text and the margin info icon on the right
+    left: calc(var(--ada-lang-right-margin) + 1 * var(--ifm-spacing-horizontal));
   }
 
   @media (max-width: 996px) {
-    right: 1.5rem;
+    // Some extra spacing between the margin text and the margin info icon on the right
+    right: calc(#{$ada-lang-margin-text-right-small} + 0.5 * var(--ifm-spacing-horizontal));
+  }
+}
+
+[data-arm-annotations="false"] .text {
+  @media (min-width: 997px) and (max-width: #{$ada-lang-margin-text-min-width - 1}) {
+    left: var(--ada-lang-right-margin);
+  }
+
+  @media (max-width: 996px) {
+    // Without the margin info icon on the right
+    right: calc(#{$ada-lang-margin-text-right-small});
   }
 }
