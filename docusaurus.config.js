@@ -186,6 +186,11 @@ const config = {
             title: "Community",
             items: [
               {
+                label: "Forum",
+                href: "https://forum.ada-lang.io",
+                className: "fa-icon footer__image footer-discourse-link"
+              },
+              {
                 label: "Gitter",
                 href: "https://gitter.im/ada-lang/Lobby",
                 className: "fa-icon footer__image footer-gitter-link"
