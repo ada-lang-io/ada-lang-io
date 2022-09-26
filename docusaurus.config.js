@@ -191,9 +191,9 @@ const config = {
                 className: "fa-icon footer__image footer-discourse-link"
               },
               {
-                label: "Gitter",
-                href: "https://gitter.im/ada-lang/Lobby",
-                className: "fa-icon footer__image footer-gitter-link"
+                label: "Stack Overflow",
+                href: "https://stackoverflow.com/questions/tagged/ada",
+                className: "fa-icon footer__image footer-stackoverflow-link"
               },
               {
                 label: "Reddit",
@@ -201,14 +201,14 @@ const config = {
                 className: "fa-icon footer__image footer-reddit-link"
               },
               {
+                label: "Gitter",
+                href: "https://gitter.im/ada-lang/Lobby",
+                className: "fa-icon footer__image footer-gitter-link"
+              },
+              {
                 label: "Telegram",
                 href: "https://t.me/ada_lang",
                 className: "fa-icon footer__image footer-telegram-link"
-              },
-              {
-                label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/ada",
-                className: "fa-icon footer__image footer-stackoverflow-link"
               },
               {
                 label: "ARG Community Input",
