@@ -125,6 +125,11 @@ const config = {
             label: "Style Guide"
           },
           {
+            to: "https://forum.ada-lang.io",
+            position: "left",
+            label: "Forum"
+          },
+          {
             // See https://github.com/facebook/docusaurus/issues/7227 for custom components
             type: "custom-armAnnotations",
             position: "right"
