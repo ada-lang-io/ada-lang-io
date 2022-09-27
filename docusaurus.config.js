@@ -114,7 +114,7 @@ const config = {
             label: "Learn"
           },
           {
-            to: "/docs/arm/AA-Title",
+            to: "/docs/arm",
             position: "left",
             label: "Reference Manual"
           },
@@ -171,7 +171,7 @@ const config = {
             items: [
               {
                 label: "Reference Manual",
-                to: "/docs/arm/AA-Title"
+                to: "/docs/arm"
               },
               {
                 label: "Style Guide",
