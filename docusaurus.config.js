@@ -16,7 +16,7 @@ const config = {
   tagline: "Readable, correct, performant",
   url: "https://ada-lang.io",
   baseUrl: "/",
-  onBrokenLinks: "warn",
+  onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
 
