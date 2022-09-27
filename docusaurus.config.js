@@ -96,14 +96,6 @@ const config = {
       colorMode: {
         respectPrefersColorScheme: true
       },
-      announcementBar: {
-        id: "wip",
-        content:
-          "Please thank Jay on HN or lobsters for announcing this website, which is still work in progress! Thanks Jay! 😂",
-        backgroundColor: "#fcb316",
-        textColor: "#fafbfc",
-        isCloseable: false
-      },
       navbar: {
         title: "Ada",
         logo: {
