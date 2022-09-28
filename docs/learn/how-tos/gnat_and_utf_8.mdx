@@ -202,29 +202,17 @@ The result is, well, non-obvious:
 
 The output is the so-called "brackets encoding", invented by the GNAT
 authors in the early days of `Wide_Character` and `Wide_String`.
-
-:::info
-
-Brackets encoding was used, for example, in GNAT's implementation of package `Ada.Numerics`
-to provide the constant `Pi` as the greek letter π:
-
-```ada
-["03C0"] : constant := Pi;
-```
-
-(Chapter [A.5](/docs/arm/AA-A/AA-A.5#static-semantics) of the reference manual does
-not use bracket encoding and uses the actual UTF-8 character π)
-
-:::
-
-You can make the compiler use UTF-8 even in this case by adding `-W8`
-to the list of switches in package `Binder`:
+To avoid brackets encoding and make the compiler use UTF-8 even without `-gnatW8`,
+add `-W8` to the list of switches in package `Binder`:
 
 ```
 package Binder is
    for Switches ("ada") use ("-W8");
 end Binder;
 ```
+
+Using this switch, the program will correctly print the string "Привіт" instead
+of producing output using brackets encoding.
 
 :::tip
 
@@ -237,6 +225,20 @@ the options bar.
 
 When you use `-gnatW8`, the binder will use the `-W8` switch automatically.
 But you can specify both of them, it won't hurt.
+
+:::
+
+:::info
+
+Brackets encoding was used, for example, in GNAT's implementation of package `Ada.Numerics`
+to provide the constant `Pi` as the greek letter π:
+
+```ada
+["03C0"] : constant := Pi;
+```
+
+(Chapter [A.5](/docs/arm/AA-A/AA-A.5#static-semantics) of the reference manual does
+not use bracket encoding and uses the actual UTF-8 character π)
 
 :::
 
