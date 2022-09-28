@@ -107,7 +107,7 @@ of the window.
 
 ### Printing text containing UTF-8 characters
 
-To print text containing UTF-8 characters, the type `String` is insufficient.
+To work with text containing UTF-8 characters, the type `String` is insufficient.
 A different type is needed.
 
 Before the first version of the Ada language, only 127 characters of the ASCII set could fit in
@@ -141,14 +141,12 @@ Now the program will compile and print a string of 6 characters to the screen.
 
 ## Identifiers
 
-According to the
-[GNAT User's Guide](https://docs.adacore.com/gnat_ugn-docs/html/gnat_ugn/gnat_ugn/building_executable_programs_with_gnat.html#character-set-control),
-the GNAT compiler by default recognizes only the Latin-1 character set in identifiers.
+By default the GNAT compiler recognizes only the Latin-1 character set in identifiers.
 The current Ada standard, however, defines the
 _identifier_ lexical element in Unicode terms, not in Latin-1 characters.
 That is, the standard allows the use of non-Latin-1 characters in identifiers.
-To make the compiler follow the standard, you need to tell it the `-gnatiw`
-options (besides `-gnatW8`). This will allow the use of UTF-8 characters in identifiers:
+With `-gnatW8` the compiler will follow the standard with
+respect to identifiers and allow the use of UTF-8 characters:
 
 ```ada
 with Ada.Text_IO;
@@ -310,12 +308,12 @@ The type `Wide_Wide_String` does not help here.
 Various Alire crates exist which provide proper support for Unicode strings:
 
 - [vss](https://github.com/AdaCore/VSS).
-Introduces its own type for Unicode strings with handy methods to work
-with. It can be used to find character boundaries, grapheme clusters, character
-offsets in UTF-8/UTF-16 encoding, etc.
+  Introduces its own type for Unicode strings with handy methods to work
+  with. It can be used to find character boundaries, grapheme clusters, character
+  offsets in UTF-8/UTF-16 encoding, etc.
 
 - [matreshka_league](https://alire.ada.dev/crates/matreshka_league). Allows
-you to operate on strings in terms of Unicode "code points". It has a set of
-transcoders to different encoding systems (like Windows-1251, KOI8-R),
-support for JSON, XML, databases, regular expressions, XML template engine,
-etc.
+  you to operate on strings in terms of Unicode "code points". It has a set of
+  transcoders to different encoding systems (like Windows-1251, KOI8-R),
+  support for JSON, XML, databases, regular expressions, XML template engine,
+  etc.
