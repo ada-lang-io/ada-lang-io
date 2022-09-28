@@ -1,44 +1,43 @@
 ---
 sidebar_position: 2
-title: UTF-8
 draft: true
+description: How to use UTF-8 in string literals and identifiers in GNAT
+keywords:
+  - UTF-8
+  - Unicode
+  - GNAT
 ---
 
 # Using UTF-8 encoding in GNAT
 
-Nowadays UTF-8 is de facto standard for source code representation.
-So a newbie Ada developer could expect this as default for GNAT tools, but it's not.
-Let's see how things actually turn out.
-
-Although the
-[Ada language Standard](https://ada-lang.io/docs/arm/AA-2/AA-2.1#implementation-requirements)
-says that the compiler must understand texts in UTF-8 encoding:
+Nowadays, UTF-8 is de facto standard for source code representation.
+Section [2.1 Character Set](/docs/arm/AA-2/AA-2.1#implementation-requirements)
+of the reference manual says that the compiler must understand texts in UTF-8 encoding:
 
 > An Ada implementation shall accept Ada source code in UTF-8 encoding, with
 > or without a BOM (see A.4.11), where every character is represented by its
 > code point.
 
-But this does not mean that the compiler must do so "by default".
-The GNAT compiler does not violate the standard, but it does not accept the
-UTF-8 encoding by default.
-The same applies to the rest of the GNAT tools.
+This does not mean that the compiler must do so by default.
+In the case of the GNAT compiler, the compiler by default uses the Latin-1 (ISO-8859-1)
+encoding and a build switch is needed to enable UTF-8 encoding of string literals
+and identifiers.
 
-## GNAT Studio
+## String literals
 
-After installing the compiler and GNAT Studio development environment,
-the newbie developer will write the first program:
+For example, the following program has a string literal containing UTF-8 characters:
 
 ```ada
 with Ada.Text_IO;
 
 procedure Main is
 begin
-   Ada.Text_IO.Put_Line ("Привет");
+   Ada.Text_IO.Put_Line ("Привіт");
 end Main;
 ```
 
-But he won't be able to build this program, or even save it.
-GNAT Studio will complain:
+In some IDEs, such as GNAT Studio, building or even saving the file may
+generate an error like:
 
 > This buffer contains UTF-8 characters which could not be translated to ISO-8859-1.
 >
@@ -46,208 +45,126 @@ GNAT Studio will complain:
 >
 > You may change the character set of this file through the "Properties..." contextual menu.
 
-And "Locations View" shows details:
+If you change the encoding of the file to UTF-8, the program can be build and may
+seem to work as expected (assuming that the terminal understands UTF-8).
 
-> Error converting from UTF8 to ISO-8859-1
->
-> main.adb:5:1: Invalid byte sequence in conversion input
+:::tip
 
-You can change encoding for this file using "Properties..." contextual menu, but
-for the next file it will be the same.
+The default encoding of all files can be changed in GNAT Studio by going to
+"Edit" -> "Preferences...". Then go to "General" and change "Character set" to
+"Unicode UTF-8". Re-create the file "main.adb" and it will save successfully.
 
-Instead, it is better to change the default encoding. Go to the settings
-"/Edit/Preferences...", "General" and change "Character set" to
-"Unicode UTF-8". Re-create the file "main.adb" and it will save
-successfully.
+:::
 
-## Compiler
+### UTF-8 encoding of string literals
 
-Now you can build the program and it will even work as expected
-(but only if you have the console in UTF-8; on Windows you can switch the
-`cmd.exe` console to UTF-8 using the command `chcp 65001`).
-But from the compiler point of view the string "Hello" will be 12(!)
-characters long.
-The point is that according to the Standard
-([ARM 3.5.2 2/3](https://ada-lang.io/docs/arm/AA-3/AA-3.5#352--character-types))
-the `Character` type includes only 256 values from the Latin-1 set:
+However, from the compiler's point of view the string "Привіт" contains not 6, but 12 characters!
+The reason for this is that, according to
+Section [3.5.2 Character Types](/docs/arm/AA-3/AA-3.5#352--character-types)
+of the reference manual,
+the type `Character` includes only 256 values from the Latin-1 set:
 
 > The predefined type Character is a character type whose values correspond
 > to the 256 code points of Row 00 (also known as Latin-1) of the
 > ISO/IEC 10646:2017 Basic Multilingual Plane (BMP).
 
-So, it does not contain any Cyrillic character.
-The compiler does not know that you have set the default encoding in the IDE
-to UTF-8. It still uses its default encoding. As
-[GNAT User guide](https://docs.adacore.com/gnat_ugn-docs/html/gnat_ugn/gnat_ugn/the_gnat_compilation_model.html#source-representation)
-states:
+As far as the compiler is concerned, the string literal does not contain
+any Cyrillic characters.
+The compiler sees the string literal as `"Ð_Ñ_Ð¸Ð²ÐµÑ_"` (`_` indicates non-printable characters in Latin-1).
+The compiler does not know that you have set the encoding in the IDE
+to UTF-8. It still uses Latin-1 as its [default encoding](https://docs.adacore.com/gnat_ugn-docs/html/gnat_ugn/gnat_ugn/the_gnat_compilation_model.html#source-representation).
 
-> Ada source programs are represented in standard text files, using Latin-1 coding.
-
-The compiler sees this program as
-
-```ada
-with Ada.Text_IO;
-
-procedure Main is
-begin
-   Ada.Text_IO.Put_Line ("Ð_Ñ_Ð¸Ð²ÐµÑ_");
-end Main;
-```
-
-here `_` indicates non-printable characters in Latin-1.
-
-:::note To be investigated
-
-Shouldn't the compiler rise compilation error on
-non-printable characters in a sting literal??
-
-:::
-
-You can tell the compiler the encoding of the input texts by passing
-the `-gnatW8` option. Hre is the described in the options list
-(`gnatmake --help`):
-
-```text
-    -gnatW?   Wide character encoding method (?=h/u/s/e/8/b)
-```
-
-The simplest way to specify this option is to change the project properties
-by selecting the menu "/Edit/Project Properties...", the tab
-"/Build/Switches/Ada" and write `-gnatW8` in the options bar at the bottom
-of the form.
-
-The project file `default.gpr` will look like this:
+You can tell the compiler the encoding of the source code is UTF-8 by adding the `-gnatW8` option
+to the list of compiler switches.
+If your project is an Alire crate, edit the .gpr file in the root of your project and
+add `-gnatW8` to the default switches in the package `Compiler`:
 
 ```
-project Default is
-
-   for Source_Dirs use ("src");
-   for Object_Dir use "obj";
-   for Main use ("main.adb");
-
-   package Compiler is
-      for Switches ("ada") use ("-gnatW8");
-   end Compiler;
-
-end Default;
+package Compiler is
+   for Default_Switches ("Ada") use Main_Config.Ada_Compiler_Switches & ("-gnatW8");
+end Compiler;
 ```
 
-Now the compiler will see the Cyrillic alphabet and refuse to build
+Now the compiler will see the Cyrillic alphabet and correctly refuses to build
 the program:
 
 ```
-Builder results
-  /tmp/utf8/src/main.adb
-    5:27 error: literal out of range of type Standard.Character
+     5.    Ada.Text_IO.Put_Line ("Привіт");
+                                  |
+        >>> literal out of range of type Standard.Character
+
+ 6 lines: 1 error
 ```
 
-And it is right. We need a different type of string here. Yes, there are
-several types of strings in Ada. There are even too many of them. And not
-one is good enough for all cases of real life. From the Ada string types
-you can trace how string encodings evolved. Before the first version of
-the language, only 127 characters of the ASCII set could fit into
-`Character`. But this was quickly corrected by expanding `Character`
+:::tip
+
+If your project does not use Alire, the switch can be added in GNAT Studio
+as follows: select in the menu "Edit" -> "Project Properties...". Then go to
+"Build" -> "Switches" -> "Ada" and write `-gnatW8` in the options bar at the bottom
+of the window.
+
+:::
+
+### Printing text containing UTF-8 characters
+
+To print text containing UTF-8 characters, the type `String` is insufficient.
+A different type is needed.
+
+Before the first version of the Ada language, only 127 characters of the ASCII set could fit in
+the type `Character`. This was quickly corrected by expanding `Character`
 to 256 Latin-1 values. The next version of the standard, around the
-time of Java appearance, where the character size was 16 bits,
-introduced `Wide_Character`, which contains 65536 characters, and
-it seemed to be enough for everyone. But Unicode came along, with
-a repertoire of 1,114,112 "code points". Then `Wide_Wide_Character`
-with 32 bits and 2 billion characters was introduced.
-Note that the "old" types `Character`/`String`, `Wide_Character`/`Wide_String`
-were not depricated at all. Moreover, `String` is widely used in the standard
-library! For example, in I/O file names, in `Ada.Environments`, and so on.
-It's a slippery place where you can make a lot of mistakes.
-But that's not what we are talking about yet.
+time of Java's appearance (whose character size is 16 bits)
+introduced the type `Wide_Character`, which contains 65536 characters.
+Later the 32-bit type `Wide_Wide_Character` was added for Unicode with its
+repertoire of 1114112 "code points".
 
-Let's replace `String` with `Wide_String`? Easy! But we also need another package
-instead of `Text_IO`:
+The types `String` and `Wide_String` were never deprecated.
+In fact, the type `String` is still widely used in the standard library.
+For example, in file names in packages related to I/O and packages related to
+environment variables.
 
-```ada
-with Ada.Wide_Text_IO;
-
-procedure Main is
-begin
-   Ada.Wide_Text_IO.Put_Line ("Привет");
-end Main;
-```
-
-To emphasize the differences, let's rewrite it this way
+To print the text with the UTF-8 characters in the program above,
+the type `Wide_String` should be used instead.
+In order to print text of this type, the package `Ada.Wide_Text_IO` is needed:
 
 ```ada
 with Ada.Wide_Text_IO;
 
 procedure Main is
-   Hello : constant Wide_String := "Привет";
+   Hello : constant Wide_String := "Привіт";
 begin
    Ada.Wide_Text_IO.Put_Line (Hello);
 end Main;
 ```
 
-Now it works!
+Now the program will compile and print a string of 6 characters to the screen.
 
-## Non-ASCII identifiers
+## Identifiers
 
-Another compiler option, `-gnatiw`, changes the way the compiler
-considers identifiers in a program. The
-[GNAT User's Guide](https://docs.adacore.com/gnat_ugn-docs/html/gnat_ugn/gnat_ugn/building_executable_programs_with_gnat.html#character-set-control)
-ays:
-
-> Normally GNAT recognizes the Latin-1 character set in source program
-> identifiers, as described in the Ada Reference Manual. This switch causes
-> GNAT to recognize alternate character sets in identifiers.
-
-The guide is oupdated here, since current Ada Standards defines the
+According to the
+[GNAT User's Guide](https://docs.adacore.com/gnat_ugn-docs/html/gnat_ugn/gnat_ugn/building_executable_programs_with_gnat.html#character-set-control),
+the GNAT compiler by default recognizes only the Latin-1 character set in identifiers.
+The current Ada standard, however, defines the
 _identifier_ lexical element in terms Unicode terms, not in Latin-1
-characters at all.
+characters.
 That is, the standard allows the use of non-Latin-1 characters in identifiers.
 To make the compiler follow the standard, you need to tell it the `-gnatiw`
 options (besides `-gnatW8`):
 
 ```ada
-with Ada.Wide_Text_IO;
+with Ada.Text_IO;
 
 procedure Main is
-   Привет : constant Wide_String := "Привет";
+   π : constant := 3.14;
 begin
-   Ada.Wide_Text_IO.Put_Line (Привет);
+   Ada.Text_IO.Put_Line (π'Image);
 end Main;
 ```
 
-The use of such names is not particularly encouraged, but I found them very
-handy when I tried to write a type system for analyzing Russian morphology.
-My knowledge of English ends with the terms "noun" and "verb," so the
-following text is more acceptable to me than in Latin:
+The use of such names is not particularly encouraged, but can be found useful
+in certain cases.
 
-```ada
-package Ru is
-   type Часть_Речи is  --  Part of speech in Russian
-     (Существительное,
-      Глагол,
-      Прилагательное,
-      Числительное,
-      Наречие,
-      Предлог,
-      Союз,
-      Частица,
-      Междометие
-     );
-
-   type Лицо is ('1', '2', '3');  --  Grammatical person
-   type Время is (Прошедшее, Настоящее, Будущее);  --  Tense
-   type Hаклонение is
-    (Обычное, Повелительное, Сослогательное);  --  mood
-   type Число is (Единственное, Множественное);
-   type Род is (Общий, Мужской, Женский, Средний);  --  gender
-   type Падеж is   --  case
-     (Именительный,
-      Родительный,
-      Дательный,
-      Винительный,
-      Творительный,
-      Предложный);
-```
-
-:::note Advice
+:::caution
 
 Keep compilation units and file names in ASCII to avoid
 problems with the compiler and tools.
@@ -256,10 +173,10 @@ problems with the compiler and tools.
 
 ## When `-gnatW8` isn't allowed
 
-Some style guides prohibit the use of non-ASCII characters
-in source code. Does it mean you need not `-gnatW8`?
-Let's try to remove `-gnatW8` and see how it works.
-We evaluate `Привет` word:
+Some style guides prohibit the use of non-ASCII characters in source code.
+Without `-gnatW8`,
+a `Wide_String` containing UTF-8 characters (in this case "Привіт") can be constructed
+as follows:
 
 ```ada
 with Ada.Wide_Text_IO;
@@ -270,7 +187,7 @@ procedure Main is
      Wide_Character'Val (1088) &
      Wide_Character'Val (1080) &
      Wide_Character'Val (1074) &
-     Wide_Character'Val (1077) &
+     Wide_Character'Val (1110) &
      Wide_Character'Val (1090);
 begin
    Ada.Wide_Text_IO.Put_Line (Hello);
@@ -280,72 +197,52 @@ end Main;
 The result is, well, non-obvious:
 
 ```text
-["041F"]["0440"]["0438"]["0432"]["0435"]["0442"]
+["041F"]["0440"]["0438"]["0432"]["0456"]["0442"]
 ```
 
-What is it? This is the so-called "Brackets encoding" invented by the GNAT
-authors in the early days of `Wide_Character`/`Wide_String`. Let's take
-a look at the `Ada.Numerics` package.
-Until recently, it looked like this
+The output is the so-called "brackets encoding", invented by the GNAT
+authors in the early days of `Wide_Character` and `Wide_String`.
+
+:::info
+
+Brackets encoding was used, for example, in GNAT's implementation of package `Ada.Numerics`
+to provide the constant `Pi` as the greek letter π:
 
 ```ada
-package Ada.Numerics is
-   pragma Pure;
-
-   Argument_Error : exception;
-
-   Pi : constant :=
-          3.14159_26535_89793_23846_26433_83279_50288_41971_69399_37511;
-
-   ["03C0"] : constant := Pi;
-   --  This is the Greek letter Pi (for Ada 2005 AI-388). Note that it is
-   --  conforming to have this constant present even in Ada 95 mode, as there
-   --  is no way for a normal mode Ada 95 program to reference this identifier.
+["03C0"] : constant := Pi;
 ```
 
-In the Standard it is
-[defined as](https://ada-lang.io/docs/arm/AA-A/AA-A.5#static-semantics):
+(Chapter [A.5](/docs/arm/AA-A/AA-A.5#static-semantics) of the reference manual does
+not use bracket encoding and uses the actual UTF-8 character π)
 
-```ada
-package Ada.Numerics is
-   pragma Pure(Numerics);
-   Argument_Error : exception;
-   Pi : constant :=
-          3.14159_26535_89793_23846_26433_83279_50288_41971_69399_37511;
-   π  : constant := Pi;
-   e  : constant :=
-          2.71828_18284_59045_23536_02874_71352_66249_77572_47093_69996;
-end Ada.Numerics;
-```
+:::
 
-Recent versions of the compiler have removed this constant altogether!
+You can make the compiler use UTF-8 even in this case by adding `-W8`
+to the list of switches in package `Binder`:
 
 ```
-   --  ???This is removed for now, because nobody uses it, and it causes
-   --  trouble for tools other than the compiler. If people want to use the
-   --  Greek letter in their programs, they can easily define it themselves.
+package Binder is
+   for Switches ("ada") use ("-W8");
+end Binder;
 ```
 
-You can make the compiler use UTF-8 even in this case by passing the `-W8`
-option to the `gnatbind` stage (in GNAT Studio go to "/Build/Switches/Binder"
-tab):
+:::tip
 
-```
-project Default is
+In GNAT Studio, go to the tab "Build" -> "Switches" -> "Binder" and add `-W8` to
+the options bar.
 
-   for Source_Dirs use ("src");
-   for Object_Dir use "obj";
-   for Main use ("main.adb");
+:::
 
-   package Binder is
-      for Switches ("ada") use ("-W8");
-   end Binder;
+:::note
 
-end Default;
-```
+When you use `-gnatW8`, the binder will use the `-W8` switch automatically.
+But you can specify both of them, it won't hurt.
 
-Another way is to do this while opening a file with the parameter
-`Form => "WCEM=8"`:
+:::
+
+## Opening files using UTF-8
+
+Files using UTF-8 can be opened using the parameter `Form => "WCEM=8"`:
 
 ```ada
 with Ada.Wide_Text_IO;
@@ -356,32 +253,14 @@ procedure Main is
      Wide_Character'Val (1088) &
      Wide_Character'Val (1080) &
      Wide_Character'Val (1074) &
-     Wide_Character'Val (1077) &
+     Wide_Character'Val (1110) &
      Wide_Character'Val (1090);
    Output : Ada.Wide_Text_IO.File_Type;
 begin
-   Ada.Wide_Text_IO.Create (Output, Name => "aaa.txt", Form => "WCEM=8");
+   Ada.Wide_Text_IO.Create (Output, Name => "hello.txt", Form => "WCEM=8");
    Ada.Wide_Text_IO.Put_Line (Output, Hello);
 end Main;
 ```
-
-When you use `-gnatW8`, the `gnatbind` `-W8` switch is used automatically.
-But you can specify both of them, it won't hurt.
-
-## Other GNAT tools
-
-Using other GNAT programs, look for their encoding flags:
-
-- `gnatpp` `--wide-character-encoding=8`
-- `gnatstub` `--wide-character-encoding=8`
-
-Alas, even the
-[Ada Language Server](https://github.com/AdaCore/ada_language_server/)
-(part of the Ada extension for VS Code) uses `iso-8859-1` by default.
-Fix this in the settings via the
-[parameter](https://github.com/AdaCore/ada_language_server/blob/master/doc/settings.md#defaultCharset)
-
-    'defaultCharset': 'UTF-8'
 
 ## Environment variables
 
@@ -389,9 +268,27 @@ Do not expect your program to pay attention to locale settings (like `LANG`),
 but watch out for environment variables
 `GNAT_CCS_ENCODING`, `GNAT_CODE_PAGE` on Windows.
 
-## Matreshka and VSS Libraries
+## Enabling UTF-8 in other tools
 
-For some time, the Ada standard was unambiguous in that `Character`/`String`
+### GNAT programs
+
+Other GNAT programs lke `gnatpp` and `gnatstub` can use UTF-8
+by using the flag `--wide-character-encoding=8`.
+
+### Ada Language Server
+
+The [Ada Language Server](https://github.com/AdaCore/ada_language_server/)
+(part of the Ada extension for Visual Studio Code) uses `iso-8859-1` by default.
+This can be changed to UTF-8 via the parameter
+[defaultCharset](https://github.com/AdaCore/ada_language_server/blob/master/doc/settings.md#defaultCharset) in the settings:
+
+```json
+"defaultCharset": "UTF-8"
+```
+
+## Alire crates for handling Unicode strings
+
+For some time, the Ada standard was unambiguous in that the types `Character` and `String`
 could only contain Latin-1 characters. But at some point it faltered under
 the onslaught of "lovers of simple solutions" and there appeared functions
 to convert `Wide_String`/`Wide_Wide_String` to UTF-8, which use `String`
@@ -401,49 +298,23 @@ The GNAT authors take full advantage of this, allowing, for example, to pass
 to `Ada.Text_IO.Create` the file name in UTF-8 encoding via a parameter of
 type `String`.
 
-Introducing the `Wide_Wide_String` type does not really solve the problem of
+Introducing the type `Wide_Wide_String` does not really solve the problem of
 using Unicode, since this standard does not manipulate "characters", but
 combinations of characters. There are variants where several "code points"
-form a single glyph when printed/displayed. It is often more convenient for
+form a single glyph when printed or displayed. It is often more convenient for
 the user to work in such concepts. This is logical for specifying the
-"line/column" position in the text. `Wide_Wide_String` does not help here.
+line or column position in a text.
+The type `Wide_Wide_String` does not help here.
 
-The
-[VSS library](https://github.com/AdaCore/VSS)
-introduces its own type for Unicode string with handy methods to work
-with. It allows to find character boundaries, grapheme clusters, character
+Various Alire crates exist which provide proper support for Unicode strings:
+
+- [vss](https://github.com/AdaCore/VSS).
+Introduces its own type for Unicode strings with handy methods to work
+with. It can be used to find character boundaries, grapheme clusters, character
 offsets in UTF-8/UTF-16 encoding, etc.
 
-[Matreshka library](https://alire.ada.dev/crates/matreshka_league) allows
-you to operate with strings in terms of Unicode "code points", has a set of
+- [matreshka_league](https://alire.ada.dev/crates/matreshka_league). Allows
+you to operate on strings in terms of Unicode "code points". It has a set of
 transcoders to different encoding systems (like Windows-1251, KOI8-R),
 support for JSON, XML, databases, regular expressions, XML template engine,
 etc.
-
-## Conclusions
-
-- Always set the compiler switch `-gnatW8`, it is a good idea to have the
-  switch `-W8` for gnatbind also.
-- Configure the development environment to work in UTF-8.
-- Look at the VSS and Matreshka libraries, they make working in Unicode painless.
-
-## Afterword
-
-I've [proposed to add](https://github.com/alire-project/alire/issues/919)
-`-gnatW8` option to projects generated by alire, but the proposal was rejected
-with the reason:
-
-> After some further discussion, the risk of introducing incompatibilities
-> is too high to make this the default switch.
-
-I don't understand what incompatibility could araise. I've tried to
-compile
-
-```ada
-package Pkg is
-   π : Integer;
-end Pkg;
-```
-
-and correcteding code in "brackets encoding". There are no differences.
-So we need more communication there.
