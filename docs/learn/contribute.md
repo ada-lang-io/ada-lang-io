@@ -12,7 +12,7 @@ React for more control where needed.
 
 1. Install [Node][url-node] and [Yarn][url-yarn]. `yarn --version` should show version 2 or higher.
 
-2. Then install the dependencies of this package.  You might have to rerun this command after pulling the main branch if dependencies change.
+2. Then install the dependencies of this package. You might have to rerun this command after pulling the main branch if dependencies change.
 
 ```bash
 cd ada-lang-io
@@ -35,7 +35,7 @@ yarn start
 
 2. It will update as you make changes.
 
-3. Verify a clean build before you submit.  This ensures that there are no broken links.
+3. Verify a clean build before you submit. This ensures that there are no broken links.
 
 ```bash
 yarn build

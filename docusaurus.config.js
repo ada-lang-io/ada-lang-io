@@ -61,14 +61,13 @@ const config = {
             const res = await req.json()
             return res.tag_name
           }
-        }
-        catch {
+        } catch {
           return alireDefaultVersion
         }
       },
-      async contentLoaded({content, actions}) {
-        const {setGlobalData} = actions
-        setGlobalData({alireVersion: content ?? alireDefaultVersion})
+      async contentLoaded({ content, actions }) {
+        const { setGlobalData } = actions
+        setGlobalData({ alireVersion: content ?? alireDefaultVersion })
       }
     })
   ],
