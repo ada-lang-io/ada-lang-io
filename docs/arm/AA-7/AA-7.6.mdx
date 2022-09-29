@@ -30,7 +30,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>3.a/2</MarginText>
 <MarginInfo items={["AI95-00114-01", "AI95-00287-01"]} />
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI95-00114-01"}</em>{"}"} {"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />Here's the basic idea of initialization, value adjustment, and finalization, whether or not user defined: When an object is created, if it is explicitly assigned an initial value, the object is either built-in-place from an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call (in which case neither Adjust nor Initialize is applied), or the assignment copies and adjusts the initial value. Otherwise, Initialize is applied to it (except in the case of an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> as a whole). An <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> finalizes the target before copying in and adjusting the new value. Whenever an object goes away, it is finalized. Calls on Initialize and Adjust happen bottom-up; that is, components first, followed by the containing object. Calls on Finalize happen top-down; that is, first the containing object, and then its components. These ordering rules ensure that any components will be in a well-defined state when Initialize, Adjust, or Finalize is applied to the containing object. <br /></Admonition>
+<strong></strong>Here's the basic idea of initialization, value adjustment, and finalization, whether or not user defined: When an object is created, if it is explicitly assigned an initial value, the object is either built-in-place from an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call (in which case neither Adjust nor Initialize is applied), or the assignment copies and adjusts the initial value. Otherwise, Initialize is applied to it (except in the case of an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> as a whole). An <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> finalizes the target before copying in and adjusting the new value. Whenever an object goes away, it is finalized. Calls on Initialize and Adjust happen bottom-up; that is, components first, followed by the containing object. Calls on Finalize happen top-down; that is, first the containing object, and then its components. These ordering rules ensure that any components will be in a well-defined state when Initialize, Adjust, or Finalize is applied to the containing object. <br /></Admonition>
 
 
 #### Static Semantics
@@ -41,29 +41,29 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>5/5</MarginText>
 <MarginInfo items={["AI95-00126-01", "AI05-0212-1", "AI12-0241-1"]} />
 <CodeBlock language="ada">
-{"{"}8652/0020{"}"} --  {"{"}{"AI95-00126-01"}{"}"}{"\n"} --  {"{"}{"AI05-0212-1"}{"}"}{"\n"} --  {"{"}{"AI12-0241-1"}{"}"}{"\n"} package Ada.Finalization {"\n"}    with Pure, Nonblocking ={">"} False is {"\n"}
+{"{"}8652/0020{"}"} package Ada.Finalization {"\n"}    with Pure, Nonblocking ={">"} False is {"\n"}
 <MarginText>6/5</MarginText>
 <MarginInfo items={["AI95-00161-01", "AI12-0399-1"]} />
---  {"{"}{"AI95-00161-01"}{"}"}{"\n"} --  {"{"}{"AI12-0399-1"}{"}"}{"\n"}     type Controlled is abstract tagged private {"\n"}       with  Preelaborable_Initialization ;{"\n"}
+    type Controlled is abstract tagged private {"\n"}       with  Preelaborable_Initialization ;{"\n"}
 <MarginText>7/2</MarginText>
 <MarginInfo items={["AI95-00348-01"]} />
---  {"{"}{"AI95-00348-01"}{"}"}{"\n"}     procedure Initialize (Object : in out Controlled) is null;{"\n"}    procedure Adjust     (Object : in out Controlled) is null;{"\n"}    procedure Finalize   (Object : in out Controlled) is null;{"\n"}
+    procedure Initialize (Object : in out Controlled) is null;{"\n"}    procedure Adjust     (Object : in out Controlled) is null;{"\n"}    procedure Finalize   (Object : in out Controlled) is null;{"\n"}
 <MarginText>8/5</MarginText>
 <MarginInfo items={["AI95-00161-01", "AI12-0399-1"]} />
---  {"{"}{"AI95-00161-01"}{"}"}{"\n"} --  {"{"}{"AI12-0399-1"}{"}"}{"\n"}     type Limited_Controlled is abstract tagged limited private {"\n"}       with  Preelaborable_Initialization ;{"\n"}
+    type Limited_Controlled is abstract tagged limited private {"\n"}       with  Preelaborable_Initialization ;{"\n"}
 <MarginText>9/2</MarginText>
 <MarginInfo items={["AI95-00348-01"]} />
---  {"{"}{"AI95-00348-01"}{"}"}{"\n"}     procedure Initialize (Object : in out Limited_Controlled) is null;{"\n"}    procedure Finalize   (Object : in out Limited_Controlled) is null;{"\n"}private{"\n"}    ... -- not specified by the language{"\n"}end Ada.Finalization;{"\n"}
+    procedure Initialize (Object : in out Limited_Controlled) is null;{"\n"}    procedure Finalize   (Object : in out Limited_Controlled) is null;{"\n"}private{"\n"}    ... -- not specified by the language{"\n"}end Ada.Finalization;{"\n"}
 
 </CodeBlock>
 <MarginText>9.a/5</MarginText>
 <MarginInfo items={["AI12-0241-1"]} />
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI12-0241-1"}</em>{"}"} <br />This package must allow blocking (Nonblocking ={">"} False) for compatibility. The purpose of this package is to provide a template for overriding user-defined routines; and such routines can only allow blocking if the root type does so. Users can still declare their overridding routines nonblocking if they wish. <br /></Admonition>
+<strong></strong>This package must allow blocking (Nonblocking ={">"} False) for compatibility. The purpose of this package is to provide a template for overriding user-defined routines; and such routines can only allow blocking if the root type does so. Users can still declare their overridding routines nonblocking if they wish. <br /></Admonition>
 
 <MarginText>10/2</MarginText>
 <MarginInfo items={["AI95-00348-01"]} />
-<p>{"{"}<em>{"AI95-00348-01"}</em>{"}"} <br />A controlled type is a descendant of Controlled or Limited_Controlled. The predefined "=" operator of type Controlled always returns True, [since this operator is incorporated into the implementation of the predefined equality operator of types derived from Controlled, as explained in <a href="../AA-4/AA-4.5#Subclause_4.5.2">4.5.2</a>.] The type Limited_Controlled is like Controlled, except that it is limited and it lacks the primitive subprogram Adjust. <br /></p>
+<p>A controlled type is a descendant of Controlled or Limited_Controlled. The predefined "=" operator of type Controlled always returns True, [since this operator is incorporated into the implementation of the predefined equality operator of types derived from Controlled, as explained in <a href="../AA-4/AA-4.5#Subclause_4.5.2">4.5.2</a>.] The type Limited_Controlled is like Controlled, except that it is limited and it lacks the primitive subprogram Adjust. <br /></p>
 
 <MarginText>10.a</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
@@ -80,24 +80,24 @@ Types Controlled and Limited_Controlled are abstract, even though they have no a
 <MarginText>10.d/2</MarginText>
 <MarginInfo items={["AI95-00251-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00251-01"}</em>{"}"} <br />For Ada 2005, we considered making these types interfaces. That would have the advantage of allowing them to be added to existing trees. But that was rejected both because it would cause massive disruptions to existing implementations, and because it would be very incompatible due to the "no hidden interfaces" rule. The latter rule would prevent a tagged private type from being completed with a derivation from Controlled or Limited_Controlled &mdash; a very common idiom. <br /></Admonition>
+For Ada 2005, we considered making these types interfaces. That would have the advantage of allowing them to be added to existing trees. But that was rejected both because it would cause massive disruptions to existing implementations, and because it would be very incompatible due to the "no hidden interfaces" rule. The latter rule would prevent a tagged private type from being completed with a derivation from Controlled or Limited_Controlled &mdash; a very common idiom. <br /></Admonition>
 
 <MarginText>10.1/2</MarginText>
 <MarginInfo items={["AI95-00360-01"]} />
-<p>{"{"}<em>{"AI95-00360-01"}</em>{"}"} <br />A type is said to <em>need finalization</em> if:<br /></p>
+<p>A type is said to <em>need finalization</em> if:<br /></p>
 
 <MarginText>10.2/2</MarginText>
 <ul>
 <li>it is a controlled type, a task type or a protected type; or<br /></li>
 <MarginText>10.3/3</MarginText>
 <MarginInfo items={["AI05-0092-1"]} />
-<li>{"{"}<em>{"AI05-0092-1"}</em>{"}"} <br />it has a component whose type  needs finalization; or<br /></li>
+<li>it has a component whose type  needs finalization; or<br /></li>
 <MarginText>10.4/3</MarginText>
 <MarginInfo items={["AI05-0013-1"]} />
-<li>{"{"}<em>{"AI05-0013-1"}</em>{"}"} <br />it is a class-wide type; or<br /></li>
+<li>it is a class-wide type; or<br /></li>
 <MarginText>10.5/3</MarginText>
 <MarginInfo items={["AI05-0026-1"]} />
-<li>{"{"}<em>{"AI05-0026-1"}</em>{"}"} <br />it is a partial view whose full view needs finalization; or<br /></li>
+<li>it is a partial view whose full view needs finalization; or<br /></li>
 <MarginText>10.6/2</MarginText>
 <li>it is one of a number of language-defined types that are explicitly defined to need finalization.<br /></li>
 </ul>
@@ -114,11 +114,11 @@ This property is defined for the type, not for a particular view. That's necessa
 
 <MarginText>11/2</MarginText>
 <MarginInfo items={["AI95-00373-01"]} />
-<p>{"{"}<em>{"AI95-00373-01"}</em>{"}"} <br />During the elaboration or evaluation of a construct that causes an object to be initialized by default, for every controlled subcomponent of the object that is not assigned an initial value (as defined in <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>), Initialize is called on that subcomponent. Similarly, if the object that is initialized by default as a whole is controlled, Initialize is called on the object.<br /></p>
+<p>During the elaboration or evaluation of a construct that causes an object to be initialized by default, for every controlled subcomponent of the object that is not assigned an initial value (as defined in <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>), Initialize is called on that subcomponent. Similarly, if the object that is initialized by default as a whole is controlled, Initialize is called on the object.<br /></p>
 
 <MarginText>12/2</MarginText>
 <MarginInfo items={["AI95-00182-01", "AI95-00373-01"]} />
-<p>{"{"}<em>8652/0021</em>{"}"} {"{"}<em>{"AI95-00182-01"}</em>{"}"} {"{"}<em>{"AI95-00373-01"}</em>{"}"} <br />For an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> whose <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> denoting a controlled subtype, the Initialize procedure of the ancestor type is called, unless that Initialize procedure is abstract. <br /></p>
+<p>{"{"}<em>8652/0021</em>{"}"} For an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> whose <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> denoting a controlled subtype, the Initialize procedure of the ancestor type is called, unless that Initialize procedure is abstract. <br /></p>
 
 <MarginText>12.a</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
@@ -144,7 +144,7 @@ For the elaboration of B's declaration, Initialize is not called at all. Instead
 <MarginText>12.f.1/2</MarginText>
 <MarginInfo items={["AI95-00182-01", "AI95-00373-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0021</em>{"}"} {"{"}<em>{"AI95-00182-01"}</em>{"}"} {"{"}<em>{"AI95-00373-01"}</em>{"}"} <br />The <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> of an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, {"<"}{">"} in aggregates, and the return object of an <code><a href="../AA-6/AA-6.5#S0225">extended_return_statement</a></code> are handled similarly. <br /></Admonition>
+{"{"}<em>8652/0021</em>{"}"} The <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> of an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, {"<"}{">"} in aggregates, and the return object of an <code><a href="../AA-6/AA-6.5#S0225">extended_return_statement</a></code> are handled similarly. <br /></Admonition>
 
 <MarginText>13</MarginText>
 <p>Initialize and other initialization operations are done in an arbitrary order, except as follows. Initialize is applied to an object after initialization of its subcomponents, if any [(including both implicit initialization and Initialize calls)]. If an object has a component with an access discriminant constrained by a per-object expression, Initialize is applied to this component after any components that do not have such discriminants. For an object with several components with such a discriminant, Initialize is applied to them in order of their <code><a href="../AA-3/AA-3.8#S0070">component_declaration</a></code>s. For an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>, any task activations follow all calls on Initialize. <br /></p>
@@ -172,17 +172,17 @@ The fact that Initialize is done for components with access discriminants after 
 
 <MarginText>17/3</MarginText>
 <MarginInfo items={["AI05-0067-1"]} />
-<p>{"{"}<em>{"AI05-0067-1"}</em>{"}"} <br />To adjust the value of a composite object, the values of the components of the object are first adjusted in an arbitrary order, and then, if the object is nonlimited controlled, Adjust is called. Adjusting the value of an elementary object has no effect[, nor does adjusting the value of a composite object with no controlled parts.] <br /></p>
+<p>To adjust the value of a composite object, the values of the components of the object are first adjusted in an arbitrary order, and then, if the object is nonlimited controlled, Adjust is called. Adjusting the value of an elementary object has no effect[, nor does adjusting the value of a composite object with no controlled parts.] <br /></p>
 
 <MarginText>17.a/3</MarginText>
 <MarginInfo items={["AI05-0067-1"]} />
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI05-0067-1"}</em>{"}"} <br />Adjustment is never actually performed for values of an immutably limited type, since all assignment operations for such types are required to be built-in-place. Even so, we still define adjustment for all types in order that the canonical semantics is well-defined. <br /></Admonition>
+<strong></strong>Adjustment is never actually performed for values of an immutably limited type, since all assignment operations for such types are required to be built-in-place. Even so, we still define adjustment for all types in order that the canonical semantics is well-defined. <br /></Admonition>
 
 <MarginText>17.b/3</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />The verbiage in the Initialize rule about access discriminants constrained by per-object expressions is not necessary here, since such types are either limited or do not have defaults, so the discriminant can only be changed by an assignment to an outer object. Such an assignment could happen only before any adjustments or (if part of an outer Adjust) only after any inner (component) adjustments have completed. <br /></Admonition>
+<strong></strong>The verbiage in the Initialize rule about access discriminants constrained by per-object expressions is not necessary here, since such types are either limited or do not have defaults, so the discriminant can only be changed by an assignment to an outer object. Such an assignment could happen only before any adjustments or (if part of an outer Adjust) only after any inner (component) adjustments have completed. <br /></Admonition>
 
 <MarginText>18</MarginText>
 <p>For an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>, [ after the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> and <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> have been evaluated, and any conversion (including constraint checking) has been done,] an anonymous object is created, and the value is assigned into it; [that is, the assignment operation is applied]. [(Assignment includes value adjustment.)] The target of the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is then finalized. The value of the anonymous object is then assigned into the target of the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>. Finally, the anonymous object is finalized. [As explained below, the implementation may eliminate the intermediate anonymous object, so this description subsumes the one given in <a href="../AA-5/AA-5.2">5.2</a>, &ldquo;<a href="../AA-5/AA-5.2">Assignment Statements</a>&rdquo;.] <br /></p>
@@ -224,12 +224,12 @@ Forbidding such cases is not an option &mdash; it would cause generic contract m
 
 <MarginText>18.1/5</MarginText>
 <MarginInfo items={["AI05-0067-1", "AI12-0439-1"]} />
-<p>{"{"}<em>{"AI05-0067-1"}</em>{"}"} {"{"}<em>{"AI12-0439-1"}</em>{"}"} <br />When a function call or <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> is used to initialize an object, the result of the function call or <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> is an anonymous object, which is assigned into the newly-created object. For such an assignment, the anonymous object may  be <em>built in place</em>, in which case the assignment does not involve any copying. Under certain circumstances, the anonymous object is required to be built in place. In particular:<br /></p>
+<p>When a function call or <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> is used to initialize an object, the result of the function call or <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> is an anonymous object, which is assigned into the newly-created object. For such an assignment, the anonymous object may  be <em>built in place</em>, in which case the assignment does not involve any copying. Under certain circumstances, the anonymous object is required to be built in place. In particular:<br /></p>
 
 <MarginText>18.i/3</MarginText>
 <MarginInfo items={["AI05-0067-1"]} />
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>{"AI05-0067-1"}</em>{"}"} <br />We say assignment to built-in-place objects does not involve copying, which matches the intended implementation (see below). Of course, the implementation can do any copying it likes, if it can make such copying semantically invisible (by patching up access values to point to the copy, and so forth). <br /></Admonition>
+<strong></strong>We say assignment to built-in-place objects does not involve copying, which matches the intended implementation (see below). Of course, the implementation can do any copying it likes, if it can make such copying semantically invisible (by patching up access values to point to the copy, and so forth). <br /></Admonition>
 
 <MarginText>18.2/3</MarginText>
 <ul>
@@ -238,17 +238,17 @@ Forbidding such cases is not an option &mdash; it would cause generic contract m
 <MarginText>18.j/3</MarginText>
 <MarginInfo items={["AI05-0067-1"]} />
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI05-0067-1"}</em>{"}"} <br />We talk about the full types being immutably limited, as this is independent of the view of a type (in the same way that it is for determining the technique of parameter passing). That is, privacy is ignored for this purpose.<br /></Admonition>
+<strong></strong>We talk about the full types being immutably limited, as this is independent of the view of a type (in the same way that it is for determining the technique of parameter passing). That is, privacy is ignored for this purpose.<br /></Admonition>
 
 <MarginText>18.k/3</MarginText>
 <MarginInfo items={["AI05-0005-1", "AI05-0067-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0005-1"}</em>{"}"} {"{"}<em>{"AI05-0067-1"}</em>{"}"} <br />For function calls, we only require building in place for immutably limited types. These are the types that would have been return-by-reference types in Ada 95. We limited the requirement because we want to minimize disruption to Ada 95 implementations and users. <br /></Admonition>
+For function calls, we only require building in place for immutably limited types. These are the types that would have been return-by-reference types in Ada 95. We limited the requirement because we want to minimize disruption to Ada 95 implementations and users. <br /></Admonition>
 
 <MarginText>18.l/5</MarginText>
 <MarginInfo items={["AI05-0232-1", "AI12-0005-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-<strong>To be honest: </strong>{"{"}<em>{"AI05-0232-1"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />This is a dynamic property and is determined by the specific type of the parts of the actual object. In particular, if a part has a class-wide type, the tag of the object might need to be examined in order to determine if build-in-place is required. However, we expect that most Ada implementations will determine this property at compile-time using some assume-the-worst algorithm in order to choose  the appropriate method to implement a given call or aggregate. In addition, there is no attribute or other method for a program to determine if a particular object has this property (or not), so there is no value to a more careful description of this rule. <br /></Admonition>
+<strong>To be honest: </strong>This is a dynamic property and is determined by the specific type of the parts of the actual object. In particular, if a part has a class-wide type, the tag of the object might need to be examined in order to determine if build-in-place is required. However, we expect that most Ada implementations will determine this property at compile-time using some assume-the-worst algorithm in order to choose  the appropriate method to implement a given call or aggregate. In addition, there is no attribute or other method for a program to determine if a particular object has this property (or not), so there is no value to a more careful description of this rule. <br /></Admonition>
 
 <MarginText>18.3/3</MarginText>
 <ul>
@@ -257,7 +257,7 @@ Forbidding such cases is not an option &mdash; it would cause generic contract m
 <MarginText>18.m/3</MarginText>
 <MarginInfo items={["AI05-0067-1"]} />
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI05-0067-1"}</em>{"}"} <br />This is necessary to prevent elaboration problems with deferred constants of controlled types. Consider: <br /></Admonition>
+<strong></strong>This is necessary to prevent elaboration problems with deferred constants of controlled types. Consider: <br /></Admonition>
 
 <MarginText>18.m.1/3</MarginText>
 <CodeBlock language="ada">
@@ -286,7 +286,7 @@ Similarly, an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> that has
 
 <MarginText>18.5/3</MarginText>
 <MarginInfo items={["AI05-0067-1"]} />
-<p>{"{"}<em>{"AI05-0067-1"}</em>{"}"} <br />Notwithstanding what this document says elsewhere, if an object is built in place:<br /></p>
+<p>Notwithstanding what this document says elsewhere, if an object is built in place:<br /></p>
 
 <MarginText>18.6/3</MarginText>
 <ul>
@@ -305,7 +305,7 @@ Similarly, an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> that has
 <MarginText>18.q/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-<strong>To be honest: </strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />This &ldquo;mutating&rdquo; does not necessarily happen atomically with respect to abort and other tasks. For example, if a function call is used as the ancestor  part of an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, then the tag of the anonymous object (the function result) will be different from the tag of the newly-created object (the ancestor  part of the <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>). In implementation terms, this involves modifying the tag field. If the current task is aborted during this modification, the object might become abnormal. Likewise, if some other task accesses the tag field during this modification, it constitutes improper use of shared variables, and is erroneous. <br /></Admonition>
+<strong>To be honest: </strong>This &ldquo;mutating&rdquo; does not necessarily happen atomically with respect to abort and other tasks. For example, if a function call is used as the ancestor  part of an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, then the tag of the anonymous object (the function result) will be different from the tag of the newly-created object (the ancestor  part of the <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>). In implementation terms, this involves modifying the tag field. If the current task is aborted during this modification, the object might become abnormal. Likewise, if some other task accesses the tag field during this modification, it constitutes improper use of shared variables, and is erroneous. <br /></Admonition>
 
 <MarginText>18.r/3</MarginText>
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
@@ -332,22 +332,22 @@ An alternative implementation model might allow objects to move around to differ
 
 <MarginText>19/3</MarginText>
 <MarginInfo items={["AI05-0067-1"]} />
-<p>{"{"}<em>{"AI05-0067-1"}</em>{"}"} <br />An implementation is allowed to relax the above rules for <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s in the following ways: <br /></p>
+<p>An implementation is allowed to relax the above rules for <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s in the following ways: <br /></p>
 
 <MarginText>19.a/3</MarginText>
 <MarginInfo items={["AI05-0067-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-<em>This paragraph was deleted.</em>{"{"}<em>{"AI05-0067-1"}</em>{"}"} <br /></Admonition>
+<em>This paragraph was deleted.</em><br /></Admonition>
 
 <MarginText>19.b/5</MarginText>
 <MarginInfo items={["AI05-0067-1", "AI12-0005-1"]} />
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI05-0067-1"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />The relaxations apply only to nonlimited types, as <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s are not allowed for limited types. This is important so that the programmer can count on  stricter semantics for limited controlled types. <br /></Admonition>
+<strong></strong>The relaxations apply only to nonlimited types, as <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s are not allowed for limited types. This is important so that the programmer can count on  stricter semantics for limited controlled types. <br /></Admonition>
 
 <MarginText>20/5</MarginText>
 <MarginInfo items={["AI05-0067-1", "AI12-0444-1"]} />
 <ul>
-<li>{"{"}<em>{"AI05-0067-1"}</em>{"}"} {"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />If an object is assigned the value of that same object, the implementation may omit the entire assignment . <br /></li>
+<li>If an object is assigned the value of that same object, the implementation may omit the entire assignment . <br /></li>
 </ul>
 <MarginText>20.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -356,7 +356,7 @@ An alternative implementation model might allow objects to move around to differ
 <MarginText>21/3</MarginText>
 <MarginInfo items={["AI05-0067-1"]} />
 <ul>
-<li>{"{"}<em>{"AI05-0067-1"}</em>{"}"} <br />For assignment of a noncontrolled type, the implementation may finalize and assign each component of the variable separately (rather than finalizing the entire variable and assigning the entire new value) unless a discriminant of the variable is changed by the assignment. <br /></li>
+<li>For assignment of a noncontrolled type, the implementation may finalize and assign each component of the variable separately (rather than finalizing the entire variable and assigning the entire new value) unless a discriminant of the variable is changed by the assignment. <br /></li>
 </ul>
 <MarginText>21.a</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
@@ -365,26 +365,26 @@ An alternative implementation model might allow objects to move around to differ
 <MarginText>21.b/3</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />This potentially breaks a single assignment operation into many, and thus abort deferral (see <a href="../AA-9/AA-9.8">9.8</a>) needs to last only across an individual component assignment when the component has a controlled part. It is only important that the copy step is not separated (by an abort) from the adjust step, so aborts between component assignments is not harmful. <br /></Admonition>
+<strong></strong>This potentially breaks a single assignment operation into many, and thus abort deferral (see <a href="../AA-9/AA-9.8">9.8</a>) needs to last only across an individual component assignment when the component has a controlled part. It is only important that the copy step is not separated (by an abort) from the adjust step, so aborts between component assignments is not harmful. <br /></Admonition>
 
 <MarginText>22/5</MarginText>
 <MarginInfo items={["AI95-00147-01", "AI05-0067-1", "AI12-0444-1"]} />
 <ul>
-<li>{"{"}<em>{"AI95-00147-01"}</em>{"}"} {"{"}<em>{"AI05-0067-1"}</em>{"}"} {"{"}<em>{"AI12-0444-1"}</em>{"}"} <br />The implementation may avoid creating  an anonymous object if the value being assigned is the result of evaluating a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denoting an object (the source object) whose storage cannot overlap with the target. If the source object can  overlap with the target object, then the implementation can avoid the need for an intermediary anonymous object by exercising one of the above permissions and perform the assignment one component at a time (for an overlapping array assignment), or not at all (for an assignment where the target and the source of the assignment are the same object). <br /></li>
+<li>The implementation may avoid creating  an anonymous object if the value being assigned is the result of evaluating a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denoting an object (the source object) whose storage cannot overlap with the target. If the source object can  overlap with the target object, then the implementation can avoid the need for an intermediary anonymous object by exercising one of the above permissions and perform the assignment one component at a time (for an overlapping array assignment), or not at all (for an assignment where the target and the source of the assignment are the same object). <br /></li>
 </ul>
 <MarginText>22.a/3</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />If the anonymous object is eliminated by this permission,  there is no anonymous object to be finalized and thus the Finalize call on it is eliminated.<br /></Admonition>
+<strong></strong>If the anonymous object is eliminated by this permission,  there is no anonymous object to be finalized and thus the Finalize call on it is eliminated.<br /></Admonition>
 
 <MarginText>22.b/3</MarginText>
 <MarginInfo items={["AI95-00147-01", "AI05-0005-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00147-01"}</em>{"}"} {"{"}<em>{"AI05-0005-1"}</em>{"}"} <br />Note that if the anonymous object is eliminated but the new value is not built in place in the target object, that Adjust must be called directly on the target object as the last step of the assignment, since some of the subcomponents may be self-referential or otherwise position-dependent. This Adjust can be eliminated only by using one of the following permissions. <br /></Admonition>
+Note that if the anonymous object is eliminated but the new value is not built in place in the target object, that Adjust must be called directly on the target object as the last step of the assignment, since some of the subcomponents may be self-referential or otherwise position-dependent. This Adjust can be eliminated only by using one of the following permissions. <br /></Admonition>
 
 <MarginText>23/2</MarginText>
 <MarginInfo items={["AI95-00147-01"]} />
-<p>{"{"}<em>{"AI95-00147-01"}</em>{"}"} <br />Furthermore, an implementation is permitted to omit implicit Initialize, Adjust, and Finalize calls and associated assignment operations on an object of a nonlimited controlled type provided that:<br /></p>
+<p>Furthermore, an implementation is permitted to omit implicit Initialize, Adjust, and Finalize calls and associated assignment operations on an object of a nonlimited controlled type provided that:<br /></p>
 
 <MarginText>24/2</MarginText>
 <ul>
@@ -426,7 +426,7 @@ Controlled types and user-defined finalization are new to Ada 95. (Ada 83 had fi
 <MarginText>28.c/2</MarginText>
 <MarginInfo items={["AI95-00161-01"]} />
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI95-00161-01"}</em>{"}"} <strong><br />Amendment </strong> Types Controlled and Limited_Controlled now have Preelaborable_Initialization, so that objects of types derived from these types can be used in preelaborated packages. <br /></Admonition>
+<strong>Amendment </strong> Types Controlled and Limited_Controlled now have Preelaborable_Initialization, so that objects of types derived from these types can be used in preelaborated packages. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
@@ -434,42 +434,42 @@ Controlled types and user-defined finalization are new to Ada 95. (Ada 83 had fi
 <MarginText>28.d/2</MarginText>
 <MarginInfo items={["AI95-00126-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0020</em>{"}"} {"{"}<em>{"AI95-00126-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Clarified that Ada.Finalization is a remote types package.<br /></Admonition>
+{"{"}<em>8652/0020</em>{"}"} <strong>Corrigendum:</strong> Clarified that Ada.Finalization is a remote types package.<br /></Admonition>
 
 <MarginText>28.e/2</MarginText>
 <MarginInfo items={["AI95-00182-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0021</em>{"}"} {"{"}<em>{"AI95-00182-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Added wording to clarify that the default initialization (whatever it is) of an ancestor part is used.<br /></Admonition>
+{"{"}<em>8652/0021</em>{"}"} <strong>Corrigendum:</strong> Added wording to clarify that the default initialization (whatever it is) of an ancestor part is used.<br /></Admonition>
 
 <MarginText>28.f/2</MarginText>
 <MarginInfo items={["AI95-00083-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0022</em>{"}"} {"{"}<em>{"AI95-00083-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Clarified that Adjust is never called on an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> used for the initialization of an object or subaggregate, or passed as a parameter.<br /></Admonition>
+{"{"}<em>8652/0022</em>{"}"} <strong>Corrigendum:</strong> Clarified that Adjust is never called on an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> used for the initialization of an object or subaggregate, or passed as a parameter.<br /></Admonition>
 
 <MarginText>28.g/2</MarginText>
 <MarginInfo items={["AI95-00147-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00147-01"}</em>{"}"} <br />Additional optimizations are allowed for nonlimited controlled types. These allow traditional dead variable elimination to be applied to such types.<br /></Admonition>
+Additional optimizations are allowed for nonlimited controlled types. These allow traditional dead variable elimination to be applied to such types.<br /></Admonition>
 
 <MarginText>28.h/2</MarginText>
 <MarginInfo items={["AI95-00318-02"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00318-02"}</em>{"}"} <br />Corrected the build-in-place requirement for controlled <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s to be consistent with the requirements for limited types.<br /></Admonition>
+Corrected the build-in-place requirement for controlled <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s to be consistent with the requirements for limited types.<br /></Admonition>
 
 <MarginText>28.i/2</MarginText>
 <MarginInfo items={["AI95-00348-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00348-01"}</em>{"}"} <br />The operations of types Controlled and Limited_Controlled are now declared as null procedures (see <a href="../AA-6/AA-6.7">6.7</a>) to make the semantics clear (and to provide a good example of what null procedures can be used for).<br /></Admonition>
+The operations of types Controlled and Limited_Controlled are now declared as null procedures (see <a href="../AA-6/AA-6.7">6.7</a>) to make the semantics clear (and to provide a good example of what null procedures can be used for).<br /></Admonition>
 
 <MarginText>28.j/2</MarginText>
 <MarginInfo items={["AI95-00360-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00360-01"}</em>{"}"} <br />Types that need finalization are defined; this is used by the No_Nested_Finalization restriction (see <a href="../AA-D/AA-D.7">D.7</a>, &ldquo;<a href="../AA-D/AA-D.7">Tasking Restrictions</a>&rdquo;).<br /></Admonition>
+Types that need finalization are defined; this is used by the No_Nested_Finalization restriction (see <a href="../AA-D/AA-D.7">D.7</a>, &ldquo;<a href="../AA-D/AA-D.7">Tasking Restrictions</a>&rdquo;).<br /></Admonition>
 
 <MarginText>28.k/2</MarginText>
 <MarginInfo items={["AI95-00373-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00373-01"}</em>{"}"} <br />Generalized the description of objects that have Initialize called for them to say that it is done for all objects that are initialized by default. This is needed so that all of the new cases are covered. <br /></Admonition>
+Generalized the description of objects that have Initialize called for them to say that it is done for all objects that are initialized by default. This is needed so that all of the new cases are covered. <br /></Admonition>
 
 
 #### Extensions to Ada 2005
@@ -477,7 +477,7 @@ Controlled types and user-defined finalization are new to Ada 95. (Ada 83 had fi
 <MarginText>28.l/3</MarginText>
 <MarginInfo items={["AI05-0212-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0212-1"}</em>{"}"} <br />Package Ada.Finalization now has Pure categorization, so it can be mentioned for any package. Note that this does not change the preelaborability of objects descended from Controlled and Limited_Controlled. <br /></Admonition>
+Package Ada.Finalization now has Pure categorization, so it can be mentioned for any package. Note that this does not change the preelaborability of objects descended from Controlled and Limited_Controlled. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
@@ -485,22 +485,22 @@ Controlled types and user-defined finalization are new to Ada 95. (Ada 83 had fi
 <MarginText>28.m/3</MarginText>
 <MarginInfo items={["AI05-0013-1"]} />
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0013-1"}</em>{"}"} <strong><br /></strong> Eliminated coextensions from the &ldquo;needs finalization&rdquo; rules, as this cannot be determined in general in the compilation unit that declares the type. (The designated type of the coextension may have been imported as a limited view.) Uses of &ldquo;needs finalization&rdquo; need to ensure that coextensions are handled by other means (such as in No_Nested_Finalization &ndash; see <a href="../AA-D/AA-D.7">D.7</a>) or that coextensions cannot happen.<br /></Admonition>
+<strong></strong> Eliminated coextensions from the &ldquo;needs finalization&rdquo; rules, as this cannot be determined in general in the compilation unit that declares the type. (The designated type of the coextension may have been imported as a limited view.) Uses of &ldquo;needs finalization&rdquo; need to ensure that coextensions are handled by other means (such as in No_Nested_Finalization &ndash; see <a href="../AA-D/AA-D.7">D.7</a>) or that coextensions cannot happen.<br /></Admonition>
 
 <MarginText>28.n/3</MarginText>
 <MarginInfo items={["AI05-0013-1"]} />
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0013-1"}</em>{"}"} <strong><br /></strong> Corrected the &ldquo;needs finalization&rdquo; rules to include class-wide types, as a future extension can include a part that needs finalization.<br /></Admonition>
+<strong></strong> Corrected the &ldquo;needs finalization&rdquo; rules to include class-wide types, as a future extension can include a part that needs finalization.<br /></Admonition>
 
 <MarginText>28.o/3</MarginText>
 <MarginInfo items={["AI05-0026-1"]} />
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0026-1"}</em>{"}"} <strong><br /></strong> Corrected the &ldquo;needs finalization&rdquo; rules to clearly say that they ignore privacy.<br /></Admonition>
+<strong></strong> Corrected the &ldquo;needs finalization&rdquo; rules to clearly say that they ignore privacy.<br /></Admonition>
 
 <MarginText>28.p/3</MarginText>
 <MarginInfo items={["AI05-0067-1"]} />
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0067-1"}</em>{"}"} <strong><br /></strong> Changed &ldquo;built in place&rdquo; to Dynamic Semantics and centralized the rules here. This eliminates the fiction that built in place is just a combination of a permission and a requirement; it clearly has noticeable semantic effects. This wording change is not intended to change the semantics of any correct Ada program. <br /></Admonition>
+<strong></strong> Changed &ldquo;built in place&rdquo; to Dynamic Semantics and centralized the rules here. This eliminates the fiction that built in place is just a combination of a permission and a requirement; it clearly has noticeable semantic effects. This wording change is not intended to change the semantics of any correct Ada program. <br /></Admonition>
 
 <a id="Subclause_7.6.1"></a>
 
@@ -514,7 +514,7 @@ Controlled types and user-defined finalization are new to Ada 95. (Ada 83 had fi
 
 <MarginText>2/2</MarginText>
 <MarginInfo items={["AI95-00318-02"]} />
-<p>{"{"}<em>{"AI95-00318-02"}</em>{"}"} <br />The execution of a construct or entity is <em>complete</em> when the end of that execution has been reached, or when a transfer of control (see <a href="../AA-5/AA-5.1">5.1</a>) causes it to be abandoned. Completion due to reaching the end of execution, or due to the transfer of control of an <code><a href="../AA-5/AA-5.7#S0193">exit_statement</a></code>, return statement, <code><a href="../AA-5/AA-5.8#S0194">goto_statement</a></code>, or <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code> or of the selection of a <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> is <em>normal completion</em>. Completion is <em>abnormal</em> otherwise [&mdash; when control is transferred out of a construct due to abort or the raising of an exception]. <br /></p>
+<p>The execution of a construct or entity is <em>complete</em> when the end of that execution has been reached, or when a transfer of control (see <a href="../AA-5/AA-5.1">5.1</a>) causes it to be abandoned. Completion due to reaching the end of execution, or due to the transfer of control of an <code><a href="../AA-5/AA-5.7#S0193">exit_statement</a></code>, return statement, <code><a href="../AA-5/AA-5.8#S0194">goto_statement</a></code>, or <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code> or of the selection of a <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> is <em>normal completion</em>. Completion is <em>abnormal</em> otherwise [&mdash; when control is transferred out of a construct due to abort or the raising of an exception]. <br /></p>
 
 <MarginText>2.a</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
@@ -522,22 +522,22 @@ Controlled types and user-defined finalization are new to Ada 95. (Ada 83 had fi
 
 <MarginText>3/5</MarginText>
 <MarginInfo items={["AI95-00162-01", "AI95-00416-01", "AI12-0406-1"]} />
-<p>{"{"}<em>{"AI95-00162-01"}</em>{"}"} {"{"}<em>{"AI95-00416-01"}</em>{"}"} {"{"}<em>{"AI12-0406-1"}</em>{"}"} <br />After execution of a construct or entity is complete, it is <em>left</em>, meaning that execution continues with the next action, as defined for the execution that is taking place. Leaving an execution happens immediately after its completion, except in the case of the execution of a <em>master construct</em> :  a body other than a <code><a href="../AA-7/AA-7.2#S0231">package_body</a></code>;  a <code><a href="../AA-5/AA-5.1#S0167">statement</a></code>; or  an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>, or <code><a href="../AA-3/AA-3.5#S0037">range</a></code> that is not part of an enclosing <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>, <code><a href="../AA-3/AA-3.5#S0037">range</a></code>, or <code><a href="../AA-5/AA-5.1#S0168">simple_statement</a></code> other than a <code><a href="../AA-6/AA-6.5#S0222">simple_return_statement</a></code>. The term <em>master</em> by itself refers to the execution of a master construct. A master is finalized after it is complete, and before it is left.<br /></p>
+<p>After execution of a construct or entity is complete, it is <em>left</em>, meaning that execution continues with the next action, as defined for the execution that is taking place. Leaving an execution happens immediately after its completion, except in the case of the execution of a <em>master construct</em> :  a body other than a <code><a href="../AA-7/AA-7.2#S0231">package_body</a></code>;  a <code><a href="../AA-5/AA-5.1#S0167">statement</a></code>; or  an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>, or <code><a href="../AA-3/AA-3.5#S0037">range</a></code> that is not part of an enclosing <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>, <code><a href="../AA-3/AA-3.5#S0037">range</a></code>, or <code><a href="../AA-5/AA-5.1#S0168">simple_statement</a></code> other than a <code><a href="../AA-6/AA-6.5#S0222">simple_return_statement</a></code>. The term <em>master</em> by itself refers to the execution of a master construct. A master is finalized after it is complete, and before it is left.<br /></p>
 
 <MarginText>3.a/2</MarginText>
 <MarginInfo items={["AI95-00162-01", "AI95-00416-01"]} />
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI95-00162-01"}</em>{"}"} {"{"}<em>{"AI95-00416-01"}</em>{"}"} <br /><code><a href="../AA-4/AA-4.4#S0132">Expression</a></code>s and <code><a href="../AA-5/AA-5.1#S0167">statement</a></code>s are masters so that objects created by subprogram calls (in <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s, <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s for anonymous access-to-object types, and so on) are finalized and have their tasks awaited before the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s or <code><a href="../AA-5/AA-5.1#S0167">statement</a></code>s are left. Note that <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s like the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> of an <code><a href="../AA-5/AA-5.3#S0175">if_statement</a></code> are masters, because they are not enclosed by a <code><a href="../AA-5/AA-5.1#S0168">simple_statement</a></code>. Similarly, a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> which is renamed is a master, as it is not in a <code><a href="../AA-5/AA-5.1#S0168">simple_statement</a></code>.<br /></Admonition>
+<strong></strong><code><a href="../AA-4/AA-4.4#S0132">Expression</a></code>s and <code><a href="../AA-5/AA-5.1#S0167">statement</a></code>s are masters so that objects created by subprogram calls (in <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s, <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s for anonymous access-to-object types, and so on) are finalized and have their tasks awaited before the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s or <code><a href="../AA-5/AA-5.1#S0167">statement</a></code>s are left. Note that <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s like the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> of an <code><a href="../AA-5/AA-5.3#S0175">if_statement</a></code> are masters, because they are not enclosed by a <code><a href="../AA-5/AA-5.1#S0168">simple_statement</a></code>. Similarly, a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> which is renamed is a master, as it is not in a <code><a href="../AA-5/AA-5.1#S0168">simple_statement</a></code>.<br /></Admonition>
 
 <MarginText>3.b/2</MarginText>
 <MarginInfo items={["AI95-00416-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00416-01"}</em>{"}"} <br />We have to include <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s in the contexts that do not cause masters to occur so that <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s contained in a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> (that is not part of an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <code><a href="../AA-5/AA-5.1#S0168">simple_statement</a></code>) do not individually become masters. We certainly do not want the parameter <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s of a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> to be separate masters, as they would then be finalized before the function is called. <br /></Admonition>
+We have to include <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s in the contexts that do not cause masters to occur so that <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s contained in a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> (that is not part of an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <code><a href="../AA-5/AA-5.1#S0168">simple_statement</a></code>) do not individually become masters. We certainly do not want the parameter <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s of a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> to be separate masters, as they would then be finalized before the function is called. <br /></Admonition>
 
 <MarginText>3.c/2</MarginText>
 <MarginInfo items={["AI95-00416-01"]} />
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI95-00416-01"}</em>{"}"} <br />The fact that a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> is a master does not change the accessibility of the return object denoted by the <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>; that depends on the use of the <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>. The <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> is the master of any short-lived entities (such as <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s used as parameters of types with task or controlled parts). <br /></Admonition>
+<strong></strong>The fact that a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> is a master does not change the accessibility of the return object denoted by the <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>; that depends on the use of the <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>. The <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> is the master of any short-lived entities (such as <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s used as parameters of types with task or controlled parts). <br /></Admonition>
 
 <MarginText>3.c.1/5</MarginText>
 <Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
@@ -575,23 +575,23 @@ Note that any object whose accessibility level is deeper than that of the master
 <MarginText>7/3</MarginText>
 <MarginInfo items={["AI05-0099-1"]} />
 <ul>
-<li>{"{"}<em>{"AI05-0099-1"}</em>{"}"} <br />If the full type of the object is an elementary type, finalization has no effect; <br /></li>
+<li>If the full type of the object is an elementary type, finalization has no effect; <br /></li>
 </ul>
 <MarginText>7.a/3</MarginText>
 <MarginInfo items={["AI05-0099-1"]} />
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI05-0099-1"}</em>{"}"} <br />We say &ldquo;full type&rdquo; in this and the following bullets as privacy is ignored for the purpose of determining the finalization actions of an object; that is as expected for Dynamic Semantics rules. <br /></Admonition>
+<strong></strong>We say &ldquo;full type&rdquo; in this and the following bullets as privacy is ignored for the purpose of determining the finalization actions of an object; that is as expected for Dynamic Semantics rules. <br /></Admonition>
 
 <MarginText>8/3</MarginText>
 <MarginInfo items={["AI05-0099-1"]} />
 <ul>
-<li>{"{"}<em>{"AI05-0099-1"}</em>{"}"} <br />If the full type of the object is a tagged type, and the tag of the object identifies a controlled type, the Finalize procedure of that controlled type is called;<br /></li>
+<li>If the full type of the object is a tagged type, and the tag of the object identifies a controlled type, the Finalize procedure of that controlled type is called;<br /></li>
 <MarginText>9/3</MarginText>
 <MarginInfo items={["AI05-0099-1"]} />
-<li>{"{"}<em>{"AI05-0099-1"}</em>{"}"} <br />If the full type of the object is a protected type, or if the full type of the object is a tagged type and the tag of the object identifies a protected type, the actions defined in <a href="../AA-9/AA-9.4">9.4</a> are performed;<br /></li>
+<li>If the full type of the object is a protected type, or if the full type of the object is a tagged type and the tag of the object identifies a protected type, the actions defined in <a href="../AA-9/AA-9.4">9.4</a> are performed;<br /></li>
 <MarginText>10/3</MarginText>
 <MarginInfo items={["AI95-00416-01", "AI05-0099-1"]} />
-<li>{"{"}<em>{"AI95-00416-01"}</em>{"}"} {"{"}<em>{"AI05-0099-1"}</em>{"}"} <br />If the full type of the object is a composite type, then after performing the above actions, if any, every component of the object is finalized in an arbitrary order, except as follows: if the object has a component with an access discriminant constrained by a per-object expression, this component is finalized before any components that do not have such discriminants; for an object with several components with such a discriminant, they are finalized in the reverse of the order of their <code><a href="../AA-3/AA-3.8#S0070">component_declaration</a></code>s; <br /></li>
+<li>If the full type of the object is a composite type, then after performing the above actions, if any, every component of the object is finalized in an arbitrary order, except as follows: if the object has a component with an access discriminant constrained by a per-object expression, this component is finalized before any components that do not have such discriminants; for an object with several components with such a discriminant, they are finalized in the reverse of the order of their <code><a href="../AA-3/AA-3.8#S0070">component_declaration</a></code>s; <br /></li>
 </ul>
 <MarginText>10.a</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
@@ -600,44 +600,44 @@ Note that any object whose accessibility level is deeper than that of the master
 <MarginText>10.b/4</MarginText>
 <MarginInfo items={["AI05-0099-1", "AI12-0005-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-<strong>To be honest: </strong>{"{"}<em>{"AI05-0099-1"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />The components discussed here are all of the components that the object actually has, not just those components that are statically identified by the type of the object. These can be different if the object has a class-wide type. <br /></Admonition>
+<strong>To be honest: </strong>The components discussed here are all of the components that the object actually has, not just those components that are statically identified by the type of the object. These can be different if the object has a class-wide type. <br /></Admonition>
 
 <MarginText>10.1/2</MarginText>
 <MarginInfo items={["AI95-00416-01"]} />
 <ul>
-<li>{"{"}<em>{"AI95-00416-01"}</em>{"}"} <br />If the object has coextensions (see <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>), each coextension is finalized after the object whose access discriminant designates it.<br /></li>
+<li>If the object has coextensions (see <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>), each coextension is finalized after the object whose access discriminant designates it.<br /></li>
 </ul>
 <MarginText>10.c/3</MarginText>
 <MarginInfo items={["AI05-0066-1"]} />
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI05-0066-1"}</em>{"}"} <br />In the case of an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call that is used (in its entirety) to directly initialize a part of an object, the coextensions of the result of evaluating the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call are transfered to become coextensions of the object being initialized and are not finalized until the object being initialized is ultimately finalized, even if an anonymous object is created as part of the operation. <br /></Admonition>
+<strong></strong>In the case of an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call that is used (in its entirety) to directly initialize a part of an object, the coextensions of the result of evaluating the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call are transfered to become coextensions of the object being initialized and are not finalized until the object being initialized is ultimately finalized, even if an anonymous object is created as part of the operation. <br /></Admonition>
 
 <MarginText>11</MarginText>
 <p>Immediately before an instance of Unchecked_Deallocation reclaims the storage of an object, the object is finalized. [If an instance of Unchecked_Deallocation is never applied to an object created by an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>, the object will still exist when the corresponding master completes, and it will be finalized then.]<br /></p>
 
 <MarginText>12/3</MarginText>
 <MarginInfo items={["AI95-00280-01", "AI05-0051-1", "AI05-0190-1"]} />
-<p>{"{"}<em>{"AI95-00280-01"}</em>{"}"} {"{"}<em>{"AI05-0051-1"}</em>{"}"} {"{"}<em>{"AI05-0190-1"}</em>{"}"} <br />The finalization of a master performs finalization of objects created by declarations in the master in the reverse order of their creation. After the finalization of a master is complete, the objects finalized as part of its finalization cease to <em>exist</em>, as do any types and subtypes defined and created within the master. <br /></p>
+<p>The finalization of a master performs finalization of objects created by declarations in the master in the reverse order of their creation. After the finalization of a master is complete, the objects finalized as part of its finalization cease to <em>exist</em>, as do any types and subtypes defined and created within the master. <br /></p>
 
 <MarginText>12.a/3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-<em>This paragraph was deleted.</em>{"{"}<em>{"AI05-0190-1"}</em>{"}"} <br /></Admonition>
+<em>This paragraph was deleted.</em><br /></Admonition>
 
 <MarginText>12.b/3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-<em>This paragraph was deleted.</em>{"{"}<em>{"AI05-0190-1"}</em>{"}"} <br /></Admonition>
+<em>This paragraph was deleted.</em><br /></Admonition>
 
 <MarginText>12.c/3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-<em>This paragraph was deleted.</em>{"{"}<em>{"AI05-0190-1"}</em>{"}"} <br /></Admonition>
+<em>This paragraph was deleted.</em><br /></Admonition>
 
 <MarginText>12.d/3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-<em>This paragraph was deleted.</em>{"{"}<em>{"AI05-0190-1"}</em>{"}"} <br /></Admonition>
+<em>This paragraph was deleted.</em><br /></Admonition>
 
 <MarginText>12.e</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -653,27 +653,27 @@ An imported object is not created by its declaration. It is neither initialized 
 
 <MarginText>12.1/3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
-<p>{"{"}<em>{"AI05-0190-1"}</em>{"}"} <br />Each nonderived access type <em>T</em> has an associated <em>collection</em>, which is the set of objects created by <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s of <em>T</em>, or of types derived from <em>T</em>. Unchecked_Deallocation removes an object from its collection. Finalization of a collection consists of finalization of each object in the collection, in an arbitrary order. The collection of an access type is an object implicitly declared at the following place:<br /></p>
+<p>Each nonderived access type <em>T</em> has an associated <em>collection</em>, which is the set of objects created by <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s of <em>T</em>, or of types derived from <em>T</em>. Unchecked_Deallocation removes an object from its collection. Finalization of a collection consists of finalization of each object in the collection, in an arbitrary order. The collection of an access type is an object implicitly declared at the following place:<br /></p>
 
 <MarginText>12.h/3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI05-0190-1"}</em>{"}"} <br />The place of the implicit declaration determines when allocated objects are finalized. For multiple collections declared at the same place, we do not define the order of their implicit declarations.<br /></Admonition>
+<strong></strong>The place of the implicit declaration determines when allocated objects are finalized. For multiple collections declared at the same place, we do not define the order of their implicit declarations.<br /></Admonition>
 
 <MarginText>12.i/3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0190-1"}</em>{"}"} <br />Finalization of allocated objects is done according to the (ultimate ancestor) <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> type, not according to the storage pool in which they are allocated. Pool finalization might reclaim storage (see <a href="../AA-13/AA-13.11">13.11</a>, &ldquo;<a href="../AA-13/AA-13.11">Storage Management</a>&rdquo;), but has nothing (directly) to do with finalization of the pool elements.<br /></Admonition>
+Finalization of allocated objects is done according to the (ultimate ancestor) <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> type, not according to the storage pool in which they are allocated. Pool finalization might reclaim storage (see <a href="../AA-13/AA-13.11">13.11</a>, &ldquo;<a href="../AA-13/AA-13.11">Storage Management</a>&rdquo;), but has nothing (directly) to do with finalization of the pool elements.<br /></Admonition>
 
 <MarginText>12.j/3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0190-1"}</em>{"}"} <br />Note that finalization is done only for objects that still exist; if an instance of Unchecked_Deallocation has already gotten rid of a given pool element, that pool element will not be finalized when the master is left. <br /></Admonition>
+Note that finalization is done only for objects that still exist; if an instance of Unchecked_Deallocation has already gotten rid of a given pool element, that pool element will not be finalized when the master is left. <br /></Admonition>
 
 <MarginText>12.k/3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI05-0190-1"}</em>{"}"} <br />Note that we talk about the type of the <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> here. There may be access values of a (general) access type pointing at objects created by <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s for some other type; these are not (necessarily) finalized at this point. <br /></Admonition>
+<strong></strong>Note that we talk about the type of the <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> here. There may be access values of a (general) access type pointing at objects created by <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s for some other type; these are not (necessarily) finalized at this point. <br /></Admonition>
 
 <MarginText>12.2/3</MarginText>
 <ul>
@@ -682,7 +682,7 @@ An imported object is not created by its declaration. It is neither initialized 
 <MarginText>12.l/3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI05-0190-1"}</em>{"}"} <br />The freezing point of the ultimate ancestor access type is chosen because before that point, pool elements cannot be created, and after that point, access values designating (parts of) the pool elements can be created. This is also the point after which the pool object cannot have been declared. We don't want to finalize the pool elements until after anything finalizing objects that contain access values designating them. Nor do we want to finalize pool elements after finalizing the pool object itself. <br /></Admonition>
+<strong></strong>The freezing point of the ultimate ancestor access type is chosen because before that point, pool elements cannot be created, and after that point, access values designating (parts of) the pool elements can be created. This is also the point after which the pool object cannot have been declared. We don't want to finalize the pool elements until after anything finalizing objects that contain access values designating them. Nor do we want to finalize pool elements after finalizing the pool object itself. <br /></Admonition>
 
 <MarginText>12.3/3</MarginText>
 <ul>
@@ -693,7 +693,7 @@ An imported object is not created by its declaration. It is neither initialized 
 <MarginText>12.m/3</MarginText>
 <MarginInfo items={["AI05-0005-1", "AI05-0190-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-<strong>To be honest: </strong>{"{"}<em>{"AI05-0005-1"}</em>{"}"} {"{"}<em>{"AI05-0190-1"}</em>{"}"} <br />We mean at a place within the master consistent with the execution of the call within the master. We don't say that normatively, as it is difficult to explain that when the master of the call need not be the master that immediately includes the call (such as when an anonymous result is converted to a named access type). <br /></Admonition>
+<strong>To be honest: </strong>We mean at a place within the master consistent with the execution of the call within the master. We don't say that normatively, as it is difficult to explain that when the master of the call need not be the master that immediately includes the call (such as when an anonymous result is converted to a named access type). <br /></Admonition>
 
 <MarginText>12.5/3</MarginText>
 <ul>
@@ -701,16 +701,16 @@ An imported object is not created by its declaration. It is neither initialized 
 </ul>
 <MarginText>13/2</MarginText>
 <MarginInfo items={["AI95-00256-01"]} />
-<p>{"{"}<em>{"AI95-00256-01"}</em>{"}"} <br />The target of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is finalized before copying in the new value, as explained in <a href="../AA-7/AA-7.6">7.6</a>.<br /></p>
+<p>The target of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is finalized before copying in the new value, as explained in <a href="../AA-7/AA-7.6">7.6</a>.<br /></p>
 
 <MarginText>14/3</MarginText>
 <MarginInfo items={["AI95-00162-01", "AI95-00182-01", "AI05-0066-1", "AI05-0142-4", "AI05-0269-1"]} />
-<p>{"{"}<em>8652/0021</em>{"}"} {"{"}<em>{"AI95-00182-01"}</em>{"}"} {"{"}<em>{"AI95-00162-01"}</em>{"}"} {"{"}<em>{"AI05-0066-1"}</em>{"}"} {"{"}<em>{"AI05-0142-4"}</em>{"}"} {"{"}<em>{"AI05-0269-1"}</em>{"}"} <br />The master of an object is the master enclosing its creation whose accessibility level (see <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>) is equal to that of the object, except in the case of an anonymous object representing the result of an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call. If such an anonymous object is part of the result of evaluating the actual parameter expression for an explicitly aliased parameter of a function call, the master of the object is the innermost master enclosing the evaluation of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call, excluding the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call itself. Otherwise, the master of such an anonymous object is the innermost master enclosing the evaluation of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call, which may be the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call itself. <br /></p>
+<p>{"{"}<em>8652/0021</em>{"}"} The master of an object is the master enclosing its creation whose accessibility level (see <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>) is equal to that of the object, except in the case of an anonymous object representing the result of an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call. If such an anonymous object is part of the result of evaluating the actual parameter expression for an explicitly aliased parameter of a function call, the master of the object is the innermost master enclosing the evaluation of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call, excluding the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call itself. Otherwise, the master of such an anonymous object is the innermost master enclosing the evaluation of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call, which may be the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call itself. <br /></p>
 
 <MarginText>14.a/2</MarginText>
 <MarginInfo items={["AI95-00162-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-<em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00162-01"}</em>{"}"} <br /></Admonition>
+<em>This paragraph was deleted.</em><br /></Admonition>
 
 <MarginText>14.b/2</MarginText>
 <CodeBlock language="ada">
@@ -724,38 +724,38 @@ This paragraph was deleted.{"\n"}
 <MarginText>14.d/2</MarginText>
 <MarginInfo items={["AI95-00162-01"]} />
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>{"AI95-00162-01"}</em>{"}"} <br />This effectively imports all of the special rules for the accessibility level of renames, <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s, and so on, and applies them to determine where objects created in them are finalized. For instance, the master of a rename of a subprogram is that of the renamed subprogram.<br /></Admonition>
+<strong></strong>This effectively imports all of the special rules for the accessibility level of renames, <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s, and so on, and applies them to determine where objects created in them are finalized. For instance, the master of a rename of a subprogram is that of the renamed subprogram.<br /></Admonition>
 
 <MarginText>14.e/3</MarginText>
 <MarginInfo items={["AI05-0066-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0066-1"}</em>{"}"} <br />In <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a> we assign an accessibility level to the result of an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call that is used to directly initialize a part of an object based on the object being initialized. This is important to ensure that any access discriminants denote objects that live at least as long as the object being initialized. However, if the result of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call is not built directly in the target object, but instead is built in an anonymous object that is then assigned to the target, the anonymous object needs to be finalized after the assignment rather than persisting until the target object is finalized (but not its coextensions). (Note than an implementation is never required to create such an anonymous object, and in some cases is required to <em>not</em> have such a separate object, but rather to build the result directly in the target.)<br /></Admonition>
+In <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a> we assign an accessibility level to the result of an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call that is used to directly initialize a part of an object based on the object being initialized. This is important to ensure that any access discriminants denote objects that live at least as long as the object being initialized. However, if the result of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or function call is not built directly in the target object, but instead is built in an anonymous object that is then assigned to the target, the anonymous object needs to be finalized after the assignment rather than persisting until the target object is finalized (but not its coextensions). (Note than an implementation is never required to create such an anonymous object, and in some cases is required to <em>not</em> have such a separate object, but rather to build the result directly in the target.)<br /></Admonition>
 
 <MarginText>14.f/3</MarginText>
 <MarginInfo items={["AI05-0142-4"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0142-4"}</em>{"}"} <br />The special case for explicitly aliased parameters of functions is needed for the same reason, as access discriminants of the returned object may designate one of these parameters. In that case, we want to lengthen the lifetime of the anonymous objects as long as the possible lifetime of the result.<br /></Admonition>
+The special case for explicitly aliased parameters of functions is needed for the same reason, as access discriminants of the returned object may designate one of these parameters. In that case, we want to lengthen the lifetime of the anonymous objects as long as the possible lifetime of the result.<br /></Admonition>
 
 <MarginText>14.g/3</MarginText>
 <MarginInfo items={["AI05-0142-4"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0142-4"}</em>{"}"} <br />We don't do a similar change for other kinds of calls, because the extended lifetime of the parameters adds no value, but could constitute a storage leak. For instance, such an anonymous object created by a procedure call in the elaboration part of a package body would have to live until the end of the program, even though it could not be used after the procedure returns (other than via Unchecked_Access). <br /></Admonition>
+We don't do a similar change for other kinds of calls, because the extended lifetime of the parameters adds no value, but could constitute a storage leak. For instance, such an anonymous object created by a procedure call in the elaboration part of a package body would have to live until the end of the program, even though it could not be used after the procedure returns (other than via Unchecked_Access). <br /></Admonition>
 
 <MarginText>14.h/3</MarginText>
 <MarginInfo items={["AI05-0142-4"]} />
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI05-0142-4"}</em>{"}"} <br />Note that the lifetime of the master given to anonymous objects in explicitly aliased parameters of functions is not necessarily as long as the lifetime of the master of the object being initialized (if the function call is used to initialize an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>, for instance). In that case, the accessibility check on explicitly aliased parameters will necessarily fail if any such anonymous objects exist. This is necessary to avoid requiring the objects to live as long as the access type or having the implementation complexity of an implicit coextension. <br /></Admonition>
+<strong></strong>Note that the lifetime of the master given to anonymous objects in explicitly aliased parameters of functions is not necessarily as long as the lifetime of the master of the object being initialized (if the function call is used to initialize an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>, for instance). In that case, the accessibility check on explicitly aliased parameters will necessarily fail if any such anonymous objects exist. This is necessary to avoid requiring the objects to live as long as the access type or having the implementation complexity of an implicit coextension. <br /></Admonition>
 
 <MarginText>14.1/3</MarginText>
 <MarginInfo items={["AI95-00162-01", "AI95-00169-01", "AI05-0066-1", "AI05-0262-1"]} />
-<p>{"{"}<em>8652/0023</em>{"}"} {"{"}<em>{"AI95-00169-01"}</em>{"}"} {"{"}<em>{"AI95-00162-01"}</em>{"}"} {"{"}<em>{"AI05-0066-1"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />In the case of an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> that is a master, finalization of any (anonymous) objects occurs after completing evaluation of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> and all use of the objects, prior to starting the execution of any subsequent construct.<br /></p>
+<p>{"{"}<em>8652/0023</em>{"}"} In the case of an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> that is a master, finalization of any (anonymous) objects occurs after completing evaluation of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> and all use of the objects, prior to starting the execution of any subsequent construct.<br /></p>
 
 
 #### Bounded (Run-Time) Errors
 
 <MarginText>15/1</MarginText>
 <MarginInfo items={["AI95-00169-01"]} />
-<p>{"{"}<em>8652/0023</em>{"}"} {"{"}<em>{"AI95-00169-01"}</em>{"}"} <br />It is a bounded error for a call on Finalize or Adjust that occurs as part of object finalization or assignment to propagate an exception. The possible consequences depend on what action invoked the Finalize or Adjust operation: <br /></p>
+<p>{"{"}<em>8652/0023</em>{"}"} It is a bounded error for a call on Finalize or Adjust that occurs as part of object finalization or assignment to propagate an exception. The possible consequences depend on what action invoked the Finalize or Adjust operation: <br /></p>
 
 <MarginText>15.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -764,24 +764,24 @@ This paragraph was deleted.{"\n"}
 <MarginText>15.a.1/1</MarginText>
 <MarginInfo items={["AI95-00169-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0023</em>{"}"} {"{"}<em>{"AI95-00169-01"}</em>{"}"} <br />It also is not a bounded error for an explicit call to Finalize or Adjust to propagate an exception. We do not want implementations to have to treat explicit calls to these routines specially. <br /></Admonition>
+{"{"}<em>8652/0023</em>{"}"} It also is not a bounded error for an explicit call to Finalize or Adjust to propagate an exception. We do not want implementations to have to treat explicit calls to these routines specially. <br /></Admonition>
 
 <MarginText>16</MarginText>
 <ul>
 <li>For a Finalize invoked as part of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>, Program_Error is raised at that point.<br /></li>
 <MarginText>17/5</MarginText>
 <MarginInfo items={["AI95-00193-01", "AI95-00256-01", "AI12-0445-1"]} />
-<li>{"{"}<em>8652/0024</em>{"}"} {"{"}<em>{"AI95-00193-01"}</em>{"}"} {"{"}<em>{"AI95-00256-01"}</em>{"}"} {"{"}<em>{"AI12-0445-1"}</em>{"}"} <br />For an Adjust invoked as part of assignment operations other than those invoked as part of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>, some of the  adjustments due to be performed can  be performed, and then Program_Error is raised. During its propagation, finalization may  be applied to objects whose Adjust failed. For an Adjust invoked as part of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>, any other adjustments due to be performed are performed, and then Program_Error is raised. <br /></li>
+<li>{"{"}<em>8652/0024</em>{"}"} For an Adjust invoked as part of assignment operations other than those invoked as part of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>, some of the  adjustments due to be performed can  be performed, and then Program_Error is raised. During its propagation, finalization may  be applied to objects whose Adjust failed. For an Adjust invoked as part of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>, any other adjustments due to be performed are performed, and then Program_Error is raised. <br /></li>
 </ul>
 <MarginText>17.a/2</MarginText>
 <MarginInfo items={["AI95-00193-01", "AI95-00256-01"]} />
 <Admonition type="aarm" aarm="reason" title="Reason: ">
-<strong></strong>{"{"}<em>8652/0024</em>{"}"} {"{"}<em>{"AI95-00193-01"}</em>{"}"} {"{"}<em>{"AI95-00256-01"}</em>{"}"} <br />In the case of assignments that are part of initialization, there is no need to complete all adjustments if one propagates an exception, as the object will immediately be finalized. So long as a subcomponent is not going to be finalized, it need not be adjusted, even if it is initialized as part of an enclosing composite assignment operation for which some adjustments are performed. However, there is no harm in an implementation making additional Adjust calls (as long as any additional components that are adjusted are also finalized), so we allow the implementation flexibility here. On the other hand, for an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>, it is important that all adjustments be performed, even if one fails, because all controlled subcomponents are going to be finalized. Other kinds of assignment are more like initialization than <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s, so we include them as well in the permission. <br /></Admonition>
+<strong></strong>{"{"}<em>8652/0024</em>{"}"} In the case of assignments that are part of initialization, there is no need to complete all adjustments if one propagates an exception, as the object will immediately be finalized. So long as a subcomponent is not going to be finalized, it need not be adjusted, even if it is initialized as part of an enclosing composite assignment operation for which some adjustments are performed. However, there is no harm in an implementation making additional Adjust calls (as long as any additional components that are adjusted are also finalized), so we allow the implementation flexibility here. On the other hand, for an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>, it is important that all adjustments be performed, even if one fails, because all controlled subcomponents are going to be finalized. Other kinds of assignment are more like initialization than <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s, so we include them as well in the permission. <br /></Admonition>
 
 <MarginText>17.a.1/1</MarginText>
 <MarginInfo items={["AI95-00193-01"]} />
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>8652/0024</em>{"}"} {"{"}<em>{"AI95-00193-01"}</em>{"}"} <br />Even if an Adjust invoked as part of the initialization of a controlled object propagates an exception, objects whose initialization (including any Adjust or Initialize calls) successfully completed will be finalized. The permission above only applies to objects whose Adjust failed. Objects for which Adjust was never even invoked must not be finalized. <br /></Admonition>
+<strong></strong>{"{"}<em>8652/0024</em>{"}"} Even if an Adjust invoked as part of the initialization of a controlled object propagates an exception, objects whose initialization (including any Adjust or Initialize calls) successfully completed will be finalized. The permission above only applies to objects whose Adjust failed. Objects for which Adjust was never even invoked must not be finalized. <br /></Admonition>
 
 <MarginText>18</MarginText>
 <ul>
@@ -790,25 +790,25 @@ This paragraph was deleted.{"\n"}
 <MarginText>18.a.1/1</MarginText>
 <MarginInfo items={["AI95-00179-01"]} />
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>8652/0104</em>{"}"} {"{"}<em>{"AI95-00179-01"}</em>{"}"} <br />The standard does not specify if storage is recovered in this case. If storage is not recovered (and the object continues to exist), Finalize may be called on the object again (when the <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>'s master is finalized). <br /></Admonition>
+<strong></strong>{"{"}<em>8652/0104</em>{"}"} The standard does not specify if storage is recovered in this case. If storage is not recovered (and the object continues to exist), Finalize may be called on the object again (when the <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>'s master is finalized). <br /></Admonition>
 
 <MarginText>18.1/3</MarginText>
 <MarginInfo items={["AI95-00169-01", "AI05-0064-1"]} />
 <ul>
-<li><em>This paragraph was deleted.</em>{"{"}<em>8652/0023</em>{"}"} {"{"}<em>{"AI95-00169-01"}</em>{"}"} {"{"}<em>{"AI05-0064-1"}</em>{"}"} <br /></li>
+<li><em>This paragraph was deleted.</em>{"{"}<em>8652/0023</em>{"}"} <br /></li>
 <MarginText>18.2/1</MarginText>
 <MarginInfo items={["AI95-00169-01"]} />
-<li>{"{"}<em>8652/0023</em>{"}"} {"{"}<em>{"AI95-00169-01"}</em>{"}"} <br />For a Finalize invoked due to reaching the end of the execution of a master, any other finalizations associated with the master are performed, and Program_Error is raised immediately after leaving the master.<br /></li>
+<li>{"{"}<em>8652/0023</em>{"}"} For a Finalize invoked due to reaching the end of the execution of a master, any other finalizations associated with the master are performed, and Program_Error is raised immediately after leaving the master.<br /></li>
 </ul>
 <MarginText>18.a/3</MarginText>
 <MarginInfo items={["AI05-0064-1"]} />
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>{"AI05-0064-1"}</em>{"}"} <br />This rule covers both ordinary objects created by a declaration, and anonymous objects created as part of evaluating an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>. All contexts that create objects that need finalization are defined to be masters. <br /></Admonition>
+<strong></strong>This rule covers both ordinary objects created by a declaration, and anonymous objects created as part of evaluating an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>. All contexts that create objects that need finalization are defined to be masters. <br /></Admonition>
 
 <MarginText>19/2</MarginText>
 <MarginInfo items={["AI95-00318-02"]} />
 <ul>
-<li>{"{"}<em>{"AI95-00318-02"}</em>{"}"} <br />For a Finalize invoked by the transfer of control of an <code><a href="../AA-5/AA-5.7#S0193">exit_statement</a></code>, return statement, <code><a href="../AA-5/AA-5.8#S0194">goto_statement</a></code>, or <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code>, Program_Error is raised no earlier than after the finalization of the master being finalized when the exception occurred, and no later than the point where normal execution would have continued. Any other finalizations due to be performed up to that point are performed before raising Program_Error. <br /></li>
+<li>For a Finalize invoked by the transfer of control of an <code><a href="../AA-5/AA-5.7#S0193">exit_statement</a></code>, return statement, <code><a href="../AA-5/AA-5.8#S0194">goto_statement</a></code>, or <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code>, Program_Error is raised no earlier than after the finalization of the master being finalized when the exception occurred, and no later than the point where normal execution would have continued. Any other finalizations due to be performed up to that point are performed before raising Program_Error. <br /></li>
 </ul>
 <MarginText>19.a</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -822,7 +822,7 @@ procedure Main is{"\n"}begin{"\n"}    {"<"}{"<"}The_Label{">"}{">"}{"\n"}    Out
 <MarginText>19.c/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />The <code><a href="../AA-5/AA-5.8#S0194">goto_statement</a></code> will first cause Finalize(Z ) to be called. Suppose that Finalize(Z ) propagates an exception. Program_Error will be raised after leaving Inner_Block_Statement, but before leaving Main. Thus, handler number 1 cannot handle this Program_Error; it will be handled either by handler number 2 or handler number 3. If it is handled by handler number 2, then Finalize(Y ) will be done before executing the handler. If it is handled by handler number 3, then Finalize(Y ) and Finalize(X) will both be done before executing the handler. <br /></Admonition>
+The <code><a href="../AA-5/AA-5.8#S0194">goto_statement</a></code> will first cause Finalize(Z ) to be called. Suppose that Finalize(Z ) propagates an exception. Program_Error will be raised after leaving Inner_Block_Statement, but before leaving Main. Thus, handler number 1 cannot handle this Program_Error; it will be handled either by handler number 2 or handler number 3. If it is handled by handler number 2, then Finalize(Y ) will be done before executing the handler. If it is handled by handler number 3, then Finalize(Y ) and Finalize(X) will both be done before executing the handler. <br /></Admonition>
 
 <MarginText>20</MarginText>
 <ul>
@@ -831,7 +831,7 @@ procedure Main is{"\n"}begin{"\n"}    {"<"}{"<"}The_Label{">"}{">"}{"\n"}    Out
 <MarginText>20.a/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
-<strong></strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />If, in the above example, the <code><a href="../AA-5/AA-5.8#S0194">goto_statement</a></code> were replaced by a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code>, then the Program_Error would be handled by handler number 2, and Finalize(Y ) would be done before executing the handler. <br /></Admonition>
+<strong></strong>If, in the above example, the <code><a href="../AA-5/AA-5.8#S0194">goto_statement</a></code> were replaced by a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code>, then the Program_Error would be handled by handler number 2, and Finalize(Y ) would be done before executing the handler. <br /></Admonition>
 
 <MarginText>20.b</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
@@ -858,7 +858,7 @@ On the other hand, the <code><a href="../AA-11/AA-11.2#S0305">exception_handler<
 
 <MarginText>21.1/3</MarginText>
 <MarginInfo items={["AI05-0107-1"]} />
-<p>{"{"}<em>{"AI05-0107-1"}</em>{"}"} <br />If the execution of an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> propagates an exception, any parts of the allocated object that were successfully initialized may be finalized as part of the finalization of the innermost master enclosing the <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>.<br /></p>
+<p>If the execution of an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> propagates an exception, any parts of the allocated object that were successfully initialized may be finalized as part of the finalization of the innermost master enclosing the <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>.<br /></p>
 
 <MarginText>21.c/3</MarginText>
 <Admonition type="aarm" aarm="reason" title="Reason: ">
@@ -866,7 +866,7 @@ On the other hand, the <code><a href="../AA-11/AA-11.2#S0305">exception_handler<
 
 <MarginText>21.2/3</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI05-0262-1"]} />
-<p>{"{"}<em>{"AI05-0111-3"}</em>{"}"} {"{"}<em>{"AI05-0262-1"}</em>{"}"} <br />The implementation may finalize objects created by <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s for an access type whose storage pool supports subpools (see <a href="../AA-13/AA-13.11#Subclause_13.11.4">13.11.4</a>) as if the objects were created (in an arbitrary order) at the point where the storage pool was elaborated instead of at the first freezing point of the access type.<br /></p>
+<p>The implementation may finalize objects created by <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s for an access type whose storage pool supports subpools (see <a href="../AA-13/AA-13.11#Subclause_13.11.4">13.11.4</a>) as if the objects were created (in an arbitrary order) at the point where the storage pool was elaborated instead of at the first freezing point of the access type.<br /></p>
 
 <MarginText>21.d/3</MarginText>
 <Admonition type="aarm" aarm="ramification" title="Ramification: ">
@@ -875,12 +875,12 @@ On the other hand, the <code><a href="../AA-11/AA-11.2#S0305">exception_handler<
 <MarginText>21.e/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
-<strong></strong>{"{"}<em>{"AI12-0005-1"}</em>{"}"} <br />This permission is intended to allow the allocated objects to "belong" to the subpool objects and to allow those objects to be finalized at the time that the storage pool is finalized (if they are not finalized earlier). This is expected to ease implementation, as the remaining yet-to-be deallocated objects will only need to be accessible at run time from the subpool header and not also from the overall access type collection header. That is, they only need to belong to a single list, rather than two . <br /></Admonition>
+<strong></strong>This permission is intended to allow the allocated objects to "belong" to the subpool objects and to allow those objects to be finalized at the time that the storage pool is finalized (if they are not finalized earlier). This is expected to ease implementation, as the remaining yet-to-be deallocated objects will only need to be accessible at run time from the subpool header and not also from the overall access type collection header. That is, they only need to belong to a single list, rather than two . <br /></Admonition>
 
 <MarginText>22/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-NOTE 1   {"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />The rules of Clause 10 imply that immediately prior to partition termination, Finalize operations are applied to library-level controlled objects (including those created by <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s of library-level access types, except those already finalized). This occurs after waiting for library-level tasks to terminate. <br /></Admonition>
+NOTE 1   The rules of Clause 10 imply that immediately prior to partition termination, Finalize operations are applied to library-level controlled objects (including those created by <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s of library-level access types, except those already finalized). This occurs after waiting for library-level tasks to terminate. <br /></Admonition>
 
 <MarginText>22.a</MarginText>
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
@@ -909,7 +909,7 @@ NOTE 4   The Finalize procedure is called upon finalization of a controlled obje
 <MarginText>25.c/2</MarginText>
 <MarginInfo items={["AI95-00287-01"]} />
 <Admonition type="aarm" aarm="discussion" title="Discussion: ">
-<strong></strong>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br />Either Initialize or Adjust, but not both, is applied to (almost) every controlled object when it is created: Initialize is done when no initial value is assigned to the object, whereas Adjust is done as part of assigning the initial value. The one exception is the object initialized by an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> (both the anonymous object created for an aggregate, or an object initialized by an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> that is built-in-place); Initialize is not applied to the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> as a whole, nor is the value of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or object adjusted.<br /></Admonition>
+<strong></strong>Either Initialize or Adjust, but not both, is applied to (almost) every controlled object when it is created: Initialize is done when no initial value is assigned to the object, whereas Adjust is done as part of assigning the initial value. The one exception is the object initialized by an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> (both the anonymous object created for an aggregate, or an object initialized by an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> that is built-in-place); Initialize is not applied to the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> as a whole, nor is the value of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or object adjusted.<br /></Admonition>
 
 <MarginText>25.d</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
@@ -924,14 +924,14 @@ All of the following use the assignment operation, and thus perform value adjust
 <li>default initialization of a component of a stand-alone object or pool element (in this case, the value of each component is assigned, and therefore adjusted, but the value of the object as a whole is not adjusted);<br /></li>
 <MarginText>25.h/2</MarginText>
 <MarginInfo items={["AI95-00318-02"]} />
-<li>{"{"}<em>{"AI95-00318-02"}</em>{"}"} <br />function return, when the result is not built-in-place (adjustment of the result happens before finalization of the function);<br /></li>
+<li>function return, when the result is not built-in-place (adjustment of the result happens before finalization of the function);<br /></li>
 <MarginText>25.i</MarginText>
 <li>predefined operators (although the only one that matters is concatenation; see <a href="../AA-4/AA-4.5#Subclause_4.5.3">4.5.3</a>);<br /></li>
 <MarginText>25.j</MarginText>
 <li>generic formal objects of mode <strong>in</strong> (see <a href="../AA-12/AA-12.4">12.4</a>); these are defined in terms of constant declarations; and<br /></li>
 <MarginText>25.k/5</MarginText>
 <MarginInfo items={["AI95-00287-01", "AI12-0005-1"]} />
-<li>{"{"}<em>{"AI95-00287-01"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} <br /><code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s (see <a href="../AA-4/AA-4.3">4.3</a>), when the result is not built-in-place (in this case, the value of each component, and the ancestor  part, for an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, is assigned, and therefore adjusted, but the value of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> as a whole is not adjusted; neither is Initialize called); <br /></li>
+<li><code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s (see <a href="../AA-4/AA-4.3">4.3</a>), when the result is not built-in-place (in this case, the value of each component, and the ancestor  part, for an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, is assigned, and therefore adjusted, but the value of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> as a whole is not adjusted; neither is Initialize called); <br /></li>
 </ul>
 <MarginText>25.l</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
@@ -944,12 +944,12 @@ The following also use the assignment operation, but adjustment never does anyth
 <li><strong>For</strong> loops use the assignment operation (see <a href="../AA-5/AA-5.5">5.5</a>), but since the type of the loop parameter is never controlled, nothing interesting happens there, either.<br /></li>
 <MarginText>25.n.1/2</MarginText>
 <MarginInfo items={["AI95-00318-02"]} />
-<li>{"{"}<em>{"AI95-00318-02"}</em>{"}"} <br />Objects initialized by function results and <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s that are built-in-place. In this case, the assignment operation is never executed, and no adjustment takes place. While built-in-place is always allowed, it is required for some types &mdash; see <a href="../AA-7/AA-7.5">7.5</a> and <a href="../AA-7/AA-7.6">7.6</a> &mdash; and that's important since limited types have no Adjust to call. <br /></li>
+<li>Objects initialized by function results and <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s that are built-in-place. In this case, the assignment operation is never executed, and no adjustment takes place. While built-in-place is always allowed, it is required for some types &mdash; see <a href="../AA-7/AA-7.5">7.5</a> and <a href="../AA-7/AA-7.6">7.6</a> &mdash; and that's important since limited types have no Adjust to call. <br /></li>
 </ul>
 <MarginText>25.o/2</MarginText>
 <MarginInfo items={["AI95-00287-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-<em>This paragraph was deleted.</em>{"{"}<em>{"AI95-00287-01"}</em>{"}"} <br /></Admonition>
+<em>This paragraph was deleted.</em><br /></Admonition>
 
 <MarginText>25.p</MarginText>
 <Admonition type="aarm" aarm="note" title="Note: ">
@@ -981,7 +981,7 @@ It is our intention that both of these implementation methods should be possible
 <MarginText>25.v/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0299-1"}</em>{"}"} <br />Finalization depends on the concepts of completion and leaving, and on the concept of a master. Therefore, we have moved the definitions of these concepts here, from where they used to be in Clause <a href="../AA-9/">9</a>. These concepts also needed to be generalized somewhat. Task waiting is closely related to user-defined finalization; the rules here refer to the task-waiting rules of Clause <a href="../AA-9/">9</a>. <br /></Admonition>
+Finalization depends on the concepts of completion and leaving, and on the concept of a master. Therefore, we have moved the definitions of these concepts here, from where they used to be in Clause <a href="../AA-9/">9</a>. These concepts also needed to be generalized somewhat. Task waiting is closely related to user-defined finalization; the rules here refer to the task-waiting rules of Clause <a href="../AA-9/">9</a>. <br /></Admonition>
 
 
 #### Inconsistencies With Ada 95
@@ -989,7 +989,7 @@ It is our intention that both of these implementation methods should be possible
 <MarginText>25.v.1/3</MarginText>
 <MarginInfo items={["AI05-0066-1"]} />
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0066-1"}</em>{"}"} <strong><br />Ada 2012 </strong> Changed the definition of the master of an anonymous object used to directly initialize an object, so it can be finalized immediately rather than having to hang around as long as the object. In this case, the Ada 2005 definition was inconsistent with Ada 95, and Ada 2012 changes it back. It is unlikely that many compilers implemented the rule as written in Amendment 1, so an inconsistency is unlikely to arise in practice. <br /></Admonition>
+<strong>Ada 2012 </strong> Changed the definition of the master of an anonymous object used to directly initialize an object, so it can be finalized immediately rather than having to hang around as long as the object. In this case, the Ada 2005 definition was inconsistent with Ada 95, and Ada 2012 changes it back. It is unlikely that many compilers implemented the rule as written in Amendment 1, so an inconsistency is unlikely to arise in practice. <br /></Admonition>
 
 
 #### Wording Changes from Ada 95
@@ -997,32 +997,32 @@ It is our intention that both of these implementation methods should be possible
 <MarginText>25.w/2</MarginText>
 <MarginInfo items={["AI95-00182-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0021</em>{"}"} {"{"}<em>{"AI95-00182-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Fixed the wording to say that anonymous objects aren't finalized until the object can't be used anymore.<br /></Admonition>
+{"{"}<em>8652/0021</em>{"}"} <strong>Corrigendum:</strong> Fixed the wording to say that anonymous objects aren't finalized until the object can't be used anymore.<br /></Admonition>
 
 <MarginText>25.x/2</MarginText>
 <MarginInfo items={["AI95-00169-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0023</em>{"}"} {"{"}<em>{"AI95-00169-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Added wording to clarify what happens when Adjust or Finalize raises an exception; some cases had been omitted.<br /></Admonition>
+{"{"}<em>8652/0023</em>{"}"} <strong>Corrigendum:</strong> Added wording to clarify what happens when Adjust or Finalize raises an exception; some cases had been omitted.<br /></Admonition>
 
 <MarginText>25.y/2</MarginText>
 <MarginInfo items={["AI95-00193-01", "AI95-00256-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>8652/0024</em>{"}"} {"{"}<em>{"AI95-00193-01"}</em>{"}"} {"{"}<em>{"AI95-00256-01"}</em>{"}"} <strong><br />Corrigendum:</strong> Stated that if Adjust raises an exception during initialization, nothing further is required. This is corrected in Ada 2005 to include all kinds of assignment other than <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s.<br /></Admonition>
+{"{"}<em>8652/0024</em>{"}"} <strong>Corrigendum:</strong> Stated that if Adjust raises an exception during initialization, nothing further is required. This is corrected in Ada 2005 to include all kinds of assignment other than <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s.<br /></Admonition>
 
 <MarginText>25.z/2</MarginText>
 <MarginInfo items={["AI95-00162-01", "AI95-00416-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00162-01"}</em>{"}"} {"{"}<em>{"AI95-00416-01"}</em>{"}"} <br />Revised the definition of master to include <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s and <code><a href="../AA-5/AA-5.1#S0167">statement</a></code>s, in order to cleanly define what happens for tasks and controlled objects created as part of a subprogram call. Having done that, all of the special wording to cover those cases is eliminated (at least until the Ada comments start rolling in).<br /></Admonition>
+Revised the definition of master to include <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s and <code><a href="../AA-5/AA-5.1#S0167">statement</a></code>s, in order to cleanly define what happens for tasks and controlled objects created as part of a subprogram call. Having done that, all of the special wording to cover those cases is eliminated (at least until the Ada comments start rolling in).<br /></Admonition>
 
 <MarginText>25.aa/2</MarginText>
 <MarginInfo items={["AI95-00280-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00280-01"}</em>{"}"} <br />We define <em>finalization of the collection</em> here, so as to be able to conveniently refer to it in other rules (especially in <a href="../AA-4/AA-4.8">4.8</a>, &ldquo;<a href="../AA-4/AA-4.8">Allocators</a>&rdquo;).<br /></Admonition>
+We define <em>finalization of the collection</em> here, so as to be able to conveniently refer to it in other rules (especially in <a href="../AA-4/AA-4.8">4.8</a>, &ldquo;<a href="../AA-4/AA-4.8">Allocators</a>&rdquo;).<br /></Admonition>
 
 <MarginText>25.bb/2</MarginText>
 <MarginInfo items={["AI95-00416-01"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI95-00416-01"}</em>{"}"} <br />Clarified that a coextension is finalized at the same time as the outer object. (This was intended for Ada 95, but since the concept did not have a name, it was overlooked.) <br /></Admonition>
+Clarified that a coextension is finalized at the same time as the outer object. (This was intended for Ada 95, but since the concept did not have a name, it was overlooked.) <br /></Admonition>
 
 
 #### Inconsistencies With Ada 2005
@@ -1030,7 +1030,7 @@ It is our intention that both of these implementation methods should be possible
 <MarginText>25.cc/3</MarginText>
 <MarginInfo items={["AI05-0051-1", "AI05-0190-1"]} />
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0051-1"}</em>{"}"} {"{"}<em>{"AI05-0190-1"}</em>{"}"} <strong><br /></strong> Better defined when objects allocated from anonymous access types are finalized. This could be inconsistent if objects are finalized in a different order than in an Ada 2005 implementation and that order caused different program behavior; however programs that depend on the order of finalization within a single master are already fragile and hopefully are rare. <br /></Admonition>
+<strong></strong> Better defined when objects allocated from anonymous access types are finalized. This could be inconsistent if objects are finalized in a different order than in an Ada 2005 implementation and that order caused different program behavior; however programs that depend on the order of finalization within a single master are already fragile and hopefully are rare. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2005
@@ -1038,27 +1038,27 @@ It is our intention that both of these implementation methods should be possible
 <MarginText>25.dd/3</MarginText>
 <MarginInfo items={["AI05-0064-1"]} />
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0064-1"}</em>{"}"} <strong><br /></strong> Removed a redundant rule, which is now covered by the additional places where masters are defined.<br /></Admonition>
+<strong></strong> Removed a redundant rule, which is now covered by the additional places where masters are defined.<br /></Admonition>
 
 <MarginText>25.ee/4</MarginText>
 <MarginInfo items={["AI05-0099-1", "AI12-0005-1"]} />
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0099-1"}</em>{"}"} {"{"}<em>{"AI12-0005-1"}</em>{"}"} <strong><br /></strong> Clarified the finalization rules so that there is no doubt that privacy is ignored, and to ensure that objects of class-wide interface types are finalized based on their specific concrete type.<br /></Admonition>
+<strong></strong> Clarified the finalization rules so that there is no doubt that privacy is ignored, and to ensure that objects of class-wide interface types are finalized based on their specific concrete type.<br /></Admonition>
 
 <MarginText>25.ff/3</MarginText>
 <MarginInfo items={["AI05-0107-1"]} />
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI05-0107-1"}</em>{"}"} <strong><br /></strong> Allowed premature finalization of parts of failed <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s. This could be an inconsistency, but the previous behavior is still allowed and there is no requirement that implementations take advantage of the permission.<br /></Admonition>
+<strong></strong> Allowed premature finalization of parts of failed <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s. This could be an inconsistency, but the previous behavior is still allowed and there is no requirement that implementations take advantage of the permission.<br /></Admonition>
 
 <MarginText>25.gg/3</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0111-3"}</em>{"}"} <br />Added a permission to finalize an object allocated from a subpool later than usual.<br /></Admonition>
+Added a permission to finalize an object allocated from a subpool later than usual.<br /></Admonition>
 
 <MarginText>25.hh/3</MarginText>
 <MarginInfo items={["AI05-0142-4"]} />
 <Admonition type="aarm" aarm="note" title="Note: ">
-{"{"}<em>{"AI05-0142-4"}</em>{"}"} <br />Added text to specially define the master of anonymous objects which are passed as explicitly aliased parameters (see <a href="../AA-6/AA-6.1">6.1</a>) of functions. The model for these parameters is explained in detail in <a href="../AA-6/AA-6.4#Subclause_6.4.1">6.4.1</a>. <br /></Admonition>
+Added text to specially define the master of anonymous objects which are passed as explicitly aliased parameters (see <a href="../AA-6/AA-6.1">6.1</a>) of functions. The model for these parameters is explained in detail in <a href="../AA-6/AA-6.4#Subclause_6.4.1">6.4.1</a>. <br /></Admonition>
 
 
 #### Wording Changes from Ada 2012
@@ -1066,5 +1066,5 @@ It is our intention that both of these implementation methods should be possible
 <MarginText>25.ii/5</MarginText>
 <MarginInfo items={["AI12-0406-1"]} />
 <Admonition type="aarm" aarm="correction" title="Correction:">
-{"{"}<em>{"AI12-0406-1"}</em>{"}"} <strong><br /></strong> Defined the term &ldquo;master construct&rdquo;, so as to put static accessibility rules on a firmer basis, including ensuring that those rules apply inside of generic bodies. <br /></Admonition>
+<strong></strong> Defined the term &ldquo;master construct&rdquo;, so as to put static accessibility rules on a firmer basis, including ensuring that those rules apply inside of generic bodies. <br /></Admonition>
 
