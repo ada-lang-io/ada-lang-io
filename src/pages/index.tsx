@@ -192,9 +192,9 @@ export function HomepageHeader({ title, description }: HomepageHeaderProps): JSX
                   <Tabs.Tab value="embedded">Embedded</Tabs.Tab>
                 </Tabs.List>
 
-                <div className={styles.codeTabPanel}>
+                <div className={styles.codeTabPanels}>
                   {samples.map(({ key, code }) => (
-                    <Tabs.Panel key={key} value={key} pt="xs">
+                    <Tabs.Panel key={key} value={key} pt="xs" className={styles.codeTabPanel}>
                       <CodeBlock showLineNumbers={true}>{code}</CodeBlock>
                     </Tabs.Panel>
                   ))}
