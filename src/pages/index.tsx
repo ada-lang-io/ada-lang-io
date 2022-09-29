@@ -127,7 +127,12 @@ export function HomepageHeader({ title, description }: HomepageHeaderProps): JSX
         <picture>
           <source srcSet="/img/unsplash/yZygONrUBe8.avif" type="image/avif" />
           <source srcSet="/img/unsplash/yZygONrUBe8.webp" type="image/webp" />
-          <img src="/img/unsplash/yZygONrUBe8.jpg" width="1920" height="1278" />
+          <img
+            src="/img/unsplash/yZygONrUBe8.jpg"
+            width="1920"
+            height="1278"
+            alt="Fancy background image"
+          />
         </picture>
       </div>
       <Overlay color="#000" opacity={0.65} zIndex={1} />
