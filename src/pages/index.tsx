@@ -119,8 +119,17 @@ export function HomepageHeader({ title, description }: HomepageHeaderProps): JSX
 
   const linkOthers: JSX.Element = <Link to={gitHubReleasePage}>others</Link>
 
+  // Photos from Unsplash (licensed under Unsplash License (https://unsplash.com/license))
+  // - https://unsplash.com/photos/Q1p7bh3SHj8 (vendorized)
   return (
     <header className={styles.heroWrapper}>
+      <div className={styles.heroBackground}>
+        <picture>
+          <source srcSet="/img/unsplash/yZygONrUBe8.avif" type="image/avif" />
+          <source srcSet="/img/unsplash/yZygONrUBe8.webp" type="image/webp" />
+          <img src="/img/unsplash/yZygONrUBe8.jpg" width="1920" height="1278" />
+        </picture>
+      </div>
       <Overlay color="#000" opacity={0.65} zIndex={1} />
 
       <div className={styles.heroInner}>
