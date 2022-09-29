@@ -122,7 +122,7 @@ export default function AlireInstallInstructions(): JSX.Element {
           <Text color="dimmed">
             Download{" "}
             <Link onClick={onClickDownloadLink} to={platformDownloadURL}>
-              Alire {alireVersion.slice(0)}
+              Alire {alireVersion}
               {platformLabel}
             </Link>
             {platform !== null && otherDownloadText}.

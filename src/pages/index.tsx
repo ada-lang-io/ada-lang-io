@@ -75,7 +75,7 @@ export const gitHubProjectPage = "https://github.com/alire-project/alire"
 export const gitHubReleasePage = `${gitHubProjectPage}/releases`
 
 export function getInstallTarget(version: string, suffix: string): string {
-  return `${gitHubProjectPage}/releases/download/v${version}/alr-${version}-${suffix}`
+  return `${gitHubProjectPage}/releases/download/${version}/alr-${version.slice(1)}-${suffix}`
 }
 
 interface CodeBlockProps {
@@ -162,7 +162,7 @@ export function HomepageHeader({ title, description }: HomepageHeaderProps): JSX
                 gradient={{ from: "blue", to: "cyan" }}
                 leftIcon={<DownloadIcon className={styles.downloadIcon} />}
               >
-                Download Alire {alireVersion.slice(0)}
+                Download Alire {alireVersion}
                 {platformLabel}
               </Button>
               <Button
