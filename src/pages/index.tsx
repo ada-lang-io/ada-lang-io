@@ -120,19 +120,27 @@ export function HomepageHeader({ title, description }: HomepageHeaderProps): JSX
   const linkOthers: JSX.Element = <Link to={gitHubReleasePage}>others</Link>
 
   // Photos from Unsplash (licensed under Unsplash License (https://unsplash.com/license))
-  // - https://unsplash.com/photos/Q1p7bh3SHj8 (vendorized)
+  // - https://unsplash.com/photos/Q1p7bh3SHj8
+  // - https://unsplash.com/photos/gYwfpVI2JzM
+  // Video of GESTE from https://github.com/Fabien-Chouteau/GESTE (CC-BY 4.0 with permission)
   return (
-    <header className={styles.heroWrapper}>
+    <header className={styles.heroWrapper} data-animate="true">
       <div className={styles.heroBackground}>
-        <picture>
+        <picture className={styles.background1}>
           <source srcSet="/img/unsplash/yZygONrUBe8.avif" type="image/avif" />
           <source srcSet="/img/unsplash/yZygONrUBe8.webp" type="image/webp" />
-          <img
-            src="/img/unsplash/yZygONrUBe8.jpg"
-            width="1920"
-            height="1278"
-            alt="Fancy background image"
-          />
+          <img src="/img/unsplash/yZygONrUBe8.jpg" alt="Background image of Earth and satellite" />
+        </picture>
+        <div className={styles.background2}>
+          <video autoPlay loop muted playsInline>
+            <source src="/img/geste-av1.webm" type="video/webm; codecs=av1" />
+            <source src="/img/geste-vp9.webm" type="video/webm; codecs=vp9" />
+          </video>
+        </div>
+        <picture className={styles.background3}>
+          <source srcSet="/img/unsplash/gYwfpVI2JzM.avif" type="image/avif" />
+          <source srcSet="/img/unsplash/gYwfpVI2JzM.webp" type="image/webp" />
+          <img src="/img/unsplash/gYwfpVI2JzM.jpg" alt="Background image of Earth and astronaut" />
         </picture>
       </div>
       <Overlay color="#000" opacity={0.65} zIndex={1} />
