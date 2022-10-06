@@ -519,18 +519,22 @@ Note that if the anonymous object is eliminated but the new value is not built i
 <strong></strong>The goal of the above permissions is to allow typical dead assignment and dead variable removal algorithms to work for nonlimited controlled types. We require that &ldquo;pairs&rdquo; of Initialize/Adjust/Finalize operations are removed. (These aren't always pairs, which is why we talk about &ldquo;any execution of the program&rdquo;.) <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 83
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>28.b</MarginText>
 <Admonition type="aarm" aarm="note">
 Controlled types and user-defined finalization are new to Ada 95. (Ada 83 had finalization semantics only for masters of tasks.) <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>28.c/2</MarginText>
 <MarginInfo items={["AI95-00161-01"]} />
@@ -538,9 +542,11 @@ Controlled types and user-defined finalization are new to Ada 95. (Ada 83 had fi
 <strong>Amendment </strong> Types Controlled and Limited_Controlled now have Preelaborable_Initialization, so that objects of types derived from these types can be used in preelaborated packages. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>28.d/2</MarginText>
 <MarginInfo items={["AI95-00126-01"]} />
@@ -597,9 +603,11 @@ Types that need finalization are defined; this is used by the No_Nested_Finaliza
 Generalized the description of objects that have Initialize called for them to say that it is done for all objects that are initialized by default. This is needed so that all of the new cases are covered. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>28.l/3</MarginText>
 <MarginInfo items={["AI05-0212-1"]} />
@@ -607,9 +615,11 @@ Generalized the description of objects that have Initialize called for them to s
 Package Ada.Finalization now has Pure categorization, so it can be mentioned for any package. Note that this does not change the preelaborability of objects descended from Controlled and Limited_Controlled. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>28.m/3</MarginText>
 <MarginInfo items={["AI05-0013-1"]} />
@@ -1175,6 +1185,7 @@ NOTE 4   The Finalize procedure is called upon finalization of a controlled obje
 All of the following use the assignment operation, and thus perform value adjustment: <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>25.e</MarginText>
 <ul>
 <li>the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> (see <a href="../AA-5/AA-5.2">5.2</a>);<br /></li>
@@ -1193,12 +1204,14 @@ All of the following use the assignment operation, and thus perform value adjust
 <MarginInfo items={["AI95-00287-01", "AI12-0005-1"]} />
 <li><code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s (see <a href="../AA-4/AA-4.3">4.3</a>), when the result is not built-in-place (in this case, the value of each component, and the ancestor  part, for an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code>, is assigned, and therefore adjusted, but the value of the <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> as a whole is not adjusted; neither is Initialize called); <br /></li>
 </ul>
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>25.l</MarginText>
 <Admonition type="aarm" aarm="note">
 The following also use the assignment operation, but adjustment never does anything interesting in these cases: <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>25.m</MarginText>
 <ul>
 <li>By-copy parameter passing uses the assignment operation (see <a href="../AA-6/AA-6.4#Subclause_6.4.1">6.4.1</a>), but controlled objects are always passed by reference, so the assignment operation never does anything interesting in this case. If we were to allow by-copy parameter passing for controlled objects, we would need to make sure that the actual is finalized before doing the copy back for [<strong>in</strong>] <strong>out</strong> parameters. The finalization of the parameter itself needs to happen after the copy back (if any), similar to the finalization of an anonymous function return object or <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> object.<br /></li>
@@ -1208,6 +1221,7 @@ The following also use the assignment operation, but adjustment never does anyth
 <MarginInfo items={["AI95-00318-02"]} />
 <li>Objects initialized by function results and <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s that are built-in-place. In this case, the assignment operation is never executed, and no adjustment takes place. While built-in-place is always allowed, it is required for some types &mdash; see <a href="../AA-7/AA-7.5">7.5</a> and <a href="../AA-7/AA-7.6">7.6</a> &mdash; and that's important since limited types have no Adjust to call. <br /></li>
 </ul>
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>25.o/2</MarginText>
 <MarginInfo items={["AI95-00287-01"]} />
@@ -1251,9 +1265,11 @@ If the PC-map approach is used, the implementation must take care in the case of
 It is our intention that both of these implementation methods should be possible. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 83
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>25.v/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
@@ -1261,9 +1277,11 @@ It is our intention that both of these implementation methods should be possible
 Finalization depends on the concepts of completion and leaving, and on the concept of a master. Therefore, we have moved the definitions of these concepts here, from where they used to be in Clause <a href="../AA-9/">9</a>. These concepts also needed to be generalized somewhat. Task waiting is closely related to user-defined finalization; the rules here refer to the task-waiting rules of Clause <a href="../AA-9/">9</a>. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Inconsistencies With Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>25.v.1/3</MarginText>
 <MarginInfo items={["AI05-0066-1"]} />
@@ -1271,9 +1289,11 @@ Finalization depends on the concepts of completion and leaving, and on the conce
 <strong>Ada 2012 </strong> Changed the definition of the master of an anonymous object used to directly initialize an object, so it can be finalized immediately rather than having to hang around as long as the object. In this case, the Ada 2005 definition was inconsistent with Ada 95, and Ada 2012 changes it back. It is unlikely that many compilers implemented the rule as written in Amendment 1, so an inconsistency is unlikely to arise in practice. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>25.w/2</MarginText>
 <MarginInfo items={["AI95-00182-01"]} />
@@ -1316,9 +1336,11 @@ We define <em>finalization of the collection</em> here, so as to be able to conv
 Clarified that a coextension is finalized at the same time as the outer object. (This was intended for Ada 95, but since the concept did not have a name, it was overlooked.) <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Inconsistencies With Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>25.cc/3</MarginText>
 <MarginInfo items={["AI05-0051-1", "AI05-0190-1"]} />
@@ -1326,9 +1348,11 @@ Clarified that a coextension is finalized at the same time as the outer object. 
 <strong></strong> Better defined when objects allocated from anonymous access types are finalized. This could be inconsistent if objects are finalized in a different order than in an Ada 2005 implementation and that order caused different program behavior; however programs that depend on the order of finalization within a single master are already fragile and hopefully are rare. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>25.dd/3</MarginText>
 <MarginInfo items={["AI05-0064-1"]} />
@@ -1364,9 +1388,11 @@ Added a permission to finalize an object allocated from a subpool later than usu
 Added text to specially define the master of anonymous objects which are passed as explicitly aliased parameters (see <a href="../AA-6/AA-6.1">6.1</a>) of functions. The model for these parameters is explained in detail in <a href="../AA-6/AA-6.4#Subclause_6.4.1">6.4.1</a>. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>25.ii/5</MarginText>
 <MarginInfo items={["AI12-0406-1"]} />

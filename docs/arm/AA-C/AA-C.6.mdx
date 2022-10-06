@@ -350,6 +350,7 @@ Because accesses to the same atomic variable by different tasks establish a sequ
 The rule above and the definition of external effect are intended to prevent (at least) the following incorrect optimizations, where V is a volatile variable: <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>20.c</MarginText>
 <ul>
 <li>X:= V; Y:=V; cannot be allowed to be translated as Y:=V; X:=V;<br /></li>
@@ -366,6 +367,7 @@ The rule above and the definition of external effect are intended to prevent (at
 <MarginText>20.i</MarginText>
 <li>Reordering of stores to volatile variables: V1:= X; V2:= X; should not translate to V2:=X; V1:= X; <br /></li>
 </ul>
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>20.j/5</MarginText>
 <MarginInfo items={["AI12-0128-1"]} />
@@ -453,18 +455,22 @@ NOTE 3   When mapping an Ada object to a memory-mapped hardware register, the Ad
 <strong></strong>This is especially important for a write-only hardware register, as in such a case a read-modify-write cycle will not work. The only time the language guarantees such a cycle will not happen is when writing an entire atomic object. If one wants to write individual components of a write-only hardware register (assuming the hardware supports that), those also need to be declared atomic. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Incompatibilities With Ada 83
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>26.b</MarginText>
 <Admonition type="aarm" aarm="note">
 Pragma Atomic replaces Ada 83's pragma Shared. The name &ldquo;Shared&rdquo; was confusing, because the pragma was not used to mark variables as shared. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>26.c/2</MarginText>
 <MarginInfo items={["AI95-00259-01"]} />
@@ -479,9 +485,11 @@ Added  to clarify the meaning of Atomic and Volatile in machine terms. The docum
 Added wording to clarify that a slice of an object of an atomic type is not atomic, just like a component of an atomic type is not (necessarily) atomic. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Incompatibilities With Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>26.e/3</MarginText>
 <MarginInfo items={["AI05-0218-1"]} />
@@ -489,9 +497,11 @@ Added wording to clarify that a slice of an object of an atomic type is not atom
 <strong></strong> Plugged a hole involving volatile components of formal types when the formal type's component has a nonvolatile type. This was done by making certain actual types illegal for formal derived and formal array types; these types were allowed for Ada 95 and Ada 2005. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>26.f/3</MarginText>
 <MarginInfo items={["AI05-0009-1", "AI05-0229-1"]} />
@@ -506,9 +516,11 @@ Aspects Independent and Independent_Components are new; they eliminate ambiguity
 Aspects Atomic, Atomic_Components, Volatile, and Volatile_Components are new; <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s Atomic, Atomic_Components, Volatile, and Volatile_Components are now obsolescent. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>26.h/3</MarginText>
 <MarginInfo items={["AI05-0117-1", "AI05-0275-1"]} />
@@ -523,9 +535,11 @@ Revised the definition of volatile to eliminate overspecification and simply foc
 Added wording to take explicitly aliased parameters (see <a href="../AA-6/AA-6.1">6.1</a>) into account when determining the legality of parameter passing of volatile and atomic objects. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Inconsistencies With Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>26.j/5</MarginText>
 <MarginInfo items={["AI12-0128-1"]} />
@@ -533,9 +547,11 @@ Added wording to take explicitly aliased parameters (see <a href="../AA-6/AA-6.1
  Required that nonatomic components of a atomic object use a read-modify-write cycle, as well as clarifying that such a cycle is allowed for volatile objects that aren't exactly the size of a machine scalar. That can introduce a read-modify-write cycle where one was not used previously (for instance, if the components are exactly byte-sized on most machines); it is thought that this will more often fix bugs with access to hardware than it will cause them. If this is an issue, declaring the components themselves as atomic will restore the previous behavior. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>26.k/5</MarginText>
 <MarginInfo items={["AI12-0282-1"]} />
@@ -550,9 +566,11 @@ These aspects now can be specified for generic formal types.<br /></Admonition>
 Aspect Full_Access_Only is new; it can be used to guarantee access to a complete device register for any operation even when the register is mapped to a number of components. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>26.m/4</MarginText>
 <MarginInfo items={["AI12-0001-1"]} />
@@ -592,9 +610,11 @@ package System.Atomic_Operations{"\n"}   with Pure, Nonblocking is{"\n"}end Syst
 <MarginInfo items={["AI12-0234-1"]} />
 <p>In each child package, a function Is_Lock_Free(...) is provided to check whether the operations of the child package can all be provided lock-free for a given object. Is_Lock_Free returns True if operations defined in the child package are lock-free when applied to the object denoted by Item, and Is_Lock_Free returns False otherwise.<br /></p>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>6.a/5</MarginText>
 <MarginInfo items={["AI12-0234-1"]} />
@@ -682,9 +702,11 @@ begin -- Some critical section, trying to get the lock:{"\n"}
    Lock := False; -- Release the lock{"\n"}end;{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 
 #### Extensions to Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>24.a/5</MarginText>
 <MarginInfo items={["AI12-0234-1"]} />
@@ -746,9 +768,11 @@ end System.Atomic_Operations.Test_And_Set;{"\n"}
 <MarginInfo items={["AI12-0321-1"]} />
 <p>Atomic_Clear performs an atomic clear operation on Item. After the operation, Item contains 0. This call should be used in conjunction with Atomic_Test_And_Set.<br /></p>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>11.a/5</MarginText>
 <MarginInfo items={["AI12-0321-1"]} />
@@ -828,9 +852,11 @@ function Atomic_Fetch_And_Subtract{"\n"}  (Item  : aliased in out Atomic_Type;{"
 <MarginInfo items={["AI12-0321-1"]} />
 <p>Atomically performs: Tmp := Item; Item := Item - Value; <strong>return</strong> Tmp;<br /></p>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>18.a/5</MarginText>
 <MarginInfo items={["AI12-0321-1"]} />
@@ -910,9 +936,11 @@ function Atomic_Fetch_And_Subtract{"\n"}  (Item  : aliased in out Atomic_Type;{"
 <MarginInfo items={["AI12-0364-1"]} />
 <p>Atomically performs: Tmp := Item; Item := Item - Value; <strong>return</strong> Tmp;<br /></p>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>18.a/5</MarginText>
 <MarginInfo items={["AI12-0364-1"]} />

@@ -97,6 +97,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <strong></strong>The goal of these coverage rules is that any possible value of the <em>selecting_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-5/AA-5.4#S0176">case_statement</a></code> should be covered by exactly one <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> of the <code><a href="../AA-5/AA-5.4#S0176">case_statement</a></code>, and that this should be checked at compile time. The goal is achieved in most cases, but there are two minor loopholes: <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>10.b</MarginText>
 <ul>
 <li>If the expression reads an object with an invalid representation (e.g. an uninitialized object), then the value can be outside the covered range. This can happen for static constrained subtypes, as well as nonstatic or unconstrained subtypes. It cannot, however, happen if the <code><a href="../AA-5/AA-5.4#S0176">case_statement</a></code> has the <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code> <strong>others</strong>, because <strong>others</strong> covers all values, even those outside the subtype.<br /></li>
@@ -104,6 +105,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI95-00114-01", "AI05-0188-1"]} />
 <li>If the compiler chooses to represent the value of an expression of an unconstrained subtype in a way that includes values outside the bounds of the subtype, then those values can be outside the covered range. For example, if X: Integer := Integer'Last;, and the case <em>selecting_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is X+1, then the implementation might choose to produce the correct value, which is outside the bounds of Integer. (It might raise Constraint_Error instead.) This case can only happen for nongeneric subtypes that are either unconstrained or nonstatic (or both). It can only happen if there is no <strong>others</strong> <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code>. <br /></li>
 </ul>
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>10.d</MarginText>
 <Admonition type="aarm" aarm="note">
@@ -159,9 +161,11 @@ case Today is{"\n"}   when Mon	={">"} Compute_Initial_Balance;{"\n"}   when Fri	
 case Bin_Number(Count) is{"\n"}   when 1	={">"} Update_Bin(1);{"\n"}   when 2	={">"} Update_Bin(2);{"\n"}   when 3 | 4	={">"}{"\n"}      Empty_Bin(1);{"\n"}      Empty_Bin(2);{"\n"}   when others	={">"} raise Error;{"\n"}end case;{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 
 #### Incompatibilities With Ada 83
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>18.a.1/1</MarginText>
 <Admonition type="aarm" aarm="note">
@@ -174,9 +178,11 @@ In Ada 95, <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s and <c
 In addition, the rule about which choices must be covered is unchanged in Ada 95. Therefore, for a <code><a href="../AA-5/AA-5.4#S0176">case_statement</a></code> whose <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> or <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>, Ada 83 required covering all choices in the base range, while Ada 95 only requires covering choices in the bounds of the subtype. If the <code><a href="../AA-5/AA-5.4#S0176">case_statement</a></code> does not include an <strong>others</strong> <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a></code>, then a legal Ada 83 <code><a href="../AA-5/AA-5.4#S0176">case_statement</a></code> will be illegal in Ada 95 if the bounds of the subtype are different than the bounds of the base type. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 83
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>18.a</MarginText>
 <Admonition type="aarm" aarm="note">
@@ -203,9 +209,11 @@ subtype S is Integer range 1..2;{"\n"}function F return S;{"\n"}case F is{"\n"} 
 Note that the result subtype given in a function <code><a href="../AA-8/AA-8.5#S0238">renaming_declaration</a></code> is ignored; for a <code><a href="../AA-5/AA-5.4#S0176">case_statement</a></code> whose expression calls a such a function, the full coverage rules are checked using the result subtype of the original function. Note that predefined operators such as "+" have an unconstrained result subtype (see <a href="../AA-4/AA-4.5#Subclause_4.5.1">4.5.1</a>). Note that generic formal functions do not have static result subtypes. Note that the result subtype of an inherited subprogram need not correspond to any nameable subtype; there is still a perfectly good result subtype, though. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 83
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>18.e</MarginText>
 <Admonition type="aarm" aarm="note">
@@ -230,9 +238,11 @@ In the Name Resolution Rule for the case expression, we no longer need RM83-5.4(
 Since <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>s are now defined as <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s, their coverage rule is now covered under the general rule for <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s, rather than being separated out along with <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code>s. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>18.i/3</MarginText>
 <MarginInfo items={["AI05-0003-1"]} />
@@ -254,9 +264,11 @@ Revised for changes to <code><a href="../AA-3/AA-3.8#S0074">discrete_choice</a><
 Added the <em>selecting_</em> prefix to make this wording consistent with <code><a href="../AA-4/AA-4.5#S0151">case_expression</a></code>, and to clarify which <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is being talked about in the wording. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>18.l/4</MarginText>
 <MarginInfo items={["AI12-0071-1"]} />

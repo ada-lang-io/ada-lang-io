@@ -735,9 +735,11 @@ type Sequence is array (Integer range {"<"}{">"}) of Integer;{"\n"}subtype Dozen
 Sequence(Ledger)            --  bounds are those of Ledger{"\n"}Sequence(Ledger(31 .. 42))  --  bounds are 31 and 42{"\n"}Dozen(Ledger(31 .. 42))     --  bounds are those of Dozen {"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 
 #### Incompatibilities With Ada 83
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>71.a</MarginText>
 <Admonition type="aarm" aarm="note">
@@ -756,9 +758,11 @@ The component subtypes have to statically match in an array conversion, rather t
 Because sliding of array bounds is now provided for operations where it was not in Ada 83, programs that used to raise Constraint_Error might now continue executing and produce a reasonable result. This is likely to fix more bugs than it creates. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 83
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>71.d</MarginText>
 <Admonition type="aarm" aarm="note">
@@ -783,9 +787,11 @@ We now specify &ldquo;deterministic&rdquo; rounding from real to integer types w
 &ldquo;Sliding&rdquo; of array bounds (which is part of conversion to an array subtype) is performed in more cases in Ada 95 than in Ada 83. Sliding is not performed on the operand of a membership test, nor on the operand of a <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code>. It wouldn't make sense on a membership test, and we wish to retain a connection between subtype membership and subtype qualification. In general, a subtype membership test returns True if and only if a corresponding subtype qualification succeeds without raising an exception. Other operations that take arrays perform sliding. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 83
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>71.h</MarginText>
 <Admonition type="aarm" aarm="note">
@@ -799,9 +805,11 @@ We no longer explicitly list the kinds of things that are not allowed as the ope
 The rules in this subclause subsume the rules for "parameters of the form of a type conversion", and have been generalized to cover the use of a type conversion as a <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Incompatibilities With Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>71.j/2</MarginText>
 <MarginInfo items={["AI95-00246-01"]} />
@@ -816,9 +824,11 @@ The rules in this subclause subsume the rules for "parameters of the form of a t
 If a discriminated full type has a partial view (private type) that is constrained, we do not allow conversion between access-to-unconstrained and access-to-constrained subtypes designating the type. Ada 95 allowed this conversion and the declaration of various access subtypes, requiring that the designated object be constrained and thus making details of the implementation of the private type visible to the client of the private type. See <a href="../AA-4/AA-4.8">4.8</a> for more on this topic. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>71.l/2</MarginText>
 <MarginInfo items={["AI95-00230-01"]} />
@@ -833,9 +843,11 @@ Conversion rules for <em>universal_access</em> were defined. These allow the use
 A type conversion from an access-to-discriminated and unconstrained object to an access-to-discriminated and constrained one is allowed. Ada 95 only allowed the reverse conversion, which was weird and asymmetric. Of course, a constraint check will be performed for this conversion. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>71.n/2</MarginText>
 <MarginInfo items={["AI95-00184-01"]} />
@@ -885,9 +897,11 @@ Rules added by the Corrigendum to eliminate problems with discriminants of alias
 Accessibility checks on conversions involving types with anonymous access components were added. These components have the level of the type, and conversions can be between types at different levels, which could cause dangling access values in the absence of such checks. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Inconsistencies With Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>71.u/3</MarginText>
 <MarginInfo items={["AI05-0148-1"]} />
@@ -895,9 +909,11 @@ Accessibility checks on conversions involving types with anonymous access compon
 A stand-alone object of an anonymous access-to-object type now has dynamic accessibility. Normally, this will make programs legal that were illegal in Ada 2005. However, it is possible that a program that previously raised Program_Error now will not. It is very unlikely that an existing program intentionally depends on the exception being raised; the change is more likely to fix bugs than introduce them. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>71.v/3</MarginText>
 <MarginInfo items={["AI05-0115-1"]} />
@@ -912,9 +928,11 @@ A stand-alone object of an anonymous access-to-object type now has dynamic acces
 Added rules so that predicate aspects (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>) are enforced on subtype conversion. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Inconsistencies With Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>71.x/5</MarginText>
 <MarginInfo items={["AI12-0333-1", "AI12-0432-1"]} />
@@ -922,9 +940,11 @@ Added rules so that predicate aspects (see <a href="../AA-3/AA-3.2#Subclause_3.2
 <strong></strong> Predicate checks are no longer made on any <strong>out</strong> parameters before a call (they're still made when the call returns). This was already true for elementary <strong>out</strong> parameters. If a program depends on a predicate check failing on an inbound <strong>out</strong> composite parameter, it will get an incorrect result. Similarly, predicate checks are no longer made on the view conversion of a target of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>. Both of these cases seem quite unlikely, as programs (outside of ACATS tests) that depend on the failure of checks are very rare, and the predicate might be checking uninitialized components (making check failure unreliable). <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Incompatibilities With Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>71.y/5</MarginText>
 <MarginInfo items={["AI12-0005-1", "AI12-0095-1"]} />
@@ -932,9 +952,11 @@ Added rules so that predicate aspects (see <a href="../AA-3/AA-3.2#Subclause_3.2
 <strong>Corrigendum:</strong> Because of a rule added in <a href="../AA-12/AA-12.5#Subclause_12.5.1">12.5.1</a>, the checks for the legality of an access type conversion in a generic body were strengthened to use an assume-the-worst  rule. This case is rather unlikely because  a formal private or derived type with discriminants is required along with a conversion between two access types whose designated types don't statically match, and any such programs were at risk having objects disappear while valid access values still pointed at them. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>71.z/4</MarginText>
 <MarginInfo items={["AI12-0027-1"]} />

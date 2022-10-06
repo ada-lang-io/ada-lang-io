@@ -193,6 +193,7 @@ For the statically bound remote calls, the identity of the remote partition is s
 The calling stub operates as follows: <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>20.f</MarginText>
 <ul>
 <li>It allocates (or reuses) a stream of Params_Stream_Type of Initial_Size, and initializes it by repeatedly calling Write operations, first to identify which remote subprogram in the receiving partition is being called, and then to pass the incoming value of each of the <strong>in</strong> and <strong>in out</strong> parameters of the call.<br /></li>
@@ -206,12 +207,14 @@ The calling stub operates as follows: <br /></Admonition>
 <MarginInfo items={["AI05-0229-1"]} />
 <li>If the aspect Asynchronous is not specified for the procedure, Do_RPC blocks until a reply message arrives, and then returns to the calling stub. The stub returns after extracting from the Result stream, using Read operations, the <strong>in out</strong> and <strong>out</strong> parameters or the function result. If the reply message indicates that the execution of the remote subprogram propagated an exception, the exception is propagated from Do_RPC to the calling stub, and thence to the point of the original remote subprogram call. If Do_RPC detects that communication with the remote partition has failed, it propagates Communication_Error.<br /></li>
 </ul>
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>20.j</MarginText>
 <Admonition type="aarm" aarm="note">
 On the receiving side, the RPC-receiver procedure operates as follows: <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>20.k</MarginText>
 <ul>
 <li>It is called from the PCS when a remote-subprogram-call message is received. The call originates in some remote call receiver task executed and managed in the context of the PCS.<br /></li>
@@ -222,6 +225,7 @@ On the receiving side, the RPC-receiver procedure operates as follows: <br /></A
 <MarginText>20.n</MarginText>
 <li>The receiving stub calls the actual subprogram body and, upon completion of the subprogram, uses Write to insert the results into the stream pointed to by the Result parameter. The receiving stub returns to the RPC-receiver procedure which in turn returns to the PCS. If the actual subprogram body propagates an exception, it is propagated by the RPC-receiver to the PCS, which handles the exception, and indicates in the reply message that the execution of the subprogram body propagated an exception. The exception occurrence can be represented in the reply message using the Write attribute of Ada.Exceptions.Exception_Occurrence. <br /></li>
 </ul>
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>20.o</MarginText>
 <Admonition type="aarm" aarm="note">
@@ -292,9 +296,11 @@ NOTE 2   If a given exception is propagated by a remote subprogram call, but the
 <strong></strong>This situation can happen in a case of dynamically nested remote subprogram calls, where an intermediate call executes in a partition that does not include the library unit that defines the exception. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>22.b/2</MarginText>
 <MarginInfo items={["AI95-00159-01"]} />
@@ -309,9 +315,11 @@ NOTE 2   If a given exception is propagated by a remote subprogram call, but the
 {"{"}<em>8652/0085</em>{"}"} <strong>Corrigendum:</strong> Clarified that the check on class-wide types also applies to values returned from remote subprogram call functions. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>22.d/3</MarginText>
 <MarginInfo items={["AI05-0101-1"]} />
@@ -319,9 +327,11 @@ NOTE 2   If a given exception is propagated by a remote subprogram call, but the
 <strong></strong> Corrected the text to note that remote access types can be defined in remote types units. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>22.e/5</MarginText>
 <MarginInfo items={["AI12-0283-1"]} />
@@ -403,9 +413,11 @@ Clarified that remote subprogram calls are always to active partitions. <br /></
 <strong>To be honest: </strong>It is not clear that this rule can be tested or even defined formally. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>10.b/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />

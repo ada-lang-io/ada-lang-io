@@ -478,6 +478,7 @@ NOTE 1   A user-defined storage pool type can be obtained by extending the Root_
 NOTE 2   The writer of the user-defined allocation and deallocation procedures, and users of <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s for the associated access type, are responsible for dealing with any interactions with tasking. In particular: <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>29</MarginText>
 <ul>
 <li>If the <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s are used in different tasks, they require mutual exclusion.<br /></li>
@@ -486,6 +487,7 @@ NOTE 2   The writer of the user-defined allocation and deallocation procedures, 
 <MarginText>31</MarginText>
 <li>If they are used by interrupt handlers (see <a href="../AA-C/AA-C.3">C.3</a>, &ldquo;<a href="../AA-C/AA-C.3">Interrupt Support</a>&rdquo;), the mutual exclusion mechanism has to work properly in that context. <br /></li>
 </ul>
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>32</MarginText>
 <Admonition type="aarm" aarm="note">
@@ -568,18 +570,22 @@ type Acc is access ...;{"\n"}for Acc'Storage_Pool use Our_Pool;{"\n"}...{"\n"}
 My_Mark := Mark(Our_Pool);{"\n"}... -- Allocate objects using &ldquo;new (My_Mark) Designated(...)&rdquo;.{"\n"}Release(My_Mark); -- Finalize objects and reclaim storage.{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 
 #### Extensions to Ada 83
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>44.a</MarginText>
 <Admonition type="aarm" aarm="note">
 User-defined storage pools are new to Ada 95. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 83
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>44.b/3</MarginText>
 <MarginInfo items={["AI05-0005-1", "AI05-0190-1"]} />
@@ -593,9 +599,11 @@ Ada 83 originally introduced the concept called a &ldquo;collection&rdquo;, whic
 RM83 states the erroneousness of reading or updating deallocated objects incorrectly by missing various cases. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Incompatibilities With Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>44.d/2</MarginText>
 <MarginInfo items={["AI95-00435-01"]} />
@@ -603,9 +611,11 @@ RM83 states the erroneousness of reading or updating deallocated objects incorre
 <strong>Amendment </strong> Storage pools (and Storage_Size) are not defined for access-to-subprogram types. The original Ada 95 wording defined the attributes, but said nothing about their values. If a program uses attributes Storage_Pool or Storage_Size on an access-to-subprogram type, it will need to be corrected for Ada 2005. That's a good thing, as such a use is a bug &mdash; the concepts never were defined for such types. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>44.e/2</MarginText>
 <MarginInfo items={["AI95-00161-01"]} />
@@ -613,9 +623,11 @@ RM83 states the erroneousness of reading or updating deallocated objects incorre
 <strong>Amendment </strong> Added <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Preelaborable_Initialization to type Root_Storage_Pool, so that extensions of it can be used to declare default-initialized objects in preelaborated units. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>44.f/2</MarginText>
 <MarginInfo items={["AI95-00137-01"]} />
@@ -630,9 +642,11 @@ RM83 states the erroneousness of reading or updating deallocated objects incorre
 Added wording to clarify that an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> for a coextension nested inside an outer <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> shares the pool with the outer <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>44.h/3</MarginText>
 <MarginInfo items={["AI05-0051-1"]} />
@@ -668,9 +682,11 @@ Added wording to support subpools and refer to the subpool example, see <a href=
 Added wording to allow larger alignments for calls to Allocate made by <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s, up to Max_Alignment_For_Allocation. This eases implementation in some cases. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>44.m/5</MarginText>
 <MarginInfo items={["AI12-0235-1"]} />
@@ -678,9 +694,11 @@ Added wording to allow larger alignments for calls to Allocate made by <code><a 
 Package System.Storage_Pools now has Pure categorization, so it can be mentioned for any package. Note that this does not allow storage pool objects to be shared between partitions, as these necessarily must be variables; however, this does allow a storage pool type to be shared. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>44.n/4</MarginText>
 <MarginInfo items={["AI12-0043-1"]} />
@@ -746,9 +764,11 @@ Specified that the standard pool(s), and the pool(s) used to implement a specifi
 <strong></strong>Coextensions of coextensions of this type (and so on) are included in the values of these attributes if they are allocated from the same pool. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>5.c/2</MarginText>
 <MarginInfo items={["AI95-00256-01"]} />
@@ -756,9 +776,11 @@ Specified that the standard pool(s), and the pool(s) used to implement a specifi
 Corrected the wording so that a fortune-telling compiler that can see the future execution of the program is not required. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>5.d/3</MarginText>
 <MarginInfo items={["AI05-0193-1"]} />
@@ -983,9 +1005,11 @@ NOTE 1   The rules here that refer to Free apply to any instance of Unchecked_De
 NOTE 2   Unchecked_Deallocation cannot be instantiated for an access-to-constant type. This is implied by the rules of <a href="../AA-12/AA-12.5#Subclause_12.5.4">12.5.4</a>. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 95
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>19.a/2</MarginText>
 <MarginInfo items={["AI95-00416-01"]} />
@@ -993,9 +1017,11 @@ NOTE 2   Unchecked_Deallocation cannot be instantiated for an access-to-constant
 The rules for coextensions are clarified (mainly by adding that term). In theory, this reflects no change from Ada 95 (coextensions existed in Ada 95, they just didn't have a name). <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>19.b/3</MarginText>
 <MarginInfo items={["AI05-0033-1"]} />
@@ -1017,9 +1043,11 @@ The rules for coextensions are clarified (mainly by adding that term). In theory
 <strong></strong> Added wording so that calling an instance of Unchecked_Deallocation is treated similarly to <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s for access types where <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s would be banned. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Inconsistencies With Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>19.e/4</MarginText>
 <MarginInfo items={["AI12-0148-1"]} />
@@ -1034,9 +1062,11 @@ The rules for coextensions are clarified (mainly by adding that term). In theory
 A side effect of this change is to allow an Ada implementation to detect dangling references in more places. This does not require any Ada implementation to change, and if the implementation does change, it just means that errors will be detected earlier. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>19.g/4</MarginText>
 <MarginInfo items={["AI12-0148-1"]} />
@@ -1240,9 +1270,11 @@ The semantics of the Default_Storage_Pool aspect are similar to passing a pool o
 NOTE 1   Default_Storage_Pool can  be used with restrictions No_Coextensions and No_Access_Parameter_Allocators (see <a href="../AA-H/AA-H.4">H.4</a>) to ensure that all <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s use the default pool. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 83
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>9.a/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
@@ -1250,9 +1282,11 @@ NOTE 1   Default_Storage_Pool can  be used with restrictions No_Coextensions and
 <em>This paragraph was deleted.</em><br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Incompatibilities With Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>9.b/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
@@ -1260,9 +1294,11 @@ NOTE 1   Default_Storage_Pool can  be used with restrictions No_Coextensions and
 Pragma Controlled has been dropped from Ada, as it has no effect in any known Ada implementations and it seems to promise capabilities not expected in Ada implementations. This is usually not an incompatibility, as the pragma merely becomes unrecognized (with a warning) and can be implemented as an implementation-defined pragma if desired. However, it is incompatible if it is (now) implemented as an implementation-defined pragma, someone used this pragma in a unit, and they also used restriction No_Implementation_Pragmas on that unit. In that case, the pragma would now violate the restriction; but use of this pragma (which does nothing) should be very rare, so this is not a significant issue. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>9.c/4</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI12-0005-1"]} />
@@ -1270,9 +1306,11 @@ Pragma Controlled has been dropped from Ada, as it has no effect in any known Ad
 The pragma Default_Storage_Pool and aspect Default_Storage_Pool are new. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>9.d/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
@@ -1280,9 +1318,11 @@ The pragma Default_Storage_Pool and aspect Default_Storage_Pool are new. <br /><
 The entire discussion of garbage collection (and especially that of controlled objects) is deleted. Ada 2012 provides subpools (see <a href="../AA-13/AA-13.11#Subclause_13.11.4">13.11.4</a>) for storage management of objects, including controlled objects, a mechanism which is much more predictable than garbage collection. Note that no version of Ada allows early finalization of controlled objects (other than via the use of Unchecked_Deallocation or Unchecked_Deallocate_Subpool), so that garbage collection of such objects would be ineffective in the standard mode anyway. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>9.e/4</MarginText>
 <MarginInfo items={["AI05-0003-1"]} />
@@ -1290,9 +1330,11 @@ The entire discussion of garbage collection (and especially that of controlled o
 <strong>Corrigendum:</strong> The <code><a href="../AA-13/AA-13.11#S0358">storage_pool_indicator</a></code> Standard is new. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>9.f/4</MarginText>
 <MarginInfo items={["AI12-0136-1"]} />
@@ -1479,12 +1521,14 @@ Allocate_From_Subpool{"\n"}  (Root_Storage_Pool_With_Subpools'Class(P),{"\n"}   
 <strong></strong>This ensures either of two implementation models are possible for an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> with no <code><a href="../AA-4/AA-4.8#S0165">subpool_specification</a></code>. Note that the "supports subpools" property is not known at compile time for a pool of the class-wide type.<br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>32.b/3</MarginText>
 <ul>
 <li>The implementation can dispatch to Storage_Pools.Allocate. If the pool supports subpools, this will call Allocate_From_Subpool with the default subpool so long as Allocate has not been overridden.<br /></li>
 <MarginText>32.c/3</MarginText>
 <li>The implementation can declare Allocate_From_Subpool as a primitive of Root_Storage_Pool in the private part of Storage_Pools. This means that the Allocate_From_Subpool for Root_Storage_Pool_With_Subpools overrides that private one. The implementation can thus call the private one, which will call Allocate for non-subpool-supporting pools. The effect of this implementation does not change if Allocate is overridden for a pool that supports subpools. <br /></li>
 </ul>
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>33/5</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI12-0442-1"]} />
@@ -1506,9 +1550,11 @@ NOTE 2   A user-defined storage pool type that supports subpools can  define add
 NOTE 3   The pool implementor can  override Default_Subpool_For_Pool if they want the pool  to support a default subpool for the pool. The implementor can override Deallocate if individual object reclamation is to be supported, and can override Storage_Size if there is some limit on the total size of the storage pool. The implementor can override Initialize and Finalize if there is any desire  for nontrivial initialization and finalization for the pool as a whole. For example, Finalize can  reclaim blocks of storage that are allocated over and above the space occupied by the pool object itself. The pool implementor can  extend the Root_Subpool type as necessary to carry additional information with each subpool provided by Create_Subpool.<br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>35.a/3</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI05-0252-1"]} />
@@ -1516,9 +1562,11 @@ NOTE 3   The pool implementor can  override Default_Subpool_For_Pool if they wan
 Subpools and the package System.Storage_Pools.Subpools are new. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>35.b/4</MarginText>
 <MarginInfo items={["AI12-0142-1"]} />
@@ -1630,9 +1678,11 @@ If Unchecked_Deallocation is not called (the usual case), the object will be fin
 If that's never called, then the object will be finalized when the Pool_With_Subpools is finalized (by permission &mdash; it might happen when the collection of the access type is finalized).<br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Extensions to Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>10.f/3</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
@@ -1640,9 +1690,11 @@ If that's never called, then the object will be finalized when the Pool_With_Sub
 Unchecked_Deallocate_Subpool is new. <br /></Admonition>
 </AnnotatedOnly>
 
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2012
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>10.g/4</MarginText>
 <MarginInfo items={["AI12-0148-1"]} />
@@ -1736,9 +1788,11 @@ package body MR_Pool is{"\n"}
 end MR_Pool;{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 
 #### Wording Changes from Ada 2005
 
+</AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>29.a/3</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
