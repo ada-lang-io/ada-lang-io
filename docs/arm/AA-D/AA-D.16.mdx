@@ -35,9 +35,11 @@ package System.Multiprocessors {"\n"}   with  Preelaborate, Nonblocking, Global 
    type CPU_Range is range 0 .. implementation-defined;{"\n"}   Not_A_Specific_CPU : constant CPU_Range := 0;{"\n"}   subtype CPU is CPU_Range range 1 .. CPU_Range'Last;{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>4.a.1/3</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The value of CPU_Range'Last in System.Multiprocessors.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>5/3</MarginText>
 <CodeBlock language="ada">
@@ -57,9 +59,11 @@ package System.Multiprocessors {"\n"}   with  Preelaborate, Nonblocking, Global 
 <dl>
 <dd>The aspect CPU is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, which shall be of type System.Multiprocessors.CPU_Range.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>8.a/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>CPU: </strong>Processor on which a given task, or calling task for a protected operation, should run.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Legality Rules
@@ -87,9 +91,11 @@ package System.Multiprocessors {"\n"}   with  Preelaborate, Nonblocking, Global 
 <MarginInfo items={["AI05-0171-1", "AI05-0229-1"]} />
 <p>The CPU value is associated with the environment task if the CPU aspect is specified for the main subprogram. If the CPU aspect is not specified for the main subprogram it is implementation defined on which processor the environment task executes. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>13.a.1/3</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The processor on which the environment task executes in the absence of a value for the aspect CPU.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>14/5</MarginText>
 <MarginInfo items={["AI05-0171-1", "AI05-0264-1", "AI12-0281-1"]} />
@@ -99,10 +105,12 @@ package System.Multiprocessors {"\n"}   with  Preelaborate, Nonblocking, Global 
 <MarginInfo items={["AI12-0281-1"]} />
 <p>For a protected type, the CPU value determines the processor on which calling tasks will execute; the protected object is said to be assigned to that processor. If the CPU value is Not_A_Specific_CPU, then the protected object is not assigned to a processor. A call to a protected object that is assigned to a processor from a task that is not assigned a processor or is assigned a different processor raises Program_Error.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>15.a/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>When a protected object is assigned to a CPU, only tasks also assigned to that CPU can call it. In contrast, a protected object that is not assigned to a specific CPU can be called by any task on any processor (subject, of course, to visibility and ceiling priority restrictions). As noted below, when the tasks and protected object are necessarily on the same CPU, a simpler implementation can be used. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Advice
@@ -111,37 +119,47 @@ package System.Multiprocessors {"\n"}   with  Preelaborate, Nonblocking, Global 
 <MarginInfo items={["AI12-0281-1", "AI12-0323-1"]} />
 <p>Starting a protected action on a protected object statically assigned to a processor should be implemented without busy-waiting.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>16.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Busy-waiting is a form of lock and can be a source of deadlock. Busy-waiting is typically needed for starting protected actions on multiprocessors, but if all tasks calling a protected object execute on the same CPU, this locking isn't needed and the source of deadlock and associated overhead can be eliminated. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16.b/5</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Starting a protected action on a protected object statically assigned to a processor should not use busy-waiting.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>16.c/3</MarginText>
 <MarginInfo items={["AI05-0171-1", "AI05-0229-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The package System.Multiprocessors and the CPU aspect are new. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>16.d/5</MarginText>
 <MarginInfo items={["AI12-0281-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Aspect CPU can now be applied to protected types, in order to avoid the overhead and deadlock potential of multiprocessor execution. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>16.e/4</MarginText>
 <MarginInfo items={["AI12-0081-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Clarified when the CPU aspect expression is evaluated. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_D.16.1"></a>
 
@@ -212,9 +230,11 @@ private{"\n"}   ... -- not specified by the language{"\n"}end System.Multiproces
 <dl>
 <dd>The value of aspect Dispatching_Domain is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, which shall be of type Dispatching_Domains.Dispatching_Domain. This aspect is the domain to which the task (or all objects of the task type) are assigned.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>18.a/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Dispatching_Domain: </strong>Domain (group of processors) on which a given task should run.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Legality Rules
@@ -277,21 +297,29 @@ private{"\n"}   ... -- not specified by the language{"\n"}end System.Multiproces
 <MarginInfo items={["AI12-0048-1"]} />
 <p>Any task that belongs to the system dispatching domain can execute on any CPU within that domain, unless the assignment of the task has been specified.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>30.a/4</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This ensures that priorities and deadlines are respected within the system dispatching domain. There is no such guarantee between different domains.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.b/4</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We only need to talk about the system dispatching domain here, because Assign_Task and Set_CPU already have such wording for tasks that are assigned explicitly to a dispatching domain and specify Not_a_Specific_CPU. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.c/4</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>If no dispatching domains are created, all tasks can execute on all processors. (As always, implementation-defined dispatching policies may have other rules, so a partition that does not specify any language-defined dispatching policy may do anything at all and in particular does not need to follow this rule. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.d/4</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>A task can be assigned to a specific CPU by specifying the aspect CPU for a task, or by calling a dynamic operation like Set_CPU or Assign_Task. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Advice
@@ -300,14 +328,18 @@ We only need to talk about the system dispatching domain here, because Assign_Ta
 <MarginInfo items={["AI05-0167-1"]} />
 <p>Each dispatching domain should have separate and disjoint ready queues.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>31.a/3</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Each dispatching domain should have separate and disjoint ready queues.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>31.b/4</MarginText>
 <MarginInfo items={["AI12-0048-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>&ldquo;Ready queue&rdquo; here doesn't mean the conceptual "ready queue" as defined in <a href="../AA-D/AA-D.2#Subclause_D.2.1">D.2.1</a> (one per processor); this rule is talking about the ready queues used by the implementation. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Documentation Requirements
@@ -316,9 +348,11 @@ We only need to talk about the system dispatching domain here, because Assign_Ta
 <MarginInfo items={["AI05-0167-1"]} />
 <p>The implementation shall document the processor(s) on which the clock interrupt is handled and hence where delay queue and ready queue manipulations occur. For any Interrupt_Id whose handler can execute on more than one processor the implementation shall also document this set of processors.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>32.a/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Documentation Requirement: </strong>The processor(s) on which the clock interrupt is handled; the processors on which each Interrupt_Id can be handled.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Permissions
@@ -331,45 +365,57 @@ We only need to talk about the system dispatching domain here, because Assign_Ta
 <MarginInfo items={["AI12-0119-1"]} />
 <p>The implementation may defer the effect of a Set_CPU or an Assign_Task operation until the specified task leaves an ongoing parallel construct.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>34.a/5</MarginText>
 <MarginInfo items={["AI12-0119-1"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>These operations can change the set of CPUs that a parallel operation is allowed to use. This could require the ability to move or suspend one or more threads to execute them on a different CPU. However, parallel constructs are primarily intended to improve performance of code, and the overhead needed to support such a rarely used operation could be substantial. Therefore, rather than requiring support we allow the implementation to wait to implement these operations until the parallel construct (and thus the extra threads) have completed. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>34.b/3</MarginText>
 <MarginInfo items={["AI05-0167-1", "AI05-0278-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The package System.Multiprocessors.Dispatching_Domains and the aspect Dispatching_Domains are new. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Inconsistencies With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>34.c/4</MarginText>
 <MarginInfo items={["AI12-0033-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> We now explicitly allow empty dispatching domains, as it would be difficult to avoid declaring them when a system is configured at runtime. Therefore, assigning a task to an empty domain now raises Dispatching_Domain_Error; creating such a domain should not raise Dispatching_Domain_Error. If an implementation does something different in these cases, and a program depends on that difference, the program could malfunction. This seems very unlikely (if no exception is ever raised, the task assigned to the empty domain could never run; if the exception is raised earlier, the program can't do anything useful). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>34.d/5</MarginText>
 <MarginInfo items={["AI05-0005-1", "AI05-0033-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> The subtypes of the parameter or result of several routines were changed to support empty domains. These changes will cause rules requiring subtype conformance to fail on these routines (such as 'Access). We believe such uses are unlikely. In addition, type CPU_Set and function Get_CPU_Set, along with an overloaded Create are newly added to this package. As such, a use clause conflict is possible; see the introduction of <a href="../AA-A/">Annex A</a> for more on this topic.  <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>34.e/4</MarginText>
 <MarginInfo items={["AI12-0048-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added wording to clarify that all tasks can execute on all CPUs of the system dispatching domain by default.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.f/4</MarginText>
 <MarginInfo items={["AI12-0082-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added a definition to clarify that a "dispatching domain" is a concept which is identified by an object of type Dispatching_Domain; more than one object might identify the same dispatching domain (for instance, the result of function Get_Dispatching_Domain is a different object but identifies the same dispatching domain). <br /></Admonition>
+</AnnotatedOnly>
 

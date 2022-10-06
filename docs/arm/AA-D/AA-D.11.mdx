@@ -39,29 +39,37 @@ with Ada.Task_Identification;{"\n"}package Ada.Asynchronous_Task_Control {"\n"} 
 <MarginInfo items={["AI95-00357-01"]} />
 <p>After the Hold operation has been applied to a task, the task becomes <em>held</em>. For each processor there is a conceptual <em>idle task</em>, which is always ready. The base priority of the idle task is below System.Any_Priority'First. The <em>held priority</em> is a constant of the type Integer whose value is below the base priority of the idle task. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>4.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The held state should not be confused with the blocked state as defined in <a href="../AA-9/AA-9.2">9.2</a>; the task is still ready. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>4.1/2</MarginText>
 <MarginInfo items={["AI95-00357-01"]} />
 <p>For any priority below System.Any_Priority'First, the task dispatching policy is FIFO_Within_Priorities. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>4.b/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>This applies even if a Task_Dispatching_Policy specifies the policy for all of the priorities of the partition. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.c/2</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>A task at the held priority never runs, so it is not necessary to implement FIFO_Within_Priorities for systems that have only one policy (such as EDF_Across_Priorities). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>5/2</MarginText>
 <MarginInfo items={["AI95-00357-01"]} />
 <p>The Hold operation sets the state of T to held. For a held task, the active priority is reevaluated as if the base priority of the task were the held priority. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>5.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>For example, if T is currently inheriting priorities from other sources (e.g. it is executing in a protected action), its active priority does not change, and it continues to execute until it leaves the protected action. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>6/2</MarginText>
 <MarginInfo items={["AI95-00357-01"]} />
@@ -70,9 +78,11 @@ with Ada.Task_Identification;{"\n"}package Ada.Asynchronous_Task_Control {"\n"} 
 <MarginText>7</MarginText>
 <p>The Is_Held function returns True if and only if T is in the held state. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Note that the state of T can be changed immediately after Is_Held returns. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>8</MarginText>
 <p>As part of these operations, a check is made that the task identified by T is not terminated. Tasking_Error is raised if the check fails. Program_Error is raised if the value of T is Null_Task_Id.<br /></p>
@@ -90,25 +100,35 @@ with Ada.Task_Identification;{"\n"}package Ada.Asynchronous_Task_Control {"\n"} 
 <MarginInfo items={["AI12-0444-1"]} />
 <p>An implementation may omit  support for Asynchronous_Task_Control if it is infeasible to support it in the target environment. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>10.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>A direct implementation of the Asynchronous_Task_Control semantics using priorities is not necessarily efficient enough. Thus, we envision implementations that use some other mechanism to set the &ldquo;held&rdquo; state. If there is no other such mechanism, support for Asynchronous_Task_Control might be infeasible, because an implementation in terms of priority would require one idle task per processor. On some systems, programs are not supposed to know how many processors are available, so creating enough idle tasks would be problematic. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   It is a consequence of the priority rules that held tasks cannot be dispatched on any processor in a partition (unless they are inheriting priorities) since their priorities are defined to be below the priority of any idle task.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   The effect of calling Get_Priority and Set_Priority on a Held task is the same as on any other task.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   Calling Hold on a held task or Continue on a non-held task has no effect.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 4   The rules affecting queuing are derived from the above rules, in addition to the normal priority rules: <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>15</MarginText>
 <ul>
@@ -126,21 +146,27 @@ NOTE 4   The rules affecting queuing are derived from the above rules, in additi
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>19.a/2</MarginText>
 <MarginInfo items={["AI95-00362-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Asynchronous_Task_Control is now Preelaborated, so it can be used in preelaborated units. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>19.b/2</MarginText>
 <MarginInfo items={["AI95-00111-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0077</em>{"}"} <strong>Corrigendum:</strong> Corrected to eliminate the use of the undefined term &ldquo;accept body&rdquo;.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19.c/2</MarginText>
 <MarginInfo items={["AI95-00357-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The description of held tasks was changed to reflect that the calculation of active priorities depends on the dispatching policy of the base priority. Thus, the policy of the held priority was specified in order to avoid surprises (especially when using the EDF policy). <br /></Admonition>
+</AnnotatedOnly>
 

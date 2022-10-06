@@ -20,10 +20,12 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI95-00248-01"]} />
 <p>The package Directories provides operations for manipulating files and directories, and their names. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>1.a/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The notes for this subclause contain the expected interpretations of some of the operations on various target systems. &ldquo;Unix&rdquo; refers to the UNIX® operating system, and in most cases also covers Unix-like systems such as Linux and POSIX. &ldquo;Windows®&rdquo; refers to the Microsoft® Windows® 2000 operating system and usually also covers most other versions that use the Win32 API. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -138,53 +140,69 @@ private{"\n"}    ... -- not specified by the language{"\n"}end Ada.Directories;{
 <MarginInfo items={["AI95-00248-01"]} />
 <p>External files may be classified as directories, special files, or ordinary files. A <em>directory</em> is an external file that is a container for files on the target system. A <em>special file</em> is an external file that cannot be created or read by a predefined Ada input-output package. External files that are not special files or directories are called <em>ordinary files</em>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>45.a/2</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>A directory is an external file, although it may not have a name on some targets. A directory is not a special file, as it can be created and read by Directories. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>45.b/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Devices and soft links are examples of special files on Windows® and Unix.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>45.c/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Even if an implementation provides a package to create and read soft links, such links are still special files. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>46/2</MarginText>
 <MarginInfo items={["AI95-00248-01"]} />
 <p>A <em>file name</em> is a string identifying an external file. Similarly, a <em>directory name</em> is a string identifying a directory. The interpretation of file names and directory names is implementation defined. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>46.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The interpretation of file names and directory names.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>47/2</MarginText>
 <MarginInfo items={["AI95-00248-01"]} />
 <p>The <em>full name</em> of an external file is a full specification of the name of the file. If the external environment allows alternative specifications of the name (for example, abbreviations), the full name should not use such alternatives. A full name typically will include the names of all of the directories that contain the item. The <em>simple name</em> of an external file is the name of the item, not including any containing directory names. Unless otherwise specified, a file name or directory name parameter in a call to a predefined Ada input-output subprogram can be a full name, a simple name, or any other form of name supported by the implementation. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>47.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The full name on Unix is a complete path to the root. For Windows®, the full name includes a complete path, as well as a disk name ("C:") or network share name. For both systems, the simple name is the part of the name following the last '/' (or '\' for Windows®). For example, in the name "/usr/randy/ada-directories.ads", "ada-directories.ads" is the simple name. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>47.b/2</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>It is possible for a file or directory name to be neither a full name nor a simple name. For instance, the Unix name "../parent/myfile" is neither a full name nor a simple name. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>47.1/5</MarginText>
 <MarginInfo items={["AI12-0337-1"]} />
 <p>A <em>root directory</em> is a directory that has no containing directory.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>47.c/5</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>For Unix and Unix-like systems, "/" is the root. For Windows®, "C:\" and "\\Computer\Share" are roots. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>48/2</MarginText>
 <MarginInfo items={["AI95-00248-01"]} />
 <p>The <em>default directory</em> is the directory that is used if a directory or file name is not a full name (that is, when the name does not fully identify all of the containing directories). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>48.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The default directory is the one maintained by the familiar &ldquo;cd&rdquo; command on Unix and Windows®. Note that Windows® maintains separate default directories for each disk drive; implementations should use the natural implementation. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>49/2</MarginText>
 <MarginInfo items={["AI95-00248-01"]} />
@@ -265,9 +283,11 @@ procedure Rename (Old_Name, New_Name : in String);{"\n"}
 <MarginInfo items={["AI05-0231-1"]} />
 <p>Renames an existing external file (including directories) with name Old_Name to New_Name. The exception Name_Error is propagated if the string given as Old_Name does not identify an existing external file or if the string given as New_Name does not allow the identification of an external file. The exception Use_Error is propagated if the external environment does not support the renaming of the file with the given name (in the absence of Name_Error). In particular, Use_Error is propagated if a file or directory already exists with name New_Name.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>67.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>This operation is expected to work within a single directory, and implementers are encouraged to support it across directories on a single device. Copying files from one device to another is discouraged (that's what Copy_File is for). However, there is no requirement to detect file copying by the target system. If the target system has an API that gives that for &ldquo;free&rdquo;, it can be used. For Windows®, for instance, MoveFile can be used to implement Rename. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>68/3</MarginText>
 <MarginInfo items={["AI05-0092-1"]} />
@@ -279,9 +299,11 @@ procedure Copy_File (Source_Name,{"\n"}                     Target_Name : in Str
 <MarginInfo items={["AI05-0271-1"]} />
 <p>Copies the contents of the existing external file with name Source_Name to an external file with name Target_Name. The resulting external file is a duplicate of the source external file. The Form parameter can be used to give system-dependent characteristics of the resulting external file; the interpretation of the Form parameter is implementation defined. Exception Name_Error is propagated if the string given as Source_Name does not identify an existing external ordinary or special file, or if the string given as Target_Name does not allow the identification of an external file. The exception Use_Error is propagated if the external environment does not support creating the file with the name given by Target_Name and form given by Form, or copying of the file with the name given by Source_Name (in the absence of Name_Error). If Use_Error is propagated, it is unspecified whether a portion of the file is copied. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>69.a/2</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Name_Error is always raised if Source_Name identifies a directory. It is up to the implementation whether special files can be copied, or if Use_Error will be raised. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>70/2</MarginText>
 <MarginInfo items={["AI95-00248-01"]} />
@@ -295,9 +317,11 @@ function Full_Name (Name : in String) return String;{"\n"}
 <MarginText>72/2</MarginText>
 <p>Returns the full name corresponding to the file name specified by Name. The exception Name_Error is propagated if the string given as Name does not allow the identification of an external file (including directories and special files). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>72.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Full name means that no abbreviations are used in the returned name, and that it is a full specification of the name. Thus, for Unix and Windows®, the result should be a full path that does not contain any "." or ".." directories. Typically, the default directory is used to fill in any missing information. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>73/2</MarginText>
 <CodeBlock language="ada">
@@ -308,10 +332,12 @@ function Simple_Name (Name : in String) return String;{"\n"}
 <MarginInfo items={["AI12-0337-1", "AI12-0433-1"]} />
 <p>Returns the simple name portion of the file name specified by Name. The simple name of a root directory is a name of the root itself. The exception Name_Error is propagated if the string given as Name does not allow the identification of an external file (including directories and special files).<br /></p>
 
+<AnnotatedOnly>
 <MarginText>74.a/5</MarginText>
 <MarginInfo items={["AI12-0337-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The result of Simple_Name corresponds to the result of the &ldquo;basename&rdquo; command on Linux and Unix. If the filename ends with a '/', and is not a root, then &ldquo;basename&rdquo; returns the part in front of all of the trailing '/'s. It returns a root intact. The null string is never returned. Similar rules should be used for Windows filenames. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>75/2</MarginText>
 <CodeBlock language="ada">
@@ -321,14 +347,18 @@ function Containing_Directory (Name : in String) return String;{"\n"}
 <MarginText>76/2</MarginText>
 <p>Returns the name of the containing directory of the external file (including directories) identified by Name. (If more than one directory can contain Name, the directory name returned is implementation defined.) The exception Name_Error is propagated if the string given as Name does not allow the identification of an external file. The exception Use_Error is propagated if the external file does not have a containing directory. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>76.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>This is purely a string manipulation function. If Name is not given as a full name, the containing directory probably won't be one, either. For example, if Containing_Directory ("..\AARM\RM-A-8") is called on Windows®, the result should be "..\AARM". If there is no path at all on the name, the result should be "." (which represents the current directory). Use Full_Name on the result of Containing_Directory if the full name is needed. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>76.b/5</MarginText>
 <MarginInfo items={["AI12-0337-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Containing_Directory raises Use_Error when passed a string representing a root directory. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>77/2</MarginText>
 <CodeBlock language="ada">
@@ -338,9 +368,11 @@ function Extension (Name : in String) return String;{"\n"}
 <MarginText>78/2</MarginText>
 <p>Returns the extension name corresponding to Name. The extension name is a portion of a simple name (not including any separator characters), typically used to identify the file class. If the external environment does not have extension names, then the null string is returned. The exception Name_Error is propagated if the string given as Name does not allow the identification of an external file. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>78.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>For Unix and Windows®, the extension is the portion of the simple name following the rightmost period. For example, in the simple name "RM-A-8.html", the extension is "html". <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>79/2</MarginText>
 <CodeBlock language="ada">
@@ -350,9 +382,11 @@ function Base_Name (Name : in String) return String;{"\n"}
 <MarginText>80/2</MarginText>
 <p>Returns the base name corresponding to Name. The base name is the remainder of a simple name after removing any extension and extension separators. The exception Name_Error is propagated if the string given as Name does not allow the identification of an external file (including directories and special files). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>80.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>For Unix and Windows®, the base name is the portion of the simple name preceding the rightmost period (except for the special directory names "." and "..", whose Base_Name is "." and ".."). For example, in the simple name "RM-A-8.html", the base name is "RM-A-8". <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>81/2</MarginText>
 <CodeBlock language="ada">
@@ -374,17 +408,23 @@ function Compose (Containing_Directory : in String := "";{"\n"}                 
 <MarginInfo items={["AI12-0337-1"]} />
 <li>the string given as Name is a root directory, and Containing_Directory or Extension is nonnull. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>82.a/2</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The above definition implies that if the Extension is null, for Unix and Windows® no '.' is added to Name. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>82.b/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>If Name is null, Name_Error should be raised, as nothing is not a possible simple name or base name.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>82.c/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Generally, Compose(Containing_Directory(F), Base_Name(F),Extension(F)) = F. However, this is not true on Unix or Windows® for file names that end with a '.'; Compose(Base_Name("Fooey."),Extension("Fooey.")) = "Fooey". This is not a problem for Windows®, as the names have the same meaning with or without the '.', but these are different names for Unix. Thus, care needs to be taken on Unix; if Extension is null, Base_Name should be avoided. (That's not usually a problem with file names generated by a program.) <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>82.5/3</MarginText>
 <MarginInfo items={["AI05-0049-1"]} />
@@ -396,9 +436,11 @@ function Name_Case_Equivalence (Name : in String) return Name_Case_Kind;{"\n"}
 <MarginInfo items={["AI05-0049-1", "AI05-0248-1"]} />
 <p>Returns the file name equivalence rule for the directory containing Name. Raises Name_Error if Name is not a full name. Returns Case_Sensitive if file names that differ only in the case of letters are considered different names. If file names that differ only in the case of letters are considered the same name, then Case_Preserving is returned if names have the case of the file name used when a file is created; and Case_Insensitive is returned otherwise. Returns Unknown if the file name equivalence is not known. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>82.c.1/3</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Unix, Linux, and their relatives are Case_Sensitive systems. Microsoft® Windows® is a Case_Preserving system (unless the rarely used POSIX mode is used). Ancient systems like CP/M and early MS-DOS were Case_Insensitive systems (file names were always in UPPER CASE). Unknown is provided in case it is impossible to tell (such as could be the case for network files). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>83/2</MarginText>
 <MarginInfo items={["AI95-00248-01"]} />
@@ -420,9 +462,11 @@ type File_Size is range 0 .. implementation-defined;{"\n"}
 <MarginText>87/2</MarginText>
 <p>The type File_Size represents the size of an external file. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>87.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The maximum value for a file size in Directories.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>88/2</MarginText>
 <CodeBlock language="ada">
@@ -448,13 +492,17 @@ function Size (Name : in String) return File_Size;{"\n"}
 <MarginText>93/2</MarginText>
 <p>Returns the size of the external file represented by Name. The size of an external file is the number of stream elements contained in the file. If the external file is not an ordinary file, the result is implementation defined. The exception Name_Error is propagated if the string given as Name does not allow the identification of an existing external file. The exception Constraint_Error is propagated if the file size is not a value of type File_Size. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>93.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The result for Directories.Size for a directory or special file.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>93.b/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>We allow raising Constraint_Error, so that an implementation for a system with 64-bit file sizes does not need to support full numerics on 64-bit integers just to implement this package. Of course, if 64-bit integers are available on such a system, they should be used when defining type File_Size. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>94/2</MarginText>
 <CodeBlock language="ada">
@@ -464,9 +512,11 @@ function Modification_Time (Name : in String) return Ada.Calendar.Time;{"\n"}
 <MarginText>95/2</MarginText>
 <p>Returns the time that the external file represented by Name was most recently modified. If the external file is not an ordinary file, the result is implementation defined. The exception Name_Error is propagated if the string given as Name does not allow the identification of an existing external file. The exception Use_Error is propagated if the external environment does not support reading the modification time of the file with the name given by Name (in the absence of Name_Error). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>95.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The result for Directories.Modification_Time for a directory or special file.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>96/2</MarginText>
 <MarginInfo items={["AI95-00248-01"]} />
@@ -505,9 +555,11 @@ procedure Start_Search (Search    : in out Search_Type;{"\n"}                   
 <MarginInfo items={["AI05-0092-1", "AI05-0262-1"]} />
 <p>Starts a search in the directory named by Directory for entries matching Pattern and Filter. Pattern represents a pattern for matching file names. If Pattern is the null string, all items in the directory are matched; otherwise, the interpretation of Pattern is implementation defined. Only items that match Filter will be returned. After a successful call on Start_Search, the object Search may have entries available, but it may have no entries available if no files or directories match Pattern and Filter. The exception Name_Error is propagated if the string given by Directory does not identify an existing directory, or if Pattern does not allow the identification of any possible external file or directory. The exception Use_Error is propagated if the external environment does not support the searching of the directory with the given name (in the absence of Name_Error). When Start_Search propagates Name_Error or Use_Error, the object Search will have no entries available. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>104.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The interpretation of a nonnull search pattern in Directories.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>105/2</MarginText>
 <CodeBlock language="ada">
@@ -517,9 +569,11 @@ procedure End_Search (Search : in out Search_Type);{"\n"}
 <MarginText>106/2</MarginText>
 <p>Ends the search represented by Search. After a successful call on End_Search, the object Search will have no entries available.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>106.a/2</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The only way that a call to End_Search could be unsuccessful if Device_Error (see <a href="../AA-A/AA-A.13">A.13</a>) is raised because of an underlying failure (or bug). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>107/2</MarginText>
 <CodeBlock language="ada">
@@ -538,9 +592,11 @@ procedure Get_Next_Entry (Search : in out Search_Type;{"\n"}                    
 <MarginInfo items={["AI05-0262-1"]} />
 <p>Returns the next Directory_Entry for the search described by Search that matches the pattern and filter. If no further matches are available, Status_Error is raised. It is implementation defined as to whether the results returned by this subprogram are altered if the contents of the directory are altered while the Search object is valid (for example, by another program). The exception Use_Error is propagated if the external environment does not support continued searching of the directory represented by Search. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>110.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The results of a Directories search if the contents of the directory are altered while a search is in progress.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>111/5</MarginText>
 <MarginInfo items={["AI12-0286-1"]} />
@@ -552,9 +608,11 @@ procedure Search ({"\n"}   Directory : in String;{"\n"}   Pattern   : in String;
 <MarginInfo items={["AI05-0092-1", "AI05-0262-1"]} />
 <p>Searches in the directory named by Directory for entries matching Pattern and Filter. The subprogram designated by Process is called with each matching entry in turn. Pattern represents a pattern for matching file names. If Pattern is the null string, all items in the directory are matched; otherwise, the interpretation of Pattern is implementation defined. Only items that match Filter will be returned. The exception Name_Error is propagated if the string given by Directory does not identify an existing directory, or if Pattern does not allow the identification of any possible external file or directory. The exception Use_Error is propagated if the external environment does not support the searching of the directory with the given name (in the absence of Name_Error). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>112.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>&ldquo;In turn&rdquo; means that the calls to the subprogram designated by Process are not made in parallel; they can be made in any order but must be in sequence. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>113/2</MarginText>
 <CodeBlock language="ada">
@@ -602,9 +660,11 @@ function Modification_Time (Directory_Entry : in Directory_Entry_Type){"\n"}    
 <MarginText>123/2</MarginText>
 <p>For Copy_File, if Source_Name identifies an existing external ordinary file created by a predefined Ada input-output package, and Target_Name and Form can be used in the Create operation of that input-output package with mode Out_File without raising an exception, then Copy_File shall not propagate Use_Error.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>123.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>This means that Copy_File will copy any file that the Ada programmer could copy (by writing some possibly complicated Ada code). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Advice
@@ -612,14 +672,19 @@ function Modification_Time (Directory_Entry : in Directory_Entry_Type){"\n"}    
 <MarginText>124/2</MarginText>
 <p>If other information about a file (such as the owner or creation date) is available in a directory entry, the implementation should provide functions in a child package Directories.Information to retrieve it. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>124.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Package Directories.Information should be provided to retrieve other information about a file.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>124.b/2</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>For Windows®, Directories.Information should contain at least the following routines:<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>124.c/5</MarginText>
 <MarginInfo items={["AI12-0302-1"]} />
 <CodeBlock language="ada">
@@ -676,10 +741,14 @@ package Ada.Directories.Information {"\n"}   with Global ={">"} in out synchroni
     -- Additional implementation-defined subprograms allowed here.{"\n"}end Ada.Directories.Information;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>124.cc/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 For Unix-like systems (Unix, POSIX, Linux, etc.), Directories.Information should contain at least the following routines:<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>124.dd/5</MarginText>
 <MarginInfo items={["AI12-0302-1"]} />
 <CodeBlock language="ada">
@@ -733,99 +802,132 @@ package Ada.Directories.Information {"\n"}   with Global ={">"} in out synchroni
     -- Additional implementation-defined subprograms allowed here.{"\n"}end Ada.Directories.Information;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>124.bbb/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We give these definitions to give guidance so that every implementation for a given target is not unnecessarily different. Implementers are encouraged to make packages for other targets as similar to these as possible.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>125/5</MarginText>
 <MarginInfo items={["AI05-0231-1", "AI12-0439-1"]} />
 <p>Start_Search and Search should raise Name_Error if Pattern is malformed, but not if it can  represent a file in the directory but does not actually do so.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>125.a/3</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Directories.Start_Search and Directories.Search should raise Name_Error for malformed patterns.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>126/2</MarginText>
 <p>Rename should be supported at least when both New_Name and Old_Name are simple names and New_Name does not identify an existing external file. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>126.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Directories.Rename should be supported at least when both New_Name and Old_Name are simple names and New_Name does not identify an existing external file.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>126.b/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>&ldquo;Supported&rdquo; includes raising an exception if either name is malformed, the file to rename doesn't exist, insufficient permission for the operation exists, or similar problems. But this advice requires implementations to document what they do, and tells implementers that simply raising Use_Error isn't acceptable. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>127/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   The operations Containing_Directory, Full_Name, Simple_Name, Base_Name, Extension, and Compose operate on file names, not external files. The files identified by these operations do not necessarily  exist. Name_Error is raised only if the file name is malformed and cannot possibly identify a file. Of these operations, only the result of Full_Name depends on the current default directory; the result of the others depends only on their parameters.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>128/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   Using access types, values of Search_Type and Directory_Entry_Type can be saved and queried later. However, another task or application can modify or delete the file represented by a Directory_Entry_Type value or the directory represented by a Search_Type value; such a value can only give the information valid at the time it is created. Therefore, long-term storage of these values is not recommended.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>129/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   If the target system does not support directories inside of directories, then Kind will never return Directory and Containing_Directory will always raise Use_Error.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>130/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 4   If the target system does not support creation or deletion of directories, then Create_Directory, Create_Path, Delete_Directory, and Delete_Tree will always propagate Use_Error.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>131/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 5   To move a file or directory to a different location, use Rename. Most target systems will allow renaming of files from one directory to another. If the target file or directory can  already exist, delete it  first. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>131.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>While Rename is only guaranteed to work for name changes within a single directory, its unlikely that implementers would purposely prevent functionality present in the underlying system from working. To move a file totally portably, it's necessary to handle failure of the Rename and fall back to Copy_File and Delete: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>131.b</MarginText>
 <CodeBlock language="ada">
 begin{"\n"}   Rename (Source, Target);{"\n"}exception{"\n"}   when Use_Error ={">"}{"\n"}      Copy_File (Source, Target);{"\n"}      Delete (Source);{"\n"}end;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>131.c/2</MarginText>
 <MarginInfo items={["AI95-00248-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Package Ada.Directories is new. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Inconsistencies With Ada 2005
 
+<AnnotatedOnly>
 <MarginText>131.d/3</MarginText>
 <MarginInfo items={["AI05-0231-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Correction</strong>: Clarified when and which exceptions are raised for Start_Search, Search, Delete_Directory, and Rename. If an implementation followed the original incorrect wording, it might raise Use_Error instead of Name_Error for Start_Search and Search, Name_Error instead of Use_Error for Rename, and might have deleted a nonempty directory instead of raising Use_Error for Delete_Directory. The first two cases are very unlikely to matter in practice, and it unlikely that an implementation would have followed the latter implementation strategy, as it would be more work and would make Delete_Directory identical to Delete_Tree (which is obvious nonsense). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2005
 
+<AnnotatedOnly>
 <MarginText>131.e/3</MarginText>
 <MarginInfo items={["AI05-0049-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 A new enumeration type Name_Case_Kind and a new function Name_Case_Equivalence is added to Directories. If Directories is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with a <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> of one of the new entities is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>131.f/3</MarginText>
 <MarginInfo items={["AI05-0271-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> We now explicitly say that the behavior of Create_Path and Copy_File is unspecified when Use_Error is raised. Nothing has changed here, as the behavior was (implicitly) unspecified in the 2007 Amendment. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>131.g/5</MarginText>
 <MarginInfo items={["AI12-0337-1", "AI12-0433-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Clarified the meaning of Simple_Name in the case that the parameter is a root directory. This was not previously described. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_A.16.1"></a>
 
@@ -884,10 +986,12 @@ function Is_Simple_Name (Name : in String) return Boolean;{"\n"}
 <MarginText>18/3</MarginText>
 <p>Returns True if Name is a simple name, and returns False otherwise.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>18.a/5</MarginText>
 <MarginInfo items={["AI12-0337-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Root directories are considered simple names, so this function will return True if Name represents a root. Use Is_Root_Directory if it is necessary to distinguish roots and other simple names. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>19/3</MarginText>
 <CodeBlock language="ada">
@@ -897,10 +1001,12 @@ function Is_Root_Directory_Name (Name : in String) return Boolean;{"\n"}
 <MarginText>20/3</MarginText>
 <p>Returns True if Name is syntactically a root (a directory that cannot be decomposed further), and returns False otherwise.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>20.a/5</MarginText>
 <MarginInfo items={["AI12-0337-1"]} />
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>21/3</MarginText>
 <CodeBlock language="ada">
@@ -910,9 +1016,11 @@ function Is_Parent_Directory_Name (Name : in String) return Boolean;{"\n"}
 <MarginText>22/3</MarginText>
 <p>Returns True if Name can be used to indicate symbolically the parent directory of any directory, and returns False otherwise.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>22.a/3</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Is_Parent_Directory_Name returns True if and only if Name is ".." for both Unix and Windows®. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>23/3</MarginText>
 <CodeBlock language="ada">
@@ -922,9 +1030,11 @@ function Is_Current_Directory_Name (Name : in String) return Boolean;{"\n"}
 <MarginText>24/3</MarginText>
 <p>Returns True if Name can be used to indicate symbolically the directory itself for any directory, and returns False otherwise.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>24.a/3</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Is_Current_Directory_Name returns True if and only if Name is "." for both Unix and Windows®. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>25/3</MarginText>
 <CodeBlock language="ada">
@@ -943,10 +1053,12 @@ function Is_Relative_Name (Name : in String) return Boolean;{"\n"}
 <MarginInfo items={["AI05-0049-1", "AI05-0269-1"]} />
 <p>Returns True if Name allows the identification of an external file (including directories and special files) but is not a full name, and returns False otherwise.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>28.a/5</MarginText>
 <MarginInfo items={["AI12-0337-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Relative names include simple names other than root directories as a special case. This function returns False if the syntax of the name is incorrect. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>29/3</MarginText>
 <CodeBlock language="ada">
@@ -965,9 +1077,11 @@ function Relative_Name (Name : in String) return String;{"\n"}
 <MarginText>32/3</MarginText>
 <p>Returns the entire file name except the Initial_Directory portion. The exception Name_Error is propagated if the string given as Name does not allow the identification of an external file (including directories and special files), or if Name has a single part (this includes if any of Is_Simple_Name, Is_Root_Directory_Name, Is_Parent_Directory_Name, or Is_Current_Directory_Name are True).<br /></p>
 
+<AnnotatedOnly>
 <MarginText>32.a/3</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The result might be a simple name. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>33/3</MarginText>
 <CodeBlock language="ada">
@@ -980,50 +1094,70 @@ function Compose (Directory      : in String := "";{"\n"}                  Relat
 <MarginText>35/3</MarginText>
 <p>The result of Compose is a full name if Is_Full_Name (Directory) is True; result is a relative name otherwise.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>35.a/3</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Name_Error is raised by Compose if Directory is not the null string, and both Is_Full_Name and Is_Relative_Name return False. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>35.b/3</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>A common security problem is to include a parent directory name in the middle of a file name; this is often used to navigate outside of an intended root directory. We considered attempting to prevent that case by having Compose detect it and raise an exception. But the extra rules necessary were more confusing than helpful.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>35.c/5</MarginText>
 <MarginInfo items={["AI12-0337-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We can say more about the details of these operations by adopting the notation of a subscript to specify how many path fragments a particular result has. Then, we can abbreviate "Full Name" as "Full" and "Relative Name" as "Rel". In this notation, Unix file name "a/b" is a Rel(2), "../c/d" is a Rel(3), and "/a/b" is a Full(2). Rel(1) is equivalent to a simple name that is not a root; thus we don't have to describe that separately.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>35.d/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 In this notation, <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>35.e/3</MarginText>
 <CodeBlock language="ada">
   {"\n"}For N{">"}1,{"\n"}Containing_Directory(Rel(N)) = Leftmost Rel(N-1),{"\n"}Containing_Directory(Full(N)) = Leftmost Full(N-1),{"\n"}Else if N = 1, raise Use_Error .{"\n"}  {"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>35.f/3</MarginText>
 <MarginInfo items={["AI12-0337-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Similarly, <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>35.g/3</MarginText>
 <CodeBlock language="ada">
 For N{">"}1,{"\n"}Relative_Name(Rel(N)) = Rightmost Rel(N-1),{"\n"}Relative_Name(Full(N)) = Rightmost Full(N-1),{"\n"}Else if N = 1, raise Name_Error.{"\n"}  {"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>35.h/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Finally, for Compose (ignoring the extension here): <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>35.i/3</MarginText>
 <CodeBlock language="ada">
 Compose (Directory ={">"} Full(N), Relative_Name ={">"} Rel(M)) ={">"} Full(N+M){"\n"}Compose (Directory ={">"} Rel(N), Relative_Name ={">"} Rel(M)) ={">"} Rel(N+M){"\n"}Name_Error if Relative_Name is a Full(M).{"\n"}  {"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>35.j/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We didn't try to write wording to reflect these details of these functions. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Advice
@@ -1032,35 +1166,47 @@ We didn't try to write wording to reflect these details of these functions. <br 
 <MarginInfo items={["AI05-0049-1"]} />
 <p>Directories.Hierarchical_File_Names should be provided for systems with hierarchical file naming, and should not be provided on other systems. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>36.a/3</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Directories.Hierarchical_File_Names should be provided for systems with hierarchical file naming, and should not be provided on other systems.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.b/3</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>This package should be provided when targeting Microsoft® Windows®, Unix, Linux, and most Unix-like systems. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>37/5</MarginText>
 <MarginInfo items={["AI05-0049-1", "AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   These operations operate on file names, not external files. The files identified by these operations do not necessarily  exist. Name_Error is raised only as specified or if the file name is malformed and cannot possibly identify a file. The result of these operations depends only on their parameters.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>38/3</MarginText>
 <MarginInfo items={["AI05-0049-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   Containing_Directory raises Use_Error if Name does not have a containing directory, including when any of Is_Simple_Name, Is_Root_Directory_Name, Is_Parent_Directory_Name, or Is_Current_Directory_Name are True.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>38.a/3</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>In particular, the default directory is not used to find the containing directory either when Is_Parent_Directory_Name or Is_Current_Directory_Name is True. As noted above, these functions operate purely on the syntax of the file names and do not attempt to interpret them. If interpretation is needed, Directories.Full_Name can be to expand any shorthands used before calling Containing_Directory. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>38.b/3</MarginText>
 <MarginInfo items={["AI05-0049-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Package Ada.Directories.Hierarchical_File_Names is new. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_A.16.2"></a>
 
@@ -1084,8 +1230,10 @@ Package Ada.Directories.Hierarchical_File_Names is new. <br /></Admonition>
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>3.a/5</MarginText>
 <MarginInfo items={["AI12-0021-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 These six packages are new. <br /></Admonition>
+</AnnotatedOnly>
 

@@ -56,71 +56,101 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>2.9/4</MarginText>
 <li><code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code>. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>2.a.1/4</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Unlike conditional expressions, this doesn't say "immediately surrounded"; the only requirement is that it is somehow within a pair of parentheses that is part of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>. We need this restriction in order that <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code>s cannot be syntactically confused with immediately following constructs (such as <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>s). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>2.a.2/4</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>We only need to require that a right parenthesis appear somewhere between the <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> and the surrounding context; that's all we need to specify in order to eliminate the ambiguities. Moreover, we don't care at all where the left parenthesis is (so long as it is legal, of course).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>2.a.3/4</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 For instance, the following is illegal by this rule: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>2.a.4/4</MarginText>
 <CodeBlock language="ada">
 Obj : Boolean := Func_Call or else raise TBD_Error with Atomic;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>2.a.5/4</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 as the "<strong>with</strong> Atomic" could be part of the <strong>raise_expression</strong> or part of the object declaration. Both of the following are legal: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>2.a.6/4</MarginText>
 <CodeBlock language="ada">
 Obj : Boolean := Func_Call or else (raise TBD_Error) with Atomic;{"\n"}Obj : Boolean := (Func_Call or else raise TBD_Error) with Atomic;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>2.a.7/4</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 and if the <strong>with</strong> belongs to the <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code>, then both of the following are legal: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>2.a.8/4</MarginText>
 <CodeBlock language="ada">
 Obj : Boolean := Func_Call or else (raise TBD_Error with Atomic);{"\n"}Obj : Boolean := (Func_Call or else raise TBD_Error with Atomic);{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>2.a.9/4</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 This rule only requires parentheses for <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code>s that are part of the "top-level" of an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in one of the named contexts; the <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> is either the entire <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, or part of a chain of logical operations. In practice, the <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> will almost always be last in interesting top-level <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s; anything that follows it could never be executed, so that should be rare. Other contexts such as conditional expressions, qualified expressions, aggregates, and even function calls, provide the needed parentheses. All of the following are legal, no additional parens are needed: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>2.a.10/4</MarginText>
 <CodeBlock language="ada">
 Pre : Boolean  := (if not Is_Valid(Param) then raise Not_Valid_Error);{"\n"}A : A_Tagged   := (Some_Tagged'(raise TBD_Error) with Comp ={">"} 'A');{"\n"}B : Some_Array := (1, 2, 3, others ={">"} raise Not_Valid_Error);{"\n"}C : Natural    := Func (Val ={">"} raise TBD_Error);{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>2.a.11/4</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Parentheses that are part of the context of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> don't count. For instance, the parentheses around the <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> are required in the following: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>2.a.12/4</MarginText>
 <CodeBlock language="ada">
 D : A_Tagged   := ((raise TBD_Error) with Comp ={">"} 'A');{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>2.a.13/4</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 as <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> is one of the contexts that triggers the rule.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>2.a.14/4</MarginText>
 <MarginInfo items={["AI12-0152-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 This English-language rule could have been implemented instead by adding nonterminals <code>initial_expression</code> and <code>initial_relation</code>, which are the same as <code><a href="../AA-4/AA-4.4#S0133">choice_expression</a></code> and <code><a href="../AA-4/AA-4.4#S0134">choice_relation</a></code> except for the inclusion of membership in <code>initial_relation</code>. Then, <code>initial_expresion</code> could be used in place of <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in all of the contexts noted. We did not do that because of the large amount of change required, both to the grammar and to language rules that refer to the grammar. A complete grammar is given in .<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>2.a.15/4</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The use of a <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> is illegal in each of <code><a href="../AA-3/AA-3.5#S0043">modular_type_definition</a></code>, <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code>, <code><a href="../AA-3/AA-3.5#S0048">ordinary_fixed_point_definition</a></code>, and <code><a href="../AA-3/AA-3.5#S0049">decimal_fixed_point_definition</a></code> as these uses are required to be static and a <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> is never static. We include these in this rule so that Ada text has an unambiguous syntax in these cases. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Legality Rules
@@ -147,20 +177,26 @@ The use of a <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> 
 <MarginInfo items={["AI95-00361-01", "AI12-0022-1", "AI12-0152-1"]} />
 <p>To <em>raise an exception</em> is to raise a new occurrence of that exception[, as explained in <a href="../AA-11/AA-11.4">11.4</a>]. For the execution of a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> with an <em>exception_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>, the named exception is raised. Similarly, for the evaluation of a <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code>, the named exception is raised. [In both of these cases, if a <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> is present, the expression is evaluated and its value is associated with the exception occurrence.] For the execution of a re-raise statement, the exception occurrence that caused transfer of control to the innermost enclosing handler is raised [again]. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>4.a.1/2</MarginText>
 <MarginInfo items={["AI95-00361-01"]} />
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>The definition of Exceptions.Exception_Message includes a statement that the string is returned (see <a href="../AA-11/AA-11.4#Subclause_11.4.1">11.4.1</a>). We describe the use of the string here so that we don't have an unexplained parameter in this subclause. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>For a re-raise statement, the implementation does not create a new Exception_Occurrence, but instead propagates the same Exception_Occurrence value. This allows the original cause of the exception to be determined. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>5</MarginText>
+<AnnotatedOnly>
 <MarginText>5.1/4</MarginText>
 <MarginInfo items={["AI12-0062-1", "AI12-0152-1", "AI12-0159-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   If the evaluation of a <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> raises an exception, that exception is propagated instead of the one denoted by the <em>exception_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> of the <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> or <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -182,23 +218,29 @@ raise;                                -- re-raise the current exception{"\n"}
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>9.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The fact that the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> in a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> has to denote an exception is not clear from RM83. Clearly that was the intent, since the italicized part of the syntax rules so indicate, but there was no explicit rule. RM83-1.5(11) doesn't seem to give the italicized parts of the syntax any force. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>9.b/2</MarginText>
 <MarginInfo items={["AI95-00361-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The syntax of a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> is extended to include a string message. This is more convenient than calling Exceptions.Exception_Message (<em>exception_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>'Identity, <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>), and should encourage the use of message strings when raising exceptions. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>9.c/4</MarginText>
 <MarginInfo items={["AI12-0022-1", "AI12-0152-1", "AI12-0159-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> The <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> is new. This construct is necessary to allow conversion of existing specifications to use preconditions and predicates without changing the exceptions raised. It is considered important enough to be added to Ada 2012 rather than waiting for Ada 2022. <br /></Admonition>
+</AnnotatedOnly>
 

@@ -20,21 +20,27 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI95-00296-01"]} />
 <p>Types and operations for the manipulation of real vectors and matrices are provided in Generic_Real_Arrays, which is defined in <a href="../AA-G/AA-G.3#Subclause_G.3.1">G.3.1</a>. Types and operations for the manipulation of complex vectors and matrices are provided in Generic_Complex_Arrays, which is defined in <a href="../AA-G/AA-G.3#Subclause_G.3.2">G.3.2</a>. Both of these library units are generic children of the predefined package Numerics (see <a href="../AA-A/AA-A.5">A.5</a>). Nongeneric equivalents of these packages for each of the predefined floating point types are also provided as children of Numerics. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>1.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Vector and matrix manipulation is defined in the Numerics Annex, rather than in the core, because it is considered to be a specialized need of (some) numeric applications.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>1.b/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 These packages provide facilities that are similar to and replace those found in ISO/IEC 13813:1998 <em>Information technology &mdash; Programming languages &mdash; Generic packages of real and complex type declarations and basic operations for Ada (including vector and matrix types)</em>. (The other facilities provided by that Standard were already provided in Ada 95.) In addition to the main facilities of that Standard, these packages also include subprograms for the solution of linear equations, matrix inversion, determinants, and the determination of the eigenvalues and eigenvectors of real symmetric matrices and Hermitian matrices. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>1.c/3</MarginText>
 <MarginInfo items={["AI95-00296-01", "AI05-0299-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 This subclause It just provides an introduction to the following subclauses. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_G.3.1"></a>
 
@@ -113,9 +119,11 @@ end Ada.Numerics.Generic_Real_Arrays;{"\n"}
 <MarginInfo items={["AI95-00296-01"]} />
 <p>The library package Numerics.Real_Arrays is declared pure and defines the same types and subprograms as Numerics.Generic_Real_Arrays, except that the predefined type Float is systematically substituted for Real'Base throughout. Nongeneric equivalents for each of the other predefined floating point types are defined similarly, with the names Numerics.Short_Real_Arrays, Numerics.Long_Real_Arrays, etc. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>31.a/2</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The nongeneric equivalents are provided to allow the programmer to construct simple mathematical applications without being required to understand and use generics, and to be consistent with other Numerics packages. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>32/2</MarginText>
 <MarginInfo items={["AI95-00296-01"]} />
@@ -165,13 +173,17 @@ function "abs" (Right : Real_Vector) return Real'Base;{"\n"}
 <MarginInfo items={["AI95-00418-01"]} />
 <p>This operation returns the L2-norm of Right (the square root of the inner product of the vector with itself).<br /></p>
 
+<AnnotatedOnly>
 <MarginText>42.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Normalization of vectors is a frequent enough operation that it is useful to provide the norm as a basic operation. Furthermore, implementing the norm is not entirely straightforward, because the inner product might overflow while the final norm does not. An implementation cannot merely return Sqrt (X * X), it has to cope with a possible overflow of the inner product. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>42.b/2</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>While the definition is given in terms of an inner product, the norm doesn't &ldquo;involve an inner product&rdquo; in the technical sense. The reason is that it has accuracy requirements substantially different from those applicable to inner products; and that cancellations cannot occur, because all the terms are positive, so there is no possibility of intermediate overflow. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>43/2</MarginText>
 <CodeBlock language="ada">
@@ -290,17 +302,23 @@ function Solve (A : Real_Matrix; X : Real_Vector) return Real_Vector;{"\n"}
 <MarginInfo items={["AI95-00296-01"]} />
 <p>This function returns a vector Y such that X is (nearly) equal to A * Y. This is the standard mathematical operation for solving a single set of linear equations. The index range of the result is A'Range(2). Constraint_Error is raised if A'Length(1), A'Length(2), and X'Length are not equal. Constraint_Error is raised if the matrix A is ill-conditioned.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>68.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>The text says that Y is such that &ldquo;X is (nearly) equal to A * Y&rdquo; rather than &ldquo;X is equal to A * Y&rdquo; because rounding errors may mean that there is no value of Y such that X is exactly equal to A * Y. On the other hand it does not mean that any old rough value will do. The algorithm given under  should be followed.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>68.b/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 The requirement to raise Constraint_Error if the matrix is ill-conditioned is really a reflection of what will happen if the matrix is ill-conditioned. See . We do not make any attempt to define ill-conditioned formally.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>68.c/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 These remarks apply to all versions of Solve and Inverse. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>69/2</MarginText>
 <CodeBlock language="ada">
@@ -347,10 +365,12 @@ procedure Eigensystem(A       : in  Real_Matrix;{"\n"}                      Valu
 <MarginInfo items={["AI95-00296-01", "AI05-0047-1"]} />
 <p>This procedure computes both the eigenvalues and eigenvectors of the symmetric matrix A. The out parameter Values is the same as that obtained by calling the function Eigenvalues. The out parameter Vectors is a matrix whose columns are the eigenvectors of the matrix A. The order of the columns corresponds to the order of the eigenvalues. The eigenvectors are normalized and mutually orthogonal (they are orthonormal), including when there are repeated eigenvalues. Constraint_Error is raised if A'Length(1) is not equal to A'Length(2), or if Values'Range is not equal to A'Range(1), or if the index ranges of the parameter Vectors are not equal to those of A. Argument_Error is raised if the matrix A is not symmetric. Constraint_Error is also raised in implementation-defined circumstances if the algorithm used does not converge quickly enough.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>78.a/3</MarginText>
 <MarginInfo items={["AI05-0047-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>There is no requirement on the absolute direction of the returned eigenvectors. Thus they might be multiplied by -1. It is only the ratios of the components that matter. This is standard practice. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>79/2</MarginText>
 <CodeBlock language="ada">
@@ -368,9 +388,11 @@ function Unit_Matrix (Order            : Positive;{"\n"}                      Fi
 <MarginInfo items={["AI95-00296-01"]} />
 <p>Accuracy requirements for the subprograms Solve, Inverse, Determinant, Eigenvalues and Eigensystem are implementation defined. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>81.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The accuracy requirements for the subprograms Solve, Inverse, Determinant, Eigenvalues and Eigensystem for type Real_Matrix.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>82/2</MarginText>
 <p>For operations not involving an inner product, the accuracy requirements are those of the corresponding operations of the type Real in both the strict mode and the relaxed mode (see <a href="../AA-G/AA-G.2">G.2</a>).<br /></p>
@@ -385,9 +407,11 @@ function Unit_Matrix (Order            : Positive;{"\n"}                      Fi
 <MarginInfo items={["AI95-00418-01"]} />
 <p>For the L2-norm, no accuracy requirements are specified in the relaxed mode. In the strict mode the relative error on the norm shall not exceed <em>g</em> / 2.0 + 3.0 * Real'Model_Epsilon where <em>g</em> is defined as above.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>85.a/2</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This is simply the combination of the error on the inner product with the error on Sqrt. A first order computation would lead to 2.0 * Real'Model_Epsilon above, but we are adding an extra Real'Model_Epsilon to account for higher order effects. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Documentation Requirements
@@ -396,18 +420,24 @@ function Unit_Matrix (Order            : Positive;{"\n"}                      Fi
 <MarginInfo items={["AI95-00296-01"]} />
 <p>Implementations shall document any techniques used to reduce cancellation errors such as extended precision arithmetic. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>86.a/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Documentation Requirement: </strong>Any techniques used to reduce cancellation errors in Numerics.Generic_Real_Arrays shall be documented.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>86.b/2</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>The above accuracy requirement is met by the canonical implementation of the inner product by multiplication and addition using the corresponding operations of type Real'Base and performing the cumulative addition using ascending indices. Note however, that some hardware provides special operations for the computation of the inner product and although these may be fast they may not meet the accuracy requirement specified. See Accuracy and Stability of Numerical Algorithms By N J Higham (ISBN 0-89871-355-2), Section 3.1.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>86.c/3</MarginText>
 <MarginInfo items={["AI05-0047-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Note moreover that the componentwise accuracy requirements are not met by subcubic methods for matrix multiplication such as that devised by Strassen. These methods, which are typically used for the fast multiplication of very large matrices (e.g. order more than a few thousands), have normwise accuracy properties. If it is desired to use such methods, then distinct subprograms should be provided (perhaps in a child package). See Section 22.2.2 in the above reference. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Permissions
@@ -423,51 +453,65 @@ Note moreover that the componentwise accuracy requirements are not met by subcub
 <MarginInfo items={["AI95-00296-01", "AI05-0264-1"]} />
 <p>Implementations should implement the Solve and Inverse functions using established techniques such as LU decomposition with row interchanges followed by back and forward substitution. Implementations are recommended to refine the result by performing an iteration on the residuals; if this is done, then it should be documented. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>88.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Solve and Inverse for Numerics.Generic_Real_Arrays should be implemented using established techniques such as LU decomposition and the result should be refined by an iteration on the residuals.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>89/2</MarginText>
 <p>It is not the intention that any special provision should be made to determine whether a matrix is ill-conditioned or not. The naturally occurring overflow (including division by zero) which will result from executing these functions with an ill-conditioned matrix and thus raise Constraint_Error is sufficient. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>89.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>There isn't any advice for the implementation to document with this paragraph. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>90/2</MarginText>
 <p>The test that a matrix is symmetric should be performed by using the equality operator to compare the relevant components. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>90.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>The equality operator should be used to test that a matrix in Numerics.Generic_Real_Arrays is symmetric.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>91/3</MarginText>
 <MarginInfo items={["AI05-0047-1"]} />
 <p>An implementation should minimize the circumstances under which the algorithm used for Eigenvalues and Eigensystem fails to converge. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>91.a.1/3</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>An implementation should minimize the circumstances under which the algorithm used for Numerics.Generic_Real_Arrays.Eigenvalues and Numerics.Generic_Real_Arrays.Eigensystem fails to converge.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>91.a/3</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>J. H. Wilkinson is the acknowledged expert in this area. See for example Wilkinson, J. H., and Reinsch, C. , Linear Algebra , vol II of Handbook for Automatic Computation, Springer-Verlag, or Wilkinson, J. H., The Algebraic Eigenvalue Problem, Oxford University Press. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>91.b/2</MarginText>
 <MarginInfo items={["AI95-00296-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The package Numerics.Generic_Real_Arrays and its nongeneric equivalents are new. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>91.c/3</MarginText>
 <MarginInfo items={["AI05-0047-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Corrected various accuracy and definition issues. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_G.3.2"></a>
 
@@ -603,10 +647,12 @@ end Ada.Numerics.Generic_Complex_Arrays;{"\n"}
 <MarginInfo items={["AI95-00296-01"]} />
 <p>In the case of those operations which are defined to <em>involve an inner product</em>, Constraint_Error may be raised if an intermediate result has a component outside the range of Real'Base even though the final mathematical result would not.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>56.a/3</MarginText>
 <MarginInfo items={["AI05-0047-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>An inner product never involves implicit complex conjugation. If the product of a vector with the conjugate of another (or the same) vector is required, then this has to be stated explicitly by writing for example X * Conjugate(Y). This mimics the usual mathematical notation. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>57/2</MarginText>
 <CodeBlock language="ada">
@@ -699,9 +745,11 @@ function "abs" (Right : Complex_Vector) return Real'Base;{"\n"}
 <MarginInfo items={["AI95-00418-01"]} />
 <p>This operation returns the Hermitian L2-norm of Right (the square root of the inner product of the vector with its conjugate).<br /></p>
 
+<AnnotatedOnly>
 <MarginText>76.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>While the definition is given in terms of an inner product, the norm doesn't &ldquo;involve an inner product&rdquo; in the technical sense. The reason is that it has accuracy requirements substantially different from those applicable to inner products; and that cancellations cannot occur, because all the terms are positive, so there is no possibility of intermediate overflow. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>77/2</MarginText>
 <CodeBlock language="ada">
@@ -973,17 +1021,23 @@ function Solve (A : Complex_Matrix; X : Complex_Vector) return Complex_Vector;{"
 <MarginInfo items={["AI95-00296-01"]} />
 <p>This function returns a vector Y such that X is (nearly) equal to A * Y. This is the standard mathematical operation for solving a single set of linear equations. The index range of the result is A'Range(2). Constraint_Error is raised if A'Length(1), A'Length(2), and X'Length are not equal. Constraint_Error is raised if the matrix A is ill-conditioned.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>136.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>The text says that Y is such that &ldquo;X is (nearly) equal to A * Y&rdquo; rather than &ldquo;X is equal to A * Y&rdquo; because rounding errors may mean that there is no value of Y such that X is exactly equal to A * Y. On the other hand it does not mean that any old rough value will do. The algorithm given under  should be followed.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>136.b/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 The requirement to raise Constraint_Error if the matrix is ill-conditioned is really a reflection of what will happen if the matrix is ill-conditioned. See . We do not make any attempt to define ill-conditioned formally.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>136.c/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 These remarks apply to all versions of Solve and Inverse. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>137/2</MarginText>
 <CodeBlock language="ada">
@@ -1021,9 +1075,11 @@ function Eigenvalues(A : Complex_Matrix) return Real_Vector;{"\n"}
 <MarginInfo items={["AI95-00296-01"]} />
 <p>This function returns the eigenvalues of the Hermitian matrix A as a vector sorted into order with the largest first. Constraint_Error is raised if A'Length(1) is not equal to A'Length(2). The index range of the result is A'Range(1). Argument_Error is raised if the matrix A is not Hermitian.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>144.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>A Hermitian matrix is one whose transpose is equal to its complex conjugate. The eigenvalues of a Hermitian matrix are always real. We only support this case because algorithms for solving the general case are inherently unstable. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>145/2</MarginText>
 <CodeBlock language="ada">
@@ -1034,10 +1090,12 @@ procedure Eigensystem(A       : in  Complex_Matrix;{"\n"}                      V
 <MarginInfo items={["AI95-00296-01", "AI05-0047-1"]} />
 <p>This procedure computes both the eigenvalues and eigenvectors of the Hermitian matrix A. The out parameter Values is the same as that obtained by calling the function Eigenvalues. The out parameter Vectors is a matrix whose columns are the eigenvectors of the matrix A. The order of the columns corresponds to the order of the eigenvalues. The eigenvectors are mutually orthonormal, including when there are repeated eigenvalues. Constraint_Error is raised if A'Length(1) is not equal to A'Length(2), or if Values'Range is not equal to A'Range(1), or if the index ranges of the parameter Vectors are not equal to those of A. Argument_Error is raised if the matrix A is not Hermitian. Constraint_Error is also raised in implementation-defined circumstances if the algorithm used does not converge quickly enough.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>146.a/3</MarginText>
 <MarginInfo items={["AI05-0047-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>There is no requirement on the absolute direction of the returned eigenvectors. Thus they might be multiplied by any complex number whose modulus is 1. It is only the ratios of the components that matter. This is standard practice. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>147/2</MarginText>
 <CodeBlock language="ada">
@@ -1055,9 +1113,11 @@ function Unit_Matrix (Order            : Positive;{"\n"}                      Fi
 <MarginInfo items={["AI95-00296-01"]} />
 <p>Accuracy requirements for the subprograms Solve, Inverse, Determinant, Eigenvalues and Eigensystem are implementation defined. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>149.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The accuracy requirements for the subprograms Solve, Inverse, Determinant, Eigenvalues and Eigensystem for type Complex_Matrix.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>150/2</MarginText>
 <MarginInfo items={["AI95-00296-01"]} />
@@ -1084,13 +1144,17 @@ function Unit_Matrix (Order            : Positive;{"\n"}                      Fi
 <MarginInfo items={["AI95-00296-01"]} />
 <p>Implementations shall document any techniques used to reduce cancellation errors such as extended precision arithmetic. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>155.a/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Documentation Requirement: </strong>Any techniques used to reduce cancellation errors in Numerics.Generic_Complex_Arrays shall be documented.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>155.b/2</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>The above accuracy requirement is met by the canonical implementation of the inner product by multiplication and addition using the corresponding operations of type Complex and performing the cumulative addition using ascending indices. Note however, that some hardware provides special operations for the computation of the inner product and although these may be fast they may not meet the accuracy requirement specified. See Accuracy and Stability of Numerical Algorithms by N J Higham (ISBN 0-89871-355-2), Sections 3.1 and 3.6. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Permissions
@@ -1110,58 +1174,74 @@ function Unit_Matrix (Order            : Positive;{"\n"}                      Fi
 <MarginInfo items={["AI95-00296-01", "AI05-0264-1"]} />
 <p>Implementations should implement the Solve and Inverse functions using established techniques. Implementations are recommended to refine the result by performing an iteration on the residuals; if this is done, then it should be documented. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>158.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Solve and Inverse for Numerics.Generic_Complex_Arrays should be implemented using established techniques and the result should be refined by an iteration on the residuals.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>159/2</MarginText>
 <MarginInfo items={["AI95-00296-01"]} />
 <p>It is not the intention that any special provision should be made to determine whether a matrix is ill-conditioned or not. The naturally occurring overflow (including division by zero) which will result from executing these functions with an ill-conditioned matrix and thus raise Constraint_Error is sufficient. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>159.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>There isn't any advice for the implementation to document with this paragraph. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>160/2</MarginText>
 <MarginInfo items={["AI95-00296-01"]} />
 <p>The test that a matrix is Hermitian should use the equality operator to compare the real components and negation followed by equality to compare the imaginary components (see <a href="../AA-G/AA-G.2#Subclause_G.2.1">G.2.1</a>). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>160.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>The equality and negation operators should be used to test that a matrix is Hermitian.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>160.1/3</MarginText>
 <p>An implementation should minimize the circumstances under which the algorithm used for Eigenvalues and Eigensystem fails to converge. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>160.a.1/3</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>An implementation should minimize the circumstances under which the algorithm used for Numerics.Generic_Complex_Arrays.Eigenvalues and Numerics.Generic_Complex_Arrays.Eigensystem fails to converge.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>160.b/3</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>J. H. Wilkinson is the acknowledged expert in this area. See for example Wilkinson, J. H., and Reinsch, C. , Linear Algebra , vol II of Handbook for Automatic Computation, Springer-Verlag, or Wilkinson, J. H., The Algebraic Eigenvalue Problem, Oxford University Press. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>161/2</MarginText>
 <MarginInfo items={["AI95-00296-01"]} />
 <p>Implementations should not perform operations on mixed complex and real operands by first converting the real operand to complex. See <a href="../AA-G/AA-G.1#Subclause_G.1.1">G.1.1</a>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>161.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Mixed real and complex operations should not be performed by converting the real operand to complex.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>161.b/2</MarginText>
 <MarginInfo items={["AI95-00296-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The package Numerics.Generic_Complex_Arrays and its nongeneric equivalents are new. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>161.c/3</MarginText>
 <MarginInfo items={["AI05-0047-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Corrected various accuracy and definition issues. <br /></Admonition>
+</AnnotatedOnly>
 

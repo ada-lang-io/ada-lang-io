@@ -24,29 +24,39 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI05-0229-1", "AI05-0269-1"]} />
 <p>Specifying the Import aspect  to have the value True is used to import an entity defined in a foreign language into an Ada program, thus allowing a foreign-language subprogram to be called from Ada, or a foreign-language variable to be accessed from Ada. In contrast, specifying the Export aspect to have the value True is used to export an Ada entity to a foreign language, thus allowing an Ada subprogram to be called from a foreign language, or an Ada object to be accessed from a foreign language. The Import and Export aspects are intended primarily for objects and subprograms, although implementations are allowed to support other entities. The Link_Name and External_Name aspects are used to specify the link name and external name, respectively, to be used to identify imported or exported entities in the external environment. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>1.a/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Import: </strong>Entity is imported from another language.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>1.b/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Export: </strong>Entity is exported to another language.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>1.c/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>External_Name: </strong>Name used to identify an imported or exported entity.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>1.d/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Link_Name: </strong>Linker symbol used to identify an imported or exported entity.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>2/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <p>The Convention aspect is used to indicate that an Ada entity should use the conventions of another language. It is intended primarily for types and &ldquo;callback&rdquo; subprograms. For example, &ldquo;<strong>with</strong> Convention ={">"} Fortran&rdquo; on the declaration of an array type Matrix implies that Matrix should be represented according to the conventions of the supported Fortran implementation, namely column-major order.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>2.a/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Convention: </strong>Calling convention or other convention used for interfacing to other languages.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>3/5</MarginText>
 <MarginInfo items={["AI12-0445-1"]} />
@@ -82,9 +92,11 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI05-0229-1"]} />
 <p>The Link_Name and External_Name aspects are of type String. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>10.a/3</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>There is no language-defined support for external or link names of type Wide_String, or of other string types. Implementations may, of course, have additional aspects for that purpose. Note that allowing both String and Wide_String in the same <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> would cause ambiguities. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10.1/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
@@ -97,13 +109,17 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI05-0229-1"]} />
 <p>The aspect Convention shall be specified by a <em>convention_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> which shall be the name of a <em>convention</em>. The convention names are implementation defined, except for certain language-defined ones, such as Ada and Intrinsic, as explained in <a href="../AA-6/AA-6.3#Subclause_6.3.1">6.3.1</a>, &ldquo;<a href="../AA-6/AA-6.3#Subclause_6.3.1">Conformance Rules</a>&rdquo;. [Additional convention names generally represent the calling conventions of foreign languages, language implementations, or specific run-time models.] The convention of a callable entity is its <em>calling convention</em>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>11.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>Implementation-defined convention names.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.b</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>We considered representing the convention names using an enumeration type declared in System. Then, <em>convention_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> would be changed to <em>convention_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>, and we would make its expected type be the enumeration type. We didn't do this because it seems to introduce extra complexity, and because the list of available languages is better represented as the list of children of package Interfaces &mdash; a more open-ended sort of list. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>12</MarginText>
 <p>If <em>L</em> is a <em>convention_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> for a language, then a type T is said to be <em>compatible with convention L</em>, (alternatively, is said to be an <em>L-compatible type</em>) if any of the following conditions are met: <br /></p>
@@ -136,53 +152,67 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI12-0207-1"]} />
 <li>T is an anonymous access type, and T is eligible for convention <em>L</em>,<br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>19.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We say this so that the presence of an anonymous access component does not necessarily prevent a type from being eligible for convention <em>L</em>. We want the anonymous access type to take the convention from the enclosing type, but if we only said that, the definition would be circular (one can only portably apply the convention <em>L</em> to a record type R if the components of R already have convention <em>L</em>; but the anonymous components of R have to take the convention from R). We include the part of about T being eligible for convention <em>L</em> so that we don't force convention <em>L</em> on some type that is incompatible with it. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>20</MarginText>
 <ul>
 <li>The implementation permits T as an <em>L</em>-compatible type.<br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>20.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>For example, an implementation might permit Integer as a C-compatible type, though the C type to which it corresponds might be different in different environments. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>21/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <p>If the Convention aspect is specified for a type, then the type shall either be compatible with or eligible for the specified convention. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>21.a/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>If a type is derived from an <em>L</em>-compatible type, the derived type is by default <em>L</em>-compatible, but it is also permitted to specify the Convention aspect for the derived type.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>21.b/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 It is permitted to specify the Convention aspect for an incomplete type, but in the complete declaration each component must be <em>L</em>-compatible.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>21.c/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 If each component of a record type is <em>L</em>-compatible, then the record type itself is only <em>L</em>-compatible if it has a specified Convention. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>21.1/5</MarginText>
 <MarginInfo items={["AI12-0207-1"]} />
 <p>If convention <em>L</em> is specified for a type T, for each component of T that has an anonymous access type, the convention of the anonymous access type is <em>L</em>. If convention <em>L</em> is specified for an object that has an anonymous access type, the convention of the anonymous access type is <em>L</em>.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>21.d/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This applies to both anonymous access-to-object and anonymous access-to-subprogram types. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>22/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <p>Notwithstanding any rule to the contrary, a declaration with a True Import aspect shall not have a completion. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>22.a/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>For declarations of deferred constants and subprograms, we explicitly mention that no completion is allowed when aspect Import is True. For other declarations that require completions, we ignore the possibility of the aspect Import being True. Nevertheless, if an implementation chooses to allow specifying aspect Import to be True for the declaration of a task, protected type, incomplete type, private type, etc., it may do so, and the normal completion is then not allowed for that declaration. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>23/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
@@ -191,17 +221,21 @@ If each component of a record type is <em>L</em>-compatible, then the record typ
 <MarginText>24</MarginText>
 <p>The declaration of an imported object shall not include an explicit initialization expression. [Default initializations are not performed.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>24.a</MarginText>
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>This follows from the &ldquo;Notwithstanding ...&rdquo; wording in the Dynamics Semantics paragraphs below. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>25/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <p>The type of an imported or exported object shall be compatible with the specified Convention aspect, if any. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>25.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This implies, for example, that importing an Integer object might be illegal, whereas importing an object of type Interfaces.C.int would be permitted. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>26/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
@@ -237,28 +271,38 @@ If each component of a record type is <em>L</em>-compatible, then the record typ
 <MarginText>36</MarginText>
 <p>The meaning of link names is implementation defined. If neither a link name nor the Address attribute of an imported or exported entity is specified, then a link name is chosen in an implementation-defined manner, based on the external name if one is specified. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>36.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The meaning of link names.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>For example, an implementation might always prepend "_", and then pass it to the system linker. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.c</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The manner of choosing link names when neither the link name nor the address of an imported or exported entity is specified.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.d</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Normally, this will be the entity's defining name, or some simple transformation thereof. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>37</MarginText>
 <p>Pragma Linker_Options has the effect of passing its string argument as a parameter to the system linker (if one exists), if the immediately enclosing compilation unit is included in the partition being linked. The interpretation of the string argument, and the way in which the string arguments from multiple Linker_Options pragmas are combined, is implementation defined. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>37.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The effect of pragma Linker_Options.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Dynamic Semantics
@@ -267,19 +311,25 @@ If each component of a record type is <em>L</em>-compatible, then the record typ
 <MarginInfo items={["AI05-0229-1"]} />
 <p>Notwithstanding what this document says elsewhere, the elaboration of a declaration with a True Import aspect does not create the entity. Such an elaboration has no other effect than to allow the defining name to denote the external entity. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>38.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This implies that default initializations are skipped. (Explicit initializations are illegal.) For example, an imported access object is <em>not</em> initialized to <strong>null</strong>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>38.b/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>38.c/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>This &ldquo;notwithstanding&rdquo; wording is better than saying &ldquo;unless aspect Import is True&rdquo; on every definition of elaboration. It says we recognize the contradiction, and this rule takes precedence. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Erroneous Execution
@@ -295,94 +345,130 @@ If each component of a record type is <em>L</em>-compatible, then the record typ
 <MarginInfo items={["AI05-0229-1"]} />
 <p>If an implementation supports Export for a given language, then it should also allow the main subprogram to be written in that language. It should support some mechanism for invoking the elaboration of the Ada library units included in the system, and for invoking the finalization of the environment task. On typical systems, the recommended mechanism is to provide two subprograms whose link names are "adainit" and "adafinal". Adainit should contain the elaboration code for library units. Adafinal should contain the finalization code. These subprograms should have no effect the second and subsequent time they are called. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>39.a.1/3</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>If  Export is supported for a language, the main program should be able to be written in that language. Subprograms named "adainit" and "adafinal" should be provided for elaboration and finalization of the environment task.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>39.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>For example, if the main subprogram is written in C, it can call adainit before the first call to an Ada subprogram, and adafinal after the last. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>40/3</MarginText>
 <MarginInfo items={["AI05-0229-1", "AI05-0269-1"]} />
 <p>Automatic elaboration of preelaborated packages should be provided when specifying the Export aspect as True is supported. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>40.a.1/3</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Automatic elaboration of preelaborated packages should be provided when specifying the Export aspect as True is supported.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>41/5</MarginText>
 <MarginInfo items={["AI05-0229-1", "AI12-0135-1", "AI12-0444-1"]} />
 <p>For each supported convention <em>L</em> other than Intrinsic, an implementation should support specifying the Import and Export aspects for objects of <em>L</em>-compatible types and for subprograms, and the Convention aspect for <em>L</em>-eligible types and for subprograms, presuming the other language has corresponding features. Specifying the  Convention aspect should  be supported for   enumeration types whose internal codes fall within the range 0 .. 2**15&ndash;1, but no recommendation is made for other scalar types. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>41.a.1/3</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>For each supported convention <em>L</em> other than Intrinsic, specifying the aspects Import and Export should be supported for objects of <em>L</em>-compatible types and for subprograms, and aspect Convention should be supported for <em>L</em>-eligible types and for subprograms.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>41.a/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Specifying aspect Convention is not necessary for scalar types, since the language interface packages declare scalar types corresponding to those provided by the respective foreign languages. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>41.b/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>If an implementation supports interfacing to the C++ entities not supported by <a href="../AA-B/AA-B.3">B.3</a>, it should do so via the convention identifier C_Plus_Plus (in additional to any C++-implementation-specific ones). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>41.c/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The reason for giving the advice about C++ is to encourage uniformity among implementations, given that the name of the language is not syntactically legal as an <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>42/5</MarginText>
 <MarginInfo items={["AI05-0229-1", "AI12-0440-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   Implementations can  place restrictions on interfacing aspects; for example, requiring each exported entity to be declared at the library level. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>42.a</MarginText>
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>Arbitrary restrictions are allowed by <a href="../AA-13/AA-13.1">13.1</a>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>42.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Such a restriction might be to disallow them altogether. Alternatively, the implementation might allow them only for certain kinds of entities, or only for certain conventions. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>43/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   The Convention aspect in combination with the Import aspect indicates the conventions for accessing external entities. It is possible that the actual entity is written in assembly language, but reflects the conventions of a particular language. For example, <strong>with</strong> Convention ={">"} Ada can be used to interface to an assembly language routine that obeys the Ada compiler's calling conventions.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>44/5</MarginText>
 <MarginInfo items={["AI05-0229-1", "AI12-0440-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   To obtain &ldquo;call-back&rdquo; to an Ada subprogram from a foreign language environment, the Convention aspect can  be specified both for the access-to-subprogram type and the specific subprogram(s) to which 'Access is applied.<br /></Admonition>
+</AnnotatedOnly>
 
-<Admonition type="aarm" aarm="note" title="Note: ">
+<AnnotatedOnly>
+<Admonition type="aarm" aarm="note">
 <em>Paragraphs 45 and 46 were deleted.</em> <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>47</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 4   See also <a href="../AA-13/AA-13.8">13.8</a>, &ldquo;<a href="../AA-13/AA-13.8">Machine Code Insertions</a>&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>47.a/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The Intrinsic convention (see <a href="../AA-6/AA-6.3#Subclause_6.3.1">6.3.1</a>) implies that the entity is somehow &ldquo;built in&rdquo; to the implementation. Thus, it generally does not make sense for users to specify Intrinsic along with specifying that the entity is imported. The intention is that only implementations will specify Intrinsic for an imported entity. The language also defines certain subprograms to be Intrinsic. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>47.b/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>There are many imaginable interfacing aspects that don't make any sense. For example, setting the Convention of a protected procedure to Ada is probably wrong. Rather than enumerating all such cases, however, we leave it up to implementations to decide what is sensible. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>48/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 5   If both External_Name and Link_Name are specified for a given entity, then the External_Name is ignored.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>49/2</MarginText>
 <MarginInfo items={["AI95-00320-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -400,60 +486,76 @@ package Fortran_Library is{"\n"}  function Sqrt (X : Float) return Float{"\n"}  
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>51.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Interfacing pragmas are new to Ada 95. Pragma Import replaces Ada 83's pragma Interface. Existing implementations can continue to support pragma Interface for upward compatibility. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>51.b/2</MarginText>
 <MarginInfo items={["AI95-00036-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0058</em>{"}"} <strong>Corrigendum:</strong> Clarified that <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s Import and Export work like a subprogram call; parameters cannot be omitted unless named notation is used. (Reordering is still not permitted, however.)<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>51.c/2</MarginText>
 <MarginInfo items={["AI95-00320-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added wording to say all bets are off if foreign code doesn't follow the semantics promised by the Ada specifications. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2005
 
+<AnnotatedOnly>
 <MarginText>51.d/3</MarginText>
 <MarginInfo items={["AI05-0002-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Access types that designate unconstrained arrays are no longer defined to be <em>L</em>-compatible. Such access-to-arrays require bounds information, which is likely to be incompatible with a foreign language. The change will allow (but not require) compilers to reject bad uses, which probably will not work anyway. Note that implementations can still support any type that it wants as <em>L</em>-compatible; such uses will not be portable, however. As such, there should be little existing code that will be impacted (compilers probably already rejected cases that could not be translated, whether or not the language allowed doing so formally). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>51.e/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Aspects Convention, Import, Export, Link_Name, and External_Name are new; <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s Convention, Import, and Export are now obsolescent. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>51.f/5</MarginText>
 <MarginInfo items={["AI12-0207-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> The convention of anonymous access components is that of the enclosing type (in Ada 2012, it was Ada). Similarly, the convention of the anonymous access type of an object is that of the object (again, in Ada 2012 it was Ada). While this is formally incompatible, it should be more useful in portable code; it makes little sense to have a component of an Ada access type in a record with a C convention. For most implementations, this will have no real effect as convention Ada anonymous access types were allowed as C-compatible anyway. But such code was not portable, as this was not required in Ada 2012. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>51.g/4</MarginText>
 <MarginInfo items={["AI12-0135-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added a suggestion that convention be supported for enumeration types. This will make the use of enumeration types portable for implementations that support interfacing to a particular language. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>51.h/5</MarginText>
 <MarginInfo items={["AI12-0219-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Added some examples to the erroneous execution text; this is a very important rule as it means that Ada compilers can assume that provided interfacing declarations reflect the actual foreign code. <br /></Admonition>
+</AnnotatedOnly>
 

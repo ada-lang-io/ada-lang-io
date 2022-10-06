@@ -23,10 +23,12 @@ import MarginInfo from "@site/src/components/MarginInfo";
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>1.a/2</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Included package Wide_Wide_Text_IO.Text_Streams in this description. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_A.12.1"></a>
 
@@ -42,9 +44,11 @@ Included package Wide_Wide_Text_IO.Text_Streams in this description. <br /></Adm
 <MarginInfo items={["AI95-00026-01"]} />
 <p>{"{"}<em>8652/0055</em>{"}"} The elements of a stream file are stream elements. If positioning is supported for the specified external file, a current index and current size are maintained for the file as described in <a href="../AA-A/AA-A.8">A.8</a>. If positioning is not supported, a current index is not maintained, and the current size is implementation defined. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>1.a.1/1</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>Current size for a stream file for which positioning is not supported.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>2</MarginText>
 <p>The library package Streams.Stream_IO has the following declaration: <br /></p>
@@ -186,9 +190,11 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams.Stream
 <MarginInfo items={["AI95-00026-01"]} />
 <p>{"{"}<em>8652/0055</em>{"}"} The Index function returns the current index. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>31.a/1</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>32</MarginText>
 <p>The Set_Index procedure sets the current index to the specified value.<br /></p>
@@ -217,10 +223,12 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams.Stream
 <MarginText>33</MarginText>
 <p>If positioning is not supported for the given file, then a call of Index or Set_Index propagates Use_Error. Similarly, a call of Read or Write with a Positive_Count parameter propagates Use_Error.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>33.a/2</MarginText>
 <MarginInfo items={["AI95-00085-01"]} />
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>It is permissible for an implementation to implement mode Append_File using the Unix append mode (the O_APPEND bit). Such an implementation does not support positioning when the mode is Append_File, and therefore the operations listed above must raise Use_Error. This is acceptable as there is no requirement that any particular file support positioning; therefore it is acceptable that a file support positioning when opened with mode Out_File, and the same file not support positioning when opened with mode Append_File. But it is not acceptable for a file to support positioning (by allowing the above operations), but to do something other than the defined semantics (that is, always write at the end, even when explicitly commanded to write somewhere else). <br /></Admonition>
+</AnnotatedOnly>
 
 <p><em>Paragraphs 34 through 36 were deleted.</em> <br /></p>
 
@@ -231,80 +239,102 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams.Stream
 <MarginInfo items={["AI95-00001-01"]} />
 <p>{"{"}<em>8652/0056</em>{"}"} If the File_Type object passed to the Stream function is later closed or finalized, and the stream-oriented attributes are subsequently called (explicitly or implicitly) on the Stream_Access value returned by Stream, execution is erroneous. This rule applies even if the File_Type object was opened again after it had been closed. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>36.a.1/1</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>These rules are analogous to the rule for the result of the Current_Input, Current_Output, and Current_Error functions. These rules make it possible to represent a value of (some descendant of) Root_Stream_Type which represents a file as an access value, with a null value corresponding to a closed file. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Inconsistencies With Ada 95
 
+<AnnotatedOnly>
 <MarginText>36.a/3</MarginText>
 <MarginInfo items={["AI95-00283-01", "AI05-0005-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong>Amendment </strong> The description of the subprograms for managing files was corrected so that they do not require truncation of the external file &mdash; a stream file is not a sequential file. An Ada 95 program that expects truncation of the stream file might not work under Ada 2005. Note that the Ada 95 standard was ambiguous on this point (the normative wording seemed to require truncation, but didn't explain where; the AARM notes seemed to expect behavior like Direct_IO), and implementations varied widely. Therefore, as a practical matter, code that depends on stream truncation might not work even in Ada 95; deleting the file before opening it provides truncation that works in both Ada 95 and Ada 2005. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 95
 
+<AnnotatedOnly>
 <MarginText>36.b/2</MarginText>
 <MarginInfo items={["AI95-00360-01"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong>Amendment </strong> Stream_IO.File_Type is defined to need finalization. If the restriction No_Nested_Finalization (see <a href="../AA-D/AA-D.7">D.7</a>) applies to the partition, and File_Type does not have a controlled part, it will not be allowed in local objects in Ada 2005 whereas it would be allowed in original Ada 95. Such code is not portable, as another Ada compiler may have a controlled part in File_Type, and thus would be illegal. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>36.c/2</MarginText>
 <MarginInfo items={["AI95-00057-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0051</em>{"}"} <strong>Corrigendum:</strong> Corrected the parameter mode of Flush; otherwise it could not be used on Standard_Output.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.d/2</MarginText>
 <MarginInfo items={["AI95-00026-01", "AI95-00256-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0055</em>{"}"} <strong>Corrigendum:</strong> Added wording to describe the effects of the various operations on the current index. The Amendment adds an explanation of the use of current index for Read and Write.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.e/2</MarginText>
 <MarginInfo items={["AI95-00001-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0056</em>{"}"} <strong>Corrigendum:</strong> Clarified that Stream can raise Status_Error, and clarified that using a Stream_Access whose file has been closed is erroneous.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.f/2</MarginText>
 <MarginInfo items={["AI95-00085-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Clarified that Set_Mode can be called with the current mode. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>36.g/3</MarginText>
 <MarginInfo items={["AI05-0283-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Package Ada.Streams.Stream_IO is now preelaborated, allowing it to be used in more contexts (including in distributed systems). Note that it is <em>not</em> a remote types package; File_Type objects cannot be passed between partitions. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>36.h/5</MarginText>
 <MarginInfo items={["AI12-0021-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The Wide_File_Names and Wide_Wide_File_Names nested packages are newly added to Ada.Stream_IO. Therefore, a use clause conflict is possible; see the introduction of <a href="../AA-A/">Annex A</a> for more on this topic. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>36.i/4</MarginText>
 <MarginInfo items={["AI12-0102-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Type Ada.Streams.Stream_IO.File_Type now has preelaborable initialization. This allows declaring library-level file objects in preelaborable packages (an oversight from the change above). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>36.j/4</MarginText>
 <MarginInfo items={["AI12-0130-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> The definition of the Flush procedure was moved to <a href="../AA-A/AA-A.8#Subclause_A.8.2">A.8.2</a>, so that it could be shared by all of the I/O packages. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_A.12.2"></a>
 
@@ -330,13 +360,17 @@ with Ada.Streams;{"\n"}package Ada.Text_IO.Text_Streams{"\n"}   with Global ={">
 <MarginText>5</MarginText>
 <p>The Stream function has the same effect as the corresponding function in Streams.Stream_IO. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>6</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   The ability to obtain a stream for a text file allows Current_Input, Current_Output, and Current_Error to be processed with the functionality of streams, including the mixing of text and binary input-output, and the mixing of binary input-output for different types.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>7</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   Performing operations on the stream associated with a text file does not affect the column, line, or page counts. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_A.12.3"></a>
 
@@ -392,8 +426,10 @@ with Ada.Streams;{"\n"}package Ada.Wide_Wide_Text_IO.Text_Streams{"\n"}   with G
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>5.a/2</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Package Wide_Wide_Text_IO.Text_Streams is new. <br /></Admonition>
+</AnnotatedOnly>
 

@@ -23,10 +23,12 @@ import MarginInfo from "@site/src/components/MarginInfo";
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>1.a/3</MarginText>
 <MarginInfo items={["AI95-00327-01", "AI05-0299-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 This subclause is turned into two subclauses. This subclause introduction is new. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_D.5.1"></a>
 
@@ -63,13 +65,17 @@ end Ada.Dynamic_Priorities;{"\n"}
 <MarginText>8</MarginText>
 <p>The function Get_Priority returns T's current base priority. Tasking_Error is raised if the task is terminated. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>8.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>There is no harm in setting the priority of a terminated task. A previous version of Ada 9X made this a run-time error. However, there is little difference between setting the priority of a terminated task, and setting the priority of a task that is about to terminate very soon; neither case should be an error. Furthermore, the runtime check is not necessarily feasible to implement on all systems, since priority changes might be deferred due to inter-processor communication overhead, so the error might not be detected until after Set_Priority has returned.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>8.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 However, we wish to allow implementations to avoid storing &ldquo;extra&rdquo; information about terminated tasks. Therefore, we make Get_Priority of a terminated task raise an exception; the implementation need not continue to store the priority of a task that has terminated. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9</MarginText>
 <p>Program_Error is raised by Set_Priority and Get_Priority if T is equal to Null_Task_Id.<br /></p>
@@ -78,14 +84,18 @@ However, we wish to allow implementations to avoid storing &ldquo;extra&rdquo; i
 <MarginInfo items={["AI95-00188-02"]} />
 <p>On a system with a single processor, the setting of the base priority of a task <em>T</em> to the new value occurs immediately at the first point when <em>T</em> is outside the execution of a protected action.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>10.a/2</MarginText>
 <MarginInfo items={["AI95-00188-02"]} />
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>The priority change is immediate if the target task is on a delay queue or a ready queue outside of a protected action. However, consider when Set_Priority is called by a task T1 to set the priority of T2, if T2 is blocked, waiting on an entry call queued on a protected object, the entry queue needs to be reordered. Since T1 might have a priority that is higher than the ceiling of the protected object, T1 cannot, in general, do the reordering. One way to implement this is to wake T2 up and have T2 do the work. This is similar to the disentangling of queues that needs to happen when a high-priority task aborts a lower-priority task, which might have a call queued on a protected object with a low ceiling. We have an Implementation Permission in <a href="../AA-D/AA-D.4">D.4</a> to allow this implementation. We could have required an immediate priority change if on a ready queue during a protected action, but that would have required extra checks for ceiling violations to meet Bounded (Run-Time) Error requirements of <a href="../AA-D/AA-D.3">D.3</a> and potentially could cause a protected action to be abandoned in the middle (by raising Program_Error). That seems bad. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>10.b</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>A previous version of Ada 9X made it a run-time error for a high-priority task to set the priority of a lower-priority task that has a queued call on a protected object with a low ceiling. This was changed because: <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10.c</MarginText>
 <ul>
@@ -101,9 +111,11 @@ However, we wish to allow implementations to avoid storing &ldquo;extra&rdquo; i
 <MarginText>12</MarginText>
 <p>If any subprogram in this package is called with a parameter T that specifies a task object that no longer exists, the execution of the program is erroneous. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>12.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that this rule overrides the above rule saying that Program_Error is raised on Get_Priority of a terminated task. If the task object still exists, and the task is terminated, Get_Priority raises Program_Error. However, if the task object no longer exists, calling Get_Priority causes erroneous execution. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Documentation Requirements
@@ -112,9 +124,11 @@ However, we wish to allow implementations to avoid storing &ldquo;extra&rdquo; i
 <MarginInfo items={["AI95-00188-02"]} />
 <p>On a multiprocessor, the implementation shall document any conditions that cause the completion of the setting of the priority of a task to be delayed later than what is specified for a single processor. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>12.a.1/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Documentation Requirement: </strong>Any conditions that cause the completion of the setting of the priority of a task to be delayed for a multiprocessor.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Metrics
@@ -126,67 +140,91 @@ However, we wish to allow implementations to avoid storing &ldquo;extra&rdquo; i
 <ul>
 <li>The execution time of a call to Set_Priority, for the nonpreempting case, in processor clock cycles. This is measured for a call that modifies the priority of a ready task that is not running (which cannot be the calling one), where the new base priority of the affected task is lower than the active priority of the calling task, and the affected task is not on any entry queue and is not executing a protected operation. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>14.a/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Documentation Requirement: </strong>The metrics for Set_Priority.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>15/2</MarginText>
 <MarginInfo items={["AI95-00321-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   Setting a task's base priority affects task dispatching. First, it can change the task's active priority. Second, under the FIFO_Within_Priorities policy it always causes the task to move to the tail of the ready queue corresponding to its active priority, even if the new base priority is unchanged.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   Under the priority queuing policy, setting a task's base priority has an effect on a queued entry call if the task is blocked waiting for the call. That is, setting the base priority of a task causes the priority of a queued entry call from that task to be updated and the call to be removed and then reinserted in the entry queue at the new priority (see <a href="../AA-D/AA-D.4">D.4</a>), unless the call originated from the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> of an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>17</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   The effect of two or more Set_Priority calls executed in parallel on the same task is defined as executing these calls in some serial order.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>17.a</MarginText>
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>This follows from the general reentrancy requirements stated near the beginning of <a href="../AA-A/">Annex A</a>, &ldquo;<a href="../AA-A/">Predefined Language Environment</a>&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18/3</MarginText>
 <MarginInfo items={["AI05-0092-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 4   The rule for when Tasking_Error is raised for Set_Priority or Get_Priority is different from the rule for when Tasking_Error is raised on an entry call (see <a href="../AA-9/AA-9.5#Subclause_9.5.3">9.5.3</a>). In particular, querying the priority of a completed or an abnormal task is allowed, so long as the task is not yet terminated, and setting the priority of a task is allowed for any task state (including for terminated tasks).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 5   Changing the priorities of a set of tasks can be performed by a series of calls to Set_Priority for each task separately. This can be done  reliably  within a protected operation that has high enough ceiling priority to guarantee that the operation completes without being preempted by any of the affected tasks.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>19.a/2</MarginText>
 <MarginInfo items={["AI95-00188-02"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong>Amendment </strong> Priority changes are now required to be done immediately so long as the target task is not on an entry queue.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19.b/2</MarginText>
 <MarginInfo items={["AI95-00362-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Dynamic_Priorities is now Preelaborated, so it can be used in preelaborated units. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>19.c/3</MarginText>
 <MarginInfo items={["AI95-00327-01", "AI05-0299-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 This Ada 95 subclause was moved down a level. The paragraph numbers are the same as those for <a href="../AA-D/AA-D.5">D.5</a> in Ada 95.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19.d/2</MarginText>
 <MarginInfo items={["AI95-00321-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 There is no &ldquo;standard&rdquo; policy anymore, so that phrase was replaced by the name of a specific policy in the notes.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19.e/2</MarginText>
 <MarginInfo items={["AI95-00327-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The bounded error for the priority of a task being higher than the ceiling of an object it is currently in was moved to <a href="../AA-D/AA-D.3">D.3</a>, so that it applies no matter how the situation arises. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_D.5.2"></a>
 
@@ -246,28 +284,36 @@ protected P is{"\n"}   procedure Do_Not_Set_Ceiling (Pr : System.Any_Priority);{
 protected body P is{"\n"}   procedure Do_Not_Set_Ceiling (Pr : System.Any_Priority) is{"\n"}   begin{"\n"}      null;{"\n"}   end;{"\n"}   procedure Set_Ceiling (Pr : System.Any_Priority) is{"\n"}   begin{"\n"}      P'Priority := Pr;{"\n"}   end;{"\n"}end P;{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>10.a/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Documentation Requirement: </strong>The metrics for setting the priority of a protected object.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11/2</MarginText>
 <MarginInfo items={["AI95-00327-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   Since P'Priority is a normal variable, the value following an assignment to the attribute immediately reflects the new value even though its impact on the ceiling priority of P is postponed until completion of the protected action in which it is executed. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>11.a/2</MarginText>
 <MarginInfo items={["AI95-00327-01", "AI95-00445-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The ability to dynamically change and query the priority of a protected object is new. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>11.b/5</MarginText>
 <MarginInfo items={["AI12-0230-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The ability to dynamically change and query the relative deadline of a protected object is new. <br /></Admonition>
+</AnnotatedOnly>
 

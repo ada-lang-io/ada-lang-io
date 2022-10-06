@@ -41,10 +41,12 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>4</MarginText>
 <p>For the execution of an <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code>, the given <em>task_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>s are evaluated in an arbitrary order. Each named task is then <em>aborted</em>, which consists of making the task <em>abnormal</em> and aborting the execution of the corresponding <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>, unless it is already completed. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>4.a/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that aborting those tasks is not defined to be an abort-deferred operation. Therefore, if one of the named tasks is the task executing the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code>, or if the task executing the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> depends on one of the named tasks, then it is possible for the execution of the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> to be aborted, thus leaving some of the tasks unaborted. This allows the implementation to use either a sequence of calls to an &ldquo;abort task&rdquo; run-time system primitive, or a single call to an &ldquo;abort list of tasks&rdquo; run-time system primitive. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>5</MarginText>
 <p>When the execution of a construct is <em>aborted</em> (including that of a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> or of a <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>), the execution of every construct included within the aborted execution is also aborted, except for executions included within the execution of an <em>abort-deferred</em> operation; the execution of an abort-deferred operation continues to completion without being affected by the abort; the following are the abort-deferred operations: <br /></p>
@@ -66,13 +68,17 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>12</MarginText>
 <p>[The last three of these are discussed further in <a href="../AA-7/AA-7.6">7.6</a>.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>12.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Deferring abort during Initialize and finalization allows, for example, the result of an allocator performed in an Initialize operation to be assigned into an access object without being interrupted in the middle, which would cause storage leaks. For an object with several controlled parts, each individual Initialize is abort-deferred. Note that there is generally no semantic difference between making each Finalize abort-deferred, versus making a group of them abort-deferred, because if the task gets aborted, the first thing it will do is complete any remaining finalizations. Individual objects are finalized prior to an assignment operation (if nonlimited controlled) and as part of Unchecked_Deallocation. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Abort is deferred during the entire assignment operation to an object with a controlled part, even if only some subcomponents are controlled. Note that this says "assignment operation", not "<code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>". Explicit calls to Initialize, Finalize, or Adjust are not abort-deferred. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>13</MarginText>
 <p>When a master is aborted, all tasks that depend on that master are aborted.<br /></p>
@@ -97,21 +103,27 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>18</MarginText>
 <li>the start or end of the execution of an entry call, <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code>, or <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code>; <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>18.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Although the abort completion point doesn't occur until the end of the entry call or <code><a href="../AA-9/AA-9.6#S0266">delay_statement</a></code>, these operations might be cut short because an abort attempts to cancel them. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>19</MarginText>
 <ul>
 <li>the start of the execution of a <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code>, or of the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of an <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code>. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>19.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The start of an <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code> is considered an abort completion point simply because it is easy for an implementation to check at such points. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19.b</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Implementations may of course check for abort more often than at each abort completion point; ideally, a fully preemptive implementation of abort will be provided. If preemptive abort is not supported in a given environment, then supporting the checking for abort as part of subprogram calls and loop iterations might be a useful option. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Bounded (Run-Time) Errors
@@ -120,13 +132,17 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI05-0264-1", "AI12-0445-1"]} />
 <p>An attempt to execute an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> as part of the execution of an abort-deferred operation is a bounded error. Similarly, an attempt to create a task that depends on a master that is included entirely within the execution of an abort-deferred operation is a bounded error. In both cases, Program_Error is raised if the error is detected by the implementation; otherwise, the operations proceed as they would outside an abort-deferred operation, except that an abort of the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> or the created task does not necessarily  have an effect. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>20.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>An <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> relies on an abort of the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> to effect the asynchronous transfer of control. For an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> within an abort-deferred operation, the abort might have no effect.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>20.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Creating a task dependent on a master included within an abort-deferred operation is considered an error, because such tasks could be aborted while the abort-deferred operation was still progressing, undermining the purpose of abort-deferral. Alternatively, we could say that such tasks are abort-deferred for their entire execution, but that seems too easy to abuse. Note that task creation is already a bounded error in protected actions, so this additional rule only applies to local task creation as part of Initialize, Finalize, or Adjust. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Erroneous Execution
@@ -134,32 +150,42 @@ Creating a task dependent on a master included within an abort-deferred operatio
 <MarginText>21</MarginText>
 <p>If an assignment operation completes prematurely due to an abort, the assignment is said to be <em>disrupted</em>; the target of the assignment or its parts can become abnormal, and certain subsequent uses of the object can be erroneous, as explained in <a href="../AA-13/AA-13.9#Subclause_13.9.1">13.9.1</a>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>22/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   An <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> is best  used only in situations requiring unconditional termination.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>23</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   A task is allowed to abort any task it can name, including itself.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>24</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   Additional requirements associated with abort are given in <a href="../AA-D/AA-D.6">D.6</a>, &ldquo;<a href="../AA-D/AA-D.6">Preemptive Abort</a>&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>24.a/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 This subclause has been rewritten to accommodate the concept of aborting the execution of a construct, rather than just of a task. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>24.b/5</MarginText>
 <MarginInfo items={["AI12-0119-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added points within parallel constructs to the list of abort completion points. <br /></Admonition>
+</AnnotatedOnly>
 

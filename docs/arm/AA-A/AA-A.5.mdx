@@ -40,24 +40,30 @@ package Ada.Numerics {"\n"}   with  Pure is {"\n"}   Argument_Error : exception;
 <MarginText>5</MarginText>
 <p>The implementation may specify the values of Pi and e to a larger number of significant digits. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>5.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>51 digits seem more than adequate for all present computers; converted to binary, the values given above are accurate to more than 160 bits. Nevertheless, the permission allows implementations to accommodate unforeseen hardware advances. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>5.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Numerics and its children were not predefined in Ada 83. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>5.c/2</MarginText>
 <MarginInfo items={["AI95-00388-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The alternative declaration of &pi; is new. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_A.5.1"></a>
 
@@ -66,9 +72,11 @@ The alternative declaration of &pi; is new. <br /></Admonition>
 <MarginText>1</MarginText>
 <p>Implementation-defined approximations to the mathematical functions known as the &ldquo;elementary functions&rdquo; are provided by the subprograms in Numerics.Generic_Elementary_Functions. Nongeneric equivalents of this generic package for each of the predefined floating point types are also provided as children of Numerics. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>1.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The accuracy actually achieved by the elementary functions.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -96,9 +104,11 @@ end Ada.Numerics.Generic_Elementary_Functions;{"\n"}
 <MarginInfo items={["AI95-00126-01"]} />
 <p>{"{"}<em>8652/0020</em>{"}"} The library package Numerics.Elementary_Functions is declared pure and defines the same subprograms as Numerics.Generic_Elementary_Functions, except that the predefined type Float is systematically substituted for Float_Type'Base throughout. Nongeneric equivalents of Numerics.Generic_Elementary_Functions for each of the other predefined floating point types are defined similarly, with the names Numerics.Short_Elementary_Functions, Numerics.Long_Elementary_Functions, etc. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>9.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The nongeneric equivalents are provided to allow the programmer to construct simple mathematical applications without being required to understand and use generics. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10</MarginText>
 <p>The functions have their usual mathematical meanings. When the Base parameter is specified, the Log function computes the logarithm to the given base; otherwise, it computes the natural logarithm. When the Cycle parameter is specified, the parameter X of the forward trigonometric functions (Sin, Cos, Tan, and Cot) and the results of the inverse trigonometric functions (Arcsin, Arccos, Arctan, and Arccot) are measured in units such that a full cycle of revolution has the given value; otherwise, they are measured in radians.<br /></p>
@@ -165,13 +175,17 @@ end Ada.Numerics.Generic_Elementary_Functions;{"\n"}
 <MarginText>34</MarginText>
 <p>[Constraint_Error can also be raised when a finite result overflows (see <a href="../AA-G/AA-G.2#Subclause_G.2.4">G.2.4</a>); this may occur for parameter values sufficiently <em>near</em> poles, and, in the case of some of the functions, for parameter values with sufficiently large magnitudes.] When Float_Type'Machine_Overflows is False, the result at poles is unspecified. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>34.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The purpose of raising Constraint_Error (rather than Numerics.Argument_Error) at the poles of a function, when Float_Type'Machine_Overflows is True, is to provide continuous behavior as the actual parameters of the function approach the pole and finally reach it. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.b</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>It is anticipated that an Ada binding to IEC 559:1989 will be developed in the future. As part of such a binding, the Machine_Overflows attribute of a conformant floating point type will be specified to yield False, which will permit both the predefined arithmetic operations and implementations of the elementary functions to deliver signed infinities (and set the overflow flag defined by the binding) instead of raising Constraint_Error in overflow situations, when traps are disabled. Similarly, it is appropriate for the elementary functions to deliver signed infinities (and set the zero-divide flag defined by the binding) instead of raising Constraint_Error at poles, when traps are disabled. Finally, such a binding should also specify the behavior of the elementary functions, when sensible, given parameters with infinite values. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>35</MarginText>
 <p>When one parameter of a function with multiple parameters represents a pole and another is outside the function's domain, the latter takes precedence (i.e., Numerics.Argument_Error is raised). <br /></p>
@@ -182,9 +196,11 @@ end Ada.Numerics.Generic_Elementary_Functions;{"\n"}
 <MarginText>36</MarginText>
 <p>In the implementation of Numerics.Generic_Elementary_Functions, the range of intermediate values allowed during the calculation of a final result shall not be affected by any range constraint of the subtype Float_Type. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>36.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Implementations of Numerics.Generic_Elementary_Functions written in Ada should therefore avoid declaring local variables of subtype Float_Type; the subtype Float_Type'Base should be used instead. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>37</MarginText>
 <p>In the following cases, evaluation of an elementary function shall yield the <em>prescribed result</em>, provided that the preceding rules do not call for an exception to be raised: <br /></p>
@@ -213,17 +229,21 @@ end Ada.Numerics.Generic_Elementary_Functions;{"\n"}
 <MarginText>46</MarginText>
 <li>A prescribed zero result delivered by one of the odd functions <em>away from the origin</em>, or by some other elementary function, has an implementation-defined sign. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>46.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The sign of a zero result from some of the operators or functions in Numerics.Generic_Elementary_Functions, when Float_Type'Signed_Zeros is True.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>47</MarginText>
 <ul>
 <li>[A zero result that is not a prescribed result (i.e., one that results from rounding or underflow) has the correct mathematical sign.] <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>47.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This is a consequence of the rules specified in IEC 559:1989 as they apply to underflow situations with traps disabled. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Permissions
@@ -235,9 +255,11 @@ end Ada.Numerics.Generic_Elementary_Functions;{"\n"}
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>48.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The semantics of Numerics.Generic_Elementary_Functions differs from Generic_Elementary_Functions as defined in ISO/IEC DIS 11430 (for Ada 83) in the following ways: <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>48.b</MarginText>
 <ul>
@@ -258,10 +280,12 @@ The semantics of Numerics.Generic_Elementary_Functions differs from Generic_Elem
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>48.i/2</MarginText>
 <MarginInfo items={["AI95-00126-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0020</em>{"}"} <strong>Corrigendum:</strong> Explicitly stated that the nongeneric equivalents of Generic_Elementary_Functions are pure. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_A.5.2"></a>
 
@@ -276,9 +300,11 @@ The semantics of Numerics.Generic_Elementary_Functions differs from Generic_Elem
 <MarginText>3</MarginText>
 <p>Other facilities are provided specifically for advanced applications. These include subprograms to save and restore the state of a given generator; a private type whose objects can be used to hold the saved state of a generator; and subprograms to obtain a string representation of a given generator state, or, given such a string representation, the corresponding state.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>3.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>These facilities support a variety of requirements ranging from repeatable sequences (for debugging) to unique sequences in each execution of a program. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -354,32 +380,44 @@ generic{"\n"}   type Result_Subtype is ({"<"}{">"});{"\n"}package Ada.Numerics.D
 private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Numerics.Discrete_Random;{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>27.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The value of Numerics.Float_Random.Max_Image_Width.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.b</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The value of Numerics.Discrete_Random.Max_Image_Width.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.c/1</MarginText>
 <MarginInfo items={["AI95-00115-01"]} />
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>{"{"}<em>8652/0097</em>{"}"} The following is a possible implementation of the private part of Numerics.Float_Random (assuming the presence of &ldquo;<strong>with</strong> Ada.Finalization;&rdquo; as a context clause): <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.d</MarginText>
 <CodeBlock language="ada">
 type State is ...;{"\n"}type Access_State is access State;{"\n"}type Generator is new Finalization.Limited_Controlled with{"\n"}   record{"\n"}      S : Access_State := new State'(...);{"\n"}   end record;{"\n"}procedure Finalize (G : in out Generator);{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>27.d.1/2</MarginText>
 <MarginInfo items={["AI95-00115-01", "AI95-00344-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0097</em>{"}"} Numerics.Discrete_Random.Generator also can be implemented this way.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.e</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Clearly some level of indirection is required in the implementation of a Generator, since the parameter mode is <strong>in</strong> for all operations on a Generator. For this reason, Numerics.Float_Random and Numerics.Discrete_Random cannot be declared pure. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27.1/2</MarginText>
 <MarginInfo items={["AI95-00360-01"]} />
@@ -388,18 +426,22 @@ Clearly some level of indirection is required in the implementation of a Generat
 <MarginText>28</MarginText>
 <p>An object of the limited private type Generator is associated with a sequence of random numbers. Each generator has a hidden (internal) state, which the operations on generators use to determine the position in the associated sequence. All generators are implicitly initialized to an unspecified state that does not vary from one program execution to another; they may also be explicitly initialized, or reinitialized, to a time-dependent state, to a previously saved state, or to a state uniquely denoted by an integer value. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>28.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The repeatability provided by the implicit initialization may be exploited for testing or debugging purposes. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>29/5</MarginText>
 <MarginInfo items={["AI05-0280-1", "AI12-0445-1"]} />
 <p>An object of the private type State can be used to hold the internal state of a generator. Such objects are only necessary  if the application is designed to save and restore generator states or to examine or manufacture them. The implicit initial value of type State corresponds to the implicit initial value of all generators.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>29.a/3</MarginText>
 <MarginInfo items={["AI05-0280-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>All generators are implicitly initialized to the same unchanging value, and using Reset on a default initialized object of type State will produce a generator with that same value. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>30</MarginText>
 <p>The operations on generators affect the state and therefore the future values of the associated sequence. The semantics of the operations on generators and states are defined below. <br /></p>
@@ -413,17 +455,23 @@ function Random (Gen : Generator) return Uniformly_Distributed;{"\n"}function Ra
 <MarginInfo items={["AI12-0144-1"]} />
 <p>Obtains the &ldquo;next&rdquo; random number from the given generator, relative to its current state, according to an implementation-defined algorithm.  <br /></p>
 
+<AnnotatedOnly>
 <MarginText>32.a/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>32.a.1/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The algorithm is the subject of a Documentation Requirement, so we don't separately summarize this implementation-defined item. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>32.b</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The requirement for a level of indirection in accessing the internal state of a generator arises from the desire to make Random a function, rather than a procedure. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>32.1/5</MarginText>
 <MarginInfo items={["AI12-0144-1"]} />
@@ -443,9 +491,11 @@ procedure Reset (Gen       : in Generator;{"\n"}                 Initiator : in 
 <MarginText>34</MarginText>
 <p>Sets the state of the specified generator to one that is an unspecified function of the value of the parameter Initiator (or to a time-dependent state, if only a generator parameter is specified). The latter form of the procedure is known as the <em>time-dependent Reset procedure</em>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>34.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>The time-dependent Reset procedure can be implemented by mapping the current time and date as determined by the system clock into a state, but other implementations are possible. For example, a white-noise generator or a radioactive source can be used to generate time-dependent states. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>35</MarginText>
 <CodeBlock language="ada">
@@ -463,9 +513,11 @@ function Image (Of_State    : State)  return String;{"\n"}function Value (Coded_
 <MarginText>38</MarginText>
 <p>Image provides a representation of a state coded (in an implementation-defined way) as a string whose length is bounded by the value of Max_Image_Width. Value is the inverse of Image: Value(Image(S)) = S for each state S that can be obtained from a generator by invoking Save. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>38.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The string representation of a random number generator's state.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Dynamic Semantics
@@ -495,10 +547,12 @@ function Image (Of_State    : State)  return String;{"\n"}function Value (Coded_
 <MarginInfo items={["AI12-0144-1"]} />
 <p>A sufficiently long sequence of random numbers obtained by consecutive  calls to Random that have the same generator and result range is approximately uniformly distributed over the result range .<br /></p>
 
+<AnnotatedOnly>
 <MarginText>41.a/5</MarginText>
 <MarginInfo items={["AI12-0005-1", "AI12-0144-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>In this rule, &ldquo;consecutive&rdquo; means at least that there are no intervening explicit calls involving the same generator. This restricts the rule to only applying to cases where just the Random function changes the generator. We don't mean to impose a requirement if there are intervening calls to Reset, to Random with the same generator but a different result range, or any other case that would affect the sequence of values returned. Operations that use the resulting random values (for instance, to store them somewhere) are not considered in determining if calls are consecutive. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>42/5</MarginText>
 <MarginInfo items={["AI12-0144-1"]} />
@@ -513,20 +567,26 @@ function Image (Of_State    : State)  return String;{"\n"}function Value (Coded_
 <MarginText>44</MarginText>
 <p>No one algorithm for random number generation is best for all applications. To enable the user to determine the suitability of the random number generators for the intended application, the implementation shall describe the algorithm used and shall give its period, if known exactly, or a lower bound on the period, if the exact period is unknown. Periods that are so long that the periodicity is unobservable in practice can be described in such terms, without giving a numerical bound. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>44.a/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Documentation Requirement: </strong>The algorithm used for random number generation, including a description of its period.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>45</MarginText>
 <p>The implementation also shall document the minimum time interval between calls to the time-dependent Reset procedure that are guaranteed to initiate different sequences, and it shall document the nature of the strings that Value will accept without raising Constraint_Error. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>45.a/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>45.b/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Documentation Requirement: </strong>The minimum time interval between calls to the time-dependent Reset procedure that is guaranteed to initiate different random number sequences.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Advice
@@ -534,59 +594,81 @@ function Image (Of_State    : State)  return String;{"\n"}function Value (Coded_
 <MarginText>46</MarginText>
 <p>Any storage associated with an object of type Generator should be reclaimed on exit from the scope of the object. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>46.a.1/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Any storage associated with an object of type Generator of the random number packages should be reclaimed on exit from the scope of the object.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>46.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>A level of indirection is implicit in the semantics of the operations, given that they all take parameters of mode <strong>in</strong>. This implies that the full type of Generator probably should be a controlled type, with appropriate finalization to reclaim any heap-allocated storage. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>47</MarginText>
 <p>If the generator period is sufficiently long in relation to the number of distinct initiator values, then each possible value of Initiator passed to Reset should initiate a sequence of random numbers that does not, in a practical sense, overlap the sequence initiated by any other value. If this is not possible, then the mapping between initiator values and generator states should be a rapidly varying function of the initiator value. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>47.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Each value of Initiator passed to Reset for the random number packages should initiate a distinct sequence of random numbers, or, if that is not possible, be at least a rapidly varying function of the initiator value.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>48</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   If two or more tasks are to share the same generator, then the tasks have to synchronize their access to the generator as for any shared variable (see <a href="../AA-9/AA-9.10">9.10</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>49</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   Within a given implementation, a repeatable random number sequence can be obtained by relying on the implicit initialization of generators or by explicitly initializing a generator with a repeatable initiator value. Different sequences of random numbers can be obtained from a given generator in different program executions by explicitly initializing the generator to a time-dependent state.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>50/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   A given implementation of the Random function in Numerics.Float_Random is not guaranteed to  be capable of delivering the values 0.0 or 1.0. Applications will be more portable if they  assume that these values, or values sufficiently close to them to behave indistinguishably from them, can occur. If a sequence of random integers from some  range is necessary , it is preferred that the application uses one of  the Random functions  in an appropriate instantiation of Numerics.Discrete_Random, rather than transforming the result of the Random function in Numerics.Float_Random.  <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>51/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
 <CodeBlock language="ada">
 This paragraph was deleted. {"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>51.a/5</MarginText>
 <MarginInfo items={["AI12-0144-1", "AI12-0442-1"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>One might think that a simple transformation of the result of the floating point Random function such as Integer(Float(M) * Random(G)) <strong>mod</strong> M would give a uniform distribution. But this is only true if the period of the underlying generator is a multiple of M. (This usually requires that M be a power of two.) In other cases, the <strong>mod</strong> operation maps slightly more random values to a some result values than others. It is easy to see this: consider a 4-bit random integer (with a range of 0 .. 15). If one <strong>mod</strong>s this by 6 to get a value in 0 .. 5 (to which one would add 1 to get the value of a die roll), 3 values would be mapped to each value 0 .. 3, but only 2 values would be mapped to 4 and 5. Even when the input is uniformly distributed, the output clearly is not. A similar effect occurs regardless of the number of bits in the random integer. Since it takes care to get this right, users should use the provided functions (which presumably do this correctly &ndash;  contains a correct algorithm) and resist the urge to &ldquo;roll-their-own&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>52/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
  Exponentially distributed (floating point) random numbers with mean and standard deviation 1.0 can be obtained by the transformation <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>53/2</MarginText>
 <MarginInfo items={["AI95-00434-01"]} />
 <CodeBlock language="ada">
    -Log(Random(G) + Float'Model_Small){"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>54</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 where Log comes from Numerics.Elementary_Functions (see <a href="../AA-A/AA-A.5#Subclause_A.5.1">A.5.1</a>); in this expression, the addition of Float'Model_Small avoids the exception that would be raised were Log to be given the value zero, without affecting the result (in most implementations) when Random returns a nonzero value. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -615,41 +697,51 @@ with Ada.Numerics.Discrete_Random;{"\n"}procedure Flip_A_Coin is{"\n"}   type Co
 with Ada.Numerics.Float_Random;{"\n"}procedure Parallel_Simulation is{"\n"}   use Ada.Numerics.Float_Random;{"\n"}   task type Worker is{"\n"}      entry Initialize_Generator (Initiator : in Integer);{"\n"}      ...{"\n"}   end Worker;{"\n"}   W : array (1 .. 10) of Worker;{"\n"}   task body Worker is{"\n"}      G : Generator;{"\n"}      Probability_Of_Event : Uniformly_Distributed;{"\n"}   begin{"\n"}      accept Initialize_Generator (Initiator : in Integer) do{"\n"}         Reset (G, Initiator);{"\n"}      end Initialize_Generator;{"\n"}      loop{"\n"}         ...{"\n"}         Probability_Of_Event := Random(G);{"\n"}         ...{"\n"}      end loop;{"\n"}   end Worker;{"\n"}begin{"\n"}   -- Initialize the generators in the Worker tasks to different states{"\n"}   for I in W'Range loop{"\n"}      W(I).Initialize_Generator (I);{"\n"}   end loop;{"\n"}   ... -- Wait for the Worker tasks to terminate{"\n"}end Parallel_Simulation;{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>61</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializes its generator to a different state, those states will be the same in every execution of the program. The generator states can be initialized uniquely in each program execution by instantiating Ada.Numerics.Discrete_Random for the type Integer in the main procedure, resetting the generator obtained from that instance to a time-dependent state, and then using random integers obtained from that generator to initialize the generators in each Worker task. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 95
 
+<AnnotatedOnly>
 <MarginText>61.a/2</MarginText>
 <MarginInfo items={["AI95-00360-01"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong>Amendment </strong> Type Generator in Numerics.Float_Random and in an instance of Numerics.Discrete_Random is defined to need finalization. If the restriction No_Nested_Finalization (see <a href="../AA-D/AA-D.7">D.7</a>) applies to the partition, and Generator does not have a controlled part, it will not be allowed in local objects in Ada 2005 whereas it would be allowed in original Ada 95. Such code is not portable, as another Ada compiler may have a controlled part in Generator, and thus would be illegal. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>61.b/3</MarginText>
 <MarginInfo items={["AI95-00089-01", "AI05-0005-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0050</em>{"}"} <strong>Corrigendum:</strong> Made the passing of an incorrect Image of a generator a bounded error, as it might not be practical to check for problems (if a generator consists of several related values). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>61.c/3</MarginText>
 <MarginInfo items={["AI05-0280-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Specified the implicit initial value for (sub)type State. This was unspecified in Ada 95 and Ada 2005, so a program depending on some other initial value is very unlikely and certainly was not portable. An implementation can use default expressions, aspect Default_Value, or aspect Default_Component_Value to keep the representation of the type unchanged while meeting this new requirement. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>61.d/5</MarginText>
 <MarginInfo items={["AI12-0144-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
  The function Random with First and Last parameters is new. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_A.5.3"></a>
 
@@ -680,9 +772,11 @@ NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializ
 <dl>
 <dd>Yields the largest value of p such that every value expressible in the canonical form (for the type T), having a p-digit <em>mantissa</em> and an <em>exponent</em> between T'Machine_Emin and T'Machine_Emax, is a machine number (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type T. This attribute yields a value of the type <em>universal_integer</em>. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>6.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Values of a type held in an extended register are, in general, not machine numbers of the type, since they cannot be expressed in the canonical form with a sufficiently short <em>mantissa</em>. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7</MarginText>
 <dt><br/>S'Machine_Emin</dt>
@@ -692,9 +786,11 @@ NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializ
 <dt><br/>S'Machine_Emax</dt>
 <dd>Yields the largest (most positive) value of <em>exponent</em> such that every value expressible in the canonical form (for the type T), having a <em>mantissa</em> of T'Machine_Mantissa digits, is a machine number (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type T. This attribute yields a value of the type <em>universal_integer</em>. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>8.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that the above definitions do not determine unique values for the representation-oriented attributes of floating point types. The implementation may choose any set of values that collectively satisfies the definitions.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9</MarginText>
 <dt><br/>S'Denorm</dt>
@@ -704,18 +800,22 @@ NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializ
 <MarginText>10</MarginText>
 <p>The values described by the formula in the definition of S'Denorm are called <em>denormalized numbers</em>. A nonzero machine number that is not a denormalized number is a <em>normalized number</em>. A normalized number x of a given type T is said to be <em>represented in canonical form</em> when it is expressed in the canonical form (for the type T) with a <em>mantissa</em> having T'Machine_Mantissa digits; the resulting form is the <em>canonical-form representation</em> of x. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>10.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The intent is that S'Denorm be True when such denormalized numbers exist and are generated in the circumstances defined by IEC 559:1989, though the latter requirement is not formalized here. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>11</MarginText>
 <dt><br/>S'Machine_Rounds</dt>
 <dl>
 <dd>Yields the value True if rounding is performed on inexact results of every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>11.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>It is difficult to be more precise about what it means to round the result of a predefined operation. If the implementation does not use extended registers, so that every arithmetic result is necessarily a machine number, then rounding seems to imply two things: <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>11.b</MarginText>
 <ul>
@@ -723,9 +823,11 @@ NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializ
 <MarginText>11.c</MarginText>
 <li>when the exact mathematical result is not a machine number, the result of a predefined operation must be the nearer of the two adjacent machine numbers. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>11.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Technically, this attribute should yield False when extended registers are used, since a few computed results will cross over the half-way point as a result of double rounding, if and when a value held in an extended register has to be reduced in precision to that of the machine numbers. It does not seem desirable to preclude the use of extended registers when S'Machine_Rounds could otherwise be True. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>12</MarginText>
 <dt><br/>S'Machine_Overflows</dt>
@@ -744,13 +846,17 @@ Technically, this attribute should yield False when extended registers are used,
 <MarginText>16</MarginText>
 <li>for nonzero x, the normalized exponent of x is the unique integer k such that T'Machine_Radixk&ndash;1 &le; |x| {"<"} T'Machine_Radixk. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>16.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The normalized exponent of a normalized number x is the value of <em>exponent</em> in the canonical-form representation of x.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The normalized exponent of a denormalized number is less than the value of T'Machine_Emin. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>17</MarginText>
 <p>The following <em>primitive function attributes</em> are defined for any subtype S of a floating point type T. <br /></p>
@@ -781,17 +887,23 @@ function S'Fraction (X : T){"\n"}  return T{"\n"}
 <dl>
 <dd>The function yields the value X · T'Machine_Radix&ndash;k, where k is the normalized exponent of X. A zero result[, which can only occur when X is zero,] has the sign of X. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>23.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Informally, when X is a normalized number, the result is the value obtained by replacing the <em>exponent</em> by zero in the canonical-form representation of X. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>23.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Except when X is zero, the magnitude of the result is greater than or equal to the reciprocal of T'Machine_Radix and less than one; consequently, the result is always a normalized number, even when X is a denormalized number. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>23.c</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>When X is a denormalized number, the result is the value obtained by replacing the <em>exponent</em> by zero in the canonical-form representation of the result of scaling X up sufficiently to normalize it. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>24</MarginText>
 <dt><br/>S'Compose</dt>
@@ -807,13 +919,17 @@ function S'Compose (Fraction : T;{"\n"}                    Exponent : universal_
 <dl>
 <dd>Let v be the value Fraction · T'Machine_RadixExponent&ndash;k, where k is the normalized exponent of Fraction. If v is a machine number of the type T, or if |v| &ge; T'Model_Small, the function yields v; otherwise, it yields either one of the machine numbers of the type T adjacent to v. Constraint_Error is optionally raised if v is outside the base range of S. A zero result has the sign of Fraction when S'Signed_Zeros is True. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>26.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Informally, when Fraction and v are both normalized numbers, the result is the value obtained by replacing the <em>exponent</em> by Exponent in the canonical-form representation of Fraction. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>26.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>If Exponent is less than T'Machine_Emin and Fraction is nonzero, the result is either zero, T'Model_Small, or (if T'Denorm is True) a denormalized number. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27</MarginText>
 <dt><br/>S'Scaling</dt>
@@ -829,13 +945,17 @@ function S'Scaling (X : T;{"\n"}                    Adjustment : universal_integ
 <dl>
 <dd>Let v be the value X · T'Machine_RadixAdjustment. If v is a machine number of the type T, or if |v| &ge; T'Model_Small, the function yields v; otherwise, it yields either one of the machine numbers of the type T adjacent to v. Constraint_Error is optionally raised if v is outside the base range of S. A zero result has the sign of X when S'Signed_Zeros is True. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>29.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Informally, when X and v are both normalized numbers, the result is the value obtained by increasing the <em>exponent</em> by Adjustment in the canonical-form representation of X. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>29.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>If Adjustment is sufficiently small (i.e., sufficiently negative), the result is either zero, T'Model_Small, or (if T'Denorm is True) a denormalized number. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>30</MarginText>
 <dt><br/>S'Floor</dt>
@@ -900,9 +1020,11 @@ function S'Machine_Rounding (X : T){"\n"}  return T{"\n"}
 <dl>
 <dd>The function yields the integral value nearest to X. If X lies exactly halfway between two integers, one of those integers is returned, but which of them is returned is unspecified. A zero result has the sign of X when S'Signed_Zeros is True. This function provides access to the rounding behavior which is most efficient on the target processor.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>41.a.1/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>We leave the rounding unspecified, so that users cannot depend on a particular rounding. This attribute is intended for use in cases where the particular rounding chosen is irrelevant. If there is a need to know which way values halfway between two integers are rounded, one of the other rounding attributes should be used. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>42</MarginText>
 <dt><br/>S'Truncation</dt>
@@ -930,13 +1052,17 @@ function S'Remainder (X, Y : T){"\n"}  return T{"\n"}
 <dl>
 <dd>For nonzero Y, let v be the value X &ndash; n · Y, where n is the integer nearest to the exact value of X/Y; if |n &ndash; X/Y| = 1/2, then n is chosen to be even. If v is a machine number of the type T, the function yields v; otherwise, it yields zero. Constraint_Error is raised if Y is zero. A zero result has the sign of X when S'Signed_Zeros is True. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>47.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The magnitude of the result is less than or equal to one-half the magnitude of Y. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>47.b</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Given machine numbers X and Y of the type T, v is necessarily a machine number of the type T, except when Y is in the neighborhood of zero, X is sufficiently close to a multiple of Y, and T'Denorm is False. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>48</MarginText>
 <dt><br/>S'Adjacent</dt>
@@ -952,9 +1078,11 @@ function S'Adjacent (X, Towards : T){"\n"}  return T{"\n"}
 <dl>
 <dd>If Towards = X, the function yields X; otherwise, it yields the machine number of the type T adjacent to X in the direction of Towards, if that machine number exists. If the result would be outside the base range of S, Constraint_Error is raised. When T'Signed_Zeros is True, a zero result has the sign of X. When Towards is zero, its sign has no bearing on the result. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>50.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The value of S'Adjacent(0.0, 1.0) is the smallest normalized positive number of the type T when T'Denorm is False and the smallest denormalized positive number of the type T when T'Denorm is True. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>51</MarginText>
 <dt><br/>S'Copy_Sign</dt>
@@ -970,9 +1098,11 @@ function S'Copy_Sign (Value, Sign : T){"\n"}  return T{"\n"}
 <dl>
 <dd>If the value of Value is nonzero, the function yields a result whose magnitude is that of Value and whose sign is that of Sign; otherwise, it yields the value zero. Constraint_Error is optionally raised if the result is outside the base range of S. A zero result has the sign of Sign when S'Signed_Zeros is True. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>53.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>S'Copy_Sign is provided for convenience in restoring the sign to a quantity from which it has been temporarily removed, or to a related quantity. When S'Signed_Zeros is True, it is also instrumental in determining the sign of a zero quantity, when required. (Because negative and positive zeros compare equal in systems conforming to IEC 559:1989, a negative zero does <em>not</em> appear to be negative when compared to zero.) The sign determination is accomplished by transferring the sign of the zero quantity to a nonzero quantity and then testing for a negative result. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>54</MarginText>
 <dt><br/>S'Leading_Part</dt>
@@ -998,13 +1128,17 @@ function S'Leading_Part (X : T;{"\n"}                         Radix_Digits : uni
 <dl>
 <dd>Constraint_Error is raised when Radix_Digits is zero or negative. A zero result[, which can only occur when X is zero,] has the sign of X. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>59.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Informally, if X is nonzero, the result is the value obtained by retaining only the specified number of (leading) significant digits of X (in the machine radix), setting all other digits to zero. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>59.b</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>The result can be obtained by first scaling X up, if necessary to normalize it, then masking the mantissa so as to retain only the specified number of leading digits, then scaling the result back down if X was scaled up. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>60</MarginText>
 <dt><br/>S'Machine</dt>
@@ -1020,14 +1154,18 @@ function S'Machine (X : T){"\n"}  return T{"\n"}
 <dl>
 <dd>If X is a machine number of the type T, the function yields X; otherwise, it yields the value obtained by rounding or truncating X to either one of the adjacent machine numbers of the type T. Constraint_Error is raised if rounding or truncating X to the precision of the machine numbers results in a value outside the base range of S. A zero result has the sign of X when S'Signed_Zeros is True. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>62.a/3</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>All of the primitive function attributes except Rounding and Machine correspond to subprograms in the Generic_Primitive_Functions generic package that was proposed as a separate ISO standard (ISO/IEC DIS 11729) for Ada 83. The Scaling, Unbiased_Rounding, and Truncation attributes correspond to the Scale, Round, and Truncate functions, respectively, in Generic_Primitive_Functions. The Rounding attribute rounds away from zero; this functionality was not provided in Generic_Primitive_Functions. The name Round was not available for either of the primitive function attributes that perform rounding, since an attribute of that name is used for a different purpose for decimal fixed point types. Likewise, the name Scale was not available, since an attribute of that name is also used for a different purpose for decimal fixed point types. The functionality of the Machine attribute was also not provided in Generic_Primitive_Functions. The functionality of the Decompose procedure of Generic_Primitive_Functions is only provided in the form of the separate attributes Exponent and Fraction. The functionality of the Successor and Predecessor functions of Generic_Primitive_Functions is provided by the extension of the existing Succ and Pred attributes. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>62.b</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>The primitive function attributes may be implemented either with appropriate floating point arithmetic operations or with integer and logical operations that act on parts of the representation directly. The latter is strongly encouraged when it is more efficient than the former; it is mandatory when the former cannot deliver the required accuracy due to limitations of the implementation's arithmetic operations. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>63</MarginText>
 <p>The following <em>model-oriented attributes</em> are defined for any subtype S of a floating point type T. <br /></p>
@@ -1043,18 +1181,22 @@ function S'Machine (X : T){"\n"}  return T{"\n"}
 <dt><br/>S'Model_Epsilon</dt>
 <dd>Yields the value T'Machine_Radix1 &ndash; T'Model_Mantissa. The value of this attribute is of the type <em>universal_real</em>. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>66.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>In most implementations, this attribute yields the absolute value of the difference between one and the smallest machine number of the type T above one which, when added to one, yields a machine number different from one. Further discussion can be found in <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>67</MarginText>
 <dt><br/>S'Model_Small</dt>
 <dl>
 <dd>Yields the value T'Machine_RadixT'Model_Emin &ndash; 1. The value of this attribute is of the type <em>universal_real</em>. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>67.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>In most implementations, this attribute yields the smallest positive normalized number of the type T, i.e. the number corresponding to the positive underflow threshold. In some implementations employing a radix-complement representation for the type T, the positive underflow threshold is closer to zero than is the negative underflow threshold, with the consequence that the smallest positive normalized number does not coincide with the positive underflow threshold (i.e., it exceeds the latter). Further discussion can be found in <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>68</MarginText>
 <dt><br/>S'Model</dt>
@@ -1076,51 +1218,69 @@ function S'Model (X : T){"\n"}  return T{"\n"}
 <dt><br/>S'Safe_Last</dt>
 <dd>Yields the upper bound of the safe range (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type T. If the Numerics Annex is not supported, the value of this attribute is implementation defined; see <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a> for the definition that applies to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_real</em>. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>72.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>A predefined floating point arithmetic operation that yields a value in the safe range of its result type is guaranteed not to overflow. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>72.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>An exception is made for exponentiation by a negative exponent in <a href="../AA-4/AA-4.5#Subclause_4.5.6">4.5.6</a>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>72.c</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The values of the Model_Mantissa, Model_Emin, Model_Epsilon, Model, Safe_First, and Safe_Last attributes, if the Numerics Annex is not supported.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 83
 
+<AnnotatedOnly>
 <MarginText>72.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The Epsilon and Mantissa attributes of floating point types are removed from the language and replaced by Model_Epsilon and Model_Mantissa, which may have different values (as a result of changes in the definition of model numbers); the replacement of one set of attributes by another is intended to convert what would be an inconsistent change into an incompatible change.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>72.e</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The Emax, Small, Large, Safe_Emax, Safe_Small, and Safe_Large attributes of floating point types are removed from the language. Small and Safe_Small are collectively replaced by Model_Small, which is functionally equivalent to Safe_Small, though it may have a slightly different value. The others are collectively replaced by Safe_First and Safe_Last. Safe_Last is functionally equivalent to Safe_Large, though it may have a different value; Safe_First is comparable to the negation of Safe_Large but may differ slightly from it as well as from the negation of Safe_Last. Emax and Safe_Emax had relatively few uses in Ada 83; T'Safe_Emax can be computed in the revised language as Integer'Min(T'Exponent(T'Safe_First), T'Exponent(T'Safe_Last)).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>72.f</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Implementations are encouraged to eliminate the incompatibilities discussed here by retaining the old attributes, during a transition period, in the form of implementation-defined attributes with their former values. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>72.g</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The Model_Emin attribute is new. It is conceptually similar to the negation of Safe_Emax attribute of Ada 83, adjusted for the fact that the model numbers now have the hardware radix. It is a fundamental determinant, along with Model_Mantissa, of the set of model numbers of a type (see <a href="../AA-G/AA-G.2#Subclause_G.2.1">G.2.1</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>72.h</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The Denorm and Signed_Zeros attributes are new, as are all of the primitive function attributes. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>72.i/2</MarginText>
 <MarginInfo items={["AI95-00388-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The Machine_Rounding attribute is new. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_A.5.4"></a>
 
@@ -1146,20 +1306,26 @@ The Machine_Rounding attribute is new. <br /></Admonition>
 
 #### Incompatibilities With Ada 83
 
+<AnnotatedOnly>
 <MarginText>4.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The Mantissa, Large, Safe_Small, and Safe_Large attributes of fixed point types are removed from the language.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Implementations are encouraged to eliminate the resulting incompatibility by retaining these attributes, during a transition period, in the form of implementation-defined attributes with their former values. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>4.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The Machine_Radix attribute is now allowed for fixed point types. It is also specifiable in an attribute definition clause (see <a href="../AA-F/AA-F.1">F.1</a>). <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_A.5.5"></a>
 
@@ -1184,10 +1350,12 @@ package Ada.Numerics.Big_Numbers{"\n"}   with Pure, Nonblocking, Global ={">"} n
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>3.a/5</MarginText>
 <MarginInfo items={["AI12-0208-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The package Numerics.Big_Numbers is new. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_A.5.6"></a>
 
@@ -1210,10 +1378,12 @@ with Ada.Strings.Text_Buffers;{"\n"}package Ada.Numerics.Big_Numbers.Big_Integer
    function Is_Valid (Arg : Big_Integer) return Boolean{"\n"}      with Convention ={">"} Intrinsic;{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>4.a/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The result of Is_Valid on a default-initialized object of type Big_Integer is unspecified, analogous to the value of a Valid <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> applied to a default-initialized object of an integer type (see <a href="../AA-13/AA-13.9#Subclause_13.9.2">13.9.2</a>). The language-provided functions in the Big_Integers package only return values for which Is_Valid is certain to be True. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>5/5</MarginText>
 <CodeBlock language="ada">
@@ -1270,19 +1440,25 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Numerics.Big_N
 <MarginInfo items={["AI12-0208-1", "AI12-0366-1"]} />
 <p>For purposes of determining whether predicate checks are performed as part of default initialization, the type Big_Integer is considered to have a subcomponent that has a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>24.a/5</MarginText>
 <MarginInfo items={["AI12-0005-1", "AI12-0208-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This means that the elaboration of <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>24.b/5</MarginText>
 <CodeBlock language="ada">
 Default_Initialized_Object : Valid_Big_Integer;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>24.c/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 either produces a value for which Is_Valid is True. or it propagates Program_Error. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Requirements
@@ -1291,18 +1467,22 @@ either produces a value for which Is_Valid is True. or it propagates Program_Err
 <MarginInfo items={["AI12-0208-1", "AI12-0366-1"]} />
 <p>No storage associated with a Big_Integer object shall be lost upon assignment or scope exit.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>25.a/5</MarginText>
 <MarginInfo items={["AI12-0208-1"]} />
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>The &ldquo;No storage ... shall be lost&rdquo; requirement does not preclude implementation techniques such as caching or unique number tables. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>25.b/5</MarginText>
 <MarginInfo items={["AI12-0208-1", "AI12-0366-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The package Numerics.Big_Numbers.Big_Integers is new. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_A.5.7"></a>
 
@@ -1325,10 +1505,12 @@ with Ada.Numerics.Big_Numbers.Big_Integers;{"\n"}   use all type Big_Integers.Bi
    function Is_Valid (Arg : Big_Real) return Boolean{"\n"}      with Convention ={">"} Intrinsic;{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>4.a/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The result of Is_Valid on a default-initialized object of type Big_Real is unspecified, analogous to the value of a Valid <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> applied to a default-initialized object of a real type (see <a href="../AA-13/AA-13.9#Subclause_13.9.2">13.9.2</a>). The language-provided functions in the Big_Reals package only return values for which Is_Valid is certain to be True. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>5/5</MarginText>
 <CodeBlock language="ada">
@@ -1339,9 +1521,11 @@ with Ada.Numerics.Big_Numbers.Big_Integers;{"\n"}   use all type Big_Integers.Bi
    function Numerator{"\n"}      (Arg : Valid_Big_Real) return Big_Integers.Valid_Big_Integer{"\n"}     with Post ={">"} (if Arg = 0.0 then Numerator'Result = 0);{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>7.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The postcondition of Numerator cannot be complete as it cannot mention Denominator. Since the postcondition of Denominator uses Numerator, we would get an infinite mutual recursion if both postconditions are enabled. The postcondition of Denominator serves as the postcondition for Numerator as well unless Arg = 0.0. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>8/5</MarginText>
 <CodeBlock language="ada">
@@ -1401,19 +1585,25 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Numerics.Big_N
 <MarginInfo items={["AI12-0208-1", "AI12-0366-1"]} />
 <p>For purposes of determining whether predicate checks are performed as part of default initialization, the type Big_Real is considered to have a subcomponent that has a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>27.a/5</MarginText>
 <MarginInfo items={["AI12-0005-1", "AI12-0208-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This means that the elaboration of <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.b/5</MarginText>
 <CodeBlock language="ada">
 Default_Initialized_Object : Valid_Big_Real;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>27.c/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 either produces a value for which Is_Valid is True. or it propagates Program_Error. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Requirements
@@ -1422,16 +1612,20 @@ either produces a value for which Is_Valid is True. or it propagates Program_Err
 <MarginInfo items={["AI12-0208-1", "AI12-0366-1"]} />
 <p>No storage associated with a Big_Real object shall be lost upon assignment or scope exit.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>28.a/5</MarginText>
 <MarginInfo items={["AI12-0208-1"]} />
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>The &ldquo;No storage ... shall be lost&rdquo; requirement does not preclude implementation techniques such as caching or unique number tables. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>28.b/5</MarginText>
 <MarginInfo items={["AI12-0208-1", "AI12-0366-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The package Numerics.Big_Numbers.Big_Reals is new. <br /></Admonition>
+</AnnotatedOnly>
 

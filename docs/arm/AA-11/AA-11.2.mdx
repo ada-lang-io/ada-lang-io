@@ -47,14 +47,18 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <code>exception_choice</code><a id="S0307"></a><code> ::= </code><em>exception_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> | <strong>others</strong><br />
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>5.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>&ldquo;<em>Handler</em>&rdquo; is an abbreviation for &ldquo;<code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code>&rdquo;.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>5.b/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Within this clause, we sometimes abbreviate &ldquo;<code><a href="../AA-11/AA-11.2#S0307">exception_choice</a></code>&rdquo; to &ldquo;<em>choice</em>&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Legality Rules
@@ -66,13 +70,17 @@ Within this clause, we sometimes abbreviate &ldquo;<code><a href="../AA-11/AA-11
 <MarginText>6</MarginText>
 <p>A choice with an <em>exception_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> <em>covers</em> the named exception. A choice with <strong>others</strong> covers all exceptions not named by previous choices of the same <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code>. Two choices in different <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code>s of the same <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> shall not cover the same exception. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>6.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Two <code><a href="../AA-11/AA-11.2#S0307">exception_choice</a></code>s of the same <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code> may cover the same exception. For example, given two renaming declarations in separate packages for the same exception, one may nevertheless write, for example, &ldquo;<strong>when</strong> Ada.Text_IO.Data_Error | My_Seq_IO.Data_Error ={">"}&rdquo;.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>6.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 An <strong>others</strong> choice even covers exceptions that are not visible at the place of the handler. Since exception raising is a dynamic activity, it is entirely possible for an <strong>others</strong> handler to handle an exception that it could not have named. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7</MarginText>
 <p>A choice with <strong>others</strong> is allowed only for the last handler of a <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> and as the only choice of that handler.<br /></p>
@@ -80,9 +88,11 @@ An <strong>others</strong> choice even covers exceptions that are not visible at
 <MarginText>8</MarginText>
 <p>An <em>exception_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> of a choice shall not denote an exception declared in a generic formal package. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>8.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This is because the compiler doesn't know the identity of such an exception, and thus can't enforce the coverage rules. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -111,23 +121,31 @@ begin{"\n"}   Open(File, In_File, "input.txt");   -- see <a href="../AA-A/AA-A.8
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>12.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The syntax rule for <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code> is modified to allow a <code><a href="../AA-11/AA-11.2#S0306">choice_parameter_specification</a></code>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12.b/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Different <code><a href="../AA-11/AA-11.2#S0307">exception_choice</a></code>s of the same <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code> may cover the same exception. This allows for &ldquo;when Numeric_Error | Constraint_Error ={">"}&rdquo; even though Numeric_Error is a rename of Constraint_Error. This also allows one to &ldquo;with&rdquo; two different I/O packages, and then write, for example, &ldquo;when Ada.Text_IO.Data_Error | My_Seq_IO.Data_Error ={">"}&rdquo; even though these might both be renames of the same exception. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>12.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The syntax rule for <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> is new. These are now used in all the places where handlers are allowed. This obviates the need to explain (in Clauses 5, 6, 7, and 9) what portions of the program are handled by the handlers. Note that there are more such cases in Ada 95.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The syntax rule for <code><a href="../AA-11/AA-11.2#S0306">choice_parameter_specification</a></code> is new. <br /></Admonition>
+</AnnotatedOnly>
 

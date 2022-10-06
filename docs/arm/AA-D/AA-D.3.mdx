@@ -35,9 +35,11 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>4</MarginText>
 <p>The <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> shall either be Ceiling_Locking or an implementation-defined <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>4.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>Implementation-defined <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s allowed in a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Locking_Policy.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Post-Compilation Rules
@@ -52,9 +54,11 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI95-00091-01", "AI95-00327-01"]} />
 <p>{"{"}<em>8652/0073</em>{"}"} [A locking policy specifies the details of protected object locking. All protected objects have a priority. The locking policy specifies the meaning of the priority of a protected object, and the relationships between these priorities and task priorities. In addition, the policy specifies the state of a task when it executes a protected action, and how its active priority is affected by the locking.] The <em>locking policy</em> is specified by a Locking_Policy pragma. For implementation-defined locking policies, the meaning of the priority of a protected object is implementation defined. If no Locking_Policy pragma applies to any of the program units comprising a partition, the locking policy for that partition, as well as the meaning of the priority of a protected object, are implementation defined. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>6.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The locking policy if no Locking_Policy pragma applies to any unit of a partition.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>6.1/3</MarginText>
 <MarginInfo items={["AI95-00327-01", "AI05-0229-1"]} />
@@ -74,9 +78,11 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI95-00327-01", "AI05-0229-1", "AI12-0051-1"]} />
 <li>If an Interrupt_Handler or Attach_Handler aspect (see <a href="../AA-C/AA-C.3#Subclause_C.3.1">C.3.1</a>) is specified for a protected subprogram of a protected type that does not have either the Priority or Interrupt_Priority aspect specified, the initial priority of protected objects of that type is implementation defined, but in the range of the subtype System.Interrupt_Priority. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>10.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>Default ceiling priorities.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>11/3</MarginText>
 <MarginInfo items={["AI95-00327-01", "AI05-0229-1"]} />
@@ -122,9 +128,11 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI12-0404-1"]} />
 <li>when the entry is open, the entry body is executed at the ceiling priority of the protected object that was in effect when the entry call was queued. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>13.a.1/2</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that the error is &ldquo;blamed&rdquo; on the task that did the entry call, not the task that changed the priority of the task or protected object. This seems to make sense for the case of changing the priority of a task blocked on a call, since if the Set_Priority had happened a little bit sooner, before the task queued a call, the entry-calling task would get the error. Similarly, there is no reason not to raise the priority of a task that is executing in an <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code>, so long as its priority is lowered before it gets to the end and needs to cancel the call. The priority might need to be lowered to allow it to remove the call from the entry queue, in order to avoid violating the ceiling. This seems relatively harmless, since there is an error, and the task is about to start raising an exception anyway. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Permissions
@@ -132,13 +140,17 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>14</MarginText>
 <p>The implementation is allowed to round all ceilings in a certain subrange of System.Priority or System.Interrupt_Priority up to the top of that subrange, uniformly. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>14.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>For example, an implementation might use Priority'Last for all ceilings in Priority, and Interrupt_Priority'Last for all ceilings in Interrupt_Priority. This would be equivalent to having two ceiling priorities for protected objects, &ldquo;nonpreemptible&rdquo; and &ldquo;noninterruptible&rdquo;, and is an allowed behavior.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Note that the implementation cannot choose a subrange that crosses the boundary between normal and interrupt priorities. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>15/5</MarginText>
 <MarginInfo items={["AI95-00256-01", "AI12-0444-1"]} />
@@ -147,17 +159,23 @@ Note that the implementation cannot choose a subrange that crosses the boundary 
 <MarginText>16</MarginText>
 <p>[Since implementations are allowed to place restrictions on code that runs at an interrupt-level active priority (see <a href="../AA-C/AA-C.3#Subclause_C.3.1">C.3.1</a> and <a href="../AA-D/AA-D.2#Subclause_D.2.1">D.2.1</a>), the implementation may implement a language feature in terms of a protected object with an implementation-defined ceiling, but the ceiling shall be no less than Priority'Last.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>16.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The ceiling of any protected object used internally by the implementation.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16.b</MarginText>
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>This permission follows from the fact that the implementation can place restrictions on interrupt handlers and on any other code that runs at an interrupt-level active priority.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The implementation might protect a storage pool with a protected object whose ceiling is Priority'Last, which would cause <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s to fail when evaluated at interrupt priority. Note that the ceiling of such an object has to be at least Priority'Last, since there is no permission for <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s to fail when evaluated at a noninterrupt priority. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Advice
@@ -165,82 +183,110 @@ The implementation might protect a storage pool with a protected object whose ce
 <MarginText>17</MarginText>
 <p>The implementation should use names that end with &ldquo;_Locking&rdquo; for implementation-defined locking policies.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>17.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Names that end with &ldquo;_Locking&rdquo; should be used for implementation-defined locking policies.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   While a task executes in a protected action, it can be preempted only by tasks whose active priorities are higher than the ceiling priority of the protected object.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   If a protected object has a ceiling priority in the range of Interrupt_Priority, certain interrupts are blocked while protected actions of that object execute. In the extreme, if the ceiling is Interrupt_Priority'Last, all blockable interrupts are blocked during that time.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>20</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   The ceiling priority of a protected object has to be in the Interrupt_Priority range if one of its procedures is to be used as an interrupt handler (see <a href="../AA-C/AA-C.3">C.3</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>21/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 4   When specifying the ceiling of a protected object, a correct  value is one that is at least as high as the highest active priority at which tasks can be executing when they call protected operations of that object. In determining this value the following factors, which can affect active priority, are relevant : the effect of Set_Priority, nested protected operations, entry calls, task activation, and other implementation-defined factors.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 5   Attaching a protected procedure whose ceiling is below the interrupt hardware priority to an interrupt causes the execution of the program to be erroneous (see <a href="../AA-C/AA-C.3#Subclause_C.3.1">C.3.1</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>23</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 6   On a single processor implementation, the ceiling priority rules guarantee that there is no possibility of deadlock involving only protected subprograms (excluding the case where a protected operation calls another protected operation on the same protected object).<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>23.a/2</MarginText>
 <MarginInfo items={["AI95-00327-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 All protected objects now have a priority, which is the value of the Priority attribute of <a href="../AA-D/AA-D.5#Subclause_D.5.2">D.5.2</a>. How this value is interpreted depends on the locking policy; for instance, the ceiling priority is derived from this value when the locking policy is Ceiling_Locking. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>23.b/2</MarginText>
 <MarginInfo items={["AI95-00091-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0073</em>{"}"} <strong>Corrigendum:</strong> Corrected the wording to reflect that pragma Locking_Policy cannot be inside of a program unit.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>23.c/2</MarginText>
 <MarginInfo items={["AI95-00256-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Clarified that an implementation need support only one locking policy (of any kind, language-defined or otherwise) per partition.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>23.d/2</MarginText>
 <MarginInfo items={["AI95-00327-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The bounded error for the priority of a task being higher than the ceiling of an object it is currently in was moved here from <a href="../AA-D/AA-D.5">D.5</a>, so that it applies no matter how the situation arises. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>23.e/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Revised to use aspects Priority and Interrupt_Priority as <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s Priority and Interrupt_Priority are now obsolescent. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>23.f/5</MarginText>
 <MarginInfo items={["AI12-0230-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 All protected objects now have a relative deadline, which is the value of the Relative_Deadline attribute of <a href="../AA-D/AA-D.5#Subclause_D.5.2">D.5.2</a>. How this value is interpreted depends on the locking policy. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>23.g/4</MarginText>
 <MarginInfo items={["AI12-0051-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Clarified that the Priority aspect can be used to set the initial ceiling priority of a protected object that contains an interrupt handler. <br /></Admonition>
+</AnnotatedOnly>
 

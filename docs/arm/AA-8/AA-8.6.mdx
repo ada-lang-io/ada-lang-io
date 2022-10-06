@@ -29,9 +29,11 @@ import MarginInfo from "@site/src/components/MarginInfo";
 
 #### Language Design Principles
 
+<AnnotatedOnly>
 <MarginText>3.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The type resolution rules are intended to minimize the need for implicit declarations and preference rules associated with implicit conversion and dispatching operations. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Name Resolution Rules
@@ -45,9 +47,11 @@ The type resolution rules are intended to minimize the need for implicit declara
 <MarginText>6</MarginText>
 <li>A <code><a href="../AA-3/AA-3.11#S0087">declarative_item</a></code> or declaration. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>6.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>A <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code> is a declaration, and hence a complete context. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7</MarginText>
 <ul>
@@ -55,18 +59,22 @@ The type resolution rules are intended to minimize the need for implicit declara
 <MarginText>8</MarginText>
 <li>A <code><a href="../AA-2/AA-2.8#S0020">pragma_argument_association</a></code>. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>8.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We would make it the whole <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>, except that certain pragma arguments are allowed to be ambiguous, and ambiguity applies to a complete context. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9/4</MarginText>
 <MarginInfo items={["AI12-0040-1"]} />
 <ul>
 <li>The <em>selecting_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-5/AA-5.4#S0176">case_statement</a></code> or <code><a href="../AA-4/AA-4.5#S0151">case_expression</a></code>. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>9.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This means that the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is resolved without looking at the choices. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9.1/5</MarginText>
 <MarginInfo items={["AI12-0125-3"]} />
@@ -80,45 +88,59 @@ The type resolution rules are intended to minimize the need for implicit declara
 <ul>
 <li>for each constituent of the complete context, to which syntactic categories it belongs, and by which syntax rules; and <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>11.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Syntactic categor<em>ies</em> is plural here, because there are lots of trivial productions &mdash; an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> might also be all of the following, in this order: <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>, <code><a href="../AA-4/AA-4.1#S0091">name</a></code>, <code><a href="../AA-4/AA-4.4#S0141">primary</a></code>, <code><a href="../AA-4/AA-4.4#S0140">factor</a></code>, <code><a href="../AA-4/AA-4.4#S0139">term</a></code>, <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>, and <code><a href="../AA-4/AA-4.4#S0135">relation</a></code>. Basically, we're trying to capture all the information in the parse tree here, without using compiler-writer's jargon like &ldquo;parse tree&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>12</MarginText>
 <ul>
 <li>for each usage name, which declaration it denotes (and, therefore, which view and which entity it denotes); and <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>12.a/2</MarginText>
 <MarginInfo items={["AI95-00382-01"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>In most cases, a usage name denotes the view declared by the denoted declaration. However, in certain cases, a usage name that denotes a declaration and appears inside the declarative region of that same declaration, denotes the current instance of the declaration. For example, within a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> other than in an <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code>, a usage name that denotes the <code><a href="../AA-9/AA-9.1#S0244">task_type_declaration</a></code> denotes the object containing the currently executing task, and not the task type declared by the declaration. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>13</MarginText>
 <ul>
 <li>for a complete context that is a <code><a href="../AA-3/AA-3.11#S0087">declarative_item</a></code>, whether or not it is a completion of a declaration, and (if so) which declaration it completes. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>13.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Unfortunately, we are not confident that the above list is complete. We'll have to live with that. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>For &ldquo;possible&rdquo; interpretations, the above information is tentative. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13.c</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>A possible interpretation (an <em>input</em> to overload resolution) contains information about what a usage name <em>might</em> denote, but what it actually <em>does</em> denote requires overload resolution to determine. Hence the term &ldquo;tentative&rdquo; is needed for possible interpretations; otherwise, the definition would be circular. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>14</MarginText>
 <p>A <em>possible interpretation</em> is one that obeys the syntax rules and the visibility rules. An <em>acceptable interpretation</em> is a possible interpretation that obeys the <em>overloading rules</em>[, that is, those rules that specify an expected type or expected profile, or specify how a construct shall <em>resolve</em> or be <em>interpreted</em>.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>14.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>One rule that falls into this category, but does not use the above-mentioned magic words, is the rule about numbers of parameter associations in a call (see <a href="../AA-6/AA-6.4">6.4</a>). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The Name Resolution Rules are the ones that appear under the Name Resolution Rules heading. Some Syntax Rules are written in English, instead of BNF. No rule is a Syntax Rule or Name Resolution Rule unless it appears under the appropriate heading. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>15</MarginText>
 <p>The <em>interpretation</em> of a constituent of a complete context is determined from the overall interpretation of the complete context as a whole. [Thus, for example, &ldquo;interpreted as a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>&rdquo;, means that the construct's interpretation says that it belongs to the syntactic category <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>.]<br /></p>
@@ -126,92 +148,118 @@ The type resolution rules are intended to minimize the need for implicit declara
 <MarginText>16</MarginText>
 <p>[Each occurrence of] a usage name <em>denotes</em> the declaration determined by its interpretation. It also denotes the view declared by its denoted declaration, except in the following cases: <br /></p>
 
+<AnnotatedOnly>
 <MarginText>16.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>As explained below, a pragma argument is allowed to be ambiguous, so it can denote several declarations, and all of the views declared by those declarations. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>17/3</MarginText>
 <MarginInfo items={["AI95-00382-01", "AI05-0287-1"]} />
 <ul>
 <li>If a usage name appears within the declarative region of a <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code> and denotes that same <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code>, then it denotes the <em>current instance</em> of the type (rather than the type itself); the current instance of a type is the object or value of the type that is associated with the execution that evaluates the usage name.  Similarly, if a usage name appears within the declarative region of a <code><a href="../AA-3/AA-3.2#S0026">subtype_declaration</a></code> and denotes that same <code><a href="../AA-3/AA-3.2#S0026">subtype_declaration</a></code>, then it denotes the current instance of the subtype. These rules do not apply if the usage name appears within the <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> of an <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code> for an access-to-object type, or within the subtype of a parameter or result of an access-to-subprogram type. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>17.a/2</MarginText>
 <MarginInfo items={["AI95-00382-01"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This is needed, for example, for references to the Access attribute from within the <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code>. Also, within a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> or <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code>, we need to be able to denote the current task or protected object. (For a <code><a href="../AA-9/AA-9.1#S0245">single_task_declaration</a></code> or <code><a href="../AA-9/AA-9.4#S0250">single_protected_declaration</a></code>, the rule about current instances is not needed.) We exclude anonymous access types so that they can be used to create self-referencing types in the natural manner (otherwise such types would be illegal). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>17.b/2</MarginText>
 <MarginInfo items={["AI95-00382-01"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The phrase &ldquo;within the <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>&rdquo; in the &ldquo;this rule does not apply&rdquo; part is intended to cover a case like <strong>access</strong> T'Class appearing within the declarative region of T: here T denotes the type, not the current instance. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>17.1/5</MarginText>
 <MarginInfo items={["AI12-0068-1", "AI12-0324-1", "AI12-0427-1"]} />
 <ul>
 <li>Within an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> for a type or subtype, the current instance represents a value of the type; it is not an object. Unless otherwise specified, the  nominal subtype of this value is given by the subtype itself (the first subtype in the case of a <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code>), prior to applying any predicate specified directly on the type or subtype. If the type or subtype is by-reference, the associated object of  the value is the object associated (see <a href="../AA-6/AA-6.2">6.2</a>) with the evaluation  of the usage name.<br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>17.c/4</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>For the purposes of Legality Rules, the current instance acts as a value within an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>. It might really be an object (and has to be for a by-reference type), but that isn't discoverable by direct use of the name of the current instance. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>18</MarginText>
 <ul>
 <li>If a usage name appears within the declarative region of a <code><a href="../AA-12/AA-12.1#S0310">generic_declaration</a></code> (but not within its <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code>) and it denotes that same <code><a href="../AA-12/AA-12.1#S0310">generic_declaration</a></code>, then it denotes the <em>current instance</em> of the generic unit (rather than the generic unit itself). See also <a href="../AA-12/AA-12.3">12.3</a>. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>18.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>The current instance of a generic unit is the instance created by whichever <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> is of interest at any given time. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Within a <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code>, a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes the <code><a href="../AA-12/AA-12.1#S0310">generic_declaration</a></code> denotes the generic unit, which implies that it is not overloadable. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>19</MarginText>
 <p>A usage name that denotes a view also denotes the entity of that view. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>19.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Usually, a usage name denotes only one declaration, and therefore one view and one entity. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>20/2</MarginText>
 <MarginInfo items={["AI95-00231-01"]} />
 <p>The <em>expected type</em> for a given <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, <code><a href="../AA-4/AA-4.1#S0091">name</a></code>, or other construct determines, according to the <em>type resolution rules</em> given below, the types considered for the construct during overload resolution. [ The type resolution rules provide support for class-wide programming, universal literals, dispatching operations, and anonymous access types:] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>20.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Expected types are defined throughout the RM95. The most important definition is that, for a subprogram, the expected type for the actual parameter is the type of the formal parameter.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>20.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The type resolution rules are trivial unless either the actual or expected type is universal, class-wide, or of an anonymous access type. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>21</MarginText>
 <ul>
 <li>If a construct is expected to be of any type in a class of types, or of the universal or class-wide type for a class, then the type of the construct shall resolve to a type in that class or to a universal type that covers the class. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>21.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This matching rule handles (among other things) cases like the Val attribute, which denotes a function that takes a parameter of type <em>universal_integer</em>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>21.b/1</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The last part of the rule, &ldquo;or to a universal type that covers the class&rdquo; implies that if the expected type for an expression is <em>universal_fixed</em>, then an expression whose type is <em>universal_real</em> (such as a real literal) is OK. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>22</MarginText>
 <ul>
 <li>If the expected type for a construct is a specific type <em>T</em>, then the type of the construct shall resolve either to <em>T</em>, or: <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>22.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This rule is <em>not</em> intended to create a preference for the specific type &mdash; such a preference would cause Beaujolais effects. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>23</MarginText>
 <ul>
 <li>to <em>T</em>'Class; or <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>23.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This will only be legal as part of a call on a dispatching operation; see <a href="../AA-3/AA-3.9#Subclause_3.9.2">3.9.2</a>, &ldquo;<a href="../AA-3/AA-3.9#Subclause_3.9.2">Dispatching Operations of Tagged Types</a>&rdquo;. Note that that rule is not a Name Resolution Rule. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>24</MarginText>
 <ul>
@@ -220,14 +268,18 @@ The last part of the rule, &ldquo;or to a universal type that covers the class&r
 <MarginInfo items={["AI95-00230-01", "AI95-00231-01", "AI95-00254-01", "AI95-00409-01"]} />
 <li>when <em>T</em> is a specific anonymous access-to-object type (see <a href="../AA-3/AA-3.10">3.10</a>) with designated type <em>D</em>, to an access-to-object type whose designated type is <em>D</em>'Class or is covered by <em>D</em>; or<br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>25.a/2</MarginText>
 <MarginInfo items={["AI95-00409-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>25.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The case where the actual is access-to-<em>D</em>'Class will only be legal as part of a call on a dispatching operation; see <a href="../AA-3/AA-3.9#Subclause_3.9.2">3.9.2</a>, &ldquo;<a href="../AA-3/AA-3.9#Subclause_3.9.2">Dispatching Operations of Tagged Types</a>&rdquo;. Note that that rule is not a Name Resolution Rule. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>25.1/3</MarginText>
 <MarginInfo items={["AI05-0149-1"]} />
@@ -240,10 +292,12 @@ The last part of the rule, &ldquo;or to a universal type that covers the class&r
 <MarginText>26</MarginText>
 <p>In certain contexts, [such as in a <code><a href="../AA-8/AA-8.5#S0242">subprogram_renaming_declaration</a></code>,] the Name Resolution Rules define an <em>expected profile</em> for a given <code><a href="../AA-4/AA-4.1#S0091">name</a></code>; in such cases, the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> shall resolve to the name of a callable entity whose profile is type conformant with the expected profile. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>26.a/3</MarginText>
 <MarginInfo items={["AI05-0239-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The parameter and result <em>sub</em>types are not used in overload resolution. Only type conformance of profiles is considered during overload resolution. Legality rules generally require at least mode conformance in addition, but those rules are not used in overload resolution. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Legality Rules
@@ -252,58 +306,76 @@ The last part of the rule, &ldquo;or to a universal type that covers the class&r
 <MarginInfo items={["AI95-00332-01"]} />
 <p>When a construct is one that requires that its expected type be a <em>single</em> type in a given class, the type of the construct shall be determinable solely from the context in which the construct appears, excluding the construct itself, but using the requirement that it be in the given class. Furthermore, the context shall not be one that expects any type in some class that contains types of the given class; in particular, the construct shall not be the operand of a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>27.a/5</MarginText>
 <MarginInfo items={["AI95-00230-01", "AI12-0005-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>For example, the expected type for a character  literal is required to be a single character  type. But the expected type for the operand of a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code> is any type. Therefore, a character  literal is not allowed as the operand of a <code><a href="../AA-4/AA-4.6#S0162">type_conversion</a></code>. This is true even if there is only one character  type in scope (which is never the case). The reason for these rules is so that the compiler will not have to search &ldquo;everywhere&rdquo; to see if there is exactly one type in a class in scope. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.b/2</MarginText>
 <MarginInfo items={["AI95-00332-01"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The first sentence is carefully worded so that it only mentions &ldquo;expected type&rdquo; as part of identifying the interesting case, but doesn't require that the context actually provide such an expected type. This allows such constructs to be used inside of constructs that don't provide an expected type (like qualified expressions and renames). Otherwise, such constructs wouldn't allow <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s, 'Access, and so on. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27.1/4</MarginText>
 <MarginInfo items={["AI05-0102-1", "AI05-0149-1", "AI05-0299-1", "AI12-0039-1"]} />
 <p>Other than for the <em>tested_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> of a membership test, if the expected type for a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is not the same as the actual type of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, the actual type shall be convertible to the expected type (see <a href="../AA-4/AA-4.6">4.6</a>); further, if the expected type is a named access-to-object type with designated type <em>D1</em> and the actual type is an anonymous access-to-object type with designated type <em>D2</em>, then <em>D1</em> shall cover <em>D2</em>, and the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> shall denote a view with an accessibility level for which the statically deeper relationship applies[; in particular it shall not denote an access parameter nor a stand-alone access object].<br /></p>
 
+<AnnotatedOnly>
 <MarginText>27.c/3</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This rule prevents an implicit conversion that would be illegal if it was an explicit conversion. For instance, this prevents assigning an access-to-constant value into a stand-alone anonymous access-to-variable object. It also covers convertibility of the designated type and accessibility checks.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.d/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The rule also minimizes cases of implicit conversions when the tag check or the accessibility check might fail. We word it this way because access discriminants should also be disallowed if their enclosing object is designated by an access parameter. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.e/3</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This rule does not apply to expressions that don't have expected types (such as the operand of a qualified expression or the expression of a renames). We don't need a rule like this in those cases, as the type needs to be the same; there is no implicit conversion. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>28</MarginText>
 <p>A complete context shall have at least one acceptable interpretation; if there is exactly one, then that one is chosen. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>28.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This, and the rule below about ambiguity, are the ones that suck in all the Syntax Rules and Name Resolution Rules as compile-time rules. Note that this and the ambiguity rule have to be Legality Rules. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>29</MarginText>
 <p>There is a <em>preference</em> for the primitive operators (and <code><a href="../AA-3/AA-3.5#S0037">range</a></code>s) of the root numeric types <em>root_integer</em> and <em>root_real</em>. In particular, if two acceptable interpretations of a constituent of a complete context differ only in that one is for a primitive operator (or <code><a href="../AA-3/AA-3.5#S0037">range</a></code>) of the type <em>root_integer</em> or <em>root_real</em>, and the other is not, the interpretation using the primitive operator (or <code><a href="../AA-3/AA-3.5#S0037">range</a></code>) of the root numeric type is <em>preferred</em>.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>29.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The reason for this preference is so that expressions involving literals and named numbers can be unambiguous. For example, without the preference rule, the following would be ambiguous: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>29.b/1</MarginText>
 <CodeBlock language="ada">
 N : constant := 123;{"\n"}if N {">"} 100 then -- Preference for root_integer "{">"}" operator.{"\n"}    ...{"\n"}end if;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
 <MarginText>29.1/3</MarginText>
 <MarginInfo items={["AI05-0149-1"]} />
 <p>Similarly, there is a preference for the equality operators of the <em>universal_access</em> type (see <a href="../AA-4/AA-4.5#Subclause_4.5.2">4.5.2</a>). If two acceptable interpretations of a constituent of a complete context differ only in that one is for an equality operator of the <em>universal_access</em> type, and the other is not, the interpretation using the equality operator of the <em>universal_access</em> type is preferred.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>29.c/3</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This preference is necessary because of implicit conversion from an anonymous access type to a named access type, which would allow the equality operator of any named access type to be used to compare anonymous access values (and that way lies madness). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>30</MarginText>
 <p>For a complete context, if there is exactly one overall acceptable interpretation where each constituent's interpretation is the same as or preferred (in the above sense) over those in all other overall acceptable interpretations, then that one overall acceptable interpretation is chosen. Otherwise, the complete context is <em>ambiguous</em>.<br /></p>
@@ -314,125 +386,174 @@ N : constant := 123;{"\n"}if N {">"} 100 then -- Preference for root_integer "{"
 <MarginText>32</MarginText>
 <p>A complete context that is a <code><a href="../AA-2/AA-2.8#S0020">pragma_argument_association</a></code> is allowed to be ambiguous (unless otherwise specified for the particular pragma), but only if every acceptable interpretation of the pragma argument is as a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that statically denotes a callable entity. Such a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes all of the declarations determined by its interpretations, and all of the views declared by these declarations. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>32.a/3</MarginText>
 <MarginInfo items={["AI95-00224-01", "AI05-0229-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This applies to Inline, Suppress, Import, Export, and Convention <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s. For example, it is OK to say &ldquo;<strong>pragma</strong> Export(C, Entity_Name ={">"} P.Q);&rdquo;, even if there are two directly visible P's, and there are two Q's declared in the visible part of each P. In this case, P.Q denotes four different declarations. This rule also applies to certain pragmas defined in the Specialized Needs Annexes. It almost applies to Pure, Elaborate_Body, and Elaborate_All <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s, but those can't have overloading for other reasons.  Note that almost all of these pragmas are obsolescent (see <a href="../AA-J/AA-J.10">J.10</a> and <a href="../AA-J/AA-J.15">J.15</a>), and a major reason is that this rule has proven to be too broad in practice (it is common to want to specify something on a single subprogram of an overloaded set, that can't be done easily with this rule). <code><a href="../AA-13/AA-13.1#S0346">Aspect_specification</a></code>s, which are given on individual declarations, are preferred in Ada 2012.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>32.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Note that if a pragma argument denotes a <em>call</em> to a callable entity, rather than the entity itself, this exception does not apply, and ambiguity is disallowed.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>32.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Note that we need to carefully define which pragma-related rules are Name Resolution Rules, so that, for example, a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Inline does not pick up subprograms declared in enclosing declarative regions, and therefore make itself illegal.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>32.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We say &ldquo;statically denotes&rdquo; in the above rule in order to avoid having to worry about how many times the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> is evaluated, in case it denotes more than one callable entity. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>33</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE   If a usage name has only one acceptable interpretation, then it denotes the corresponding entity. However, this does not mean that the usage name is necessarily legal since other requirements exist which are not considered for overload resolution; for example, the fact that an expression is static, whether an object is constant, mode and subtype conformance rules, freezing rules, order of elaboration, and so on.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Similarly, subtypes are not considered for overload resolution (the violation of a constraint does not make a program illegal but raises an exception during program execution). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 83
 
+<AnnotatedOnly>
 <MarginText>34.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The new preference rule for operators of root numeric types is upward incompatible, but only in cases that involved <em>Beaujolais</em> effects in Ada 83. Such cases are ambiguous in Ada 95. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>34.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The rule that allows an expected type to match an actual expression of a universal type, in combination with the new preference rule for operators of root numeric types, subsumes the Ada 83 "implicit conversion" rules for universal types. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>34.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 In Ada 83, it is not clear what the &ldquo;syntax rules&rdquo; are. AI83-00157 states that a certain textual rule is a syntax rule, but it's still not clear how one tells in general which textual rules are syntax rules. We have solved the problem by stating exactly which rules are syntax rules &mdash; the ones that appear under the &ldquo;Syntax&rdquo; heading.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 RM83 has a long list of the &ldquo;forms&rdquo; of rules that are to be used in overload resolution (in addition to the syntax rules). It is not clear exactly which rules fall under each form. We have solved the problem by explicitly marking all rules that are used in overload resolution. Thus, the list of kinds of rules is unnecessary. It is replaced with some introductory (intentionally vague) text explaining the basic idea of what sorts of rules are overloading rules.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.e/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 It is not clear from RM83 what information is embodied in a &ldquo;meaning&rdquo; or an &ldquo;interpretation&rdquo;. &ldquo;Meaning&rdquo; and &ldquo;interpretation&rdquo; were intended to be synonymous; we now use the latter only in defining the rules about overload resolution. &ldquo;Meaning&rdquo; is used only informally. This subclause attempts to clarify what is meant by &ldquo;interpretation&rdquo;.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.f</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 For example, RM83 does not make it clear that overload resolution is required in order to match <code>subprogram_bodies</code> with their corresponding declarations (and even to tell whether a given <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> is the completion of a previous declaration). Clearly, the information needed to do this is part of the &ldquo;interpretation&rdquo; of a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code>. The resolution of such things is defined in terms of the &ldquo;expected profile&rdquo; concept. Ada 95 has some new cases where expected profiles are needed &mdash; the resolution of P'Access, where P might denote a subprogram, is an example.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.g</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 RM83-8.7(2) might seem to imply that an interpretation embodies information about what is denoted by each usage name, but not information about which syntactic category each construct belongs to. However, it seems necessary to include such information, since the Ada grammar is highly ambiguous. For example, X(Y) might be a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> or an <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>, and no context-free/syntactic information can tell the difference. It seems like we should view X(Y) as being, for example, &ldquo;interpreted as a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>&rdquo; (if that's what overload resolution decides it is). Note that there are examples where the denotation of each usage name does not imply the syntactic category. However, even if that were not true, it seems that intuitively, the interpretation includes that information. Here's an example: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.h</MarginText>
 <CodeBlock language="ada">
 type T;{"\n"}type A is access T;{"\n"}type T is array(Integer range 1..10) of A;{"\n"}I : Integer := 3;{"\n"}function F(X : Integer := 7) return A;{"\n"}Y : A := F(I); -- Ambiguous? (We hope so.){"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>34.i/1</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Consider the declaration of Y (a complete context). In the above example, overload resolution can easily determine the declaration, and therefore the entity, denoted by Y, A, F, and I. However, given all of that information, we still don't know whether F(I) is a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code> or an <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> whose <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>. (In the latter case, it is equivalent to F(7).<strong>all</strong>(I).)<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.j</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 It seems clear that the declaration of Y ought to be considered ambiguous. We describe that by saying that there are two interpretations, one as a <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>, and one as an <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>. These interpretations are both acceptable to the overloading rules. Therefore, the complete context is ambiguous, and therefore illegal.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.k</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 It is the intent that the Ada 95 preference rule for root numeric operators is more locally enforceable than that of RM83-4.6(15). It should also eliminate interpretation shifts due to the addition or removal of a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code> (the so called <em>Beaujolais</em> effect).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.l/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 RM83-8.7 seems to be missing some complete contexts, such as <code><a href="../AA-2/AA-2.8#S0020">pragma_argument_association</a></code>s, <code><a href="../AA-3/AA-3.11#S0087">declarative_item</a></code>s that are not declarations or <code><a href="../AA-13/AA-13.1#S0343">aspect_clause</a></code>s, and <code><a href="../AA-10/AA-10.1#S0293">context_item</a></code>s. We have added these, and also replaced the &ldquo;must be determinable&rdquo; wording of RM83-5.4(3) with the notion that the expression of a <code><a href="../AA-5/AA-5.4#S0176">case_statement</a></code> is a complete context.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.m</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Cases like the Val attribute are now handled using the normal type resolution rules, instead of having special cases that explicitly allow things like &ldquo;any integer type&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 95
 
+<AnnotatedOnly>
 <MarginText>34.n/2</MarginText>
 <MarginInfo items={["AI95-00409-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Ada 95 allowed name resolution to distinguish between anonymous access-to-variable and access-to-constant types. This is similar to distinguishing between subprograms with <strong>in</strong> and <strong>in out</strong> parameters, which is known to be bad. Thus, that part of the rule was dropped as we now have anonymous access-to-constant types, making this much more likely. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.o/2</MarginText>
 <CodeBlock language="ada">
 type Cacc is access constant Integer;{"\n"}procedure Proc (Acc : access Integer) ...{"\n"}procedure Proc (Acc : Cacc) ...{"\n"}List : Cacc := ...;{"\n"}Proc (List); -- OK in Ada 95, ambiguous in Ada 2005.{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>34.p/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 If there is any code like this (such code should be rare), it will be ambiguous in Ada 2005. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>34.q/2</MarginText>
 <MarginInfo items={["AI95-00230-01", "AI95-00231-01", "AI95-00254-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Generalized the anonymous access resolution rules to support the new capabilities of anonymous access types (that is, access-to-subprogram and access-to-constant).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.r/2</MarginText>
 <MarginInfo items={["AI95-00382-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We now allow the creation of self-referencing types via anonymous access types. This is an extension in unusual cases involving task and protected types. For example: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.s/2</MarginText>
 <CodeBlock language="ada">
 task type T;{"\n"}
@@ -440,56 +561,71 @@ task type T;{"\n"}
 task body T is{"\n"}   procedure P (X : access T) is -- Illegal in Ada 95, legal in Ada 2005{"\n"}      ...{"\n"}   end P;{"\n"}begin{"\n"}   ...{"\n"}end T;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>34.u/2</MarginText>
 <MarginInfo items={["AI95-00332-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Corrected the &ldquo;single expected type&rdquo; so that it works in contexts that don't have expected types (like object renames and qualified expressions). This fixes a hole in Ada 95 that appears to prohibit using <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s, 'Access, character literals, string literals, and <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s in qualified expressions. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2005
 
+<AnnotatedOnly>
 <MarginText>34.v/3</MarginText>
 <MarginInfo items={["AI05-0149-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Implicit conversion is now allowed from anonymous access-to-object types to general access-to-object types. Such conversions can make calls ambiguous. That can only happen when there are two visible subprograms with the same name and have profiles that differ only by a parameter that is of a named or anonymous access type, and the actual argument is of an anonymous access type. This should be rare, as many possible calls would be ambiguous even in Ada 2005 (including <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s and any actual of a named access type if the designated types are the same). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>34.w/3</MarginText>
 <MarginInfo items={["AI05-0149-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Implicit conversion is allowed from anonymous access-to-object types to general access-to-object types if the designated type is convertible and runtime checks are minimized. See also the incompatibilities section. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>34.x/3</MarginText>
 <MarginInfo items={["AI05-0102-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added a requirement here that implicit conversions are convertible to the appropriate type. This rule was scattered about the Reference Manual, we moved a single generalized version here. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Inconsistencies With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>34.y/4</MarginText>
 <MarginInfo items={["AI12-0068-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added a rule to specify that the current instance of a type or subtype is a value within an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>. This could be inconsistent if a predicate or invariant uses the Constrained attribute on the current instance (it will always be False now, while it might have returned True in original Ada 2012). More likely, a usage of a current instance as a prefix of an attribute will become illegal (such as Size or Alignment). Any such code is very tricky. Moreover, as this is a new feature of Ada 2012, there are not that many predicates and invariants, and the ones that exist are very unlikely to be this tricky. Thus we do not believe that there will be any practical effect to this change, other than to explicitly allow common implementation strategies. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>34.z/4</MarginText>
 <MarginInfo items={["AI12-0040-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added wording to clarify that the <em>selecting_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.5#S0151">case_expression</a></code> is a complete context, just like that of a <code><a href="../AA-5/AA-5.4#S0176">case_statement</a></code>. Clearly, everyone expects these to work the same way. Moreover, since it would be a lot of extra work to treat <code><a href="../AA-4/AA-4.5#S0151">case_expression</a></code>s differently, it is quite unlikely that any compiler would implement the much more complicated resolution necessary (and we are not aware of any that did). Therefore, we didn't document this as a potential incompatibility.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>34.aa/5</MarginText>
 <MarginInfo items={["AI12-0125-3"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added a resolution rule for <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> (see <a href="../AA-5/AA-5.2#Subclause_5.2.1">5.2.1</a>). <br /></Admonition>
+</AnnotatedOnly>
 

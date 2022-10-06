@@ -26,10 +26,12 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI05-0225-1", "AI05-0291-1"]} />
 <p>When a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes an entry, protected subprogram, or a prefixed view of a primitive subprogram of a limited interface whose first parameter is a controlling parameter, the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> determines a <em>target object</em>, as follows: <br /></p>
 
+<AnnotatedOnly>
 <MarginText>2.a/3</MarginText>
 <MarginInfo items={["AI05-0291-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>This wording uses "denotes" to mean "denotes a view of an entity" (when the term is used in Legality Rules), and "denotes an entity" (when the term is used in Dynamic Semantics rules). It does not mean "view of a declaration", as that would not include renames (a renames is not an entry or protected subprogram). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>3/3</MarginText>
 <MarginInfo items={["AI05-0291-1"]} />
@@ -39,10 +41,13 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI05-0291-1"]} />
 <li>If it is a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> that is not an expanded name, then the target object is explicitly specified to be the  object denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code>; a call using such a name is defined to be an <em>external call</em>; <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>4.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>For example: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.b</MarginText>
 <CodeBlock language="ada">
 protected type Pt is{"\n"}  procedure Op1;{"\n"}  procedure Op2;{"\n"}end Pt;{"\n"}
@@ -54,6 +59,7 @@ protected body Pt is{"\n"}  procedure Op1 is begin ... end Op1;{"\n"}
   procedure Op2 is{"\n"}  begin{"\n"}    Op1; -- An internal call.{"\n"}    Pt.Op1; -- Another internal call.{"\n"}    PO.Op1; -- An external call. It the current instance is PO, then{"\n"}            -- this is a bounded error (see <a href="../AA-9/AA-9.5#Subclause_9.5.1">9.5.1</a>).{"\n"}    Other_Object.Some_Op; -- An external call.{"\n"}  end Op2;{"\n"}end Pt;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
 <MarginText>5/3</MarginText>
 <MarginInfo items={["AI05-0291-1"]} />
 <ul>
@@ -75,29 +81,37 @@ protected body Pt is{"\n"}  procedure Op1 is begin ... end Op1;{"\n"}
 <MarginInfo items={["AI95-00345-01", "AI05-0225-1", "AI05-0291-1"]} />
 <p>If a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> determines a target object, and the name denotes a protected entry or procedure, then the target object shall be a variable, unless the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is for an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> to the Count attribute (see <a href="../AA-9/AA-9.9">9.9</a>). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.a/3</MarginText>
 <MarginInfo items={["AI05-0225-1"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The point is to prevent any calls to such a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> whose target object is a constant view of a protected object, directly, or via an access value, renames, or generic formal subprogram. It is, however, legal to say P'Count in a protected function body, even though the protected object is a constant view there. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>7.b/3</MarginText>
 <MarginInfo items={["AI05-0291-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This rule does not apply to calls that are not to a prefixed view. Specifically a "normal" call to a primitive operation of a limited interface is not covered by this rule. In that case, the normal parameter passing mode checks will prevent passing a constant protected object to an operation implemented by a protected entry or procedure as the mode is required to be <strong>in out</strong> or <strong>out</strong>. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7.2/5</MarginText>
 <MarginInfo items={["AI12-0166-1"]} />
 <p>An internal call on a protected function shall not occur within a precondition expression (see <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>) of a protected operation nor within a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> of a <code><a href="../AA-6/AA-6.1#S0207">parameter_specification</a></code> of a protected operation.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.c/5</MarginText>
 <MarginInfo items={["AI125-0166-1"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>These calls will be made before the start of the protected action, and thus would not be subject to the expected mutual exclusion. As such, they would be an automatic race condition (the state of the called object could change before the start of the protected action for the call on the protected entry or subprogram). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>7.d/5</MarginText>
 <MarginInfo items={["AI125-0166-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong><a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a> actually defines "specific precondition expression" and "class-wide precondition expression". This rule is intended to apply to both. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Dynamic Semantics
@@ -105,16 +119,20 @@ protected body Pt is{"\n"}  procedure Op1 is begin ... end Op1;{"\n"}
 <MarginText>8</MarginText>
 <p>Within the body of a protected operation, the current instance (see <a href="../AA-8/AA-8.6">8.6</a>) of the immediately enclosing protected unit is determined by the target object specified (implicitly or explicitly) in the call (or requeue) on the protected operation. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>8.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>The current instance is defined in the same way within the body of a subprogram declared immediately within a <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9</MarginText>
 <p>Any call on a protected procedure or entry of a target protected object is defined to be an update to the object, as is a requeue on such an entry. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>9.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Read/write access to the components of a protected object is granted while inside the body of a protected procedure or entry. Also, any protected entry call can change the value of the Count attribute, which represents an update. Any protected procedure call can result in servicing the entries, which again might change the value of a Count attribute. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Syntax
@@ -138,9 +156,11 @@ protected body Pt is{"\n"}  procedure Op1 is begin ... end Op1;{"\n"}
 <dl>
 <dd>If specified, the aspect definition shall be a <code><a href="../AA-9/AA-9.5#S0256">synchronization_kind</a></code>.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>12.a/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Synchronization: </strong>Defines whether a given primitive operation of a synchronized interface will  be implemented by an entry or protected procedure.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>13/3</MarginText>
 <MarginInfo items={["AI05-0030-2", "AI05-0215-1"]} />
@@ -177,71 +197,89 @@ protected body Pt is{"\n"}  procedure Op1 is begin ... end Op1;{"\n"}
 <dl>
 <dd>This aspect specifies the blocking restriction for the entity; it shall be specified by a static Boolean expression. [The <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> can be omitted from the specification of this aspect; in that case, the aspect for the entity is True.]<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>19.a/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Nonblocking: </strong>Specifies that an associated subprogram does not block.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19.b/5</MarginText>
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong><a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a> allows omitting the aspect <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> for any aspect with type Boolean; we take advantage of that here. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>20/5</MarginText>
 <MarginInfo items={["AI12-0064-2"]} />
 <dl>
 <dd>The Nonblocking aspect may be specified for all entities for which it is defined, except for protected operations and task entries. In particular, Nonblocking may be specified for generic formal parameters.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>20.a/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The Nonblocking aspect cannot be specified for predefined operators or enumeration literals but we don't need to mention that above. One would have to declare a subprogram in order to specify the aspect in those cases, but that defines a user-defined subprogram which is itself not a predefined operator or an enumeration literal. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>21/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2", "AI12-0439-1"]} />
 <dl>
 <dd>{"}"} When aspect Nonblocking is False for an entity, the entity can contain a potentially blocking operation; such an entity <em>allows blocking</em>. If the aspect is True for an entity, the entity is said to be <em>nonblocking</em>.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>21.a/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Specifying Nonblocking as False imposes no restrictions. Specifying Nonblocking as True imposes additional compile-time checks to prevent blocking, but does not prevent deadlock. A pragma Detect_Blocking can be used to ensure that Program_Error is raised in a deadlock situation. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>22/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2"]} />
 <dl>
 <dd>For a generic instantiation and entities declared within such an instance, the aspect is determined by the Nonblocking aspect for the corresponding entity of the generic unit, <strong>and</strong>ed with the Nonblocking aspects of the actual generic parameters <em>used</em> by the entity. If the aspect is directly specified for an instance, the specified expression shall have the same value as the Nonblocking aspect of the instance (after <strong>and</strong>ing with the aspects of the used actual parameters). In the absence of a Use_Formal aspect, all actual generic parameters are presumed to be <em>used</em> by an entity (see <a href="../AA-H/AA-H.7#Subclause_H.7.1">H.7.1</a>).<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>22.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We want to allow confirming aspects for instances, but nothing else. The Legality Rules of the generic body were checked assuming the Nonblocking aspect of the generic unit combined with the Nonblocking aspects of the formals where they are used, and if that is overridden on the instance, the instance body might make calls that allow blocking in subprograms that are declared nonblocking. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>23/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2"]} />
 <dl>
 <dd>For a (protected or task) entry, the Nonblocking aspect is False.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>23.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>An entry can be renamed as a procedure, so the value of the aspect has to be well-defined (as the attribute can be applied to a procedure). We do not want a nonblocking subprogram to be able to call an entry, no matter how it occurs, so the value ought to be False. Moreover, we do not want a subprogram that renames an entry to be able to override a nonblocking subprogram. We could have used individual rules for these cases, but there were already many of them, and this solution avoids the need for extra rules for entries. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>24/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2"]} />
 <dl>
 <dd>For an enumeration literal, the Nonblocking aspect is True.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>24.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Enumeration literals can be renamed as functions, and passed to generic formal functions, so we need to define the value of the aspect to ensure the other rules are meaningful. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>25/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2"]} />
 <dl>
 <dd>For a predefined operator of an elementary type, the Nonblocking aspect is True. For a predefined operator of a composite type, the Nonblocking aspect of the operator is the same as the Nonblocking aspect for the type.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>25.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Predefined operators of elementary types can never include any potentially blocking operations, so we want them to declare that. Record equality can be composed of operations including user-defined "=" operators, which might allow blocking. Array equality might use some record equality. So we have to have the possibility of allowing blocking for them. We don't just copy the Nonblocking aspect of the type in every case, as someone could declare an elementary type to allow blocking. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>25.b/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>It's not possible to specify the nonblocking expression of a predefined operator; if an operator is declared in order to do that, it is no longer predefined. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>26/5</MarginText>
 <MarginInfo items={["AI12-0064-2"]} />
@@ -251,9 +289,11 @@ protected body Pt is{"\n"}  procedure Op1 is begin ... end Op1;{"\n"}
 <MarginInfo items={["AI12-0374-2"]} />
 <dd>For the base subtype of a scalar (sub)type, the Nonblocking aspect is True.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>27.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The first subtype of a scalar type can allow blocking (which can be useful so a predicate can allow blocking), but the base subtype is always Nonblocking. We need this so the Nonblocking value is well-defined for any subtype that is built from the base subtype (T'Base). T'Base of any scalar type, including a generic formal type, is always nonblocking. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>28/5</MarginText>
 <MarginInfo items={["AI12-0064-2"]} />
@@ -266,18 +306,22 @@ protected body Pt is{"\n"}  procedure Op1 is begin ... end Op1;{"\n"}
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2"]} />
 <dd>Unless directly specified, for a formal subtype, formal package, or formal subprogram, the Nonblocking aspect is that of the actual subtype, package, or subprogram.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>30.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This means that Nonblocking legality checking for the actual parameters of the instance is only necessary when the aspect is explicitly specified for the formal type. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>31/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2"]} />
 <dl>
 <dd>Unless directly specified, for a non-first subtype <em>S</em>, the Nonblocking aspect is that of the subtype identified in the subtype_indication defining <em>S</em>; unless directly specified for the first subtype of a derived type, the Nonblocking aspect is that of the ancestor subtype.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>31.a/5</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The expressions that can be specified for a such a subtype are limited by a Legality Rule, see below. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>32/5</MarginText>
 <MarginInfo items={["AI12-0064-2"]} />
@@ -291,9 +335,11 @@ protected body Pt is{"\n"}  procedure Op1 is begin ... end Op1;{"\n"}
 <MarginInfo items={["AI12-0064-2", "AI12-0247-1"]} />
 <p>The following are defined to be <em>potentially blocking</em> operations: <br /></p>
 
+<AnnotatedOnly>
 <MarginText>34.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The primary purpose of these rules is to define what operations are not allowed in a protected operation (blocking is not allowed). Some of these operations are not directly blocking. However, they are still treated as potentially blocking, because allowing them in a protected action might impose an undesirable implementation burden. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>35/5</MarginText>
 <ul>
@@ -311,21 +357,27 @@ protected body Pt is{"\n"}  procedure Op1 is begin ... end Op1;{"\n"}
 <MarginText>41/5</MarginText>
 <li>during a protected action, an external call on a protected subprogram (or an external requeue) with the same target object as that of the protected action.<br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>41.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This is really a deadlocking call, rather than a blocking call, but we include it in this list for simplicity. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>42/5</MarginText>
 <MarginInfo items={["AI12-0064-2"]} />
 <p>If a language-defined subprogram allows blocking, then a call on the subprogram is a potentially blocking operation.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>42.a/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Calls on other subprograms that allow blocking are not themselves potentially blocking; the execution of the body could execute a potentially blocking operation.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>42.b/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 A user-defined instance of a language-defined generic creates user-defined subprograms for the purpose of this rule. A dispatching call to a language-defined abstract subprogram always calls a user-defined concrete subprogram, so that too is not potentially blocking for the purposes of this rule. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Legality Rules
@@ -354,29 +406,39 @@ A user-defined instance of a language-defined generic creates user-defined subpr
 <MarginInfo items={["AI12-0374-2"]} />
 <p>Finally, a nonblocking region that is outside of a parallel construct shall not contain a call on a callable entity for which the Nonblocking aspect is False, unless the region is within a generic unit and the callable entity is associated with a generic formal parameter of the generic unit, or the call is within the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> of an assertion aspect for an entity that allows blocking.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>50.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>A generic unit or entity declared within one is presumed to use its "used" generic formal parameters at least once each time it is invoked, and this passes through to the parallel construct check. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>50.b/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Implicit calls for finalization, storage pools, and the like are covered by the above prohibition. The rules above say &ldquo;a call&rdquo;, not &ldquo;an explicit call&rdquo;. Such calls are considered statically bound when that is possible, that is, when the controlling object has a known specific type (even if the actual implementation uses dispatching). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>50.c/5</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>We don't need to worry specially about entry calls (even if the entry has been renamed as a procedure), as they will be detected by the prohibition against calls to entities with the Nonblocking aspect False.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>50.d/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Similarly, we don't need to specially worry about subprograms of limited interfaces that are implemented by entries, as any such subprogram necessarily has the value statically False for the Nonblocking aspect, and thus is already covered by the prohibition against calling such subprograms. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>51/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2"]} />
 <p>For the purposes of the above rules, an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> is considered nonblocking if the immediately enclosing protected unit is nonblocking.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>51.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>An entry declaration always allows blocking (by rule); but we want to be able to compile-time check for most violations of the prohibition against potentially blocking operations in a protected action (see <a href="../AA-9/AA-9.5#Subclause_9.5.1">9.5.1</a>). We do that by using the nonblocking status of the protected unit as the controlling factor, and enforce that by not allowing the specification of the Nonblocking aspect for any protected operation. We can't do this checking unconditionally, as that would be incompatible: existing Ada protected units might call subprograms that allow blocking. Thus a protected unit that allows blocking (which is the default) must allow calling any subprogram from an entry body. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>52/5</MarginText>
 <MarginInfo items={["AI12-0374-2"]} />
@@ -386,37 +448,47 @@ Similarly, we don't need to specially worry about subprograms of limited interfa
 <MarginInfo items={["AI12-0064-2"]} />
 <p>A subprogram shall be nonblocking if it overrides a nonblocking dispatching operation. An entry shall not implement a nonblocking procedure. If an inherited dispatching subprogram allows blocking, then the corresponding subprogram of each ancestor shall allow blocking.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>53.a/5</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Rules elsewhere in the standard (<a href="../AA-4/AA-4.6">4.6</a> and <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>) ensure that access-to-subprogram conversion and the Access attribute enforce nonblocking. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>53.b/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>A nonblocking subprogram can override one that allows blocking, but the reverse is illegal. Thus one can declare a Finalize subprogram to be nonblocking, even though it overrides a routine that allows blocking. (This works because a nonblocking subprogram allows a strict subset of the operations allowed in allows blocking subprograms, so calling such a subprogram as if it allows blocking &mdash; as is necessary in a dispatching call &mdash; is harmless.) <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>54/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2", "AI12-0396-1", "AI12-0399-1"]} />
 <p>It is illegal to directly specify aspect Nonblocking for the first subtype of the full view of a type that has a partial view. If the Nonblocking aspect of the full view is inherited, it shall have the same value as that of the partial view, or have the value True.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>54.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We need completions to agree on nonblocking with the original view. One reason this is necessary to prevent the predefined equality operator from being nonblocking in the partial view and allowing blocking in the full view. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>55/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2"]} />
 <p>Aspect Nonblocking shall be directly specified for the first subtype of a derived type only if it has the same value as the Nonblocking aspect of the ancestor subtype or if it is specified True. Aspect Nonblocking shall be directly specified for a nonfirst subtype <em>S</em> only if it has the same value as the Nonblocking aspect of the subtype identified in the <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> defining <em>S</em> or if it is specified True.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>55.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Boolean-valued aspects have a similar rule to the first rule here (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>), we want this one to work similarly. We need non-first subtypes to allow blocking only if the original first subtype allows blocking, as that allows the programmer to know that any operation on any subtype of a type are nonblocking if the first subtype is nonblocking. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>56/5</MarginText>
 <MarginInfo items={["AI12-0319-1"]} />
 <p>For an access-to-object type that is nonblocking, the Allocate, Deallocate, and Storage_Size operations on its storage pool shall be nonblocking.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>56.a/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Standard storage pools always have nonblocking operations by definition (see <a href="../AA-13/AA-13.11">13.11</a>), so this rule only can fail for user-defined storage pools. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>57/5</MarginText>
 <MarginInfo items={["AI12-0319-1"]} />
@@ -430,13 +502,17 @@ Similarly, we don't need to specially worry about subprograms of limited interfa
 <MarginText>60/5</MarginText>
 <li>For a controlled type, the Initialize, Finalize, and Adjust (if any) subprograms shall be nonblocking.<br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>60.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>These rules ensure that if a type is nonblocking, the default initialization, finalization, and assignment of the type are also nonblocking. This ensures that if a generic formal type is nonblocking, all of the basic operations of the actual type are nonblocking.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>60.b/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Default initialization, finalization, and assignment of elementary types are always nonblocking, so we don't need any rules for those. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>61/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2"]} />
@@ -452,17 +528,23 @@ Default initialization, finalization, and assignment of elementary types are alw
 <MarginText>65/5</MarginText>
 <li><em>T</em> is neither a record type nor a record extension, and <em>T</em> has a predefined "=" that allows blocking. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>65.a/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This applies to both record and array "=".<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>65.b/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 This check occurs when the equality operator is declared, so this rule effectively makes the type illegal if the rule is violated. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>65.c/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We don't need to check this when the operator is overridden for a record type, as the body of the new definition of equality will enforce the rules, and there is no case where the predefined operator will re-emerge. We do have to check this for array types even if the operator is overridden, as the predefined operator will re-emerge in generics and record equality. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>66/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2"]} />
@@ -474,9 +556,11 @@ This check occurs when the equality operator is declared, so this rule effective
 <MarginText>68/5</MarginText>
 <li>the actual subtype corresponding to a nonblocking formal subtype shall be nonblocking;<br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>68.a/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>We require matching for formal scalar or access-to-object types, even though their predefined operators are always nonblocking (and they re-emerge in the generic unit) - because a "blocking" predicate might apply to the actual subtype, which will also be enforced on operations of the formal type. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>69/5</MarginText>
 <ul>
@@ -488,62 +572,78 @@ This check occurs when the equality operator is declared, so this rule effective
 <MarginInfo items={["AI12-0064-2"]} />
 <p>In addition to the places where Legality Rules normally apply (see <a href="../AA-12/AA-12.3">12.3</a>), the above rules also apply in the private part of an instance of a generic unit.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>71.a/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>For a generic formal parameter to be nonblocking (thus, for these rules to apply), it has to explicitly specify aspect Nonblocking to be True. However, if not specified True, these rules do apply in the instance of the specification of the generic unit (the normal re-checking is needed). For instance, the body of an expression function might make a prohibited call. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>72/3</MarginText>
 <MarginInfo items={["AI05-0030-2", "AI05-0215-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   The <code><a href="../AA-9/AA-9.5#S0256">synchronization_kind</a></code> By_Protected_Procedure implies that the operation will not block. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>72.a/2</MarginText>
 <MarginInfo items={["AI95-00345-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added a Legality Rule to make it crystal-clear that the protected object of an entry or procedure call must be a variable. This rule was implied by the Dynamic Semantics here, along with the Static Semantics of <a href="../AA-3/AA-3.3">3.3</a>, but it is much better to explicitly say it. While many implementations have gotten this wrong, this is not an incompatibility &mdash; allowing updates of protected constants has always been wrong. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>72.b/3</MarginText>
 <MarginInfo items={["AI05-0030-2", "AI05-0215-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added the Synchronization aspect to allow specifying that an interface procedure is really an entry or a protected procedure. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>72.c/3</MarginText>
 <MarginInfo items={["AI05-0225-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Clarified that the target object of any name denoted a protected procedure or entry can never be a constant (other than for the 'Count attribute). This closes holes involving calls to access-to-protected, renaming as a procedure, and generic formal subprograms. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Inconsistencies With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>72.d/5</MarginText>
 <MarginInfo items={["AI12-0064-2"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Calls on procedures that rename an entry or are implemented by an entry are now defined to be potentially blocking. This means that such a call now might raise Program_Error. However, it never made sense for some entry calls to be excluded from being potentially blocking, and we expect that most implementations already treated all entry calls the same way. Thus do not expect this wording change to actually change the behavior of any implementation, and thus no program will change. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>72.e/5</MarginText>
 <MarginInfo items={["AI12-0166-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Internal protected calls are now prohibited in preconditions and default expressions of protected operations. These were allowed in Ada 2012, but as they cause race conditions and as most existing Ada 95 compilers crash when given such a default parameter, we expect such code to be extremely rare. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>72.f/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0319-1", "AI12-0374-2"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Aspect Nonblocking is new; it allows compile-time checks to prevent using potentially blocking operations in contexts where that is not allowed. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_9.5.1"></a>
 
@@ -552,9 +652,11 @@ Aspect Nonblocking is new; it allows compile-time checks to prevent using potent
 <MarginText>1</MarginText>
 <p>A <em>protected subprogram</em> is a subprogram declared immediately within a <code><a href="../AA-9/AA-9.4#S0251">protected_definition</a></code>. Protected procedures provide exclusive read-write access to the data of a protected object; protected functions provide concurrent read-only access to the data. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>1.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>A subprogram declared immediately within a <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code> is not a protected subprogram; it is an intrinsic subprogram. See <a href="../AA-6/AA-6.3#Subclause_6.3.1">6.3.1</a>, &ldquo;<a href="../AA-6/AA-6.3#Subclause_6.3.1">Conformance Rules</a>&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -562,14 +664,18 @@ Aspect Nonblocking is new; it allows compile-time checks to prevent using potent
 <MarginText>2</MarginText>
 <p>[Within the body of a protected function (or a function declared immediately within a <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code>), the current instance of the enclosing protected unit is defined to be a constant (that is, its subcomponents may be read but not updated). Within the body of a protected procedure (or a procedure declared immediately within a <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code>), and within an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, the current instance is defined to be a variable (updating is permitted).] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>2.a.1/3</MarginText>
 <MarginInfo items={["AI05-0120-1"]} />
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>All constant views are defined in <a href="../AA-3/AA-3.3">3.3</a>, &ldquo;<a href="../AA-3/AA-3.3">Objects and Named Numbers</a>&rdquo;, anything not named there is a variable view. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>2.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The current instance is like an implicit parameter, of mode <strong>in</strong> for a protected function, and of mode <strong>in out</strong> for a protected procedure (or protected entry). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>2.1/4</MarginText>
 <MarginInfo items={["AI12-0129-1"]} />
@@ -583,9 +689,11 @@ Aspect Nonblocking is new; it allows compile-time checks to prevent using potent
 <dt><br/></dt>
 <dd>A value of True for this aspect indicates that protected functions behave in the same way as protected procedures with respect to mutual exclusion and queue servicing (see below).<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>2.a.1/4</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Exclusive_Functions: </strong>Specifies mutual exclusion behavior of protected functions in a protected type.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>2.4/4</MarginText>
 <MarginInfo items={["AI12-0129-1"]} />
@@ -616,9 +724,11 @@ Aspect Nonblocking is new; it allows compile-time checks to prevent using potent
 <MarginInfo items={["AI12-0119-1"]} />
 <p>If a parallel construct occurs within a protected action, no new logical threads of control are created. Instead, each element of the parallel construct that would have become a separate logical thread of control executes on the logical thread of control that is performing the protected action. If there are multiple such elements initiated at the same point, they execute in an arbitrary order.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>It would be feasible to allow multiple logical threads of control within a protected action, but it would significantly complicate the definition of &ldquo;sequential&rdquo; and &ldquo;concurrent&rdquo; actions, since we generally presume that everything occuring within protected actions of a given protected object is sequential. We could simply disallow any use of parallel constructs, but that seems unnecessary, particularly as a parallel construct might be buried within a subprogram that is declared Nonblocking. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Bounded (Run-Time) Errors
@@ -629,10 +739,12 @@ Aspect Nonblocking is new; it allows compile-time checks to prevent using potent
 
 <p><em>Paragraphs 9 through 16 were moved to <a href="../AA-9/AA-9.5">9.5</a>.</em> <br /></p>
 
+<AnnotatedOnly>
 <MarginText>8.a/5</MarginText>
 <MarginInfo items={["AI12-0064-2"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9/5</MarginText>
 <ul>
@@ -650,76 +762,102 @@ Aspect Nonblocking is new; it allows compile-time checks to prevent using potent
 <MarginText>15/5</MarginText>
 <li> <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>15.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>16/5</MarginText>
 <ul>
 <li> <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>16.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>17/5</MarginText>
 <MarginInfo items={["AI12-0439-1"]} />
 <p>If the bounded error is detected, Program_Error is raised. If not detected, the bounded error can  result in deadlock or a (nested) protected action on the same target object.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>17.a/2</MarginText>
 <MarginInfo items={["AI95-00305-01"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>By &ldquo;nested protected action&rdquo;, we mean that an additional protected action can be started by another task on the same protected object. This means that mutual exclusion may be broken in this bounded error case. A way to ensure that this does not happen is to use pragma Detect_Blocking (see <a href="../AA-H/AA-H.5">H.5</a>). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>18/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0247-1"]} />
 <p>During a protected action, a call on a subprogram whose body contains a potentially blocking operation is a bounded error. If the bounded error is detected, Program_Error is raised; otherwise, the call proceeds normally.  <br /></p>
 
+<AnnotatedOnly>
 <MarginText>18.a/5</MarginText>
 <MarginInfo items={["AI95-00178-01"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18.b/5</MarginText>
 <MarginInfo items={["AI12-0247-1"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This allows an implementation to check and raise Program_Error as soon as a subprogram is called, rather than waiting to find out whether it actually reaches the potentially blocking operation. If the call proceeds normally, reaching the potentially blocking operation is a separate bounded error, covered by the previous rules. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19/5</MarginText>
 <MarginInfo items={["AI12-0276-1", "AI12-0440-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   If two tasks both try to start a protected action on a protected object, and at most one is calling a protected nonexclusive function, then only one of the tasks can proceed. Although the other task cannot proceed, it is not considered blocked, and it can  be consuming processing resources while it awaits its turn. Unless there is an admission policy (see <a href="../AA-D/AA-D.4#Subclause_D.4.1">D.4.1</a>) in effect, there  is no language-defined ordering or queuing presumed for tasks competing to start a protected action &mdash; on a multiprocessor such tasks can  use busy-waiting; for further monoprocessor and multiprocessor considerations, see <a href="../AA-D/AA-D.3">D.3</a>, &ldquo;<a href="../AA-D/AA-D.3">Priority Ceiling Locking</a>&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The intended implementation on a multi-processor is in terms of &ldquo;spin locks&rdquo; &mdash; the waiting task will spin. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>20/5</MarginText>
 <MarginInfo items={["AI12-0440-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   The body of a protected unit can  contain declarations and bodies for local subprograms. These are not visible outside the protected unit.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>21</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   The body of a protected function can contain internal calls on other protected functions, but not protected procedures, because the current instance is a constant. On the other hand, the body of a protected procedure can contain internal calls on both protected functions and procedures.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 4   From within a protected action, an internal call on a protected subprogram, or an external call on a protected subprogram with a different target object is not considered a potentially blocking operation. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This is because a task is not considered blocked while attempting to acquire the execution resource associated with a protected object. The acquisition of such a resource is rather considered part of the normal competition for execution resources between the various tasks that are ready. External calls that turn out to be on the same target object are considered potentially blocking, since they can deadlock the task indefinitely. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>23/5</MarginText>
 <MarginInfo items={["AI95-00305-01", "AI12-0064-2", "AI12-0440-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 5   The aspect Nonblocking can be specified True on the definition of a protected unit in order to reject most attempts to use potentially blocking operations within the protected unit (see <a href="../AA-9/AA-9.5">9.5</a>). The <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Detect_Blocking can  be used to ensure that any remaining  executions of potentially blocking operations during a protected action raise Program_Error. See <a href="../AA-H/AA-H.5">H.5</a>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>23.a/5</MarginText>
 <MarginInfo items={["AI12-0064-2"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The deadlock case cannot be detected at compile-time, so pragma Detect_Blocking is needed to give it consistent behavior. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -735,31 +873,39 @@ Shared_Array.Set_Component(N, E);{"\n"}E := Shared_Array.Component(M);{"\n"}Cont
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>25.a/2</MarginText>
 <MarginInfo items={["AI95-00305-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added a note pointing out the existence of <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Detect_Blocking. This pragma can be used to ensure portable (somewhat pessimistic) behavior of protected actions by converting the Bounded Error into a required check. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>25.b/4</MarginText>
 <MarginInfo items={["AI12-0129-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Aspect Exclusive_Functions is new. The term &ldquo;exclusive protected operations&rdquo; is new. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>25.c/5</MarginText>
 <MarginInfo items={["AI12-0064-2"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Moved the definition of potentially blocking operations to <a href="../AA-9/AA-9.5">9.5</a>, so it could be integrated into the definition of the Nonblocking aspect.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>25.d/5</MarginText>
 <MarginInfo items={["AI12-0247-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Added a separate bounded error for a subprogram containing a blocking operation, to keep compatibility with Ada 95 rules without requiring a correct implementation of pragma Detect_Blocking to do full program analysis. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_9.5.2"></a>
 
@@ -784,9 +930,11 @@ Moved the definition of potentially blocking operations to <a href="../AA-9/AA-9
 <code>accept_statement</code><a id="S0258"></a><code> ::= </code><br />   <strong>accept</strong> <em>entry_</em><code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> [(<code><a href="../AA-9/AA-9.5#S0259">entry_index</a></code>)] <code><a href="../AA-6/AA-6.1#S0204">parameter_profile</a></code> [<strong>do</strong><br />     <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code><br />   <strong>end</strong> [<em>entry_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>]];<br />
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>3.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We cannot use <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> for <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s. Although an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> is sort of like a body, it can appear nested within a <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></code>, and therefore be hidden from its own entry by an outer homograph. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>4</MarginText>
 
@@ -801,10 +949,12 @@ Moved the definition of potentially blocking operations to <a href="../AA-9/AA-9
 <code>entry_body</code><a id="S0260"></a><code> ::= </code><br />    <strong>entry</strong> <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> <code><a href="../AA-9/AA-9.5#S0261">entry_body_formal_part</a></code><br />       [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>]<br />    <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code> <strong>is</strong><br />       <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code><br />    <strong>begin</strong><br />       <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code><br />    <strong>end</strong> [<em>entry_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>];<br />
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>5.a/2</MarginText>
 <MarginInfo items={["AI95-00397-01"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>We don't allow an <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code> on an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> because entries always implement procedures at the point of the type declaration; there is no late implementation. And we don't want to have to think about <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code>s on <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>6</MarginText>
 
@@ -831,17 +981,21 @@ Moved the definition of potentially blocking operations to <a href="../AA-9/AA-9
 <MarginText>10</MarginText>
 <p>[An <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> is allowed only in a protected or task declaration.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>10.a</MarginText>
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>This follows from the BNF. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10.1/2</MarginText>
 <MarginInfo items={["AI95-00397-01"]} />
 <p>An <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code> is not allowed in an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> that includes a <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>10.a.1/2</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>An entry family can never implement something, so allowing an indicator is felt by the majority of the ARG to be redundant. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Name Resolution Rules
@@ -852,9 +1006,11 @@ Moved the definition of potentially blocking operations to <a href="../AA-9/AA-9
 <MarginText>12</MarginText>
 <p>Within the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, if a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> has a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> that denotes the corresponding <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code>, then the entity denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, and the <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> is interpreted as an expanded name (see <a href="../AA-4/AA-4.1#Subclause_4.1.3">4.1.3</a>)[; the <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> of the <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> has to be the <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> for some formal parameter of the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>]. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>12.a</MarginText>
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>The only declarations that occur immediately within the declarative region of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> are those for its formal parameters. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Legality Rules
@@ -862,10 +1018,13 @@ Moved the definition of potentially blocking operations to <a href="../AA-9/AA-9
 <MarginText>13</MarginText>
 <p>An <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> in a task declaration shall not contain a specification for an access parameter (see <a href="../AA-3/AA-3.10">3.10</a>). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>13.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Access parameters for task entries would require a complex implementation. For example: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13.b</MarginText>
 <CodeBlock language="ada">
 task T is{"\n"}   entry E(Z : access Integer); -- Illegal!{"\n"}end T;{"\n"}
@@ -873,13 +1032,18 @@ task T is{"\n"}   entry E(Z : access Integer); -- Illegal!{"\n"}end T;{"\n"}
 task body T is{"\n"}begin{"\n"}   declare{"\n"}      type A is access all Integer;{"\n"}      X : A;{"\n"}      Int : aliased Integer;{"\n"}      task Inner;{"\n"}      task body Inner is{"\n"}      begin{"\n"}         T.E(Int'Access);{"\n"}      end Inner;{"\n"}   begin{"\n"}      accept E(Z : access Integer) do{"\n"}         X := A(Z); -- Accessibility_Check{"\n"}      end E;{"\n"}   end;{"\n"}end T;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>13.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Implementing the Accessibility_Check inside the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> for E is difficult, since one does not know whether the entry caller is calling from inside the immediately enclosing declare block or from outside it. This means that the lexical nesting level associated with the designated object is not sufficient to determine whether the Accessibility_Check should pass or fail.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13.e</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Note that such problems do not arise with protected entries, because <code>entry_bodies</code> are always nested immediately within the <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code>; they cannot be further nested as can <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s, nor can they be called from within the <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code> (since no entry calls are permitted inside a <code><a href="../AA-9/AA-9.4#S0254">protected_body</a></code>). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>13.1/2</MarginText>
 <MarginInfo items={["AI95-00397-01"]} />
@@ -894,9 +1058,11 @@ Note that such problems do not arise with protected entries, because <code>entry
 <MarginText>13.4/2</MarginText>
 <p>In addition to the places where Legality Rules normally apply (see <a href="../AA-12/AA-12.3">12.3</a>), these rules also apply in the private part of an instance of a generic unit.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>13.f/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>These rules are subtly different than those for subprograms (see <a href="../AA-8/AA-8.3#Subclause_8.3.1">8.3.1</a>) because there cannot be &ldquo;late&rdquo; inheritance of primitives from interfaces. Hidden (that is, private) interfaces are prohibited explicitly (see <a href="../AA-7/AA-7.3">7.3</a>), as are hidden primitive operations (as private operations of public abstract types are prohibited &mdash; see <a href="../AA-3/AA-3.9#Subclause_3.9.3">3.9.3</a>). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>14</MarginText>
 <p>For an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, the innermost enclosing body shall be a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>, and the <em>entry_</em><code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> shall denote an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> in the corresponding task declaration; the profile of the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> shall conform fully to that of the corresponding <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code>. An <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> shall have a parenthesized <code><a href="../AA-9/AA-9.5#S0259">entry_index</a></code> if and only if the corresponding <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> has a <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code>.<br /></p>
@@ -904,33 +1070,45 @@ Note that such problems do not arise with protected entries, because <code>entry
 <MarginText>15</MarginText>
 <p>An <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> shall not be within another <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> that corresponds to the same <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code>, nor within an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> inner to the enclosing <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>15.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong><code><a href="../AA-9/AA-9.5#S0258">Accept_statement</a></code>s are required to be immediately within the enclosing <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> (as opposed to being in a nested subprogram) to ensure that a nested task does not attempt to accept the entry of its enclosing task. We considered relaxing this restriction, either by making the check a run-time check, or by allowing a nested task to accept an entry of its enclosing task. However, neither change seemed to provide sufficient benefit to justify the additional implementation burden.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>15.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Nested <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s for the same entry (or entry family) are prohibited to ensure that there is no ambiguity in the resolution of an expanded name for a formal parameter of the entry. This could be relaxed by allowing the inner one to hide the outer one from all visibility, but again the small added benefit didn't seem to justify making the change for Ada 95.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>15.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <code><a href="../AA-9/AA-9.5#S0258">Accept_statement</a></code>s are not permitted within <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> statements to simplify the semantics and implementation: an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> in an <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code> could result in Tasking_Error being propagated from an entry call even though the target task was still callable; implementations that use multiple tasks implicitly to implement an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> might have trouble supporting "up-level" accepts. Furthermore, if <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s were permitted in the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code>, a task could call its own entry and then accept it in the <code><a href="../AA-9/AA-9.7#S0283">abortable_part</a></code>, leading to rather unusual and possibly difficult-to-specify semantics. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>16</MarginText>
 <p>An <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> of a protected unit requires a completion[, which shall be an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>,] and every <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> shall be the completion of an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> of a protected unit. The profile of the <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> shall conform fully to that of the corresponding declaration. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>16.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>An <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code>, unlike a <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code>, cannot be completed with a <code><a href="../AA-8/AA-8.5#S0238">renaming_declaration</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16.b/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>If the implementation supports it, the entry body can be imported (using aspect Import, see <a href="../AA-B/AA-B.1">B.1</a>), in which case no explicit <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> is allowed. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16.c</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The above applies only to protected entries, which are the only ones completed with <code>entry_bodies</code>. Task entries have corresponding <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s instead of having <code>entry_bodies</code>, and we do not consider an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> to be a &ldquo;completion,&rdquo; because a task <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> is allowed to have zero, one, or more than one corresponding <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>17</MarginText>
 <p>An <code><a href="../AA-9/AA-9.5#S0261">entry_body_formal_part</a></code> shall have an <code><a href="../AA-9/AA-9.5#S0263">entry_index_specification</a></code> if and only if the corresponding <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> has a <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code>. In this case, the <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code>s of the <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> and the <code><a href="../AA-9/AA-9.5#S0263">entry_index_specification</a></code> shall fully conform to one another (see <a href="../AA-6/AA-6.3#Subclause_6.3.1">6.3.1</a>). <br /></p>
@@ -944,9 +1122,11 @@ Nested <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s for the
 <MarginText>19</MarginText>
 <p>The parameter modes defined for parameters in the <code><a href="../AA-6/AA-6.1#S0204">parameter_profile</a></code> of an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> are the same as for a <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code> and have the same meaning (see <a href="../AA-6/AA-6.2">6.2</a>). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>19.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Note that access parameters are not allowed for task entries (see above). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>20</MarginText>
 <p>An <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> with a <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code> (see <a href="../AA-3/AA-3.6">3.6</a>) declares a <em>family</em> of distinct entries having the same profile, with one such entry for each value of the <em>entry index subtype</em> defined by the <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code>. [A name for an entry of a family takes the form of an <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>, where the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes the <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> for the family, and the index value identifies the entry within the family.] The term <em>single entry</em> is used to refer to any entry other than an entry of an entry family.<br /></p>
@@ -954,9 +1134,11 @@ Nested <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s for the
 <MarginText>21</MarginText>
 <p>In the <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> for an entry family, the <code><a href="../AA-9/AA-9.5#S0263">entry_index_specification</a></code> declares a named constant whose subtype is the entry index subtype defined by the corresponding <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code>; the value of the <em>named entry index</em> identifies which entry of the family was called. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>21.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code> of the <code><a href="../AA-9/AA-9.5#S0263">entry_index_specification</a></code> is not elaborated; the subtype of the named constant declared is defined by the <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code> of the corresponding <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code>, which is elaborated, either when the type is declared, or when the object is created, if its constraint is per-object. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Dynamic Semantics
@@ -965,10 +1147,12 @@ Nested <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s for the
 <MarginInfo items={["AI95-00171-01"]} />
 <p>{"{"}<em>8652/0002</em>{"}"} The elaboration of an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> for an entry family consists of the elaboration of the <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code>, as described in <a href="../AA-3/AA-3.8">3.8</a>. The elaboration of an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> for a single entry has no effect. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>22.a/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The elaboration of the declaration of a protected subprogram has no effect, as specified in subclause <a href="../AA-6/AA-6.1">6.1</a>. The default initialization of an object of a task or protected type is covered in <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>23</MarginText>
 <p>[The actions to be performed when an entry is called are specified by the corresponding <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s (if any) for an entry of a task unit, and by the corresponding <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> for an entry of a protected unit.]<br /></p>
@@ -981,22 +1165,30 @@ Nested <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s for the
 <MarginInfo items={["AI12-0193-1"]} />
 <p>For the execution of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, the <code><a href="../AA-9/AA-9.5#S0259">entry_index</a></code>, if any, is first evaluated and converted to the entry index subtype; this index value identifies which entry of the family is to be accepted. Further execution of the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> is then blocked until a caller of the corresponding entry is selected (see <a href="../AA-9/AA-9.5#Subclause_9.5.3">9.5.3</a>), whereupon the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code>, if any, of the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> is executed, with the formal parameters associated with the corresponding actual parameters of the selected entry call. Execution of the rendezvous consists of the execution of the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code>,  performance of any postcondition or type invariant checks associated with the entry, and any initialization or finalization associated with these checks, as described in <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a> and <a href="../AA-7/AA-7.3#Subclause_7.3.2">7.3.2</a>. After execution of the rendezvous, the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> completes and is left. [The two tasks then proceed independently.] When an exception is propagated from the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, the same exception is also raised by the execution of the corresponding <code><a href="../AA-9/AA-9.5#S0264">entry_call_statement</a></code>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>24.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This is in addition to propagating it to the construct containing the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>. In other words, for a rendezvous, the raising splits in two, and continues concurrently in both tasks.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>24.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The caller gets a new occurrence; this isn't considered propagation.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>24.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Note that we say &ldquo;propagated from the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>&rdquo;, not &ldquo;propagated from an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>&rdquo;. The latter would be wrong &mdash; we don't want exceptions propagated by the <code><a href="../AA-9/AA-9.5#S0259">entry_index</a></code> to be sent to the caller (there is none yet!).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>24.d/5</MarginText>
 <MarginInfo items={["AI12-0193-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Execution of the rendezvous does not include any checks associated with parameter copy back or any post-call subtype predicate check for a parameter which is passed by reference. These checks are performed by the caller after the execution of the rendezvous. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>25/5</MarginText>
 <MarginInfo items={["AI12-0193-1"]} />
@@ -1005,39 +1197,55 @@ Execution of the rendezvous does not include any checks associated with paramete
 <MarginText>26</MarginText>
 <p>[An <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> is executed when the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> of the <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code> evaluates to True and a caller of the corresponding single entry, or entry of the corresponding entry family, has been selected (see <a href="../AA-9/AA-9.5#Subclause_9.5.3">9.5.3</a>).] For the execution of the <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, the <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> of the <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> is elaborated, and the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> of the body is executed, as for the execution of a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code>. The value of the named entry index, if any, is determined by the value of the entry index specified in the <em>entry_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> of the selected entry call (or intermediate <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code> &mdash; see <a href="../AA-9/AA-9.5#Subclause_9.5.4">9.5.4</a>). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>26.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>If the entry had been renamed as a subprogram, and the call was a <code><a href="../AA-6/AA-6.4#S0217">procedure_call_statement</a></code> using the name declared by the renaming, the entry index (if any) comes from the entry <code><a href="../AA-4/AA-4.1#S0091">name</a></code> specified in the <code><a href="../AA-8/AA-8.5#S0242">subprogram_renaming_declaration</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   A task entry has corresponding accept_statements (zero or more), whereas a protected entry has a corresponding entry_body (exactly one).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>28</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   A consequence of the rule regarding the allowed placements of <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s is that a task can execute <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s only for its own entries.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>29/5</MarginText>
 <MarginInfo items={["AI95-00318-02", "AI12-0440-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   A return statement (see <a href="../AA-6/AA-6.5">6.5</a>) or a <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code> (see <a href="../AA-9/AA-9.5#Subclause_9.5.4">9.5.4</a>) can  be used to complete the execution of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> or an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>29.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>An <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> need not have a <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> even if the corresponding entry has parameters. Equally, it can have a <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> even if the corresponding entry has no parameters. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>29.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>A single entry overloads a subprogram, an enumeration literal, or another single entry if they have the same <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code>. Overloading is not allowed for entry family names. A single entry or an entry of an entry family can be renamed as a procedure as explained in <a href="../AA-8/AA-8.5#Subclause_8.5.4">8.5.4</a>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30/5</MarginText>
 <MarginInfo items={["AI12-0440-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 4   The <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> in the <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code> can  reference anything visible except the formal parameters of the entry. This includes the entry index (if any), the components (including discriminants) of the protected object, the Count attribute of an entry of that protected object, and data global to the protected unit.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>31</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The restriction against referencing the formal parameters within an <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code> ensures that all calls of the same entry see the same barrier value. If it is necessary to look at the parameters of an entry call before deciding whether to handle it, the <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code> can be &ldquo;<strong>when</strong> True&rdquo; and the caller can be requeued (on some private entry) when its parameters indicate that it cannot be handled immediately. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -1065,55 +1273,71 @@ accept Request(Low)(D : Item) do{"\n"}   ...{"\n"}end Request;{"\n"}
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>37.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The syntax rule for <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> is new.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>37.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <code><a href="../AA-9/AA-9.5#S0258">Accept_statement</a></code>s can now have <code><a href="../AA-11/AA-11.2#S0305">exception_handler</a></code>s. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>37.c/2</MarginText>
 <MarginInfo items={["AI95-00171-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0002</em>{"}"} <strong>Corrigendum:</strong> Clarified the elaboration of per-object constraints.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>37.d/2</MarginText>
 <MarginInfo items={["AI95-00397-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <code><a href="../AA-8/AA-8.3#S0234">Overriding_indicator</a></code>s can be used on entries; this is only useful when a task or protected type inherits from an interface. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>37.e/3</MarginText>
 <MarginInfo items={["AI05-0183-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 An optional <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> can be used in an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code>. This is described in <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>37.f/5</MarginText>
 <MarginInfo items={["AI12-0169-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> An optional <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> can be used in an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>. All other kinds of bodies allow (only) implementation-defined aspects, we need to be consistent.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>37.g/5</MarginText>
 <MarginInfo items={["AI12-0398-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Named entry indexes now can have an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>, allowing the specification of (implementation-defined) aspects for a named entry index. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>37.h/5</MarginText>
 <MarginInfo items={["AI12-0193-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Clarified that postcondition and invariant checks are clearly part of the rendezvous for an entry call. <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a> already said this, so the intent was clear and this is not an inconsistency. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_9.5.3"></a>
 
@@ -1157,13 +1381,17 @@ Named entry indexes now can have an <code><a href="../AA-13/AA-13.1#S0346">aspec
 <MarginInfo items={["AI05-0264-1"]} />
 <li>An entry of a protected object is open if the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> of the <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code> of the corresponding <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> evaluates to True; otherwise, it is closed. If the evaluation of the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> propagates an exception, the exception Program_Error is propagated to all current callers of all entries of the protected object. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>7.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>An exception during barrier evaluation is considered essentially a fatal error. All current entry callers are notified with a Program_Error. In a fault-tolerant system, a protected object might provide a Reset protected procedure, or equivalent, to support attempts to restore such a "broken" protected object to a reasonable state. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>7.b</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Note that the definition of when a task entry is open is based on the state of the (accepting) task, whereas the "openness" of a protected entry is defined only when it is explicitly checked, since the barrier expression needs to be evaluated. Implementation permissions are given (below) to allow implementations to evaluate the barrier expression more or less often than it is checked, but the basic semantic model presumes it is evaluated at the times when it is checked. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>8</MarginText>
 <p>For the execution of an <code><a href="../AA-9/AA-9.5#S0264">entry_call_statement</a></code>, evaluation of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> and of the parameter associations is as for a subprogram call (see <a href="../AA-6/AA-6.4">6.4</a>). The entry call is then <em>issued</em>: For a call on an entry of a protected object, a new protected action is started on the object (see <a href="../AA-9/AA-9.5#Subclause_9.5.1">9.5.1</a>). The named entry is checked to see if it is open; if open, the entry call is said to be <em>selected immediately</em>, and the execution of the call proceeds as follows: <br /></p>
@@ -1177,9 +1405,11 @@ Named entry indexes now can have an <code><a href="../AA-13/AA-13.1#S0346">aspec
 <MarginText>11</MarginText>
 <p>If the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> or <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> completes other than by a requeue (see <a href="../AA-9/AA-9.5#Subclause_9.5.4">9.5.4</a>), return is made to the caller (after servicing the entry queues &mdash; see below); any necessary assigning back of formal to actual parameters occurs, as for a subprogram call (see <a href="../AA-6/AA-6.4#Subclause_6.4.1">6.4.1</a>); such assignments take place outside of any protected action. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>11.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The return to the caller will generally not occur until the protected action completes, unless some other thread of control is given the job of completing the protected action and releasing the associated execution resource. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>12</MarginText>
 <p>If the named entry is closed, the entry call is added to an <em>entry queue</em> (as part of the protected action, for a call on a protected entry), and the call remains queued until it is selected or cancelled; there is a separate (logical) entry queue for each entry of a given task or protected object [(including each entry of an entry family)].<br /></p>
@@ -1203,24 +1433,30 @@ Named entry indexes now can have an <code><a href="../AA-13/AA-13.1#S0346">aspec
 <MarginText>18</MarginText>
 <p>For a protected object, the above servicing of entry queues continues until there are no open entries with queued calls, at which point the protected action completes. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>18.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>While servicing the entry queues of a protected object, no new calls can be added to any entry queue of the object, except due to an internal requeue (see <a href="../AA-9/AA-9.5#Subclause_9.5.4">9.5.4</a>). This is because the first step of a call on a protected entry is to start a new protected action, which implies acquiring (for exclusive read-write access) the execution resource associated with the protected object, which cannot be done while another protected action is already in progress. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>19</MarginText>
 <p>For an entry call that is added to a queue, and that is not the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> of an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> (see <a href="../AA-9/AA-9.7#Subclause_9.7.4">9.7.4</a>), the calling task is blocked until the call is cancelled, or the call is selected and a corresponding <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> or <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> completes without requeuing. In addition, the calling task is blocked during a rendezvous.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>19.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>For a call on a protected entry, the caller is not blocked if the call is selected immediately, unless a requeue causes the call to be queued.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>20</MarginText>
 <p>An attempt can be made to cancel an entry call upon an abort (see <a href="../AA-9/AA-9.8">9.8</a>) and as part of certain forms of <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code> (see <a href="../AA-9/AA-9.7#Subclause_9.7.2">9.7.2</a>, <a href="../AA-9/AA-9.7#Subclause_9.7.3">9.7.3</a>, and <a href="../AA-9/AA-9.7#Subclause_9.7.4">9.7.4</a>). The cancellation does not take place until a point (if any) when the call is on some entry queue, and not protected from cancellation as part of a requeue (see <a href="../AA-9/AA-9.5#Subclause_9.5.4">9.5.4</a>); at such a point, the call is removed from the entry queue and the call completes due to the cancellation. The cancellation of a call on an entry of a protected object is a protected action[, and as such cannot take place while any other protected action is occurring on the protected object. Like any protected action, it includes servicing of the entry queues (in case some entry barrier depends on a Count attribute).] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>20.a/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>In the case of an attempted cancellation due to abort, this removal might have to be performed by the calling task itself if the ceiling priority of the protected object is lower than the priority of the task initiating the abort. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>21</MarginText>
 <p>A call on an entry of a task that has already completed its execution raises the exception Tasking_Error at the point of the call; similarly, this exception is raised at the point of the call if the called task completes its execution or becomes abnormal before accepting the call or completing the rendezvous (see <a href="../AA-9/AA-9.8">9.8</a>). This applies equally to a simple entry call and to an entry call as part of a <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code>.<br /></p>
@@ -1232,81 +1468,113 @@ Named entry indexes now can have an <code><a href="../AA-13/AA-13.1#S0346">aspec
 <MarginInfo items={["AI12-0444-1"]} />
 <p>An implementation may perform the sequence of steps of a protected action using any thread of control; it can be a thread other than  that of the task that started the protected action. If an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> completes without requeuing, then the corresponding calling task may be made ready without waiting for the entire protected action to complete. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>22.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>These permissions are intended to allow flexibility for implementations on multiprocessors. On a monoprocessor, which thread of control executes the protected action is essentially invisible, since the thread is not abortable in any case, and the "current_task" function is not guaranteed to work during a protected action (see <a href="../AA-C/AA-C.7#Subclause_C.7.1">C.7.1</a>). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>23/5</MarginText>
 <MarginInfo items={["AI12-0129-1", "AI12-0444-1"]} />
 <p>When the entry of a protected object is checked to see whether it is open, the implementation can bypass reevaluating  the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> of the corresponding <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code> if no variable or attribute referenced by the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> (directly or indirectly) has been altered by the execution (or cancellation) of a call to an exclusive protected operation of the object since the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> was last evaluated. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>23.a/4</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Changes to variables referenced by an entry barrier that result from actions outside of a call to an exclusive protected operation of the protected object need not be "noticed". For example, if a global variable is referenced by an entry barrier, it should not be altered (except as part of a protected action on the object) any time after the barrier is first evaluated. In other words, globals can be used to "parameterize" a protected object, but they cannot reliably be used to control it after the first use of the protected object. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>23.b</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Note that even if a global variable is volatile, the implementation need only reevaluate a barrier if the global is updated during a protected action on the protected object. This ensures that an entry-open bit-vector implementation approach is possible, where the bit-vector is computed at the end of a protected action, rather than upon each entry call. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>24</MarginText>
 <p>An implementation may evaluate the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code>s of all <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code>s of a given protected object any time any entry of the object is checked to see if it is open. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>24.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>In other words, any side effects of evaluating an entry barrier should be innocuous, since an entry barrier might be evaluated more or less often than is implied by the "official" dynamic semantics. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>24.b</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>It is anticipated that when the number of entries is known to be small, all barriers will be evaluated any time one of them needs to be, to produce an "entry-open bit-vector". The appropriate bit will be tested when the entry is called, and only if the bit is false will a check be made to see whether the bit-vector might need to be recomputed. This should allow an implementation to maximize the performance of a call on an open entry, which seems like the most important case.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>24.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 In addition to the entry-open bit-vector, an "is-valid" bit is needed per object, which indicates whether the current bit-vector setting is valid. A "depends-on-Count-attribute" bit is needed per type. The "is-valid" bit is set to false (as are all the bits of the bit-vector) when the protected object is first created, as well as any time an exception is propagated from computing the bit-vector. Is-valid would also be set false any time the Count is changed and "depends-on-Count-attribute" is true for the type, or a protected procedure or entry returns indicating it might have updated a variable referenced in some barrier.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>24.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 A single procedure can be compiled to evaluate all of the barriers, set the entry-open bit-vector accordingly, and set the is-valid bit to true. It could have a "when others" handler to set them all false, and call a routine to propagate Program_Error to all queued callers.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>24.e</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 For protected types where the number of entries is not known to be small, it makes more sense to evaluate a barrier only when the corresponding entry is checked to see if it is open. It isn't worth saving the state of the entry between checks, because of the space that would be required. Furthermore, the entry queues probably want to take up space only when there is actually a caller on them, so rather than an array of all entry queues, a linked list of nonempty entry queues make the most sense in this case, with the first caller on each entry queue acting as the queue header. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>25/5</MarginText>
 <MarginInfo items={["AI12-0444-1"]} />
 <p>When an attempt is made to cancel an entry call, the implementation can use a  thread of control other than that of the task (or interrupt) that initiated the cancellation; in particular, it may use the thread of control of the caller itself to attempt the cancellation, even if this can  allow the entry call to be selected in the interim. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>25.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Because cancellation of a protected entry call is a protected action (which helps make the Count attribute of a protected entry meaningful), it might not be practical to attempt the cancellation from the thread of control that initiated the cancellation. For example, if the cancellation is due to the expiration of a delay, it is unlikely that the handler of the timer interrupt could perform the necessary protected action itself (due to being on the interrupt level). Similarly, if the cancellation is due to an abort, it is possible that the task initiating the abort has a priority higher than the ceiling priority of the protected object (for implementations that support ceiling priorities). Similar considerations could apply in a multiprocessor situation. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>26</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   If an exception is raised during the execution of an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, it is propagated to the corresponding caller (see <a href="../AA-11/AA-11.4">11.4</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   For a call on a protected entry, the entry is checked to see if it is open prior to queuing the call, and again thereafter if its Count attribute (see <a href="../AA-9/AA-9.9">9.9</a>) is referenced in some entry barrier. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Given this, extra care is required if a reference to the Count attribute of an entry appears in the entry's own barrier. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.b</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>An entry is checked to see if it is open prior to queuing to maximize the performance of a call on an open entry. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>28</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   In addition to simple entry calls, the language permits timed, conditional, and asynchronous entry calls (see <a href="../AA-9/AA-9.7#Subclause_9.7.2">9.7.2</a>, <a href="../AA-9/AA-9.7#Subclause_9.7.3">9.7.3</a>, and see <a href="../AA-9/AA-9.7#Subclause_9.7.4">9.7.4</a>). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>28.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>A task can call its own entries, but the task will deadlock if the call is a simple entry call. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>29/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 4   The <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> of an <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code> is allowed to be evaluated by an implementation more often than strictly necessary, even if the evaluation can  have side effects. On the other hand, an implementation can avoid reevaluating  the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> if nothing it references was updated by an intervening protected action on the protected object, even if the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> references some global variable that is  updated by an action performed from outside of a protected action. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -1322,10 +1590,12 @@ Agent.Shut_Down;                      --  see <a href="../AA-9/AA-9.1">9.1</a>{"
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>31.a/4</MarginText>
 <MarginInfo items={["AI12-0129-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Revised wording to talk about &ldquo;exclusive protected operations&rdquo; (see <a href="../AA-9/AA-9.5#Subclause_9.5.1">9.5.1</a>). <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_9.5.4"></a>
 
@@ -1371,9 +1641,11 @@ Agent.Shut_Down;                      --  see <a href="../AA-9/AA-9.1">9.1</a>{"
 <MarginText>5.3/4</MarginText>
 <li>if <em>P1</em> is enabled, then <em>P2</em> is also enabled. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>5.a/4</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Roughly speaking, the postcondition of the requeue target is required to imply that of the enclosing callable construct. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>5.4/5</MarginText>
 <MarginInfo items={["AI12-0090-1", "AI12-0143-1"]} />
@@ -1383,9 +1655,11 @@ Agent.Shut_Down;                      --  see <a href="../AA-9/AA-9.1">9.1</a>{"
 <MarginInfo items={["AI12-0090-1"]} />
 <p>If the requeue target is declared immediately within the <code><a href="../AA-9/AA-9.1#S0246">task_definition</a></code> of a named task type or the <code><a href="../AA-9/AA-9.4#S0251">protected_definition</a></code> of a named protected type, and if the requeue statement occurs within the body of that type, and if the requeue is an external requeue, then the requeue target shall not have a specific or class-wide postcondition which includes a name denoting either the current instance of that type or any entity declared within the declaration of that type.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>5.b/4</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The above pair of rules always apply; they don't depend on whether or not any of the postconditions are enabled. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>5.6/4</MarginText>
 <MarginInfo items={["AI05-0030-2", "AI05-0215-1", "AI12-0090-1"]} />
@@ -1395,21 +1669,29 @@ Agent.Shut_Down;                      --  see <a href="../AA-9/AA-9.1">9.1</a>{"
 <MarginInfo items={["AI05-0030-2"]} />
 <p>In a <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code> of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> of some task unit, either the target object shall be a part of a formal parameter of the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, or the accessibility level of the target object shall not be equal to or statically deeper than any enclosing <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> of the task unit. In a <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code> of an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> of some protected unit, either the target object shall be a part of a formal parameter of the <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, or the accessibility level of the target object shall not be statically deeper than that of the <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> for the <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>6.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>In the <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> case, the intent is that the target object can be global, or can be a component of the protected unit, but cannot be a local variable of the <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>6.b</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>These restrictions ensure that the target object of the requeue outlives the completion and finalization of the enclosing callable construct. They also prevent requeuing from a nested <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> on a parameter of an outer <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, which could create some strange "long-distance" connections between an entry caller and its server.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>6.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Note that in the strange case where a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> is nested inside an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, it is permissible to requeue from an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> of the inner <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> on parameters of the outer <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>. This is not a problem because all calls on the inner task have to complete before returning from the outer <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, meaning no "dangling calls" will be created. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>6.d</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>By disallowing certain requeues, we ensure that the normal <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> rules remain sensible, and that explicit clearing of the entry queues of a protected object during finalization is rarely necessary. In particular, such clearing of the entry queues is necessary only (ignoring premature Unchecked_Deallocation) for protected objects declared in a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> (or created by an allocator for an access type declared in such a body) containing one or more <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code>s. Protected objects declared in subprograms, or at the library level, will never need to have their entry queues explicitly cleared during finalization. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Dynamic Semantics
@@ -1444,9 +1726,11 @@ Note that in the strange case where a <code><a href="../AA-9/AA-9.1#S0248">task_
 <ul>
 <li>if the requeue is an internal requeue (that is, the requeue is back on an entry of the same protected object &mdash; see <a href="../AA-9/AA-9.5">9.5</a>), the call is added to the queue of the named entry and the ongoing protected action continues (see <a href="../AA-9/AA-9.5#Subclause_9.5.1">9.5.1</a>); <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>10.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that for an internal requeue, the call is queued without checking whether the target entry is open. This is because the entry queues will be serviced before the current protected action completes anyway, and considering the requeued call immediately might allow it to "jump" ahead of existing callers on the same queue. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>11</MarginText>
 <ul>
@@ -1468,18 +1752,24 @@ Note that in the strange case where a <code><a href="../AA-9/AA-9.1#S0248">task_
 <MarginText>16</MarginText>
 <p>If the reserved words <strong>with abort</strong> do not appear, then the call remains protected against cancellation while queued as the result of the <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>16.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This protection against cancellation lasts only until the call completes or a subsequent requeue-with-abort is performed on the call. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16.b</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We chose to protect a requeue, by default, against abort or cancellation. This seemed safer, since it is likely that extra steps need to be taken to allow for possible cancellation once the servicing of an entry call has begun. This also means that in the absence of <strong>with abort</strong> the usual Ada 83 behavior is preserved, namely that once an entry call is accepted, it cannot be cancelled until it completes. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>17/5</MarginText>
 <MarginInfo items={["AI12-0300-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   A requeue is permitted from a single entry to an entry of an entry family, or vice  versa. The entry index, if any, plays no part in the subtype conformance check between the profiles of the two entries; an entry index is part of the <em>entry_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> for an entry of a family. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -1497,44 +1787,56 @@ requeue Flags(I).Seize;{"\n"}                    -- requeue on an entry of an ar
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>20.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code> is new. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>20.b/3</MarginText>
 <MarginInfo items={["AI05-0030-2", "AI05-0215-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added the ability to requeue on operations of synchronized interfaces that are declared to be an entry. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Inconsistencies With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>20.c/4</MarginText>
 <MarginInfo items={["AI12-0090-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> We now define that any preconditions of the requeue target are evaluated as part of a <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code>. Original Ada 2012 did not specify this, so a program that requeues when the preconditions fail will raise an exception when none would happen in original Ada 2012. We don't expect this to be a problem, as in that case, the entry body would be called with some of its preconditions evaluating as False; the body is likely to assume that they are true and probably will have failed in some other way anyway.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>20.d/5</MarginText>
 <MarginInfo items={["AI12-0335-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> We now include an accessibility check on requeues. This means Program_Error could be raised for a requeue that worked in Ada 2012. This can only fail for an object for which the statically deeper relationship does not apply, for instance a stand-alone object of an anonymous access type. Most programs that are affected are erroneous anyway (as they will eventually use a nonexistent object), so we do not believe this will matter in practice. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>20.e/4</MarginText>
 <MarginInfo items={["AI12-0090-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> If a requeue target has a different postcondition than the original entry, the requeue is now illegal. In such a case, the original postcondition would never have been evaluated, and assumptions that the caller relied upon might not be true. A requeue should be invisible to the caller with respect to any postconditions; thus we only allow it when the original entry has no postconditions or the requeue target has (at least) the same postconditions. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>20.f/5</MarginText>
 <MarginInfo items={["AI12-0143-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added a Legality Rule for the new Index attribute (see <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>). <br /></Admonition>
+</AnnotatedOnly>
 

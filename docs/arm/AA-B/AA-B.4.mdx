@@ -134,9 +134,11 @@ package Interfaces.COBOL  {"\n"}   with  Preelaborate, Nonblocking, Global ={">"
 private{"\n"}   ... -- not specified by the language{"\n"}end Interfaces.COBOL;{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>50.a/1</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The types Floating, Long_Floating, Binary, Long_Binary, Decimal_Element, and COBOL_Character; and the initializations of the variables Ada_To_COBOL and COBOL_To_Ada, in Interfaces.COBOL.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>51</MarginText>
 <p>Each of the types in Interfaces.COBOL is COBOL-compatible.<br /></p>
@@ -153,9 +155,11 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Interfaces.COBOL;{
 <MarginText>55</MarginText>
 <p>The type COBOL_Character defines the run-time character set used in the COBOL implementation. Ada_To_COBOL and COBOL_To_Ada are the mappings between the Ada and COBOL run-time character sets. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>55.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The character mappings are visible variables, since the user needs the ability to modify them at run time. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>56</MarginText>
 <p>Type Alphanumeric corresponds to COBOL's alphanumeric data category.<br /></p>
@@ -207,9 +211,11 @@ function To_Decimal (Item   : in Numeric;{"\n"}                     Format : in 
 <MarginText>69</MarginText>
 <p>Produces a value of type Num corresponding to Item as represented by Format. The number of digits after the assumed radix point in Item is Num'Scale. Conversion_Error is propagated if the value represented by Item is outside the range of Num. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>69.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>There is no issue of truncation versus rounding, since the number of decimal places is established by Num'Scale.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>70</MarginText>
 <CodeBlock language="ada">
@@ -261,9 +267,11 @@ function Valid (Item   : in Byte_Array;{"\n"}                Format : in Binary_
 <MarginText>81</MarginText>
 <p>This function returns True if Item has a value consistent with Format, and False otherwise. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>81.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This function returns False only when the represented value is outside the range of Num.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>82</MarginText>
 <CodeBlock language="ada">
@@ -298,9 +306,11 @@ function To_Decimal (Item : in Binary)      return Num;{"\n"}{"\n"}function To_D
 <MarginText>89</MarginText>
 <p>These functions convert from COBOL binary format to a corresponding value of the decimal type Num. Conversion_Error is propagated if Item is too large for Num. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>89.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>There is no rescaling performed on the conversion. That is, the returned value in each case is a &ldquo;bit copy&rdquo; if Num has a binary radix. The programmer is responsible for maintaining the correct scale. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>90</MarginText>
 <CodeBlock language="ada">
@@ -310,17 +320,23 @@ function To_Binary      (Item : in Num)  return Binary;{"\n"}{"\n"}function To_L
 <MarginText>91</MarginText>
 <p>These functions convert from Ada decimal to COBOL binary format. Conversion_Error is propagated if the value of Item is too large to be represented in the result type. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>91.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>One style of interface supported for COBOL, similar to what is provided for C, is the ability to call and pass parameters to an existing COBOL program. Thus the interface package supplies types that can be used in an Ada program as parameters to subprograms whose bodies will be in COBOL. These types map to COBOL's alphanumeric and numeric data categories.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>91.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Several types are provided for support of alphanumeric data. Since COBOL's run-time character set is not necessarily the same as Ada's, Interfaces.COBOL declares an implementation-defined character type COBOL_Character, and mappings between Character and COBOL_Character. These mappings are visible variables (rather than, say, functions or constant arrays), since in the situation where COBOL_Character is EBCDIC, the flexibility of dynamically modifying the mappings is needed. Corresponding to COBOL's alphanumeric data is the string type Alphanumeric.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>91.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Numeric data may have either a &ldquo;display&rdquo; or &ldquo;computational&rdquo; representation in COBOL. On the Ada side, the data is of a decimal fixed point type. Passing an Ada decimal data item to a COBOL program requires conversion from the Ada decimal type to some type that reflects the representation expected on the COBOL side. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>91.d</MarginText>
 <ul>
@@ -336,14 +352,18 @@ Numeric data may have either a &ldquo;display&rdquo; or &ldquo;computational&rdq
 <MarginText>91.i</MarginText>
 <li>Display representation for numeric data is modeled by the array type Numeric. Conversion between display representation and a decimal type is through functions from an instantiation of the generic package Decimal_Conversions. A parameter to the conversion function indicates the desired interpretation of the data (e.g., signed leading separate, etc.) <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>91.j/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The Convention of a record type may be specified as COBOL to direct the compiler to choose a COBOL-compatible representation for objects of the type.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>91.k</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The package Interfaces.COBOL allows the Ada programmer to deal with data from files (or databases) created by a COBOL program. For data that is alphanumeric, or in display or packed decimal format, the approach is the same as for passing parameters (instantiate Decimal_Conversions to obtain the needed conversion functions). For binary data, the external representation is treated as a Byte array, and an instantiation of Decimal_IO produces a package that declares the needed conversion functions. A parameter to the conversion function indicates the desired interpretation of the data (e.g., high- versus low-order byte first). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Requirements
@@ -352,9 +372,11 @@ The package Interfaces.COBOL allows the Ada programmer to deal with data from fi
 <MarginInfo items={["AI05-0229-1"]} />
 <p>An implementation shall support specifying aspect Convention with a COBOL <em>convention</em>_<code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> for a COBOL-eligible type (see <a href="../AA-B/AA-B.1">B.1</a>). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>92.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>An implementation supporting this package shall ensure that if the bounds of a Packed_Decimal, Alphanumeric, or Numeric variable are static, then the representation of the object comprises solely the array components (that is, there is no implicit run-time &ldquo;descriptor&rdquo; that is part of the object). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Permissions
@@ -362,9 +384,11 @@ The package Interfaces.COBOL allows the Ada programmer to deal with data from fi
 <MarginText>93</MarginText>
 <p>An implementation may provide additional constants of the private types Display_Format, Binary_Format, or Packed_Format. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>93.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This is to allow exploitation of other external formats that may be available in the COBOL implementation.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>94</MarginText>
 <p>An implementation may provide further floating point and integer types in Interfaces.COBOL to match additional native COBOL types, and may also supply corresponding conversion functions in the generic package Decimal_Conversions. <br /></p>
@@ -383,23 +407,31 @@ The package Interfaces.COBOL allows the Ada programmer to deal with data from fi
 <MarginText>98</MarginText>
 <li>Any other Ada parameter is passed as a &ldquo;BY REFERENCE&rdquo; data item of the COBOL type corresponding to the Ada parameter type; for scalars, a local copy is used if necessary to ensure by-copy semantics. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>98.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>If COBOL interfacing is supported, the interface correspondences between Ada and COBOL should be supported.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>99/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   An implementation is not required to support specifying aspect Convention for access types, nor is it required to support specifying aspects Import, Export, or Convention for functions. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>99.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>COBOL does not have a pointer facility, and a COBOL program does not return a value. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>100/5</MarginText>
 <MarginInfo items={["AI12-0440-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   If an Ada subprogram is exported to COBOL, then a call from COBOL call can  specify either &ldquo;BY CONTENT&rdquo; or &ldquo;BY REFERENCE&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -464,13 +496,17 @@ begin{"\n"}   Open (COBOL_File, Name ={">"} "Some_File");{"\n"}
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>124.a/2</MarginText>
 <MarginInfo items={["AI95-00071-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0066</em>{"}"} <strong>Corrigendum:</strong> Corrected the definition of Valid to match COBOL.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>124.b/2</MarginText>
 <MarginInfo items={["AI95-00072-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0067</em>{"}"} <strong>Corrigendum:</strong> Specified the bounds of the results of To_Display, To_Packed, and To_Binary. <br /></Admonition>
+</AnnotatedOnly>
 

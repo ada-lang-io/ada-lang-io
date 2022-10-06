@@ -19,13 +19,17 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>1</MarginText>
 <p>Types and arithmetic operations for complex arithmetic are provided in Generic_Complex_Types, which is defined in <a href="../AA-G/AA-G.1#Subclause_G.1.1">G.1.1</a>. Implementation-defined approximations to the complex analogs of the mathematical functions known as the &ldquo;elementary functions&rdquo; are provided by the subprograms in Generic_Complex_Elementary_Functions, which is defined in <a href="../AA-G/AA-G.1#Subclause_G.1.2">G.1.2</a>. Both of these library units are generic children of the predefined package Numerics (see <a href="../AA-A/AA-A.5">A.5</a>). Nongeneric equivalents of these generic packages for each of the predefined floating point types are also provided as children of Numerics. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>1.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The accuracy actually achieved by the complex elementary functions and by other complex arithmetic operations.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>1.b</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Complex arithmetic is defined in the Numerics Annex, rather than in the core, because it is considered to be a specialized need of (some) numeric applications. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_G.1.1"></a>
 
@@ -92,33 +96,43 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <MarginInfo items={["AI95-00126-01"]} />
 <p>{"{"}<em>8652/0020</em>{"}"} The library package Numerics.Complex_Types is declared pure and defines the same types, constants, and subprograms as Numerics.Generic_Complex_Types, except that the predefined type Float is systematically substituted for Real'Base throughout. Nongeneric equivalents of Numerics.Generic_Complex_Types for each of the other predefined floating point types are defined similarly, with the names Numerics.Short_Complex_Types, Numerics.Long_Complex_Types, etc. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>25.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The nongeneric equivalents are provided to allow the programmer to construct simple mathematical applications without being required to understand and use generics. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>25.b</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The nongeneric equivalents all export the types Complex and Imaginary and the constants i and j (rather than uniquely named types and constants, such as Short_Complex, Long_Complex, etc.) to preserve their equivalence to actual instantiations of the generic package and to allow the programmer to change the precision of an application globally by changing a single context clause. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>25.c/5</MarginText>
 <MarginInfo items={["AI12-0241-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>A pure unit is always nonblocking, so we don't need to talk about the Nonblocking aspect of these packages. Similarly, a pure unit always has the Global aspect set to <strong>null</strong>, so we don't need to talk about that, either. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>26/2</MarginText>
 <MarginInfo items={["AI95-00434-01"]} />
 <p>[Complex is a visible type with Cartesian components.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>26.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The Cartesian representation is far more common than the polar representation, in practice. The accuracy of the results of the complex arithmetic operations and of the complex elementary functions is dependent on the representation; thus, implementers need to know that representation. The type is visible so that complex &ldquo;literals&rdquo; can be written in aggregate notation, if desired. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27</MarginText>
 <p>[Imaginary is a private type; its full type is derived from Real'Base.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>27.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The Imaginary type and the constants i and j are provided for two reasons: <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27.b</MarginText>
 <ul>
@@ -127,9 +141,11 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <MarginInfo items={["AI12-0437-1"]} />
 <li>When an Ada binding to ISO/IEC 60559:2020  that provides (signed) infinities as the result of operations that overflow becomes available, it will be important to allow arithmetic between pure-imaginary and complex operands without requiring the former to be represented as (or promoted to) complex values with a real component of zero. For example, the multiplication of a + b*i by d*i should yield &ndash;b· d + a· d*i, but if one cannot avoid representing the pure-imaginary value d*i as the complex value 0.0 + d*i, then a NaN ("Not-a-Number") could be produced as the result of multiplying a by 0.0 (e.g., when a is infinite); the NaN could later trigger an exception. Providing the Imaginary type and overloadings of the arithmetic operators for mixtures of Imaginary and Complex operands gives the programmer the same control over avoiding premature coercion of pure-imaginary values to complex as is already provided for pure-real values. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>27.d</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The Imaginary type is private, rather than being visibly derived from Real'Base, for two reasons: <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27.e</MarginText>
 <ul>
@@ -137,16 +153,20 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <MarginText>27.f</MarginText>
 <li>to suppress the implicit derivation of the multiplication, division, and absolute value operators with Imaginary operands and an Imaginary result (the result type would be incorrect). <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>27.g</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The base subtype Real'Base is used for the component type of Complex, the parent type of Imaginary, and the parameter and result types of some of the subprograms to maximize the chances of being able to pass meaningful values into the subprograms and receive meaningful results back. The generic formal parameter Real therefore plays only one role, that of providing the precision to be maintained in complex arithmetic calculations. Thus, the subprograms in Numerics.Generic_Complex_Types share with those in Numerics.Generic_Elementary_Functions, and indeed even with the predefined arithmetic operations (see <a href="../AA-4/AA-4.5">4.5</a>), the property of being free of range checks on input and output, i.e., of being able to exploit the base range of the relevant floating point type fully. As a result, the user loses the ability to impose application-oriented bounds on the range of values that the components of a complex variable can acquire; however, it can be argued that few, if any, applications have a naturally square domain (as opposed to a circular domain) anyway. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>28</MarginText>
 <p>The arithmetic operations and the Re, Im, Modulus, Argument, and Conjugate functions have their usual mathematical meanings. When applied to a parameter of pure-imaginary type, the &ldquo;imaginary-part&rdquo; function Im yields the value of its parameter, as the corresponding real value. The remaining subprograms have the following meanings: <br /></p>
 
+<AnnotatedOnly>
 <MarginText>28.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The middle case can be understood by considering the parameter of pure-imaginary type to represent a complex value with a zero real part. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>29</MarginText>
 <ul>
@@ -187,10 +207,12 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <MarginText>40</MarginText>
 <p>The exception Constraint_Error is raised by the division operator when the value of the right operand is zero, and by the exponentiation operator when the value of the left operand is zero and the value of the exponent is negative, provided that Real'Machine_Overflows is True; when Real'Machine_Overflows is False, the result is unspecified. [Constraint_Error can also be raised when a finite result overflows (see <a href="../AA-G/AA-G.2#Subclause_G.2.6">G.2.6</a>).] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>40.a/5</MarginText>
 <MarginInfo items={["AI12-0437-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>It is anticipated that an Ada binding to ISO/IEC 60559:2020  will be developed in the future. As part of such a binding, the Machine_Overflows attribute of a conformant floating point type will be specified to yield False, which will permit implementations of the complex arithmetic operations to deliver results with an infinite component (and set the overflow flag defined by the binding) instead of raising Constraint_Error in overflow situations, when traps are disabled. Similarly, it is appropriate for the complex arithmetic operations to deliver results with infinite components (and set the zero-divide flag defined by the binding) instead of raising Constraint_Error in the situations defined above, when traps are disabled. Finally, such a binding should also specify the behavior of the complex arithmetic operations, when sensible, given operands with infinite components. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Requirements
@@ -198,9 +220,11 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <MarginText>41</MarginText>
 <p>In the implementation of Numerics.Generic_Complex_Types, the range of intermediate values allowed during the calculation of a final result shall not be affected by any range constraint of the subtype Real. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>41.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Implementations of Numerics.Generic_Complex_Types written in Ada should therefore avoid declaring local variables of subtype Real; the subtype Real'Base should be used instead. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>42</MarginText>
 <p>In the following cases, evaluation of a complex arithmetic operation shall yield the <em>prescribed result</em>, provided that the preceding rules do not call for an exception to be raised: <br /></p>
@@ -211,9 +235,11 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <MarginText>44</MarginText>
 <li>The real (resp., imaginary) component of the result of a binary addition operator that yields a result of complex type is exact when either of its operands is of pure-imaginary (resp., real) type. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>44.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The result of the addition operator is exact when one of its operands is of real type and the other is of pure-imaginary type. In this particular case, the operator is analogous to the Compose_From_Cartesian function; it performs no arithmetic. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>45</MarginText>
 <ul>
@@ -223,9 +249,11 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <MarginText>47</MarginText>
 <li>When the point in the complex plane represented by the parameter X lies on the nonnegative real axis, the Argument function yields a result of zero. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>47.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Argument(X + i*Y) is analogous to <em>EF</em>.Arctan(Y, X), where <em>EF</em> is an appropriate instance of Numerics.Generic_Elementary_Functions, except when X and Y are both zero, in which case the former yields the value zero while the latter raises Numerics.Argument_Error. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>48</MarginText>
 <ul>
@@ -244,9 +272,11 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <MarginText>53</MarginText>
 <p>The sign of a zero result or zero result component yielded by a complex arithmetic operation or function is implementation defined when Real'Signed_Zeros is True. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>53.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The sign of a zero result (or a component thereof) from any operator or function in Numerics.Generic_Complex_Types, when Real'Signed_Zeros is True.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Permissions
@@ -266,9 +296,11 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <MarginInfo items={["AI12-0437-1"]} />
 <p>Because the usual mathematical meaning of multiplication of a complex operand and a real operand is that of the scaling of both components of the former by the latter, an implementation should not perform this operation by first promoting the real operand to complex type and then performing a full complex multiplication. In systems that, in the future, support an Ada binding to ISO/IEC 60559:2020 , the latter technique will not generate the required result when one of the components of the complex operand is infinite. (Explicit multiplication of the infinite component by the zero component obtained during promotion yields a NaN that propagates into the final result.) Analogous advice applies in the case of multiplication of a complex operand and a pure-imaginary operand, and in the case of division of a complex operand by a real or pure-imaginary operand. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>56.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Mixed real and complex operations (as well as pure-imaginary and complex operations) should not be performed by converting the real (resp. pure-imaginary) operand to complex.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>57/5</MarginText>
 <MarginInfo items={["AI12-0437-1"]} />
@@ -277,16 +309,20 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <MarginText>58</MarginText>
 <p>Implementations in which Real'Signed_Zeros is True should attempt to provide a rational treatment of the signs of zero results and result components. As one example, the result of the Argument function should have the sign of the imaginary component of the parameter X when the point represented by that parameter lies on the positive real axis; as another, the sign of the imaginary component of the Compose_From_Polar function should be the same as (resp., the opposite of) that of the Argument parameter when that parameter has a value of zero and the Modulus parameter has a nonnegative (resp., negative) value. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>58.a.1/3</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>If Real'Signed_Zeros is True for Numerics.Generic_Complex_Types, a rational treatment of the signs of zero results and result components should be provided.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>58.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The semantics of Numerics.Generic_Complex_Types differs from Generic_Complex_Types as defined in ISO/IEC CD 13813 (for Ada 83) in the following ways: <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>58.b</MarginText>
 <ul>
@@ -303,18 +339,22 @@ The semantics of Numerics.Generic_Complex_Types differs from Generic_Complex_Typ
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>58.g/2</MarginText>
 <MarginInfo items={["AI95-00161-01"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong>Amendment </strong> Added a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Preelaborable_Initialization to type Imaginary, so that it can be used in preelaborated units. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>58.h/2</MarginText>
 <MarginInfo items={["AI95-00126-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0020</em>{"}"} <strong>Corrigendum:</strong> Explicitly stated that the nongeneric equivalents of Generic_Complex_Types are pure. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_G.1.2"></a>
 
@@ -348,9 +388,11 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 <MarginInfo items={["AI95-00126-01"]} />
 <p>{"{"}<em>8652/0020</em>{"}"} The library package Numerics.Complex_Elementary_Functions is declared pure and defines the same subprograms as Numerics.Generic_Complex_Elementary_Functions, except that the predefined type Float is systematically substituted for Real'Base, and the Complex and Imaginary types exported by Numerics.Complex_Types are systematically substituted for Complex and Imaginary, throughout. Nongeneric equivalents of Numerics.Generic_Complex_Elementary_Functions corresponding to each of the other predefined floating point types are defined similarly, with the names Numerics.Short_Complex_Elementary_Functions, Numerics.Long_Complex_Elementary_Functions, etc. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>9.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The nongeneric equivalents are provided to allow the programmer to construct simple mathematical applications without being required to understand and use generics. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10</MarginText>
 <p>The overloading of the Exp function for the pure-imaginary type is provided to give the user an alternate way to compose a complex value from a given modulus and argument. In addition to Compose_From_Polar(Rho, Theta) (see <a href="../AA-G/AA-G.1#Subclause_G.1.1">G.1.1</a>), the programmer may write Rho * Exp(i * Theta).<br /></p>
@@ -380,10 +422,12 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 <MarginText>19</MarginText>
 <li>The imaginary component of the result of the Arccoth function is discontinuous as the parameter X crosses the real axis between &ndash;1.0 and 1.0. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>19.a/2</MarginText>
 <MarginInfo items={["AI95-00185-01"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The branch cuts come from the fact that the functions in question are really multi-valued in the complex domain, and that we have to pick one <em>principal value</em> to be the result of the function. Evidently we have much freedom in choosing where the branch cuts lie. However, we are adhering to the following principles which seem to lead to the more <em>natural</em> definitions: <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>19.b/2</MarginText>
 <ul>
@@ -434,14 +478,18 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 <MarginText>33</MarginText>
 <p>[Constraint_Error can also be raised when a finite result overflows (see <a href="../AA-G/AA-G.2#Subclause_G.2.6">G.2.6</a>); this may occur for parameter values sufficiently <em>near</em> poles, and, in the case of some of the functions, for parameter values having components of sufficiently large magnitude.] When Complex_Types.Real'Machine_Overflows is False, the result at poles is unspecified. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>33.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The purpose of raising Constraint_Error (rather than Numerics.Argument_Error) at the poles of a function, when Float_Type'Machine_Overflows is True, is to provide continuous behavior as the actual parameters of the function approach the pole and finally reach it. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>33.b/5</MarginText>
 <MarginInfo items={["AI12-0437-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>It is anticipated that an Ada binding to ISO/IEC 60559:2020  will be developed in the future. As part of such a binding, the Machine_Overflows attribute of a conformant floating point type will be specified to yield False, which will permit implementations of the complex elementary functions to deliver results with an infinite component (and set the overflow flag defined by the binding) instead of raising Constraint_Error in overflow situations, when traps are disabled. Similarly, it is appropriate for the complex elementary functions to deliver results with an infinite component (and set the zero-divide flag defined by the binding) instead of raising Constraint_Error at poles, when traps are disabled. Finally, such a binding should also specify the behavior of the complex elementary functions, when sensible, given parameters with infinite components. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Requirements
@@ -449,9 +497,11 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 <MarginText>34</MarginText>
 <p>In the implementation of Numerics.Generic_Complex_Elementary_Functions, the range of intermediate values allowed during the calculation of a final result shall not be affected by any range constraint of the subtype Complex_Types.Real. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>34.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Implementations of Numerics.Generic_Complex_Elementary_Functions written in Ada should therefore avoid declaring local variables of subtype Complex_Types.Real; the subtype Complex_Types.Real'Base should be used instead. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>35</MarginText>
 <p>In the following cases, evaluation of a complex elementary function shall yield the <em>prescribed result</em> (or a result having the prescribed component), provided that the preceding rules do not call for an exception to be raised: <br /></p>
@@ -479,9 +529,11 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 <MarginText>43</MarginText>
 <li>Exponentiation by a zero exponent yields the value one. Exponentiation by a unit exponent yields the value of the left operand (as a complex value). Exponentiation of the value one yields the value one. Exponentiation of the value zero yields the value zero. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>43.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>It is possible to give many other prescribed results restricting the result to the real or imaginary axis when the parameter X is appropriately restricted to easily testable portions of the domain. We follow the proposed ISO/IEC standard for Generic_Complex_Elementary_Functions (for Ada 83), CD 13813, in not doing so, however. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>44</MarginText>
 <p>Other accuracy requirements for the complex elementary functions, which apply only in the strict mode, are given in <a href="../AA-G/AA-G.2#Subclause_G.2.6">G.2.6</a>.<br /></p>
@@ -489,9 +541,11 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 <MarginText>45</MarginText>
 <p>The sign of a zero result or zero result component yielded by a complex elementary function is implementation defined when Complex_Types.Real'Signed_Zeros is True. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>45.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The sign of a zero result (or a component thereof) from any operator or function in Numerics.Generic_Complex_Elementary_Functions, when Complex_Types.Real'Signed_Zeros is True.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Permissions
@@ -512,16 +566,20 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 <MarginText>49</MarginText>
 <p>Implementations in which Complex_Types.Real'Signed_Zeros is True should attempt to provide a rational treatment of the signs of zero results and result components. For example, many of the complex elementary functions have components that are odd functions of one of the parameter components; in these cases, the result component should have the sign of the parameter component at the origin. Other complex elementary functions have zero components whose sign is opposite that of a parameter component at the origin, or is always positive or always negative. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>49.a.1/3</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>If Complex_Types.Real'Signed_Zeros is True for Numerics.Generic_Complex_Elementary_Functions, a rational treatment of the signs of zero results and result components should be provided.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>49.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The semantics of Numerics.Generic_Complex_Elementary_Functions differs from Generic_Complex_Elementary_Functions as defined in ISO/IEC CD 13814 (for Ada 83) in the following ways: <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>49.b</MarginText>
 <ul>
@@ -538,15 +596,19 @@ The semantics of Numerics.Generic_Complex_Elementary_Functions differs from Gene
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>49.g/2</MarginText>
 <MarginInfo items={["AI95-00126-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0020</em>{"}"} <strong>Corrigendum:</strong> Explicitly stated that the nongeneric equivalents of Generic_Complex_Elementary_Functions are pure.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>49.h/2</MarginText>
 <MarginInfo items={["AI95-00185-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Corrected various inconsistencies in the definition of the branch cuts. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_G.1.3"></a>
 
@@ -555,9 +617,11 @@ Corrected various inconsistencies in the definition of the branch cuts. <br /></
 <MarginText>1</MarginText>
 <p>The generic package Text_IO.Complex_IO defines procedures for the formatted input and output of complex values. The generic actual parameter in an instantiation of Text_IO.Complex_IO is an instance of Numerics.Generic_Complex_Types for some floating point subtype. Exceptional conditions are reported by raising the appropriate exception defined in Text_IO. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>1.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>An implementation of Text_IO.Complex_IO can be built around an instance of Text_IO.Float_IO for the base subtype of Complex_Types.Real, where Complex_Types is the generic formal package parameter of Text_IO.Complex_IO. There is no need for an implementation of Text_IO.Complex_IO to parse real values. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -565,9 +629,11 @@ Corrected various inconsistencies in the definition of the branch cuts. <br /></
 <MarginText>2</MarginText>
 <p>The generic library package Text_IO.Complex_IO has the following declaration: <br /></p>
 
+<AnnotatedOnly>
 <MarginText>2.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Because this is a child of Text_IO, the declarations of the visible part of Text_IO are directly visible within it. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>3/5</MarginText>
 <MarginInfo items={["AI12-0302-1"]} />
@@ -592,9 +658,11 @@ end Ada.Text_IO.Complex_IO;{"\n"}
 <MarginInfo items={["AI95-00328-01"]} />
 <p>The library package Complex_Text_IO defines the same subprograms as Text_IO.Complex_IO, except that the predefined type Float is systematically substituted for Real, and the type Numerics.Complex_Types.Complex is systematically substituted for Complex throughout. Nongeneric equivalents of Text_IO.Complex_IO corresponding to each of the other predefined floating point types are defined similarly, with the names Short_Complex_Text_IO, Long_Complex_Text_IO, etc. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>9.a/2</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The nongeneric equivalents are provided to allow the programmer to construct simple mathematical applications without being required to understand and use generics. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10</MarginText>
 <p>The semantics of the Get and Put procedures are as follows: <br /></p>
@@ -625,9 +693,11 @@ procedure Get (File  : in  File_Type;{"\n"}               Item  : out Complex;{"
 <MarginText>17</MarginText>
 <li>exactly Width characters are read, or the characters (possibly none) up to a line terminator, whichever comes first (blanks are included in the count). <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>17.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The parenthesized and comma-separated form is the form produced by Put on output (see below), and also by list-directed output in Fortran. The other allowed forms match several common styles of edit-directed output in Fortran, allowing most preexisting Fortran data files containing complex data to be read easily. When such files contain complex values with no separation between the real and imaginary components, the user will have to read those components separately, using an instance of Text_IO.Float_IO. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>18</MarginText>
 <p>Returns, in the parameter Item, the value of type Complex that corresponds to the input sequence.<br /></p>
@@ -655,13 +725,17 @@ procedure Put (File : in File_Type;{"\n"}               Item : in Complex;{"\n"}
 <MarginText>26</MarginText>
 <li>outputs a right parenthesis. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>26.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>If the file has a bounded line length, a line terminator may be output implicitly before any element of the sequence itemized above. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>26.b</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The option of outputting the complex value as a pair of reals without additional punctuation is not provided, since it can be accomplished by outputting the real and imaginary components of the complex value separately. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27</MarginText>
 <CodeBlock language="ada">
@@ -689,9 +763,11 @@ procedure Put (To   : out String;{"\n"}               Item : in  Complex;{"\n"} 
 <MarginText>33</MarginText>
 <li>the imaginary component and a right parenthesis are right justified in the given string, with the imaginary component having the format defined by the Put procedure (for output to a file) of an instance of Text_IO.Float_IO for the base subtype of Complex_Types.Real, using a value for Fore that completely fills the remainder of the string, together with the given values of Aft and Exp. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>33.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This rule is the one proposed in LSN-1051. Other rules were considered, including one that would have read &ldquo;Outputs the value of the parameter Item to the given string, following the same rule as for output to a file, using a value for Fore such that the sequence of characters output exactly fills, or comes closest to filling, the string; in the latter case, the string is filled by inserting one extra blank immediately after the comma.&rdquo; While this latter rule might be considered the closest analogue to the rule for output to a string in Text_IO.Float_IO, it requires a more difficult and inefficient implementation involving special cases when the integer part of one component is substantially longer than that of the other and the string is too short to allow both to be preceded by blanks. Unless such a special case applies, the latter rule might produce better columnar output if several such strings are ultimately output to a file, but very nearly the same output can be produced by outputting to the file directly, with the appropriate value of Fore; in any case, it might validly be assumed that output to a string is intended for further computation rather than for display, so that the precise formatting of the string to achieve a particular appearance is not the major concern. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>34</MarginText>
 <p>The exception Text_IO.Layout_Error is raised if the given string is too short to hold the formatted output. <br /></p>
@@ -705,18 +781,22 @@ procedure Put (To   : out String;{"\n"}               Item : in  Complex;{"\n"} 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>35.a/2</MarginText>
 <MarginInfo items={["AI95-00328-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Nongeneric equivalents for Text_IO.Complex_IO are added, to be consistent with all other language-defined Numerics generic packages. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>35.b/2</MarginText>
 <MarginInfo items={["AI95-00029-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0092</em>{"}"} <strong>Corrigendum:</strong> Clarified that the syntax of values read by Complex_IO is the same as that read by Text_IO.Float_IO. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_G.1.4"></a>
 
@@ -742,8 +822,10 @@ Nongeneric equivalents for Text_IO.Complex_IO are added, to be consistent with a
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>1.a/2</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Package Wide_Wide_Text_IO.Complex_IO is new. (At least it wasn't called Incredibly_Wide_Text_IO.Complex_IO; maybe next time.) <br /></Admonition>
+</AnnotatedOnly>
 

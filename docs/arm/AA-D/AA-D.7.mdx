@@ -54,15 +54,19 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <dl>
 <dd>No task depends on a master other than the library-level master.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>3.a/3</MarginText>
 <MarginInfo items={["AI05-0216-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This is equivalent to saying &ldquo;no task depends on a master other than the master that is the execution of the body of the environment task of the partition&rdquo;, but it is much easier to understand. This is a post-compilation check, which can be checked at compile-time.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>3.b/3</MarginText>
 <MarginInfo items={["AI05-0013-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 This disallows any function returning an object with a task part or coextension, even if called at the library level, as such a task would temporarily depend on a nested master (the master of the return statement), which is disallowed by this restriction. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>4/3</MarginText>
 <MarginInfo items={["AI95-00130-01", "AI95-00360-01", "AI05-0013-1"]} />
@@ -70,15 +74,19 @@ This disallows any function returning an object with a task part or coextension,
 <dl>
 <dd>Objects of a type that needs finalization (see <a href="../AA-7/AA-7.6">7.6</a>) are declared only at library level. If an access type does not have library-level accessibility, then there are no <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s of the type where the type determined by the <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> of the <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> or <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> needs finalization. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>4.a/1</MarginText>
 <MarginInfo items={["AI95-00130-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em>{"{"}<em>8652/0042</em>{"}"} <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.b/3</MarginText>
 <MarginInfo items={["AI05-0013-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The second sentence prevents the declaration of objects of access types which would require nested finalization. It also prevents the declarations of coextensions that need finalization in a nested scope. The latter cannot be done by preventing the declaration of the objects, as it is not necessarily known if the coextension type needs finalization (it could be a limited view). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>5/3</MarginText>
 <MarginInfo items={["AI05-0211-1"]} />
@@ -98,9 +106,11 @@ This disallows any function returning an object with a task part or coextension,
 <dt><br/>No_Implicit_Heap_Allocations </dt>
 <dd>There are no operations that implicitly require heap storage allocation to be performed by the implementation. The operations that implicitly require heap storage allocation are implementation defined. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>8.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>Any operations that implicitly require heap storage allocation.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9/2</MarginText>
 <MarginInfo items={["AI95-00327-01"]} />
@@ -112,10 +122,12 @@ This disallows any function returning an object with a task part or coextension,
 <dt><br/>No_Dynamic_Attachment </dt>
 <dd>There is no use of a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denoting any of the operations defined in package Interrupts (Is_Reserved, Is_Attached, Current_Handler, Attach_Handler, Exchange_Handler, Detach_Handler, and Reference). <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>10.a/3</MarginText>
 <MarginInfo items={["AI05-0013-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This includes 'Access and 'Address of any of these operations, as well as inherited versions of these operations. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10.1/4</MarginText>
 <MarginInfo items={["AI12-0055-1"]} />
@@ -123,21 +135,29 @@ This disallows any function returning an object with a task part or coextension,
 <dl>
 <dd>No task has the CPU aspect specified to be a non-static expression. Each task (including the environment task) that has the CPU aspect specified as Not_A_Specific_CPU will be assigned to a particular implementation-defined CPU. The same is true for the environment task when the CPU aspect is not specified. [Any other task without a CPU aspect will activate and execute on the same processor as its activating task.] <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>10.b/4</MarginText>
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>The processor of a task without a CPU aspect is defined in <a href="../AA-D/AA-D.16">D.16</a>, and this restriction guarantees that the activator always has a CPU assigned. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>10.c/4</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This restriction prevents any migration of tasks. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>10.d/4</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>If no CPU aspects are specified, then the program will run on a single CPU, as all of the tasks will be activated directly or indirectly by the environment task, and the rules require the same CPU to be used as the activating task. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>10.d.1/4</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>When restriction No_Dynamic_CPU_Assignment applies to a partition, the processor on which a task with a CPU value of a Not_A_Specific_CPU will execute.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10.2/3</MarginText>
 <MarginInfo items={["AI95-00305-01", "AI05-0013-1"]} />
@@ -176,9 +196,11 @@ This disallows any function returning an object with a task part or coextension,
 <dt><br/>No_Tasks_Unassigned_To_CPU </dt>
 <dd>The CPU aspect is specified for the environment task. No CPU aspect is specified to be statically equal to Not_A_Specific_CPU. If aspect CPU is specified (dynamically) to the value Not_A_Specific_CPU, then Program_Error is raised. If Set_CPU or Delay_Until_And_Set_CPU are called with the CPU parameter equal to Not_A_Specific_CPU, then Program_Error is raised. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>10.e/4</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>If this restriction is used in a context for which restriction No_Dynamic_CPU_Assignment is in effect, then no runtime check is needed when specifying the CPU aspect. If the restriction is used with the Ravenscar profile, no runtime checks are needed. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10.11/5</MarginText>
 <MarginInfo items={["AI12-0290-1"]} />
@@ -217,9 +239,11 @@ This disallows any function returning an object with a task part or coextension,
 <dl>
 <dd>All tasks are nonterminating. It is implementation-defined what happens if a task attempts to terminate. If there is a fall-back handler (see C.7.3) set for the partition it should be called when the first task attempts to terminate. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>15.a.1/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>When restriction No_Task_Termination applies to a partition, what happens when a task terminates.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>16</MarginText>
 <p>The following <em>restriction_parameter_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s are language defined: <br /></p>
@@ -230,9 +254,11 @@ This disallows any function returning an object with a task part or coextension,
 <dl>
 <dd>Specifies the maximum portion [(in storage elements)] of a task's Storage_Size that can be retained by a blocked task. If an implementation chooses to detect a violation of this restriction, Storage_Error should be raised; otherwise, the behavior is implementation defined. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>17.a.1/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The behavior when restriction Max_Storage_At_Blocking is violated.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>18/1</MarginText>
 <MarginInfo items={["AI95-00067-01"]} />
@@ -240,9 +266,11 @@ This disallows any function returning an object with a task part or coextension,
 <dl>
 <dd>Specifies the maximum dynamic nesting level of <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code>s. A value of zero prevents the use of any <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code> and, if a program contains an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code>, it is illegal. If an implementation chooses to detect a violation of this restriction for values other than zero, Storage_Error should be raised; otherwise, the behavior is implementation defined. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>18.a.1/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The behavior when restriction Max_Asynchronous_Select_Nesting is violated.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>19/1</MarginText>
 <MarginInfo items={["AI95-00067-01"]} />
@@ -250,17 +278,23 @@ This disallows any function returning an object with a task part or coextension,
 <dl>
 <dd>Specifies the maximum number of task creations that may be executed over the lifetime of a partition, not counting the creation of the environment task. A value of zero prevents any task creation and, if a program contains a task creation, it is illegal. If an implementation chooses to detect a violation of this restriction, Storage_Error should be raised; otherwise, the behavior is implementation defined. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>19.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that this is not a limit on the number of tasks active at a given time; it is a limit on the total number of task creations that occur. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19.b</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>We envision an implementation approach that places TCBs or pointers to them in a fixed-size table, and never reuses table elements. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19.b.1/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The behavior when restriction Max_Tasks is violated.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>19.1/2</MarginText>
 <MarginInfo items={["AI95-00305-01"]} />
@@ -278,9 +312,11 @@ This disallows any function returning an object with a task part or coextension,
 <MarginText>20</MarginText>
 <p>It is implementation defined whether the use of pragma Restrictions results in a reduction in executable program size, storage requirements, or execution time. If possible, the implementation should provide quantitative descriptions of such effects for each restriction. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>20.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>Whether the use of pragma Restrictions results in a reduction in program code or data size or execution time.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Advice
@@ -288,112 +324,148 @@ This disallows any function returning an object with a task part or coextension,
 <MarginText>21</MarginText>
 <p>When feasible, the implementation should take advantage of the specified restrictions to produce a more efficient implementation.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>21.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>When feasible, specified restrictions should be used to produce a more efficient implementation.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   The above Storage_Checks can be suppressed with pragma Suppress. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 95
 
+<AnnotatedOnly>
 <MarginText>22.a/2</MarginText>
 <MarginInfo items={["AI95-00360-01"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong>Amendment </strong> The No_Nested_Finalization is now defined in terms of types that need finalization. These types include a variety of language-defined types that <em>might</em> be implemented with a controlled type. If the restriction No_Nested_Finalization (see <a href="../AA-D/AA-D.7">D.7</a>) applies to the partition, and one of these language-defined types does not have a controlled part, it will not be allowed in local objects in Ada 2005 whereas it would be allowed in original Ada 95. Such code is not portable, as other Ada compilers may have had a controlled part, and thus would be illegal under the restriction. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>22.b/2</MarginText>
 <MarginInfo items={["AI95-00297-01", "AI95-00305-01", "AI95-00394-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Restrictions No_Dynamic_Attachment, No_Local_Protected_Objects, No_Protected_Type_Allocators, No_Local_Timing_Events, No_Relative_Delay, No_Requeue_Statement, No_Select_Statements, No_Specific_Termination_Handlers, No_Task_Termination, Max_Entry_Queue_Length, and Simple_Barriers are newly added to Ada. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>22.c/2</MarginText>
 <MarginInfo items={["AI95-00130-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0042</em>{"}"} <strong>Corrigendum:</strong> Clarified that No_Nested_Finalization covered task and protected parts as well.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.d/2</MarginText>
 <MarginInfo items={["AI95-00067-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0076</em>{"}"} <strong>Corrigendum:</strong> Changed the description of Max_Tasks and Max_Asynchronous_Select_Nested to eliminate conflicts with the High Integrity Annex (see <a href="../AA-H/AA-H.4">H.4</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.e/2</MarginText>
 <MarginInfo items={["AI95-00327-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added using of the new Priority attribute to the restriction No_Dynamic_Priorities.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.f/2</MarginText>
 <MarginInfo items={["AI95-00394-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Restriction No_Asynchronous_Control is now obsolescent. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2005
 
+<AnnotatedOnly>
 <MarginText>22.g/3</MarginText>
 <MarginInfo items={["AI05-0013-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Changed so that coextensions of types that require nested finalization are also prohibited; this is done by prohibiting <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s rather than objects of specific access types. It seems unlikely that any program depending on this restriction would violate it in this blatant manner, so it is expected that very few programs will be affected by this change.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.h/3</MarginText>
 <MarginInfo items={["AI05-0211-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> The restriction No_Relative_Delay was changed to include the Timing_Events routine that uses a relative delay. This means that a program that uses that routine and this restriction will now be rejected. However, such a program violates the spirit and intent of the restriction and as such the program should never have been allowed. Moreover, it is unlikely that any program depending on this restriction would violate it in such an obvious manner, so it is expected that very few programs will be affected by this change.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.i/3</MarginText>
 <MarginInfo items={["AI05-0211-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> A number of restrictions were changed from "no calls" on some subprogram to "no use of a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes" that subprogram. This closes a hole where renames, uses as the prefix of 'Access, and the like, would not be rejected by the restriction, possibly allowing backdoor access to the prohibited subprogram. A program that uses one of these restrictions and using such backdoor access will now be rejected; however, it is extremely unlikely that any program that relies on these restrictions would also use an end-run around the restriction, so it is expected that very few programs will be affected by this change. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>22.j/3</MarginText>
 <MarginInfo items={["AI05-0189-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Restriction No_Standard_Allocators_After_Elaboration is newly added to Ada. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>22.k/3</MarginText>
 <MarginInfo items={["AI05-0013-1", "AI05-0216-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Improved the wording of various restrictions to make it clearer that they prohibit things that would otherwise be legal, and to word them as definitions, not Legality Rules;.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.l/3</MarginText>
 <MarginInfo items={["AI05-0192-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Added wording to explain how No_Task_Allocators and No_Protected_Type_Allocators are checked for class-wide types. This might be an extension if the compiler assumed the worst in the past (it is now a runtime check). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>22.m/4</MarginText>
 <MarginInfo items={["AI12-0055-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Restriction No_Dynamic_CPU_Assignment is newly added to Ada, for use as part of the Ravenscar profile (see <a href="../AA-D/AA-D.13">D.13</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.n/4</MarginText>
 <MarginInfo items={["AI12-0117-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Restriction No_Tasks_Unassigned_To_CPU is newly added to Ada; it ensures that no task is running on an implementation-defined CPU so that task scheduling can be analyzed.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.o/5</MarginText>
 <MarginInfo items={["AI12-0290-1", "AI12-0369-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Restriction Pure_Barriers is newly added to Ada; it allows the Jorvik profile to use more expressive barriers than the Ravenscar profile without having to worry about exceptions or side-effects.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.p/5</MarginText>
 <MarginInfo items={["AI12-0369-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Restriction Simple_Barriers (which is part of the Ravenscar profile) is extended to allow statically named record and array subcomponents; this allows common static analysis patterns to be used with Ravenscar. <br /></Admonition>
+</AnnotatedOnly>
 

@@ -31,10 +31,12 @@ import MarginInfo from "@site/src/components/MarginInfo";
 generic{"\n"}   type Source({"<"}{">"}) is limited private;{"\n"}   type Target({"<"}{">"}) is limited private;{"\n"}function Ada.Unchecked_Conversion(S : Source) return Target{"\n"}   with Pure, Nonblocking, Convention ={">"} Intrinsic; {"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>3.a/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The aspect Convention implies that the attribute Access is not allowed for instances of Unchecked_Conversion. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Dynamic Semantics
@@ -49,9 +51,11 @@ generic{"\n"}   type Source({"<"}{">"}) is limited private;{"\n"}   type Target(
 <ul>
 <li>S'Size = Target'Size. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>6.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that there is no requirement that the Sizes be known at compile time. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7/3</MarginText>
 <MarginInfo items={["AI05-0078-1"]} />
@@ -68,27 +72,37 @@ generic{"\n"}   type Source({"<"}{">"}) is limited private;{"\n"}   type Target(
 <MarginInfo items={["AI95-00426-01"]} />
 <p>Otherwise, if the result type is scalar, the result of the function is implementation defined, and can have an invalid representation (see <a href="../AA-13/AA-13.9#Subclause_13.9.1">13.9.1</a>). If the result type is nonscalar, the effect is implementation defined; in particular, the result can be abnormal (see <a href="../AA-13/AA-13.9#Subclause_13.9.1">13.9.1</a>).<br /></p>
 
+<AnnotatedOnly>
 <MarginText>11.a.1/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The result of unchecked conversion for instances with scalar result types whose result is not defined by the language.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The effect of unchecked conversion for instances with nonscalar result types whose effect is not defined by the language.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.a.1/2</MarginText>
 <MarginInfo items={["AI95-00426-01"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Note the difference between these sentences; the first only says that the bits returned are implementation defined, while the latter allows any effect. The difference is because scalar objects should never be abnormal unless their assignment was disrupted or if they are a subcomponent of an abnormal composite object. Neither exception applies to instances of Unchecked_Conversion. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.a.2/2</MarginText>
 <MarginInfo items={["AI95-00426-01"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Whenever unchecked conversions are used, it is the programmer's responsibility to ensure that these conversions maintain the properties that are guaranteed by the language for objects of the target type. For nonscalar types, this requires the user to understand the underlying run-time model of  the implementation. The execution of a program that violates these properties by means of unchecked conversions returning a nonscalar type is erroneous. Properties of scalar types can be checked by using the Valid attribute (see <a href="../AA-13/AA-13.9#Subclause_13.9.2">13.9.2</a>); programs can avoid violating properties of the type (and erroneous execution) by careful use of this attribute.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 An instance of Unchecked_Conversion can be applied to an object of a private type, assuming the implementation allows it. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Permissions
@@ -96,16 +110,20 @@ An instance of Unchecked_Conversion can be applied to an object of a private typ
 <MarginText>12</MarginText>
 <p>An implementation may return the result of an unchecked conversion by reference, if the Source type is not a by-copy type. [In this case, the result of the unchecked conversion represents simply a different (read-only) view of the operand of the conversion.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>12.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>In other words, the result object of a call on an instance of Unchecked_Conversion can occupy the same storage as the formal parameter S. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>13</MarginText>
 <p>An implementation may place restrictions on Unchecked_Conversion. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>13.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>For example, an instantiation of Unchecked_Conversion for types for which unchecked conversion doesn't make sense may be disallowed. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Advice
@@ -114,24 +132,32 @@ An instance of Unchecked_Conversion can be applied to an object of a private typ
 <MarginInfo items={["AI95-00051-02"]} />
 <p>Since the Size of an array object generally does not include its bounds, the bounds should not be part of the converted data. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>14.a.1/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Since the Size of an array object generally does not include its bounds, the bounds should not be part of the converted data in an instance of Unchecked_Conversion.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>On the other hand, we have no advice to offer about discriminants and tag fields. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>15</MarginText>
 <p>The implementation should not generate unnecessary runtime checks to ensure that the representation of S is a representation of the target type. It should take advantage of the permission to return by reference when possible. Restrictions on unchecked conversions should be avoided unless required by the target environment. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>15.a.1/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>There should not be unnecessary runtime checks on the result of an Unchecked_Conversion; the result should be returned by reference when possible. Restrictions on Unchecked_Conversions should be avoided.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>15.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>As an example of an unnecessary runtime check, consider a record type with gaps between components. The compiler might assume that such gaps are always zero bits. If a value is produced that does not obey that assumption, then the program might misbehave. The implementation should not generate extra code to check for zero bits (except, perhaps, in a special error-checking mode). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>16</MarginText>
 <p>The recommended level of support for unchecked conversions is: <br /></p>
@@ -141,30 +167,38 @@ An instance of Unchecked_Conversion can be applied to an object of a private typ
 <ul>
 <li>Unchecked conversions should be supported and should be reversible in the cases where this subclause defines the result. To enable meaningful use of unchecked conversion, a contiguous representation should be used for elementary subtypes, for statically constrained array subtypes whose component subtype is one of the subtypes described in this paragraph, and for record subtypes without discriminants whose component subtypes are described in this paragraph. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>17.a/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>The recommended level of support for Unchecked_Conversion should be followed.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>17.b/2</MarginText>
 <MarginInfo items={["AI95-00051-02"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The implementation advice about the size of array objects was moved to 13.3 so that all of the advice about Size is in one place.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>17.c/2</MarginText>
 <MarginInfo items={["AI95-00426-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Clarified that the result of Unchecked_Conversion for scalar types can be invalid, but not abnormal. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>17.d/3</MarginText>
 <MarginInfo items={["AI05-0078-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Relaxed the alignment requirement slightly, giving a defined result in more cases. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_13.9.1"></a>
 
@@ -195,21 +229,27 @@ Clarified that the result of Unchecked_Conversion for scalar types can be invali
 <MarginInfo items={["AI95-00426-01"]} />
 <li>The object is the return object of a function call of a nonscalar type, and the function is an imported function, an instance of Unchecked_Conversion, or the stream attribute T'Input, if after return from the function the representation of the return object does not represent a value of the function's subtype.<br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>6.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>We explicitly list the routines involved in order to avoid future arguments. All possibilities are listed.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>6.b/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We did not include Stream_IO.Read in the list above. A Stream_Element should include all possible bit patterns, and thus it cannot be invalid. Therefore, the parameter will always represent a value of its subtype. By omitting this routine, we make it possible to write arbitrary I/O operations without any possibility of abnormal objects. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>6.2/2</MarginText>
 <MarginInfo items={["AI95-00426-01"]} />
 <p>[For an imported object, it is the programmer's responsibility to ensure that the object remains in a normal state.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>6.c/2</MarginText>
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>This follows (and echos) the standard rule of interfacing; the programmer must ensure that Ada semantics are followed (see <a href="../AA-B/AA-B.1">B.1</a>). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7</MarginText>
 <p>Whether or not an object actually becomes abnormal in these cases is not specified. An abnormal object becomes normal again upon successful completion of an assignment to the object as a whole. <br /></p>
@@ -220,19 +260,25 @@ We did not include Stream_IO.Read in the list above. A Stream_Element should inc
 <MarginText>8</MarginText>
 <p>It is erroneous to evaluate a <code><a href="../AA-4/AA-4.4#S0141">primary</a></code> that is a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denoting an abnormal object, or to evaluate a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> that denotes an abnormal object. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>8.a/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>8.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The <strong>in out</strong> or <strong>out</strong> parameter case does not apply to scalars; bad scalars are merely invalid representations, rather than abnormal, in this case. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>8.c/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The reason we allow access objects, and objects containing subcomponents of an access type, to become abnormal is because the correctness of an access value cannot necessarily be determined merely by looking at the bits of the object. The reason we allow scalar objects to become abnormal is that we wish to allow the compiler to optimize assuming that the value of a scalar object belongs to the object's subtype, if the compiler can prove that the object is initialized with a value that belongs to the subtype. The reason we allow composite objects to become abnormal is that such object might be represented with implicit levels of indirection; if those are corrupted, then even assigning into a component of the object, or simply asking for its Address, might have an unpredictable effect. The same is true if the discriminants have been destroyed. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Bounded (Run-Time) Errors
@@ -240,14 +286,18 @@ We did not include Stream_IO.Read in the list above. A Stream_Element should inc
 <MarginText>9</MarginText>
 <p>If the representation of a scalar object does not represent a value of the object's subtype (perhaps because the object was not initialized), the object is said to have an <em>invalid representation</em>. It is a bounded error to evaluate the value of such an object. If the error is detected, either Constraint_Error or Program_Error is raised. Otherwise, execution continues using the invalid representation. The rules of the language outside this subclause assume that all objects have valid representations. The semantics of operations on invalid representations are as follows:<br /></p>
 
+<AnnotatedOnly>
 <MarginText>9.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The AARM is more explicit about what happens when the value of the case expression is an invalid representation.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>9.b/2</MarginText>
 <MarginInfo items={["AI95-00426-01"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This includes the result object of functions, including the result of Unchecked_Conversion, T'Input, and imported functions. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10</MarginText>
 <ul>
@@ -255,10 +305,12 @@ We did not include Stream_IO.Read in the list above. A Stream_Element should inc
 <MarginText>11</MarginText>
 <li>If the representation of the object does not represent a value of the object's type, the semantics of operations on such representations is implementation-defined, but does not by itself lead to erroneous or unpredictable execution, or to other objects becoming abnormal. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>11.a/2</MarginText>
 <MarginInfo items={["AI95-00426-01"]} />
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>This means that the implementation must take care not to use an invalid representation in a way that might cause erroneous execution. For instance, the exception mandated for <code><a href="../AA-5/AA-5.4#S0176">case_statement</a></code>s must be raised. Array indexing must not cause memory outside of the array to be written (and usually, not read either). These cases and similar cases may require explicit checks by the implementation. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Erroneous Execution
@@ -267,106 +319,144 @@ We did not include Stream_IO.Read in the list above. A Stream_Element should inc
 <MarginInfo items={["AI95-00167-01", "AI05-0279-1"]} />
 <p>A call to an imported function or an instance of Unchecked_Conversion is erroneous if the result is scalar, the result object has an invalid representation, and the result is used other than as the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> or an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>, as the <em>object_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> of an <code><a href="../AA-8/AA-8.5#S0239">object_renaming_declaration</a></code>, or as the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of a Valid attribute. If such a result object is used as the source of an assignment, and the assigned value is an invalid representation for the target of the assignment, then any use of the target object prior to a further assignment to the target object, other than as the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of a Valid attribute reference, is erroneous. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>12.a/2</MarginText>
 <MarginInfo items={["AI95-00167-01"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>In a typical implementation, every bit pattern that fits in an object of a signed integer subtype will represent a value of the type, if not of the subtype. However, for an enumeration or floating point type, as well as some modular types, there are typically bit patterns that do not represent any value of the type. In such cases, the implementation ought to define the semantics of operations on the invalid representations in the obvious manner (assuming the bounded error is not detected): a given representation should be equal to itself, a representation that is in between the internal codes of two enumeration literals should behave accordingly when passed to comparison operators and membership tests, etc. We considered <em>requiring</em> such sensible behavior, but it resulted in too much arcane verbiage, and since implementations have little incentive to behave irrationally, such verbiage is not important to have.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12.b/2</MarginText>
 <MarginInfo items={["AI95-00167-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 If a stand-alone scalar object is initialized to a an in-range value, then the implementation can take advantage of the fact that the use of any out-of-range value has to be erroneous. Such an out-of-range value can be produced only by things like unchecked conversion, imported functions, and abnormal values caused by disruption of an assignment due to abort or to failure of a language-defined check. This depends on out-of-range values being checked before assignment (that is, checks are not optimized away unless they are proven redundant).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Consider the following example: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12.d/2</MarginText>
 <MarginInfo items={["AI95-00167-01"]} />
 <CodeBlock language="ada">
 type My_Int is range 0..99;{"\n"}function Safe_Convert is new Unchecked_Conversion(My_Int, Integer);{"\n"}function Unsafe_Convert is new Unchecked_Conversion(My_Int, Positive);{"\n"}X : Positive := Safe_Convert(0); -- Raises Constraint_Error.{"\n"}Y : Positive := Unsafe_Convert(0); -- Bounded Error, may be invalid.{"\n"}B : Boolean  := Y'Valid; -- OK, B = False.{"\n"}Z : Positive := Y+1; -- Erroneous to use Y.{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>12.e/2</MarginText>
 <MarginInfo items={["AI95-00167-01", "AI95-00426-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The call to Unsafe_Convert  is a bounded error, which might raise Constraint_Error, Program_Error, or return an invalid value. Moreover, if an exception is not raised, most uses of that invalid value (including the use of Y) cause erroneous execution. The call to Safe_Convert is not erroneous. The result object is an object of subtype Integer containing the value 0. The assignment to X is required to do a constraint check; the fact that the conversion is unchecked does not obviate the need for subsequent checks required by the language rules.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12.e.1/2</MarginText>
 <MarginInfo items={["AI95-00167-01", "AI95-00426-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The reason for delaying erroneous execution until the object is used is so that the invalid representation can be tested for validity using the Valid attribute (see <a href="../AA-13/AA-13.9#Subclause_13.9.2">13.9.2</a>) without causing execution to become erroneous. Note that this delay does not imply an exception will not be raised; an implementation could treat both conversions in the example in the same way and raise Constraint_Error.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12.e.2/3</MarginText>
 <MarginInfo items={["AI05-0279-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The rules are defined in terms of the result object, and thus the name used to reference that object is irrelevant. That is why we don't need any special rules to describe what happens when the function result is renamed.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12.f</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>If an implementation wants to have a &ldquo;friendly&rdquo; mode, it might always assign an uninitialized scalar a default initial value that is outside the object's subtype (if there is one), and check for this value on some or all reads of the object, so as to help detect references to uninitialized scalars. Alternatively, an implementation might want to provide an &ldquo;unsafe&rdquo; mode where it presumed even uninitialized scalars were always within their subtype. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12.g</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The above rules imply that it is a bounded error to apply a predefined operator to an object with a scalar subcomponent having an invalid representation, since this implies reading the value of each subcomponent. Either Program_Error or Constraint_Error is raised, or some result is produced, which if composite, might have a corresponding scalar subcomponent still with an invalid representation.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12.h</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Note that it is not an error to assign, convert, or pass as a parameter a composite object with an uninitialized scalar subcomponent. In the other hand, it is a (bounded) error to apply a predefined operator such as =, {"<"}, and <strong>xor</strong> to a composite operand with an invalid scalar subcomponent. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>13/3</MarginText>
 <MarginInfo items={["AI05-0054-2"]} />
 <p>The dereference of an access value is erroneous if it does not designate an object of an appropriate type or a subprogram with an appropriate profile, if it designates a nonexistent object, or if it is an access-to-variable value that designates a constant object and it did not originate from an attribute_reference applied to an aliased variable view of a controlled or immutably limited object. [An access value whose dereference is erroneous can exist, for example, because of Unchecked_Deallocation, Unchecked_Access, or Unchecked_Conversion.]<br /></p>
 
+<AnnotatedOnly>
 <MarginText>13.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The above mentioned Unchecked_... features are not the only causes of such access values. For example, interfacing to other languages can also cause the problem.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13.b/3</MarginText>
 <MarginInfo items={["AI05-0054-2"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We permit the use of access-to-variable values that designate constant objects so long as they originate from an aliased variable view of a controlled or immutably limited constant, such as during the initialization of a constant (both via the &ldquo;current instance&rdquo; and during a call to Initialize) or during an assignment (during a call to Adjust). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   Objects can become abnormal due to other kinds of actions that directly update the object's representation; such actions are generally considered directly erroneous, however. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>14.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 In order to reduce the amount of erroneousness, we separate the concept of an undefined value into objects with invalid representation (scalars only) and abnormal objects.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Reading an object with an invalid representation is a bounded error rather than erroneous; reading an abnormal object is still erroneous. In fact, the only safe thing to do to an abnormal object is to assign to the object as a whole. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>14.c/2</MarginText>
 <MarginInfo items={["AI95-00167-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The description of erroneous execution for Unchecked_Conversion and imported objects was tightened up so that using the Valid attribute to test such a value is not erroneous.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14.d/2</MarginText>
 <MarginInfo items={["AI95-00426-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Clarified the definition of objects that can become abnormal; made sure that all of the possibilities are included. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>14.e/3</MarginText>
 <MarginInfo items={["AI05-0054-2"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Common programming techniques such as squirreling away an access to a controlled object during initialization and using a self-referencing discriminant (the so-called &ldquo;Rosen trick&rdquo;) no longer are immediately erroneous if the object is declared constant, so these techniques can be used portably and safely. Practically, these techniques already worked as compilers did not take much advantage of this rule, so the impact of this change will be slight. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14.f/3</MarginText>
 <MarginInfo items={["AI05-0279-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> The description of erroneous execution for Unchecked_Conversion and imported objects was adjusted to clarify that renaming such an object is not, by itself, erroneous. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_13.9.2"></a>
 
@@ -387,13 +477,17 @@ Clarified the definition of objects that can become abnormal; made sure that all
 <dl>
 <dd>Yields True if and only if the object denoted by X is normal, has a valid representation, and then, if the preceding conditions hold, the value of X also satisfies the predicates of the nominal subtype of X. The value of this attribute is of the predefined type Boolean. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>3.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Having checked that X'Valid is True, it is safe to read the value of X without fear of erroneous execution caused by abnormality, or a bounded error caused by an invalid representation. Such a read will produce a value in the subtype of X. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   Invalid data can be created in the following cases (not counting erroneous or unpredictable execution): <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>5</MarginText>
 <ul>
@@ -411,66 +505,88 @@ NOTE 1   Invalid data can be created in the following cases (not counting errone
 <MarginText>11</MarginText>
 <li>use of an object whose Address has been specified. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>12/5</MarginText>
 <MarginInfo items={["AI12-0071-1", "AI12-0440-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   Determining whether X is normal and has a valid representation as part of the evaluation of X'Valid is not considered to include an evaluation of X; hence, it is not an error to check the validity of an object that is invalid or abnormal. Determining whether X satisfies the predicates of its nominal subtype can  include an evaluation of X, but only after it has been determined that X has a valid representation.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13/4</MarginText>
 <MarginInfo items={["AI12-0071-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 If X is volatile, the evaluation of X'Valid is considered a read of X.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13.a/4</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Since an implementation is not allowed to add, remove, or reorder accesses to volatile objects, we have to define X'Valid as a read so that it is implementable for most subtypes as the value of the object is required. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14/5</MarginText>
 <MarginInfo items={["AI95-00426-01", "AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   The Valid attribute can  be used to check the result of calling an instance of Unchecked_Conversion (or any other operation that can return invalid values). However, an exception handler is still useful  because implementations are permitted to raise Constraint_Error or Program_Error if they detect the use of an invalid representation (see <a href="../AA-13/AA-13.9#Subclause_13.9.1">13.9.1</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>If X is of an enumeration type with a representation clause, then X'Valid checks that the value of X when viewed as an integer is one of the specified internal codes. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14.b</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Valid is defined only for scalar objects because the implementation and description burden would be too high for other types. For example, given a typical run-time model, it is impossible to check the validity of an access value. The same applies to composite types implemented with internal pointers. One can check the validity of a composite object by checking the validity of each of its scalar subcomponents. The user should ensure that any composite types that need to be checked for validity are represented in a way that does not involve implementation-defined components, or gaps between components. Furthermore, such types should not contain access subcomponents.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14.c/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>14.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 X'Valid is new in Ada 95. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>14.e/2</MarginText>
 <MarginInfo items={["AI95-00426-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added a note explaining that handlers for Constraint_Error and Program_Error are needed in the general case of testing for validity. (An implementation could document cases where these are not necessary, but there is no language requirement.) <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>14.f/3</MarginText>
 <MarginInfo items={["AI05-0153-3"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The validity check now also includes a check of the predicate aspects (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>), if any, of the subtype of the object. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>14.g/4</MarginText>
 <MarginInfo items={["AI12-0071-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Updated wording of the attributes X'Valid to use the new term "satisfies the predicates" (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>). Also updated the notes to make sense when evaluating predicates and testing validity of volatile objects. <br /></Admonition>
+</AnnotatedOnly>
 

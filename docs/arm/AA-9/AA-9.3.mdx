@@ -32,17 +32,21 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI95-00416-01"]} />
 <li>Otherwise, the task depends on the master of the outermost object of which it is a part (as determined by the accessibility level of that object &mdash; see <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a> and <a href="../AA-7/AA-7.6#Subclause_7.6.1">7.6.1</a>), as well as on any master whose execution includes that of the master of the outermost object. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>3.a/2</MarginText>
 <MarginInfo items={["AI95-00416-01"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The master of a task created by a return statement changes when the accessibility of the return object changes. Note that its activation happens, if at all, only after the function returns and all accessibility level changes have occurred. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>4</MarginText>
 <p>Furthermore, if a task depends on a given master, it is defined to depend on the task that executes the master, and (recursively) on any master of that task. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>4.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Don't confuse these kinds of dependences with the dependences among compilation units defined in <a href="../AA-10/AA-10.1#Subclause_10.1.1">10.1.1</a>, &ldquo;<a href="../AA-10/AA-10.1#Subclause_10.1.1">Compilation Units - Library Units</a>&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>5</MarginText>
 <p>A task is said to be <em>completed</em> when the execution of its corresponding <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> is completed. A task is said to be <em>terminated</em> when any finalization of the <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> has been performed (see <a href="../AA-7/AA-7.6#Subclause_7.6.1">7.6.1</a>). [The first step of finalizing a master (including a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>) is to wait for the termination of any tasks dependent on the master.] The task executing the master is blocked until all the dependents have terminated. [Any remaining finalization is then performed and the master is left.]<br /></p>
@@ -60,30 +64,42 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>9</MarginText>
 <p>When both conditions are satisfied, the task considered becomes completed, together with all tasks that depend on the master considered that are not yet completed. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>9.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Any required finalization is performed after the selection of <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code>s. The tasks are not callable during the finalization. In some ways it is as though they were aborted. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>10</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   The full view of a limited private type can be a task type, or can have subcomponents of a task type. Creation of an object of such a type creates dependences according to the full type.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   An <code><a href="../AA-8/AA-8.5#S0239">object_renaming_declaration</a></code> defines a new view of an existing entity and hence creates no further dependence.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12/5</MarginText>
 <MarginInfo items={["AI12-0440-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   The rules given for the collective completion of a group of tasks all blocked on <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code>s with open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code>s ensure that the collective completion can occur only when there are no remaining active tasks that can  call one of the tasks being collectively completed.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 4   If two or more tasks are blocked on <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code>s with open <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code>s, and become completed collectively, their finalization actions proceed concurrently.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 5   The completion of a task can occur due to any of the following: <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>15</MarginText>
 <ul>
@@ -109,31 +125,41 @@ declare{"\n"}   type Global is access Server;        --  see <a href="../AA-9/AA
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>20.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We have revised the wording to be consistent with the definition of master now given in <a href="../AA-7/AA-7.6#Subclause_7.6.1">7.6.1</a>, &ldquo;<a href="../AA-7/AA-7.6#Subclause_7.6.1">Completion and Finalization</a>&rdquo;.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>20.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Tasks that used to depend on library packages in Ada 83, now depend on the (implicit) <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> of the environment task (see <a href="../AA-10/AA-10.2">10.2</a>). Therefore, the environment task has to wait for them before performing library level finalization and terminating the partition. In Ada 83 the requirement to wait for tasks that depended on library packages was not as clear.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>20.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 What was "collective termination" is now "collective completion" resulting from selecting <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code>s. This is because finalization still occurs for such tasks, and this happens after selecting the <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code>, but before termination. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>20.d/2</MarginText>
 <MarginInfo items={["AI95-00416-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added missing wording that explained the master of tasks that are neither <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code>s nor <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s, such as function returns. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>20.e/4</MarginText>
 <MarginInfo items={["AI12-0070-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Ensured that the master of tasks that are not <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s of named access types is correctly determined. (Ignoring the accessibility rules of <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a> could not be intended.) <br /></Admonition>
+</AnnotatedOnly>
 

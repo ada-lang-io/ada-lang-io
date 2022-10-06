@@ -19,9 +19,11 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>1</MarginText>
 <p>The generic package Storage_IO provides for reading from and writing to an in-memory buffer. This generic package supports the construction of user-defined input-output packages. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>1.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This package exists to allow the portable construction of user-defined direct-access-oriented input-output packages. The Write procedure writes a value of type Element_Type into a Storage_Array of size Buffer_Size, flattening out any implicit levels of indirection used in the representation of the type. The Read procedure reads a value of type Element_Type from the buffer, reconstructing any implicit levels of indirection used in the representation of the type. It also properly initializes any type tags that appear within the value, presuming that the buffer was written by a different program and that tag values for the&ldquo;same&rdquo; type might vary from one executable to another. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -50,28 +52,38 @@ with Ada.IO_Exceptions;{"\n"}with System.Storage_Elements;{"\n"}generic{"\n"}   
 <MarginText>10</MarginText>
 <p>In each instance, the constant Buffer_Size has a value that is the size (in storage elements) of the buffer required to represent the content of an object of subtype Element_Type, including any implicit levels of indirection used by the implementation. The Read and Write procedures of Storage_IO correspond to the Read and Write procedures of Direct_IO (see <a href="../AA-A/AA-A.8#Subclause_A.8.4">A.8.4</a>), but with the content of the Item parameter being read from or written into the specified Buffer, rather than an external file.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>10.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>As with Direct_IO, the Element_Type formal of Storage_IO does not have an <code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code> so that there is a well-defined upper bound on the size of the buffer needed to hold the content of an object of the formal subtype (i.e. Buffer_Size). If there are no implicit levels of indirection, Buffer_Size will typically equal: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>10.b</MarginText>
 <CodeBlock language="ada">
 (Element_Type'Size + System.Storage_Unit - 1) / System.Storage_Unit{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>10.c</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The value of Buffer_Size in Storage_IO.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   A buffer used for Storage_IO holds only one element at a time; an external file used for Direct_IO holds a sequence of elements. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>11.a/3</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Storage_IO is new in Ada 95. <br /></Admonition>
+</AnnotatedOnly>
 

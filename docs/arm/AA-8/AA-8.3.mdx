@@ -37,23 +37,29 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>6</MarginText>
 <p>[ Two or more declarations are <em>overloaded</em> if they all have the same defining name and there is a place where they are all directly visible.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>6.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> can have more than one possible interpretation even if it denotes a nonoverloadable entity. For example, if there are two functions F that return records, both containing a component called C, then the name F.C has two possible interpretations, even though component declarations are not overloadable. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7</MarginText>
 <p>The declarations of callable entities [(including enumeration literals)] are <em>overloadable</em>[, meaning that overloading is allowed for them]. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>A <code><a href="../AA-12/AA-12.1#S0310">generic_declaration</a></code> is not overloadable within its own <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code>. This follows from the rules about when a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes a current instance. See AI83-00286. This implies that within a <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code>, outer declarations with the same defining name are hidden from direct visibility. It also implies that if a generic formal parameter has the same defining name as the generic itself, the formal parameter hides the generic from direct visibility. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>8</MarginText>
 <p>Two declarations are <em>homographs</em> if they have the same defining name, and, if both are overloadable, their profiles are type conformant. [An inner declaration hides any outer homograph from direct visibility.]<br /></p>
 
+<AnnotatedOnly>
 <MarginText>8.a/2</MarginText>
-<Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
+<Admonition type="aarm" aarm="glossary-entry">
 <strong></strong>An overriding operation is one that replaces an inherited primitive operation. Operations may be marked explicitly as overriding or not overriding.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9</MarginText>
 <MarginText>10/1</MarginText>
@@ -65,35 +71,47 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <ul>
 <li>{"{"}<em>8652/0025</em>{"}"} A declaration that is not overridable overrides one that is overridable, [regardless of which declaration occurs first]; <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>11.a/1</MarginText>
 <MarginInfo items={["AI95-00044-01"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>{"{"}<em>8652/0025</em>{"}"} And regardless of whether the nonoverridable declaration is overloadable or not. For example, <code><a href="../AA-5/AA-5.1#S0172">statement_identifier</a></code>s are covered by this rule.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The &ldquo;regardless of which declaration occurs first&rdquo; is there because the explicit declaration could be a primitive subprogram of a partial view, and then the full view might inherit a homograph. We are saying that the explicit one wins (within its scope), even though the implicit one comes later.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 If the overriding declaration is also a subprogram, then it is a primitive subprogram.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 As explained in <a href="../AA-7/AA-7.3#Subclause_7.3.1">7.3.1</a>, &ldquo;<a href="../AA-7/AA-7.3#Subclause_7.3.1">Private Operations</a>&rdquo;, some inherited primitive subprograms are never declared. Such subprograms cannot be overridden, although they can be reached by dispatching calls in the case of a tagged type. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>12</MarginText>
 <ul>
 <li>The implicit declaration of an inherited operator overrides that of a predefined operator; <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>12.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>In a previous version of Ada 9X, we tried to avoid the notion of predefined operators, and say that they were inherited from some magical root type. However, this seemed like too much mechanism. Therefore, a type can have a predefined "+" as well as an inherited "+". The above rule says the inherited one wins.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12.b/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The &ldquo;regardless of which declaration occurs first&rdquo; applies here as well, in the case where <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> in the visible part of a public library unit derives from a private type declared in the parent unit, and the full view of the parent type has additional predefined operators, as explained in <a href="../AA-7/AA-7.3#Subclause_7.3.1">7.3.1</a>, &ldquo;<a href="../AA-7/AA-7.3#Subclause_7.3.1">Private Operations</a>&rdquo;. Those predefined operators can be overridden by inherited subprograms implicitly declared earlier. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>13</MarginText>
 <ul>
@@ -110,10 +128,13 @@ The &ldquo;regardless of which declaration occurs first&rdquo; applies here as w
 <MarginInfo items={["AI95-00251-01", "AI12-0183-1"]} />
 <li>Otherwise (all are null procedures, abstract subprograms, or require overriding), then any null procedure overrides all abstract subprograms and all subprograms that require overriding; if more than one such homograph remains that is not thus overridden, then if the profiles of the remaining homographs  are all fully conformant with one another, one is chosen arbitrarily; if not, they are all hidden from all visibility. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>13.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>In the case where the implementation arbitrarily chooses one overrider from among a group of inherited subprograms, users should not be able to determine which member was chosen, as the set of inherited subprograms which are chosen from must be fully conformant. This rule is needed in order to allow<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13.b/2</MarginText>
 <CodeBlock language="ada">
 package Outer is{"\n"}   package P1 is{"\n"}      type Ifc1 is interface;{"\n"}      procedure Null_Procedure (X : Ifc1) is null;{"\n"}      procedure Abstract_Subp  (X : Ifc1) is abstract;{"\n"}   end P1;{"\n"}
@@ -123,39 +144,54 @@ package Outer is{"\n"}   package P1 is{"\n"}      type Ifc1 is interface;{"\n"} 
    type T is abstract new P1.Ifc1 and P2.Ifc2 with null record;{"\n"}end Outer;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>13.e/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 without requiring that T explicitly override any of its inherited operations.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13.f/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Full conformance is required here, as we cannot allow the parameter names to differ. If they did differ, the routine which was selected for overriding could be determined by using named parameter notation in a call.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13.g/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 When the subprograms do not conform, we chose not to adopt the &ldquo;use clause&rdquo; rule which would make them all visible resulting in likely ambiguity. If we had used such a rule, any successful calls would be confusing; and the fact that there are no Beaujolais-like effects  to worry about means we can consider other rules. The hidden-from-all-visibility homographs are still inherited by further derivations, which avoids order-of-declaration dependencies and other anomalies.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13.h/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We have to be careful to not include arbitrary selection if the routines have real bodies. (This can happen in generics, see the example in the incompatibilities section below.) We don't want the ability to successfully call routines where the body executed depends on the compiler or a phase of the moon.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13.i/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Note that if the type is concrete, abstract subprograms are inherited as subprograms that require overriding. We include functions that require overriding as well; these don't have real bodies, so they can use the more liberal rules. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>14</MarginText>
 <ul>
 <li>[For an implicit declaration of a primitive subprogram in a generic unit, there is a copy of this declaration in an instance.] However, a whole new set of primitive subprograms is implicitly declared for each type declared within the visible part of the instance. These new declarations occur immediately after the type declaration, and override the copied ones. [The copied ones can be called only from within the instance; the new ones can be called only from outside the instance, although for tagged types, the body of a new one can be executed by a call to an old one.] <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>14.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>In addition, this is also stated redundantly (again), and is repeated, in <a href="../AA-12/AA-12.3">12.3</a>, &ldquo;<a href="../AA-12/AA-12.3">Generic Instantiation</a>&rdquo;. The rationale for the rule is explained there. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14.b/3</MarginText>
 <MarginInfo items={["AI05-0042-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>The implicit subprograms declared when an operation of a progenitor is implemented by an entry or subprogram also override the appropriate implicitly declared inherited operations of the progenitor. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>15</MarginText>
 <p>A declaration is visible within its scope, except where hidden from all visibility, as follows: <br /></p>
@@ -164,13 +200,17 @@ Note that if the type is concrete, abstract subprograms are inherited as subprog
 <ul>
 <li>An overridden declaration is hidden from all visibility within the scope of the overriding declaration. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>16.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>We have to talk about the scope of the overriding declaration, not its visibility, because it hides even when it is itself hidden.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Note that the scope of an explicit <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code> does not start until after its profile. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>17</MarginText>
 <ul>
@@ -183,40 +223,50 @@ Note that the scope of an explicit <code><a href="../AA-6/AA-6.1#S0195">subprogr
 <MarginInfo items={["AI95-00345-01", "AI05-0177-1"]} />
 <li>For a <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code>, <code><a href="../AA-12/AA-12.1#S0312">generic_package_declaration</a></code>, <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code>, or <code><a href="../AA-6/AA-6.8#S0228">expression_function_declaration</a></code>, the declaration is hidden from all visibility only until the reserved word <strong>is</strong> of the declaration; <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>19.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>We're talking about the <strong>is</strong> of the construct itself, here, not some random <strong>is</strong> that might appear in a <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>19.1/2</MarginText>
 <MarginInfo items={["AI95-00345-01"]} />
 <ul>
 <li>For a task declaration or protected declaration, the declaration is hidden from all visibility only until the reserved word <strong>with</strong> of the declaration if there is one, or the reserved word <strong>is</strong> of the declaration if there is no <strong>with</strong>.<br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>19.b/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>If there is neither a <strong>with</strong> nor <strong>is</strong>, then the exception does not apply and the name is hidden from all visibility until the end of the declaration. This oddity was inherited from Ada 95. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19.c/2</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We need the &ldquo;<strong>with</strong> or <strong>is</strong>&rdquo; rule so that the visibility within an <code><a href="../AA-3/AA-3.9#S0078">interface_list</a></code> does not vary by construct. That would make it harder to complete private extensions and would complicate implementations. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>20</MarginText>
 <ul>
 <li>If the completion of a declaration is a declaration, then within the scope of the completion, the first declaration is hidden from all visibility. Similarly, a <code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code> or <code><a href="../AA-6/AA-6.1#S0207">parameter_specification</a></code> is hidden within the scope of a corresponding <code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code> or <code><a href="../AA-6/AA-6.1#S0207">parameter_specification</a></code> of a corresponding completion, or of a corresponding <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>20.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This rule means, for example, that within the scope of a <code><a href="../AA-3/AA-3.2#S0024">full_type_declaration</a></code> that completes a <code><a href="../AA-7/AA-7.3#S0232">private_type_declaration</a></code>, the name of the type will denote the <code><a href="../AA-3/AA-3.2#S0024">full_type_declaration</a></code>, and therefore the full view of the type. On the other hand, if the completion is not a declaration, then it doesn't hide anything, and you can't denote it. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>21/2</MarginText>
 <MarginInfo items={["AI95-00217-06", "AI95-00412-01"]} />
 <ul>
 <li>The declaration of a library unit (including a <code><a href="../AA-10/AA-10.1#S0289">library_unit_renaming_declaration</a></code>) is hidden from all visibility at places outside its declarative region that are not within the scope of a <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code> that mentions it. The limited view of a library package is hidden from all visibility at places that are not within the scope of a <code><a href="../AA-10/AA-10.1#S0295">limited_with_clause</a></code> that mentions it; in addition, the limited view is hidden from all visibility within the declarative region of the package, as well as within the scope of any <code><a href="../AA-10/AA-10.1#S0296">nonlimited_with_clause</a></code> that mentions the package. Where the declaration of the limited view of a package is visible, any name that denotes the package denotes the limited view, including those provided by a package renaming.<br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>21.a/2</MarginText>
 <MarginInfo items={["AI95-00217-06"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>This is the rule that prevents <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s from being transitive; the [immediate] scope includes indirect semantic dependents. This rule also prevents the limited view of a package from being visible in the same place as the full view of the package, which prevents various ripple effects. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>21.1/2</MarginText>
 <MarginInfo items={["AI95-00217-06", "AI95-00412-01"]} />
@@ -242,16 +292,20 @@ Note that the scope of an explicit <code><a href="../AA-6/AA-6.1#S0195">subprogr
 <MarginText>25</MarginText>
 <p>A <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> shall resolve to denote a directly visible declaration whose defining name is the same as the <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code>. A <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> shall resolve to denote a visible declaration whose defining name is the same as the <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>25.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>"The same as" has the obvious meaning here, so for +, the possible interpretations are declarations whose defining name is "+" (an <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code>). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>26</MarginText>
 <p>These rules on visibility and direct visibility do not apply in a <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>, a <code><a href="../AA-10/AA-10.1#S0291">parent_unit_name</a></code>, or a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> that appears at the place of a <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code>. For those contexts, see the rules in <a href="../AA-10/AA-10.1#Subclause_10.1.6">10.1.6</a>, &ldquo;<a href="../AA-10/AA-10.1#Subclause_10.1.6">Environment-Level Visibility Rules</a>&rdquo;. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>26.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Direct visibility is irrelevant for <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>s. In terms of overload resolution <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>s are similar to other literals, like <strong>null</strong> &mdash; see <a href="../AA-4/AA-4.2">4.2</a>. For <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>s, there is no need to worry about hiding, since there is no way to declare homographs. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Legality Rules
@@ -260,9 +314,11 @@ Note that the scope of an explicit <code><a href="../AA-6/AA-6.1#S0195">subprogr
 <MarginInfo items={["AI95-00044-01", "AI95-00150-01", "AI95-00377-01"]} />
 <p>{"{"}<em>8652/0025</em>{"}"} {"{"}<em>8652/0026</em>{"}"} A nonoverridable declaration is illegal if there is a homograph occurring immediately within the same declarative region that is visible at the place of the declaration, and is not hidden from all visibility by the nonoverridable declaration. In addition, a type extension is illegal if somewhere within its immediate scope it has two visible components with the same name. Similarly, the <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code> for a compilation unit is illegal if it mentions (in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>) some library unit, and there is a homograph of the library unit that is visible at the place of the compilation unit, and the homograph and the mentioned library unit are both declared immediately within the same declarative region. These rules also apply to dispatching operations declared in the visible part of an instance of a generic unit. However, they do not apply to other overloadable declarations in an instance[; such declarations may have type conformant profiles in the instance, so long as the corresponding declarations in the generic were not type conformant]. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>27.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Normally, these rules just mean you can't explicitly declare two homographs immediately within the same declarative region. The wording is designed to handle the following special cases: <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27.b</MarginText>
 <ul>
@@ -270,6 +326,7 @@ Note that the scope of an explicit <code><a href="../AA-6/AA-6.1#S0195">subprogr
 <MarginText>27.c</MarginText>
 <li>If the body of a library unit contains an explicit homograph of a child of that same library unit, this is illegal only if the body mentions the child in its <code><a href="../AA-10/AA-10.1#S0292">context_clause</a></code>, or if some subunit mentions the child. Here's an example: <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>27.d</MarginText>
 <CodeBlock language="ada">
 package P is{"\n"}end P;{"\n"}
@@ -281,6 +338,7 @@ package body P is{"\n"}    Q : Integer; -- OK; we cannot see package P.Q here.{"
 with P.Q;{"\n"}separate(P){"\n"}procedure Sub is -- Illegal.{"\n"}begin{"\n"}    null;{"\n"}end Sub;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
 <MarginText>27.h</MarginText>
 <ul>
 <li>If package body P said "<strong>with</strong> P.Q;", then it would be illegal to declare the homograph Q: Integer. But it does not, so the body of P is OK. However, the subunit would be able to see both P.Q's, and is therefore illegal.<br /></li>
@@ -290,6 +348,7 @@ with P.Q;{"\n"}separate(P){"\n"}procedure Sub is -- Illegal.{"\n"}begin{"\n"}   
 <MarginInfo items={["AI95-00150-01", "AI95-00157-01"]} />
 <li>{"{"}<em>8652/0026</em>{"}"} {"{"}<em>8652/0102</em>{"}"} If a type extension contains a component with the same name as a component in an ancestor type, there must be no place where both components are visible. For instance: <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>27.i.2/1</MarginText>
 <CodeBlock language="ada">
 package A is{"\n"}   type T is tagged private;{"\n"}   package B is{"\n"}      type NT is new T with record{"\n"}         I: Integer; -- Illegal because T.I is visible in the body.{"\n"}      end record; -- T.I is not visible here.{"\n"}   end B;{"\n"}private{"\n"}   type T is tagged record{"\n"}      I: Integer; -- Illegal because T.I is visible in the body.{"\n"}   end record;{"\n"}end A;{"\n"}
@@ -304,6 +363,7 @@ with A;{"\n"}package D is{"\n"}   type NT3 is new A.T with record{"\n"}      I: 
 with D;{"\n"}package A.E is{"\n"}   type NT4 is new D.NT3 with null record;{"\n"}   X : NT4;{"\n"}   I1 : Integer := X.I;        -- D.NT3.I{"\n"}   I2 : Integer := D.NT3(X).I; -- D.NT3.I{"\n"}   I3 : Integer := A.T(X).I;   -- A.T.I{"\n"}end A.E;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
 <MarginText>27.i.7/1</MarginText>
 <MarginInfo items={["AI95-00157-01"]} />
 <ul>
@@ -312,6 +372,7 @@ with D;{"\n"}package A.E is{"\n"}   type NT4 is new D.NT3 with null record;{"\n"
 <MarginInfo items={["AI95-00377-01"]} />
 <li>It is illegal to mention both an explicit child of an instance, and a child of the generic from which the instance was instantiated. This is easier to understand with an example: <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>27.i.9/2</MarginText>
 <CodeBlock language="ada">
 generic{"\n"}package G1 is{"\n"}end G1;{"\n"}
@@ -325,34 +386,47 @@ package I1.G2 renames ...{"\n"}
 with G1.G2;{"\n"}with I1.G2;             -- Illegal{"\n"}package Bad is ...{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
 <MarginText>27.i.14/5</MarginText>
 <MarginInfo items={["AI12-0300-1"]} />
 <ul>
 <li>The context clause for Bad is illegal as I1 has an implicit declaration of I1.G2 based on the generic child G1.G2, as well as the mention of the explicit child I1.G2. As in the previous cases, this is illegal only if the context clause makes both children visible; the explicit child can be mentioned as long as the generic child is not (and vice  versa). <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>27.j</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Note that we need to be careful which things we make "hidden from all visibility" versus which things we make simply illegal for names to denote. The distinction is subtle. The rules that disallow names denoting components within a type declaration (see <a href="../AA-3/AA-3.7">3.7</a>) do not make the components invisible at those places, so that the above rule makes components with the same name illegal. The same is true for the rule that disallows names denoting formal parameters within a <code><a href="../AA-6/AA-6.1#S0206">formal_part</a></code> (see <a href="../AA-6/AA-6.1">6.1</a>). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.k</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The part about instances is from AI83-00012. The reason it says &ldquo;overloadable declarations&rdquo; is because we don't want it to apply to type extensions that appear in an instance; components are not overloadable. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>28</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   Visibility for compilation units follows from the definition of the environment in <a href="../AA-10/AA-10.1#Subclause_10.1.4">10.1.4</a>, except that it is necessary to apply a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> to obtain visibility to a <code><a href="../AA-10/AA-10.1#S0288">library_unit_declaration</a></code> or <code><a href="../AA-10/AA-10.1#S0289">library_unit_renaming_declaration</a></code>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>29</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   In addition to the visibility rules given above, the meaning of the occurrence of a <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> or <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> at a given place in the text can depend on the overloading rules (see <a href="../AA-8/AA-8.6">8.6</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   Not all contexts where an <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>, <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>, or <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code> are allowed require visibility of a corresponding declaration. Contexts where visibility is not required are identified by using one of these three syntactic categories directly in a syntax rule, rather than using <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> or <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>An <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>, <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> or <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code> that occurs in one of the following contexts is not required to denote a visible or directly visible declaration: <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>30.b</MarginText>
 <dt><br/>a)</dt>
@@ -382,66 +456,91 @@ NOTE 3   Not all contexts where an <code><a href="../AA-2/AA-2.3#S0002">identifi
 <MarginInfo items={["AI05-0183-1"]} />
 <dd>An <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> specific to an aspect used in an <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code>. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>30.h</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The visibility rules have nothing to do with the above cases; the meanings of such things are defined elsewhere. Reserved words are not <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s; the visibility rules don't apply to them either.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.i</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Because of the way we have defined "declaration", it is possible for a usage name to denote a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code>, either within that body, or (for a nonlibrary unit) after it (since the body hides the corresponding declaration, if any). Other bodies do not work that way. Completions of <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code>s and deferred constant declarations do work that way. <code><a href="../AA-9/AA-9.5#S0258">Accept_statement</a></code>s are never denoted, although the <code><a href="../AA-6/AA-6.1#S0207">parameter_specification</a></code>s in their profiles can be.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.j</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The scope of a subprogram does not start until after its profile. Thus, the following is legal: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.k</MarginText>
 <CodeBlock language="ada">
 X : constant Integer := 17;{"\n"}...{"\n"}package P is{"\n"}    procedure X(Y : in Integer := X);{"\n"}end P;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>30.l</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The body of the subprogram will probably be illegal, however, since the constant X will be hidden by then.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.m</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The rule is different for generic subprograms, since they are not overloadable; the following is illegal: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.n</MarginText>
 <CodeBlock language="ada">
 X : constant Integer := 17;{"\n"}package P is{"\n"}    generic{"\n"}      Z : Integer := X; -- Illegal!{"\n"}    procedure X(Y : in Integer := X); -- Illegal!{"\n"}end P;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>30.o</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The constant X is hidden from direct visibility by the generic declaration. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>30.p</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Declarations with the same defining name as that of a subprogram or entry being defined are nevertheless visible within the subprogram specification or entry declaration. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>30.q</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The term &ldquo;visible by selection&rdquo; is no longer defined. We use the terms &ldquo;directly visible&rdquo; and &ldquo;visible&rdquo; (among other things). There are only two regions of text that are of interest, here: the region in which a declaration is visible, and the region in which it is directly visible.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.r</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Visibility is defined only for declarations. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 95
 
+<AnnotatedOnly>
 <MarginText>30.s/2</MarginText>
 <MarginInfo items={["AI95-00251-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added rules to handle the inheritance and overriding of multiple homographs for a single type declaration, in order to support multiple inheritance from interfaces. The new rules are intended to be compatible with the existing rules so that programs that do not use interfaces do not change their legality. However, there is a very rare case where this is not true: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.t/2</MarginText>
 <CodeBlock language="ada">
 generic{"\n"}   type T1 is private;{"\n"}   type T2 is private;{"\n"}package G is{"\n"}   type T is null record;{"\n"}   procedure P (X : T; Y : T1);{"\n"}   procedure P (X : T; Z : T2);{"\n"}end G;]{"\n"}
@@ -455,50 +554,67 @@ Obj : D;{"\n"}
 P (Obj, Z ={">"} 10); -- Legal in Ada 95, illegal in Ada 2005.{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>30.y/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The call to P would resolve in Ada 95 by using the parameter name, while the procedures P would be hidden from all visibility in Ada 2005 and thus would not resolve. This case doesn't seem worth making the rules any more complex than they already are.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.z/2</MarginText>
 <MarginInfo items={["AI95-00377-01"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong>Amendment </strong> A <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> is illegal if it would create a homograph of an implicitly declared generic child (see <a href="../AA-10/AA-10.1#Subclause_10.1.1">10.1.1</a>). An Ada 95 compiler could have allowed this, but which unit of the two units involved would be denoted wasn't specified, so any successful use isn't portable. Removing one of the two <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s involved will fix the problem. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>30.aa/2</MarginText>
 <MarginInfo items={["AI95-00044-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0025</em>{"}"} <strong>Corrigendum:</strong> Clarified the overriding rules so that "/=" and <code><a href="../AA-5/AA-5.1#S0172">statement_identifier</a></code>s are covered.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.bb/2</MarginText>
 <MarginInfo items={["AI95-00150-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0026</em>{"}"} <strong>Corrigendum:</strong> Clarified that is it never possible for two components with the same name to be visible; any such program is illegal.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.cc/2</MarginText>
 <MarginInfo items={["AI95-00195-01", "AI95-00408-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The visibility of an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> is defined so that it can be used by the stream attribute availability rules (see <a href="../AA-13/AA-13.13#Subclause_13.13.2">13.13.2</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.dd/2</MarginText>
 <MarginInfo items={["AI95-00217-06"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The visibility of a limited view of a library package is defined (see <a href="../AA-10/AA-10.1#Subclause_10.1.1">10.1.1</a>). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>30.ee/4</MarginText>
 <MarginInfo items={["AI05-0177-1", "AI12-0157-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added wording so that the parameters of an <code><a href="../AA-6/AA-6.8#S0228">expression_function_declaration</a></code> are visible in the return expression of the function. (It would be pretty useless without such a rule.)<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30.ff/3</MarginText>
 <MarginInfo items={["AI05-0183-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The visibility of an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> is defined so that it can be used in various other rules. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_8.3.1"></a>
 
@@ -531,10 +647,12 @@ The visibility of an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification
 <MarginText>5/2</MarginText>
 <li>if the <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code> is <strong>overriding</strong>, then the operation shall override a homograph at the place of the declaration or body;<br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>5.a/3</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>This doesn't require that the overriding happen at precisely the place of the declaration or body; it only requires that the region in  which the overriding is known to have happened includes this place. That is, the overriding can happen at or before the place of the declaration or body. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>6/2</MarginText>
 <ul>
@@ -543,18 +661,24 @@ The visibility of an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification
 <MarginText>7/2</MarginText>
 <p>In addition to the places where Legality Rules normally apply, these rules also apply in the private part of an instance of a generic unit.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The <strong>overriding</strong> and <strong>not overriding</strong> rules differ slightly. For <strong>overriding</strong>, we want the indicator to reflect the overriding state at the place of the declaration; otherwise the indicator would be &ldquo;lying&rdquo;. Whether a homograph is implicitly declared after the declaration (see 7.3.1 to see how this can happen) has no impact on this check. However, <strong>not overriding</strong> is different; &ldquo;lying&rdquo; would happen if a homograph declared later actually is overriding. So, we require this check to take into account later overridings. That can be implemented either by looking ahead, or by rechecking when additional operations are declared.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>7.b/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The &ldquo;no lying&rdquo; rules are needed to prevent a <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code> and <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> from having contradictory <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code>s. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>8/2</MarginText>
 <MarginInfo items={["AI95-00397-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   Rules for <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code>s of task and protected entries and of protected subprograms are found in <a href="../AA-9/AA-9.5#Subclause_9.5.2">9.5.2</a> and <a href="../AA-9/AA-9.4">9.4</a>, respectively. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -583,23 +707,29 @@ not overriding{"\n"}procedure Arrest(Q : in out Security_Queue; Person : in Pers
 <MarginInfo items={["AI12-0429-1"]} />
 <p><em>The first four subprogram declarations guarantee that these subprograms will override the four subprograms inherited from the Queue interface. A misspelling in one of these subprograms will be detected at compile time by the implementation. Conversely, the declaration of Arrest guarantees that this is a new operation.</em> <br /></p>
 
+<AnnotatedOnly>
 <MarginText>16.a/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>In this case, the subprograms are abstract, so misspellings will get detected anyway. But for other subprograms (especially when deriving from concrete types), the error might never be detected, and a body other than the one the programmer intended might be executed without warning. Thus our new motto: &ldquo;Overriding indicators &mdash; don't derive a type without them!&rdquo; <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>16.b/2</MarginText>
 <MarginInfo items={["AI95-00218-03"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <code><a href="../AA-8/AA-8.3#S0234">Overriding_indicator</a></code>s are new. These let the programmer state her overriding intentions to the compiler; if the compiler disagrees, an error will be produced rather than a hard to find bug. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>16.c/3</MarginText>
 <MarginInfo items={["AI95-0177-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Expression functions can have overriding indicators. <br /></Admonition>
+</AnnotatedOnly>
 

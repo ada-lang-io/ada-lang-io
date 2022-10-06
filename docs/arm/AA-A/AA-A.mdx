@@ -39,13 +39,17 @@ import MarginInfo from "@site/src/components/MarginInfo";
 
 <p>	System &mdash; <a href="../AA-13/AA-13.7">13.7</a><br />		Address_To_Access_Conversions &mdash; <a href="../AA-13/AA-13.7#Subclause_13.7.2">13.7.2</a><br />		Atomic_Operations &mdash; <a href="../AA-C/AA-C.6#Subclause_C.6.1">C.6.1</a><br />			Exchange &mdash; <a href="../AA-C/AA-C.6#Subclause_C.6.2">C.6.2</a><br />			Integer_Arithmetic &mdash; <a href="../AA-C/AA-C.6#Subclause_C.6.4">C.6.4</a><br />			Modular_Arithmetic &mdash; <a href="../AA-C/AA-C.6#Subclause_C.6.5">C.6.5</a><br />			Test_And_Set &mdash; <a href="../AA-C/AA-C.6#Subclause_C.6.3">C.6.3</a><br />		Machine_Code &mdash; <a href="../AA-13/AA-13.8">13.8</a><br />		Multiprocessors &mdash; <a href="../AA-D/AA-D.16">D.16</a><br />			Dispatching_Domains &mdash; <a href="../AA-D/AA-D.16#Subclause_D.16.1">D.16.1</a><br />		RPC &mdash; <a href="../AA-E/AA-E.5">E.5</a><br />		Storage_Elements &mdash; <a href="../AA-13/AA-13.7#Subclause_13.7.1">13.7.1</a><br />		Storage_Pools &mdash; <a href="../AA-13/AA-13.11">13.11</a><br />			Subpools &mdash; <a href="../AA-13/AA-13.11#Subclause_13.11.4">13.11.4</a>]<br /></p>
 
+<AnnotatedOnly>
 <MarginText>2.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>In running text, we generally leave out the &ldquo;Ada.&rdquo; when referring to a child of Ada. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>2.b</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We had no strict rule for which of Ada, Interfaces, or System should be the parent of a given library unit. However, we have tried to place as many things as possible under Ada, except that interfacing is a separate category, and we have tried to place library units whose use is highly nonportable under System. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Requirements
@@ -54,28 +58,38 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI95-00434-01", "AI12-0052-1", "AI12-0114-1", "AI12-0200-1", "AI12-0439-1"]} />
 <p>The implementation shall ensure that  concurrent calls on any two (possibly the same) language-defined subprograms  perform as specified, so long as all pairs of objects (one from each call) that are either denoted by parameters that can  be passed by reference, or are designated by parameters of an access type, are nonoverlapping. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>3.a.1/4</MarginText>
 <MarginInfo items={["AI12-0052-1", "AI12-0114-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>So long as the parameters are disjoint, concurrent calls on the same language-defined subprogram, and concurrent calls on two different language-defined subprograms are required to work. But concurrent calls operating on overlapping objects (be they of the same or different language-defined subprograms) are <em>not</em> required to work (being an erroneous use of shared variables) unless both subprograms are required to pass the associated parameter by-copy.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>3.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 For example, simultaneous calls to Text_IO.Put will work properly, so long as they are going to two different files. On the other hand, simultaneous output to the same file constitutes erroneous use of shared variables. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>3.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>Here, &ldquo;language defined subprogram&rdquo; means a language defined library subprogram, a subprogram declared in the visible part of a language defined library package, an instance of a language defined generic library subprogram, or a subprogram declared in the visible part of an instance of a language defined generic library package. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>3.b.1/4</MarginText>
 <MarginInfo items={["AI12-0052-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This rule applies to all language-defined subprograms, including those defined in packages that manage some global state (like environment variables or the current directory). Unless specified above, such subprograms need to work when the explicit parameters are not overlapping; in particular, the existence of the global state is not considered.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>3.c/4</MarginText>
 <MarginInfo items={["AI12-0052-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The rule implies that any data local to the private part or body of the package (including global state as described above) has to be somehow protected against simultaneous access. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>3.1/4</MarginText>
 <MarginInfo items={["AI12-0052-1", "AI12-0159-1"]} />
@@ -85,9 +99,11 @@ The rule implies that any data local to the private part or body of the package 
 <MarginInfo items={["AI05-0048-1"]} />
 <p>If a descendant of a language-defined tagged type is declared, the implementation shall ensure that each inherited language-defined subprogram behaves as described in this Reference Manual. In particular, overriding a language-defined subprogram shall not alter the effect of any inherited language-defined subprogram. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>3.d/3</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This means that internally the implementation must not do redispatching unless it is required by the Standard. So when we say that some subprogram Bar is equivalent to Foo, overriding Foo for a derived type doesn't change the semantics of Bar, and in particular it means that Bar may no longer be equivalent to Foo. The word &ldquo;equivalent&rdquo; is always a bit of a lie anyway. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Permissions
@@ -95,84 +111,112 @@ The rule implies that any data local to the private part or body of the package 
 <MarginText>4</MarginText>
 <p>The implementation may restrict the replacement of language-defined compilation units. The implementation may restrict children of language-defined library units (other than Standard). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>4.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>For example, the implementation may say, &ldquo;you cannot compile a library unit called System&rdquo; or &ldquo;you cannot compile a child of package System&rdquo; or &ldquo;if you compile a library unit called System, it has to be a package, and it has to contain at least the following declarations: ...&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.b/5</MarginText>
 <MarginInfo items={["AI12-0112-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Implementations are of course allowed to make changes to the specifications of language-defined units, so long as those changes are semantically neutral (that is, no program could change legality or effect because of the changes). In particular, an implementation can <strong>with</strong> additional units (especially implementation-defined units) so long as those units do not change the elaboration of the language-defined unit.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.c/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Similarly, an implementation can add postconditions to language-defined subprograms, so long as those postconditions always evaluate to True. This is useful if the implementation can use those postconditions for optimization. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>4.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Many of Ada 83's language-defined library units are now children of Ada or System. For upward compatibility, these are renamed as root library units (see <a href="../AA-J/AA-J.1">J.1</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.e</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The order and lettering of the annexes has been changed. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>4.f/2</MarginText>
 <MarginInfo items={["AI95-00081-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0047</em>{"}"} <strong>Corrigendum:</strong> Units missing from the list of predefined units were added.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.g/2</MarginText>
 <MarginInfo items={["AI95-00424-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added new units to the list of predefined units. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>4.h/3</MarginText>
 <MarginInfo items={["AI05-0048-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Added wording to ban redispatching unless it is explicitly required, in order to safeguard portability when overriding language-defined routines.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.i/3</MarginText>
 <MarginInfo items={["AI05-0060-1", "AI05-0206-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Added a permission to omit pragma Remote_Types from language-defined units if Annex E is not supported. This was later removed, as a better method of supporting the reason is now available. Note that this requires all implementations to provide minimal support for the Remote_Types categorization even if Annex E is not supported; being unable to compile language-defined units is not allowed.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.j/3</MarginText>
 <MarginInfo items={["AI05-0001-1", "AI05-0049-1", "AI05-0069-1", "AI05-0111-3", "AI05-0136-1", "AI05-0137-1", "AI05-0166-1", "AI05-0168-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added various new units to the list of predefined units. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>4.k/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 When a new entity <em>E</em> is added to a package <em>P</em> that is <strong>use</strong>d in client code, <em>use clause conflicts</em> are possible. Specifically, if <em>P</em> is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>F</em> with the same defining identifier as <em>E</em> is defined in some other package that is also referenced in a <em>use_clause</em>, the user-defined entity <em>F</em> may no longer be use-visible, resulting in errors. This is an incompatibility when the new entity is added to a language-defined package. Note that use clause conflicts are rare and easily fixed by using an expanded name. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>4.k.1/4</MarginText>
 <MarginInfo items={["AI12-0052-1", "AI12-0114-1", "AI12-0159-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> The rules requiring concurrent access of language-defined subprograms were expanded to include implicit Text_IO objects, overlapping objects designated by parameters of an access type, and simultaneous calls on different language-defined subprograms. While this might change behavior of some programs, it would do so by eliminating erroneous execution, so we don't consider this an inconsistency.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.k.2/5</MarginText>
 <MarginInfo items={["AI12-0200-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> The rules requiring concurrent access of language-defined subprograms were clarified further.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.l/5</MarginText>
 <MarginInfo items={["AI12-0021-1", "AI12-0208-1", "AI12-0234-1", "AI12-0254-1", "AI12-0293-1", "AI12-0321-1", "AI12-0340-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added various new units to the list of predefined units. <br /></Admonition>
+</AnnotatedOnly>
 

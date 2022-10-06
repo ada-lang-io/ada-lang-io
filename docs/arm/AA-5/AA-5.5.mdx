@@ -89,9 +89,11 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI12-0250-1", "AI12-0327-1"]} />
 <p>The <em>filter</em> of an <em>iterator construct</em>  (a <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code>, <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>, or <code><a href="../AA-5/AA-5.5#S0185">procedural_iterator</a></code>) is defined to be <em>satisfied</em> when there is no <code><a href="../AA-5/AA-5.5#S0182">iterator_filter</a></code> for the iterator construct, or when the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> of the <code><a href="../AA-5/AA-5.5#S0182">iterator_filter</a></code> evaluates to True for a given iteration of the iterator construct.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>6.a.1/5</MarginText>
-<Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
+<Admonition type="aarm" aarm="glossary-entry">
 <strong></strong>An iterator filter is a construct that is used to restrict the elements produced by an iteration to those for which a boolean condition evaluates to True.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7</MarginText>
 <MarginText>7.1/5</MarginText>
@@ -117,26 +119,35 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginInfo items={["AI05-0139-2", "AI05-0262-1", "AI12-0071-1", "AI12-0119-1", "AI12-0250-1", "AI12-0251-1", "AI12-0294-1", "AI12-0355-2", "AI12-0416-1"]} />
 <p> For the execution of a <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code> that has an  <code><a href="../AA-5/AA-5.5#S0179">iteration_scheme</a></code> including a  <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code>, after elaborating the <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code> and <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>, if any, the <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code> is  elaborated. This  elaborates the <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code>, which defines the subtype of the loop parameter. If the <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code> defines a subtype with a null range, the execution of the <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code> is complete. Otherwise, the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> is conditionally executed once for each value of the discrete subtype defined by the <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code> that satisfies the predicates of the subtype (or until the loop is left as a consequence of a transfer of control). Prior to each such iteration, the corresponding value of the discrete subtype is assigned to the loop parameter associated with the given iteration. If the loop is a parallel loop, each chunk has its own logical thread of control with its own copy of the loop parameter; otherwise (a <em>sequential loop</em>), a single logical thread of control performs the loop, and there is a single copy of the loop parameter. Each logical thread of control handles a distinct subrange of the values of the subtype of the loop parameter such that all values are covered with no overlaps. Within each logical thread of control, the  values are assigned to the loop parameter in increasing order unless the reserved word <strong>reverse</strong> is present, in which case the values are assigned in decreasing order. In the absence of a transfer of control, the associated parallel construct of a <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code> is complete when all of its logical threads of control are complete. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>10.a.1/5</MarginText>
 <MarginInfo items={["AI12-0294-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>This wording does not describe when the loop parameter object(s) are created. That creation has no side-effects (other than possibly raising Storage_Error, but anything can do that), so we simplified the wording by leaving it out. Each object has to be created before any iteration that depends on it starts, but we do not (for instance) require that the objects are all created at once at the start of the loop, nor that the objects are created after the elaboration of the <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>10.a/5</MarginText>
 <MarginInfo items={["AI12-0294-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <em>This paragraph was deleted.</em><strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>10.b/3</MarginText>
 <MarginInfo items={["AI05-0262-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The predicate (if any) necessarily has to be a static predicate as a dynamic predicate is explicitly disallowed &mdash; see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>10.c/3</MarginText>
 <MarginInfo items={["AI05-0262-1"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>If there is a predicate, the loop still visits the values in the order of the underlying base type; the order of the values in the predicate is irrelevant. This is the case so that the following loops have the same sequence of calls and parameters on procedure Call for any subtype S: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>10.d</MarginText>
 <CodeBlock language="ada">
 for I in S loop{"\n"}   Call (I);{"\n"}end loop;{"\n"}
@@ -144,10 +155,13 @@ for I in S loop{"\n"}   Call (I);{"\n"}end loop;{"\n"}
 for I in S'Base loop{"\n"}   if I in S then{"\n"}      Call (I);{"\n"}   end if;{"\n"}end loop;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>10.f/5</MarginText>
 <MarginInfo items={["AI12-0416-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The rules for completing a parallel construct when there is a transfer of control are given in <a href="../AA-5/AA-5.1">5.1</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>11/5</MarginText>
 <MarginInfo items={["AI12-0251-1", "AI12-0294-1"]} />
@@ -161,32 +175,44 @@ for I in S'Base loop{"\n"}   if I in S then{"\n"}      Call (I);{"\n"}   end if;
 <MarginInfo items={["AI05-0262-1", "AI12-0250-1", "AI12-0266-1"]} />
 <p>[For details about the execution of a <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code> with the <code><a href="../AA-5/AA-5.5#S0179">iteration_scheme</a></code> including an  <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>, see <a href="../AA-5/AA-5.5#Subclause_5.5.2">5.5.2</a>. For details relating to a <code><a href="../AA-5/AA-5.5#S0185">procedural_iterator</a></code>, see <a href="../AA-5/AA-5.5#Subclause_5.5.3">5.5.3</a>.]<br /></p>
 
+<AnnotatedOnly>
 <MarginText>14/5</MarginText>
 <MarginInfo items={["AI12-0250-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   A loop parameter declared by a <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code> is a constant; it cannot be updated within the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the loop (see <a href="../AA-3/AA-3.3">3.3</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>15/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   No separate  <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> is expected  for a loop parameter, since the loop parameter is automatically declared by the <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code>. The scope of a loop parameter extends from the <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code> to the end of the <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code>, and the visibility rules are such that a loop parameter is only visible within the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the loop. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>15.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>An implementation could give a warning if a variable is hidden by a <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   The <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code> of a for loop is elaborated just once. Use of the reserved word <strong>reverse</strong> does not alter the discrete subtype defined, so that the following <code><a href="../AA-5/AA-5.5#S0179">iteration_scheme</a></code>s are not equivalent; the first has a null range. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>17</MarginText>
 <CodeBlock language="ada">
 for J in reverse 1 .. 0{"\n"}for J in 0 .. 1{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>17.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>If a <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code> has a static discrete range, the subtype of the loop parameter is static. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -255,43 +281,55 @@ begin{"\n"}   parallel (Chunk in Chunk_Number){"\n"}   for I in Grid'Range(1) lo
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>33.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The constant-ness of loop parameters is specified in <a href="../AA-3/AA-3.3">3.3</a>, &ldquo;<a href="../AA-3/AA-3.3">Objects and Named Numbers</a>&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>33.b/3</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI05-0262-1", "AI05-0299-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Generalized <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>s are allowed in <strong>for</strong> loops; these are documented as an extension in the appropriate subclause. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>33.c/5</MarginText>
 <MarginInfo items={["AI12-0119-1", "AI12-0251-1", "AI12-0266-1", "AI12-0294-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Parallel loops are new.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>33.d/5</MarginText>
 <MarginInfo items={["AI12-0250-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 An <code><a href="../AA-5/AA-5.5#S0182">iterator_filter</a></code> is now allowed on <code><a href="../AA-5/AA-5.5#S0181">loop_parameter_specification</a></code>s. This is mainly for consistency with aggregate and reduction iterators, where it eliminates the need for temporary objects. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>33.e/4</MarginText>
 <MarginInfo items={["AI12-0071-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Updated wording of loop execution to use the new term "satisfies the predicates" (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>33.f/5</MarginText>
 <MarginInfo items={["AI12-0061-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added text so that the nominal subtype of a loop parameter is clearly defined. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_5.5.1"></a>
 
@@ -340,10 +378,12 @@ generic{"\n"}   type Cursor;{"\n"}   with function Has_Element (Position : Curso
 end Ada.Iterator_Interfaces;{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>5.a/5</MarginText>
 <MarginInfo items={["AI12-0241-1"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This package must allow blocking (Nonblocking ={">"} False) for compatibility. The purpose of this package is to provide a template for overriding user-defined routines; and such routines can only allow blocking if the root type does so. Users can still declare their overridding routines nonblocking if they wish. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>6/5</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI12-0266-1"]} />
@@ -359,9 +399,11 @@ end Ada.Iterator_Interfaces;{"\n"}
 <dl>
 <dd>This aspect is specified by a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes exactly one function declared immediately within the same declaration list in which <em>T</em>, or the declaration completed by <em>T</em>, is declared, whose first parameter is of type <em>T</em> or <em>T</em>'Class or an access parameter whose designated type is type <em>T</em> or <em>T</em>'Class, whose other parameters, if any, have default expressions, and whose result type is an iterator type. This function is the <em>default iterator function</em> for <em>T</em>. Its result subtype is the <em>default iterator subtype</em> for <em>T</em>. The iteration cursor subtype for the default iterator subtype is the <em>default cursor subtype</em> for <em>T</em>. This aspect is inherited by descendants of type <em>T</em> (including <em>T</em>'Class).<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>8.a/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Default_Iterator: </strong>Default iterator to be used in <strong>for</strong> loops.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9/5</MarginText>
 <MarginInfo items={["AI12-0111-1"]} />
@@ -369,9 +411,11 @@ end Ada.Iterator_Interfaces;{"\n"}
 <dl>
 <dd>This aspect is specified by a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a subtype. This is the <em>default element subtype</em> for <em>T</em>. This aspect is inherited by descendants of type <em>T</em> (including <em>T</em>'Class).<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>9.a/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Iterator_Element: </strong>Element type to be used for user-defined iterators.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9.1/5</MarginText>
 <MarginInfo items={["AI12-0111-1"]} />
@@ -393,17 +437,23 @@ end Ada.Iterator_Interfaces;{"\n"}
 <dl>
 <dd>This aspect is never inherited[, even by <em>T</em>'Class].<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>9.b/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Iterator_View allows specifying an alternative type to be automatically used by container element iterators; see <a href="../AA-5/AA-5.5#Subclause_5.5.2">5.5.2</a>. This allows setting state for an iteration only once rather than for each individual reference. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>9.c/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Since Iterator_View is not inherited, it does not apply to <em>T</em>'Class. Otherwise, the type of the iterator object would not be known at compile-time (since it necessarily has to be different for each descendant). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>9.d/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Iterator_View: </strong>An alternative type to used for container element iterators.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10/5</MarginText>
 <MarginInfo items={["AI12-0111-1"]} />
@@ -413,18 +463,22 @@ end Ada.Iterator_Interfaces;{"\n"}
 <MarginInfo items={["AI05-0139-2", "AI05-0292-1", "AI12-0266-1"]} />
 <p>An <em>iterable container type</em> is an indexable container type with specified Default_Iterator and Iterator_Element aspects. A <em>reversible iterable container type</em> is an iterable container type with the default iterator type being a reversible iterator type. A <em>parallel iterable container type</em> is an iterable container type with the default iterator type being a parallel iterator type. An <em>iterable container object</em> is an object of an iterable container type. A <em>reversible iterable container object</em> is an object of a reversible iterable container type. A <em>parallel iterable container object</em> is an object of a parallel iterable container type.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>11.a.1/3</MarginText>
-<Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
+<Admonition type="aarm" aarm="glossary-entry">
 <strong></strong>An iterable container type is one that has user-defined behavior for iteration, via the Default_Iterator and Iterator_Element aspects.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>12</MarginText>
 <MarginText>12.1/4</MarginText>
 <MarginInfo items={["AI12-0138-1"]} />
 <p>The Default_Iterator and Iterator_Element aspects are nonoverridable (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>12.a/4</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This ensures that all descendants of an iterable container type have aspects with the same properties. This prevents generic contract problems with formal derived types. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Legality Rules
@@ -444,9 +498,11 @@ end Ada.Iterator_Interfaces;{"\n"}
 <MarginText>17/3</MarginText>
 <p>This function (if any) is the <em>default constant indexing function</em> for <em>T</em>.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>17.a/3</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This does not mean that Constant_Indexing has to designate only one subprogram, only that there is only one routine that meets all of these properties. There can be other routines designated by Constant_Indexing, but they cannot have the profile described above. For instance, map containers have a version of Constant_Indexing that takes a key instead of a cursor; this is allowed. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>18/3</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI05-0292-1"]} />
@@ -470,43 +526,55 @@ end Ada.Iterator_Interfaces;{"\n"}
 <MarginInfo items={["AI12-0354-1"]} />
 <p>A call on the First or Next operation on a given Parallel_Iterator object with a given Chunk value, which does not propagate an exception, should return a Cursor value that either yields False when passed to Has_Element, or that identifies an element distinct from any Cursor value returned by a call on a First or Next operation on the same Parallel_Iterator object with a different Chunk value. If the First or Next operations with a Chunk parameter behave in any other manner, execution is erroneous. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>23.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This describes the expectations from a user-written parallel iterator. If the expectations are not met, execution is erroneous so that implementations do not need to go to heroic efforts to avoid problems caused by bad iterators. This is similar to the handling of storage pools, see <a href="../AA-13/AA-13.11">13.11</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>23.b/3</MarginText>
 <MarginInfo items={["AI05-0139-2"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 User-defined iterator types are new in Ada 2012. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>23.c/4</MarginText>
 <MarginInfo items={["AI12-0138-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Defined Default_Iterator and Iterator_Element to be nonoveridable, which makes redefinitions and hiding of these aspects illegal. It's possible that some program could violate one of these new restrictions, but in most cases this can easily be worked around by using overriding rather than redefinition.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>23.d/5</MarginText>
 <MarginInfo items={["AI12-0266-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Various new types and subprograms are newly added to Ada.Iterator_Interfaces. Therefore, a use clause conflict is possible; see the introduction of <a href="../AA-A/">Annex A</a> for more on this topic. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>23.e/5</MarginText>
 <MarginInfo items={["AI12-0111-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Aspect Iterator_View is new; it allows container element iterators to set the tampering state once rather than for each use of the element.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>23.f/5</MarginText>
 <MarginInfo items={["AI12-0266-1", "AI12-0354-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Parallel iterator interfaces are new; they allow user-defined parallel loops to be defined. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_5.5.2"></a>
 
@@ -544,9 +612,11 @@ Parallel iterator interfaces are new; they allow user-defined parallel loops to 
 <MarginInfo items={["AI05-0139-2", "AI05-0292-1"]} />
 <p>For the first form of <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>, called a <em>generalized iterator</em>, the expected type for the <em>iterator_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is any iterator type. For the second form of <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>, the expected type for the <em>iterable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is any array or iterable container type. If the <em>iterable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes an array object, the <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code> is called an <em>array component iterator</em>; otherwise it is called a <em>container element iterator</em>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>3.a.1/3</MarginText>
-<Admonition type="aarm" aarm="glossary-entry" title="Glossary entry: ">
+<Admonition type="aarm" aarm="glossary-entry">
 <strong></strong>An iterator is a construct that is used to loop over the elements of an array or container. Iterators may be user defined, and may perform arbitrary computations to access elements from a container.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Legality Rules
@@ -568,25 +638,31 @@ Parallel iterator interfaces are new; they allow user-defined parallel loops to 
 <MarginInfo items={["AI12-0047-1"]} />
 <p>The <em>iterator_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <em>iterable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> of an <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code> shall not denote a subcomponent that depends on discriminants of an object whose nominal subtype is unconstrained, unless the object is known to be constrained.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.a/4</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This is the same rule that applies to renames; it serves the same purpose of preventing the object from disappearing while the iterator is still using it. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7.2/4</MarginText>
 <MarginInfo items={["AI12-0120-1"]} />
 <p>A container element iterator is illegal if the call of the default iterator function that creates the loop iterator (see below) is illegal.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.b/4</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This can happen if the parameter to the default iterator function is <strong>in out</strong> and the <em>iterable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is a constant. The wording applies to any reason that the call would be illegal, as it's possible that one of the default parameters would be illegal, or that some accessibility check would fail. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7.3/4</MarginText>
 <MarginInfo items={["AI12-0120-1"]} />
 <p>A generalized iterator is illegal if the iteration cursor subtype of the <em>iterator_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is a limited type at the point of the generalized iterator. A container element iterator is illegal if the default cursor subtype of the type of the <em>iterable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is a limited type at the point of the container element iterator.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.c/4</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>If the cursor type is limited, the assignment to the loop parameter for a generalized iterator would be illegal. The same is true for a container element iterator. We have to say "at the point of the iterator" as the limitedness of a type can change due to visibility. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -599,10 +675,12 @@ Parallel iterator interfaces are new; they allow user-defined parallel loops to 
 <MarginInfo items={["AI05-0139-2", "AI05-0292-1"]} />
 <p>In a generalized iterator, the loop parameter is a constant. In an array component iterator, the loop parameter is a constant if the <em>iterable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes a constant; otherwise it denotes a variable. In a container element iterator, the loop parameter is a constant if the <em>iterable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> denotes a constant, or if the Variable_Indexing aspect is not specified for the type of the <em>iterable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>; otherwise it is a variable.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>9.a/5</MarginText>
 <MarginInfo items={["AI12-0093-1", "AI12-0156-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The loop parameter of a generalized iterator has the same accessibility as the loop statement. This means that the loop parameter object is finalized when the loop statement is left. (It also may be finalized as part of assigning a new value to the loop parameter.) For array component iterators , the loop parameter directly denotes an element of the array  and has the accessibility of the associated array . For container element iterators, the loop parameter denotes the result of the indexing function call (in the case of a constant indexing) or a generalized reference thereof (in the case of a variable indexing). Roughly speaking, the loop parameter has the accessibility level of a single iteration of the loop. More precisely, the function result (or the generalized reference thereof) is considered to be renamed in the declarative part of a notional block statement which immediately encloses the loop's <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>; the accessibility of the loop parameter is that of the block statement. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Dynamic Semantics
@@ -615,22 +693,28 @@ Parallel iterator interfaces are new; they allow user-defined parallel loops to 
 <MarginInfo items={["AI05-0139-2", "AI12-0250-1", "AI12-0266-1"]} />
 <p>For a sequential generalized iterator, the loop parameter is created, the <em>iterator_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is evaluated, and the denoted iterator object becomes the <em>loop iterator</em>. In a forward generalized iterator, the operation First of the iterator type is called on the loop iterator, to produce the initial value for the loop parameter. If the result of calling Has_Element on the initial value is False, then the execution of the <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code> is complete. Otherwise, the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> is conditionally executed and then the Next operation of the iterator type is called with the loop iterator and the current value of the loop parameter to produce the next value to be assigned to the loop parameter. This repeats until the result of calling Has_Element on the loop parameter is False, or the loop is left as a consequence of a transfer of control. For a reverse generalized iterator, the operations Last and Previous are called rather than First and Next.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>11.a/4</MarginText>
 <MarginInfo items={["AI12-0093-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The loop parameter of a generalized iterator is a variable of which the user only has a constant view. It follows the normal rules for a variable of its nominal subtype. In particular, if the nominal subtype is indefinite, the variable is constrained by its initial value. Similarly, if the nominal subtype is class-wide, the variable (like all variables) has the tag of the initial value. Constraint_Error may be raised by a subsequent iteration if Next or Previous return an object with a different tag or constraint. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>11.1/5</MarginText>
 <MarginInfo items={["AI12-0266-1"]} />
 <p>For a parallel generalized iterator, the <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>, if any, of the associated parallel construct, is first elaborated, to determine the maximum number of chunks (see <a href="../AA-5/AA-5.5">5.5</a>), and then the operation Split_Into_Chunks of the iterator type is called, with the determined maximum passed as the Max_Chunks parameter, specifying the upper bound for the number of loop parameter objects (and the number of logical threads of control) to be associated with the iterator. In the absence of a <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>, the maximum number of chunks is determined in an implementation-defined manner.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>11.b/5</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The maximum number of chunks for a parallel generalized iterator without a <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.c/5</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The Max_Chunks parameter of the Split_Into_Chunks procedure is an upper bound for the number of chunks to be associated with a loop. A container implementation may opt for a lower value for the number of chunks if a more optimal split can be determined. For instance, a tree-based container might create the split based on the number of branches at the top levels of the tree. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>11.2/5</MarginText>
 <MarginInfo items={["AI12-0250-1", "AI12-0266-1", "AI12-0418-1"]} />
@@ -648,9 +732,11 @@ Parallel iterator interfaces are new; they allow user-defined parallel loops to 
 <MarginInfo items={["AI05-0139-2", "AI05-0292-1", "AI12-0250-1", "AI12-0266-1"]} />
 <p>For an array component iterator, the <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code> of the associated parallel construct, if any, is first elaborated to determine the maximum number of chunks (see <a href="../AA-5/AA-5.5">5.5</a>), and then the <em>iterable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is evaluated and the denoted array object becomes the <em>array for the loop</em>. If the array for the loop is a null array, then the execution of the <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code> is complete. Otherwise, the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> is conditionally executed with the loop parameter denoting each component of the array for the loop, using a <em>canonical</em> order of components, which is last dimension varying fastest (unless the array has convention Fortran, in which case it is first dimension varying fastest). For a forward array component iterator, the iteration starts with the component whose index values are each the first in their index range, and continues in the canonical order. For a reverse array component iterator, the iteration starts with the component whose index values are each the last in their index range, and continues in the reverse of the canonical order. For a parallel array component iterator, the iteration is broken up into contiguous chunks of the canonical order, such that all components are covered with no overlaps; each chunk has its own logical thread of control with its own loop parameter and iteration within each chunk is in the canonical order. The number of chunks is implementation defined, but is limited in the presence of a <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code> to the determined maximum. The loop iteration proceeds until the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> has been conditionally executed for each component of the array for the loop, or until the loop is left as a consequence of a transfer of control.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>12.a/5</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The number of chunks for an array component iterator.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>12.1/5</MarginText>
 <MarginInfo items={["AI12-0266-1"]} />
@@ -660,10 +746,12 @@ Parallel iterator interfaces are new; they allow user-defined parallel loops to 
 <MarginInfo items={["AI05-0139-2", "AI05-0292-1", "AI12-0111-1", "AI12-0266-1"]} />
 <p>For a container element iterator, the <code><a href="../AA-5/AA-5.5#S0180">chunk_specification</a></code> of the associated parallel construct, if any, is first elaborated to determine the maximum number of chunks (see <a href="../AA-5/AA-5.5">5.5</a>), and then the <em>iterable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is evaluated. If the container type has Iterator_View specified, an object of the Iterator_View type is created with the discriminant referencing the iterable container object denoted by the <em>iterable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>. This is the <em>iterable container object for the loop</em>. Otherwise,  the iterable container object denoted by the <em>iterable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> becomes the iterable container object for the loop . The default iterator function for the type of the iterable container object for the loop is called on the iterable container object and the result is the <em>loop iterator</em>. For a sequential container element iterator, an  object of the default cursor subtype is created (the <em>loop cursor</em>). For a parallel container element iterator, each chunk of iterations will have its own loop cursor, again of the default cursor subtype.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>13.a/5</MarginText>
 <MarginInfo items={["AI12-0111-1"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>If Iterator_View is specified, we add an extra object and use that object for this iteration. This allows these iterators to automatically use the stable view (defined in each of the language-defined containers) to do the iteration. That eliminates the need to set and clear the tampering with elements indication each time Reference is called; that eliminates substantial overhead as finalization is typically used to implement the tampering reset. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>14/5</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI05-0292-1", "AI12-0266-1"]} />
@@ -673,9 +761,11 @@ Parallel iterator interfaces are new; they allow user-defined parallel loops to 
 <MarginInfo items={["AI12-0120-1"]} />
 <p>Any exception propagated by the execution of a generalized iterator or container element iterator is propagated by the immediately enclosing loop statement.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>15.a/4</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This text covers exceptions raised by called functions that make up the execution of the iterator as well as exceptions raised by the assignment to the loop parameter or cursor. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -697,59 +787,77 @@ parallel {"\n"}for Element of Board loop  -- See <a href="../AA-3/AA-3.6#Subclau
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>18.a/3</MarginText>
 <MarginInfo items={["AI05-0139-2"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Generalized forms of loop iteration are new. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>18.b/4</MarginText>
 <MarginInfo items={["AI12-0047-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added a rule to ensure that the object being iterated cannot be a component that could disappear before the loop completes. This could be incompatible by making a loop that was legal (and worked correctly, so long as the enclosing object is not modified during the loop) from the original Ada 2012 illegal in corrected Ada 2012. Such loops should be pretty rare, especially as these iterator forms are new to Ada 2012.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18.c/4</MarginText>
 <MarginInfo items={["AI12-0120-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added rules to reject loops if the call to the default iterator function for a container element iterator is illegal, or if the cursor type of an iterator is limited. These are formally incompatible with original Ada 2012, but as it's unlikely that any Ada 2012 compiler ever allowed the illegal usages in an expansion of a loop (it's much more likely that they would have just caused an internal error in the compiler), this should have no effect in practice.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18.d/4</MarginText>
 <MarginInfo items={["AI12-0151-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added a requirement that the given subtype statically match the subtype of the element or component for a component element iterator or array component iterator. Original Ada 2012 text allowed any type that covered the subtype of the element or component, but that led to questions of what the meaning was if they are different. In this case, the element is essentially a renaming of the container element, and it doesn't make sense for the constraints to be different. Ignoring explicitly defined constraints in renames is a mistake that we don't want to continue, thus we require static matching. This means that some programs might be illegal, but those programs were misleading at best, and potentially would raise unexpected exceptions because the element values might have been invalid or abnormal with respect to the declared constraint. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>18.e/5</MarginText>
 <MarginInfo items={["AI12-0156-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 For consistency, we now allow a <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> on a generalized iterator, and anonymous access types on all forms of iterator. We introduced a new syntax non-terminal, <code><a href="../AA-5/AA-5.5#S0184">loop_parameter_subtype_indication</a></code> to simplfy the wording.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18.f/5</MarginText>
 <MarginInfo items={["AI12-0250-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 An <code><a href="../AA-5/AA-5.5#S0182">iterator_filter</a></code> is now allowed on <code><a href="../AA-5/AA-5.5#S0183">iterator_specification</a></code>s. This is mainly for consistency with aggregate and reduction iterators, where it eliminates the need for temporary objects. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>18.g/4</MarginText>
 <MarginInfo items={["AI12-0120-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added wording to specify that a loop propagates any exceptions propagated by the execution of an iterator. Since that's what naturally would happen from a macro-style expansion of the parts of an iterator, and no other interpretation makes sense given the way the rest of Ada works, we consider it so unlikely that any Ada 2012 implementation ever did anything else that we don't document this as a possible inconsistency.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18.h/5</MarginText>
 <MarginInfo items={["AI12-0111-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added wording to include the use of the iterator view in a container element iterator.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18.i/5</MarginText>
 <MarginInfo items={["AI12-0266-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added wording to describe the execution of parallel iterators. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_5.5.3"></a>
 
@@ -838,10 +946,12 @@ Added wording to describe the execution of parallel iterators. <br /></Admonitio
 <MarginInfo items={["AI12-0189-1", "AI12-0292-1"]} />
 <p>[If the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> given in an <code><a href="../AA-5/AA-5.5#S0187">iterator_procedure_call</a></code> denotes an abstract subprogram, the subprogram shall be a dispatching subprogram.]<br /></p>
 
+<AnnotatedOnly>
 <MarginText>14.a/5</MarginText>
 <MarginInfo items={["AI12-0320-1"]} />
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>This is stated normatively in <a href="../AA-3/AA-3.9#Subclause_3.9.3">3.9.3</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -850,16 +960,20 @@ Added wording to describe the execution of parallel iterators. <br /></Admonitio
 <MarginInfo items={["AI12-0189-1", "AI12-0250-1", "AI12-0308-1", "AI12-0326-2"]} />
 <p>A <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code> with an <code><a href="../AA-5/AA-5.5#S0179">iteration_scheme</a></code> that has a <code><a href="../AA-5/AA-5.5#S0185">procedural_iterator</a></code> is equivalent to a local declaration of a procedure P followed by a <code><a href="../AA-6/AA-6.4#S0217">procedure_call_statement</a></code> that is formed from the <code><a href="../AA-5/AA-5.5#S0187">iterator_procedure_call</a></code> by replacing the {"<"}{">"} of the <code><a href="../AA-5/AA-5.5#S0190">parameter_association_with_box</a></code> with P'Access. The <code><a href="../AA-6/AA-6.1#S0206">formal_part</a></code> of the locally declared procedure P is formed from the <code><a href="../AA-6/AA-6.1#S0206">formal_part</a></code> of the anonymous access-to-procedure type <em>A</em>, by replacing the <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> of each formal parameter of this <code><a href="../AA-6/AA-6.1#S0206">formal_part</a></code> with the <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> of the corresponding formal parameter or element of the list of <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code>s given in the <code><a href="../AA-5/AA-5.5#S0186">iterator_parameter_specification</a></code>. The body of <em>P</em> consists of the conditionally executed <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code>. The procedure P is called the <em>loop body procedure</em>.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>15.a/5</MarginText>
 <MarginInfo items={["AI12-0250-1"]} />
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>For a <code><a href="../AA-5/AA-5.5#S0185">procedural_iterator</a></code> with an <code><a href="../AA-5/AA-5.5#S0182">iterator_filter</a></code>, the body of the routine would be something like:<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>15.b/5</MarginText>
 <CodeBlock language="ada">
 procedure P ... is{"\n"}begin{"\n"}   if <a href="../AA-5/AA-5.5#S0182">iterator_filter</a> then{"\n"}      <a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a>{"\n"}   end if;{"\n"}end P;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
 <MarginText>16/5</MarginText>
 <MarginInfo items={["AI12-0344-1"]} />
 <p>In a procedural iterator, the Parallel_Calls aspect (see <a href="../AA-9/AA-9.10#Subclause_9.10.1">9.10.1</a>) of the loop body procedure is True if the reserved word <strong>parallel</strong> occurs in the corresponding loop statement, and False otherwise.<br /></p>
@@ -873,21 +987,27 @@ procedure P ... is{"\n"}begin{"\n"}   if <a href="../AA-5/AA-5.5#S0182">iterator
 <dl>
 <dd>The Allows_Exit aspect is of type Boolean. The specified value shall be static. The Allows_Exit aspect of an inherited primitive subprogram is True if Allows_Exit is True either for the corresponding subprogram of the progenitor type or for any other inherited subprogram that it overrides. If not specified or inherited as True, the Allows_Exit aspect of a callable entity is False. For an entry, only a confirming specification of False is permitted for the Allows_Exit aspect.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>18.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>An entry does not allow exit, because implementing a transfer of control out of a task or protected entry creates unnecessarily complex dynamic semantics. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>19/5</MarginText>
 <dl>
 <dd>Specifying the Allows_Exit aspect to be True for a subprogram indicates that the subprogram <em>allows exit</em>, meaning that it is prepared to be completed by arbitrary transfers of control from the loop body procedure[, including propagation of exceptions. A subprogram for which Allows_Exit is True should use finalization as appropriate rather than exception handling to recover resources and make any necessary final updates to data structures].<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>19.a/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Allows_Exit: </strong>An indication of whether a subprogram will operate correctly for arbitrary transfers of control.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>19.b/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>A subprogram that does not need cleanup satisfies the requirements, and thus can specify Allows_Exit as True. If a subprogram <em>S</em> allows exit, it cannot expect to get control other than via finalization if the loop body procedure initiates a transfer of control as part of a <code><a href="../AA-5/AA-5.5#S0185">procedural_iterator</a></code>. In particular, exception handlers in <em>S</em>, even <strong>when others</strong> handlers, will not be executed when a transfer of control occurs. The mechanism that the implementation uses to implement such transfers of control needs to avoid triggering exception handlers. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>20/5</MarginText>
 <dt><br/>Parallel_Iterator</dt>
@@ -897,13 +1017,17 @@ procedure P ... is{"\n"}begin{"\n"}   if <a href="../AA-5/AA-5.5#S0182">iterator
 <MarginInfo items={["AI12-0189-1", "AI12-0442-1"]} />
 <dd>Specifying the Parallel_Iterator aspect to be True for a callable entity indicates that the entity is allowed to invoke the loop body procedure from multiple distinct logical threads of control. The Parallel_Iterator aspect for a subprogram shall be statically False if the subprogram allows exit.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>21.a/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Parallel_Iterator: </strong>An indication of whether a subprogram may use multiple threads of control to invoke a loop body procedure.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>21.b/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Permitting exit from a parallel procedural iterator introduces additional semantic and implementation complexity. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Legality Rules
@@ -912,9 +1036,11 @@ procedure P ... is{"\n"}begin{"\n"}   if <a href="../AA-5/AA-5.5#S0182">iterator
 <MarginInfo items={["AI12-0189-1", "AI12-0326-2"]} />
 <p>If a callable entity overrides an inherited dispatching subprogram that allows exit, the overriding callable entity also shall allow exit. If a callable entity overrides an inherited dispatching subprogram that has a True Parallel_Iterator aspect, the overriding callable entity also shall have a True Parallel_Iterator aspect.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>22.a/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Since an entry never allows exit, attempting to implement an allows exit subprogram with a task or protected entry is always illegal. However, the Parallel_Iterator aspect can be applied to an entry, so a subprogram with the Parallel_Iterator aspect True can be implemented by an entry. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>23/5</MarginText>
 <MarginInfo items={["AI12-0326-2"]} />
@@ -932,13 +1058,17 @@ procedure P ... is{"\n"}begin{"\n"}   if <a href="../AA-5/AA-5.5#S0182">iterator
 <MarginInfo items={["AI12-0294-1"]} />
 <p>The <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of a <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code> with a <code><a href="../AA-5/AA-5.5#S0185">procedural_iterator</a></code> as its <code><a href="../AA-5/AA-5.5#S0179">iteration_scheme</a></code> shall not contain an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> whose <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> occurs outside the <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code>.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>26.a/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>An <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> is not allowed in a procedure (see 9.5.2), it has to be directly in a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>. Since the loop body here is implemented as  a procedure, we can't allow <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s there, either, even if the loop itself is directly in a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>26.b/5</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>This includes cases where the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> is part of another construct, for instance, a <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Dynamic Semantics
@@ -947,9 +1077,11 @@ procedure P ... is{"\n"}begin{"\n"}   if <a href="../AA-5/AA-5.5#S0182">iterator
 <MarginInfo items={["AI12-0326-2", "AI12-0355-2", "AI12-0445-1"]} />
 <p>[For the execution of a <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code> with an <code><a href="../AA-5/AA-5.5#S0179">iteration_scheme</a></code> that has a <code><a href="../AA-5/AA-5.5#S0185">procedural_iterator</a></code>, the procedure denoted by the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the <code><a href="../AA-5/AA-5.5#S0187">iterator_procedure_call</a></code> (the <em>iterating procedure</em>) is invoked, passing an access value designating the loop body procedure as a parameter. The iterating procedure then calls the loop body procedure zero or more times and returns, whereupon the <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code> is complete. If the <strong>parallel</strong> reserved word is present, the iterating procedure is allowed to invoke the loop body procedure from multiple distinct logical threads of control.] The <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>, if any, is elaborated prior to the invocation of the iterating procedure.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>27.a/5</MarginText>
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>The stated dynamic semantics are implied by the static semantics given above and the bounded errors given below. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Bounded (Run-Time) Errors
@@ -962,10 +1094,12 @@ procedure P ... is{"\n"}begin{"\n"}   if <a href="../AA-5/AA-5.5#S0182">iterator
 <MarginInfo items={["AI12-0326-2", "AI12-0445-1"]} />
 <p>If a <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code> with the <code><a href="../AA-5/AA-5.5#S0185">procedural_iterator</a></code> as its <code><a href="../AA-5/AA-5.5#S0179">iteration_scheme</a></code> (see <a href="../AA-5/AA-5.5">5.5</a>) does not begin with the reserved word <strong>parallel</strong>, it is a bounded error if the loop body procedure is invoked from a different logical thread of control than the one that initiates the <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code>. If detected, Program_Error is raised; otherwise, conflicts associated with concurrent executions of the loop body procedure can occur without being detected by the applicable conflict check policy (see <a href="../AA-9/AA-9.10#Subclause_9.10.1">9.10.1</a>). Furthermore, propagating an exception or making an attempt to exit in the presence of multiple threads of control will not necessarily terminate the <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code>, deadlock can occur, or the loop body procedure can be called again.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>29.a/5</MarginText>
 <MarginInfo items={["AI12-0326-2"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Other Ada rules are still in effect for the allows exit subprogram <em>A</em>, of course. For instance, if a transfer of control causes finalization which raises an exception, Program_Error will be propagated by <em>A</em> (rather than the transfer of control). In such a case, the bounded error above would still apply. Another example is the case where an unrelated task is waiting on the normal completion of the loop body procedure call in <em>A</em>. Such a task might end up waiting forever if a transfer of control happens (this is a deadlock situation). This case does not require additional wording, as the same thing would happen if an exception is propagated from the loop body procedure or if <em>A</em> executed a transfer of control (such as a return statement). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -999,8 +1133,10 @@ declare{"\n"}   procedure P (Name : String; Val : String) is{"\n"}   begin{"\n"}
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>37.a/5</MarginText>
 <MarginInfo items={["AI12-0189-1", "AI12-0292-1", "AI12-0294-1", "AI12-0326-2", "AI12-0344-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Procedural iterators, and the Allows_Exit and Parallel_Iterator aspects are new in Ada 2022. <br /></Admonition>
+</AnnotatedOnly>
 

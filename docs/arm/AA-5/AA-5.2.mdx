@@ -31,13 +31,17 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>3</MarginText>
 <p>The execution of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> includes the evaluation of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> and the <em>assignment</em> of the value of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> into the <em>target</em>. [An assignment operation (as opposed to an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>) is performed in other contexts as well, including object initialization and by-copy parameter passing.] The <em>target</em> of an assignment operation is the view of the object to which a value is being assigned; the target of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is the variable denoted by the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>3.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Don't confuse this notion of the &ldquo;target&rdquo; of an assignment with the notion of the &ldquo;target object&rdquo; of an entry call or requeue.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>3.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Don't confuse the term &ldquo;assignment operation&rdquo; with the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>. The assignment operation is just one part of the execution of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>. The assignment operation is also a part of the execution of various other constructs; see <a href="../AA-7/AA-7.6#Subclause_7.6.1">7.6.1</a>, &ldquo;<a href="../AA-7/AA-7.6#Subclause_7.6.1">Completion and Finalization</a>&rdquo; for a complete list. Note that when we say, &ldquo;such-and-such is assigned to so-and-so&rdquo;, we mean that the assignment operation is being applied, and that so-and-so is the target of the assignment operation. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Name Resolution Rules
@@ -46,10 +50,13 @@ Don't confuse the term &ldquo;assignment operation&rdquo; with the <code><a href
 <MarginInfo items={["AI95-00287-01"]} />
 <p>The <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is expected to be of any type. The expected type for the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is the type of the target. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>4.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>An <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> as a whole is a &ldquo;complete context&rdquo;, so if the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is overloaded, the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> can be used to help disambiguate it. For example: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4.b</MarginText>
 <CodeBlock language="ada">
   type P1 is access R1;{"\n"}  type P2 is access R2;{"\n"}
@@ -59,6 +66,7 @@ Don't confuse the term &ldquo;assignment operation&rdquo; with the <code><a href
   X : R1;{"\n"}begin{"\n"}  F.all := X;  -- Right hand side helps resolve left hand side{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
 
 #### Legality Rules
 
@@ -69,9 +77,11 @@ Don't confuse the term &ldquo;assignment operation&rdquo; with the <code><a href
 <MarginText>6</MarginText>
 <p>If the target is of a tagged class-wide type <em>T</em>'Class, then the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> shall either be dynamically tagged, or of type <em>T</em> and tag-indeterminate (see <a href="../AA-3/AA-3.9#Subclause_3.9.2">3.9.2</a>). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>6.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This is consistent with the general rule that a single dispatching operation shall not have both dynamically tagged and statically tagged operands. Note that for an object initialization (as opposed to the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>), a statically tagged initialization expression is permitted, since there is no chance for confusion (or Tag_Check failure). Also, in an object initialization, tag-indeterminate expressions of any type covered by <em>T</em>'Class would be allowed, but with an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>, that might not work if the tag of the target was for a type that didn't have one of the dispatching operations in the tag-indeterminate expression. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Dynamic Semantics
@@ -79,9 +89,11 @@ Don't confuse the term &ldquo;assignment operation&rdquo; with the <code><a href
 <MarginText>7</MarginText>
 <p>For the execution of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>, the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> and the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> are first evaluated in an arbitrary order. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Other rules of the language may require that the bounds of the variable be determined prior to evaluating the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, but that does not necessarily require evaluation of the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>, as pointed out by the ACID. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>8</MarginText>
 <p>When the type of the target is class-wide: <br /></p>
@@ -90,9 +102,11 @@ Don't confuse the term &ldquo;assignment operation&rdquo; with the <code><a href
 <ul>
 <li>If the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is tag-indeterminate (see <a href="../AA-3/AA-3.9#Subclause_3.9.2">3.9.2</a>), then the controlling tag value for the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is the tag of the target; <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>9.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>See <a href="../AA-3/AA-3.9#Subclause_3.9.2">3.9.2</a>, &ldquo;<a href="../AA-3/AA-3.9#Subclause_3.9.2">Dispatching Operations of Tagged Types</a>&rdquo;. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10</MarginText>
 <ul>
@@ -102,17 +116,21 @@ Don't confuse the term &ldquo;assignment operation&rdquo; with the <code><a href
 <MarginInfo items={["AI12-0439-1"]} />
 <p>The value of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is converted to the subtype of the target. [The conversion can  raise an exception (see <a href="../AA-4/AA-4.6">4.6</a>).] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>11.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong><a href="../AA-4/AA-4.6">4.6</a>, &ldquo;<a href="../AA-4/AA-4.6">Type Conversions</a>&rdquo; defines what actions and checks are associated with subtype conversion. For non-array subtypes, it is just a constraint check presuming the types match. For array subtypes, it checks the lengths and slides if the target is constrained. &ldquo;Sliding&rdquo; means the array doesn't have to have the same bounds, so long as it is the same length. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>12/5</MarginText>
 <MarginInfo items={["AI12-0439-1"]} />
 <p>In cases involving controlled types, the target is finalized, and an anonymous object can  be used as an intermediate in the assignment, as described in <a href="../AA-7/AA-7.6#Subclause_7.6.1">7.6.1</a>, &ldquo;<a href="../AA-7/AA-7.6#Subclause_7.6.1">Completion and Finalization</a>&rdquo;. In any case, the converted value of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is then <em>assigned</em> to the target, which consists of the following two steps: <br /></p>
 
+<AnnotatedOnly>
 <MarginText>12.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong><a href="../AA-7/AA-7.6#Subclause_7.6.1">7.6.1</a> actually says that finalization happens always, but unless controlled types are involved, this finalization during an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> does nothing. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>13</MarginText>
 <ul>
@@ -121,26 +139,36 @@ Don't confuse the term &ldquo;assignment operation&rdquo; with the <code><a href
 <MarginInfo items={["AI05-0299-1"]} />
 <li>If any part of the target is controlled, its value is adjusted as explained in subclause <a href="../AA-7/AA-7.6">7.6</a>. <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>14.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>If any parts of the object are controlled, abort is deferred during the assignment operation itself, but not during the rest of the execution of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>15</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE   The tag of an object never changes; in particular, an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> does not change the tag of the target.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16/2</MarginText>
 <MarginInfo items={["AI95-00363-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The implicit subtype conversion described above for <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s is performed only for the value of the right-hand side expression as a whole; it is not performed for subcomponents of the value.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The determination of the type of the variable of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> may require consideration of the expression if the variable name can be interpreted as the name of a variable designated by the access value returned by a function call, and similarly, as a component or slice of such a variable (see <a href="../AA-8/AA-8.6">8.6</a>, &ldquo;<a href="../AA-8/AA-8.6">The Context of Overload Resolution</a>&rdquo;). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -180,44 +208,58 @@ A := B;  --  same number of components{"\n"}
 A(1 .. 9)  := "tar sauce";{"\n"}A(4 .. 12) := A(1 .. 9);  --  A(1 .. 12) = "tartar sauce"{"\n"}
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>28</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   <em>Notes on the examples:</em> <code><a href="../AA-5/AA-5.2#S0173">Assignment_statement</a></code>s are allowed even in the case of overlapping slices of the same array, because the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> and <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> are both evaluated before copying the value into the variable. In the above example, an implementation yielding A(1 .. 12) = "tartartartar" would be incorrect. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>28.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We now allow user-defined finalization and value adjustment actions as part of <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s (see <a href="../AA-7/AA-7.6">7.6</a>, &ldquo;<a href="../AA-7/AA-7.6">Assignment and Finalization</a>&rdquo;). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>28.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The special case of array assignment is subsumed by the concept of a subtype conversion, which is applied for all kinds of types, not just arrays. For arrays it provides &ldquo;sliding&rdquo;. For numeric types it provides conversion of a value of a universal type to the specific type of the target. For other types, it generally has no run-time effect, other than a constraint check.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>28.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We now cover in a general way in <a href="../AA-3/AA-3.7#Subclause_3.7.2">3.7.2</a> the erroneous execution possible due to changing the value of a discriminant when the variable in an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is a subcomponent that depends on discriminants. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 95
 
+<AnnotatedOnly>
 <MarginText>28.d/2</MarginText>
 <MarginInfo items={["AI95-00287-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The change of the limited check from a resolution rule to a legality rule is not quite upward compatible. For example <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>28.e/2</MarginText>
 <CodeBlock language="ada">
 type AccNonLim is access NonLim;{"\n"}function Foo (Arg : in Integer) return AccNonLim;{"\n"}type AccLim is access Lim;{"\n"}function Foo (Arg : in Integer) return AccLim;{"\n"}Foo(2).all := Foo(1).all;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>28.f/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 where NonLim is a nonlimited type and Lim is a limited type. The assignment is legal in Ada 95 (only the first Foo would be considered), and is ambiguous in Ada 2005. We made the change because we want limited types to be as similar to nonlimited types as possible. Limited expressions are now allowed in all other contexts (with a similar incompatibility), and it would be odd if assignments had different resolution rules (which would eliminate ambiguities in some cases). Moreover, examples like this one are rare, as they depend on assigning into overloaded function calls. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_5.2.1"></a>
 
@@ -244,10 +286,12 @@ where NonLim is a nonlimited type and Lim is a limited type. The assignment is l
 <MarginInfo items={["AI12-0125-3"]} />
 <p>[If a <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> occurs in an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> <em>A</em>, the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> <em>V</em> of <em>A</em> is a complete context. The target name is a constant view of <em>V</em>, having the nominal subtype of <em>V</em>.]<br /></p>
 
+<AnnotatedOnly>
 <MarginText>3.a/5</MarginText>
 <MarginInfo items={["AI12-0125-3", "AI12-0322-1"]} />
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>The complete context rule is formally given in <a href="../AA-8/AA-8.6">8.6</a>. The constant view rule is formally given in <a href="../AA-3/AA-3.3">3.3</a>; the nominal subtype is a property taken from the target object as described below in Dynamic Semantics. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Legality Rules
@@ -263,14 +307,18 @@ where NonLim is a nonlimited type and Lim is a limited type. The assignment is l
 <MarginInfo items={["AI12-0125-3", "AI12-0322-1"]} />
 <p>For the execution of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> with one or more <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code>s appearing in its <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> <em>V</em> of the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is evaluated first to determine the object denoted by <em>V</em>, and then the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is evaluated with the evaluation of each <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> yielding a constant view of the the target whose properties are otherwise identical to those of the view provided by <em>V</em>. The remainder of the execution of the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is as given in subclause <a href="../AA-5/AA-5.2">5.2</a>.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>5.a/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>The properties here include static properties like whether the <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> is aliased and the nominal subtype of the <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code>. It was too weird to give separate rules for static and dynamic properties that said almost the same thing. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>5.b/5</MarginText>
 <MarginInfo items={["AI12-0322-1"]} />
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Use of a <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> can be erroneous if the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> <em>V</em> is a discriminant-dependent component, and some other constituent of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> modifies the discriminant governing the component <em>V</em>. The assignment probably would be erroneous anyway, but the use of a <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> eliminates the possibility that a later evaluation of <em>V</em> raises an exception before any erroneous execution occurs. See <a href="../AA-3/AA-3.7#Subclause_3.7.2">3.7.2</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -291,8 +339,10 @@ My_Complex_Array : array (1 .. Max) of Complex; -- See <a href="../AA-3/AA-3.3#S
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>8.a/5</MarginText>
 <MarginInfo items={["AI12-0125-3", "AI12-0322-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The target name symbol @ is new. <br /></Admonition>
+</AnnotatedOnly>
 

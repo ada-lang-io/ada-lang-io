@@ -34,9 +34,11 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <code>range</code><a id="S0037"></a><code> ::= </code> <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code><br />   | <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> .. <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code><br />
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>3.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>These need to be <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>s rather than more general <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s because ranges appear in membership tests and other contexts where <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> .. <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> would be ambiguous. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>4</MarginText>
 <p>A <em>range</em> has a <em>lower bound</em> and an <em>upper bound</em> and specifies a subset of the values of some scalar type (the <em>type of the range</em>). A range with lower bound L and upper bound R is described by &ldquo;L .. R&rdquo;. If R is less than L, then the range is a <em>null range</em>, and specifies an empty set of values. Otherwise, the range specifies the values of the type from the lower bound to the upper bound, inclusive. A value <em>belongs</em> to a range if it is of the type of the range, and is in the subset of values specified by the range. A value <em>satisfies</em> a range constraint if it belongs to the associated range. One range is <em>included</em> in another if all values that belong to the first range also belong to the second. <br /></p>
@@ -47,18 +49,24 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>5</MarginText>
 <p>For a <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> containing a <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>, either directly or as part of some other <code><a href="../AA-3/AA-3.2#S0030">scalar_constraint</a></code>, the type of the <code><a href="../AA-3/AA-3.5#S0037">range</a></code> shall resolve to that of the type determined by the <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> of the <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code>. For a <code><a href="../AA-3/AA-3.5#S0037">range</a></code> of a given type, the <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>s of the <code><a href="../AA-3/AA-3.5#S0037">range</a></code> (likewise, the <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>s of the equivalent <code><a href="../AA-3/AA-3.5#S0037">range</a></code> for a <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>) are expected to be of the type of the <code><a href="../AA-3/AA-3.5#S0037">range</a></code>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>5.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>In Ada 95, <code><a href="../AA-3/AA-3.2#S0029">constraint</a></code>s only appear within <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code>s; things that look like constraints that appear in type declarations are called something else like <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code>s.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>5.b/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We say "the expected type is ..." or "the type is expected to be ..." depending on which reads better. They are fundamentally equivalent, and both feed into the type resolution rules of subclause <a href="../AA-8/AA-8.6">8.6</a>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>5.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 In some cases, it doesn't work to use expected types. For example, in the above rule, we say that the &ldquo;type of the <code><a href="../AA-3/AA-3.5#S0037">range</a></code> shall resolve to ...&rdquo; rather than &ldquo;the expected type for the <code><a href="../AA-3/AA-3.5#S0037">range</a></code> is ...&rdquo; We then use &ldquo;expected type&rdquo; for the bounds. If we used &ldquo;expected&rdquo; at both points, there would be an ambiguity, since one could apply the rules of <a href="../AA-8/AA-8.6">8.6</a> either on determining the type of the range, or on determining the types of the individual bounds. It is clearly important to allow one bound to be of a universal type, and the other of a specific type, so we need to use &ldquo;expected type&rdquo; for the bounds. Hence, we used &ldquo;shall resolve to&rdquo; for the type of the range as a whole. There are other situations where &ldquo;expected type&rdquo; is not quite right, and we use &ldquo;shall resolve to&rdquo; instead. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -66,21 +74,29 @@ In some cases, it doesn't work to use expected types. For example, in the above 
 <MarginText>6</MarginText>
 <p>The <em>base range</em> of a scalar type is the range of finite values of the type that can be represented in every unconstrained object of the type; it is also the range supported at a minimum for intermediate values during the evaluation of expressions involving predefined operators of the type. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>6.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Note that in some machine architectures intermediates in an expression (particularly if static), and register-resident variables might accommodate a wider range. The base range does not include the values of this wider range that are not assignable without overflow to memory-resident objects.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>6.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The base range of an enumeration type is the range of values of the enumeration type. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>6.c</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>If the representation supports infinities, the base range is nevertheless restricted to include only the representable finite values, so that 'Base'First and 'Base'Last are always guaranteed to be finite.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>6.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>By a "value that can be assigned without overflow" we don't mean to restrict ourselves to values that can be represented exactly. Values between machine representable values can be assigned, but on subsequent reading, a slightly different value might be retrieved, as (partially) determined by the number of digits of precision of the type. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7</MarginText>
 <p>[A constrained scalar subtype is one to which a range constraint applies.] The <em>range</em> of a constrained scalar subtype is the range associated with the range constraint of the subtype. The <em>range</em> of an unconstrained scalar subtype is the base range of its type. <br /></p>
@@ -91,9 +107,11 @@ In some cases, it doesn't work to use expected types. For example, in the above 
 <MarginText>8</MarginText>
 <p>A range is <em>compatible</em> with a scalar subtype if and only if it is either a null range or each bound of the range belongs to the range of the subtype. A <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code> is <em>compatible</em> with a scalar subtype if and only if its range is compatible with the subtype. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>8.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Only <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>s (explicit or implicit) impose conditions on the values of a scalar subtype. The other <code><a href="../AA-3/AA-3.2#S0030">scalar_constraint</a></code>s, <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code>s and <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code>s impose conditions on the subtype denoted by the <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> in a <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code>, but don't impose a condition on the values of the subtype being defined. Therefore, a scalar subtype is not called <em>constrained</em> if all that applies to it is a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code>. Decimal subtypes are subtle, because a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> without a <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code> nevertheless includes an implicit <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9</MarginText>
 <p>The elaboration of a <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code> consists of the evaluation of the <code><a href="../AA-3/AA-3.5#S0037">range</a></code>. The evaluation of a <code><a href="../AA-3/AA-3.5#S0037">range</a></code> determines a lower bound and an upper bound. If <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>s are given to specify bounds, the evaluation of the <code><a href="../AA-3/AA-3.5#S0037">range</a></code> evaluates these <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>s in an arbitrary order, and converts them to the type of the <code><a href="../AA-3/AA-3.5#S0037">range</a></code>. If a <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code> is given, the evaluation of the <code><a href="../AA-3/AA-3.5#S0037">range</a></code> consists of the evaluation of the <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>.<br /></p>
@@ -109,18 +127,22 @@ In some cases, it doesn't work to use expected types. For example, in the above 
 <dl>
 <dd>S'First denotes the lower bound of the range of S. The value of this attribute is of the type of S. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>12.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Evaluating S'First never raises Constraint_Error.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>13</MarginText>
 <dt><br/>S'Last</dt>
 <dl>
 <dd>S'Last denotes the upper bound of the range of S. The value of this attribute is of the type of S. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>13.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Evaluating S'Last never raises Constraint_Error.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>14</MarginText>
 <dt><br/>S'Range</dt>
@@ -142,9 +164,11 @@ function S'Min(Left, Right : S'Base){"\n"}  return S'Base{"\n"}
 <dl>
 <dd>The function returns the lesser of the values of the two parameters. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>18.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The formal parameter names are italicized because they cannot be used in calls &mdash; see <a href="../AA-6/AA-6.4">6.4</a>. Such a specification cannot be written by the user because an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> is not permitted as the designator of a user-defined function, nor can its formal parameters be anonymous. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>19</MarginText>
 <dt><br/>S'Max</dt>
@@ -172,9 +196,11 @@ function S'Succ(Arg : S'Base){"\n"}  return S'Base{"\n"}
 <dl>
 <dd>For an enumeration type, the function returns the value whose position number is one more than that of the value of Arg; Constraint_Error is raised if there is no such value of the type. For an integer type, the function returns the result of adding one to the value of Arg. For a fixed point type, the function returns the result of adding <em>small</em> to the value of Arg. For a floating point type, the function returns the machine number (as defined in <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) immediately above the value of Arg; Constraint_Error is raised if there is no such machine number. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>24.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>S'Succ for a modular integer subtype wraps around if the value of Arg is S'Base'Last. S'Succ for a signed integer subtype might raise Constraint_Error if the value of Arg is S'Base'Last, or it might return the out-of-base-range value S'Base'Last+1, as is permitted for all predefined numeric operations. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>25</MarginText>
 <dt><br/>S'Pred</dt>
@@ -190,9 +216,11 @@ function S'Pred(Arg : S'Base){"\n"}  return S'Base{"\n"}
 <dl>
 <dd>For an enumeration type, the function returns the value whose position number is one less than that of the value of Arg; Constraint_Error is raised if there is no such value of the type. For an integer type, the function returns the result of subtracting one from the value of Arg. For a fixed point type, the function returns the result of subtracting <em>small</em> from the value of Arg. For a floating point type, the function returns the machine number (as defined in <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) immediately below the value of Arg; Constraint_Error is raised if there is no such machine number. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>27.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>S'Pred for a modular integer subtype wraps around if the value of Arg is S'Base'First. S'Pred for a signed integer subtype might raise Constraint_Error if the value of Arg is S'Base'First, or it might return the out-of-base-range value S'Base'First&ndash;1, as is permitted for all predefined numeric operations. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27.1/5</MarginText>
 <dt><br/>S'Wide_Wide_Image</dt>
@@ -212,49 +240,65 @@ function S'Pred(Arg : S'Base){"\n"}  return S'Base{"\n"}
 <MarginText>27.4/5</MarginText>
 <dd> <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>27.b/5</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27.5/5</MarginText>
 <dl>
 <dd> <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>27.c/5</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27.6/5</MarginText>
 <dl>
 <dd> <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>27.d/5</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong> <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.e/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.f/5</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27.7/5</MarginText>
 <dl>
 <dd> <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>27.g/5</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.h/5</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>27.i/5</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>28/5</MarginText>
 <dt><br/>S'Wide_Image</dt>
@@ -272,9 +316,11 @@ function S'Pred(Arg : S'Base){"\n"}  return S'Base{"\n"}
 <dl>
 <dd>  <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>30.a/5</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
 <dl>
 <dd><em>Paragraphs 28  through 37  were moved to <a href="../AA-4/AA-4.10">4.10</a>, &ldquo;<a href="../AA-4/AA-4.10">Image Attributes</a>&rdquo; .</em> <br /></dd>
@@ -293,9 +339,11 @@ function S'Pred(Arg : S'Base){"\n"}  return S'Base{"\n"}
 <dl>
 <dd>  <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>37.a/5</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong> <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>37.1/5</MarginText>
 <dt><br/>S'Wide_Wide_Width</dt>
@@ -327,23 +375,29 @@ function S'Wide_Wide_Value(Arg : Wide_Wide_String){"\n"}  return S'Base{"\n"}
 <MarginInfo items={["AI05-0264-1"]} />
 <dd>For the evaluation of a call on S'Wide_Wide_Value for an enumeration subtype S, if the sequence of characters of the parameter (ignoring leading and trailing spaces) has the syntax of an enumeration literal and if it corresponds to a literal of the type of S (or corresponds to the result of S'Wide_Wide_Image for a nongraphic character of the type), the result is the corresponding enumeration value; otherwise, Constraint_Error is raised. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>39.a.1/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>It's not crystal clear that Range_Check is appropriate here, but it doesn't seem worthwhile to invent a whole new check name just for this weird case, so we decided to lump it in with Range_Check. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>39.a.2/2</MarginText>
 <MarginInfo items={["AI95-00053-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>{"{"}<em>8652/0096</em>{"}"} A sequence of characters corresponds to the result of S'Wide_Wide_Image if it is the same ignoring case. Thus, the case of an image of a nongraphic character does not matter. For example, Character'Wide_Wide_Value("nul") does not raise Constraint_Error, even though Character'Wide_Wide_Image returns "NUL" for the nul character. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>39.5/3</MarginText>
 <MarginInfo items={["AI05-0264-1"]} />
 <dl>
 <dd>For the evaluation of a call on S'Wide_Wide_Value for an integer subtype S, if the sequence of characters of the parameter (ignoring leading and trailing spaces) has the syntax of an integer literal, with an optional leading sign character (plus or minus for a signed type; only plus for a modular type), and the corresponding numeric value belongs to the base range of the type of S, then that value is the result; otherwise, Constraint_Error is raised.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>39.a.3/2</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>We considered allowing 'Value to return a representable but out-of-range value without a Constraint_Error. However, we currently require (see <a href="../AA-4/AA-4.9">4.9</a>) in an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> like "X := {"<"}numeric_literal{">"};" that the value of the numeric-literal be in X's base range (at compile time), so it seems unfriendly and confusing to have a different range allowed for 'Value. Furthermore, for modular types, without the requirement for being in the base range, 'Value would have to handle arbitrarily long literals (since overflow never occurs for modular types). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>39.6/2</MarginText>
 <dl>
@@ -381,18 +435,24 @@ function S'Wide_Value(Arg : Wide_String){"\n"}  return S'Base{"\n"}
 <MarginInfo items={["AI95-00285-01", "AI05-0264-1", "AI12-0020-1"]} />
 <dd>For the evaluation of a call on S'Wide_Value for an enumeration subtype S, if the sequence of characters of the parameter (ignoring leading and trailing spaces) has the syntax of an enumeration literal and if it corresponds to a literal of the type of S (or corresponds to the result of S'Wide_Image for a value of the type, assuming a default implementation of S'Put_Image), the result is the corresponding enumeration value; otherwise, Constraint_Error is raised. For a numeric subtype S, the evaluation of a call on S'Wide_Value with Arg of type Wide_String is equivalent to a call on S'Wide_Wide_Value for a corresponding Arg of type Wide_Wide_String. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>43.a/2</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>43.a.1/2</MarginText>
 <MarginInfo items={["AI95-00053-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em>{"{"}<em>8652/0096</em>{"}"} <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>43.b/2</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>S'Wide_Value is subtly different from S'Wide_Wide_Value for enumeration subtypes since S'Wide_Image might produce a different sequence of characters than S'Wide_Wide_Image if the enumeration literal uses characters outside of the predefined type Wide_Character. That is why we don't just define S'Wide_Value in terms of S'Wide_Wide_Value for enumeration subtypes. S'Wide_Value and S'Wide_Wide_Value for numeric subtypes yield the same result given the same sequence of characters. <br /></Admonition>
+</AnnotatedOnly>
 
 <dl>
 <dd><em>Paragraphs 44 through 51 were moved to Wide_Wide_Value.</em> <br /></dd>
@@ -412,10 +472,12 @@ function S'Value(Arg : String){"\n"}  return S'Base{"\n"}
 <MarginInfo items={["AI95-00285-01", "AI05-0264-1", "AI12-0020-1"]} />
 <dd>For the evaluation of a call on S'Value for an enumeration subtype S, if the sequence of characters of the parameter (ignoring leading and trailing spaces) has the syntax of an enumeration literal and if it corresponds to a literal of the type of S (or corresponds to the result of S'Image for a value of the type, assuming a default implementation of S'Put_Image), the result is the corresponding enumeration value; otherwise, Constraint_Error is raised. For a numeric subtype S, the evaluation of a call on S'Value with Arg of type String is equivalent to a call on S'Wide_Wide_Value for a corresponding Arg of type Wide_Wide_String. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>55.a/2</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>S'Value is subtly different from S'Wide_Wide_Value for enumeration subtypes; see the discussion under S'Wide_Value. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>55.1/5</MarginText>
 <MarginInfo items={["AI12-0020-1", "AI12-0124-1", "AI12-0225-1"]} />
@@ -442,14 +504,18 @@ function S'Value(Arg : String){"\n"}  return S'Base{"\n"}
 <MarginInfo items={["AI95-00285-01"]} />
 <p>An implementation may extend the Wide_Wide_Value, [Wide_Value, Value, Wide_Wide_Image, Wide_Image, and Image] attributes of a floating point type to support special values such as infinities and NaNs.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>56.a/2</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>The permission is really only necessary for Wide_Wide_Value, because Value and Wide_Value are defined in terms of Wide_Wide_Value, and because the behavior of Wide_Wide_Image, Wide_Image, and Image is already unspecified for things like infinities and NaNs. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>56.b</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This is to allow implementations to define full support for IEEE arithmetic. See also the similar permission for Get in <a href="../AA-A/AA-A.10#Subclause_A.10.9">A.10.9</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>56.1/3</MarginText>
 <MarginInfo items={["AI05-0182-1", "AI05-0262-1", "AI05-0269-1"]} />
@@ -467,30 +533,40 @@ function S'Value(Arg : String){"\n"}  return S'Base{"\n"}
 <dl>
 <dd>This aspect shall be specified by a static expression, and that expression shall be explicit, even if the aspect has a boolean type. Default_Value shall be specified only on a <code><a href="../AA-3/AA-3.2#S0024">full_type_declaration</a></code>. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>56.c/3</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The part about requiring an explicit expression is to disallow omitting the value for this aspect, which would otherwise be allowed by the rules of <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>56.d/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 This is a representation aspect in order to disallow specifying it on a derived type that has inherited primitive subprograms; that is necessary as the sizes of <strong>out</strong> parameters could be different whether or not a Default_Value is specified (see <a href="../AA-6/AA-6.4#Subclause_6.4.1">6.4.1</a>). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>56.e/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Default_Value: </strong>Default value for a scalar subtype.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>56.4/5</MarginText>
 <MarginInfo items={["AI05-0228-1", "AI12-0427-1"]} />
 <p>If a derived type  inherits a boolean Default_Value aspect, the aspect may be specified to have any value for the derived type. If a derived type <em>T</em> does not inherit a Default_Value aspect, it shall not specify such an aspect if it inherits a primitive subprogram that has a parameter of type <em>T</em> of mode <strong>out</strong>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>56.f/3</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This overrides the <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a> rule that says that a boolean aspect with a value True cannot be changed.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>56.g/5</MarginText>
 <MarginInfo items={["AI12-0427-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The second sentence is to avoid violating the rules specified in <a href="../AA-6/AA-6.4#Subclause_6.4.1">6.4.1</a> about view conversions of <strong>out</strong> parameters with a specified Default_Value aspect. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Name Resolution Rules
@@ -499,23 +575,31 @@ The second sentence is to avoid violating the rules specified in <a href="../AA-
 <MarginInfo items={["AI05-0228-1"]} />
 <p>The expected type for the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> specified for the Default_Value aspect is the type defined by the <code><a href="../AA-3/AA-3.2#S0024">full_type_declaration</a></code> on which it appears. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>57</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   The evaluation of S'First or S'Last never raises an exception. If a scalar subtype S has a nonnull range, S'First and S'Last belong to this range. These values can, for example, always be assigned to a variable of subtype S. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>57.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>This paragraph addresses an issue that came up with Ada 83, where for fixed point types, the end points of the range specified in the type definition were not necessarily within the base range of the type. However, it was later clarified (and we reconfirm it in <a href="../AA-3/AA-3.5#Subclause_3.5.9">3.5.9</a>, &ldquo;<a href="../AA-3/AA-3.5#Subclause_3.5.9">Fixed Point Types</a>&rdquo;) that the First and Last attributes reflect the true bounds chosen for the type, not the bounds specified in the type definition (which might be outside the ultimately chosen base range). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>58/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   For a subtype of a scalar type, the result delivered by the attributes Succ, Pred, and Value can be outside  to the subtype; similarly, the actual parameters of the attributes Succ, Pred, and Image can also be outside  the subtype.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>59/5</MarginText>
 <MarginInfo items={["AI95-00285-01", "AI12-0020-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   For any value V (including any nongraphic character) of an enumeration subtype S without a specified Put_Image (see <a href="../AA-4/AA-4.10">4.10</a>), S'Value(S'Image(V)) equals V, as do S'Wide_Value(S'Wide_Image(V)) and S'Wide_Wide_Value(S'Wide_Wide_Image(V)). None of these expressions ever raise Constraint_Error. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -539,97 +623,129 @@ range -999.0 .. +999.0{"\n"}range S'First+1 .. S'Last-1{"\n"}
 
 #### Incompatibilities With Ada 83
 
+<AnnotatedOnly>
 <MarginText>63.a/1</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 S'Base is no longer defined for nonscalar types. One conceivable existing use of S'Base for nonscalar types is S'Base'Size where S is a generic formal private type. However, that is not generally useful because the actual subtype corresponding to S might be a constrained array or discriminated type, which would mean that S'Base'Size might very well overflow (for example, S'Base'Size where S is a constrained subtype of String will generally be 8 * (Integer'Last + 1)). For derived discriminated types that are packed, S'Base'Size might not even be well defined if the first subtype is constrained, thereby allowing some amount of normally required &ldquo;dope&rdquo; to have been squeezed out in the packing. Hence our conclusion is that S'Base'Size is not generally useful in a generic, and does not justify keeping the attribute Base for nonscalar types just so it can be used as a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>63.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The attribute S'Base for a scalar subtype is now permitted anywhere a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> is permitted. S'Base'First .. S'Base'Last is the base range of the type. Using an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>, one cannot specify any subtype-specific attributes for the subtype denoted by S'Base (the base subtype).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>63.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The attribute S'Range is now allowed for scalar subtypes.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>63.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The attributes S'Min and S'Max are now defined, and made available for all scalar types.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>63.e</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The attributes S'Succ, S'Pred, S'Image, S'Value, and S'Width are now defined for real types as well as discrete types.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>63.f</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Wide_String versions of S'Image and S'Value are defined. These are called S'Wide_Image and S'Wide_Value to avoid introducing ambiguities involving uses of these attributes with string literals. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>63.g</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We now use the syntactic category <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code> since it is now syntactically distinguished from other attribute references.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>63.h</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The definition of S'Base has been moved here from 3.3.3 since it now applies only to scalar types.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>63.i</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 More explicit rules are provided for nongraphic characters. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>63.j/2</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The attributes Wide_Wide_Image, Wide_Wide_Value, and Wide_Wide_Width are new. Note that Wide_Image and Wide_Value are now defined in terms of Wide_Wide_Image and Wide_Wide_Value, but the image of types other than characters have not changed. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>63.k/2</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The Wide_Image and Wide_Value attributes are now defined in terms of Wide_Wide_Image and Wide_Wide_Value, but the images of numeric types have not changed. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Inconsistencies With Ada 2005
 
+<AnnotatedOnly>
 <MarginText>63.l/3</MarginText>
 <MarginInfo items={["AI05-0181-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Soft hyphen (code point 173) is nongraphic in ISO/IEC 10646:2011 (and also in the 2003 version of that standard). Thus, we have given it the language-defined name <em>soft_hyphen</em>. This changes the result of Character'Image (and all of the related types and Image attributes) for this character, and changes the behavior of Character'Value (and all of the related types and Value attributes) for this character, and (in unusual circumstances), changes the result for Character'Width (and all of the related types and Width attributes). The vast majority of programs won't see any difference, as they are already prepared to handle nongraphic characters.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>63.m/3</MarginText>
 <MarginInfo items={["AI05-0182-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Added an Implementation Permissions to let Wide_Wide_Value, Wide_Value, and Value accept strings in the form of literals containing nongraphic characters and "Hex_hhhhhhhh" for Latin-1 and graphic characters. These were required to raise Constraint_Error in Ada 2005. Since these attributes aren't very useful, implementations were inconsistent as to whether these were accepted, and since code that would care why the attribute failed seems unlikely, this should not be a problem in practice. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>63.n/3</MarginText>
 <MarginInfo items={["AI05-0228-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The new aspect Default_Value allows defining implicit initial values (see <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>) for scalar types. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2012
 
+<AnnotatedOnly>
 <MarginText>63.o/4</MarginText>
 <MarginInfo items={["AI12-0124-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> An object can be now used as the prefix of the Image attribute (as well as Wide_Image and Wide_Wide_Image), a convenience feature already present in some implementations.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>63.p/5</MarginText>
 <MarginInfo items={["AI12-0020-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 All of the Image-family attributes have been moved to <a href="../AA-4/AA-4.10">4.10</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_3.5.1"></a>
 
@@ -666,15 +782,19 @@ All of the Image-family attributes have been moved to <a href="../AA-4/AA-4.10">
 <MarginInfo items={["AI05-0227-1", "AI05-0299-1"]} />
 <p>The <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code>s in upper case [and the <code><a href="../AA-3/AA-3.5#S0040">defining_character_literal</a></code>s] listed in an <code><a href="../AA-3/AA-3.5#S0038">enumeration_type_definition</a></code> shall be distinct. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>5.a/3</MarginText>
 <MarginInfo items={["AI05-0227-1"]} />
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>For character literals, this is a ramification of the normal disallowance of homographs explicitly declared immediately in the same declarative region. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>5.b/3</MarginText>
 <MarginInfo items={["AI05-0227-1"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>To ease implementation of the attribute Wide_Wide_Value, we require that all enumeration literals have distinct images. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -683,18 +803,24 @@ All of the Image-family attributes have been moved to <a href="../AA-4/AA-4.10">
 <MarginInfo items={["AI05-0006-1"]} />
 <p>Each <code><a href="../AA-3/AA-3.5#S0039">enumeration_literal_specification</a></code> is the explicit declaration of the corresponding <em>enumeration literal</em>: it declares a parameterless function, whose defining name is the <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> or <code><a href="../AA-3/AA-3.5#S0040">defining_character_literal</a></code>, and whose result subtype is the base subtype of the enumeration type. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>6.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This rule defines the profile of the enumeration literal, which is used in the various types of conformance. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>6.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The parameterless function associated with an enumeration literal is fully defined by the <code><a href="../AA-3/AA-3.5#S0038">enumeration_type_definition</a></code>; a body is not permitted for it, and it never fails the Elaboration_Check when called. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>6.c/3</MarginText>
 <MarginInfo items={["AI05-0006-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>The result subtype is primarily a concern when an enumeration literal is used as the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a case statement, due to the full coverage requirement based on the nominal subtype. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7</MarginText>
 <p>Each enumeration literal corresponds to a distinct value of the enumeration type, and to a distinct position number. The position number of the value of the first listed enumeration literal is zero; the position number of the value of each subsequent enumeration literal is one more than that of its predecessor in the list.<br /></p>
@@ -711,16 +837,20 @@ All of the Image-family attributes have been moved to <a href="../AA-4/AA-4.10">
 <MarginText>10</MarginText>
 <p>The elaboration of an <code><a href="../AA-3/AA-3.5#S0038">enumeration_type_definition</a></code> creates the enumeration type and its first subtype, which is constrained to the base range of the type. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>10.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>The first subtype of a discrete type is always constrained, except in the case of a derived type whose parent subtype is Whatever'Base. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>11</MarginText>
 <p>When called, the parameterless function associated with an enumeration literal returns the corresponding value of the enumeration type. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>12</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   If an enumeration literal occurs in a context that does not otherwise suffice to determine the type of the literal, then qualification by the name of the enumeration type is one way to resolve the ambiguity (see <a href="../AA-4/AA-4.7">4.7</a>). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -741,29 +871,37 @@ subtype Weekday is Day   range Mon .. Fri;{"\n"}subtype Major   is Suit  range H
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>16.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The syntax rule for <code><a href="../AA-3/AA-3.5#S0040">defining_character_literal</a></code> is new. It is used for the defining occurrence of a <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>, analogously to <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code>. Usage occurrences use the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> syntactic categories.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We emphasize the fact that an enumeration literal denotes a function, which is called to produce a value. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2005
 
+<AnnotatedOnly>
 <MarginText>16.c/3</MarginText>
 <MarginInfo items={["AI05-0227-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Required that all enumeration literals in a type have distinct images; this might not be the case since upper case conversion can map distinct characters to the same upper case character. This can only happen for identifiers using Unicode characters first allowed by Ada 2005; moreover, the original definition of Ada 2005 was confused and appeared to require inconsistent results from the Image attribute, so implementations that allowed problematic cases are rare; the problematic cases are very rare; so it is expected that this change would only affect test programs. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>16.d/3</MarginText>
 <MarginInfo items={["AI05-0006-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Defined the result subtype of an enumeration literal to close a minor language hole. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_3.5.2"></a>
 
@@ -779,10 +917,12 @@ We emphasize the fact that an enumeration literal denotes a function, which is c
 <MarginInfo items={["AI95-00285-01", "AI05-0181-1", "AI05-0262-1", "AI05-0266-1", "AI12-0263-1"]} />
 <p> The predefined type Character is a character type whose values correspond to the 256 code points of Row 00 (also known as Latin-1) of the ISO/IEC 10646:2017  Basic Multilingual Plane (BMP). Each of the graphic characters of Row 00 of the BMP has a corresponding <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> in Character. Each of the nongraphic characters of Row 00 has a corresponding language-defined name, which is not usable as an enumeration literal, but which is usable with the attributes Image, Wide_Image, Wide_Wide_Image, Value, Wide_Value, and Wide_Wide_Value; these names are given in the definition of type Character in <a href="../AA-A/AA-A.1">A.1</a>, &ldquo;<a href="../AA-A/AA-A.1">The Package Standard</a>&rdquo;, but are set in <em>italics</em>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>2.a/5</MarginText>
 <MarginInfo items={["AI05-0262-1", "AI12-0263-1"]} />
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong><em>Code point</em> is defined in ISO/IEC 10646:2017 . <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>3/5</MarginText>
 <MarginInfo items={["AI95-00285-01", "AI05-0262-1", "AI12-0263-1"]} />
@@ -796,25 +936,33 @@ We emphasize the fact that an enumeration literal denotes a function, which is c
 <MarginInfo items={["AI95-00285-01", "AI05-0262-1"]} />
 <p>The characters whose code point is larger than 16#FF# and which are not <code>graphic_character</code>s have language-defined names which are formed by appending to the string "Hex_" the representation of their code point in hexadecimal as eight extended digits. As with other language-defined names, these names are usable only with the attributes (Wide_)Wide_Image and (Wide_)Wide_Value; they are not usable as enumeration literals.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>5.a/2</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The language-defined names are not usable as enumeration literals to avoid "polluting" the name space. Since Wide_Character and Wide_Wide_Character are defined in Standard, if the language-defined names were usable as enumeration literals, they would hide other nonoverloadable declarations with the same names in <strong>use</strong>-d packages.<br /></Admonition>
+</AnnotatedOnly>
 
 <p><em>Original Paragraphs 4 and 5 were deleted.</em> <br /></p>
 
+<AnnotatedOnly>
 <MarginText>8</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   The language-defined library package Characters.Latin_1 (see <a href="../AA-A/AA-A.3#Subclause_A.3.3">A.3.3</a>) includes the declaration of constants denoting control characters, lower case characters, and special characters of the predefined type Character. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>8.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>The package ASCII does the same, but only for the first 128 characters of Character. Hence, it is an obsolescent package, and we no longer mention it here. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>9/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   A conventional character set such as <em>EBCDIC</em> can be declared as a character type; the internal codes of the characters can be specified by an <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code> as explained in subclause <a href="../AA-13/AA-13.4">13.4</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -830,97 +978,129 @@ type Roman_Digit is ('I', 'V', 'X', 'L', 'C', 'D', 'M');{"\n"}
 
 #### Inconsistencies With Ada 83
 
+<AnnotatedOnly>
 <MarginText>11.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The declaration of Wide_Character in package Standard hides use-visible declarations with the same defining identifier. In the unlikely event that an Ada 83 program had depended on such a use-visible declaration, and the program remains legal after the substitution of Standard.Wide_Character, the meaning of the program will be different. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 83
 
+<AnnotatedOnly>
 <MarginText>11.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The presence of Wide_Character in package Standard means that an expression such as <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.c</MarginText>
 <CodeBlock language="ada">
 'a' = 'b'{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>11.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 is ambiguous in Ada 95, whereas in Ada 83 both literals could be resolved to be of type Character.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.e</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The change in visibility rules (see <a href="../AA-4/AA-4.2">4.2</a>) for character literals means that additional qualification might be necessary to resolve expressions involving overloaded subprograms and character literals. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>11.f</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The type Character has been extended to have 256 positions, and the type Wide_Character has been added. Note that this change was already approved by the ARG for Ada 83 conforming compilers.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.g</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The rules for referencing character literals are changed (see <a href="../AA-4/AA-4.2">4.2</a>), so that the declaration of the character type need not be directly visible to use its literals, similar to <strong>null</strong> and string literals. Context is used to resolve their type. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Inconsistencies With Ada 95
 
+<AnnotatedOnly>
 <MarginText>11.h/2</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Ada 95 defined most characters in Wide_Character to be graphic characters, while Ada 2005 uses the categorizations from ISO-10646:2003. It also provides language-defined names for all nongraphic characters. That means that in Ada 2005, Wide_Character'Wide_Value will raise Constraint_Error for a string representing a <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> of a nongraphic character, while Ada 95 would have accepted it. Similarly, the result of Wide_Character'Wide_Image will change for such nongraphic characters.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.i/3</MarginText>
 <MarginInfo items={["AI95-00395-01", "AI05-0005-1", "AI05-0262-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The language-defined names FFFE and FFFF were replaced by a consistent set of language-defined names for all nongraphic characters with code points greater than 16#FF#. That means that in Ada 2005, Wide_Character'Wide_Value("FFFE") will raise Constraint_Error while Ada 95 would have accepted it. Similarly, the result of Wide_Character'Wide_Image will change for the position numbers 16#FFFE# and 16#FFFF#. It is very unlikely that this will matter in practice, as these names do not represent usable characters.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.j/2</MarginText>
 <MarginInfo items={["AI95-00285-01", "AI95-00395-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Because of the previously mentioned changes to the Wide_Character'Wide_Image of various character values, the value of attribute Wide_Width will change for some subtypes of Wide_Character. However, the new language-defined names were chosen so that the value of Wide_Character'Wide_Width itself does not change.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.k/2</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The declaration of Wide_Wide_Character in package Standard hides use-visible declarations with the same defining identifier. In the (very) unlikely event that an Ada 95 program had depended on such a use-visible declaration, and the program remains legal after the substitution of Standard.Wide_Wide_Character, the meaning of the program will be different. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>11.l/2</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The type Wide_Wide_Character is new. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>11.m/2</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Characters are now defined in terms of the entire ISO/IEC 10646:2003 character set.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.n/3</MarginText>
 <MarginInfo items={["AI95-00285-01", "AI05-0248-1"]} />
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 We dropped the  for nonstandard interpretation of character sets; an implementation can do what it wants in a nonstandard mode, so there isn't much point to any advice. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2005
 
+<AnnotatedOnly>
 <MarginText>11.o/3</MarginText>
 <MarginInfo items={["AI05-0181-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Removed the position numbers of nongraphic characters from the text, as it is wrong and thus misleading.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11.p/3</MarginText>
 <MarginInfo items={["AI05-0262-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Changed "code position" to "code point" consistently throughout the standard, as ISO/IEC 10646:2011 prefers "code point" and we are referring to the definition in that Standard. This change also reduces confusion between "code point" and "position number"; while these have the same values for the predefined character types, there is no required relationship for other character types. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_3.5.3"></a>
 
@@ -932,9 +1112,11 @@ Changed "code position" to "code point" consistently throughout the standard, as
 <MarginText>1</MarginText>
 <p>There is a predefined enumeration type named Boolean, [declared in the visible part of package Standard]. It has the two enumeration literals False and True ordered with the relation False {"<"} True. Any descendant of the predefined type Boolean is called a <em>boolean</em> type. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>1.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>An implementation is not required to support enumeration representation clauses on boolean types that impose an unacceptable implementation burden. See <a href="../AA-13/AA-13.4">13.4</a>, &ldquo;<a href="../AA-13/AA-13.4">Enumeration Representation Clauses</a>&rdquo;. However, it is generally straightforward to support representations where False is zero and True is 2**n &ndash; 1 for some n. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_3.5.4"></a>
 
@@ -958,9 +1140,11 @@ Changed "code position" to "code point" consistently throughout the standard, as
 <code>signed_integer_type_definition</code><a id="S0042"></a><code> ::= </code><strong>range</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> .. <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code><br />
 
 </CodeBlock>
+<AnnotatedOnly>
 <MarginText>3.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>We don't call this a <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>, because it is rather different &mdash; not only is it required to be static, but the associated overload resolution rules are different than for normal range constraints. A similar comment applies to <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code>. This used to be <code>integer_range_specification</code> but when we added support for modular types, it seemed overkill to have three levels of syntax rules, and just calling these <code>signed_integer_range_specification</code> and <code>modular_range_specification</code> loses the fact that they are defining different classes of types, which is important for the generic type matching rules. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>4</MarginText>
 
@@ -984,9 +1168,11 @@ Changed "code position" to "code point" consistently throughout the standard, as
 <MarginText>7</MarginText>
 <p>The <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-3/AA-3.5#S0043">modular_type_definition</a></code> shall be static, and its value (the <em>modulus</em>) shall be positive, and shall be no greater than System.Max_Binary_Modulus if a power of 2, or no greater than System.Max_Nonbinary_Modulus if not. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>For a 2's-complement machine, supporting nonbinary moduli greater than System.Max_Int can be quite difficult, whereas essentially any binary moduli are straightforward to support, up to 2*System.Max_Int+2, so this justifies having two separate limits. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -997,14 +1183,18 @@ Changed "code position" to "code point" consistently throughout the standard, as
 <MarginText>9</MarginText>
 <p>A <code><a href="../AA-3/AA-3.5#S0042">signed_integer_type_definition</a></code> defines an integer type whose base range includes at least the values of the <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>s and is symmetric about zero, excepting possibly an extra negative value. A <code><a href="../AA-3/AA-3.5#S0042">signed_integer_type_definition</a></code> also defines a constrained first subtype of the type, with a range whose bounds are given by the values of the <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>s, converted to the type being defined. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>9.a/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>The base range of a signed integer type might be much larger than is necessary to satisfy the above requirements. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>9.a.1/1</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>The conversion mentioned above is not an <em>implicit subtype conversion</em> (which is something that happens at overload resolution, see <a href="../AA-4/AA-4.6">4.6</a>), although it happens implicitly. Therefore, the freezing rules are not invoked on the type (which is important so that representation items can be given for the type). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10</MarginText>
 <p>A <code><a href="../AA-3/AA-3.5#S0043">modular_type_definition</a></code> defines a modular type whose base range is from zero to one less than the given modulus. A <code><a href="../AA-3/AA-3.5#S0043">modular_type_definition</a></code> also defines a constrained first subtype of the type with a range that is the same as the base range of the type.<br /></p>
@@ -1012,9 +1202,11 @@ Changed "code position" to "code point" consistently throughout the standard, as
 <MarginText>11</MarginText>
 <p>There is a predefined signed integer subtype named Integer[, declared in the visible part of package Standard]. It is constrained to the base range of its type. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>11.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Integer is a constrained subtype, rather than an unconstrained subtype. This means that on assignment to an object of subtype Integer, a range check is required. On the other hand, an object of subtype Integer'Base is unconstrained, and no range check (only overflow check) is required on assignment. For example, if the object is held in an extended-length register, its value might be outside of Integer'First .. Integer'Last. All parameter and result subtypes of the predefined integer operators are of such unconstrained subtypes, allowing extended-length registers to be used as operands or for the result. In an earlier version of Ada 95, Integer was unconstrained. However, the fact that certain Constraint_Errors might be omitted or appear elsewhere was felt to be an undesirable upward inconsistency in this case. Note that for Float, the opposite conclusion was reached, partly because of the high cost of performing range checks when not actually necessary. Objects of subtype Float are unconstrained, and no range checks, only overflow checks, are performed for them. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>12</MarginText>
 <p>Integer has two predefined subtypes, [declared in the visible part of package Standard:] <br /></p>
@@ -1027,18 +1219,24 @@ subtype Natural  is Integer range 0 .. Integer'Last;{"\n"}subtype Positive is In
 <MarginText>14</MarginText>
 <p>A type defined by an <code><a href="../AA-3/AA-3.5#S0041">integer_type_definition</a></code> is implicitly derived from <em>root_integer</em>, an anonymous predefined (specific) integer type, whose base range is System.Min_Int .. System.Max_Int. However, the base range of the new type is not inherited from <em>root_integer</em>, but is instead determined by the range or modulus specified by the <code><a href="../AA-3/AA-3.5#S0041">integer_type_definition</a></code>. [Integer literals are all of the type <em>universal_integer</em>, the universal type (see <a href="../AA-3/AA-3.4#Subclause_3.4.1">3.4.1</a>) for the class rooted at <em>root_integer</em>, allowing their use with the operations of any integer type.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>14.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>This implicit derivation is not considered exactly equivalent to explicit derivation via a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>. In particular, integer types defined via a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> inherit their base range from their parent type. A type defined by an <code><a href="../AA-3/AA-3.5#S0041">integer_type_definition</a></code> does not necessarily inherit its base range from <em>root_integer</em>. It is not specified whether the implicit derivation from <em>root_integer</em> is direct or indirect, not that it really matters. All we want is for all integer types to be descendants of <em>root_integer</em>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14.a.1/1</MarginText>
 <MarginInfo items={["AI95-00152-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0099</em>{"}"} Note that this derivation does not imply any inheritance of subprograms. Subprograms are inherited only for types derived by a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> (see <a href="../AA-3/AA-3.4">3.4</a>), or a <code><a href="../AA-7/AA-7.3#S0233">private_extension_declaration</a></code> (see <a href="../AA-7/AA-7.3">7.3</a>, <a href="../AA-7/AA-7.3#Subclause_7.3.1">7.3.1</a>, and <a href="../AA-12/AA-12.5#Subclause_12.5.1">12.5.1</a>). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>14.b</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>It is the intent that even nonstandard integer types (see below) will be descendants of <em>root_integer</em>, even though they might have a base range that exceeds that of <em>root_integer</em>. This causes no problem for static calculations, which are performed without range restrictions (see <a href="../AA-4/AA-4.9">4.9</a>). However for run-time calculations, it is possible that Constraint_Error might be raised when using an operator of <em>root_integer</em> on the result of 'Val applied to a value of a nonstandard integer type. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>15</MarginText>
 <p>The <em>position number</em> of an integer value is equal to the value.<br /></p>
@@ -1096,25 +1294,31 @@ function S'Mod (Arg : universal_integer){"\n"}  return S'Base{"\n"}
 <MarginInfo items={["AI12-0444-1"]} />
 <p>For the execution of a predefined operation of a signed integer type, it is optional to  raise Constraint_Error if the result is outside the base range of the type, so long as the correct result is produced. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>24.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Constraint_Error is never raised for operations on modular types, except for divide-by-zero (and <strong>rem</strong>/<strong>mod</strong>-by-zero). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>25</MarginText>
 <p>An implementation may provide additional predefined signed integer types[, declared in the visible part of Standard], whose first subtypes have names of the form Short_Integer, Long_Integer, Short_Short_Integer, Long_Long_Integer, etc. Different predefined integer types are allowed to have the same base range. However, the range of Integer should be no wider than that of Long_Integer. Similarly, the range of Short_Integer (if provided) should be no wider than Integer. Corresponding recommendations apply to any other predefined integer types. An implementation may support  base ranges for which there is no corresponding named integer type . The range of each first subtype should be the base range of its type. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>25.a/5</MarginText>
 <MarginInfo items={["AI12-0444-1"]} />
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The predefined integer types declared in Standard.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>26/5</MarginText>
 <MarginInfo items={["AI12-0444-1"]} />
 <p>An implementation may provide <em>nonstandard integer types</em>, descendants of <em>root_integer</em> that are declared outside of the specification of package Standard, which may have different  characteristics than  a type defined by an <code><a href="../AA-3/AA-3.5#S0041">integer_type_definition</a></code>. For example, a nonstandard integer type can  have an asymmetric base range or it can be disallowed  as an array or loop index (a very long integer). Any type descended from a nonstandard integer type is also nonstandard. An implementation may place arbitrary restrictions on the use of such types; it is implementation defined whether operators that are predefined for &ldquo;any integer type&rdquo; are defined for a particular nonstandard integer type. [In any case, such types are not permitted as <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code>s for formal scalar types &mdash; see <a href="../AA-12/AA-12.5#Subclause_12.5.2">12.5.2</a>.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>26.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>Any nonstandard integer types and the operators defined for them.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>27</MarginText>
 <p>For a one's complement machine, the high bound of the base range of a modular type whose modulus is one less than a power of 2 may be equal to the modulus, rather than one less than the modulus. It is implementation defined for which powers of 2, if any, this permission is exercised.<br /></p>
@@ -1123,9 +1327,11 @@ function S'Mod (Arg : universal_integer){"\n"}  return S'Base{"\n"}
 <MarginInfo items={["AI95-00095-01"]} />
 <p>{"{"}<em>8652/0003</em>{"}"} For a one's complement machine, implementations may support nonbinary modulus values greater than System.Max_Nonbinary_Modulus. It is implementation defined which specific values greater than System.Max_Nonbinary_Modulus, if any, are supported. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>27.a.1/1</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>On a one's complement machine, the natural full word type would have a modulus of 2**Word_Size&ndash;1. However, we would want to allow the all-ones bit pattern (which represents negative zero as a number) in logical operations. These permissions are intended to allow that and the natural modulus value without burdening implementations with supporting expensive modulus values. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Advice
@@ -1133,44 +1339,62 @@ function S'Mod (Arg : universal_integer){"\n"}  return S'Base{"\n"}
 <MarginText>28</MarginText>
 <p>An implementation should support Long_Integer in addition to Integer if the target machine supports 32-bit (or longer) arithmetic. No other named integer subtypes are recommended for package Standard. Instead, appropriate named integer subtypes should be provided in the library package Interfaces (see <a href="../AA-B/AA-B.2">B.2</a>). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>28.a.1/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Long_Integer should be declared in Standard if the target supports 32-bit arithmetic. No other named integer subtypes should be declared in Standard.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>28.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>To promote portability, implementations should explicitly declare the integer (sub)types Integer and Long_Integer in Standard, and leave other predefined integer types anonymous. For implementations that already support Byte_Integer, etc., upward compatibility argues for keeping such declarations in Standard during the transition period, but perhaps generating a warning on use. A separate package Interfaces in the predefined environment is available for pre-declaring types such as Integer_8, Integer_16, etc. See <a href="../AA-B/AA-B.2">B.2</a>. In any case, if the user declares a subtype (first or not) whose range fits in, for example, a byte, the implementation can store variables of the subtype in a single byte, even if the base range of the type is wider. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>29</MarginText>
 <p>An implementation for a two's complement machine should support modular types with a binary modulus up to System.Max_Int*2+2. An implementation should support a nonbinary modulus up to Integer'Last. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>29.a.1/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>For a two's complement target, modular types with a binary modulus up to System.Max_Int*2+2 should be supported. A nonbinary modulus up to Integer'Last should be supported.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>29.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>Modular types provide bit-wise "<strong>and</strong>", "<strong>or</strong>", "<strong>xor</strong>", and "<strong>not</strong>" operations. It is important for systems programming that these be available for all integer types of the target hardware. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>29.b</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that on a one's complement machine, the largest supported modular type would normally have a nonbinary modulus. On a two's complement machine, the largest supported modular type would normally have a binary modulus. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>29.c</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Supporting a nonbinary modulus greater than Integer'Last can impose an undesirable implementation burden on some machines. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>30</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   Integer literals are of the anonymous predefined integer type <em>universal_integer</em>. Other integer types have no literals. However, the overload resolution rules (see <a href="../AA-8/AA-8.6">8.6</a>, &ldquo;<a href="../AA-8/AA-8.6">The Context of Overload Resolution</a>&rdquo;) allow expressions of the type <em>universal_integer</em> whenever an integer type is expected.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>31</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   The same arithmetic operators are predefined for all signed integer types defined by a <code><a href="../AA-3/AA-3.5#S0042">signed_integer_type_definition</a></code> (see <a href="../AA-4/AA-4.5">4.5</a>, &ldquo;<a href="../AA-4/AA-4.5">Operators and Expression Evaluation</a>&rdquo;). For modular types, these same operators are predefined, plus bit-wise logical operators (<strong>and</strong>, <strong>or</strong>, <strong>xor</strong>, and <strong>not</strong>). In addition, for the unsigned types declared in the language-defined package Interfaces (see <a href="../AA-B/AA-B.2">B.2</a>), functions are defined that provide bit-wise shifting and rotating.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>32</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   Modular types match a <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code> of the form "<strong>type</strong> T <strong>is mod</strong> {"<"}{">"};"; signed integer types match "<strong>type</strong> T <strong>is range</strong> {"<"}{">"};" (see <a href="../AA-12/AA-12.5#Subclause_12.5.2">12.5.2</a>). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -1190,64 +1414,88 @@ type Byte        is mod 256; -- an unsigned byte{"\n"}type Hash_Index  is mod 97
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>36.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 An implementation is allowed to support any number of distinct base ranges for integer types, even if fewer integer types are explicitly declared in Standard.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Modular (unsigned, wrap-around) types are new. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>36.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Ada 83's integer types are now called "signed" integer types, to contrast them with "modular" integer types.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Standard.Integer, Standard.Long_Integer, etc., denote constrained subtypes of predefined integer types, consistent with the Ada 95 model that only subtypes have names.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.e</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We now impose minimum requirements on the base range of Integer and Long_Integer.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.f</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 We no longer explain integer type definition in terms of an equivalence to a normal type derivation, except to say that all integer types are by definition implicitly derived from <em>root_integer</em>. This is for various reasons.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.g</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 First of all, the equivalence with a type derivation and a subtype declaration was not perfect, and was the source of various AIs (for example, is the conversion of the bounds static? Is a numeric type a derived type with respect to other rules of the language?)<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.h</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Secondly, we don't want to require that every integer size supported shall have a corresponding named type in Standard. Adding named types to Standard creates nonportabilities.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.i</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Thirdly, we don't want the set of types that match a formal derived type "type T is new Integer;" to depend on the particular underlying integer representation chosen to implement a given user-defined integer type. Hence, we would have needed anonymous integer types as parent types for the implicit derivation anyway. We have simply chosen to identify only one anonymous integer type &mdash; <em>root_integer</em>, and stated that every integer type is derived from it.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>36.j</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Finally, the &ldquo;fiction&rdquo; that there were distinct preexisting predefined types for every supported representation breaks down for fixed point with arbitrary smalls, and was never exploited for enumeration types, array types, etc. Hence, there seems little benefit to pushing an explicit equivalence between integer type definition and normal type derivation. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 95
 
+<AnnotatedOnly>
 <MarginText>36.k/2</MarginText>
 <MarginInfo items={["AI95-00340-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The Mod attribute is new. It eases mixing of signed and unsigned values in an expression, which can be difficult as there may be no type which can contain all of the values of both of the types involved. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>36.l/2</MarginText>
 <MarginInfo items={["AI95-00095-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0003</em>{"}"} <strong>Corrigendum:</strong> Added additional permissions for modular types on one's complement machines. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_3.5.5"></a>
 
@@ -1285,13 +1533,17 @@ function S'Val(Arg : universal_integer){"\n"}  return S'Base{"\n"}
 <dl>
 <dd>This function returns a value of the type of S whose position number equals the value of Arg. For the evaluation of a call on S'Val, if there is no value in the base range of its type with the given position number, Constraint_Error is raised. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>7.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>By the overload resolution rules, a formal parameter of type <em>universal_integer</em> allows an actual parameter of any integer type.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>7.b</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We considered allowing S'Val for a signed integer subtype S to return an out-of-range value, but since checks were required for enumeration and modular types anyway, the allowance didn't seem worth the complexity of the rule.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7.1/4</MarginText>
 <MarginInfo items={["AI05-0297-1", "AI12-0071-1"]} />
@@ -1311,17 +1563,23 @@ function S'Val(Arg : universal_integer){"\n"}  return S'Base{"\n"}
 <MarginInfo items={["AI05-0297-1"]} />
 <p>[First_Valid and Last_Valid <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>s are always static expressions. Any explicit predicate of S can only have been specified by a Static_Predicate aspect.]<br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.c/3</MarginText>
-<Admonition type="aarm" aarm="proof" title="Proof: ">
+<Admonition type="aarm" aarm="proof">
 <strong></strong>An <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> is static if the prefix is a static subtype (see <a href="../AA-4/AA-4.9">4.9</a>), (true by definition) and any arguments are static (there are none). Similarly, a dynamic predicate always makes a subtype nonstatic. QED. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>7.d/3</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We require there to be at least one value so that these are always values of the subtype. (This sidesteps the question of what to return for a subtype with no values.) <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>7.e/3</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>These attributes are intended primarily for use in the case where the Static_Predicate aspect of S has been specified; First and Last are equivalent if these are allowed and there is no predicate. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Advice
@@ -1329,37 +1587,51 @@ function S'Val(Arg : universal_integer){"\n"}  return S'Base{"\n"}
 <MarginText>8</MarginText>
 <p>For the evaluation of a call on S'Pos for an enumeration subtype, if the value of the operand does not correspond to the internal code for any enumeration literal of its type [(perhaps due to an uninitialized variable)], then the implementation should raise Program_Error. This is particularly important for enumeration types with noncontiguous internal codes specified by an <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>8.a.1/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Program_Error should be raised for the evaluation of S'Pos for an enumeration type, if the value of the operand does not correspond to the internal code for any enumeration literal of the type.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>8.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We say Program_Error here, rather than Constraint_Error, because the main reason for such values is uninitialized variables, and the normal way to indicate such a use (if detected) is to raise Program_Error. (Other reasons would involve the misuse of low-level features such as Unchecked_Conversion.) <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>9</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   Indexing and loop iteration use values of discrete types.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>10/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   The predefined operations of a discrete type include the assignment operation, qualification, the membership tests, and the relational operators; for a boolean type they include the short-circuit control forms and the logical operators; for an integer type they include type conversion to and from other numeric types, as well as the binary and unary adding operators &ndash; and +, the multiplying operators, the unary operator <strong>abs</strong>, and the exponentiation operator. The assignment operation is described in <a href="../AA-5/AA-5.2">5.2</a>. The other predefined operations are described in Clause <a href="../AA-4/">4</a>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>11</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   As for all types, objects of a discrete type have Size and Address attributes (see <a href="../AA-13/AA-13.3">13.3</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>12/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 4   For a subtype of a discrete type, the result delivered by the attribute Val can be outside  the subtype; similarly, the actual parameter of the attribute Pos can also be outside  the subtype. The following relations are satisfied (in the absence of an exception) by these attributes: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>13</MarginText>
 <CodeBlock language="ada">
    S'Val(S'Pos(X)) = X{"\n"}   S'Pos(S'Val(N)) = N{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
 
 #### Examples
 
@@ -1378,25 +1650,31 @@ NOTE 4   For a subtype of a discrete type, the result delivered by the attribute
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>17.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The attributes S'Succ, S'Pred, S'Width, S'Image, and S'Value have been generalized to apply to real types as well (see <a href="../AA-3/AA-3.5">3.5</a>, &ldquo;<a href="../AA-3/AA-3.5">Scalar Types</a>&rdquo;). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 2005
 
+<AnnotatedOnly>
 <MarginText>17.b/3</MarginText>
 <MarginInfo items={["AI05-0297-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The attributes S'First_Valid and S'Last_Valid are new. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>17.c/4</MarginText>
 <MarginInfo items={["AI12-0071-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Updated wording of the attributes S'First_Valid and S'Last_Valid to use the new term "satisfies the predicates" (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>). <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_3.5.6"></a>
 
@@ -1420,14 +1698,18 @@ The attributes S'First_Valid and S'Last_Valid are new. <br /></Admonition>
 <MarginText>3</MarginText>
 <p>A type defined by a <code><a href="../AA-3/AA-3.5#S0044">real_type_definition</a></code> is implicitly derived from <em>root_real</em>, an anonymous predefined (specific) real type. [Hence, all real types, whether floating point or fixed point, are in the derivation class rooted at <em>root_real</em>.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>3.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>It is not specified whether the derivation from <em>root_real</em> is direct or indirect, not that it really matters. All we want is for all real types to be descendants of <em>root_real</em>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>3.a.1/1</MarginText>
 <MarginInfo items={["AI95-00152-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0099</em>{"}"} Note that this derivation does not imply any inheritance of subprograms. Subprograms are inherited only for types derived by a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> (see <a href="../AA-3/AA-3.4">3.4</a>), or a <code><a href="../AA-7/AA-7.3#S0233">private_extension_declaration</a></code> (see <a href="../AA-7/AA-7.3">7.3</a>, <a href="../AA-7/AA-7.3#Subclause_7.3.1">7.3.1</a>, and <a href="../AA-12/AA-12.5#Subclause_12.5.1">12.5.1</a>).<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>4</MarginText>
 <p>[ Real literals are all of the type <em>universal_real</em>, the universal type (see <a href="../AA-3/AA-3.4#Subclause_3.4.1">3.4.1</a>) for the class rooted at <em>root_real</em>, allowing their use with the operations of any real type. Certain multiplying operators have a result type of <em>universal_fixed</em> (see <a href="../AA-4/AA-4.5#Subclause_4.5.5">4.5.5</a>), the universal type for the class of fixed point types, allowing the result of the multiplication or division to be used where any specific fixed point type is expected.] <br /></p>
@@ -1444,13 +1726,17 @@ The attributes S'First_Valid and S'Last_Valid are new. <br /></Admonition>
 <MarginText>6</MarginText>
 <p>An implementation shall perform the run-time evaluation of a use of a predefined operator of <em>root_real</em> with an accuracy at least as great as that of any floating point type definable by a <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>6.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>Static calculations using the operators of <em>root_real</em> are exact, as for all static calculations. See <a href="../AA-4/AA-4.9">4.9</a>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>6.b</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>The Digits attribute of the type used to represent <em>root_real</em> at run time is at least as great as that of any other floating point type defined by a <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code>, and its safe range includes that of any such floating point type with the same Digits attribute. On some machines, there might be real types with less accuracy but a wider range, and hence run-time calculations with <em>root_real</em> might not be able to accommodate all values that can be represented at run time in such floating point or fixed point types. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Permissions
@@ -1463,24 +1749,32 @@ The attributes S'First_Valid and S'Last_Valid are new. <br /></Admonition>
 <MarginInfo items={["AI12-0426-1", "AI12-0444-1"]} />
 <p>An implementation may provide <em>nonstandard real types</em>, descendants of <em>root_real</em> that are declared outside of the specification of package Standard, which may have different  characteristics than  a type defined by a <code><a href="../AA-3/AA-3.5#S0044">real_type_definition</a></code>. For example, a nonstandard real type can  have an asymmetric or unsigned base range, or its predefined operations can  wrap around or &ldquo;saturate&rdquo; rather than overflow (modular or saturating arithmetic), or it can have a different  accuracy model than is standard (see <a href="../AA-G/AA-G.2#Subclause_G.2.1">G.2.1</a> ). Any type descended from a nonstandard real type is also nonstandard. An implementation may place arbitrary restrictions on the use of such types; it is implementation defined whether operators that are predefined for &ldquo;any real type&rdquo; are defined for a particular nonstandard real type. [In any case, such types are not permitted as <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code>s for formal scalar types &mdash; see <a href="../AA-12/AA-12.5#Subclause_12.5.2">12.5.2</a>.] <br /></p>
 
+<AnnotatedOnly>
 <MarginText>8.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>Any nonstandard real types and the operators defined for them.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>9</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   As stated, real literals are of the anonymous predefined real type <em>universal_real</em>. Other real types have no literals. However, the overload resolution rules (see <a href="../AA-8/AA-8.6">8.6</a>) allow expressions of the type <em>universal_real</em> whenever a real type is expected.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>9.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The syntax rule for <code><a href="../AA-3/AA-3.5#S0044">real_type_definition</a></code> is modified to use the new syntactic categories <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> and <code><a href="../AA-3/AA-3.5#S0047">fixed_point_definition</a></code>, instead of <code>floating_point_constraint</code> and <code>fixed_point_constraint</code>, because the semantics of a type definition are significantly different than the semantics of a constraint.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>9.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 All discussion of model numbers, safe ranges, and machine numbers is moved to <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>, <a href="../AA-3/AA-3.5#Subclause_3.5.8">3.5.8</a>, and <a href="../AA-G/AA-G.2">G.2</a>. Values of a fixed point type are now described as being multiples of the <em>small</em> of the fixed point type, and we have no need for model numbers, safe ranges, etc. for fixed point types.<br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_3.5.7"></a>
 
@@ -1520,16 +1814,20 @@ All discussion of model numbers, safe ranges, and machine numbers is moved to <a
 <MarginText>6</MarginText>
 <p>The requested decimal precision shall be specified by a static <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> whose value is positive and no greater than System.Max_Base_Digits. Each <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> of a <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code> shall also be static. If the <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code> is omitted, the requested decimal precision shall be no greater than System.Max_Digits. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>6.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>We have added Max_Base_Digits to package System. It corresponds to the requested decimal precision of <em>root_real</em>. System.Max_Digits corresponds to the maximum value for Digits that may be specified in the absence of a <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code>, for upward compatibility. These might not be the same if <em>root_real</em> has a base range that does not include ± 10.0**(4*Max_Base_Digits). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>7</MarginText>
 <p>A <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> is illegal if the implementation does not support a floating point type that satisfies the requested decimal precision and range. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>7.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>What combinations of requested decimal precision and range are supported for floating point types.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -1537,20 +1835,26 @@ All discussion of model numbers, safe ranges, and machine numbers is moved to <a
 <MarginText>8</MarginText>
 <p>The set of values for a floating point type is the (infinite) set of rational numbers. The <em>machine numbers</em> of a floating point type are the values of the type that can be represented exactly in every unconstrained variable of the type. The base range (see <a href="../AA-3/AA-3.5">3.5</a>) of a floating point type is symmetric around zero, except that it can include some extra negative values in some implementations.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>8.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>For example, if a 2's complement representation is used for the mantissa rather than a sign-mantissa or 1's complement representation, then there is usually one extra negative machine number.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>8.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>If the Signed_Zeros attribute is True, then minus zero could in a sense be considered a value of the type. However, for most purposes, minus zero behaves the same as plus zero.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9</MarginText>
 <p>The <em>base decimal precision</em> of a floating point type is the number of decimal digits of precision representable in objects of the type. The <em>safe range</em> of a floating point type is that part of its base range for which the accuracy corresponding to the base decimal precision is preserved by all predefined operations. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>9.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>In most cases, the safe range and base range are the same. However, for some hardware, values near the boundaries of the base range might result in excessive inaccuracies or spurious overflows when used with certain predefined operations. For such hardware, the safe range would omit such values.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10/5</MarginText>
 <MarginInfo items={["AI12-0439-1"]} />
@@ -1559,9 +1863,11 @@ All discussion of model numbers, safe ranges, and machine numbers is moved to <a
 <MarginText>11</MarginText>
 <p>A <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> also defines a first subtype of the type. If a <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code> is given, then the subtype is constrained to a range whose bounds are given by a conversion of the values of the <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>s of the <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code> to the type being defined. Otherwise, the subtype is unconstrained.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>11.a.1/1</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>The conversion mentioned above is not an <em>implicit subtype conversion</em> (which is something that happens at overload resolution, see <a href="../AA-4/AA-4.6">4.6</a>), although it happens implicitly. Therefore, the freezing rules are not invoked on the type (which is important so that representation items can be given for the type). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>12</MarginText>
 <p>There is a predefined, unconstrained, floating point subtype named Float[, declared in the visible part of package Standard]. <br /></p>
@@ -1588,9 +1894,11 @@ All discussion of model numbers, safe ranges, and machine numbers is moved to <a
 <MarginInfo items={["AI12-0444-1"]} />
 <p>An implementation is allowed to provide additional predefined floating point types[, declared in the visible part of Standard], whose (unconstrained) first subtypes have names of the form Short_Float, Long_Float, Short_Short_Float, Long_Long_Float, etc. Different predefined floating point types are allowed to have the same base decimal precision. However, the precision of Float should be no greater than that of Long_Float. Similarly, the precision of Short_Float (if provided) should be no greater than Float. Corresponding recommendations apply to any other predefined floating point types. An implementation may support  base decimal precisions for which there is no corresponding named floating point type . <br /></p>
 
+<AnnotatedOnly>
 <MarginText>16.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The predefined floating point types declared in Standard.<br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Advice
@@ -1598,17 +1906,23 @@ All discussion of model numbers, safe ranges, and machine numbers is moved to <a
 <MarginText>17</MarginText>
 <p>An implementation should support Long_Float in addition to Float if the target machine supports 11 or more digits of precision. No other named floating point subtypes are recommended for package Standard. Instead, appropriate named floating point subtypes should be provided in the library package Interfaces (see <a href="../AA-B/AA-B.2">B.2</a>). <br /></p>
 
+<AnnotatedOnly>
 <MarginText>17.a.1/2</MarginText>
-<Admonition type="aarm" aarm="implementation-advice" title="Implementation Advice">
+<Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Long_Float should be declared in Standard if the target supports 11 or more digits of precision. No other named float subtypes should be declared in Standard.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>17.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>To promote portability, implementations should explicitly declare the floating point (sub)types Float and Long_Float in Standard, and leave other predefined float types anonymous. For implementations that already support Short_Float, etc., upward compatibility argues for keeping such declarations in Standard during the transition period, but perhaps generating a warning on use. A separate package Interfaces in the predefined environment is available for pre-declaring types such as Float_32, IEEE_Float_64, etc. See <a href="../AA-B/AA-B.2">B.2</a>. <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   If a floating point subtype is unconstrained, then assignments to variables of the subtype involve only Overflow_Checks, never Range_Checks. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -1628,28 +1942,38 @@ subtype Probability is Real range 0.0 .. 1.0;   --   a subtype with a smaller ra
 
 #### Inconsistencies With Ada 83
 
+<AnnotatedOnly>
 <MarginText>22.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 No Range_Checks, only Overflow_Checks, are performed on variables (or parameters) of an unconstrained floating point subtype. This is upward compatible for programs that do not raise Constraint_Error. For those that do raise Constraint_Error, it is possible that the exception will be raised at a later point, or not at all, if extended range floating point registers are used to hold the value of the variable (or parameter). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.b</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This change was felt to be justified by the possibility of improved performance on machines with extended-range floating point registers. An implementation need not take advantage of this relaxation in the range checking; it can hide completely the use of extended range registers if desired, presumably at some run-time expense. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>22.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The syntax rules for <code>floating_point_constraint</code> and <code>floating_accuracy_definition</code> are removed. The syntax rules for <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> and <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code> are new.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.d</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 A syntax rule for <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> is given in <a href="../AA-3/AA-3.5#Subclause_3.5.9">3.5.9</a>, &ldquo;<a href="../AA-3/AA-3.5#Subclause_3.5.9">Fixed Point Types</a>&rdquo;. In <a href="../AA-J/AA-J.3">J.3</a> we indicate that a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> may be applied to a floating point <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> as well (to be compatible with Ada 83's <code>floating_point_constraint</code>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22.e</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Discussion of model numbers is postponed to <a href="../AA-3/AA-3.5#Subclause_3.5.8">3.5.8</a> and <a href="../AA-G/AA-G.2">G.2</a>. The concept of safe numbers has been replaced by the concept of the safe range of values. The bounds of the safe range are given by T'Safe_First .. T'Safe_Last, rather than -T'Safe_Large .. T'Safe_Large, since on some machines the safe range is not perfectly symmetric. The concept of machine numbers is new, and is relevant to the definition of Succ and Pred for floating point numbers. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_3.5.8"></a>
 
@@ -1667,21 +1991,27 @@ Discussion of model numbers is postponed to <a href="../AA-3/AA-3.5#Subclause_3.
 <dl>
 <dd>{"{"}<em>8652/0004</em>{"}"} S'Digits denotes the requested decimal precision for the subtype S. The value of this attribute is of the type <em>universal_integer</em>. The requested decimal precision of the base subtype of a floating point type <em>T</em> is defined to be the largest value of <em>d</em> for which <br />ceiling(<em>d</em> * log(10) / log(T'Machine_Radix)) + <em>g</em> {"<"}= T'Model_Mantissa<br />where g is 0 if Machine_Radix is a positive power of 10 and 1 otherwise. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   The predefined operations of a floating point type include the assignment operation, qualification, the membership tests, and explicit conversion to and from other numeric types. They also include the relational operators and the following predefined arithmetic operators: the binary and unary adding operators &ndash; and +, certain multiplying operators, the unary operator <strong>abs</strong>, and the exponentiation operator.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>4</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   As for all types, objects of a floating point type have Size and Address attributes (see <a href="../AA-13/AA-13.3">13.3</a>). Other attributes of floating point types are defined in <a href="../AA-A/AA-A.5#Subclause_A.5.3">A.5.3</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>4.a/2</MarginText>
 <MarginInfo items={["AI95-00203-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0004</em>{"}"} <strong>Corrigendum:</strong> Corrected the formula for Digits when the Machine_Radix is 10. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_3.5.9"></a>
 
@@ -1738,9 +2068,11 @@ NOTE 2   As for all types, objects of a floating point type have Size and Addres
 <MarginInfo items={["AI95-00100-01"]} />
 <p>The set of values of a fixed point type comprise the integral multiples of a number called the <em>small</em> of the type. The <em>machine numbers</em> of a fixed point type are the values of the type that can be represented exactly in every unconstrained variable of the type. For a type defined by an <code><a href="../AA-3/AA-3.5#S0048">ordinary_fixed_point_definition</a></code> (an <em>ordinary</em> fixed point type), the <em>small</em> may be specified by an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> (see <a href="../AA-13/AA-13.3">13.3</a>); if so specified, it shall be no greater than the <em>delta</em> of the type. If not specified, the <em>small</em> of an ordinary fixed point type is an implementation-defined power of two less than or equal to the <em>delta</em>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>8.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The <em>small</em> of an ordinary fixed point type.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>9</MarginText>
 <p>For a decimal fixed point type, the <em>small</em> equals the <em>delta</em>; the <em>delta</em> shall be a power of 10. If a <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code> is given, both bounds of the range shall be in the range &ndash;(10**<em>digits</em>&ndash;1)*<em>delta</em> .. +(10**<em>digits</em>&ndash;1)*<em>delta</em>.<br /></p>
@@ -1748,16 +2080,20 @@ NOTE 2   As for all types, objects of a floating point type have Size and Addres
 <MarginText>10</MarginText>
 <p>A <code><a href="../AA-3/AA-3.5#S0047">fixed_point_definition</a></code> is illegal if the implementation does not support a fixed point type with the given <em>small</em> and specified range or <em>digits</em>. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>10.a</MarginText>
-<Admonition type="aarm" aarm="implementation-defined" title="Implementation defined: ">
+<Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>What combinations of <em>small</em>, range, and <em>digits</em> are supported for fixed point types.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>11</MarginText>
 <p>For a <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> with a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code>, the <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> shall denote a decimal fixed point subtype. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>11.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>Or, as an obsolescent feature, a floating point subtype is permitted &mdash; see <a href="../AA-J/AA-J.3">J.3</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Static Semantics
@@ -1772,9 +2108,11 @@ NOTE 2   As for all types, objects of a floating point type have Size and Addres
 <ul>
 <li>the value of the conversion to the fixed point type of the corresponding <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of the <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code>; <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>14.a.1/1</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>The conversion mentioned above is not an <em>implicit subtype conversion</em> (which is something that happens at overload resolution, see <a href="../AA-4/AA-4.6">4.6</a>), although it happens implicitly. Therefore, the freezing rules are not invoked on the type (which is important so that representation items can be given for the type). <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>15</MarginText>
 <ul>
@@ -1783,9 +2121,11 @@ NOTE 2   As for all types, objects of a floating point type have Size and Addres
 <MarginText>16</MarginText>
 <p>A <code><a href="../AA-3/AA-3.5#S0049">decimal_fixed_point_definition</a></code> defines a decimal fixed point type whose base range includes at least the range &ndash;(10**<em>digits</em>&ndash;1)*<em>delta</em> .. +(10**<em>digits</em>&ndash;1)*<em>delta</em>. A <code><a href="../AA-3/AA-3.5#S0049">decimal_fixed_point_definition</a></code> also defines a constrained first subtype of the type. If a <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code> is given, the bounds of the first subtype are given by a conversion of the values of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s of the <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code>. Otherwise, the range of the first subtype is &ndash;(10**<em>digits</em>&ndash;1)*<em>delta</em> .. +(10**<em>digits</em>&ndash;1)*<em>delta</em>.<br /></p>
 
+<AnnotatedOnly>
 <MarginText>16.a.1/1</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>The conversion mentioned above is not an <em>implicit subtype conversion</em> (which is something that happens at overload resolution, see <a href="../AA-4/AA-4.6">4.6</a>), although it happens implicitly. Therefore, the freezing rules are not invoked on the type (which is important so that representation items can be given for the type). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Dynamic Semantics
@@ -1797,31 +2137,43 @@ NOTE 2   As for all types, objects of a floating point type have Size and Addres
 <MarginInfo items={["AI12-0152-1"]} />
 <p>For a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> on a decimal fixed point subtype with a given <em>delta</em>, if it does not have a <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>, then it specifies an implicit range &ndash;(10**<em>D</em>&ndash;1)*<em>delta</em> .. +(10**<em>D</em>&ndash;1)*<em>delta</em>, where <em>D</em> is the value of the <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>. A <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> is <em>compatible</em> with a decimal fixed point subtype if the value of the <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> is no greater than the <em>digits</em> of the subtype, and if it specifies (explicitly or implicitly) a range that is compatible with the subtype. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>18.a</MarginText>
-<Admonition type="aarm" aarm="discussion" title="Discussion: ">
+<Admonition type="aarm" aarm="discussion">
 <strong></strong>Except for the requirement that the <em>digits</em> specified be no greater than the <em>digits</em> of the subtype being constrained, a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> is essentially equivalent to a <code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18.b</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Consider the following example: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18.c</MarginText>
 <CodeBlock language="ada">
 type D is delta 0.01 digits 7 range -0.00 .. 9999.99;{"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>18.d/1</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The compatibility rule implies that the <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> "<strong>digits</strong> 6" specifies an implicit range of "&ndash;9999.99 .. 9999.99". Thus, "<strong>digits</strong> 6" is not compatible with the constraint of D, but "<strong>digits</strong> 6 range 0.00 .. 9999.99" is compatible.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18.e/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 A value of a scalar type belongs to a constrained subtype of the type if it belongs to the range of the subtype. Attributes like Digits and Delta have no effect on this fundamental rule. So the obsolescent forms of <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code>s and <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code>s that are called &ldquo;accuracy constraints&rdquo; in RM83 don't really represent constraints on the values of the subtype, but rather primarily affect compatibility of the &ldquo;constraint&rdquo; with the subtype being &ldquo;constrained&rdquo;. In this sense, they might better be called &ldquo;subtype assertions&rdquo; rather than &ldquo;constraints&rdquo;.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18.f</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Note that the <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> on a decimal fixed point subtype is a combination of an assertion about the <em>digits</em> of the subtype being further constrained, and a constraint on the range of the subtype being defined, either explicit or implicit. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>19/4</MarginText>
 <MarginInfo items={["AI12-0152-1"]} />
@@ -1833,9 +2185,11 @@ Note that the <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> 
 <MarginText>20</MarginText>
 <p>The implementation shall support at least 24 bits of precision (including the sign bit) for fixed point types. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>20.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>This is sufficient to represent Standard.Duration with a <em>small</em> no more than 50 milliseconds. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Implementation Permissions
@@ -1843,24 +2197,32 @@ Note that the <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> 
 <MarginText>21</MarginText>
 <p>Implementations are permitted to support only <em>small</em>s that are a power of two. In particular, all decimal fixed point type declarations can be disallowed. Note however that conformance with the Information Systems Annex requires support for decimal <em>small</em>s, and decimal fixed point type declarations with <em>digits</em> up to at least 18. <br /></p>
 
+<AnnotatedOnly>
 <MarginText>21.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>The accuracy requirements for multiplication, division, and conversion (see <a href="../AA-G/AA-G.2#Subclause_G.2.1">G.2.1</a>, &ldquo;<a href="../AA-G/AA-G.2#Subclause_G.2.1">Model of Floating Point Arithmetic</a>&rdquo;) are such that support for arbitrary <em>small</em>s should be practical without undue implementation effort. Therefore, implementations should support fixed point types with arbitrary values for <em>small</em> (within reason). One reasonable limitation would be to limit support to fixed point types that can be converted to the most precise floating point type without loss of precision (so that Fixed_IO is implementable in terms of Float_IO). <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>22/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE   The specified bounds themselves can be outside the base range of an ordinary fixed point type  so that the range specification can be given in a natural way, such as: <br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>23</MarginText>
 <CodeBlock language="ada">
    type Fraction is delta 2.0**(-15) range -1.0 .. 1.0;{"\n"}  {"\n"}
 
 </CodeBlock>
+</AnnotatedOnly>
+<AnnotatedOnly>
 <MarginText>24/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 With 2's complement hardware, such a type would typically  have a signed 16-bit representation, using 1 bit for the sign and 15 bits for fraction, resulting in a base range of &ndash;1.0 .. 1.0&ndash;2.0**(&ndash;15). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Examples
@@ -1880,48 +2242,60 @@ type Money is delta 0.01 digits 15;  -- decimal fixed point{"\n"}subtype Salary 
 
 #### Inconsistencies With Ada 83
 
+<AnnotatedOnly>
 <MarginText>28.a</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 In Ada 95, S'Small always equals S'Base'Small, so if an implementation chooses a <em>small</em> for a fixed point type smaller than required by the <em>delta</em>, the value of S'Small in Ada 95 might not be the same as it was in Ada 83. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Extensions to Ada 83
 
+<AnnotatedOnly>
 <MarginText>28.b/3</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Decimal fixed point types are new, though their capabilities are essentially similar to that available in Ada 83 with a fixed point type whose <em>small</em> equals its <em>delta</em> and both are a power of 10. However, in the Information Systems Annex, additional requirements are placed on the support of decimal fixed point types (e.g. a minimum of 18 digits of precision). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 83
 
+<AnnotatedOnly>
 <MarginText>28.c</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 The syntax rules for <code>fixed_point_constraint</code> and <code>fixed_accuracy_definition</code> are removed. The syntax rule for <code><a href="../AA-3/AA-3.5#S0047">fixed_point_definition</a></code> is new. A syntax rule for <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code> is included in the Obsolescent features (to be compatible with Ada 83's <code>fixed_point_constraint</code>). <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>28.d/2</MarginText>
 <MarginInfo items={["AI95-00100-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 Added wording to define the machine numbers of fixed point types; this is needed by the static evaluation rules. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Incompatibilities With Ada 2012
 
+<AnnotatedOnly>
 <MarginText>28.e/4</MarginText>
 <MarginInfo items={["AI12-0152-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Changed the syntax so that the value following <strong>digits</strong> in a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code> is a <code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>. This is compatible with one very unlikely exception: if the <strong>digits</strong> expression is a static expression of a modular type using an unparenthesized logical operator (like <strong>and</strong> or <strong>or</strong>). Parenthesizing the expression will make it legal in that case. The change is necessary to eliminate syntax ambguities in <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>s. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>28.f/4</MarginText>
 <MarginInfo items={["AI12-0159-1"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Corrigendum</strong>:Added wording to define the expected type for a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code>. This was missing since Ada 95, but as it is obvious and unchanged from Ada 83, we don't consider it an incompatibility. <br /></Admonition>
+</AnnotatedOnly>
 
 <a id="Subclause_3.5.10"></a>
 
@@ -1939,18 +2313,22 @@ Added wording to define the machine numbers of fixed point types; this is needed
 <dl>
 <dd>{"{"}<em>8652/0005</em>{"}"} S'Small denotes the <em>small</em> of the type of S. The value of this attribute is of the type <em>universal_real</em>. Small may be specified for nonderived ordinary fixed point types via an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> (see <a href="../AA-13/AA-13.3">13.3</a>); the expression of such a clause shall be static and positive.<br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>2.a/3</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Small: </strong>Scale factor for a fixed point type.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>3</MarginText>
 <dt><br/>S'Delta</dt>
 <dl>
 <dd>S'Delta denotes the <em>delta</em> of the fixed point subtype S. The value of this attribute is of the type <em>universal_real</em>. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>3.a</MarginText>
-<Admonition type="aarm" aarm="reason" title="Reason: ">
+<Admonition type="aarm" aarm="reason">
 <strong></strong>The <em>delta</em> is associated with the <em>sub</em>type as opposed to the type, because of the possibility of an (obsolescent) <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code>.<br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>4</MarginText>
 <dt><br/>S'Fore</dt>
@@ -1975,9 +2353,11 @@ Added wording to define the machine numbers of fixed point types; this is needed
 <MarginInfo items={["AI12-0426-1"]} />
 <li>For a subtype defined by a <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> without a <code><a href="../AA-3/AA-3.5#S0050">digits_constraint</a></code>, the digits of the subtype is the same as that of the subtype denoted by the <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> in the <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code>;  <br /></li>
 </ul>
+<AnnotatedOnly>
 <MarginText>9.a</MarginText>
-<Admonition type="aarm" aarm="implementation-note" title="Implementation Note: ">
+<Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Although a decimal subtype can be both range-constrained and digits-constrained, the digits constraint is intended to control the Size attribute of the subtype. For decimal types, Size can be important because input/output of decimal types is so common. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>10</MarginText>
 <ul>
@@ -1988,9 +2368,11 @@ Added wording to define the machine numbers of fixed point types; this is needed
 <dl>
 <dd>S'Scale denotes the <em>scale</em> of the subtype S, defined as the value N such that S'Delta = 10.0**(&ndash;N). [The scale indicates the position of the point relative to the rightmost significant digits of values of subtype S.] The value of this attribute is of the type <em>universal_integer</em>. <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>11.a</MarginText>
-<Admonition type="aarm" aarm="ramification" title="Ramification: ">
+<Admonition type="aarm" aarm="ramification">
 <strong></strong>S'Scale is negative if S'Delta is greater than one. By contrast, S'Aft is always positive. <br /></Admonition>
+</AnnotatedOnly>
 
 <MarginText>12</MarginText>
 <dt><br/>S'Round</dt>
@@ -2006,35 +2388,47 @@ function S'Round(X : universal_real){"\n"}  return S'Base{"\n"}
 <dl>
 <dd>The function returns the value obtained by rounding X (away from 0, if X is midway between two values of the type of S). <br /></dd>
 </dl>
+<AnnotatedOnly>
 <MarginText>15</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 1   All subtypes of a fixed point type will have the same value for the Delta attribute, in the absence of <code><a href="../AA-J/AA-J.3#S0367">delta_constraint</a></code>s (see <a href="../AA-J/AA-J.3">J.3</a>).<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>16</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 2   S'Scale is not always the same as S'Aft for a decimal subtype; for example, if S'Delta = 1.0 then S'Aft is 1 while S'Scale is 0.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>17</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 3   The predefined operations of a fixed point type include the assignment operation, qualification, the membership tests, and explicit conversion to and from other numeric types. They also include the relational operators and the following predefined arithmetic operators: the binary and unary adding operators &ndash; and +, multiplying operators, and the unary operator <strong>abs</strong>.<br /></Admonition>
+</AnnotatedOnly>
 
+<AnnotatedOnly>
 <MarginText>18</MarginText>
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 NOTE 4   As for all types, objects of a fixed point type have Size and Address attributes (see <a href="../AA-13/AA-13.3">13.3</a>). Other attributes of fixed point types are defined in <a href="../AA-A/AA-A.5#Subclause_A.5.4">A.5.4</a>. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 95
 
+<AnnotatedOnly>
 <MarginText>18.a/2</MarginText>
 <MarginInfo items={["AI95-00054-01"]} />
-<Admonition type="aarm" aarm="note" title="Note: ">
+<Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0005</em>{"}"} <strong>Corrigendum:</strong> Clarified that <em>small</em> may be specified only for ordinary fixed point types. <br /></Admonition>
+</AnnotatedOnly>
 
 
 #### Wording Changes from Ada 2012
 
+<AnnotatedOnly>
 <MarginText>18.b/5</MarginText>
 <MarginInfo items={["AI12-0367-1"]} />
-<Admonition type="aarm" aarm="correction" title="Correction:">
+<Admonition type="aarm" aarm="correction">
 <strong></strong> Clarified that <em>small</em> may be specified only with positive values. <br /></Admonition>
+</AnnotatedOnly>
 
