@@ -103,7 +103,7 @@ const config = {
           width: 32,
           height: 32
         },
-        hideOnScroll: false,
+        hideOnScroll: true,
         style: "dark",
         items: [
           {
