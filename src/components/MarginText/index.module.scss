@@ -13,26 +13,37 @@ $ada-lang-margin-text-min-width: 1770px;
   list-style-type: none;
   position: absolute;
 
-  // Blurred background (needed when overlap with TOC in right sidebar)
-  backdrop-filter: blur(5px);
   background-color: var(--ifm-hover-overlay);
   z-index: 1;
 
   border-radius: var(--ifm-global-radius);
   padding-inline: calc(0.5 * var(--ifm-global-radius));
 
+  // Paragraph numbers to the left of the text for wide layouts
   @media (min-width: #{$ada-lang-margin-text-min-width}) {
     left: calc(var(--doc-sidebar-width) + 1rem);
   }
 
+  // Paragraph numbers to the right of the text for medium layouts
   @media (min-width: 997px) and (max-width: #{$ada-lang-margin-text-min-width - 1}) {
     // Some extra spacing between the margin text and the margin info icon on the right
     left: calc(var(--ada-lang-right-margin) + 1 * var(--ifm-spacing-horizontal));
+
+    // Blurred background (needed when overlap with TOC in right sidebar)
+    backdrop-filter: blur(5px);
   }
 
+  // Paragraph numbers on the right side of the text for small layouts
   @media (max-width: 996px) {
     // Some extra spacing between the margin text and the margin info icon on the right
     right: calc(#{$ada-lang-margin-text-right-small} + 0.5 * var(--ifm-spacing-horizontal));
+
+    &:hover {
+      // Blurred background (needed when overlap with TOC in right sidebar)
+      // (but only on hover since blurring many paragraph numbers can be slow
+      // on mobile phones, which have a small layout)
+      backdrop-filter: blur(5px);
+    }
   }
 }
 
