@@ -71,8 +71,13 @@ alr edit
 
 Install `ada-mode` extension from [GNU ELPA](https://elpa.gnu.org/packages/ada-mode.html).
 
-Set Alire to use Emacs when invoking `alr edit`:
+Set Alire to use Emacs when invoking `alr edit`. On Linux, that would be:
 
 ```sh
 alr config --set --global editor.cmd 'emacs --eval=(ada-build-prompt-select-prj-file"${GPR_FILE}") ${GPR_FILE}'
+```
+
+On Mac:
+```sh
+alr config --set editor.cmd "open -n -a emacs ${GPR_FILE}"
 ```
