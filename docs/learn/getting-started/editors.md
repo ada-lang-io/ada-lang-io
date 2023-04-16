@@ -50,11 +50,11 @@ Make a `workspace.code-workspace` in your project folder with the name of your g
 Set Alire to look for a workspace.code-workspace in whatever directory you're
 trying to open.
 
-`alr config --set editor.cmd "code workspace.code-workspace"`
-
-On Mac this might look something more like:
-
-`alr config --set editor.cmd "/Applications/VisualStudioCode.app/Contents/Resources/app/bin/code workspace.code-workspace"`
+<Tabs groupId="operating-systems">
+  <TabItem value="win" label="Windows">`alr config --set editor.cmd "code workspace.code-workspace"`</TabItem>
+  <TabItem value="win" label="Linux">`alr config --set editor.cmd "code workspace.code-workspace"`</TabItem>
+  <TabItem value="mac" label="macOS">`alr config --set editor.cmd "/Applications/VisualStudioCode.app/Contents/Resources/app/bin/code workspace.code-workspace"`</TabItem>
+</Tabs>
 
 As long as you make a workspace file, you can now edit your projects with:
 
@@ -73,11 +73,15 @@ Install `ada-mode` extension from [GNU ELPA](https://elpa.gnu.org/packages/ada-m
 
 Set Alire to use Emacs when invoking `alr edit`. On Linux, that would be:
 
+<Tabs groupId="operating-systems">
+  <TabItem value="linux" label="Linux">
 ```sh
 alr config --set --global editor.cmd 'emacs --eval=(ada-build-prompt-select-prj-file"${GPR_FILE}") ${GPR_FILE}'
 ```
-
-On Mac:
+  </TabItem>
+  <TabItem value="mac" label="macOS">
 ```sh
 alr config --set editor.cmd "open -n -a emacs ${GPR_FILE}"
 ```
+  </TabItem>
+</Tabs>
