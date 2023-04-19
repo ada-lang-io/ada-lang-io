@@ -2,6 +2,9 @@
 sidebar_position: 3
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Editors
 
 ## Setting up your editor
@@ -52,7 +55,7 @@ trying to open.
 
 <Tabs groupId="operating-systems">
   <TabItem value="win" label="Windows">`alr config --set editor.cmd "code workspace.code-workspace"`</TabItem>
-  <TabItem value="win" label="Linux">`alr config --set editor.cmd "code workspace.code-workspace"`</TabItem>
+  <TabItem value="linux" label="Linux">`alr config --set editor.cmd "code workspace.code-workspace"`</TabItem>
   <TabItem value="mac" label="macOS">`alr config --set editor.cmd "/Applications/VisualStudioCode.app/Contents/Resources/app/bin/code workspace.code-workspace"`</TabItem>
 </Tabs>
 
@@ -71,7 +74,7 @@ alr edit
 
 Install `ada-mode` extension from [GNU ELPA](https://elpa.gnu.org/packages/ada-mode.html).
 
-Set Alire to use Emacs when invoking `alr edit`. On Linux, that would be:
+Set Alire to use Emacs when invoking `alr edit`.
 
 <Tabs groupId="operating-systems">
   <TabItem value="linux" label="Linux">
