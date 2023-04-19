@@ -79,12 +79,12 @@ Set Alire to use Emacs when invoking `alr edit`.
 <Tabs groupId="operating-systems">
   <TabItem value="linux" label="Linux">
 ```sh
-alr config --set --global editor.cmd 'emacs --eval=(ada-build-prompt-select-prj-file"${GPR_FILE}") ${GPR_FILE}'
+alr config --set --global editor.cmd 'emacs --eval=(ada-build-prompt-select-prj-file"\${GPR_FILE}") \${GPR_FILE}'
 ```
   </TabItem>
   <TabItem value="mac" label="macOS">
 ```sh
-alr config --set editor.cmd "open -n -a emacs ${GPR_FILE}"
+alr config --set editor.cmd "open -n -a emacs \${GPR_FILE}"
 ```
   </TabItem>
 </Tabs>
