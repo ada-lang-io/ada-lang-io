@@ -1,6 +1,7 @@
 ---
 sidebar_position: 3
 ---
+export const GPR_FILE = "{GPR_FILE}";
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -54,9 +55,24 @@ Set Alire to look for a workspace.code-workspace in whatever directory you're
 trying to open.
 
 <Tabs groupId="operating-systems">
-  <TabItem value="win" label="Windows">`alr config --set editor.cmd "code workspace.code-workspace"`</TabItem>
-  <TabItem value="linux" label="Linux">`alr config --set editor.cmd "code workspace.code-workspace"`</TabItem>
-  <TabItem value="mac" label="macOS">`alr config --set editor.cmd "/Applications/VisualStudioCode.app/Contents/Resources/app/bin/code workspace.code-workspace"`</TabItem>
+  <TabItem value="win" label="Windows">
+
+```bash
+alr config --set editor.cmd "code workspace.code-workspace"
+```
+  </TabItem>
+ <TabItem value="linux" label="Linux">
+
+```bash
+alr config --set editor.cmd "code workspace.code-workspace"
+```
+  </TabItem>
+  <TabItem value="mac" label="macOS">
+
+```bash
+alr config --set editor.cmd "/Applications/VisualStudioCode.app/Contents/Resources/app/bin/code workspace.code-workspace"
+```
+  </TabItem>
 </Tabs>
 
 As long as you make a workspace file, you can now edit your projects with:
@@ -78,13 +94,15 @@ Set Alire to use Emacs when invoking `alr edit`.
 
 <Tabs groupId="operating-systems">
   <TabItem value="linux" label="Linux">
-```sh
-alr config --set --global editor.cmd 'emacs --eval=(ada-build-prompt-select-prj-file"&dollar;&#123;GPR_FILE&#124;") &dollar;&#123;GPR_FILE&#124;'
+
+```bash
+alr config --set --global editor.cmd 'emacs --eval=(ada-build-prompt-select-prj-file"${GPR_FILE}) ${GPR_FILE}'
 ```
   </TabItem>
   <TabItem value="mac" label="macOS">
-```sh
-alr config --set editor.cmd "open -n -a emacs &dollar;&#123;GPR_FILE&#124;"
+
+```bash
+alr config --set editor.cmd "open -n -a emacs ${GPR_FILE}"
 ```
   </TabItem>
 </Tabs>
