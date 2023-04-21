@@ -1,0 +1,115 @@
+---
+title: 10.4 Data Structures
+---
+
+### Dynamic Arrays
+
+#### guideline
+
+- Use constrained arrays when measured performance indicates.
+
+#### rationale
+
+If array bounds are not known until run-time, then calculations of these
+bounds may affect run-time performance. Using named constants or static
+expressions as array bounds may provide better performance than using
+variables or nonstatic expressions. Thus, if the values of Lower and
+Upper are not determined until run-time, then:
+
+... is array (Lower .. Upper) of ...
+
+may cause address and offset calculations to be delayed until run-time,
+introducing a performance penalty. See NASA (1992) for a detailed
+discussion of the tradeoffs and alternatives.
+
+### Zero-Based Arrays
+
+#### guideline
+
+- Use zero-based indexing for arrays when measured performance
+  indicates.
+
+#### rationale
+
+For some compilers, offset calculations for an array whose lower bound
+is 0 (either the integer zero or the first value of an enumeration type)
+are simplified. For other compilers, optimization is more likely if the
+lower bound is 1.
+
+### Unconstrained Records
+
+#### guideline
+
+- Use fixed-size components for records when measured performance
+  indicates.
+
+#### example
+
+```ada
+subtype Line_Range   is Integer range 0 .. Max_Lines;
+subtype Length_Range is Integer range 0 .. Max_Length;
+
+-- Note that Max_Lines and Max_Length need to be static
+type Paragraph_Body is array (Line_Range range <>, Length_Range range <>) of Character;
+
+type Paragraph (Lines : Line_Range := 0; Line_Length : Length_Range := 0) is
+   record
+      Text : Paragraph_Body (1 .. Lines, 1 .. Line_Length);
+   end record;
+```
+
+#### rationale
+
+Determine the size and speed impact of unconstrained records having
+components depending on discriminants. Some compilers will allocate the
+maximum possible size to each object of the type; others will use
+pointers to the dependent components, incurring a possible heap
+performance penalty. Consider the possibility of using fixed-size
+components.
+
+### Records and Arrays
+
+#### guideline
+
+- Define arrays of records as parallel arrays when measured
+  performance indicates.
+
+#### example
+
+```ada
+    -- Array of records
+    Process (Student (Index).Name, Student (Index).Grade);
+    -- Record of arrays
+    Process (Student.Name (Index), Student.Grade (Index));
+    -- Parallel arrays
+    Process (Name (Index), Grade (Index));
+```
+
+#### rationale
+
+Determine the impact of structuring data as arrays of records, records
+containing arrays, or parallel arrays. Some implementations of Ada will
+show significant performance differences among these examples.
+
+### Record and Array Aggregates
+
+#### guideline
+
+- Use a sequence of assignments for an aggregation when measured
+  performance indicates.
+
+#### rationale
+
+Determine the impact of using an aggregate versus a sequence of
+assignments. Using an aggregate generally requires the use of a
+temporary variable. If the aggregate is "static" (i.e., its size and
+components are known at compile- or link-time, allowing link-time
+allocation and initialization), then it will generally be more efficient
+than a sequence of assignments. If the aggregate is "dynamic," then a
+series of assignments may be more efficient because no temporary
+variable is needed.
+
+See Guideline 5.6.10 for a discussion of aggregates from the point of
+view of readability and maintainability.
+
+See Guideline 10.6.1 for a discussion of extension aggregates.

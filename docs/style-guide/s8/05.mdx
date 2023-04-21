@@ -1,0 +1,143 @@
+---
+title: 8.5 Summary
+---
+
+### understanding and clarity
+
+- Select the least restrictive names possible for reusable parts and
+  their identifiers.
+- Select the generic name to avoid conflicting with the naming
+  conventions of instantiations of the generic.
+- Use names that indicate the behavioral characteristics of the
+  reusable part, as well as its abstraction .
+- Do not use abbreviations in identifier or unit names.
+- Document the expected behavior of generic formal parameters just as
+  you document any package specification.
+
+### robustness
+
+- Use named numbers and static expressions to allow multiple
+  dependencies to be linked to a small number of symbols.
+- Use unconstrained array types for array formal parameters and array
+  return values.
+- Make the size of local variables depend on actual parameter size,
+  where appropriate.
+- Minimize the number of assumptions made by a unit.
+- For assumptions that cannot be avoided, use subtypes or constraints
+  to automatically enforce conformance.
+- For assumptions that cannot be automatically enforced by subtypes,
+  add explicit checks to the code.
+- Document all assumptions.
+- If the code depends upon the implementation of a specific Special
+  Needs Annex for proper operation, document this assumption in the
+  code.
+- Use first subtypes when declaring generic formal objects of mode in
+  out.
+- Beware of using subtypes as subtype marks when declaring parameters
+  or return values of generic formal subprograms.
+- Use attributes rather than literal values.
+- Be careful about overloading the names of subprograms exported by
+  the same generic package.
+- Within a specification, document any tasks that would be activated
+  by with'ing the specification and by using any part of the
+  specification.
+- Document which generic formal parameters are accessed from a task
+  hidden inside the generic unit.
+- Document any multithreaded components.
+- Propagate exceptions out of reusable parts. Handle exceptions within
+  reusable parts only when you are certain that the handling is
+  appropriate in all circumstances.
+- Propagate exceptions raised by generic formal subprograms after
+  performing any cleanup necessary to the correct operation of future
+  invocations of the generic instantiation.
+- Leave state variables in a valid state when raising an exception.
+- Leave parameters unmodified when raising an exception.
+
+### adaptability
+
+- Provide core functionality in a reusable part or set of parts so
+  that the functionality in this abstraction can be meaningfully
+  extended by its reusers.
+- More specifically, provide initialization and finalization
+  procedures for every data structure that may contain dynamic data.
+- For data structures needing initialization and finalization,
+  consider deriving them, when possible, from the types
+  Ada.Finalization.Controlled or Ada.Finalization.Limited_Controlled.
+- Use generic units to avoid code duplication.
+- Parameterize generic units for maximum adaptability.
+- Reuse common instantiations of generic units, as well as the generic
+  units themselves.
+- Consider using a limited private type for a generic formal type when
+  you do not need assignment on objects of the type inside the generic
+  body.
+- Consider using a nonlimited private type for a generic formal type
+  when you need normal assignment on objects of the type inside the
+  body of the generic.
+- Consider using a formal tagged type derived from
+  Ada.Finalization.Controlled when you need to enforce special
+  assignment semantics on objects of the type in the body of the
+  generic.
+- Export the least restrictive type that maintains the integrity of
+  the data and abstraction while allowing alternate implementations.
+- Consider using a limited private abstract type for generic formal
+  types of a generic that extends a formal private tagged type.
+- Use generic units to encapsulate algorithms independently of data
+  type.
+- Consider using abstract data types (not to be confused with Ada's
+  abstract types) in preference to abstract data objects.
+- Consider using generic units to implement abstract data types
+  independently of their component data type.
+- Provide iterators for traversing complex data structures within
+  reusable parts.
+- Consider providing both active and passive iterators.
+- Protect the iterators from errors due to modification of the data
+  structure during iteration.
+- Document the behavior of the iterators when the data structure is
+  modified during traversal.
+- Localize the currency symbol, digits separator, radix mark, and fill
+  character in picture output.
+- Consider using the \# character in picture layouts so that the
+  edited numeric output lengths are invariant across currency symbols
+  of different lengths.
+- Consider using abstract tagged types and generics to define reusable
+  units of functionality that can be "mixed into" core abstractions
+  (also known as mixins).
+- Consider structuring subsystems so that operations that are only
+  used in a particular context are in different child packages than
+  operations used in a different context.
+- Consider declaring context-independent functionality in the parent
+  package and context-dependent functionality in child packages.
+
+### independence
+
+- Minimize with clauses on reusable parts, especially on their
+  specifications.
+- Consider using generic parameters instead of with statements to
+  reduce the number of context clauses on a reusable part.
+- Consider using generic formal package parameters to import directly
+  all the types and operations defined in an instance of a preexisting
+  generic.
+- In the specification of a generic library unit, use pragma
+  Elaborate_Body.
+- Create families of generic or other parts with similar
+  specifications.
+- Structure reusable code to take advantage of dead code removal by
+  the compiler.
+- Write table-driven reusable parts wherever possible and appropriate.
+- Use the predefined packages for string handling.
+- Consider using hierarchies of tagged types to promote generalization
+  of software for reuse.
+- Consider using a tagged type hierarchy to decouple a generalized
+  algorithm from the details of dependency on specific types.
+
+:::note
+
+This page of the "Ada Quality and Style Guide" has been adapted from the
+original work at https://en.wikibooks.org/wiki/Ada_Style_Guide, which is
+licensed under the
+[Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/3.0/);
+additional terms may apply. Page not endorsed by Wikibooks or the Ada
+Style Guide Wikibook authors. This page is licensed under the same license
+as the original work.
+
+:::

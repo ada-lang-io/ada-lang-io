@@ -1,0 +1,453 @@
+---
+title: 5.9 Erroneous execution and bounded errors
+---
+
+Ada 95 introduces the category of bounded errors. Bounded errors are
+cases where the behavior is not deterministic but falls within
+well-defined bounds (Rationale 1995, §1.4). The consequence of a bounded
+error is to limit the behavior of compilers so that an Ada environment
+is not free to do whatever it wants in the presence of errors. The [Ada
+Reference Manual (1995)](http://www.adahome.com/rm95/rm9x-01-01-05.html)
+defines a set of possible outcomes for the consequences of undefined
+behavior, as in an uninitialized value or a value outside the range of
+its subtype. For example, the executing program may raise the predefined
+exception `Program_Error`, `Constraint_Error`, or it may do nothing.
+
+An Ada program is _erroneous_ when it generates an error that is not
+required to be detected by the compiler or run-time environments. As
+stated in the [Ada Reference Manual (1995,
+§1.1.5)](http://www.adahome.com/rm95/rm9x-01-01-05.html), "The effects
+of erroneous execution are unpredictable." If the compiler does detect
+an instance of an erroneous program, its options are to indicate a
+compile time error; to insert the code to raise `Program_Error`,
+possibly to write a message to that effect; or to do nothing at all.
+
+Erroneousness is not a concept unique to Ada. The guidelines below
+describe or explain some specific instances of erroneousness defined in
+the [Ada Reference Manual
+(1995)](http://www.adahome.com/rm95/rm9x-01-01-05.html). These
+guidelines are not intended to be all-inclusive but rather emphasize
+some commonly overlooked problem areas. Arbitrary order dependencies are
+not, strictly speaking, a case of erroneous execution; thus, they are
+discussed in Guideline 7.1.9 as a portability issue.
+
+### Unchecked Conversion
+
+#### guideline
+
+- Use `Ada.Unchecked_Conversion` only with the utmost care ([Ada
+  Reference Manual 1995,
+  §13.9](http://www.adahome.com/rm95/rm9x-13-09.html)).
+- Consider using the `'Valid` attribute to check the validity of
+  scalar data.
+- Ensure that the value resulting from `Ada.Unchecked_Conversion`
+  properly represents a value of the parameter's subtype.
+- Isolate the use of `Ada.Unchecked_Conversion` in package bodies.
+
+#### example
+
+The following example shows how to use the `'Valid` attribute to check
+validity of scalar data:
+
+```ada
+------------------------------------------------------------------------
+with Ada.Unchecked_Conversion;
+with Ada.Text_IO;
+with Ada.Integer_Text_IO;
+
+procedure Test is
+
+   type Color is (Red, Yellow, Blue);
+   for Color'Size use Integer'Size;
+
+   function Integer_To_Color is
+      new Ada.Unchecked_Conversion (Source => Integer,
+                                    Target => Color);
+
+   Possible_Color : Color;
+   Number         : Integer;
+
+begin  -- Test
+
+   Ada.Integer_Text_IO.Get (Number);
+   Possible_Color := Integer_To_Color (Number);
+
+   if Possible_Color'Valid then
+      Ada.Text_IO.Put_Line(Color'Image(Possible_Color));
+   else
+      Ada.Text_IO.Put_Line("Number does not correspond to a color.");
+   end if;
+
+end Test;
+------------------------------------------------------------------------
+```
+
+#### rationale
+
+An unchecked conversion is a bit-for-bit copy without regard to the
+meanings attached to those bits and bit positions by either the source
+or the destination type. The source bit pattern can easily be
+meaningless in the context of the destination type. Unchecked
+conversions can create values that violate type constraints on
+subsequent operations. Unchecked conversion of objects mismatched in
+size has implementation-dependent results.
+
+Using the `'Valid` attribute on scalar data allows you to check whether
+it is in range without raising an exception if it is out of range. There
+are several cases where such a validity check enhances the readability
+and maintainability of the code:
+
+- - Data produced through an unchecked conversion
+  - Input data
+  - Parameter values returned from a foreign language interface
+  - Aborted assignment (during asynchronous transfer of control or
+    execution of an `abort` statement)
+  - Disrupted assignment from failure of a language-defined check
+  - Data whose address has been specified with the `'Address`
+    attribute
+
+An access value should not be assumed to be correct when obtained
+without compiler or run-time checks. When dealing with access values,
+use of the `'Valid` attribute helps prevent the erroneous dereferencing
+that might occur after using `Ada.Unchecked_Deallocation`,
+`Unchecked_Access`, or `Ada.Unchecked_Conversion`.
+
+In the case of a nonscalar object used as an actual parameter in an
+unchecked conversion, you should ensure that its value on return from
+the procedure properly represents a value in the subtype. This case
+occurs when the parameter is of mode `out` or `in out`. It is important
+to check the value when interfacing to foreign languages or using a
+language-defined input procedure. The [Ada Reference Manual (1995,
+§13.9.1)](http://www.adahome.com/rm95/rm9x-13-09-01.html) lists the
+full rules concerning data validity.
+
+### Unchecked Deallocation
+
+#### guideline
+
+- Isolate the use of `Ada.Unchecked_Deallocation` in package bodies.
+- Ensure that no dangling reference to the local object exists after
+  exiting the scope of the local object.
+
+#### rationale
+
+Most of the reasons for using `Ada.Unchecked_Deallocation` with caution
+have been given in Guideline 5.4.5. When this feature is used, no
+checking is performed to verify that there is only one access path to
+the storage being deallocated. Thus, any other access paths are not made
+`null`. Depending on the value of these other access paths could result
+in erroneous execution.
+
+If your Ada environment implicitly uses dynamic heap storage but does
+not fully and reliably reclaim and reuse heap storage, you should not
+use `Ada.Unchecked_Deallocation`.
+
+### Unchecked Access
+
+#### guideline
+
+- Minimize the use of the attribute `Unchecked_Access`, preferably
+  isolating it to package bodies.
+- Use the attribute `Unchecked_Access` only on data whose
+  lifetime/scope is "library level."
+
+#### rationale
+
+The accessibility rules are checked statically at compile time (except
+for access parameters, which are checked dynamically). These rules
+ensure that the access value cannot outlive the object it designates.
+Because these rules are not applied in the case of `Unchecked_Access`,
+an access path could be followed to an object no longer in scope.
+
+Isolating the use of the attribute `Unchecked_Access` means to isolate
+its use from clients of the package. You should not apply it to an
+access value merely for the sake of returning a now unsafe value to
+clients.
+
+When you use the attribute `Unchecked_Access`, you are creating access
+values in an unsafe manner. You run the risk of dangling references,
+which in turn lead to erroneous execution ([Ada Reference Manual 1995,
+§13.9.1](http://www.adahome.com/rm95/rm9x-13-09-01.html)).
+
+#### exceptions
+
+The [Ada Reference Manual (1995,
+§13.10](http://www.adahome.com/rm95/rm9x-13-10.html)) defines the
+following potential use for this otherwise dangerous attribute. _"This
+attribute is provided to support the situation where a local object is
+to be inserted into a global linked data structure, when the programmer
+knows that it will always be removed from the data structure prior to
+exiting the object's scope."_
+
+### Address Clauses
+
+#### guideline
+
+- Use address clauses to map variables and entries to the hardware
+  device or memory, not to model the FORTRAN "equivalence" feature.
+- Ensure that the address specified in an attribute definition clause
+  is valid and does not conflict with the alignment.
+- If available in your Ada environment, use the package
+  `Ada.Interrupts` to associate handlers with interrupts.
+- Avoid using the address clause for nonimported program units.
+
+#### example
+
+```ada
+Single_Address : constant System.Address := System.Storage_Elements.To_Address(...);
+Interrupt_Vector_Table : Hardware_Array;
+for Interrupt_Vector_Table'Address use Single_Address;
+```
+
+#### rationale
+
+The result of specifying a single address for multiple objects or
+program units is undefined, as is specifying multiple addresses for a
+single object or program unit. Specifying multiple address clauses for
+an interrupt is also undefined. It does not necessarily overlay objects
+or program units, or associate a single entry with more than one
+interrupt.
+
+You are responsible for ensuring the validity of an address you specify.
+Ada requires that the object of an address be an integral multiple of
+its alignment.
+
+In Ada 83 (Ada Reference Manual 1983) you had to use values of type
+`System.Address` to attach an interrupt entry to an interrupt. While
+this technique is allowed in Ada 95, you are using an obsolete feature.
+You should use a protected procedure and the appropriate pragmas
+(Rationale 1995, §C.3.2).
+
+### Suppression of Exception Check
+
+#### guideline
+
+- Do not suppress exception checks during development.
+- If necessary, during operation, introduce blocks that encompass the
+  smallest range of statements that can safely have exception checking
+  removed.
+
+#### rationale
+
+If you disable exception checks and program execution results in a
+condition in which an exception would otherwise occur, the program
+execution is erroneous. The results are unpredictable. Further, you must
+still be prepared to deal with the suppressed exceptions if they are
+raised in and propagated from the bodies of subprograms, tasks, and
+packages you call.
+
+By minimizing the code that has exception checking removed, you increase
+the reliability of the program. There is a rule of thumb that suggests
+that 20% of the code is responsible for 80% of the CPU time. So, once
+you have identified the code that actually needs exception checking
+removed, it is wise to isolate it in a block (with appropriate comments)
+and leave the surrounding code with exception checking in effect.
+
+### Initialization
+
+#### guideline
+
+- Initialize all objects prior to use.
+- Use caution when initializing access values.
+- Do not depend on default initialization that is not part of the
+  language.
+- Derive from a controlled type and override the primitive procedure
+  to ensure automatic initialization.
+- Ensure elaboration of an entity before using it.
+- Use function calls in declarations cautiously.
+
+#### example
+
+The first example illustrates the potential problem with initializing
+access values:
+
+```ada
+procedure Mix_Letters (Of_String : in out String) is
+   type String_Ptr is access String;
+   Ptr : String_Ptr := new String'(Of_String);  -- could raise Storage_Error in caller
+begin -- Mix_Letters
+   ...
+exception
+   ...  -- cannot trap Storage_Error raised during elaboration of Ptr declaration
+end Mix_Letters;
+```
+
+The second example illustrates the issue of ensuring the elaboration of
+an entity before its use:
+
+```ada
+------------------------------------------------------------------------
+package Robot_Controller is
+   ...
+   function Sense return Position;
+   ...
+end Robot_Controller;
+------------------------------------------------------------------------
+package body Robot_Controller is
+...
+   Goal : Position := Sense;       -- This raises Program_Error
+   ...
+   ---------------------------------------------------------------------
+   function Sense return Position is
+   begin
+      ...
+   end Sense;
+   ---------------------------------------------------------------------
+begin  -- Robot_Controller
+   Goal := Sense;                  -- The function has been elaborated.
+   ...
+end Robot_Controller;
+------------------------------------------------------------------------
+```
+
+#### rationale
+
+Ada does not define an initial default value for objects of any type
+other than access types, whose initial default value is null. If you are
+initializing an access value at the point at which it is declared and
+the allocation raises the exception `Storage_Error`, the exception is
+raised in the calling not the called procedure. The caller is unprepared
+to handle this exception because it knows nothing about the
+problem-causing allocation.
+
+Operating systems differ in what they do when they allocate a page in
+memory: one operating system may zero out the entire page; a second may
+do nothing. Therefore, using the value of an object before it has been
+assigned a value causes unpredictable (but bounded) behavior, possibly
+raising an exception. Objects can be initialized implicitly by
+declaration or explicitly by assignment statements. Initialization at
+the point of declaration is safest as well as easiest for maintainers.
+You can also specify default values for components of records as part of
+the type declarations for those records.
+
+Ensuring initialization does not imply initialization at the
+declaration. In the example above, `Goal` must be initialized via a
+function call. This cannot occur at the declaration because the function
+`Sense` has not yet been elaborated, but it can occur later as part of
+the sequence of statements of the body of the enclosing package.
+
+An unelaborated function called within a declaration (initialization)
+raises the exception, `Program_Error`, that must be handled outside of
+the unit containing the declarations. This is true for any exception the
+function raises even if it has been elaborated.
+
+If an exception is raised by a function call in a declaration, it is not
+handled in that immediate scope. It is raised to the enclosing scope.
+This can be controlled by nesting blocks.
+
+See also Guideline 9.2.3.
+
+#### notes
+
+Sometimes, elaboration order can be dictated with pragma
+`Elaborate_All`. Pragma `Elaborate_All` applied to a library unit causes
+the elaboration of the transitive closure of the unit and its
+dependents. In other words, all bodies of library units reachable from
+this library unit's body are elaborated, preventing an
+access-before-elaboration error (Rationale 1995, §10.3). Use the pragma
+`Elaborate_Body` when you want the body of a package to be elaborated
+immediately after its declaration.
+
+**5.9.7 Direct_IO and Sequential_IO**
+
+#### guideline
+
+- Ensure that values obtained from `Ada.Direct_IO` and
+  `Ada.Sequential_IO` are in range.
+- Use the `'Valid` attribute to check the validity of scalar values
+  obtained through `Ada.Direct_IO` and `Ada.Sequential_IO.`
+
+#### rationale
+
+The exception `Data_Error` can be propagated by the `Read` procedures
+found in these packages if the element read cannot be interpreted as a
+value of the required subtype ([Ada Reference Manual 1995,
+§A.13](http://www.adahome.com/rm95/rm9x-A-13.html)). However, if the
+associated check is too complex, an implementation need not propagate
+`Data_Error`. In cases where the element read cannot be interpreted as a
+value of the required subtype but `Data_Error` is not propagated, the
+resulting value can be abnormal, and subsequent references to the value
+can lead to erroneous execution.
+
+#### notes
+
+It is sometimes difficult to force an optimizing compiler to perform the
+necessary checks on a value that the compiler believes is in range. Most
+compiler vendors allow the option of suppressing optimization, which can
+be helpful.
+
+### Exception Propagation
+
+#### guideline
+
+Prevent exceptions from propagating outside any user-defined `Finalize`
+or `Adjust` procedure by providing handlers for all predefined and
+user-defined exceptions at the end of each procedure.
+
+#### rationale
+
+Using `Finalize` or `Adjust` to propagate an exception results in a
+bounded error ([Ada Reference Manual 1995,
+§7.6.1](http://www.adahome.com/rm95/rm9x-07-06-01.html)). Either the
+exception will be ignored or a `Program_Error` exception will be raised.
+
+### Protected Objects
+
+#### guideline
+
+Do not invoke a potentially blocking operation within a protected entry,
+a protected procedure, or a protected function.
+
+#### rationale
+
+The [Ada Reference Manual (1995,
+§9.5.1)](http://www.adahome.com/rm95/rm9x-09-05-01.html) lists the
+potentially blocking operations:
+
+- - `Select`statement
+  - `Accept` statement
+  - Entry-call statement
+  - `Delay` statement
+  - `Abort` statement
+  - Task creation or activation
+  - External call on a protected subprogram (or an external requeue)
+    with the same target object as that of the protected action
+  - Call on a subprogram whose body contains a potentially blocking
+    operation
+
+Invoking any of these potentially blocking operations could lead either
+to a bounded error being detected or to a deadlock situation. In the
+case of bounded error, the exception `Program_Error` is raised. In
+addition, avoid calling routines within a protected entry, procedure, or
+function that could directly or indirectly invoke operating system
+primitives or similar operations that can cause blocking that is not
+visible to the Ada run-time system.
+
+### Abort Statement
+
+#### guideline
+
+- Do not use an asynchronous `select`statement within abort-deferred
+  operations.
+- Do not create a task that depends on a master that is included
+  entirely within the execution of an abort-deferred operation.
+
+#### rationale
+
+An abort-deferred operation is one of the following:
+
+- - Protected entry, protected procedure, or protected function
+  - User-defined `Initialize` procedure used as the last step of a
+    default initialization of a controlled object
+  - User-defined `Finalize` procedure used in finalization of a
+    controlled object
+  - User-defined `Adjust` procedure used in assignment of a
+    controlled object
+
+The [Ada Reference Manual (1995,
+§9.8)](http://www.adahome.com/rm95/rm9x-09-08.html) states that the
+practices discouraged in the guidelines result in bounded error. The
+exception `Program_Error` is raised if the implementation detects the
+error. If the implementation does not detect the error, the operations
+proceed as they would outside an abort-deferred operation. An `abort`
+statement itself may have no effect.

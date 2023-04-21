@@ -1,0 +1,196 @@
+---
+title: 5.1 Optional Parts of the Syntax
+---
+
+Parts of the Ada syntax, while optional, can enhance the readability of
+the code. The guidelines given below concern use of some of these
+optional features.
+
+### Loop Names
+
+#### guideline
+
+- Associate names with loops when they are nested (Booch 1986, 1987).
+- Associate names with any loop that contains an `exit`statement.
+
+#### example
+
+```ada
+Process_Each_Page:
+   loop
+      Process_All_The_Lines_On_This_Page:
+         loop
+            ...
+            exit Process_All_The_Lines_On_This_Page when Line_Number = Max_Lines_On_Page;
+            ...
+            Look_For_Sentinel_Value:
+               loop
+                  ...
+                  exit Look_For_Sentinel_Value when Current_Symbol = Sentinel;
+                  ...
+               end loop Look_For_Sentinel_Value;
+            ...
+         end loop Process_All_The_Lines_On_This_Page;
+      ...
+      exit Process_Each_Page when Page_Number = Maximum_Pages;
+      ...
+   end loop Process_Each_Page;
+```
+
+#### rationale
+
+When you associate a name with a loop, you must include that name with
+the associated end for that loop (Ada Reference Manual 1995). This helps
+readers find the associated end for any given loop. This is especially
+true if loops are broken over screen or page boundaries. The choice of a
+good name for the loop documents its purpose, reducing the need for
+explanatory comments. If a name for a loop is very difficult to choose,
+this could indicate a need for more thought about the algorithm.
+
+Regularly naming loops helps you follow Guideline 5.1.3. Even in the
+face of code changes, for example, adding an outer or inner loop, the
+`exit` statement does not become ambiguous.
+
+It can be difficult to think up a name for every loop; therefore, the
+guideline specifies nested loops. The benefits in readability and second
+thought outweigh the inconvenience of naming the loops.
+
+### Block Names
+
+#### guideline
+
+- Associate names with blocks when they are nested.
+
+#### example
+
+```ada
+Trip:
+   declare
+      ...
+   begin  -- Trip
+      Arrive_At_Airport:
+         declare
+            ...
+         begin  -- Arrive_At_Airport
+            Rent_Car;
+            Claim_Baggage;
+            Reserve_Hotel;
+            ...
+         end Arrive_At_Airport;
+      Visit_Customer:
+         declare
+            ...
+         begin  -- Visit_Customer
+            -- again a set of activities...
+            ...
+         end Visit_Customer;
+      Departure_Preparation:
+         declare
+            ...
+         begin  -- Departure_Preparation
+            Return_Car;
+            Check_Baggage;
+            Wait_For_Flight;
+            ...
+         end Departure_Preparation;
+      Board_Return_Flight;
+   end Trip;
+```
+
+#### rationale
+
+When there is a nested block structure, it can be difficult to determine
+which `end` corresponds to which block. Naming blocks alleviates this
+confusion. The choice of a good name for the block documents its
+purpose, reducing the need for explanatory comments. If a name for the
+block is very difficult to choose, this could indicate a need for more
+thought about the algorithm.
+
+This guideline is also useful if nested blocks are broken over a screen
+or page boundary.
+
+It can be difficult to think up a name for each block; therefore, the
+guideline specifies nested blocks. The benefits in readability and
+second thought outweigh the inconvenience of naming the blocks.
+
+### Exit Statements
+
+#### guideline
+
+- Use loop names on all `exit` statements from nested loops.
+
+#### example
+
+See the example in 5.1.1 .
+
+#### rationale
+
+An `exit`statement is an implicit `goto`. It should specify its source
+explicitly. When there is a nested loop structure and an `exit`statement
+is used, it can be difficult to determine which loop is being exited.
+Also, future changes that may introduce a nested loop are likely to
+introduce an error, with the `exit` accidentally exiting from the wrong
+loop. Naming loops and their exits alleviates this confusion. This
+guideline is also useful if nested loops are broken over a screen or
+page boundary.
+
+### Naming End Statements
+
+#### guideline
+
+- Include the defining program unit name at the end of a package
+  specification and body.
+- Include the defining identifier at the end of a task specification
+  and body.
+- Include the entry identifier at the end of an `accept`statement.
+- Include the designator at the end of a subprogram body.
+- Include the defining identifier at the end of a protected unit
+  declaration.
+
+#### example
+
+```ada
+------------------------------------------------------------------------
+package Autopilot is
+   function Is_Engaged return Boolean;
+   procedure Engage;
+   procedure Disengage;
+end Autopilot;
+------------------------------------------------------------------------
+package body Autopilot is
+   ...
+   ---------------------------------------------------------------------
+   task Course_Monitor is
+      entry Reset (Engage : in     Boolean);
+   end Course_Monitor;
+   ---------------------------------------------------------------------
+   function Is_Engaged return Boolean is
+   ...
+   end Is_Engaged;
+   ---------------------------------------------------------------------
+   procedure Engage is
+   ...
+   end Engage;
+   ---------------------------------------------------------------------
+   procedure Disengage is
+   ...
+   end Disengage;
+   ---------------------------------------------------------------------
+   task body Course_Monitor is
+   ...
+         accept Reset (Engage : in     Boolean) do
+            ...
+         end Reset;
+   ...
+   end Course_Monitor;
+   ---------------------------------------------------------------------
+end Autopilot;
+------------------------------------------------------------------------
+```
+
+#### rationale
+
+Repeating names on the end of these compound statements ensures
+consistency throughout the code. In addition, the named `end` provides a
+reference for the reader if the unit spans a page or screen boundary or
+if it contains a nested unit.

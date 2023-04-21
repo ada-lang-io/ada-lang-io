@@ -1,0 +1,333 @@
+---
+title: 5.10 Summary
+---
+
+#### optional parts of the syntax
+
+- Associate names with loops when they are nested (Booch 1986, 1987).
+- Associate names with any loop that contains an `exit`statement.
+- Associate names with blocks when they are nested .
+- Use loop names on all `exit`statements from nested loops.
+- Include the defining program unit name at the end of a package
+  specification and body.
+- Include the defining identifier at the end of a task specification
+  and body.
+- Include the entry identifier at the end of an `accept` statement.
+- Include the designator at the end of a subprogram body.
+- Include the defining identifier at the end of a protected unit
+  declaration.
+
+#### parameter lists
+
+- Name formal parametername formal parameters descriptively to reduce
+  the need for comments .
+- Use named parameter association in calls of infrequently used
+  subprograms or entries with many formal parameters .
+- Use named association when instantiating generics.
+- Use named association for clarification when the actual parameter is
+  any literal or expression.
+- Use named association when supplying a nondefault value to an
+  optional parameter.
+- Provide default parameters to allow for occasional, special use of
+  widely used subprograms or entries.
+- Place default parameters at the end of the formal parameter list.
+- Consider providing default values to new parameters added to an
+  existing subprogram.
+- Show the mode indication of all procedure and entry parameters
+  (Nissen and Wallis 1984).
+- Use the most restrictive parameter mode applicable to your
+  application.
+
+#### types
+
+- Use existing types as building blocks by deriving new types from
+  them.
+- Use range constraints on subtypes.
+- Define new types, especially derived types, to include the largest
+  set of possible values, including boundary values.
+- Constrain the ranges of derived types with subtypes, excluding
+  boundary values.
+- Use type derivation rather than type extension when there are no
+  meaningful components to add to the type.
+- Avoid anonymous array types.
+- Use anonymous array types for array variables only when no suitable
+  type exists or can be created and the array will not be referenced
+  as a whole (e.g., used as a subprogram parameter).
+- Use access parameters and access discriminants to guarantee that the
+  parameter or discriminant is treated as a constant.
+- Derive from controlled types in preference to using limited private
+  types.
+- Use limited private types in preference to private types.
+- Use private types in preference to nonprivate types.
+- Explicitly export needed operations rather than easing restrictions.
+- Use access-to-subprogram types for indirect access to subprograms.
+- Wherever possible, use abstract tagged types and dispatching rather
+  than access-to-subprogram types to implement dynamic selection and
+  invocation of subprograms.
+
+#### data structures
+
+- When declaring a discriminant, use as constrained a subtype as
+  possible (i.e., subtype with as specific a range constraint as
+  possible).
+- Use a discriminated record rather than a constrained array to
+  represent an array whose actual values are unconstrained.
+- Use records to group heterogeneous but related data.
+- Consider records to map to I/O device data.
+- Use access types to class-wide types to implement heterogeneous
+  polymorphic data structures.
+- Use tagged types and type extension rather than variant records (in
+  combination with enumeration types and case statements).
+- Record structures should not always be flat. Factor out common
+  parts.
+- For a large record structure, group related components into smaller
+  subrecords.
+- For nested records, pick element names that read well when inner
+  elements are referenced.
+- Consider using type extension to organize large data structures.
+- Differentiate between static and dynamic data. Use dynamically
+  allocated objects with caution.
+- Use dynamically allocated data structures only when it is necessary
+  to create and destroy them dynamically or to be able to reference
+  them by different names.
+- Do not drop pointers to undeallocated objects.
+- Do not leave dangling references to deallocated objects.
+- Initialize all access variables and components within a record.
+- Do not rely on memory deallocation.
+- Deallocate explicitly.
+- Use length clauses to specify total allocation size.
+- Provide handlers for `Storage_Error`.
+- Use controlled types to implement private types that manipulate
+  dynamic data.
+- Avoid unconstrained record objects unless your run-time environment
+  reliably reclaims dynamic heap storage.
+- Unless your run-time environment reliably reclaims dynamic heap
+  storage, declare the following items only in the outermost, unnested
+  declarative part of either a library package, a main subprogram, or
+  a permanent task:
+  - Access types
+  - Constrained composite objects with nonstatic bounds
+  - Objects of an unconstrained composite type other than
+    unconstrainedrecords
+  - Composite objects large enough (at compile time) for the
+    compiler to allocate implicitly on the heap
+- Unless your run-time environment reliably reclaims dynamic heap
+  storage or you are creating permanent, dynamically allocated tasks,
+  avoid declaring tasks in the following situations:
+  - Unconstrained array subtypes whose components are tasks
+  - Discriminated record subtypes containing a component that is an
+    array of tasks, where the array size depends on the value of the
+    discriminant
+  - Any declarative region other than the outermost, unnested
+    declarative part of either a library package or a main
+    subprogram
+  - Arrays of tasks that are not statically constrained
+- Minimize the use of aliased variables.
+- Use aliasing for statically created, ragged arrays (Rationale 1995,
+  §3.7.1).
+- Use aliasing to refer to part of a data structure when you want to
+  hide the internal connections and bookkeeping information.
+- Use access discriminants to create self-referential data structures,
+  i.e., a data structure one of whose components points to the
+  enclosing structure.
+- Use modular types rather than a Boolean arrays when you create data
+  structures that need bit-wise operations, such as `and` and `or`.
+
+#### expressions
+
+- Use `'First` or `'Last` instead of numeric literals to represent the
+  first or last values of a range.
+- Use `'Range` or the subtype name of the range instead of `'First .. 'Last`.
+- Use array attributes `'First`, `'Last`, or `'Length` instead of
+  numeric literals for accessing arrays.
+- Use the `'Range` of the array instead of the name of the index
+  subtype to express a range.
+- Use `'Range` instead of `'First .. 'Last` to express a range.
+- Use parentheses to specify the order of subexpression evaluation to
+  clarify expressions (NASA 1987).
+- Use parentheses to specify the order of evaluation for
+  subexpressions whose correctness depends on left to right
+  evaluation.
+- Avoid names and constructs that rely on the use of negatives .
+- Choose names of flags so they represent states that can be used in
+  positive form.
+- Use short-circuit forms of the logical operators to specify the
+  order of conditions when the failure of one condition means that the
+  other condition will raise an exception.
+- Use `<=` and `>=` in relational expressions with real operands
+  instead of `=`.
+
+#### statements
+
+- Minimize the depth of nested expressions (Nissen and Wallis 1984).
+- Minimize the depth of nested control structures (Nissen and Wallis
+  1984).
+- Try using simplification heuristics.
+- Use slices rather than a loop to copy part of an array.
+- Minimize the use of an `others` choice in a `case`statement.
+- Do not use ranges of enumeration literals in `case` statements.
+- Use `case` statements rather than `if/elsif` statements, wherever
+  possible.
+- Use type extension and dispatching rather than `case` statements, if
+  possible.
+- Use `for` loops, whenever possible.
+- Use `while` loops when the number of iterations cannot be calculated
+  before entering the loop but a simple continuation condition can be
+  applied at the top of the loop.
+- Use plain loops with `exit` statements for more complex situations.
+- Avoid `exit` statements in `while` and `for` loops.
+- Minimize the number of ways to exit a loop.
+- Use `exit` statements to enhance the readability of loop termination
+  code (NASA 1987).
+- Use `exit when ...` rather than`if ... then exit`whenever possible
+  (NASA 1987).
+- Review `exit` statement placement.
+- Consider specifying bounds on loops.
+- Consider specifying bounds on recursion.
+- Do not use `goto` statements.
+- Minimize the number of `return`statementsfrom a subprogram (NASA
+  1987).
+- Highlight `return`statements with comments or white space to keep
+  them from being lost in other code.
+- Use blocks to localize the scope of declarations.
+- Use blocks to perform local renaming.
+- Use blocks to define local exception handlers.
+- Use an aggregate instead of a sequence of assignments to assign
+  values to all components of a record
+- Use an aggregate instead of a temporary variable when building a
+  record to pass as an actual parameter
+- Use positional association only when there is a conventional
+  ordering of the arguments.
+
+#### visibility
+
+- When you need to provide visibility to operators, use the `use type`
+  clause.
+- Avoid/minimize the use of the `use` clause (Nissen and Wallis 1984).
+- Consider using a package `renames` clause rather than a `use` clause
+  for a package.
+- Consider using the `use` clause in the following situations:
+  - When standard packages are needed and no ambiguous references
+    are introduced
+  - When references to enumeration literals are needed
+- Localize the effect of all `use` clauses.
+- Limit the scope of a renaming declaration to the minimum necessary
+  scope.
+- Rename a long, fully qualified name to reduce the complexity if it
+  becomes unwieldy.
+- Use renaming to provide the body of a subprogram if this subprogram
+  merely calls the first subprogram.
+- Rename declarations for visibility purposes rather than using the
+  use clause, except for operators .
+- Rename parts when your code interfaces to reusable components
+  originally written with nondescriptive or inapplicable nomenclature.
+- Use a project-wide standard list of abbreviations to rename common
+  packages.
+- Provide a `use type` rather than a `renames` clause to provide
+  visibility to operators.
+- Limit overloading to widely used subprograms that perform similar
+  actions on arguments of different types (Nissen and Wallis 1984).
+- Preserve the conventional meaning of overloaded operators (Nissen
+  and Wallis 1984).
+- Use "`+`" to identify adding, joining, increasing, and enhancing
+  kinds of functions.
+- Use "`-`" to identify subtraction, separation, decreasing, and
+  depleting kinds of functions.
+- Use operator overloading sparingly and uniformly when applied to
+  tagged types.
+- Define an appropriate equality operator for private types.
+- Consider redefining the equality operator for a private type.
+- When overloading the equality operator for types, maintain the
+  properties of an algebraic equivalence relation.
+
+#### using exceptions
+
+- When it is easy and efficient to do so, avoid causing exceptions to
+  be raised.
+- Provide handlers for exceptions that cannot be avoided.
+- Use exception handlers to enhance readability by separating fault
+  handling from normal execution.
+- Do not use exceptions and exception handlers as `goto` statements.
+- Do not evaluate the value of an object (or a part of an object) that
+  has become abnormal because of the failure of a language-defined
+  check.
+- When writing an exception handler for `others`, capture and return
+  additional information about the exception through the
+  `Exception_Name`, `Exception_Message`, or `Exception_Information`
+  subprograms declared in the predefined package `Ada.Exceptions`.
+- Use `others` only to catch exceptions you cannot enumerate
+  explicitly, preferably only to flag a potential abort.
+- During development, trap `others`, capture the exception being
+  handled, and consider adding an explicit handler for that exception.
+- Handle all exceptions, both user and predefined .
+- For every exception that might be raised, provide a handler in
+  suitable frames to protect against undesired propagation outside the
+  abstraction .
+- Do not rely on being able to identify the fault-raising, predefined,
+  or implementation-defined exceptions.
+- Use the facilities defined in `Ada.Exceptions` to capture as much
+  information as possible about an exception.
+- Use blocks to associate localized sections of code with their own
+  exception handlers.
+
+#### erroneous execution and bounded errors
+
+- Use `Ada.Unchecked_Conversion` only with the utmost care ([Ada
+  Reference Manual 1995,
+  §13.9](http://www.adahome.com/rm95/rm9x-13-09.html)).
+- Consider using the `'Valid` attribute to check the validity of
+  scalar data).
+- Ensure that the value resulting from `Ada.Unchecked_Conversion`
+  properly represents a value of the parameter's subtype.
+- Isolate the use of `Ada.Unchecked_Conversion` in package bodies.
+- Isolate the use of `Ada.Unchecked_Deallocation` in package bodies.
+- Ensure that no dangling reference to the local object exists after
+  exiting the scope of the local object.
+- Minimize the use of the attribute `Unchecked_Access`, preferably
+  isolating it to package bodies.
+- Use the attribute `Unchecked_Access` only on data whose
+  lifetime/scope is "library level."
+- Use address clauses to map variables and entries to the hardware
+  device or memory, not to model the FORTRAN "equivalence" feature.
+- Ensure that the address specified in an attribute definition clause
+  is valid and does not conflict with the alignment.
+- If available in your Ada environment, use the package
+  `Ada.Interrupts` to associate handlers with interrupts.
+- Avoid using the address clause for nonimported program units.
+- Do not suppress exception checks during development.
+- If necessary, during operation, introduce blocks that encompass the
+  smallest range of statements that can safely have exception checking
+  removed.
+- Initialize all objects , including access values, prior to use.
+- Use caution when initializing access values.
+- Do not depend on default initialization that is not part of the
+  language.
+- Derive from a controlled type and override the primitive procedure
+  to ensure automatic initialization.
+- Ensure elaboration of an entity before using it.
+- Use function calls in declarations cautiously.
+- Ensure that values obtained from `Ada.Direct_IO` and
+  `Ada.Sequential_IO` are in range.
+- Use the `'Valid` attribute to check the validity of scalar values
+  obtained through `Ada.Direct_IO` and `Ada.Sequential_IO.`
+- Prevent exceptions from propagating outside any user-defined
+  `Finalize` or `Adjust` procedure by providing handlers for all
+  predefined and user-defined exceptions at the end of each procedure.
+- Do not invoke a potentially blocking operation within a protected
+  entry, a protected procedure, or a protected function.
+- Do not use an asynchronous select statement within abort-deferred
+  operations.
+- Do not create a task that depends on a master that is included
+  entirely within the execution of an abort-deferred operation.
+
+:::note
+
+This page of the "Ada Quality and Style Guide" has been adapted from the
+original work at https://en.wikibooks.org/wiki/Ada_Style_Guide, which is
+licensed under the
+[Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/3.0/);
+additional terms may apply. Page not endorsed by Wikibooks or the Ada
+Style Guide Wikibook authors. This page is licensed under the same license
+as the original work.
+
+:::

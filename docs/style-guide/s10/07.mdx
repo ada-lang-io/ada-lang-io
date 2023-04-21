@@ -1,0 +1,123 @@
+---
+title: 10.7 Pragmas
+---
+
+### Pragma Inline
+
+#### guideline
+
+- When measured performance indicates, use pragma Inline when calling
+  overhead is a significant portion of the routine's execution time.
+
+#### example
+
+```ada
+procedure Assign (Variable : in out Integer;
+                  Value    : in     Integer);
+pragma Inline (Assign);
+...
+procedure Assign (Variable : in out Integer;
+                  Value    : in     Integer) is
+begin
+   Variable := Value;
+end Assign;
+```
+
+#### rationale
+
+If calling overhead is a significant portion of a subprogram's execution
+time, then using pragma Inline may reduce execution time.
+
+Procedure and function invocations include overhead that is unnecessary
+when the code involved is very small. These small routines are usually
+written to maintain the implementation hiding characteristics of a
+package. They may also simply pass their parameters unchanged to another
+routine. When one of these routines appears in some code that needs to
+run faster, either the implementation-hiding principle needs to be
+violated or a pragma Inline can be introduced.
+
+The use of pragma Inline does have its disadvantages. It can create
+compilation dependencies on the body; that is, when the specification
+uses a pragma Inline, both the specification and corresponding body may
+need to be compiled before the specification can be used. As updates are
+made to the code, a routine may become more complex (larger) and the
+continued use of a pragma Inline may no longer be justified.
+
+#### exceptions
+
+Although it is rare, inlining code may increase code size, which can
+lead to slower performance caused by additional paging. A pragma Inline
+may actually thwart a compiler's attempt to use some other optimization
+technique, such as register optimization.
+
+When a compiler is already doing a good job of selecting routines to be
+inlined, the pragma may accomplish little, if any, improvement in
+execution speed.
+
+### Pragma Restrictions
+
+#### guideline
+
+- Use pragma Restrictions to express the user's intent to abide by
+  certain restrictions.
+
+#### rationale
+
+This may facilitate the construction of simpler run-time environments
+(Ada Reference Manual 1995, §§13.12, D.7, and H.4).
+
+### Pragma Preelaborate
+
+#### guideline
+
+- Use pragma Preelaborate where allowed.
+
+#### rationale
+
+This may reduce memory write operations after load time (Ada Reference
+Manual 1995, §§10.2.1 and C.4).
+
+### Pragma Pure
+
+#### guideline
+
+- Use pragma Pure where allowed.
+
+#### rationale
+
+This may permit the compiler to omit calls on library-level subprograms
+of the library unit if the results are not needed after the call (Ada
+Reference Manual 1995, §10.2.1).
+
+### Pragma Discard_Names
+
+#### guideline
+
+- Use pragma Discard_Names when the names are not needed by the
+  application and data space is at a premium.
+
+#### rationale
+
+This may reduce the memory needed to store names of Ada entities, where
+no operation uses those names (Ada Reference Manual 1995, §C.5).
+
+### Pragma Suppress
+
+#### guideline
+
+- Use pragma Suppress where necessary to achieve performance
+  requirements.
+
+#### rationale
+
+See Guideline 5.9.5.
+
+### Pragma Reviewable
+
+#### guideline
+
+- Use pragma Reviewable to aid in the analysis of the generated code.
+
+#### rationale
+
+See the Ada Reference Manual (1995, Annex H).

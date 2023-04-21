@@ -1,0 +1,331 @@
+---
+title: 5.7 Visibility
+---
+
+As noted in Guideline 4.2, Ada's ability to enforce information hiding
+and separation of concerns through its visibility controlling features
+is one of the most important advantages of the language. Subverting
+these features, for example, by too liberal use of the `use` clause, is
+wasteful and dangerous.
+
+### The Use Clause
+
+#### guideline
+
+- When you need to provide visibility to operators, use the `use type`
+  clause.
+- Avoid/minimize the use of the `use` clause (Nissen and Wallis 1984).
+- Consider using a package `renames` clause rather than a `use` clause
+  for a package.
+- Consider using the `use` clause in the following situations:
+  - When standard packages are needed and no ambiguous references
+    are introduced
+  - When references to enumeration literals are needed
+- Localize the effect of all `use` clauses.
+
+#### example
+
+This is a modification of the example from Guideline 4.2.3. The effect
+of a `use` clause is localized:
+
+```ada
+----------------------------------------------------------------------------------
+package Rational_Numbers is
+   type Rational is private;
+   function "=" (X, Y : Rational) return Boolean;
+   function "/" (X, Y : Integer)  return Rational;  -- construct a rational number
+   function "+" (X, Y : Rational) return Rational;
+   function "-" (X, Y : Rational) return Rational;
+   function "*" (X, Y : Rational) return Rational;
+   function "/" (X, Y : Rational) return Rational;  -- rational division
+private
+   ...
+end Rational_Numbers;
+----------------------------------------------------------------------------------
+package body Rational_Numbers is
+   procedure Reduce (R : in out Rational) is . . . end Reduce;
+   . . .
+end Rational_Numbers;
+----------------------------------------------------------------------------------
+package Rational_Numbers.IO is
+   ...
+
+   procedure Put (R : in  Rational);
+   procedure Get (R : out Rational);
+end Rational_Numbers.IO;
+----------------------------------------------------------------------------------
+with Rational_Numbers;
+with Rational_Numbers.IO;
+with Ada.Text_IO;
+procedure Demo_Rationals is
+   package R_IO renames Rational_Numbers.IO;
+
+   use type Rational_Numbers.Rational;
+   use R_IO;
+   use Ada.Text_IO;
+
+   X : Rational_Numbers.Rational;
+   Y : Rational_Numbers.Rational;
+begin  -- Demo_Rationals
+   Put ("Please input two rational numbers: ");
+   Get (X);
+   Skip_Line;
+   Get (Y);
+   Skip_Line;
+   Put ("X / Y = ");
+   Put (X / Y);
+   New_Line;
+   Put ("X * Y = ");
+   Put (X * Y);
+   New_Line;
+   Put ("X + Y = ");
+   Put (X + Y);
+   New_Line;
+   Put ("X - Y = ");
+   Put (X - Y);
+   New_Line;
+end Demo_Rationals;
+```
+
+#### rationale
+
+These guidelines allow you to maintain a careful balance between
+maintainability and readability. Use of the `use` clause may indeed make
+the code read more like prose text. However, the maintainer may also
+need to resolve references and identify ambiguous operations. In the
+absence of tools to resolve these references and identify the impact of
+changing use clauses, fully qualified names are the best alternative.
+
+Avoiding the `use` clause forces you to use fully qualified names. In
+large systems, there may be many library units named in `with` clauses.
+When corresponding `use` clauses accompany the `with` clauses and the
+simple names of the library packages are omitted (as is allowed by the
+`use` clause), references to external entities are obscured and
+identification of external dependencies becomes difficult.
+
+In some situations, the benefits of the `use` clause are clear. A
+standard package can be used with the obvious assumption that the reader
+is very familiar with those packages and that additional overloading
+will not be introduced.
+
+The `use type` clause makes both infix and prefix operators visible
+without the need for `renames` clauses. You enhance readability with the
+`use type` clause because you can write statements using the more
+natural infix notation for operators. See also Guideline 5.7.2.
+
+You can minimize the scope of the `use` clause by placing it in the body
+of a package or subprogram or by encapsulating it in a block to restrict
+visibility.
+
+#### notes
+
+Avoiding the `use` clause completely can cause problems with enumeration
+literals, which must then be fully qualified. This problem can be solved
+by declaring constants with the enumeration literals as their values,
+except that such constants cannot be overloaded like enumeration
+literals.
+
+An argument defending the use clause can be found in Rosen (1987).
+
+#### automation notes
+
+There are tools that can analyze your Ada source code, resolve
+overloading of names, and automatically convert between the `use` clause
+or fully qualified names.
+
+### The Renames Clause
+
+#### guideline
+
+- Limit the scope of a renaming declaration to the minimum necessary
+  scope.
+- Rename a long, fully qualified name to reduce the complexity if it
+  becomes unwieldy (see Guideline 3.1.4).
+- Use renaming to provide the body of a subprogram if this subprogram
+  merely calls the first subprogram.
+- Rename declarations for visibility purposes rather than using the
+  use clause, except for operators (see Guideline 5.7.1).
+- Rename parts when your code interfaces to reusable components
+  originally written with nondescriptive or inapplicable nomenclature.
+- Use a project-wide standard list of abbreviations to rename common
+  packages.
+- Provide a `use type` rather than a `renames` clause to provide
+  visibility to operators.
+
+#### example
+
+```ada
+procedure Disk_Write (Track_Name : in     Track;
+                      Item       : in     Data) renames
+   System_Specific.Device_Drivers.Disk_Head_Scheduler.Transmit;
+```
+
+See also the example in Guideline 5.7.1, where a package-level `renames`
+clause provides an abbreviation for the package `Rational_Numbers_IO`.
+
+#### rationale
+
+If the renaming facility is abused, the code can be difficult to read. A
+`renames` clause can substitute an abbreviation for a qualifier or long
+package name locally. This can make code more readable yet anchor the
+code to the full name. You can use the `renames` clause to evaluate a
+complex name once or to provide a new _"view"_ of an object (regardless
+of whether it is tagged). However, the use of `renames` clauses can
+often be avoided or made obviously undesirable by carefully choosing
+names so that fully qualified names read well.
+
+When a subprogram body calls another subprogram without adding local
+data or other algorithmic content, it is more readable to have this
+subprogram body rename the subprogram that actually does the work. Thus,
+you avoid having to write code to _"pass through"_ a subprogram call
+(Rationale 1995, §II.12).
+
+The list of renaming declarations serves as a list of abbreviation
+definitions (see Guideline 3.1.4). As an alternative, you can rename a
+package at the library level to define project-wide abbreviations for
+packages and then `with` the renamed packages. Often the parts recalled
+from a reuse library do not have names that are as general as they could
+be or that match the new application's naming scheme. An interface
+package exporting the renamed subprograms can map to your project's
+nomenclature. See also Guideline 5.7.1.
+
+The method described in the [Ada Reference Manual
+(1995)](http://www.adahome.com/rm95/rm9x-08-05.html) for renaming a type
+is to use a subtype (see Guideline 3.4.1).
+
+The `use type` clause eliminates the need for renaming infix operators.
+Because you no longer need to rename each operator explicitly, you avoid
+errors such as renaming a `+` to a `-`. See also Guideline 5.7.1.
+
+#### notes
+
+You should choose package names to be minimally meaningful, recognizing
+that package names will be widely used as prefixes (e.g.,
+`Pkg.Operation` or `Object : Pkg.Type_Name;`). If you rename every
+package to some abbreviation, you defeat the purpose of choosing
+meaningful names, and it becomes hard to keep track of what all the
+abbreviations represent.
+
+For upward compatibility of Ada 83 programs in an Ada 95 environment,
+the environment includeslibrary-level renamings of the Ada 83 library
+level packages ([Ada Reference Manual 1995,
+§J.1](http://www.adahome.com/rm95/rm9x-J-01.html)). It is not
+recommended that you use these renamings in Ada 95 code.
+
+### Overloaded Subprograms
+
+#### guideline
+
+Limit overloading to widely used subprograms that perform similar
+actions on arguments of different types (Nissen and Wallis 1984).
+
+#### example
+
+```ada
+function Sin (Angles : in     Matrix_Of_Radians) return Matrix;
+function Sin (Angles : in     Vector_Of_Radians) return Vector;
+function Sin (Angle  : in     Radians)           return Small_Real;
+function Sin (Angle  : in     Degrees)           return Small_Real;
+```
+
+#### rationale
+
+Excessive overloading can be confusing to maintainers (Nissen and Wallis
+1984, 65). There is also the danger of hiding declarations if
+overloading becomes habitual. Attempts to overload an operation may
+actually hide the original operation if the parameter profile is not
+distinct. From that point on, it is not clear whether invoking the new
+operation is what the programmer intended or whether the programmer
+intended to invoke the hidden operation and accidentally hid it.
+
+#### notes
+
+This guideline does not prohibit subprograms with identical names
+declared in different packages.
+
+### Overloaded Operators
+
+#### guideline
+
+- Preserve the conventional meaning of overloaded operators (Nissen
+  and Wallis 1984).
+- Use "`+`" to identify adding, joining, increasing, and enhancing
+  kinds of functions.
+- Use "`-`" to identify subtraction, separation, decreasing, and
+  depleting kinds of functions.
+- Use operator overloading sparingly and uniformly when applied to
+  tagged types.
+
+#### example
+
+```ada
+function "+" (X : in     Matrix;
+              Y : in     Matrix)
+  return Matrix;
+...
+Sum := A + B;
+```
+
+#### rationale
+
+Subverting the conventional interpretation of operators leads to
+confusing code.
+
+The advantage of operator overloading is that the code can become more
+clear and written more compactly (and readably) when it is used. This
+can make the semantics simple and natural. However, it can be easy to
+misunderstand the meaning of an overloaded operator, especially when
+applied to descendants. This is especially true if the programmer has
+not applied natural semantics. Thus, do not use overloading if it cannot
+be used uniformly and if it is easily misunderstood.
+
+#### notes
+
+There are potential problems with any overloading. For example, if there
+are several versions of the `"+"` operator and a change to one of them
+affects the number or order of its parameters, locating the occurrences
+that must be changed can be difficult.
+
+### Overloading the Equality Operator
+
+#### guideline
+
+- Define an appropriate equality operator for private types.
+- Consider redefining the equality operator for a private type.
+- When overloading the equality operator for types, maintain the
+  properties of an algebraic equivalence relation.
+
+#### rationale
+
+The predefined equality operation provided with private types depends on
+the data structure chosen to implement that type . If access types are
+used, then equality will mean the operands have the same pointer value.
+If discrete types are used, then equality will mean the operands have
+the same value. If a floating- point type is used, then equality is
+based on Ada model intervals (see Guideline 7.2.7). You should,
+therefore, redefine equality to provide the meaning expected by the
+client. If you implement a private type using an access type, you should
+redefine equality to provide a deep equality. For floating-point types,
+you may want to provide an equality that tests for equality within some
+application-dependent epsilon value.
+
+Any assumptions about the meaning of equality for private types will
+create a dependency on the implementation of that type. See Gonzalez
+(1991) for a detailed discussion.
+
+When the definition of "`=`" is provided, there is a conventional
+algebraic meaning implied by this symbol. As described in Baker (1991),
+the following properties should remain true for the equality operator:
+
+- - Reflexive: `a = a`
+  - Symmetric: `a = b ==> b = a`
+  - Transitive:`a = b and b = c ==> a = c`
+
+In redefining equality, you are not required to have a result type of
+`Standard.Boolean`. The Rationale (1995, §6.3) gives two examples where
+your result type is a user-defined type. In a three-valued logic
+abstraction, you redefine equality to return one of `True`, `False`, or
+`Unknown`. In a vector processing application, you can define a
+component-wise equality operator that returns a vector of Boolean
+values. In both these instances, you should also redefine inequality
+because it is not the Boolean complement of the equality function.

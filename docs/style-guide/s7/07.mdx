@@ -1,0 +1,223 @@
+---
+title: 7.7 Summary
+---
+
+### fundamentals
+
+- In programs or components intended to have a long life, avoid using
+  the features of Ada declared as "obsolescent" by Annex J of the Ada
+  Reference Manual (1995), unless the use of the feature is needed for
+  backward compatibility with Ada 83 (Ada Reference Manual 1983).
+- Document the use of any obsolescent features.
+- Avoid using the following features:
+  - The short renamings of the packages in the predefined
+    environment (e.g., Text_IO as opposed to Ada.Text_IO)
+  - The character replacements of \! for |, : for \#, and % for
+    quotation marks
+  - Reduced accuracy subtypes of floating-point types
+  - The 'Constrained attribute as applied to private types
+  - The predefined package ASCII
+  - The exception Numeric_Error
+  - Various representation specifications, including at clauses, mod
+    clauses, interrupt entries, and the Storage_Size attribute
+- Make informed assumptions about the support provided for the
+  following on potential target platforms:
+  - Number of bits available for type Integer (range constraints)
+  - Number of decimal digits of precision available for
+    floating-point types
+  - Number of bits available for fixed-point types (delta and range
+    constraints)
+  - Number of characters per line of source text
+  - Number of bits for Root_Integer expressions
+  - Number of seconds for the range of Duration
+  - Number of milliseconds for Duration'Small
+  - Minimum and maximum scale for decimal types
+- Avoid assumptions about the values and the number of values included
+  in the type Character.
+- Use highlighting comments for each package, subprogram, and task
+  where any nonportable features are present.
+- For each nonportable feature employed, describe the expectations for
+  that feature.
+- Consider using only a parameterless procedure as the main
+  subprogram.
+- Consider using Ada.Command_Line for accessing values from the
+  environment, but recognize that this package's behavior and even its
+  specification are nonportable.
+- Encapsulate and document all uses of package Ada.Command_Line.
+- Create packages specifically designed to isolate hardware and
+  implementation dependencies and designed so that their specification
+  will not change when porting.
+- Clearly indicate the objectives if machine or solution efficiency is
+  the reason for hardware or implementation-dependent code.
+- For the packages that hide implementation dependencies, maintain
+  different package bodies for different target environments.
+- Isolate interrupt receiving tasks into implementation-dependent
+  packages.
+- Refer to Annex M of the Ada Reference Manual (1995) for a list of
+  implementation-dependent features.
+- Avoid the use of vendor-supplied packages.
+- Avoid the use of features added to the predefined packages that are
+  not specified in the Ada language definition or Specialized Needs
+  Annexes.
+- Use features defined in the Specialized Needs Annexes rather than
+  vendor-defined features.
+- Document clearly the use of any features from the Specialized Needs
+  Annexes (systems programming, real-time systems, distributed
+  systems, information systems, numerics, and safety and security).
+- Do not write code whose correct execution depends on the particular
+  parameter passing mechanism used by an implementation (Ada Reference
+  Manual 1995, §6.2; Cohen 1986).
+- If a subprogram has more than one formal parameter of a given
+  subtype, at least one of which is \[in\] out, make sure that the
+  subprogram can properly handle the case when both formal parameters
+  denote the same actual object.
+- Avoid depending on the order in which certain constructs in Ada are
+  evaluated .
+
+### numeric types and expressions
+
+- Avoid using the predefined numeric types in package Standard . Use
+  range and digits declarations and let the implementation pick the
+  appropriate representation.
+- For programs that require greater accuracy than that provided by the
+  global assumptions, define a package that declares a private type
+  and operations as needed; see Pappas (1985) for a full explanation
+  and examples.
+- Consider using predefined numeric types (Integer, Natural, Positive)
+  for:
+  - Indexes into arrays where the index type is not significant,
+    such as type String
+  - "Pure" numbers, that is, numbers with no associated physical
+    unit (e.g., exponents)
+  - Values whose purpose is to control a repeat or iteration count
+- Use an implementation that supports the Numerics Annex (Ada
+  Reference Manual 1995, Annex G) when performance and accuracy are
+  overriding concerns .
+- Carefully analyze what accuracy and precision you really need.
+- Do not press the accuracy limits of the machine(s).
+- Comment the analysis and derivation of the numerical aspects of a
+  program.
+- Anticipate the range of values of subexpressions to avoid exceeding
+  the underlying range of their base type. Use derived types,
+  subtypes, factoring, and range constraints on numeric types.
+- Consider using \<= and \>= to do relational tests on real valued
+  arguments, avoiding the \<, \>, =, and /= operations.
+- Use values of type attributes in comparisons and checking for small
+  values.
+- In information systems, declare different numeric decimal types to
+  correspond to different scales (Brosgol, Eachus, and Emery 1994).
+- Create objects of different decimal types to reflect different units
+  of measure (Brosgol, Eachus, and Emery 1994).
+- Declare subtypes of the appropriately scaled decimal type to provide
+  appropriate range constraints for application-specific types.
+- Encapsulate each measure category in a package (Brosgol, Eachus, and
+  Emery 1994).
+- Declare as few decimal types as possible for unitless data (Brosgol,
+  Eachus, and Emery 1994).
+- For decimal calculations, determine whether the result should be
+  truncated toward 0 or rounded.
+- Avoid decimal types and arithmetic on compilers that do not support
+  the Information Systems Annex (Ada Reference Manual 1995, Annex F)
+  in full.
+
+### storage control
+
+- Do not use a representation clause to specify number of storage
+  units.
+- Do not compare access-to-subprogram values.
+- Consider using explicitly defined storage pool mechanisms.
+
+### tasking
+
+- Do not depend on the order in which task objects are activated when
+  declared in the same declarative list.
+- Do not depend on a particular delay being achievable (Nissen and
+  Wallis 1984).
+- Never use knowledge of the execution pattern of tasks to achieve
+  timing requirements.
+- Do not assume a correlation between System.Tick and type Duration.
+- Do not depend on the order in which guard conditions are evaluated
+  or on the algorithm for choosing among several open select
+  alternatives.
+- Do not assume that tasks execute uninterrupted until they reach a
+  synchronization point.
+- Use pragma Priority to distinguish general levels of importance
+  only.
+- Avoid using the abort statement.
+- Do not use unprotected shared variables.
+- Consider using protected types to provide data synchronization.
+- Have tasks communicate through the rendezvous mechanism.
+- Do not use unprotected shared variables as a task synchronization
+  device.
+- Consider using protected objects to encapsulate shared data.
+- Use pragma Atomic or Volatile only when you are forced to by
+  run-time system deficiencies.
+
+#### exceptions
+
+- Do not depend on the exact locations at which predefined exceptions
+  are raised.
+- Do not rely on the behavior of Ada.Exceptions beyond the minimum
+  defined in the language.
+- Do not raise implementation-specific exceptions.
+- Convert implementation-specific exceptions within interface packages
+  to visible user-defined exceptions.
+
+### representation clauses and implementation-dependent features
+
+- Use algorithms that do not depend on the representation of the data
+  and, therefore, do not need representation clauses.
+- Consider using representation clauses when accessing or defining
+  interface data or when a specific representation is needed to
+  implement a design .
+- Do not assume that sharing source files between programs guarantees
+  the same representation of data types in those files.
+- Avoid using package System constants except in attempting to
+  generalize other machine-dependent constructs.
+- Avoid machine code inserts.
+- Use the package Interfaces and its language-defined child packages
+  rather than implementation-specific mechanisms.
+- Consider using pragma Import rather than access-to-subprogram types
+  for interfacing to subprograms in other languages.
+- Isolate all subprograms employing pragmas Import, Export, and
+  Convention to implementation-specific (interface) package bodies.
+- Avoid pragmas and attributes added by the compiler implementor.
+- Avoid dependence on Ada.Unchecked_Deallocation.
+- Avoid dependence on the attribute Unchecked_Access.
+- Avoid dependence on Ada.Unchecked_Conversion.
+- Avoid the direct invocation of or implicit dependence upon an
+  underlying host operating system or Ada run-time support system,
+  except where the interface is explicitly defined in the language
+  (e.g., Annex C or D of the Ada Reference Manual \[1995\]).
+- Use standard bindings and the package Ada.Command_Line when you
+  need to invoke the underlying
+
+run-time support system.
+
+- Use features defined in the Annexes rather than vendor-defined
+  features.
+
+### input/output
+
+- Use constants and variables as symbolic actuals for the Name and
+  Form parameters on the predefined I/O packages. Declare and
+  initialize them in an implementation dependency package.
+- Close all files explicitly.
+- Avoid performing I/O on access types.
+- Consider using Sequential_IO or Direct_IO instead of Stream_IO
+  unless you need the low-level, heterogeneous I/O features provided
+  by Stream_IO.
+- Consider using Current_Error and Set_Error for run-time error
+  messages.
+
+:::note
+
+This page of the "Ada Quality and Style Guide" has been adapted from the
+original work at https://en.wikibooks.org/wiki/Ada_Style_Guide, which is
+licensed under the
+[Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/3.0/);
+additional terms may apply. Page not endorsed by Wikibooks or the Ada
+Style Guide Wikibook authors. This page is licensed under the same license
+as the original work.
+
+:::

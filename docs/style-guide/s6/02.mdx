@@ -1,0 +1,690 @@
+---
+title: 6.2 Communication
+---
+
+The need for tasks to communicate gives rise to most of the problems
+that make concurrent programming so difficult. Used properly, Ada's
+intertask communication features can improve the reliability of
+concurrent programs; used thoughtlessly, they can introduce subtle
+errors that can be difficult to detect and correct.
+
+### Efficient Task Communication
+
+#### guideline
+
+- Minimize the work performed during a rendezvous.
+- Minimize the work performed in the selective accept loop of a task.
+- Consider using protected objects for data synchronization and
+  communication.
+
+#### example
+
+In the following example, the statements in the accept body are
+performed as part of the execution of both the caller task and the task
+Server, which contains Operation and Operation2. The statements after
+the accept body are executed before Server can accept additional calls
+to Operation or Operation2.
+
+```ada
+   ...
+   loop
+      select
+         accept Operation do
+            -- These statements are executed during rendezvous.
+            -- Both caller and server are blocked during this time.
+            ...
+         end Operation;
+         ...
+         -- These statements are not executed during rendezvous.
+         -- The execution of these statements increases the time required
+         --   to get back to the accept and might be a candidate for another task.
+
+      or
+         accept Operation_2 do
+            -- These statements are executed during rendezvous.
+            -- Both caller and server are blocked during this time.
+            ...
+         end Operation_2;
+      end select;
+      -- These statements are also not executed during rendezvous,
+      -- The execution of these statements increases the time required
+      --   to get back to the accept and might be a candidate for another task.
+
+   end loop;
+```
+
+#### rationale
+
+To minimize the time required to rendezvous, only work that needs to be
+performed during a rendezvous, such as saving or generating parameters,
+should be allowed in the accept bodies.
+
+When work is removed from the accept body and placed later in the
+selective accept loop, the additional work might still suspend the
+caller task. If the caller task calls entry Operation again before the
+server task completes its additional work, the caller is delayed until
+the server completes the additional work. If the potential delay is
+unacceptable and the additional work does not need to be completed
+before the next service of the caller task, the additional work can form
+the basis of a new task that will not block the caller task.
+
+Operations on protected objects incur less execution overhead than tasks
+and are more efficient for data synchronization and communication than
+the rendezvous. You must design protected operations to be bounded,
+short, and not potentially blocking.
+
+#### notes
+
+In some cases, additional functions can be added to a task. For example,
+a task controlling a communication device might be responsible for a
+periodic function to ensure that the device is operating correctly. This
+type of addition should be done with care, realizing that the response
+time of the task might be impacted (see the above rationale).
+
+Minimizing the work performed during a rendezvous or selective accept
+loop of a task can increase the rate of execution only when it results
+in additional overlaps in processing between the caller and callee or
+when other tasks can be scheduled due to the shorter period of
+execution. Therefore, the largest increases in execution rates will be
+seen in multiprocessor environments. In single-processor environments,
+the increased execution rate will not be as significant and there might
+even be a small net loss. The guideline is still applicable, however, if
+the application could ever be ported to a multiprocessor environment.
+
+### Defensive Task Communication
+
+#### guideline
+
+- Provide a handler for exception Program_Error whenever you cannot
+  avoid a selective accept statement whose alternatives can all be
+  closed (Honeywell 1986).
+- Make systematic use of handlers for Tasking_Error.
+- Be prepared to handle exceptions during a rendezvous .
+- Consider using a when others exception handler.
+
+#### example
+
+This block allows recovery from exceptions raised while attempting to
+communicate a command to another task:
+
+```ada
+Accelerate:
+   begin
+      Throttle.Increase(Step);
+   exception
+      when Tasking_Error     =>     ...
+      when Constraint_Error  =>     ...
+      when Throttle_Too_Wide =>     ...
+      ...
+   end Accelerate;
+```
+
+In this select statement, if all the guards happen to be closed, the
+program can continue by executing the else part. There is no need for a
+handler for Program_Error. Other exceptions can still be raised while
+evaluating the guards or attempting to communicate. You will also need
+to include an exception handler in the task Throttle so that it can
+continue to execute after an exception is raised during the rendezvous:
+
+```ada
+...
+Guarded:
+   begin
+      select
+         when Condition_1 =>
+            accept Entry_1;
+      or
+         when Condition_2 =>
+            accept Entry_2;
+      else  -- all alternatives closed
+         ...
+      end select;
+   exception
+      when Constraint_Error =>
+         ...
+   end Guarded;
+```
+
+In this select statement, if all the guards happen to be closed,
+exception Program_Error will be raised. Other exceptions can still be
+raised while evaluating the guards or attempting to communicate:
+
+```ada
+Guarded:
+   begin
+      select
+         when Condition_1 =>
+            accept Entry_1;
+      or
+         when Condition_2 =>
+            delay Fraction_Of_A_Second;
+      end select;
+   exception
+      when Program_Error     =>  ...
+      when Constraint_Error  =>  ...
+   end Guarded;
+...
+```
+
+#### rationale
+
+The exception Program_Error is raised if a selective accept statement
+(select statement containing accepts) is reached, all of whose
+alternatives are closed (i.e., the guards evaluate to False and there
+are no alternatives without guards), unless there is an else part. When
+all alternatives are closed, the task can never again progress, so there
+is by definition an error in its programming. You must be prepared to
+handle this error should it occur.
+
+Because an else part cannot have a guard, it can never be closed off as
+an alternative action; thus, its presence prevents Program_Error.
+However, an else part, a delay alternative, and a terminate alternative
+are all mutually exclusive, so you will not always be able to provide an
+else part. In these cases, you must be prepared to handle
+Program_Error.
+
+The exception Tasking_Error can be raised in the calling task whenever
+it attempts to communicate. There are many situations permitting this.
+Few of them are preventable by the calling task.
+
+If an exception is raised during a rendezvous and not handled in the
+accept statement, it is propagated to both tasks and must be handled in
+two places (see Guideline 5.8). The handling of the others exception can
+be used to avoid propagating unexpected exceptions to callers (when this
+is the desired effect) and to localize the logic for dealing with
+unexpected exceptions in the rendezvous. After handling, an unknown
+exception should normally be raised again because the final decision of
+how to deal with it might need to be made at the outermost scope of the
+task body.
+
+#### notes
+
+There are other ways to prevent Program_Error at a selective accept.
+These involve leaving at least one alternative unguarded or proving that
+at least one guard will evaluate True under all circumstances. The point
+here is that you or your successors will make mistakes in trying to do
+this, so you should prepare to handle the inevitable exception.
+
+### Attributes 'Count, 'Callable, and 'Terminated
+
+#### guideline
+
+- Do not depend on the values of the task attributes 'Callable or
+  'Terminated ( Nissen and Wallis 1984).
+- Do not depend on attributes to avoid Tasking_Error on an entry
+  call.
+- For tasks, do not depend on the value of the entry attribute 'Count.
+- Using the 'Count attribute with protected entries is more reliable
+  than using the 'Count attribute with task entries.
+
+#### example
+
+In the following examples, Dispatch'Callable is a Boolean expression,
+indicating whether a call can be made to the task Intercept without
+raising the exception Tasking_Error. Dispatch'Count indicates the
+number of callers currently waiting at entry Transmit.
+Dispatch'Terminated is a Boolean expression, indicating whether the task
+Dispatch is in a terminated state.
+
+This task is badly programmed because it relies upon the values of the
+'Count attributes not changing between evaluating and acting upon them:
+
+```ada
+---------------------------------------------------------------------
+task body Dispatch is
+...
+   select
+      when Transmit'Count > 0 and Receive'Count = 0 =>
+         accept Transmit;
+         ...
+   or
+      accept Receive;
+      ...
+   end select;
+...
+end Dispatch;
+---------------------------------------------------------------------
+```
+
+If the following code is preempted between evaluating the condition and
+initiating the call, the assumption that the task is still callable
+might no longer be valid:
+
+```ada
+...
+if Dispatch'Callable then
+   Dispatch.Receive;
+end if;
+...
+```
+
+#### rationale
+
+Attributes 'Callable, 'Terminated, and 'Count are all subject to race
+conditions. Between the time you reference an attribute and the time you
+take action, the value of the attribute might change. Attributes
+'Callable and 'Terminated convey reliable information once they become
+False and True, respectively. If 'Callable is False, you can expect the
+callable state to remain constant. If 'Terminated is True, you can
+expect the task to remain terminated. Otherwise, 'Terminated and
+'Callable can change between the time your code tests them and the time
+it responds to the result.
+
+The Ada Reference Manual (1995, §9.9) itself warns about the
+asynchronous increase and decrease of the value of 'Count. A task can be
+removed from an entry queue due to execution of an abort statement as
+well as expiration of a timed entry call. The use of this attribute in
+guards of a selective accept statement might result in the opening of
+alternatives that should not be opened under a changed value of 'Count.
+
+The value of the attribute 'Count is stable for protected units because
+any change to an entry queue is itself a protected action, which will
+not occur while any other protected action is already proceeding.
+Nevertheless, when you use 'Count within an entry barrier of a protected
+unit, you should remember that the condition of the barrier is evaluated
+both before and after queueing a given caller.
+
+### Unprotected Shared Variables
+
+#### guideline
+
+- Use calls on protected subprograms or entries to pass data between
+  tasks rather than unprotected shared variables.
+- Do not use unprotected shared variables as a task synchronization
+  device.
+- Do not reference nonlocal variables in a guard .
+- If an unprotected shared variable is necessary, use the pragma
+  Volatile or Atomic.
+
+#### example
+
+This code will either print the same line more than once, fail to print
+some lines, or print garbled lines (part of one line followed by part of
+another) nondeterministically. This is because there is no
+synchronization or mutual exclusion between the task that reads a
+command and the one that acts on it. Without knowledge about their
+relative scheduling, the actual results cannot be predicted:
+
+```ada
+-----------------------------------------------------------------------
+task body Line_Printer_Driver is
+   ...
+begin
+   loop
+      Current_Line := Line_Buffer;
+      -- send to device
+   end loop;
+end Line_Printer_Driver;
+-----------------------------------------------------------------------
+task body Spool_Server is
+   ...
+begin
+   loop
+      Disk_Read (Spool_File, Line_Buffer);
+   end loop;
+end Spool_Server;
+-----------------------------------------------------------------------
+```
+
+The following example shows a vending machine that dispenses the amount
+requested into an appropriately sized container. The guards reference
+the global variables Num_Requested and Item_Count, leading to a
+potential problem in the wrong amount being dispensed into an
+inappropriately sized container:
+
+```ada
+Num_Requested : Natural;
+Item_Count    : Natural := 1000;
+task type Request_Manager (Personal_Limit : Natural := 1) is
+   entry Make_Request (Num : Natural);
+   entry Get_Container;
+   entry Dispense;
+end Request_Manager;
+
+task body Request_Manager is
+begin
+   loop
+      select
+         accept Make_Request (Num : Natural) do
+            Num_Requested := Num;
+         end Make_Request;
+      or
+         when Num_Requested < Item_Count =>
+            accept Get_Container;
+            ...
+      or
+         when Num_Requested < Item_Count =>
+            accept Dispense do
+               if Num_Requested <= Personal_Limit then
+                  Ada.Text_IO.Put_Line ("Please pick up items.");
+               else
+                  Ada.Text_IO.Put_Line ("Sorry! Requesting too many items.");
+               end if;
+            end Dispense;
+      end select;
+   end loop;
+end Request_Manager;
+R1 : Request_Manager (Personal_Limit => 10);
+R2 : Request_Manager (Personal_Limit => 2);
+```
+
+The interleaving of the execution of R1 and R2 can lead to
+Num_Requested being changed before the entry call to Dispense is
+accepted. Thus, R1 might receive fewer items than requested or R2's
+request might be bounced because the request manager thinks that what R2
+is requesting exceeds R2's personal limit. By using the local variable,
+you will dispense the correct amount. Furthermore, by using the pragma
+Volatile (Ada Reference Manual 1995, §C.6), you ensure that the
+Item_Count is reevaluated when the guards are evaluated. Given that the
+variable Item_Count is not updated in this task body, the compiler
+might otherwise have optimized the code and not generated code to
+reevaluate Item_Count every time it is read:
+
+```ada
+Item_Count : Natural := 1000;
+pragma Volatile (Item_Count);
+task body Request_Manager is
+   Local_Num_Requested : Natural := 0;
+begin
+   loop
+      select
+         accept Make_Request (Num : Natural) do
+            Local_Num_Requested := Num;
+         end Make_Request;
+      or
+         when Local_Num_Requested <= Personal_Limit =>
+            accept Get_Container;
+            ...
+      or
+         when Local_Num_Requested < Item_Count =>
+            accept Dispense do
+               ... -- output appropriate message if couldn't service request
+            end Dispense;
+            Item_Count := Item_Count - Local_Num_Requested;
+      end select;
+   end loop;
+end Request_Manager;
+```
+
+#### rationale
+
+There are many techniques for protecting and synchronizing data access.
+You must program most of them yourself to use them. It is difficult to
+write a program that shares unprotected data correctly. If it is not
+done correctly, the reliability of the program suffers.
+
+Ada provides protected objects that encapsulate and provide synchronized
+access to protected data that is shared between tasks. Protected objects
+are expected to provide better performance than the rendezvous that
+usually requires introduction of an additional task to manage the shared
+data. The use of unprotected shared variables is more error-prone than
+the protected objects or rendezvous because the programmer must ensure
+that the unprotected shared variables are independently addressable and
+that the actions of reading or updating the same unprotected shared
+variable are sequential (Ada Reference Manual 1995, §9.10; Rationale
+1995, §II.9).
+
+The first example above has a race condition requiring perfect
+interleaving of execution. This code can be made more reliable by
+introducing a flag that is set by Spool_Server and reset by
+Line_Printer_Driver. An if (condition flag) then delay ... else would
+be added to each task loop in order to ensure that the interleaving is
+satisfied. However, notice that this approach requires a delay and the
+associated rescheduling. Presumably, this rescheduling overhead is what
+is being avoided by not using the rendezvous.
+
+You might need to use an object in shared memory to communicate data
+between (Rationale 1995, §C.5):
+
+- Ada tasks
+- An Ada program and concurrent non-Ada processes
+- An Ada program and hardware devices
+
+If your environment supports the Systems Programming Annex (Ada
+Reference Manual 1995, Annex C), you should indicate whether loads and
+stores to the shared object must be indivisible. If you specify the
+pragma Atomic, make sure that the object meets the underlying hardware
+requirements for size and alignment. Multiple tasks sharing the
+predefined random number generator and certain input/output subprograms
+can lead to problems with unprotected updates to shared state. The Ada
+Reference Manual (1995, §A.5.2) points out the need for tasks to
+synchronize their access to the random number generators (packages
+Ada.Numerics.Float_Random and Ada.Numerics.Discrete_Random). See
+Guideline 7.7.5 for the I/O issue.
+
+### Selective Accepts and Entry Calls
+
+#### guideline
+
+- Use caution with conditional entry calls to task entries.
+- Use caution with selective accept with else parts.
+- Do not depend upon a particular delay in timed entry calls to task
+  entries.
+- Do not depend upon a particular delay in selective accepts with
+  delay alternatives.
+- Consider using protected objects instead of the rendezvous for
+  data-oriented synchronization.
+
+#### example
+
+The conditional entry call in the following code results in a potential
+race condition that might degenerate into a busy waiting loop (i.e.,
+perform the same calculation over and over). The task Current_Position
+containing entry Request_New_Coordinates might never execute if the
+loop-containing task (shown in the following code fragment) has a higher
+priority than Current_Position because it does not release the
+processing resource:
+
+```ada
+task body Calculate_Flightpath is
+begin
+   ...
+   loop
+
+      select
+         Current_Position.Request_New_Coordinates (X, Y);
+         -- calculate projected location based on new coordinates
+         ...
+
+      else
+         -- calculate projected location based on last locations
+         ...
+      end select;
+
+   end loop;
+   ...
+end Calculate_Flightpath;
+```
+
+The addition of a delay, as shown, may allow Current_Position to
+execute until it reaches an accept for Request_New_Coordinates:
+
+```ada
+task body Calculate_Flightpath is
+begin
+   ...
+   loop
+
+      select
+         Current_Position.Request_New_Coordinates(X, Y);
+         -- calculate projected location based on new coordinates
+         ...
+
+      else
+         -- calculate projected location based on last locations
+         ...
+
+         delay until Time_To_Execute;
+         Time_To_Execute := Time_To_Execute + Period;
+      end select;
+
+   end loop;
+   ...
+end Calculate_Flightpath;
+```
+
+The following selective accept with else again does not degenerate into
+a busy wait loop only because of the addition of a delay statement:
+
+```ada
+task body Buffer_Messages is
+
+   ...
+
+begin
+
+   ...
+
+   loop
+      delay until Time_To_Execute;
+
+      select
+         accept Get_New_Message (Message : in     String) do
+            -- copy message to parameters
+            ...
+         end Get_New_Message;
+      else  -- Don't wait for rendezvous
+         -- perform built in test Functions
+         ...
+      end select;
+
+      Time_To_Execute := Time_To_Execute + Period;
+   end loop;
+
+   ...
+
+end Buffer_Messages;
+```
+
+The following timed entry call might be considered an unacceptable
+implementation if lost communications with the reactor for over 25
+milliseconds results in a critical situation:
+
+```ada
+task body Monitor_Reactor is
+   ...
+begin
+   ...
+   loop
+
+      select
+         Reactor.Status(OK);
+
+      or
+         delay 0.025;
+         -- lost communication for more that 25 milliseconds
+         Emergency_Shutdown;
+      end select;
+
+      -- process reactor status
+      ...
+   end loop;
+   ...
+end Monitor_Reactor;
+```
+
+In the following "selective accept with delay" example, the accuracy of
+the coordinate calculation function is bounded by time. For example, the
+required accuracy cannot be obtained unless Period is within + or -
+0.005 seconds. This period cannot be guaranteed because of the
+inaccuracy of the delay statement:
+
+```ada
+task body Current_Position is
+begin
+   ...
+   loop
+
+      select
+         accept Request_New_Coordinates (X :    out Integer;
+                                         Y :    out Integer) do
+            -- copy coordinates to parameters
+            ...
+         end Request_New_Coordinates;
+
+      or
+         delay until Time_To_Execute;
+      end select;
+
+      Time_To_Execute := Time_To_Execute + Period;
+      -- Read Sensors
+      -- execute coordinate transformations
+   end loop;
+   ...
+end Current_Position;
+```
+
+#### rationale
+
+Use of these constructs always poses a risk of race conditions. Using
+them in loops, particularly with poorly chosen task priorities , can
+have the effect of busy waiting.
+
+These constructs are very much implementation dependent. For conditional
+entry calls and selective accepts with else parts, the Ada Reference
+Manual (1995, §9.7) does not define "immediately." For timed entry calls
+and selective accepts with delay alternatives, implementors might have
+ideas of time that differ from each other and from your own. Like the
+delay statement, the delay alternative on the select construct might
+wait longer than the time required (see Guideline 6.1.7).
+
+Protected objects offer an efficient means for providing data-oriented
+synchronization. Operations on protected objects incur less execution
+overhead than tasks and are more efficient for data synchronization and
+communication than the rendezvous. See Guideline 6.1.1 for an example of
+this use of protected objects.
+
+### Communication Complexity
+
+#### guideline
+
+- Minimize the number of accept and select statements per task .
+- Minimize the number of accept statements per entry.
+
+#### example
+
+Use:
+
+```ada
+accept A;
+if Mode_1 then
+   -- do one thing
+else  -- Mode_2
+   -- do something different
+end if;
+```
+
+rather than:
+
+```ada
+if Mode_1 then
+   accept A;
+   -- do one thing
+else  -- Mode_2
+   accept A;
+   -- do something different
+end if;
+```
+
+#### rationale
+
+This guideline reduces conceptual complexity. Only entries necessary to
+understand externally observable task behavior should be introduced. If
+there are several different accept and select statements that do not
+modify task behavior in a way important to the user of the task, there
+is unnecessary complexity introduced by the proliferation of
+select/accept statements. Externally observable behavior important to
+the task user includes task timing behavior, task rendezvous initiated
+by the entry calls, prioritization of entries, or data updates (where
+data is shared between tasks).
+
+#### notes
+
+Sanden (1994) argues that you need to trade off the complexity of the
+guards associated with the accept statements against the number of
+select/accept statements. Sanden (1994) shows an example of a queue
+controller for bank tellers where there are two modes, open and closed.
+You can implement this scenario with one loop and two select statements,
+one for the open mode and the other for the closed mode. Although you
+are using more select/accept statements, Sanden (1994) argues that the
+resulting program is easier to understand and verify.

@@ -1,0 +1,178 @@
+---
+title: 5.2 Parameter Lists
+---
+
+A subprogram or entry parameter list is the interface to the abstraction
+implemented by the subprogram or entry. It is important that it is clear
+and that it is expressed in a consistent style. Careful decisions about
+formal parameter naming and ordering can make the purpose of the
+subprogram easier to understand, which can make it easier to use.
+
+### Formal Parameters
+
+#### guideline
+
+- Name formal parameters descriptively to reduce the need for
+  comments.
+
+#### example
+
+    List_Manager.Insert (Element     => New_Employee,
+                         Into_List   => Probationary_Employees,
+                         At_Position => 1);
+
+#### rationale
+
+Following the variable naming guidelines ( 3.2.1 and 3.2.3 ) for formal
+parameters can make calls to subprograms read more like regular prose,
+as shown in the example above, where no comments are necessary.
+Descriptive names of this sort can also make the code in the body of the
+subprogram more clear.
+
+### Named Association
+
+#### guideline
+
+- Use named parameter association in calls of infrequently used
+  subprograms or entries with many formal parameters.
+- Use named association when instantiating generics.
+- Use named association for clarification when the actual parameter is
+  any literal or expression.
+- Use named association when supplying a nondefault value to an
+  optional parameter.
+
+#### instantiation
+
+- Use named parameter association in calls of subprograms or entries
+  called from less than five places in a single source file or with
+  more than two formal parameters.
+
+#### example
+
+    Encode_Telemetry_Packet (Source         => Power_Electronics,
+                             Content        => Temperature,
+                             Value          => Read_Temperature_Sensor(Power_Electronics),
+                             Time           => Current_Time,
+                             Sequence       => Next_Packet_ID,
+                             Vehicle        => This_Spacecraft,
+                             Primary_Module => True);
+
+#### rationale
+
+Calls of infrequently used subprograms or entries with many formal
+parameters can be difficult to understand without referring to the
+subprogram or entry code. Named parameter association can make these
+calls more readable.
+
+When the formal parameters have been named appropriately, it is easier
+to determine exactly what purpose the subprogram serves without looking
+at its code. This reduces the need for named constants that exist solely
+to make calls more readable. It also allows variables used as actual
+parameters to be given names indicating what they are without regard to
+why they are being passed in a call. An actual parameter, which is an
+expression rather than a variable, cannot be named otherwise.
+
+Named association allows subprograms to have new parameters inserted
+with minimal ramifications to existing calls.
+
+#### notes
+
+The judgment of when named parameter association improves readability is
+subjective. Certainly, simple or familiar subprograms, such as a swap
+routine or a sine function, do not require the extra clarification of
+named association in the procedure call.
+
+#### caution
+
+A consequence of named parameter association is that the formal
+parameter names may not be changed without modifying the text of each
+call.
+
+### Default Parameters
+
+#### guideline
+
+- Provide default parameters to allow for occasional, special use of
+  widely used subprograms or entries.
+- Place default parameters at the end of the formal parameter list.
+- Consider providing default values to new parameters added to an
+  existing subprogram.
+
+#### example
+
+Ada Reference Manual (1995) contains many examples of this practice.
+
+#### rationale
+
+Often, the majority of uses of a subprogram or entry need the same value
+for a given parameter. Providing that value, as the default for the
+parameter, makes the parameter optional on the majority of calls. It
+also allows the remaining calls to customize the subprogram or entry by
+providing different values for that parameter.
+
+Placing default parameters at the end of the formal parameter list
+allows the caller to use positional association on the call; otherwise,
+defaults are available only when named association is used.
+
+Often during maintenance activities, you increase the functionality of a
+subprogram or entry. This requires more parameters than the original
+form for some calls. New parameters may be required to control this new
+functionality. Give the new parameters default values that specify the
+old functionality. Calls needing the old functionality need not be
+changed; they take the defaults. This is true if the new parameters are
+added to the end of the parameter list, or if named association is used
+on all calls. New calls needing the new functionality can specify that
+by providing other values for the new parameters.
+
+This enhances maintainability in that the places that use the modified
+routines do not themselves have to be modified, while the previous
+functionality levels of the routines are allowed to be _"reused."_
+
+#### exceptions
+
+Do not go overboard. If the changes in functionality are truly radical,
+you should be preparing a separate routine rather than modifying an
+existing one. One indicator of this situation would be that it is
+difficult to determine value combinations for the defaults that uniquely
+and naturally require the more restrictive of the two functions. In such
+cases, it is better to go ahead with creation of a separate routine.
+
+### Mode Indication
+
+#### guideline
+
+- Show the mode indication of all procedure and entry parameters
+  (Nissen and Wallis 1984 ).
+- Use the most restrictive parameter mode applicable to your
+  application.
+
+#### example
+
+    procedure Open_File (File_Name   : in     String;
+                         Open_Status :    out Status_Codes);
+    entry Acquire (Key      : in     Capability;
+                   Resource :    out Tape_Drive);
+
+#### rationale
+
+By showing the mode of parameters, you aid the reader. If you do not
+specify a parameter mode, the default mode is `in`. Explicitly showing
+the mode indication of all parameters is a more assertive action than
+simply taking the default mode. Anyone reviewing the code later will be
+more confident that you intended the parameter mode to be `in`.
+
+Use the mode that reflects the actual use of the parameter. You should
+avoid the tendency to make all parameters `in out` mode because `out`
+mode parameters may be examined as well as updated.
+
+#### exceptions
+
+It may be necessary to consider several alternative implementations for
+a given abstraction. For example, a bounded stack can be implemented as
+a pointer to an array. Even though an update to the object being pointed
+to does not require changing the pointer value itself, you may want to
+consider making the mode `in out` to allow changes to the implementation
+and to document more accurately what the operation is doing. If you
+later change the implementation to a simple array, the mode will have to
+be `in out`, potentially causing changes to all places that the routine
+is called.

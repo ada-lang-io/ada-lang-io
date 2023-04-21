@@ -1,0 +1,708 @@
+---
+title: 5.6 Statements
+---
+
+Careless or convoluted use of statements can make a program hard to read
+and maintain even if its global structure is well organized. You should
+strive for simple and consistent use of statements to achieve clarity of
+local program structure. Some of the guidelines in this section counsel
+use or avoidance of particular statements. As pointed out in the
+individual guidelines, rigid adherence to those guidelines would be
+excessive, but experience has shown that they generally lead to code
+with improved reliability and maintainability.
+
+### Nesting
+
+#### guideline
+
+- Minimize the depth of nested expressions (Nissen and Wallis 1984 ).
+- Minimize the depth of nested control structures (Nissen and Wallis
+  1984 ).
+- Try using simplification heuristics (see the following Notes ).
+
+#### instantiation
+
+- Do not nest expressions or control structures beyond a nesting level
+  of five.
+
+#### example
+
+The following section of code:
+
+    if not Condition_1 then
+       if Condition_2 then
+          Action_A;
+       else  -- not Condition_2
+          Action_B;
+       end if;
+    else  -- Condition_1
+       Action_C;
+    end if;
+
+can be rewritten more clearly and with less nesting as:
+
+    if Condition_1 then
+       Action_C;
+    elsif Condition_2 then
+       Action_A;
+    else  -- not (Condition_1 or Condition_2)
+       Action_B;
+    end if;
+
+#### rationale
+
+Deeply nested structures are confusing, difficult to understand, and
+difficult to maintain. The problem lies in the difficulty of determining
+what part of a program is contained at any given level. For expressions,
+this is important in achieving the correct placement of balanced
+grouping symbols and in achieving the desired operator precedence. For
+control structures, the question involves what part is controlled.
+Specifically, is a given statement at the proper level of nesting, that
+is, is it too deeply or too shallowly nested, or is the given statement
+associated with the proper choice, for example, for `if` or `case`
+statements? Indentation helps, but it is not a panacea. Visually
+inspecting alignment of indented code (mainly intermediate levels) is an
+uncertain job at best. To minimize the complexity of the code, keep the
+maximum number of nesting levels between three and five.
+
+#### notes
+
+Ask yourself the following questions to help you simplify the code:
+
+- Can some part of the expression be put into a constant or variable?
+- Does some part of the lower nested control structures represent a
+  significant and, perhaps, reusable computation that I can factor
+  into a subprogram ?
+- Can I convert these nested `if` statements into a `case` statement?
+- Am I using `else if` where I could be using `elsif`?
+- Can I reorder the conditional expressions controlling this nested
+  structure?
+- Is there a different design that would be simpler?
+
+#### exceptions
+
+If deep nesting is required frequently, there may be overall design
+decisions for the code that should be changed. Some algorithms require
+deeply nested loops and segments controlled by conditional branches.
+Their continued use can be ascribed to their efficiency, familiarity,
+and time-proven utility. When nesting is required, proceed cautiously
+and take special care with the choice of identifiers and loop and block
+names.
+
+### Slices
+
+#### guideline
+
+- Use slices rather than a loop to copy part of an array.
+
+#### example
+
+    First  : constant Index := Index'First;
+    Second : constant Index := Index'Succ(First);
+    Third  : constant Index := Index'Succ(Second);
+    type Vector is array (Index range <>) of Element;
+    subtype Column_Vector is Vector (Index);
+    type    Square_Matrix is array  (Index) of Column_Vector;
+    subtype Small_Range  is Index range First .. Third;
+    subtype Diagonals    is Vector (Small_Range);
+    type    Tri_Diagonal is array  (Index) of Diagonals;
+    Markov_Probabilities : Square_Matrix;
+    Diagonal_Data        : Tri_Diagonal;
+    ...
+    -- Remove diagonal and off diagonal elements.
+    Diagonal_Data(Index'First)(First) := Null_Value;
+    Diagonal_Data(Index'First)(Second .. Third) :=
+          Markov_Probabilities(Index'First)(First .. Second);
+    for I in Second .. Index'Pred(Index'Last) loop
+       Diagonal_Data(I) :=
+             Markov_Probabilities(I)(Index'Pred(I) .. Index'Succ(I));
+    end loop;
+    Diagonal_Data(Index'Last)(First .. Second) :=
+          Markov_Probabilities(Index'Last)(Index'Pred(Index'Last) .. Index'Last);
+    Diagonal_Data(Index'Last)(Third) := Null_Value;
+
+#### rationale
+
+An assignment statement with slices is simpler and clearer than a loop
+and helps the reader see the intended action. See also Guideline 10.5.7
+regarding possible performance issues of slice assignments versus loops.
+
+### Case Statements
+
+#### guideline
+
+- Minimize the use of an `others` choice in a `case` statement.
+- Do not use ranges of enumeration literals in `case` statements.
+- Use `case` statements rather than `if/elsif` statements, wherever
+  possible.
+- Use type extension and dispatching rather than `case` statements if,
+  possible.
+
+#### example
+
+    type Color is (Red, Green, Blue, Purple);
+    Car_Color : Color := Red;
+    ...
+    case Car_Color is
+       when Red .. Blue => ...
+       when Purple      => ...
+    end case;  -- Car_Color
+
+Now consider a change in the type:
+
+    type Color is (Red, Yellow, Green, Blue, Purple);
+
+This change may have an unnoticed and undesired effect in the `case`
+statement. If the choices had been enumerated explicitly, as `when Red | Green | Blue =>` instead of `when` `Red .. Blue =>`, then the `case`
+statement would not have compiled. This would have forced the maintainer
+to make a conscious decision about what to do in the case of `Yellow`.
+
+In the following example, assume that a menu has been posted, and the
+user is expected to enter one of the four choices. Assume that
+`User_Choice` is declared as a `Character` and that `Terminal_IO.Get`
+handles errors in user input. The less readable alternative with the
+`if/elsif` statement is shown after the `case` statement:
+
+    Do_Menu_Choices_1:
+       loop
+          ...
+
+          case User_Choice is
+             when 'A'    => Item := Terminal_IO.Get (&quot;Item to add&quot;);
+             when 'D'    => Item := Terminal_IO.Get (&quot;Item to delete&quot;);
+             when 'M'    => Item := Terminal_IO.Get (&quot;Item to modify&quot;);
+             when 'Q'    => exit Do_Menu_Choices_1;
+
+             when others => -- error has already been signaled to user
+                null;
+          end case;
+       end loop Do_Menu_Choices_1;
+
+    Do_Menu_Choices_2:
+       loop
+          ...
+
+          if User_Choice = 'A' then
+             Item := Terminal_IO.Get (&quot;Item to add&quot;);
+
+          elsif User_Choice = 'D' then
+             Item := Terminal_IO.Get (&quot;Item to delete&quot;);
+
+          elsif User_Choice = 'M' then
+             Item := Terminal_IO.Get (&quot;Item to modify&quot;);
+
+          elsif User_Choice = 'Q' then
+             exit Do_Menu_Choices_2;
+
+          end if;
+       end loop Do_Menu_Choices_2;
+
+#### rationale
+
+All possible values for an object should be known and should be assigned
+specific actions. Use of an `others` clause may prevent the developer
+from carefully considering the actions for each value. A compiler warns
+the user about omitted values if an `others` clause is not used.
+
+You may not be able to avoid the use of `others` in a `case` statement
+when the subtype of the case expression has many values, for example,
+`universal_integer`, `Wide_Character`, or `Character`). If your choice
+of values is small compared to the range of the subtype, you should
+consider using an `if/elsif` statement. Note that you must supply an
+`others` alternative when your `case` expression is of a generic type.
+
+Each possible value should be explicitly enumerated. Ranges can be
+dangerous because of the possibility that the range could change and the
+`case` statement may not be reexamined. If you have declared a subtype
+to correspond to the range of interest, you can consider using this
+named subtype.
+
+In many instances, `case` statements enhance the readability of the
+code. See Guideline 10.5.3 for a discussion of the performance
+considerations. In many implementations, `case` statements may be more
+efficient.
+
+Type extension and dispatching ease the maintenance burden when you add
+a new variant to a data structure. See also Guidelines 5.4.2 and 5.4.4 .
+
+#### notes
+
+Ranges that are needed in `case` statements can use constrained subtypes
+to enhance maintainability. It is easier to maintain because the
+declaration of the range can be placed where it is logically part of the
+abstraction, not buried in a `case` statement in the executable code:
+
+    subtype Lower_Case is Character range 'a' .. 'z';
+    subtype Upper_Case is Character range 'A' .. 'Z';
+    subtype Control    is Character range Ada.Characters.Latin_1.NUL ..
+                                          Ada.Characters.Latin_1.US;
+    subtype Numbers    is Character range '0' .. '9';
+    ...
+    case Input_Char is
+       when Lower_Case => Capitalize(Input_Char);
+       when Upper_Case => null;
+       when Control    => raise Invalid_Input;
+       when Numbers    => null;
+       ...
+    end case;
+
+#### exceptions
+
+It is acceptable to use ranges for possible values only when the user is
+certain that new values will never be inserted among the old ones, as
+for example, in the range of ASCII characters: `'a' .. 'z'`.
+
+### Loops
+
+#### guideline
+
+- Use `for` loops, whenever possible.
+- Use `while` loops when the number of iterations cannot be calculated
+  before entering the loop but a simple continuation condition can be
+  applied at the top of the loop.
+- Use plain loops with `exit` statements for more complex situations.
+- Avoid `exit` statements in `while` and `for` loops.
+- Minimize the number of ways to `exit` a loop.
+
+#### example
+
+To iterate over all elements of an array:
+
+```ada
+for I in Array_Name'Range loop
+   ...
+end loop;
+```
+
+To iterate over all elements in a linked list:
+
+```ada
+Pointer := Head_Of_List;
+while Pointer /= null loop
+   ...
+   Pointer := Pointer.Next;
+end loop;
+```
+
+Situations requiring a "loop and a half" arise often. For this, use:
+
+```ada
+P_And_Q_Processing:
+   loop
+      P;
+      exit P_And_Q_Processing when Condition_Dependent_On_P;
+      Q;
+   end loop P_And_Q_Processing;
+```
+
+rather than:
+
+```ada
+P;
+while not Condition_Dependent_On_P loop
+   Q;
+   P;
+end loop;
+```
+
+#### rationale
+
+A `for` loop is bounded, so it cannot be an "infinite loop." This is
+enforced by the Ada language, which requires a finite range in the loop
+specification and does not allow the loop counter of a `for`loop to be
+modified by a statement executed within the loop. This yields a
+certainty of understanding for the reader and the writer not associated
+with other forms of loops. A `for` loop is also easier to maintain
+because the iteration range can be expressed using attributes of the
+data structures upon which the loop operates, as shown in the example
+above where the range changes automatically whenever the declaration of
+the array is modified. For these reasons, it is best to use the `for`
+loop whenever possible, that is, whenever simple expressions can be used
+to describe the first and last values of the loop counter.
+
+The `while` loop has become a very familiar construct to most
+programmers. At a glance, it indicates the condition under which the
+loop continues. Use the `while` loop whenever it is not possible to use
+the `for` loop but when there is a simple Boolean expression describing
+the conditions under which the loop should continue, as shown in the
+example above.
+
+The plain loop statement should be used in more complex situations, even
+if it is possible to contrive a solution using a `for` or `while` loop
+in conjunction with extra flag variables or `exit` statements. The
+criteria in selecting a loop construct are to be as clear and
+maintainable as possible. It is a bad idea to use an `exit` statement
+from within a `for` or `while` loop because it is misleading to the
+reader after having apparently described the complete set of loop
+conditions at the top of the loop. A reader who encounters a plain loop
+statement expects to see `exit` statements.
+
+There are some familiar looping situations that are best achieved with
+the plain loop statement. For example, the semantics of the Pascal
+`repeat` `until` loop, where the loop is always executed at least once
+before the termination test occurs, are best achieved by a plain loop
+with a single `exit` at the end of the loop. Another common situation is
+the _"loop and a half" construct, shown in the example above, where a
+loop must terminate somewhere within the sequence of statements of the
+body. Complicated "loop and a half"_ constructs simulated with `while`
+loops often require the introduction of flag variables or duplication of
+code before and during the loop, as shown in the example. Such
+contortions make the code more complex and less reliable.
+
+Minimize the number of ways to `exit` a loop to make the loop more
+understandable to the reader. It should be rare that you need more than
+two exit paths from a loop. When you do, be sure to use `exit`
+statements for all of them, rather than adding an `exit` statement to a
+`for` or `while` loop.
+
+### Exit Statements
+
+#### guideline
+
+- Use `exit` statements to enhance the readability of loop termination
+  code (NASA 1987).
+- Use `exit when ...` rather than`if ... then exit`whenever possible
+  (NASA 1987).
+- Review `exit` statement placement.
+
+#### example
+
+See the examples in Guidelines 5.1.1 and Guidelines 5.6.4.
+
+#### rationale
+
+It is more readable to use `exit` statements than to try to add Boolean
+flags to a `while` loop condition to simulate exits from the middle of a
+loop. Even if all `exit` statements would be clustered at the top of the
+loop body, the separation of a complex condition into multiple `exit`
+statements can simplify and make it more readable and clear. The
+sequential execution of two `exit` statements is often more clear than
+the short-circuit control forms.
+
+The `exit when` form is preferable to the `if ... then exit` form
+because it makes the word `exit` more visible by not nesting it inside
+of any control construct. The `if ... then exit` form is needed only in
+the case where other statements, in addition to the `exit` statement,
+must be executed conditionally. For example:
+
+```ada
+Process_Requests:
+   loop
+      if Status = Done then
+
+         Shut_Down;
+         exit Process_Requests;
+
+      end if;
+
+      ...
+
+   end loop Process_Requests;
+```
+
+Loops with many scattered `exit` statements can indicate fuzzy thinking
+regarding the loop's purpose in the algorithm. Such an algorithm might
+be coded better some other way, for example, with a series of loops.
+Some rework can often reduce the number of `exit` statements and make
+the code clearer.
+
+See also Guidelines 5.1.3 and 5.6.4.
+
+### Recursion and Iteration Bounds
+
+#### guideline
+
+- Consider specifying bounds on loops .
+- Consider specifying bounds on recursion .
+
+#### example
+
+Establishing an iteration bound:
+
+```ada
+Safety_Counter := 0;
+Process_List:
+   loop
+      exit when Current_Item = null;
+      ...
+      Current_Item := Current_Item.Next;
+      ...
+      Safety_Counter := Safety_Counter + 1;
+      if Safety_Counter > 1_000_000 then
+         raise Safety_Error;
+      end if;
+   end loop Process_List;
+```
+
+Establishing a recursion bound:
+
+```ada
+subtype Recursion_Bound is Natural range 0 .. 1_000;
+
+procedure Depth_First (Root           : in     Tree;
+                       Safety_Counter : in     Recursion_Bound
+                                      := Recursion_Bound'Last) is
+begin
+   if Root /= null then
+      if Safety_Counter = 0 then
+         raise Recursion_Error;
+      end if;
+      Depth_First (Root           => Root.Left_Branch,
+                   Safety_Counter => Safety_Counter - 1);
+
+      Depth_First (Root           => Root.Right_Branch,
+                   Safety_Counter => Safety_Counter - 1);
+      ... -- normal subprogram body
+   end if;
+end Depth_First;
+```
+
+Following are examples of this subprogram's usage. One call specifies a
+maximum recursion depth of 50. The second takes the default (1,000). The
+third uses a computed bound:
+
+```ada
+Depth_First(Root => Tree_1, Safety_Counter => 50);
+Depth_First(Tree_2);
+Depth_First(Root => Tree_3, Safety_Counter => Current_Tree_Height);
+```
+
+#### rationale
+
+Recursion, and iteration using structures other than `for` statements,
+can be infinite because the expected terminating condition does not
+arise. Such faults are sometimes quite subtle, may occur rarely, and may
+be difficult to detect because an external manifestation might be absent
+or substantially delayed.
+
+By including counters and checks on the counter values, in addition to
+the loops themselves, you can prevent many forms of infinite loops. The
+inclusion of such checks is one aspect of the technique called Safe
+Programming (Anderson and Witty 1978).
+
+The bounds of these checks do not have to be exact, just realistic. Such
+counters and checks are not part of the primary control structure of the
+program but a benign addition functioning as an execution-time "safety
+net," allowing error detection and possibly recovery from potential
+infinite loops or infinite recursion.
+
+#### notes
+
+If a loop uses the `for` iteration scheme (Guideline 5.6.4), it follows
+this guideline.
+
+#### exceptions
+
+Embedded control applications have loops that are intended to be
+infinite. Only a few loops within such applications should qualify as
+exceptions to this guideline. The exceptions should be deliberate (and
+documented ) policy decisions.
+
+This guideline is most important to safety critical systems. For other
+systems, it may be overkill.
+
+### Goto Statements
+
+#### guideline
+
+Do not use `goto` statements.
+
+#### rationale
+
+A `goto` statement is an unstructured change in the control flow. Worse,
+the label does not require an indicator of where the corresponding
+`goto` statement(s) are. This makes code unreadable and makes its
+correct execution suspect.
+
+Other languages use `goto` statements to implement loop exits and
+exception handling. Ada's support of these constructs makes the `goto`
+statement extremely rare.
+
+#### notes
+
+If you should ever use a `goto` statement, highlight both it and the
+label with blank space. Indicate at the label where the corresponding
+`goto` statement(s) may be found.
+
+### Return Statements
+
+#### guideline
+
+- Minimize the number of `return`statementsfrom a subprogram (NASA
+  1987).
+- Highlight `return`statements with comments or white space to keep
+  them from being lost in other code.
+
+#### example
+
+The following code fragment is longer and more complex than necessary:
+
+```ada
+if Pointer /= null then
+   if Pointer.Count > 0 then
+      return True;
+   else  -- Pointer.Count = 0
+      return False;
+   end if;
+else  -- Pointer = null
+   return False;
+end if;
+```
+
+It should be replaced with the shorter, more concise, and clearer
+equivalent line:
+
+```ada
+return Pointer /= null and then Pointer.Count > 0;
+```
+
+#### rationale
+
+Excessive use of returns can make code confusing and unreadable. Only
+use `return` statements where warranted. Too many returns from a
+subprogram may be an indicator of cluttered logic. If the application
+requires multiple returns, use them at the same level (i.e., as in
+different branches of a `case` statement), rather than scattered
+throughout the subprogram code. Some rework can often reduce the number
+of `return` statements to one and make the code more clear.
+
+#### exceptions
+
+Do not avoid `return` statements if it detracts from natural structure
+and code readability.
+
+### Blocks
+
+#### guideline
+
+- Use blocks to localize the scope of declarations.
+- Use blocks to perform local renaming.
+- Use blocks to define local exception handlers.
+
+#### example
+
+```ada
+with Motion;
+with Accelerometer_Device;
+...
+
+   ---------------------------------------------------------------------
+   function Maximum_Velocity return Motion.Velocity is
+
+      Cumulative : Motion.Velocity := 0.0;
+
+   begin  -- Maximum_Velocity
+
+      -- Initialize the needed devices
+      ...
+
+      Calculate_Velocity_From_Sample_Data:
+         declare
+            use type Motion.Acceleration;
+
+            Current       : Motion.Acceleration := 0.0;
+            Time_Delta    : Duration;
+
+         begin  -- Calculate_Velocity_From_Sample_Data
+            for I in 1 .. Accelerometer_Device.Sample_Limit loop
+
+               Get_Samples_And_Ignore_Invalid_Data:
+                  begin
+                     Accelerometer_Device.Get_Value(Current, Time_Delta);
+                  exception
+                     when Constraint_Error =>
+                        null; -- Continue trying
+
+                     when Accelerometer_Device.Failure =>
+                        raise Accelerometer_Device_Failed;
+                  end Get_Samples_And_Ignore_Invalid_Data;
+
+               exit when Current <= 0.0; -- Slowing down
+
+               Update_Velocity:
+                  declare
+                     use type Motion.Velocity;
+                     use type Motion.Acceleration;
+
+                  begin
+                     Cumulative := Cumulative + Current * Time_Delta;
+
+                  exception
+                     when Constraint_Error =>
+                        raise Maximum_Velocity_Exceeded;
+                  end Update_Velocity;
+
+            end loop;
+         end Calculate_Velocity_From_Sample_Data;
+
+      return Cumulative;
+
+   end Maximum_Velocity;
+   ---------------------------------------------------------------------
+...
+```
+
+#### rationale
+
+Blocks break up large segments of code and isolate details relevant to
+each subsection of code. Variables that are only used in a particular
+section of code are clearly visible when a declarative block delineates
+that code.
+
+Renaming may simplify the expression of algorithms and enhance
+readability for a given section of code. But it is confusing when a
+`renames` clause is visually separated from the code to which it
+applies. The declarative region allows the `renames` to be immediately
+visible when the reader is examining code that uses that abbreviation.
+Guideline 5.7.1 discusses a similar guideline concerning the `use`
+clause.
+
+Local exception handlers can catch exceptions close to the point of
+origin and allow them to be either handled, propagated, or converted.
+
+### Aggregates
+
+#### guideline
+
+- Use an aggregate instead of a sequence of assignments to assign
+  values to all components of a record.
+- Use an aggregate instead of a temporary variable when building a
+  record to pass as an actual parameter.
+- Use positional association only when there is a conventional
+  ordering of the arguments.
+
+#### example
+
+It is better to use aggregates:
+
+```ada
+Set_Position((X, Y));
+Employee_Record := (Number     => 42,
+                    Age        => 51,
+                    Department => Software_Engineering);
+```
+
+than to use consecutive assignments or temporary variables:
+
+```ada
+Temporary_Position.X := 100;
+Temporary_Position.Y := 200;
+Set_Position(Temporary_Position);
+Employee_Record.Number     := 42;
+Employee_Record.Age        := 51;
+Employee_Record.Department := Software_Engineering;
+```
+
+#### rationale
+
+Using aggregates during maintenance is beneficial. If a record structure
+is altered, but the corresponding aggregate is not, the compiler flags
+the missing field in the aggregate assignment. It would not be able to
+detect the fact that a new assignment statement should have been added
+to a list of assignment statements.
+
+Aggregates can also be a real convenience in combining data items into a
+record or array structure required for passing the information as a
+parameter. Named component association makes aggregates more readable.
+
+See Guideline 10.4.5 for the performance impact of aggregates.

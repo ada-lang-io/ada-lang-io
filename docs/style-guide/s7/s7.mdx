@@ -1,0 +1,104 @@
+---
+title: 7. Portability
+sidebar_position: 7
+---
+
+Discussions concerning portability usually concentrate on the
+differences in computer systems, but the development and run-time
+environment may also change:
+
+- portability (software)  
+  The ease with which software can be transferred from one computer
+  system or environment to another (IEEE Dictionary 1984).
+
+Most portability problems are not pure language issues. Portability
+involves hardware (byte order, device I/O) and software (utility
+libraries, operating systems, run-time libraries). This chapter will not
+address these challenging design issues.
+
+This chapter does identify the more common portability problems that are
+specific to Ada when moving from one platform or compiler to another. It
+also suggests ways that nonportable code can be isolated. By using the
+implementation hiding features of Ada, the cost of porting can be
+significantly reduced.
+
+In fact, many language portability issues are solved by the strict
+definition of the Ada language itself. In most programming languages,
+different dialects are prevalent as vendors extend or dilute a language
+for various reasons: conformance to a programming environment or
+features for a particular application domain. The Ada Compiler
+Validation Capability (ACVC) was developed by the U.S. Department of
+Defense at the Ada Validation Facility, ASD/SIDL, Wright-Patterson Air
+Force Base, to ensure that implementors strictly adhered to the Ada
+standard.
+
+As part of the strict definition of Ada, certain constructs are defined
+to be erroneous, and the effect of executing an erroneous construct is
+unpredictable. Therefore, erroneous constructs are obviously not
+portable. Erroneous constructs and bounded errors are discussed in
+Guideline 5.9.10 and are not repeated in this chapter.
+
+Most programmers new to the language expect Ada to eliminate all
+portability problems; it definitely does not. Certain areas of Ada are
+not yet covered by validation. The definition of Ada leaves certain
+details to the implementor. The compiler implementor's choices, with
+respect to these details, affect portability.
+
+The revisions to the Ada language approved in the 1995 standard generate
+a new area of portability concerns. Some programs are intended to have a
+long life and may start in Ada 83 (Ada Reference Manual 1983) but
+transition to Ada 95 (Ada Reference Manual 1995). Although this style
+guide focuses on the current Ada standard and does not address
+transition issues, there are portability issues relating to using
+certain features of the language. These issues revolve around the
+language features designated as obsolescent in Annex J of the Ada
+Reference Manual (1995).
+
+The constructs of the language have been developed to satisfy a series
+of needs. These constructs can legitimately be used even though they may
+impact portability. There are some general principles to enhancing
+portability that are exemplified by many of the guidelines in this
+chapter. They are:
+
+- Recognize those Ada constructs that may adversely affect portability
+  on the relevant implementations or platforms.
+- Rely on those Ada constructs that depend on characteristics shared
+  by all relevant implementations. Avoid the use of those constructs
+  whose implementation characteristics vary on the relevant platforms.
+- Localize and encapsulate nonportable features of a program if their
+  use is essential.
+- Highlight the use of constructs that may cause portability problems.
+
+These guidelines cannot be applied thoughtlessly. Many of them involve a
+detailed understanding of the Ada model and its implementation. In many
+cases, you will have to make carefully considered tradeoffs between
+efficiency and portability. Reading this chapter should improve your
+insight into the tradeoffs involved. The material in this chapter was
+largely acquired from three sources: the Ada Run-Time Environments
+Working Group (ARTEWG) Catalogue of Ada Runtime Implementation
+Dependencies (ARTEWG 1986); the Nissen and Wallis book on Portability
+and Style in Ada (Nissen and Wallis 1984); and a paper written for the
+U.S. Air Force by SofTech on Ada Portability Guidelines (Pappas 1985).
+The last of these sources (Pappas 1985) encompasses the other two and
+provides an in-depth explanation of the issues, numerous examples, and
+techniques for minimizing portability problems. Conti (1987) is a
+valuable reference for understanding the latitude allowed for
+implementors of Ada and the criteria often used to make decisions.
+
+This chapter's purpose is to provide a summary of portability issues in
+the guideline format of this book. The chapter does not include all
+issues identified in the references but only the most significant. For
+an in-depth presentation, see Pappas (1985). A few additional guidelines
+are presented here and others are elaborated upon where applicable. For
+further reading on Ada I/O portability issues, see Matthews (1987),
+Griest (1989), and CECOM (1989).
+
+Some of the guidelines in this chapter cross reference and place
+stricter constraints on other guidelines in this book. These constraints
+apply when portability is being emphasized.
+
+Guidelines in this chapter are frequently worded "consider . . ."
+because hard and fast rules cannot apply in all situations. The specific
+choice you make in a given situation involves design tradeoffs. The
+rationale for these guidelines is intended to give you insight into some
+of these tradeoffs.

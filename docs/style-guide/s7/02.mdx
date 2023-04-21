@@ -1,0 +1,451 @@
+---
+title: 7.2 Numeric Types and Expressions
+---
+
+A great deal of care was taken with the design of the Ada features
+related to numeric computations to ensure that the language could be
+used in embedded systems and mathematical applications where precision
+was important. As far as possible, these features were made portable.
+However, there is an inevitable tradeoff between maximally exploiting
+the available precision of numeric computation on a particular machine
+and maximizing the portability of Ada numeric constructs. This means
+that these Ada features, particularly numeric types and expressions,
+must be used with great care if full portability of the resulting
+program is to be guaranteed.
+
+### Predefined Numeric Types
+
+#### guideline
+
+- Avoid using the predefined numeric types in package Standard. Use
+  range and digits declarations and let the implementation pick the
+  appropriate representation.
+- For programs that require greater accuracy than that provided by the
+  global assumptions, define a package that declares a private type
+  and operations as needed; see Pappas (1985) for a full explanation
+  and examples.
+- Consider using predefined numeric types (Integer, Natural, Positive)
+  for:
+  - Indexes into arrays where the index type is not significant,
+    such as type String
+  - "Pure" numbers, that is, numbers with no associated physical
+    unit (e.g., exponents)
+  - Values whose purpose is to control a repeat or iteration count
+
+#### example
+
+The second and third examples below are not representable as subranges
+of Integer on a machine with a 16-bit word. The first example below
+allows a compiler to choose a multiword representation, if necessary.
+
+Use:
+
+```ada
+type    Second_Of_Day is             range 0 .. 86_400;
+```
+
+rather than:
+
+```ada
+type    Second_Of_Day is new Integer range 1 .. 86_400;
+```
+
+or:
+
+```ada
+subtype Second_Of_Day is     Integer range 1 .. 86_400;
+```
+
+#### rationale
+
+An implementor is free to define the range of the predefined numeric
+types. Porting code from an implementation with greater accuracy to one
+of lesser accuracy is a time consuming and error-prone process. Many of
+the errors are not reported until run-time.
+
+This applies to more than just numerical computation. An
+easy-to-overlook instance of this problem occurs if you neglect to use
+explicitly declared types for integer discrete ranges (array sizes, loop
+ranges, etc.) (see Guidelines 5.5.1 and 5.5.2). If you do not provide an
+explicit type when specifying index constraints and other discrete
+ranges, a predefined integer type is assumed.
+
+The predefined numeric types are useful when you use them wisely. You
+should not use them to avoid declaring numeric types—then you lose the
+benefits of strong typing. When your application deals with different
+kinds of quantities and units, you should definitely separate them
+through the use of distinct numeric types. However, if you are simply
+counting the number of iterations in an iterative approximation
+algorithm, declaring a special integer type is probably overkill. The
+predefined exponentiation operators \*\* require an integer as the type
+of its right operand.
+
+You should use the predefined types Natural and Positive for
+manipulating certain kinds of values in the predefined language
+environment. The types String and Wide_String use an index of type
+Positive. If your code indexes into a string using an incompatible
+integer type, you will be forced to do type conversion, reducing its
+readability. If you are performing operations like slices and
+concatenation, the subtype of your numeric array index is probably
+insignificant and you are better off using a predefined subtype. On the
+other hand, if your array represents a table (e.g., a hash table), then
+your index subtype is significant, and you should declare a distinct
+index type.
+
+#### notes
+
+There is an alternative that this guideline permits. As Guideline 7.1.5
+suggests, implementation dependencies can be encapsulated in packages
+intended for that purpose. This could include the definition of a 32-bit
+integer type. It would then be possible to derive additional types from
+that 32-bit type.
+
+### Accuracy Model
+
+#### guideline
+
+- Use an implementation that supports the Numerics Annex (Ada
+  Reference Manual 1995, Annex G) when performance and accuracy are
+  overriding concerns.
+
+#### rationale
+
+The Numerics Annex defines the accuracy and performance requirements for
+floating- and fixed-point arithmetic. The Annex provides a "strict" mode
+in which the compiler must support these requirements. To guarantee that
+your program's numerical performance is portable, you should compile and
+link in the strict mode. If your program relies upon the numeric
+properties of the strict mode, then it will only be portable to other
+environments that support the strict numerics mode.
+
+The accuracy of floating-point numbers is based on what machine numbers
+can be represented exactly in storage. A computational result in a
+register can fall between two machine numbers when the register contains
+more bits than storage. You can step through the machine numbers using
+the attributes 'Pred and 'Succ. Other attributes return values of the
+mantissa, exponent, radix, and other characteristics of floating- and
+fixed-point numbers.
+
+### Accuracy Analysis
+
+#### guideline
+
+- Carefully analyze what accuracy and precision you really need.
+
+#### rationale
+
+Floating-point calculations are done with the equivalent of the
+implementation's predefined floating-point types. The effect of extra
+"guard" digits in internal computations can sometimes lower the number
+of digits that must be specified in an Ada declaration. This may not be
+consistent over implementations where the program is intended to be run.
+It may also lead to the false conclusion that the declared types are
+sufficient for the accuracy required.
+
+You should choose the numeric type declarations to satisfy the lowest
+precision (smallest number of digits) that will provide the required
+accuracy. Careful analysis will be necessary to show that the
+declarations are adequate. When you move to a machine with less
+precision, you probably can use the same type declaration.
+
+### Accuracy Constraints
+
+#### guideline
+
+- Do not press the accuracy limits of the machine(s).
+
+#### rationale
+
+Just because two different machines use the same number of digits in the
+mantissa of a floating-point number does not imply they will have the
+same arithmetic properties. Some Ada implementations may give slightly
+better accuracy than required by Ada because they make efficient use of
+the machine. Do not write programs that depend on this.
+
+### Comments
+
+#### guideline
+
+- Comment the analysis and derivation of the numerical aspects of a
+  program.
+
+#### rationale
+
+Decisions and background about why certain precisions are required in a
+program are important to program revision or porting. The underlying
+numerical analysis leading to the program should be commented.
+
+### Subexpression Evaluation
+
+#### guideline
+
+- Anticipate the range of values of subexpressions to avoid exceeding
+  the underlying range of their base type. Use derived types,
+  subtypes, factoring, and range constraints on numeric types (see
+  Guidelines 3.4.1, 5.3.1, and 5.5.3).
+
+#### example
+
+This example is adapted from the Rationale (1995, §3.3):
+
+```ada
+with Ada.Text_IO;
+with Ada.Integer_Text_IO;
+procedure Demo_Overflow is
+-- assume the predefined type Integer has a 16-bit range
+   X : Integer := 24_000;
+   Y : Integer;
+begin  -- Demo_Overflow
+   y := (3 * X) / 4;  -- raises Constraint_Error if the machine registers used are 16-bit
+  -- mathematically correct intermediate result if 32-bit registers
+   Ada.Text_IO.Put ("(");
+   Ada.Integer_Text_IO.Put (X);
+   Ada.Text_IO.Put (" * 3 ) / 4 = ");
+   Ada.Integer_Text_IO.Put (Y);
+exception
+   when Constraint_Error =>
+      Ada.Text_IO.Put_Line ("3 * X too big for register!");
+end Demo_Overflow;
+```
+
+#### rationale
+
+The Ada language does not require that an implementation perform range
+checks on subexpressions within an expression. Ada does require that
+overflow checks be performed. Thus, depending on the order of evaluation
+and the size of the registers, a subexpression will either overflow or
+produce the mathematically correct result. In the event of an overflow,
+you will get the exception Constraint_Error. Even if the implementation
+on your program's current target does not result in an overflow on a
+subexpression evaluation, your program might be ported to an
+implementation that does.
+
+### Relational Tests
+
+#### guideline
+
+- Consider using \<= and \>= to do relational tests on real valued
+  arguments, avoiding the \<, \>, =, and /= operations.
+- Use values of type attributes in comparisons and checking for small
+  values.
+
+#### example
+
+The following examples test for (1) absolute "equality" in storage, (2)
+absolute "equality" in computation, (3) relative "equality" in storage,
+and (4) relative "equality" in computation:
+
+```ada
+abs (X - Y) <= Float_Type'Model_Small                -- (1)
+abs (X - Y) <= Float_Type'Base'Model_Small           -- (2)
+abs (X - Y) <= abs X * Float_Type'Model_Epsilon      -- (3)
+abs (X - Y) <= abs X * Float_Type'Base'Model_Epsilon -- (4)
+```
+
+And, specifically, for "equality" to 0:
+
+```ada
+abs X <= Float_Type'Model_Small                      -- (1)
+abs X <= Float_Type'Base'Model_Small                 -- (2)
+abs X <= abs X * Float_Type'Model_Epsilon            -- (3)
+abs X <= abs X * Float_Type'Base'Model_Epsilon       -- (4)
+```
+
+#### rationale
+
+Strict relational comparisons ( \<, \>, =, /= ) are a general problem
+with computations involving real numbers. Because of the way comparisons
+are defined in terms of model intervals, it is possible for the values
+of the comparisons to depend on the implementation. Within a model
+interval, the result of comparing two values is nondeterministic if the
+values are not model numbers. In general, you should test for proximity
+rather than equality as shown in the examples. See also Rationale (1995,
+§§G.4.1 and G.4.2.).
+
+Type attributes are the primary means of symbolically accessing the
+implementation of the Ada numeric model. When the characteristics of the
+model numbers are accessed by type attributes, the source code is
+portable. The appropriate model numbers of any implementation will then
+be used by the generated code.
+
+Although 0 is technically not a special case, it is often overlooked
+because it looks like the simplest and, therefore, safest case. But in
+reality, each time comparisons involve small values, you should evaluate
+the situation to determine which technique is appropriate.
+
+#### notes
+
+Regardless of language, real-valued computations have inaccuracy. That
+the corresponding mathematical operations have algebraic properties
+usually introduces some confusion. This guideline explains how Ada deals
+with the problem that most languages face.
+
+### Decimal Types and the Information Systems Annex
+
+#### guideline
+
+- In information systems, declare different numeric decimal types to
+  correspond to different scales (Brosgol, Eachus, and Emery 1994).
+- Create objects of different decimal types to reflect different units
+  of measure (Brosgol, Eachus, and Emery 1994).
+- Declare subtypes of the appropriately scaled decimal type to provide
+  appropriate range constraints for application-specific types.
+- Encapsulate each measure category in a package (Brosgol, Eachus, and
+  Emery 1994).
+- Declare as few decimal types as possible for unitless data (Brosgol,
+  Eachus, and Emery 1994).
+- For decimal calculations, determine whether the result should be
+  truncated toward 0 or rounded.
+- Avoid decimal types and arithmetic on compilers that do not support
+  the Information Systems Annex (Ada Reference Manual 1995, Annex F)
+  in full.
+
+#### example
+
+```ada
+-- The salary cap today is $500,000; however this can be expanded to $99,999,999.99.
+type Executive_Salary is delta 0.01 digits 10 range 0 .. 500_000.00;
+
+------------------------------------------------------------------------------
+package Currency is
+
+   type Dollars is delta 0.01 digits 12;
+
+   type Marks   is delta 0.01 digits 12;
+
+   type Yen     is delta 0.01 digits 12;
+
+   function To_Dollars (M : Marks) return Dollars;
+   function To_Dollars (Y : Yen)   return Dollars;
+
+   function To_Marks (D : Dollars) return Marks;
+   function To_Marks (Y : Yen)     return Marks;
+
+   function To_Yen (D : Dollars) return Yen;
+   function To_Yen (M : Marks)   return Yen;
+
+end Currency;
+```
+
+#### rationale
+
+The Ada language does not provide any predefined decimal types.
+Therefore, you need to declare decimal types for the different scales
+you will need to use. Differences in scale and precision must be
+considered in deciding whether or not a common type will suffice
+(Brosgol, Eachus, and Emery 1994).
+
+You need different types for objects measured in different units. This
+allows the compiler to detect mismatched values in expressions. If you
+declare all decimal objects to be of a single type, you forego the
+benefits of strong typing. For example, in an application that involves
+several currencies, each currency should be declared as a separate type.
+You should provide appropriate conversions between different currencies.
+
+You should map data with no particular unit of measure to a small set of
+types or a single type to avoid the explosion of conversions between
+numeric types.
+
+Separate the range requirement on a decimal type from its precision,
+i.e., the number of significant digits required. From the point of view
+of planning for change and ease of maintenance, you can use the digit's
+value to accommodate future growth in the values to be stored in objects
+of the type. For example, you may want to anticipate growth for database
+values and report formats. You can constrain the values of the type
+through a range constraint that matches current needs. It is easier to
+modify the range and avoid redefining databases and reports.
+
+Ada automatically truncates toward 0. If your requirements are to round
+the decimal result, you must explicitly do so using the 'Round
+attribute.
+
+The core language defines the basic syntax of and operations on decimal
+types. It does not specify, however, the minimum number of significant
+digits that must be supported. Nor does the core language require the
+compiler to support values of Small other than powers of 2, thus
+enabling the compiler effectively to reject a decimal declaration (Ada
+Reference Manual 1995, §3.5.9). The Information Systems Annex provides
+additional support for decimal types. It requires a minimum of 18
+significant digits. It also specifies a Text_IO.Editing package that
+provides support analogous to the COBOL picture approach.
+
+### Storage Control
+
+The management of dynamic storage can vary between Ada environments. In
+fact, some environments do not provide any deallocation. The following
+Ada storage control mechanisms are implementation-dependent and should
+be used with care in writing portable programs.
+
+### Representation Clause
+
+#### guideline
+
+- Do not use a representation clause to specify number of storage
+  units.
+
+#### rationale
+
+The meaning of the 'Storage_Size attribute is ambiguous; specifying a
+particular value will not improve portability. It may or may not include
+space allocated for parameters, data, etc. Save the use of this feature
+for designs that must depend on a particular vendor's implementation.
+
+#### notes
+
+During a porting activity, it can be assumed that any occurrence of
+storage specification indicates an implementation dependency that must
+be redesigned.
+
+### Access-to-Subprogram Values
+
+#### guideline
+
+- Do not compare access-to-subprogram values.
+
+#### rationale
+
+The Ada Reference Manual (1995, §3.10.2) explains that an
+"implementation may consider two access-to-subprogram values to be
+unequal, even though they designate the same subprogram. This might be
+because one points directly to the subprogram, while the other points to
+a special prologue that performs an Elaboration_Check and then jumps to
+the subprogram." The Ada Reference Manual (1995, §4.5.2) states that it
+is "unspecified whether two access values that designate the same
+subprogram but are the result of distinct evaluations of Access
+attribute references are equal or unequal."
+
+See also Guideline 5.3.4.
+
+#### exceptions
+
+If you must compare an access-to-subprogram value, you should define a
+constant using the access-to-subprogram value and make all future
+comparisons against the constant. However, if you attempt to compare
+access-to-subprogram values with different levels of indirection, the
+values might still be unequal, even if designating the same subprogram.
+
+### Storage Pool Mechanisms
+
+#### guideline
+
+- Consider using explicitly defined storage pool mechanisms.
+
+#### example
+
+See the Ada Reference Manual 1995, §13.11.2).
+
+You use allocators as before. Instead of using unchecked deallocation,
+you maintain your own free lists of objects that are no longer in use
+and available for reuse.
+
+You use allocators and possibly unchecked deallocation; however, you
+implement a storage pool and associate it with the access type(s) via a
+Storage_Pool clause. You can use this technique to implement a
+mark/release storage management paradigm, which might be significantly
+faster than an allocate/deallocate paradigm. Some vendors may provide a
+mark/release package as part of their Ada environment.
+
+You do not use allocators, but instead use unchecked conversion from the
+address and do all your own default initialization, etc. It is unlikely
+you would use this last option because you lose automatic default
+initialization.

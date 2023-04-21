@@ -1,0 +1,649 @@
+---
+title: 5.4 Data Structures
+---
+
+The data structuring capabilities of Ada are a powerful resource;
+therefore, use them to model the data as closely as possible. It is
+possible to group logically related data and let the language control
+the abstraction and operations on the data rather than requiring the
+programmer or maintainer to do so. Data can also be organized in a
+building block fashion. In addition to showing how a data structure is
+organized (and possibly giving the reader an indication as to why it was
+organized that way), creating the data structure from smaller components
+allows those components to be reused. Using the features that Ada
+provides can increase the maintainability of your code.
+
+### Discriminated Records
+
+#### guideline
+
+- When declaring a discriminant, use as constrained a subtype as
+  possible (i.e., subtype with as specific a range constraint as
+  possible).
+- Use a discriminated record rather than a constrained array to
+  represent an array whose actual values are unconstrained.
+
+#### example
+
+An object of type `Name_Holder_1` could potentially hold a string whose
+length is `Natural'Last`:
+
+    type Number_List is array (Integer range <>) of Integer;
+
+    type Number_Holder_1 (Current_Length : Natural := 0) is
+       record
+          Numbers : Number_List (1 .. Current_Length);
+       end record;
+
+An object of type `Name_Holder_2` imposes a more reasonable restriction
+on the length of its string component:
+
+    type    Number_List is array (Integer range <>) of Integer;
+    subtype Max_Numbers is Natural range 0 .. 42;
+
+    type Number_Holder_2 (Current_Length : Max_Numbers := 0) is
+       record
+          Numbers : Number_List (1 .. Current_Length);
+       end record;
+
+#### rationale
+
+When you use the discriminant to constrain an array inside a
+discriminated record, the larger the range of values the discriminant
+can assume, the more space an object of the type might require. Although
+your program may compile and link, it will fail at execution when the
+run-time system is unable to create an object of the potential size
+required.
+
+The discriminated record captures the intent of an array whose bounds
+may vary at run-time. A simple constrained array definition (e.g., `type Number_List is array (1 .. 42) of Integer;`) does not capture the intent
+that there are at most 42 possible numbers in the list.
+
+### Heterogeneous Related Data
+
+#### guideline
+
+- Use records to group heterogeneous but related data.
+- Consider records to map to I/O device data.
+
+#### example
+
+    type Propulsion_Method is (Sail, Diesel, Nuclear);
+    type Craft is
+       record
+          Name   : Common_Name;
+          Plant  : Propulsion_Method;
+          Length : Feet;
+          Beam   : Feet;
+          Draft  : Feet;
+       end record;
+    type Fleet is array (1 .. Fleet_Size) of Craft;
+
+#### rationale
+
+You help the maintainer find all of the related data by gathering it
+into the same construct, simplifying any modifications that apply to all
+rather than part. This, in turn, increases reliability. Neither you nor
+an unknown maintainer is liable to forget to deal with all the pieces of
+information in the executable statements, especially if updates are done
+with aggregate assignments whenever possible.
+
+The idea is to put the information a maintainer needs to know where it
+can be found with the minimum of effort. For example, if all information
+relating to a given `Craft` is in the same place, the relationship is
+clear both in the declarations and especially in the code accessing and
+updating that information. But, if it is scattered among several data
+structures, it is less obvious that this is an intended relationship as
+opposed to a coincidental one. In the latter case, the declarations may
+be grouped together to imply intent, but it may not be possible to group
+the accessing and updating code that way. Ensuring the use of the same
+index to access the corresponding element in each of several parallel
+arrays is difficult if the accesses are at all scattered.
+
+If the application must interface directly to hardware, the use of
+records, especially in conjunction with record representation clauses,
+could be useful to map onto the layout of the hardware in question.
+
+#### notes
+
+It may seem desirable to store heterogeneous data in parallel arrays in
+what amounts to a FORTRAN-like style. This style is an artifact of
+FORTRAN's data structuring limitations. FORTRAN only has facilities for
+constructing homogeneous arrays.
+
+#### exceptions
+
+If the application must interface directly to hardware, and the hardware
+requires that information be distributed among various locations, then
+it may not be possible to use records.
+
+### Heterogeneous Polymorphic Data
+
+#### guideline
+
+- Use access types to class-wide types to implement heterogeneous
+  polymorphic data structures.
+- Use tagged types and type extension rather than variant records (in
+  combination with enumeration types and case statements).
+
+#### example
+
+An array of type `Employee_List` can contain pointers to part-time and
+full-time employees (and possibly other kinds of employees in the
+future):
+
+    -----------------------------------------------------------------------------------
+    package Personnel is
+       type Employee  is tagged limited private;
+       type Reference is access all Employee'Class;
+       ...
+    private
+       ...
+    end Personnel;
+    -----------------------------------------------------------------------------------
+    with Personnel;
+    package Part_Time_Staff is
+       type Part_Time_Employee is new Personnel.Employee with
+          record
+             ...
+          end record;
+       ...
+    end Part_Time_Staff;
+    -----------------------------------------------------------------------------------
+    with Personnel;
+    package Full_Time_Staff is
+       type Full_Time_Employee is new Personnel.Employee with
+          record
+             ...
+          end record;
+       ...
+    end Full_Time_Staff;
+    -----------------------------------------------------------------------------------
+
+    ...
+
+    type Employee_List is array (Positive range <>) of Personnel.Reference;
+
+    Current_Employees : Employee_List (1..10);
+
+    ...
+
+    Current_Employees(1) := new Full_Time_Staff.Full_Time_Employee;
+    Current_Employees(2) := new Part_Time_Staff.Part_Time_Employee;
+    ...
+
+#### rationale
+
+Polymorphism is a means of factoring out the differences among a
+collection of abstractions so that programs may be written in terms of
+the common properties. Polymorphism allows the different objects in a
+heterogeneous data structure to be treated the same way, based on
+dispatching operations defined on the root tagged type. This eliminates
+the need for `case` statements to select the processing required for
+each specific type. Guideline 5.6.3 discusses the maintenance impact of
+using `case` statements.
+
+Enumeration types, variant records, and case statements are hard to
+maintain because the expertise on a given variant of the data type tends
+to be spread all over the program. When you create a tagged type
+hierarchy (tagged types and type extension), you can avoid the variant
+records, case statement, and single enumeration type that only supports
+the variant record discriminant. Moreover, you localize the
+_"expertise"_ about the variant within the data structure by having all
+the corresponding primitives for a single operation call common
+_"operation-specific"_ code.
+
+See also Guideline 9.2.1 for a more detailed discussion of tagged types.
+
+#### exceptions
+
+In some instances, you may want to use a variant record approach to
+organize modularity around operations. For graphic output, for example,
+you may find it more maintainable to use variant records. You must make
+the tradeoff of whether adding a new operation will be less work than
+adding a new variant.
+
+### Nested Records
+
+#### guideline
+
+- Record structures should not always be flat. Factor out common
+  parts.
+- For a large record structure, group related components into smaller
+  subrecords.
+- For nested records, pick element names that read well when inner
+  elements are referenced.
+- Consider using type extension to organize large data structures.
+
+#### example
+
+    type Coordinate is
+       record
+          Row    : Local_Float;
+          Column : Local_Float;
+       end record;
+    type Window is
+       record
+          Top_Left     : Coordinate;
+          Bottom_Right : Coordinate;
+       end record;
+
+#### rationale
+
+You can make complex data structures understandable and comprehensible
+by composing them of familiar building blocks. This technique works
+especially well for large record types with parts that fall into natural
+groupings. The components factored into separately declared records,
+based on a common quality or purpose, correspond to a lower level of
+abstraction than that represented by the larger record.
+
+When designing a complex data structure, you must consider whether type
+composition or type extension is the best suited technique. Type
+composition refers to creating a record component whose type is itself a
+record. You will often need a hybrid of these techniques, that is, some
+components you include through type composition and others you create
+through type extension. Type extension may provide a cleaner design if
+the "intermediate" records are all instances of the same abstraction
+family. See also Guidelines 5.4.2 and 9.2.1 .
+
+#### notes
+
+A carefully chosen name for the component of the larger record that is
+used to select the smaller enhances readability, for example:
+
+    if Window1.Bottom_Right.Row > Window2.Top_Left.Row then . . .
+
+### Dynamic Data
+
+#### guideline
+
+- Differentiate between static and dynamic data. Use dynamically
+  allocated objects with caution.
+- Use dynamically allocated data structures only when it is necessary
+  to create and destroy them dynamically or to be able to reference
+  them by different names.
+- Do not drop pointers to undeallocated objects.
+- Do not leave dangling references to deallocated objects.
+- Initialize all access variables and components within a record.
+- Do not rely on memory deallocation.
+- Deallocate explicitly.
+- Use length clauses to specify total allocation size.
+- Provide handlers for `Storage_Error`.
+- Use controlled types to implement private types that manipulate
+  dynamic data.
+- Avoid unconstrained record objects unless your run-time environment
+  reliably reclaims dynamic heap storage.
+- Unless your run-time environment reliably reclaims dynamic heap
+  storage, declare the following items only in the outermost, unnested
+  declarative part of either a library package, a main subprogram, or
+  a permanent task:
+  - Access types
+  - Constrained composite objects with nonstatic bounds
+  - Objects of an unconstrained composite type other than
+    unconstrained records
+  - Composite objects large enough (at compile time) for the
+    compiler to allocate implicitly on the heap
+- Unless your run-time environment reliably reclaims dynamic heap
+  storage or you are creating permanent, dynamically allocated tasks,
+  avoid declaring tasks in the following situations:
+  - Unconstrained array subtypes whose components are tasks
+  - Discriminated record subtypes containing a component that is an
+    array of tasks, where the array size depends on the value of the
+    discriminant
+  - Any declarative region other than the outermost, unnested
+    declarative part of either a library package or a main
+    subprogram
+  - Arrays of tasks that are not statically constrained
+
+#### example
+
+These lines show how a dangling reference might be created:
+
+    P1 := new Object;
+    P2 := P1;
+    Unchecked_Object_Deallocation(P2);
+
+This line can raise an exception due to referencing the deallocated
+object:
+
+    X := P1.all;
+
+In the following three lines, if there is no intervening assignment of
+the value of `P1` to any other pointer, the object created on the first
+line is no longer accessible after the third line. The only pointer to
+the allocated object has been dropped:
+
+    P1 := new Object;
+    ...
+    P1 := P2;
+
+The following code shows an example of using `Finalize` to make sure
+that when an object is finalized (i.e., goes out of scope), the
+dynamically allocated elements are chained on a free list:
+
+    with Ada.Finalization;
+    package List is
+       type Object is private;
+       function &quot;=&quot; (Left, Right : Object) return Boolean;  -- element-by-element comparison
+       ... -- Operations go here
+    private
+       type Handle is access List.Object;
+       type Object is new Ada.Finalization.Controlled with
+          record
+             Next : List.Handle;
+             ... -- Useful information go here
+          end record;
+       procedure Adjust (L : in out List.Object);
+       procedure Finalize (L : in out List.Object);
+    end List;
+    package body List is
+       Free_List : List.Handle;
+       ...
+       procedure Adjust (L : in out List.Object) is
+       begin
+          L := Deep_Copy (L);
+       end Adjust;
+       procedure Finalize (L : in out List.Object) is
+       begin
+          -- Chain L to Free_List
+       end Finalize;
+    end List;
+
+#### rationale
+
+See also 6.3.2 for variations on these problems. A dynamically allocated
+object is an object created by the execution of an allocator (`new`).
+Allocated objects referenced by access variables allow you to generate
+aliases _,_ which are multiple references to the same object. Anomalous
+behavior can arise when you reference a deallocated object by another
+name. This is called a dangling reference. Totally disassociating a
+still-valid object from all names is called dropping a pointer. A
+dynamically allocated object that is not associated with a name cannot
+be referenced or explicitly deallocated.
+
+A dropped pointer depends on an implicit memory manager for reclamation
+of space. It also raises questions for the reader as to whether the loss
+of access to the object was intended or accidental.
+
+An Ada environment is not required to provide deallocation of
+dynamically allocated objects. If provided, it may be provided
+implicitly (objects are deallocated when their access type goes out of
+scope), explicitly (objects are deallocated when
+`Ada.Unchecked_Deallocation` is called), or both. To increase the
+likelihood of the storage space being reclaimed, it is best to call
+`Ada.Unchecked_Deallocation` explicitly for each dynamically created
+object when you are finished using it. Calls to
+`Ada.Unchecked_Deallocation` also document a deliberate decision to
+abandon an object, making the code easier to read and understand. To be
+absolutely certain that space is reclaimed and reused, manage your own
+
+<i>"free list."</i> Keep track of which objects you are finished with, and reuse them instead of dynamically
+allocating new objects later.
+
+The dangers of dangling references are that you may attempt to use them,
+thereby accessing memory that you have released to the memory manager
+and that may have been subsequently allocated for another purpose in
+another part of your program. When you read from such memory, unexpected
+errors may occur because the other part of your program may have
+previously written totally unrelated data there. Even worse, when you
+write to such memory you can cause errors in an apparently unrelated
+part of the code by changing values of variables dynamically allocated
+by that code. This type of error can be very difficult to find. Finally,
+such errors may be triggered in parts of your environment that you did
+not write, for example, in the memory management system itself, which
+may dynamically allocate memory to keep records about your dynamically
+allocated memory.
+
+Keep in mind that any unreset component of a record or array can also be
+a dangling reference or carry a bit pattern representing inconsistent
+data. Components of an access type are always initialized by default to
+`null`; however, you should not rely on this default initialization. To
+enhance readability and maintainability, you should include explicit
+initialization.
+
+Whenever you use dynamic allocation, it is possible to run out of space.
+Ada provides a facility (a length clause) for requesting the size of the
+pool of allocation space at compile time. Anticipate that you can still
+run out at run time. Prepare handlers for the exception `Storage_Error`,
+and consider carefully what alternatives you may be able to include in
+the program for each such situation.
+
+There is a school of thought that dictates avoidance of all dynamic
+allocation. It is largely based on the fear of running out of memory
+during execution. Facilities, such as length clauses and exception
+handlers for `Storage_Error`, provide explicit control over memory
+partitioning and error recovery, making this fear unfounded.
+
+When implementing a complex data structure (tree, list, sparse matrices,
+etc.), you often use access types. If you are not careful, you can
+consume all your storage with these dynamically allocated objects. You
+could export a deallocate operation, but it is impossible to ensure that
+it is called at the proper places; you are, in effect, trusting the
+clients. If you derive from controlled types (see 8.3.3 , and 9.2.3 for
+more information), you can use finalization to deal with deallocation of
+dynamic data, thus avoiding storage exhaustion. User-defined storage
+pools give better control over the allocation policy.
+
+A related but distinct issue is that of shared versus copy semantics:
+even if the data structure is implemented using access types, you do not
+necessarily want shared semantics. In some instances you really want`:=`
+to create a copy, not a new reference, and you really want `=` to
+compare the contents, not the reference. You should implement your
+structure as a controlled type. If you want copy semantics, you can
+redefine `Adjust` to perform a deep copy and `=` to perform a comparison
+on the contents. You can also redefine `Finalize` to make sure that when
+an object is finalized (i.e., goes out of scope) the dynamically
+allocated elements are chained on a free list (or deallocated by
+`Ada.Unchecked_Deallocation`).
+
+The implicit use of dynamic (heap) storage by an Ada program during
+execution poses significant risks that software failures may occur. An
+Ada run-time environment may use implicit dynamic (heap) storage in
+association with composite objects, dynamically created tasks, and
+catenation. Often, the algorithms used to manage the dynamic allocation
+and reclamation of heap storage cause fragmentation or leakage, which
+can lead to storage exhaustion. It is usually very difficult or
+impossible to recover from storage exhaustion or `Storage_Error` without
+reloading and restarting the Ada program. It would be very restrictive
+to avoid all uses of implicit allocation. On the other hand, preventing
+both explicit and implicit deallocation significantly reduces the risks
+of fragmentation and leakage without overly restricting your use of
+composite objects, access values, task objects, and catenation.
+
+#### exceptions
+
+If a composite object is large enough to be allocated on the heap, you
+can still declare it as an `in` or `in out` formal parameter. The
+guideline is meant to discourage declaring the object in an object
+declaration, a formal `out` parameter, or the value returned by a
+function.
+
+You should monitor the leakage and/or fragmentation from the heap. If
+they become steady-state and do not continually increase during program
+or partition execution, you can use the constructs described in the
+guidelines.
+
+### Aliased Objects
+
+#### guideline
+
+- Minimize the use of aliased variables.
+- Use aliasing for statically created, ragged arrays (Rationale 1995,
+  §3.7.1 ).
+- Use aliasing to refer to part of a data structure when you want to
+  hide the internal connections and bookkeeping information.
+
+#### example
+
+    package Message_Services is
+       type Message_Code_Type is range 0 .. 100;
+       subtype Message is String;
+       function Get_Message (Message_Code: Message_Code_Type)
+         return Message;
+       pragma Inline (Get_Message);
+    end Message_Services;
+    package body Message_Services is
+       type Message_Handle is access constant Message;
+       Message_0 : aliased constant Message := &quot;OK&quot;;
+       Message_1 : aliased constant Message := &quot;Up&quot;;
+       Message_2 : aliased constant Message := &quot;Shutdown&quot;;
+       Message_3 : aliased constant Message := &quot;Shutup&quot;;
+       . . .
+       type Message_Table_Type is array (Message_Code_Type) of Message_Handle;
+
+       Message_Table : Message_Table_Type :=
+         (0 => Message_0'Access,
+          1 => Message_1'Access,
+          2 => Message_2'Access,
+          3 => Message_3'Access,
+          -- etc.
+         );
+       function Get_Message (Message_Code : Message_Code_Type)
+         return Message is
+       begin
+          return Message_Table (Message_Code).all;
+       end Get_Message;
+    end Message_Services;
+
+The following code fragment shows a use of aliased objects, using the
+attribute `'Access` to implement a generic component that manages hashed
+collections of objects:
+
+    generic
+       type Hash_Index is mod <>;
+       type Object is tagged private;
+       type Handle is access all Object;
+       with function Hash (The_Object : in Object) return Hash_Index;
+    package Collection is
+       function Insert (Object : in Collection.Object) return Collection.Handle;
+       function Find (Object : in Collection.Object) return Collection.Handle;
+       Object_Not_Found : exception;
+
+       ...
+    private
+       type Cell;
+       type Access_Cell is access Cell;
+    end Collection;
+    package body Collection is
+       type Cell is
+       record
+          Value : aliased Collection.Object;
+          Link  : Access_Cell;
+       end record;
+       type Table_Type is array (Hash_Index) of Access_Cell;
+
+       Table : Table_Type;
+       -- Go through the collision chain and return an access to the useful data.
+       function Find (Object : in Collection.Object;
+                      Index  : in Hash_Index) return Handle is
+          Current : Access_Cell := Table (Index);
+       begin
+          while Current /= null loop
+             if Current.Value = Object then
+                return Current.Value'Access;
+             else
+                Current := Current.Link;
+             end if;
+          end loop;
+          raise Object_Not_Found;
+       end Find;
+       -- The exported one
+       function Find (Object : in Collection.Object) return Collection.Handle is
+          Index : constant Hash_Index := Hash (Object);
+       begin
+          return Find (Object, Index);
+       end Find;
+       ...
+    end Collection;
+
+#### rationale
+
+Aliasing allows the programmer to have indirect access to declared
+objects. Because you can update aliased objects through more than one
+path, you must exercise caution to avoid unintended updates. When you
+restrict the aliased objects to being constant, you avoid having the
+object unintentionally modified. In the example above, the individual
+message objects are aliased constant message strings so their values
+cannot be changed. The ragged array is then initialized with references
+to each of these constant strings.
+
+Aliasing allows you to manipulate objects using indirection while
+avoiding dynamic allocation. For example, you can insert an object onto
+a linked list without dynamically allocating the space for that object
+(Rationale 1995, §3.7.1 ).
+
+Another use of aliasing is in a linked data structure in which you try
+to hide the enclosing container. This is essentially the inverse of a
+self-referential data structure (see Guideline 5.4.7 ). If a package
+manages some data using a linked data structure, you may only want to
+export access values that denote the _"useful"_ data. You can use an
+access-to-object to return an access to the useful data, excluding the
+pointers used to chain objects.
+
+### Access Discriminants
+
+#### guideline
+
+- Use access discriminants to create self-referential data structures,
+  i.e., a data structure one of whose components points to the
+  enclosing structure.
+
+#### example
+
+See the examples in Guidelines 8.3.6 (using access discriminants to
+build an iterator) and 9.5.1 (using access discriminants in multiple
+inheritance).
+
+#### rationale
+
+The access discriminant is essentially a pointer of an anonymous type
+being used as a discriminant. Because the access discriminant is of an
+anonymous access type, you cannot declare other objects of the type.
+Thus, once you initialize the discriminant, you create a "permanent"
+(for the lifetime of the object) association between the discriminant
+and the object it accesses. When you create a self-referential
+structure, that is, a component of the structure is initialized to point
+to the enclosing object, the _"constant"_ behavior of the access
+discriminant provides the right behavior to help you maintain the
+integrity of the structure.
+
+See also Rationale (1995, §4.6.3) for a discussion of access
+discriminants to achieve multiple views of an object.
+
+See also Guideline 6.1.3 for an example of an access discriminant for a
+task type.
+
+### Modular Types
+
+#### guideline
+
+- Use modular types rather than Boolean arrays when you create data
+  structures that need bit-wise operations, such as `and` and `or`.
+
+#### example
+
+    with Interfaces;
+    procedure Main is
+       type Unsigned_Byte is mod 255;
+
+       X : Unsigned_Byte;
+       Y : Unsigned_Byte;
+       Z : Unsigned_Byte;
+       X1 : Interfaces.Unsigned_16;
+    begin -- Main
+       Z := X or Y;  -- does not cause overflow
+
+       -- Show example of left shift
+       X1 := 16#FFFF#;
+       for Counter in 1 .. 16 loop
+          X1 := Interfaces.Shift_Left (Value => X1, Amount => 1);
+       end loop;
+    end Main;
+
+#### rationale
+
+Modular types are preferred when the number of bits is known to be fewer
+than the number of bits in a word and/or performance is a serious
+concern. Boolean arrays are appropriate when the number of bits is not
+particularly known in advance and performance is not a serious issue.
+See also Guideline 10.6.3 .

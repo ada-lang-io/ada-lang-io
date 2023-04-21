@@ -1,0 +1,741 @@
+---
+title: 3.2 Naming Conventions
+---
+
+Choose names that clarify the object's or entity's intended use. Ada
+allows identifiers to be any length as long as the identifier fits on a
+line with all characters being significant (including underscores).
+Identifiers are the names used for variables, constants, program units,
+and other entities within a program.
+
+### Names
+
+#### guideline
+
+- Choose names that are as self-documenting as possible.
+- Use a short synonym instead of an abbreviation (see Guideline
+  3.1.4).
+- Use names given by the application, but do not use obscure jargon.
+- Avoid using the same name to declare different kinds of identifiers.
+
+#### example
+
+In a tree-walker, using the name `Left` instead of `Left_Branch` is
+sufficient to convey the full meaning given the context. However, use
+`Time_Of_Day` instead of `TOD`.
+
+Mathematical formulas are often given using single-letter names for
+variables. Continue this convention for mathematical equations where
+they would recall the formula, for example:
+
+```ada
+   A*(X**2) + B*X + C.
+```
+
+With the use of child packages, a poor choice of package, subunit, and
+identifier names can lead to a visibility clash with subunits. See the
+Rationale (1995, §8.1) for a sample of the resulting, rather obscure
+code.
+
+#### rationale
+
+A program that follows these guidelines can be more easily comprehended.
+Self-documenting names require fewer explanatory comments. Empirical
+studies have shown that you can further improve comprehension if your
+variable names are not excessively long (Schneiderman 1986, 7). The
+context and application can help greatly. The unit of measure for
+numeric entities can be a source of subtype names.
+
+You should try not to use the same name as an identifier for different
+declarations, such as an object and a child package. Overusing an
+identifier in seemingly different name spaces can, in fact, lead to
+visibility clashes if the enclosing program units are intended to work
+together.
+
+#### notes
+
+See Guideline 8.1.2 for a discussion on how to use the application
+domain as a guideline for selecting abbreviations.
+
+### Subtype Names
+
+#### guideline
+
+- Use singular, general nouns as subtype identifiers.
+- Choose identifiers that describe one of the subtype's values.
+- Consider using suffixes for subtype identifiers that define visible
+  access types, visible subranges, or visible array types.
+- For private types, do not use identifier constructions (e.g.,
+  suffixes) that are unique to subtype identifiers.
+- Do not use the subtype names from predefined packages.
+
+#### example
+
+```ada
+type Day is
+   (Monday,    Tuesday,   Wednesday, Thursday,  Friday,
+    Saturday,  Sunday);
+
+type Day_Of_Month    is range      0 ..    31;
+type Month_Number    is range      1 ..    12;
+type Historical_Year is range -6_000 .. 2_500;
+
+type Date is
+   record
+      Day   : Day_Of_Month;
+      Month : Month_Number;
+      Year  : Historical_Year;
+   end record;
+```
+
+In particular, `Day` should be used in preference to `Days` or
+`Day_Type`.
+
+The identifier `Historical_Year` might appear to be specific, but it is
+actually general, with the adjective `historical` describing the range
+constraint:
+
+```ada
+------------------------------------------------------------------------
+procedure Disk_Driver is
+
+   -- In this procedure, a number of important disk parameters are
+   -- linked.
+   Number_Of_Sectors  : constant :=     4;
+   Number_Of_Tracks   : constant :=   200;
+   Number_Of_Surfaces : constant :=    18;
+   Sector_Capacity    : constant := 4_096;
+
+   Track_Capacity   : constant := Number_Of_Sectors  * Sector_Capacity;
+   Surface_Capacity : constant := Number_Of_Tracks   * Track_Capacity;
+   Disk_Capacity    : constant := Number_Of_Surfaces * Surface_Capacity;
+
+   type Sector_Range  is range 1 .. Number_Of_Sectors;
+   type Track_Range   is range 1 .. Number_Of_Tracks;
+   type Surface_Range is range 1 .. Number_Of_Surfaces;
+
+   type Track_Map   is array (Sector_Range)  of ...;
+   type Surface_Map is array (Track_Range)   of Track_Map;
+   type Disk_Map    is array (Surface_Range) of Surface_Map;
+
+begin  -- Disk_Driver
+   ...
+end Disk_Driver;
+------------------------------------------------------------------------
+```
+
+The suffixes `_Capacity`, `_Range`, and `_Map` help define the purpose
+of the above subtypes and avoid the search for synonyms for the sector,
+track, and surface abstractions. Without the suffixes, you would need
+three different names per abstraction, one to describe each of the
+concepts succinctly named in the suffix. This recommendation only
+applies to certain visible subtypes. Private types, for example, should
+be given a good name that reflects the abstraction being represented.
+
+#### rationale
+
+When this style and the suggested style for object identifiers are used,
+program code more closely resembles English (see Guideline 3.2.3).
+Furthermore, this style is consistent with the names of the language's
+predefined identifiers. They are not named `Integers`, `Booleans`,
+`Integer_Type`, or `Boolean_Type`.
+
+However, using the name of a subtype from the predefined packages is
+sure to confuse a programmer when that subtype appears somewhere without
+a package qualification.
+
+#### notes
+
+This style guide tries to be consistent with the Ada Reference Manual
+(1995) in use of the terms "type" and "subtype" name. In general, a
+"type" refers to the abstract concept, as in a type declaration, while
+the "subtype" refers to the name given to that abstract concept in an
+actual declaration. Thus, what was called a type name in Ada 83 (Ada
+Reference Manual 1983) is now called a subtype name.
+
+### Object Names
+
+#### guideline
+
+- Use predicate clauses or adjectives for Boolean objects.
+- Use singular, specific nouns as object identifiers.
+- Choose identifiers that describe the object's value during
+  execution.
+- Use singular, general nouns as identifiers for record components.
+
+#### example
+
+Non-Boolean objects:
+
+```ada
+Today           : Day;
+Yesterday       : Day;
+Retirement_Date : Date;
+```
+
+Boolean objects:
+
+```ada
+User_Is_Available : Boolean;        -- predicate clause
+List_Is_Empty     : Boolean;        -- predicate clause
+Empty             : Boolean;        -- adjective
+Bright            : Boolean;        -- adjective
+```
+
+#### rationale
+
+Using specific nouns for objects establishes a context for understanding
+the object's value, which is one of the general values described by the
+subtype's name (see Guideline 3.2.2). Object declarations become very
+English-like with this style. For example, the first declaration above
+is read as "Today is a Day."
+
+General nouns, rather than specific, are used for record components
+because a record object's name will supply the context for understanding
+the component. Thus, the following component is understood as "the year
+of retirement":
+
+```ada
+Retirement_Date.Year
+```
+
+Following conventions that relate object types and parts of speech makes
+code read more like text. For example, because of the names chosen, the
+following code segment needs no comments:
+
+```ada
+if List_Is_Empty then
+   Number_Of_Elements := 0;
+else
+   Number_Of_Elements := Length_Of_List;
+end if;
+```
+
+#### notes
+
+If it is difficult to find a specific noun that describes an object's
+value during the entire execution of a program, the object is probably
+serving multiple purposes. Multiple objects should be used in such a
+case.
+
+### Naming of Tagged Types and Associated Packages
+
+#### guideline
+
+- Use a consistent naming convention for tagged types and associated
+  packages.
+
+#### instantiation
+
+Naming conventions spark "religious wars"; therefore, two different
+instantiations are presented. The first instantiation integrates the use
+of object-oriented features. Except for two special cases, it applies
+the same naming conventions to declarations, independent of whether they
+use an object-oriented feature:
+
+- Name tagged types no differently than subtype names (see Guideline
+  3.2.2).
+- Use the prefix `Abstract_` for packages that export an abstraction
+  for which you intend to provide multiple implementations (see
+  Guideline 9.2.4).
+- Use the suffix `_Mixin` for packages that provide units of
+  functionality that can be "mixed in" to core abstractions.
+
+The second instantiation highlights the use of object-oriented features
+through special names or suffixes:
+
+- Name class packages after the object they represent, without a
+  suffix (Rosen 1995).
+- Name mixin packages after the facet they represent, appending the
+  suffix \_Facet (Rosen 1995).
+- Name the main tagged type `Instance` (Rosen 1995).
+- Follow the declaration of the specific type with a subtype named
+  `Class` for the corresponding class-wide type (Rosen 1995).
+
+#### example
+
+The following two-part example from the Rationale (1995, §§4.4.4 and
+4.6.2) applies the naming conventions of the first instantiation.
+
+For the first part of this example, assume the type `Set_Element` was
+declared elsewhere:
+
+```ada
+package Abstract_Sets is
+
+   type Set is abstract tagged private;
+
+   -- empty set
+   function Empty return Set is abstract;
+
+   -- build set with 1 element
+   function Unit (Element: Set_Element) return Set is abstract;
+
+   -- union of two sets
+   function Union (Left, Right: Set) return Set is abstract;
+
+   -- intersection of two sets
+   function Intersection (Left, Right: Set) return Set is abstract;
+
+   -- remove an element from a set
+   procedure Take (From    : in out Set;
+                   Element :    out set_Element) is abstract;
+
+   Element_Too_Large : exception;
+private
+   type Set is abstract tagged null record;
+end Abstract_Sets;
+
+with Abstract_Sets;
+package Bit_Vector_Sets is   -- one implementation of set abstraction
+
+   type Bit_Set is new Abstract_Sets.Set with private;
+   ...
+private
+   Bit_Set_Size : constant := 64;
+   type Bit_Vector is ...
+   type Bit_Set is new Abstract_Sets.Set with
+      record
+         Data : Bit_Vector;
+      end record;
+end Bit_Vector_Sets;
+
+with Abstract_Sets;
+package Sparse_Sets  -- alternate implementation of set abstraction
+
+   type Sparse_Set is new Abstract_Sets.Set with private;
+   ...
+private
+   ...
+end Bit_Vector_Sets;
+```
+
+The second part of this example applies the naming convention to mixin
+packages that support a windowing system:
+
+```ada
+-- assume you have type Basic_Window is tagged limited private;
+
+generic
+   type Some_Window is abstract new Basic_Window with private;
+package Label_Mixin is
+   type Window_With_Label is abstract new Some_Window with private;
+   ...
+private
+   ...
+end Label_Mixin;
+
+generic
+   type Some_Window is abstract new Basic_Window with private;
+package Border_Mixin is
+   type Window_With_Label is abstract new Some_Window with private;
+   ...
+private
+   ...
+end Border_Mixin;
+```
+
+The following example applies the naming conventions of the second
+instantiation, as discussed in Rosen (1995):
+
+```ada
+package Shape is
+   subtype Side_Count is range 0 .. 100;
+   type Instance (Sides: Side_Count) is tagged private;
+   subtype Class is Instance'Class;
+   . . .
+   -- operations on Shape.Instance
+private
+   . . .
+end Shape;
+
+with Shape; use Shape;
+package Line is
+   type Instance is new Shape.Instance with private;
+   subtype Class is Instance'Class;
+   . . .
+   -- Overridden or new operations
+private
+   . . .
+end Line;
+
+with Shape; use Shape;
+generic
+   type Origin is new Shape.Instance;
+package With_Color_Facet is
+   type Instance is new Origin with private;
+   subtype Class is Instance'Class;
+   -- operations for colored shapes
+private
+   . . .
+end With_Color_Facet;
+
+with Line; use Line;
+with With_Color_Facet;
+package Colored_Line is new With_Color_Facet (Line.Instance);
+```
+
+Sample declarations might look like:
+
+```ada
+Red_Line : Colored_Line.Instance;
+
+procedure Draw (What : Shape.Instance);
+```
+
+The above scheme works whether you use full names or a `use` clause. As
+long as you use the same name for all the specific types (i.e., `type Instance`) and class-wide types, the unqualified names will always hide
+one another. Thus, the compiler will insist you use full name
+qualification to resolve the ambiguity introduced by the use clause
+(Rosen 1995).
+
+#### rationale
+
+You want to use a naming scheme that is consistent and readable and
+conveys the intent of the abstraction. Ideally, the naming scheme should
+be uniform in how it handles the different ways in which tagged types
+are used to create classes. If the naming convention is too rigid,
+however, you will write code fragments that appear stilted from a
+readability point of view. By using a similar naming convention for type
+extension through derivation and through generic mixin (see also
+Guideline 9.5.1), you achieve readable declarations of objects and
+procedures.
+
+#### notes
+
+A naming convention for classes draws a hard line between
+object-oriented abstractions and other kinds of abstractions. Given that
+engineers have been defining abstract data types in Ada 83 (Ada
+Reference Manual 1983) for over 10 years, you may not want to change the
+naming convention just for the sake of using type extension with a type.
+You must consider how important it is to call out uses of inheritance in
+the overall use of abstractions in your program. If you prefer to
+emphasize abstraction, in general, over the mechanism used to implement
+the abstraction (i.e., inheritance, type-extension, and polymorphism),
+you may not want to impose such a stringent naming convention. You do
+not hamper quality by favoring a smoother transition in naming
+conventions from abstractions developed without inheritance to those
+developed with inheritance.
+
+If you choose a naming convention that highlights the use of
+object-oriented features and later decide to change the declaration to
+one that does not use an object-oriented feature, the change may be
+expensive. You must naturally change all occurrences of the names and
+must be careful not to introduce errors as you update the names. If you
+choose a naming convention that prohibits the use of suffixes or
+prefixes to characterize the declaration, you lose the opportunity to
+convey the intended usage of the declared item.
+
+### Program Unit Names
+
+#### guideline
+
+- Use action verbs for procedures and entries.
+- Use predicate clauses for Boolean functions.
+- Use nouns for non-Boolean functions.
+- Give packages names that imply a higher level of organization than
+  subprograms. Generally, these are noun phrases that describe the
+  abstraction provided.
+- Give tasks names that imply an active entity.
+- Use nouns descriptive of the data being protected for protected
+  units.
+- Consider naming generic subprograms as if they were nongeneric
+  subprograms.
+- Consider naming generic packages as if they were nongeneric
+  packages.
+- Make the generic names more general than the instantiated names.
+
+#### example
+
+The following are sample names for elements that compose an Ada program:
+
+Sample procedure names:
+
+```ada
+procedure Get_Next_Token          -- get is a transitive verb
+procedure Create                  -- create is a transitive verb
+```
+
+Sample function names for Boolean-valued functions:
+
+```ada
+function Is_Last_Item             -- predicate clause
+function Is_Empty                 -- predicate clause
+```
+
+Sample function names for non-Boolean-valued functions:
+
+```ada
+function Successor                -- common noun
+function Length                   -- attribute
+function Top                      -- component
+```
+
+Sample package names:
+
+```ada
+package Terminals is               -- common noun
+package Text_Routines is           -- common noun
+```
+
+Sample protected objects:
+
+```ada
+protected Current_Location is      -- data being protected
+protected type Guardian is         -- noun implying protection
+```
+
+Sample task names:
+
+```ada
+task Terminal_Resource_Manager is  -- common noun that shows action
+```
+
+The following sample piece of code shows the clarity that results from
+using the parts-of-speech naming conventions:
+
+```ada
+Get_Next_Token(Current_Token);
+
+case Current_Token is
+   when Identifier =>         Process_Identifier;
+   when Numeric    =>         Process_Numeric;
+end case;  -- Current_Token
+
+if Is_Empty(Current_List) then
+   Number_Of_Elements := 0;
+else
+   Number_Of_Elements := Length(Current_List);
+end if;
+```
+
+When packages and their subprograms are named together, the resulting
+code is very descriptive:
+
+```ada
+if Stack.Is_Empty(Current_List) then
+   Current_Token := Stack.Top(Current_List);
+end if;
+```
+
+#### rationale
+
+Using these naming conventions creates understandable code that reads
+much like natural language. When verbs are used for actions, such as
+subprograms, and nouns are used for objects, such as the data that the
+subprogram manipulates, code is easier to read and understand. This
+models a medium of communication already familiar to a reader. Where the
+pieces of a program model a real-life situation, using these conventions
+reduces the number of translation steps involved in reading and
+understanding the program. In a sense, your choice of names reflects the
+level of abstraction from computer hardware toward application
+requirements.
+
+See also Guideline 3.2.4 for the use of special-purpose suffixes in
+packages associated with tagged types.
+
+#### notes
+
+There are some conflicting conventions in current use for task entries.
+Some programmers and designers advocate naming task entries with the
+same conventions used for subprograms to blur the fact that a task is
+involved. Their reasoning is that if the task is reimplemented as a
+package, or vice versa, the names need not change. Others prefer to make
+the fact of a task entry as explicit as possible to ensure that the
+existence of a task with its presumed overhead is recognizable.
+Project-specific priorities may be useful in choosing between these
+conventions.
+
+### Constants and Named Numbers
+
+#### guideline
+
+- Use symbolic values instead of literals where the symbolic value
+  improves readability.
+- Use symbolic values instead of literals if the value occurs at more
+  than one place and might need to be changed.
+- Use the predefined constants Ada.Numerics.Pi and Ada.Numerics.e for
+  the mathematical constants Pi and e.
+- Use constants instead of variables for constant values.
+- Use a constant when the value is specific to a type or when the
+  value must be static.
+- Use named numbers instead of constants, whenever possible.
+- Use named numbers to replace numeric literals whose type or context
+  is truly universal.
+- Use constants for objects whose values cannot change after
+  elaboration (United Technologies 1987).
+- Show relationships between symbolic values by defining them with
+  static expressions.
+- Use linearly independent sets of literals.
+- Use attributes like 'First and 'Last instead of literals, wherever
+  possible.
+
+#### example
+
+```ada
+3.14159_26535_89793                                 -- literal
+Max_Entries : constant Integer       := 400;        -- constant
+Avogadros_Number  : constant := 6.022137 * 10**23;  -- named number
+Avogadros_Number / 2                                -- static expression
+Avogadros_Number                                    -- symbolic value
+```
+
+Declaring `Pi` as a named number (assuming a `with` clause for the
+predefined package `Ada.Numerics` in the Ada Reference Manual \[1995,
+§A.5\] allows it to be referenced symbolically in the assignment
+statement below:
+
+```ada
+Area :=       Pi * Radius**2;       -- if radius is known.
+```
+
+instead of:
+
+```ada
+Area := 3.14159 * Radius**2;        -- Needs explanatory comment
+```
+
+Also, `Ada.Characters.Latin_1.Bel` is more expressive than
+`Character'Val(8#007#)`.
+
+Clarity of constant and named number declarations can be improved by
+using other constant and named numbers. For example:
+
+```ada
+Bytes_Per_Page   : constant := 512;
+Pages_Per_Buffer : constant := 10;
+Buffer_Size      : constant := Pages_Per_Buffer * Bytes_Per_Page;
+```
+
+is more self-explanatory and easier to maintain than:
+
+```ada
+Buffer_Size : constant := 5_120;   -- ten pages
+```
+
+The following literals should be constants:
+
+```ada
+if New_Character  = '$' then  -- "constant" that may change
+...
+if Current_Column = 7 then    -- "constant" that may change
+```
+
+#### rationale
+
+Using identifiers instead of literals makes the purpose of expressions
+clear, reducing the need for comments. Constant declarations consisting
+of expressions of numeric literals are safer because they do not need to
+be computed by hand. They are also more enlightening than a single
+numeric literal because there is more opportunity for embedding
+explanatory names. Clarity of constant declarations can be improved
+further by using other related constants in static expressions defining
+new constants. This is not less efficient because static expressions of
+named numbers are computed at compile time.
+
+A constant has a type. A named number can only be a universal type:
+universal_integer or universal_real. Strong typing is enforced for
+constants but not for named numbers or literals. Named numbers allow
+compilers to generate more efficient code than for constants and to
+perform more complete error checking at compile time. If the literal
+contains a large number of digits (as Pi in the example above), the use
+of an identifier reduces keystroke errors. If keystroke errors occur,
+they are easier to locate either by inspection or at compile time.
+
+Independence of literals means that the few literals that are used do
+not depend on one another and that any relationship between constant or
+named values is shown in the static expressions. Linear independence of
+literal values gives the property that if one literal value changes, all
+of the named numbers of values dependent on that literal are
+automatically changed.
+
+See Guideline 4.1.4 for additional guidelines on choosing a
+parameterless function versus a constant.
+
+#### notes
+
+There are situations where a literal is a better choice than a name. For
+this to be the case, the following conditions have to be fulfilled:
+
+- The literal has to be self-explanatory in the respective context,
+  such that replacing the literal by a symbolic value would not
+  improve the readability.
+- The value is either unchangeable or only occurs at one single place
+  in the code, such that replacing the literal by a symbolic value
+  would not improve the maintainability.
+
+For example, the literals in the following well known relationship are
+both self-explanatory and unchangeable:
+
+```ada
+   Fahrenheit := 32.0 + (9.0 * Celsius) / 5.0;
+```
+
+As a second example, dividing by the literal 2 is self-explanatory in a
+binary search algorithm context. And, since the value is also
+unchangeably related with the algorithm, it also does not matter if the
+literal occurs at more than one place in the code (for example due to
+loop unrolling). Therefore, the use of a symbolic value like the
+following would neither improve readability nor maintainability:
+
+```ada
+   Binary_Search_Divisor : constant := 2;
+```
+
+### Exceptions
+
+#### guideline
+
+- Use a name that indicates the kind of problem the exception
+  represents.
+
+#### example
+
+```ada
+Invalid_Name: exception;
+Stack_Overflow: exception;
+```
+
+#### rationale
+
+Naming exceptions according to the kind of problem they are detecting
+enhances the readability of the code. You should name your exceptions as
+precisely as you can so that the maintainer of the code understands why
+the exception might be raised. A well-named exception should be
+meaningful to the clients of the package declaring the exception.
+
+### Constructors
+
+#### guideline
+
+- Include a prefix like `New`, `Make`, or `Create` in naming
+  constructors (in this sense, operations to create and/or initialize
+  an object).
+- Use names indicative of their content for child packages containing
+  constructors.
+
+#### instantiation
+
+- Name a child package containing constructors
+  `\<whatever\>.Constructor`.
+
+#### example
+
+```ada
+function Make_Square (Center : Cartesian_Coordinates;
+                      Side   : Positive)
+  return Square;
+```
+
+#### rationale
+
+Including a word like `New`, `Make`, or `Create` in a constructor name
+makes its purpose clear. You may want to restrict the use of the prefix
+New to constructors that return an access value because the prefix
+suggests the internal use of an allocator.
+
+Putting all constructors in a child package, even when they return
+access values, is a useful organizational principle.
+
+For information regarding the use of Ada constructors, refer to
+Guideline 9.3.3.

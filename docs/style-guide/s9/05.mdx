@@ -1,0 +1,264 @@
+---
+title: 9.5 Multiple Inheritance
+---
+
+Ada provides several mechanisms to support multiple inheritance, where
+multiple inheritance is a means for incrementally building new
+abstractions from existing ones, as defined at the beginning of this
+chapter. Specifically, Ada supports multiple inheritance module
+inclusion (via multiple with/use clauses), multiple inheritance
+"is-implemented-using" via private extensions and record composition,
+and multiple inheritance mixins via the use of generics, formal
+packages, and access discriminants (Taft 1994).
+
+### Multiple Inheritance Techniques
+
+#### guideline
+
+- Consider using type composition for implementation, as opposed to
+  interface, inheritance.
+- Consider using a generic to "mix in" functionality to a derivative
+  of some core abstraction.
+- Consider using access discriminants to support "full" multiple
+  inheritance where an object must be referenceable as an entity of
+  two or more distinct unrelated abstractions.
+
+#### example
+
+Both examples that follow are taken directly from Taft (1994). The first
+shows how to use multiple inheritance techniques to create an abstract
+type whose interface inherits from one type and whose implementation
+inherits from another type. The second example shows how to enhance the
+functionality of a basic abstraction by mixing in new features.
+
+The abstract type Set_Of_Strings provides the interface to inherit:
+
+```ada
+
+type Set_Of_Strings is abstract tagged limited private;
+type Element_Index is new Natural;  -- Index within set.
+No_Element : constant Element_Index := 0;
+Invalid_Index : exception;
+procedure Enter(
+  -- Enter an element into the set, return the index
+  Set : in out Set_Of_Strings;
+  S : String;
+  Index : out Element_Index) is abstract;
+procedure Remove(
+  -- Remove an element from the set; ignore if not there
+  Set : in out Set_Of_Strings;
+  S : String) is abstract;
+procedure Combine(
+  -- Combine Additional_Set into Union_Set
+  Union_Set : in out Set_Of_Strings;
+  Additional_Set : Set_Of_Strings) is abstract;
+procedure Intersect(
+  -- Remove all elements of Removal_Set from Intersection_Set
+  Intersection_Set : in out Set_Of_Strings;
+  Removal_Set : Set_Of_Strings) is abstract;
+function Size(Set : Set_Of_Strings) return Element_Index
+  is abstract;
+  -- Return a count of the number of elements in the set
+function Index(
+  -- Return the index of a given element;
+  -- return No_Element if not there.
+  Set : Set_Of_Strings;
+  S : String) return Element_Index is abstract;
+function Element(Index : Element_Index) return String is abstract;
+  -- Return element at given index position
+  -- raise Invalid_Index if no element there.
+private
+  type Set_Of_Strings is abstract tagged limited ...
+
+The type Hashed_Set derives its interface from Set_of_Strings and its implementation from an existing (concrete) type Hash_Table:
+
+type Hashed_Set(Table_Size : Positive) is
+  new Set_Of_Strings with private;
+-- Now we give the specs of the operations being implemented
+procedure Enter(
+  -- Enter an element into the set, return the index
+  Set : in out Hashed_Set;
+  S : String;
+  Index : out Element_Index);
+procedure Remove(
+  -- Remove an element from the set; ignore if not there
+  Set : in out Hashed_Set;
+  S : String);
+  -- . . . etc.
+private
+  type Hashed_Set(Table_Size : Positive) is
+    new Set_Of_Strings with record
+      Table : Hash_Table(1..Table_Size);
+    end record;
+```
+
+In the package body, you define the bodies of the operations (i.e.,
+Enter, Remove,Combine, Size, etc.) using the operations available on
+Hash_Table. You must also provide any necessary "glue" code.
+
+In this second example, the type Basic_Window responds to various
+events and calls:
+
+```ada
+
+type Basic_Window is tagged limited private;
+procedure Display(W : Basic_Window);
+procedure Mouse_Click(W     : in out Basic_Window;
+                      Where :        Mouse_Coords);
+          . . .
+```
+
+You use mixins to add features such as labels, borders, menu bar, etc.:
+
+```ada
+generic
+  type Some_Window is new Window with private;
+  -- take in any descendant of Window
+package Label_Mixin is
+  type Window_With_Label is new Some_Window with private;
+    -- Jazz it up somehow.
+  -- Overridden operations:
+  procedure Display(W : Window_With_Label);
+  -- New operations:
+  procedure Set_Label(W : in out Window_With_Label; S : String);
+    -- Set the label
+  function Label(W : Window_With_Label) return String;
+    -- Fetch the label
+private
+  type Window_With_Label is
+    new Some_Window with record
+      Label : String_Quark := Null_Quark;
+        -- An XWindows-Like unique ID for a string
+    end record;
+```
+
+In the generic body, you implement any overridden operations as well as
+the new operations. For example, you could implement the overridden
+Display operation using some of the inherited operations:
+
+```ada
+procedure Display(W : Window_With_Label) is
+begin
+    Display(Some_Window(W));
+      -- First display the window normally,
+      -- by passing the buck to the parent type.
+    if W.Label /= Null_Quark then
+      -- Now display the label if it is not null
+        Display_On_Screen(XCoord(W), YCoord(W)-5, Value(W.Label));
+          -- Use two inherited functions on Basic_Window
+          -- to get the coordinates where to display the label.
+    end if;
+end Display;
+```
+
+Assuming you have defined several generics with these additional
+features, to create the desired window, you use a combination of generic
+instantiations and private type extension, as shown in the following
+code:
+
+```ada
+
+  type My_Window is new Basic_Window with private;
+  . . .
+private
+  package Add_Label is new Label_Mixin(Basic_Window);
+  package Add_Border is
+    new Border_Mixin(Add_Label.Window_With_Label);
+  package Add_Menu_Bar is
+    new Menu_Bar_Mixin(Add_Border.Window_With_Border);
+  type My_Window is
+    new Add_Menu_Bar.Window_With_Menu_Bar with null record;
+      -- Final window is a null extension of Window_With_Menu_Bar.
+      -- We could instead make a record extension and
+      -- add components for My_Window over and above those
+      -- needed by the mixins.
+```
+
+The following example shows "full" multiple inheritance.
+
+Assume previous definition of packages for Savings_Account and
+Checking_Account. The following example shows the definition of an
+interest-bearing checking account (NOW account):
+
+```ada
+with Savings_Account;
+with Checking_Account;
+package NOW_Account is
+
+   type Object is tagged limited private;
+
+   type Savings (Self : access Object'Class) is
+      new Savings_Account.Object with null record;
+
+   -- These need to be overridden to call through to "Self"
+   procedure Deposit (Into_Account : in out Savings; ...);
+   procedure Withdraw (...);
+   procedure Earn_Interest (...);
+   function Interest (...) return Float;
+   function Balance (...) return Float;
+   type Checking (Self : access Object'Class) is
+      new Checking_Account.Object with null record;
+
+   procedure Deposit (Into_Account : in out Checking; ...);
+   ...
+   function Balance (...) return Float;
+
+   -- These operations will call-through to Savings_Account or
+   -- Checking_Account operations. "Inherits" in this way all savings and
+   -- checking operations
+
+   procedure Deposit (Into_Account : in out Object; ...);
+   ...
+   procedure Earn_Interest (...);
+   ...
+   function Balance (...) return Float;
+
+private
+
+   -- Could alternatively have Object be derived from either
+   -- Savings_Account.Object or Checking_Account.Object
+   type Object is tagged
+      record
+         As_Savings  : Savings (Object'Access);
+         As_Checking : Checking (Object'Access);
+      end record;
+
+end NOW_Account;
+```
+
+Another possibility is that the savings and checking accounts are both
+implemented based on a common Account abstraction, resulting in
+inheriting a Balance state twice for NOW_Account.Object. To resolve
+this ambiguity, you need to use an abstract type hierarchy for the
+multiple inheritance of interface and separate mixins for the multiple
+inheritance of implementation.
+
+#### rationale
+
+In other languages such as Eiffel and C++, multiple inheritance serves
+many purposes. In Eiffel, for instance, you must use inheritance both
+for module inclusion and for inheritance itself (Taft 1994). Ada
+provides context clauses for module inclusion and child libraries for
+finer modularization control. Ada does not provide a separate syntax for
+multiple inheritance. Rather, it provides a set of building blocks in
+type extension and composition that allow you to mix in additional
+behaviors.
+
+A library of mixins allows the client to mix and match in order to
+develop an implementation. Also see Guideline 8.3.8 about implementing
+mixins.
+
+You should not use multiple inheritance to derive an abstraction that is
+essentially unrelated to its parent(s). Thus, you should not try to
+derive a menu abstraction by inheriting from a command line type and a
+window type. However, if you have a basic abstraction such as a window,
+you can use multiple inheritance mixins to create a more sophisticated
+abstraction, where a mixin is the package containing the type(s) and
+operations that will extend the parent abstraction.
+
+Use self-referential data structures to implement types with "full"
+multiple inheritance ("multiple polymorphism").
+
+A common mistake is to use multiple inheritance for parts-of relations.
+When a type is composed of several others types, you should use
+heterogeneous data structuring techniques, discussed in Guideline 5.4.2.
