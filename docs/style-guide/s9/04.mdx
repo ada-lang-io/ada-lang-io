@@ -1,0 +1,118 @@
+---
+title: 9.4 Managing Visibility
+---
+
+### Derived Tagged Types
+
+#### guideline
+
+- Consider giving derived tagged types the same visibility to the
+  parent type as other clients of the parent.
+- Define a derived tagged type in a child of the package that defines
+  the base type if the implementation of the derived type requires
+  greater visibility into the implementation of the base type than
+  other clients of the base type require.
+
+#### example
+
+The following example illustrates the need for a derived type to have
+greater visibility into the implementation of the base type than other
+clients of the base type. In this example of a stack class hierarchy,
+Push and Pop routines provide a homogeneous interface for all variations
+of stacks. However, the implementation of these operations requires
+greater visibility into the base types due to the differences in the
+data elements. This example is adapted from Barbey, Kempe, and
+Strohmeier (1994):
+
+```ada
+generic
+   type Item_Type is private;
+package Generic_Stack is
+   type Abstract_Stack_Type is abstract tagged limited private;
+   procedure Push (Stack : in out Abstract_Stack_Type;
+                   Item  : in     Item_Type) is abstract;
+   procedure Pop (Stack : in out Abstract_Stack_Type;
+                  Item  :    out Item_Type) is abstract;
+   function Size (Stack : Abstract_Stack_Type) return Natural;
+   Full_Error  : exception; -- May be raised by Push
+   Empty_Error : exception; -- May be raised by Pop
+private
+   type Abstract_Stack_Type is abstract tagged limited
+      record
+         Size : Natural := 0;
+      end record;
+end Generic_Stack;
+package body Generic_Stack is
+   function Size (Stack : Abstract_Stack_Type)
+      return Natural is
+   begin
+      return Stack.Size;
+   end Size;
+end Generic_Stack;
+--
+-- Now, a bounded stack can be derived in a child package as follows:
+--
+----------------------------------------------------------------------
+generic
+package Generic_Stack.Generic_Bounded_Stack is
+   type Stack_Type (Max : Positive) is
+      new Abstract_Stack_Type with private;
+   -- override all abstract subprograms
+   procedure Push (Stack : in out Stack_Type;
+                   Item  : in     Item_Type);
+   procedure Pop (Stack : in out Stack_Type;
+                  Item  :    out Item_Type);
+private
+   type Table_Type is array (Positive range <>) of Item_Type;
+   type Stack_Type (Max : Positive) is new Abstract_Stack_Type with
+      record
+         Table : Table_Type (1 .. Max);
+      end record;
+end Generic_Stack.Generic_Bounded_Stack;
+----------------------------------------------------------------------
+package body Generic_Stack.Generic_Bounded_Stack is
+
+   procedure Push (Stack : in out Stack_Type;
+                   Item  : in     Item_Type) is
+   begin
+
+      -- The new bounded stack needs visibility into the base type
+      --   in order to update the Size element of the stack type
+      --   when adding or removing items.
+
+      if (Stack.Size = Stack.Max) then
+         raise Full_Error;
+      else
+         Stack.Size := Stack.Size + 1;
+         Stack.Table(Stack.Size) := Item;
+      end if;
+   end Push;
+
+   procedure Pop (Stack : in out Stack_Type;
+                  Item  :    out Item_Type) is
+   begin
+      ...
+   end Pop;
+
+end Generic_Stack.Generic_Bounded_Stack;
+```
+
+#### rationale
+
+If the derived type can be defined without any special visibility of the
+base type, this provides for the best possible decoupling of the
+implementation of the derived type from changes in the implementation of
+the base type. On the other hand, the operations of an extension of a
+tagged type may need additional information from the base type that is
+not commonly needed by other clients.
+
+When the implementation of a derived tagged type requires visibility of
+the implementation of the base type, use a child package to define the
+derived type. Rather than providing additional public operations for
+this information, it is better to place the definition of the derived
+type in a child package. This gives the derived type the necessary
+visibility without risking misuse by other clients.
+
+This situation is likely to arise when you build a data structure with a
+homogeneous interface but whose data elements have a heterogeneous
+implementation. See also Guidelines 8.4.8, 9.2.1, and 9.3.5.

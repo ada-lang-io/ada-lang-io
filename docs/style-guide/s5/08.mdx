@@ -1,0 +1,265 @@
+---
+title: 5.8 Using exceptions
+---
+
+Ada exceptions are a reliability-enhancing language feature designed to
+help specify program behavior in the presence of errors or unexpected
+events. Exceptions are not intended to provide a general purpose control
+construct. Further, liberal use of exceptions should not be considered
+sufficient for providing full software fault tolerance (Melliar-Smith
+and Randell 1987).
+
+This section addresses the issues of how and when to avoid raising
+exceptions, how and where to handle them, and whether to propagate them.
+Information on how to use exceptions as part of the interface to a unit
+includes what exceptions to declare and raise and under what conditions
+to raise them. Other issues are addressed in the guidelines in Sections
+4.3 and 7.5.
+
+### Handling Versus Avoiding Exceptions
+
+#### guideline
+
+- When it is easy and efficient to do so, avoid causing exceptions to
+  be raised.
+- Provide handlers for exceptions that cannot be avoided.
+- Use exception handlers to enhance readability by separating fault
+  handling from normal execution.
+- Do not use exceptions and exception handlers as `goto` statements.
+- Do not evaluate the value of an object (or a part of an object) that
+  has become abnormal because of the failure of a language-defined
+  check.
+
+#### rationale
+
+In many cases, it is possible to detect easily and efficiently that an
+operation you are about to perform would raise an exception. In such a
+case, it is a good idea to check rather than allowing the exception to
+be raised and handling it with an exception handler. For example, check
+each pointer for `null` when traversing a linked list of records
+connected by pointers. Also, test an integer for 0 before dividing by
+it, and call an interrogative function `Stack_Is_Empty` before invoking
+the `pop` procedure of a stack package. Such tests are appropriate when
+they can be performed easily and efficiently as a natural part of the
+algorithm being implemented.
+
+However, error detection in advance is not always so simple. There are
+cases where such a test is too expensive or too unreliable. In such
+cases, it is better to attempt the operation within the scope of an
+exception handler so that the exception is handled if it is raised. For
+example, in the case of a linked list implementation of a list, it is
+very inefficient to call a function `Entry_Exists` before each call to
+the procedure `Modify_Entry` simply to avoid raising the exception
+`Entry_Not_Found`. It takes as much time to search the list to avoid the
+exception as it takes to search the list to perform the update.
+Similarly, it is much easier to attempt a division by a real number
+within the scope of an exception handler to handle numeric overflow than
+to test, in advance, whether the dividend is too large or the divisor
+too small for the quotient to be representable on the machine.
+
+In concurrent situations, tests done in advance can also be unreliable.
+For example, if you want to modify an existing file on a multiuser
+system, it is safer to attempt to do so within the scope of an exception
+handler than to test in advance whether the file exists, whether it is
+protected, whether there is room in the file system for the file to be
+enlarged, etc. Even if you tested for all possible error conditions,
+there is no guarantee that nothing would change after the test and
+before the modification operation. You still need the exception
+handlers, so the advance testing serves no purpose.
+
+Whenever such a case does not apply, normal and predictable events
+should be handled by the code without the abnormal transfer of control
+represented by an exception. When fault handling and only fault handling
+code is included in exception handlers, the separation makes the code
+easier to read. The reader can skip all the exception handlers and still
+understand the normal flow of control of the code. For this reason,
+exceptions should never be raised and handled within the same unit, as a
+form of a `goto` statement to exit from a `loop`,`if`, `case`, or
+`block`statement.
+
+Evaluating an abnormal object results in erroneous execution ([Ada
+Reference Manual 1995,
+§13.9.1](http://www.adahome.com/rm95/rm9x-toc-13-09-01.html)). The
+failure of a language-defined check raises an exception. In the
+corresponding exception handler, you want to perform appropriate cleanup
+actions, including logging the error (see the discussion on exception
+occurrences in Guideline 5.8.2) and/or reraising the exception.
+Evaluating the object that put you into the exception handling code will
+lead to erroneous execution, where you do not know whether your
+exception handler has executed completely or correctly. See also
+Guideline 5.9.1, which discusses abnormal objects in the context of
+`Ada.Unchecked_Conversion`.
+
+### Handlers for Others
+
+#### guideline
+
+- When writing an exception handler for `others`, capture and return
+  additional information about the exception through the
+  `Exception_Name`, `Exception_Message`, or `Exception_Information`
+  subprograms declared in the predefined package `Ada.Exceptions`.
+- Use `others` only to catch exceptions you cannot enumerate
+  explicitly, preferably only to flag a potential abort.
+- During development, trap `others`, capture the exception being
+  handled, and consider adding an explicit handler for that exception.
+
+#### example
+
+The following simplified example gives the user one chance to enter an
+integer in the range 1 to 3. In the event of an error, it provides
+information back to the user. For an integer value that is outside the
+expected range, the function reports the name of the exception. For any
+other error, the function provides more complete traceback information.
+The amount of traceback information is implementation dependent.
+
+```ada
+with Ada.Exceptions;
+with Ada.Text_IO;
+with Ada.Integer_Text_IO;
+function Valid_Choice return Positive is
+   subtype Choice_Range is Positive range 1..3;
+
+   Choice : Choice_Range;
+begin
+   Ada.Text_IO.Put ("Please enter your choice: 1, 2, or 3: ");
+   Ada.Integer_Text_IO.Get (Choice);
+   if Choice in Choice_Range then   -- else garbage returned
+      return Choice;
+   end if;
+   when Out_of_Bounds : Constraint_Error =>
+      Ada.Text_IO.Put_Line ("Input choice not in range.");
+      Ada.Text_IO.Put_Line (Ada.Exceptions.Exception_Name (Out_of_Bounds));
+      Ada.Text_IO.Skip_Line;
+   when The_Error : others =>
+      Ada.Text_IO.Put_Line ("Unexpected error.");
+      Ada.Text_IO.Put_Line (Ada.Exceptions.Exception_Information (The_Error));
+      Ada.Text_IO.Skip_Line;
+end Valid_Choice;
+```
+
+#### rationale
+
+The predefined package `Ada.Exceptions` allows you to log an exception,
+including its name and traceback information. When writing a handler for
+`others`, you should provide information about the exception to
+facilitate debugging. Because you can access information about an
+exception occurrence, you can save information suitable for later
+analysis in a standard way. By using exception occurrences, you can
+identify the particular exception and either log the details or take
+corrective action.
+
+Providing a handler for `others` allows you to follow the other
+guidelines in this section. It affords a place to catch and convert
+truly unexpected exceptions that were not caught by the explicit
+handlers. While it may be possible to provide "fire walls" against
+unexpected exceptions being propagated without providing handlers in
+every block, you can convert the unexpected exceptions as soon as they
+arise. The `others` handler cannot discriminate between different
+exceptions, and, as a result, any such handler must treat the exception
+as a disaster. Even such a disaster can still be converted into a
+user-defined exception at that point. Because a handler for `others`
+catches any exception not otherwise handled explicitly, one placed in
+the frame of a task or of the main subprogram affords the opportunity to
+perform final cleanup and to shut down cleanly.
+
+Programming a handler for `others` requires caution. You should name it
+in the handler (e.g., `Error : others;`) to discriminate either which
+exception was actually raised or precisely where it was raised. In
+general, the `others` handler cannot make any assumptions about what can
+be or even what needs to be "fixed."
+
+The use of handlers for `others` during development, when exception
+occurrences can be expected to be frequent, can hinder debugging unless
+you take advantage of the facilities in `Ada.Exceptions`. It is much
+more informative to the developer to see a traceback with the actual
+exception information as captured by the `Ada.Exceptions` subprograms.
+Writing a handler without these subprograms limits the amount of error
+information you may see. For example, you may only see the converted
+exception in a traceback that does not list the point where the original
+exception was raised.
+
+#### notes
+
+It is possible, but not recommended, to use `Exception_Id` to
+distinguish between different exceptions in an `others` handler. The
+type `Exception_Id` is implementation defined. Manipulating values of
+type `Exception_Id` reduces the portability of your program and makes it
+harder to understand.
+
+### Propagation
+
+#### guideline
+
+- Handle all exceptions, both user and predefined .
+- For every exception that might be raised, provide a handler in
+  suitable frames to protect against undesired propagation outside the
+  abstraction .
+
+#### rationale
+
+The statement that _"it can never happen"_ is not an acceptable
+programming approach. You must assume it can happen and be in control
+when it does. You should provide defensive code routines for the "cannot
+get here" conditions.
+
+Some existing advice calls for catching and propagating any exception to
+the calling unit. This advice can stop a program. You should catch the
+exception and propagate it or a substitute only if your handler is at
+the wrong abstraction level to effect recovery. Effecting recovery can
+be difficult, but the alternative is a program that does not meet its
+specification.
+
+Making an explicit request for termination implies that your code is in
+control of the situation and has determined that to be the only safe
+course of action. Being in control affords opportunities to shut down in
+a controlled manner (clean up loose ends, close files, release surfaces
+to manual control, sound alarms) and implies that all available
+programmed attempts at recovery have been made.
+
+### Localizing the Cause of an Exception
+
+#### guideline
+
+- Do not rely on being able to identify the fault-raising, predefined,
+  or implementation-defined exceptions.
+- Use the facilities defined in `Ada.Exceptions` to capture as much
+  information as possible about an exception.
+- Use blocks to associate localized sections of code with their own
+  exception handlers.
+
+#### example
+
+See Guideline 5.6.9.
+
+#### rationale
+
+In an exception handler, it is very difficult to determine exactly which
+statement and which operation within that statement raised an exception,
+particularly the predefined and implementation-defined exceptions. The
+predefined and implementation-defined exceptions are candidates for
+conversion and propagation to higher abstraction levels for handling
+there. User-defined exceptions, being more closely associated with the
+application, are better candidates for recovery within handlers.
+
+User-defined exceptions can also be difficult to localize. Associating
+handlers with small blocks of code helps to narrow the possibilities,
+making it easier to program recovery actions. The placement of handlers
+in small blocks within a subprogram or task body also allows resumption
+of the subprogram or task after the recovery actions. If you do not
+handle exceptions within blocks, the only action available to the
+handlers is to shut down the task or subprogram as prescribed in
+Guideline 5.8.3.
+
+As discussed in Guideline 5.8.2, you can log run-time system information
+about the exception. You can also attach a message to the exception.
+During code development, debugging, and maintenance, this information
+should be useful to localize the cause of the exception.
+
+#### notes
+
+The optimal size for the sections of code you choose to protect by a
+block and its exception handlers is very application-dependent. Too
+small a granularity forces you to expend more effort in programming for
+abnormal actions than for the normal algorithm. Too large a granularity
+reintroduces the problems of determining what went wrong and of resuming
+normal flow.

@@ -1,0 +1,125 @@
+---
+title: 9.6 Summary
+---
+
+### tagged type hierarchies
+
+- Consider using type extension when designing an is-a
+  (generalization/specialization) hierarchy.
+- Use tagged types to preserve a common interface across differing
+  implementations (Taft 1995a).
+- When defining a tagged type in a package, consider including a
+  definition of a general access type to the corresponding class-wide
+  type.
+- In general, define only one tagged type per package.
+- The implementation of the dispatching operations of each type in a
+  derivation class rooted in a tagged type T should conform to the
+  expected semantics of the corresponding dispatching operations of
+  the class-wide type T'Class.
+- Consider using a controlled type whenever a type allocates resources
+  that must be deallocated or otherwise "cleaned up" on destruction or
+  overwriting.
+- Use a derivation from a controlled type in preference to providing
+  an explicit "cleanup" operation that must be called by clients of
+  the type.
+- When overriding the adjustment and finalization procedures derived
+  from controlled types, define the finalization procedure to undo the
+  effects of the adjustment procedure.
+- Derived type initialization procedures should call the
+  initialization procedure of their parent as part of their
+  type-specific initialization.
+- Derived type finalization procedures should call the finalization
+  procedure of their parent as part of their type-specific
+  finalization.
+- Consider deriving a data structure's components rather than the
+  enclosing data structure from a controlled type.
+- Consider using abstract types and operations in creating
+  classification schemes, for example, a taxonomy, in which only the
+  leaf objects will be meaningful in the application.
+- Consider declaring root types and internal nodes in a type tree as
+  abstract.
+- Consider using abstract types for generic formal derived types.
+- Consider using abstract types to develop different implementations
+  of a single abstraction.
+
+### tagged type operations
+
+- Consider declaring a primitive abstract operation based on the
+  absence of a meaningful "default" behavior.
+- Consider declaring a primitive nonabstract operation based on the
+  presence of a meaningful "default" behavior.
+- When overriding an operation, the overriding subprogram should not
+  raise exceptions that are not known to the users of the overridden
+  subprogram.
+- If redispatching is used in the implementation of the operations of
+  a type, with the specific intent that some of the redispatched-to
+  operations be overridden by specializations for the derived types,
+  then document this intent clearly in the specification as part of
+  the "interface" of a parent type with its derived types.
+- When redispatching is used (for any reason) in the implementation of
+  a primitive operation of a tagged type, then document (in some
+  project-consistent way) this use in the body of the operation
+  subprogram so that it can be easily found during maintenance.
+- Consider using a class-wide operation (i.e., an operation with
+  parameter\[s\] of a class-wide type) when an operation can be
+  written, compiled, and tested without knowing all the possible
+  descendants of a given tagged type (Barnes 1996).
+- Consider using a class-wide operation when you do not want an
+  operation to be inherited and/or overridden.
+- Avoid declaring a constructor as a primitive abstract operation.
+- Use a primitive abstract operation to declare an initialization
+  function or constructor only when objects of the inheriting derived
+  types will not require additional parameters for initialization.
+- Consider using access discriminants to provide parameters to default
+  initialization.
+- Use constructors for explicit initialization.
+- Consider splitting the initialization and construction of an object.
+- Consider declaring a constructor operation in a child package.
+- Consider declaring a constructor operation to return an access value
+  to the constructed object (Dewar 1995).
+- When you redefine the "=" operator on a tagged type, make sure that
+  it has the expected behavior in extensions of this type and override
+  it if necessary.
+- Consider using class-wide programming to provide run-time, dynamic
+  polymorphism when constructing larger, reusable, extensible
+  frameworks.
+- When possible, use class-wide programming rather than variant
+  records.
+- Use class-wide programming to provide a consistent interface across
+  the set of types in the tagged type hierarchy (i.e., class).
+- Consider using generics to define a new type in terms of an existing
+  type, either as an extension or as a container, collection, or
+  composite data structure.
+- Avoid using type extensions for parameterized abstractions when
+  generics provide a more appropriate mechanism.
+
+### managing visibility
+
+- Consider giving derived tagged types the same visibility to the
+  parent type as other clients of the parent.
+- Define a derived tagged type in a child of the package that defines
+  the base type if the implementation of the derived type requires
+  greater visibility into the implementation of the base type than
+  other clients of the base type require.
+
+### multiple inheritance
+
+- Consider using type composition for implementation, as opposed to
+  interface, inheritance.
+- Consider using a generic to "mix in" functionality to a derivative
+  of some core abstraction.
+- Consider using access discriminants to support "full" multiple
+  inheritance where an object must be referenceable as an entity of
+  two or more distinct unrelated abstractions.
+
+:::note
+
+This page of the "Ada Quality and Style Guide" has been adapted from the
+original work at https://en.wikibooks.org/wiki/Ada_Style_Guide, which is
+licensed under the
+[Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/3.0/);
+additional terms may apply. Page not endorsed by Wikibooks or the Ada
+Style Guide Wikibook authors. This page is licensed under the same license
+as the original work.
+
+:::

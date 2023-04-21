@@ -1,0 +1,575 @@
+---
+title: 7.1 Fundamentals
+---
+
+This section introduces some generally applicable principles of writing
+portable Ada programs. It includes guidelines about the assumptions you
+should make with respect to a number of Ada features and their
+implementations and guidelines about the use of other Ada features to
+ensure maximum portability.
+
+### Obsolescent Features
+
+#### guideline
+
+- In programs or components intended to have a long life, avoid using
+  the features of Ada declared as "obsolescent" by Annex J of the Ada
+  Reference Manual (1995), unless the use of the feature is needed for
+  backward compatibility with Ada 83 (Ada Reference Manual 1983).
+- Document the use of any obsolescent features.
+- Avoid using the following features:
+  - The short renamings of the packages in the predefined
+    environment (e.g., Text_IO as opposed to Ada.Text_IO)
+  - The character replacements of \! for |, : for \#, and % for
+    quotation marks
+  - Reduced accuracy subtypes of floating-point types
+  - The 'Constrained attribute as applied to private types
+  - The predefined package ASCII
+  - The exception Numeric_Error
+  - Various representation specifications, including at clauses, mod
+    clauses, interrupt entries, and the Storage_Size attribute
+
+#### rationale
+
+Ten years of reflection on the use of Ada 83 led to the conclusion that
+some features of the original language are not as useful as originally
+intended. These features have been replaced with others in the Ada 95
+revision. It would have been desirable to remove the obsolescent
+features completely, but that would have prevented the upward compatible
+transition of programs from Ada 83 to Ada 95. Thus, the obsolescent
+features remain in the language and are explicitly labeled as such in
+Annex J of the Ada Reference Manual (1995). The features listed in Annex
+J are candidates for removal from the language during its next revision.
+If a program's lifetime may extend beyond the next language revision, it
+should avoid the obsolescent language features unless backward
+compatibility with Ada 83 forces their use.
+
+#### exceptions
+
+When you instantiate Ada.Text_IO.Float_IO, the values of the
+Default_Fore and Default_Aft fields are set from the values of the
+'Fore and 'Aft attributes of the actual floating-point type used in the
+instantiation. If you declare a reduced accuracy floating-point type
+that you then use to instantiate Ada.Text_IO.Float_IO, the output
+field widths are determined from the reduced accuracy type, although the
+implementation accuracy is unchanged (Rationale 1995, §3.3).
+
+### Global Assumptions
+
+#### guideline
+
+- Make informed assumptions about the support provided for the
+  following on potential target platforms:
+  - Number of bits available for type Integer (range constraints)
+  - Number of decimal digits of precision available for
+    floating-point types
+  - Number of bits available for fixed-point types (delta and range
+    constraints)
+  - Number of characters per line of source text
+  - Number of bits for Root_Integer expressions
+  - Number of seconds for the range of Duration
+  - Number of milliseconds for Duration'Small
+  - Minimum and maximum scale for decimal types
+- Avoid assumptions about the values and the number of values included
+  in the type Character.
+
+#### instantiation
+
+- These are minimum values (or minimum precision in the case of
+  Duration'Small) that a project or application might assume that an
+  implementation provides. There is no guarantee that a given
+  implementation provides more than the minimum, so these would be
+  treated by the project or application as maximum values also.
+  - 16 bits available for type Integer (-2\*\*15 .. 2\*\*15 - 1)
+  - 6 decimal digits of precision available for floating-point types
+  - 24 bits available for fixed-point types
+  - 200 characters per line of source text
+  - 16 bits for expressions
+  - \-86_400 .. 86_400 seconds (1 day) for the range of Duration
+    (as specified in Ada Reference Manual \[1995, §9.6\])
+  - 20 milliseconds for Duration'Small (as specified in Ada
+    Reference Manual \[1995, §9.6\])
+
+#### rationale
+
+Some assumptions must be made with respect to certain
+implementation-specific values. The exact values assumed should cover
+the majority of the target equipment of interest. Choosing the lowest
+common denominator for values improves portability. Implementations may
+supply an alternate character set specific to a locale or environment.
+For instance, the implementation on an IBM-compatible PC may support
+that machine's native character set rather than Latin 1. As a result,
+some character values may or may not be supported, for example, the
+smiley face.
+
+#### notes
+
+Of the microcomputers currently available for incorporation within
+embedded systems, 16-bit and 32-bit processors are prevalent. Using
+current representation schemes, 6 decimal digits of floating point
+accuracy imply a representation mantissa at least 21 bits wide, leaving
+11 bits for exponent and sign within a 32-bit representation. This
+correlates with the data widths of floating point hardware currently
+available for the embedded systems market. A 32-bit minimum on
+fixed-point numbers correlates with the accuracy and storage
+requirements of floating point numbers. The 16-bit example for
+Root_Integer expressions matches that for Integer storage. (The 32-bit
+integers can be assumed if the application will only be considered for
+32-bit processors with a corresponding 32-bit operating system and
+supporting compiler.)
+
+The values for the range and accuracy of values of the predefined type
+Duration are the limits expressed in the Ada Reference Manual (1995,
+§9.6). You should not expect an implementation to provide a wider range
+or a finer granularity.
+
+A standard-mode Ada character set of Latin 1 can be assumed in most
+cases for the contents and internal behavior of type Character and
+packages Character.Latin_1, Character.Handling, and Strings.Maps.
+However, this does not mean that the target hardware platform is capable
+of displaying the entire character set. You should not use a nonstandard
+Ada character set unless intentionally producing a nonportable user
+interface with a specific purpose.
+
+### Comments
+
+#### guideline
+
+- Use highlighting comments for each package, subprogram, and task
+  where any nonportable features are present.
+- For each nonportable feature employed, describe the expectations for
+  that feature.
+
+#### example
+
+```ada
+------------------------------------------------------------------------
+package Memory_Mapped_IO is
+   -- WARNING - This package is implementation specific.
+   -- It uses absolute memory addresses to interface with the I/O
+   -- system. It assumes a particular printer's line length.
+   -- Change memory mapping and printer details when porting.
+   Printer_Line_Length : constant := 132;
+   type Data is array (1 .. Printer_Line_Length) of Character;
+   procedure Write_Line (Line : in     Data);
+end Memory_Mapped_IO;
+------------------------------------------------------------------------
+with System;
+with System.Storage_Elements;
+package body Memory_Mapped_IO is
+   -- WARNING: Implementation specific memory address
+
+   Buffer_Address : constant System.Address
+      := System.Storage_Elements.To_Address(16#200#);
+
+   ---------------------------------------------------------------------
+   procedure Write_Line (Line : in     Data) is
+      Buffer : Data;
+      for Buffer'Address use Buffer_Address;
+
+   begin  -- Write_Line
+       -- perform output operation through specific memory locations.
+       ...
+   end Write_Line;
+   ---------------------------------------------------------------------
+end Memory_Mapped_IO;
+------------------------------------------------------------------------
+```
+
+#### rationale
+
+Explicitly commenting each breach of portability will raise its
+visibility and aid in the porting process. A description of the
+nonportable feature's expectations covers the common case where vendor
+documentation of the original implementation is not available to the
+person performing the porting process.
+
+### Main Subprogram
+
+#### guideline
+
+- Consider using only a parameterless procedure as the main
+  subprogram.
+- Consider using Ada.Command_Line for accessing values from the
+  environment, but recognize that this package's behavior and even its
+  specification are nonportable (see Guideline 7.1.6).
+- Encapsulate and document all uses of package Ada.Command_Line.
+
+#### example
+
+The following example encapsulates the arguments for a hypothetical
+"execution mode" argument passed from the environment. It encapsulates
+both the expected position and the expected values of the argument, as
+well as provides a default in cases where the environment was unable to
+provide the information:
+
+```ada
+package Environment is
+
+   type Execution_Mode is (Unspecified, Interactive, Batch);
+
+   function Execution_Argument return Execution_Mode;
+
+   ...
+
+end Environment;
+
+----------------------------------------------------------------------
+
+with Ada.Command_Line;       use Ada.Command_Line;
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+
+package body Environment is
+
+   function Execution_Argument return Execution_Mode is
+
+      Execution_Argument_Number : constant := 1;
+
+      Interactive_Mode_String : constant String := "-i";
+      Batch_Mode_String       : constant String := "-b";
+
+   begin
+      if Argument_Count < Execution_Argument_Number then
+         return Unspecified;
+      elsif To_Unbounded_String (Argument (Execution_Argument_Number)) =
+               Interactive_Mode_String then
+         return Interactive;
+      elsif To_Unbounded_String (Argument (Execution_Argument_Number)) =
+               Batch_Mode_String then
+         return Batch;
+      else
+         return Unspecified;
+      end if;
+   end Execution_Argument;
+
+end Environment;
+```
+
+#### rationale
+
+The predefined language environment declares the package
+Ada.Command_Line, providing a standardized way for a program to obtain
+the values of a command line. Because all Ada compilers must implement
+the packages in the predefined language environment, you can create a
+program that is more portable, maintainable, and readable by using this
+package. You should, however, be aware that even though the language
+defines the objects and type profiles of this package, it does not force
+a relationship between the function results and any other entity or
+operation, and thus, allows the possibility of a nonportable behavior
+and specification.
+
+The value returned by the function Ada.Command_Line.Argument_Count is
+implementation-dependent. Different operating systems follow different
+conventions regarding the parsing and meaning of command line
+parameters. To enhance your program's portability, assume the simplest
+case: that the external execution environment does not support passing
+arguments to a program.
+
+Some operating systems are capable of acquiring and interpreting
+returned integer values near 0 from a function, but many others cannot.
+Further, many real-time, embedded systems will not be designed to
+terminate, so a function or a procedure having parameters with modes out
+or in out will be inappropriate to such applications.
+
+This leaves procedures with in parameters. Although some operating
+systems can pass parameters into a program as it starts, others are not.
+Also, an implementation may not be able to perform type checking on such
+parameters even if the surrounding environment is capable of providing
+them.
+
+#### notes
+
+Real-time, embedded applications may not have an "operator" initiating
+the program to supply the parameters, in which case it would be more
+appropriate for the program to have been compiled with a package
+containing the appropriate constant values or for the program to read
+the necessary values from switch settings or a downloaded auxiliary
+file. In any case, the variation in surrounding initiating environments
+is far too great to depend upon the kind of last-minute (program)
+parameterization implied by (subprogram) parameters to the main
+subprogram. POSIX 5 provides a standard operating system command line
+interface that might be a more appropriate alternative to the Ada
+command line facility depending on the implementation family of an
+application.
+
+### Encapsulating Implementation Dependencies
+
+#### guideline
+
+- Create packages specifically designed to isolate hardware and
+  implementation dependencies and designed so that their specification
+  will not change when porting.
+- Clearly indicate the objectives if machine or solution efficiency is
+  the reason for hardware or implementation-dependent code.
+- For the packages that hide implementation dependencies, maintain
+  different package bodies for different target environments.
+- Isolate interrupt receiving tasks into implementation-dependent
+  packages.
+- Refer to Annex M of the Ada Reference Manual (1995) for a list of
+  implementation-dependent features.
+
+#### example
+
+See Guideline 7.1.3.
+
+#### rationale
+
+Encapsulating hardware and implementation dependencies in a package
+allows the remainder of the code to ignore them and, thus, to be fully
+portable. It also localizes the dependencies, making it clear exactly
+which parts of the code may need to change when porting the program.
+
+Some implementation-dependent features may be used to achieve particular
+performance or efficiency objectives. Commenting these objectives
+ensures that the programmer can find an appropriate way to achieve them
+when porting to a different implementation or explicitly recognize that
+they cannot be achieved.
+
+Interrupt entries are implementation-dependent features that may not be
+supported (e.g., VAX Ada uses pragmas to assign system traps to "normal"
+rendezvous). However, interrupt entries cannot be avoided in most
+embedded, real-time systems, and it is reasonable to assume that they
+are supported by an Ada implementation. The value for an interrupt is
+implementation-defined. Isolate it.
+
+#### notes
+
+You can use Ada to write machine-dependent programs that take advantage
+of an implementation in a manner consistent with the Ada model but that
+make particular choices where Ada allows implementation freedom. These
+machine dependencies should be treated in the same way as any other
+implementation-dependent features of the code.
+
+### Implementation-Added Features
+
+#### guideline
+
+- Avoid the use of vendor-supplied packages.
+- Avoid the use of features added to the predefined packages that are
+  not specified in the Ada language definition or Specialized Needs
+  Annexes.
+
+#### rationale
+
+Vendor-added features are not likely to be provided by other
+implementations. Even if a majority of vendors eventually provide
+similar additional features, they are unlikely to have identical
+formulations. Indeed, different vendors may use the same formulation for
+(semantically) entirely different features. See Guideline 7.5.2 for
+further information on vendor-supplied exceptions.
+
+Ada has introduced a number of new pragmas and attributes that were not
+present in Ada 83 (Ada Reference Manual 1983). These new pragmas and
+attributes may clash with implementation-defined pragmas and attributes.
+
+#### exceptions
+
+There are many kinds of applications that require the use of these
+features. Examples include multilingual systems that standardize on a
+vendor's file system, applications that are closely integrated with
+vendor products (i.e., user interfaces), and embedded systems for
+performance reasons. Isolate the use of these features into packages.
+
+If a vendor-supplied package is provided in compilable source code form,
+use of the package does not make a program nonportable provided that the
+package does not contain any nonportable code and can be lawfully
+included in your program.
+
+### Specialized Needs Annexes
+
+#### guideline
+
+- Use features defined in the Specialized Needs Annexes rather than
+  vendor-defined features.
+- Document clearly the use of any features from the Specialized Needs
+  Annexes (systems programming, real-time systems, distributed
+  systems, information systems, numerics, and safety and security).
+
+#### rationale
+
+The Specialized Needs Annexes define standards for specific application
+areas without extending the syntax of the language. You can port a
+program with specific domain needs (e.g., distributed systems,
+information systems) across vendor implementations more easily if they
+support the features standardized in an annex rather than rely on
+specific vendor extensions. The purpose of the annexes is to provide a
+consistent and uniform way to address issues faced in several
+application areas where Ada is expected to be used. Because different
+compilers will support different sets of annexes if any, you may have
+portability problems if you rely on the features defined in any given
+annex.
+
+The Specialized Needs Annexes provide special capabilities that go
+beyond the core language definition. Because compilers are not required
+to support the special-purpose annexes, you should localize your use of
+these features where possible. By documenting their usage, you are
+leaving a record of potential porting difficulties for future
+programmers.
+
+### Dependence on Parameter Passing Mechanism
+
+#### guideline
+
+- Do not write code whose correct execution depends on the particular
+  parameter passing mechanism used by an implementation (Ada Reference
+  Manual 1995, §6.2; Cohen 1986).
+- If a subprogram has more than one formal parameter of a given
+  subtype, at least one of which is \[in\] out, make sure that the
+  subprogram can properly handle the case when both formal parameters
+  denote the same actual object.
+
+#### example
+
+The output of this program depends on the particular parameter passing
+mechanism that was used:
+
+```ada
+------------------------------------------------------------------------
+with Ada.Integer_Text_IO;
+procedure Outer is
+   type Coordinates is
+      record
+         X : Integer := 0;
+         Y : Integer := 0;
+      end record;
+   Outer_Point : Coordinates;
+   ---------------------------------------------------------------------
+   procedure Inner (Inner_Point : in out Coordinates) is
+   begin
+      Inner_Point.X := 5;
+      -- The following line causes the output of the program to
+      -- depend on the parameter passing mechanism.
+      Ada.Integer_Text_IO.Put(Outer_Point.X);
+   end Inner;
+   ---------------------------------------------------------------------
+begin  -- Outer
+   Ada.Integer_Text_IO.Put(Outer_Point.X);
+   Inner(Outer_Point);
+   Ada.Integer_Text_IO.Put(Outer_Point.X);
+end Outer;
+------------------------------------------------------------------------
+```
+
+If the parameter passing mechanism is by copy, the results on the
+standard output file are:
+
+0 0 5
+
+If the parameter passing mechanism is by reference, the results are:
+
+0 5 5
+
+The following code fragment shows where there is a potential for bounded
+error when a procedure is called with actual parameters denoting the
+same object:
+
+```ada
+procedure Test_Bounded_Error (Parm_1 : in out    Integer;
+                              Parm_2 : in out Integer) is
+   procedure Inner (Parm : in out Integer) is
+   begin
+      Parm := Parm * 10;
+   end Inner;
+begin
+   Parm_2 := 5;
+   Inner (Parm_1);
+end Test_Bounded_Error;
+```
+
+In executing the procedure Test_Bounded_Error, both Parm_1 and
+Parm_2 denote the object Actual_Parm. After executing the first
+statement, the object Actual_Parm has the value 5. When the procedure
+Inner is called, its formal parameter Parm denotes Actual_Parm. It
+cannot be determined whether it denotes the old value of Parm_1, in
+this case 1, or the new value, in this case 5.
+
+```ada
+Actual_Parm : Integer := 1;
+...
+Test_Bounded_Error (Actual_Parm, Actual_Parm);  -- potential bounded error
+```
+
+#### rationale
+
+Certain composite types (untagged records and arrays) can be passed
+either by copy or by reference. If there are two or more formal
+parameters of the same type, one or more of which is writable, then you
+should document whether you assume that these formal parameters do not
+denote the same actual object. Similarly, if a subprogram that has a
+formal parameter of a given subtype also makes an up-level reference to
+an object of this same type, you should document whether you assume that
+the formal parameter denotes a different object from the object named in
+the up-level reference. In these situations where an object can be
+accessed through distinct formal parameter paths, the exception
+Program_Error may be raised, the new value may be read, or the old
+value of the object may be used (Ada Reference Manual 1995, §6.2).
+
+See also Guideline 8.2.7.
+
+#### exceptions
+
+Frequently, when interfacing Ada to foreign code, dependence on
+parameter-passing mechanisms used by a particular implementation is
+unavoidable. In this case, isolate the calls to the foreign code in an
+interface package that exports operations that do not depend on the
+parameter-passing mechanism.
+
+### Arbitrary Order Dependencies
+
+#### guideline
+
+- Avoid depending on the order in which certain constructs in Ada are
+  evaluated.
+
+#### example
+
+The output of this program depends upon the order of evaluation of
+subprogram parameters, but the Ada Reference Manual (1995, §6.4)
+specifies that these evaluations are done in an arbitrary order:
+
+```ada
+package Utilities is
+   function Unique_ID return Integer;
+end Utilities;
+
+package body Utilities is
+
+   ID : Integer := 0;
+
+   function Unique_ID return Integer is
+   begin
+      ID := ID + 1;
+      return ID;
+   end Unique_ID;
+
+end Utilities;
+
+--------------------------------------------------------------------------------
+with Ada.Text_IO;
+with Utilities; use Utilities;
+procedure P is
+begin
+   Ada.Text_IO.Put_Line (Integer'Image(Unique_ID) & Integer'Image(Unique_ID));
+end P;
+```
+
+If the parameters to the "&" function are evaluated in textual order,
+the output is:
+
+1 2
+
+If the parameters are evaluated in the reverse order, the output is:
+
+2 1
+
+#### rationale
+
+The Ada language defines certain evaluations to occur in arbitrary order
+(e.g., subprogram parameters). While a dependency on the order of
+evaluation may not adversely affect the program on a certain
+implementation, the code might not execute correctly when it is ported.
+For example, if two actual parameters of a subprogram call have side
+effects, the effect of the program could depend on the order of
+evaluation (Ada Reference Manual 1995, §1.1.4). Avoid arbitrary order
+dependencies, but also recognize that even an unintentional error of
+this kind could prohibit portability.

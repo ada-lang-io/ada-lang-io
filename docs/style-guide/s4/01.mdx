@@ -1,0 +1,663 @@
+---
+title: 4.1 High-Level Structure
+---
+
+Well-structured programs are easily understood, enhanced, and
+maintained. Poorly structured programs are frequently restructured
+during maintenance just to make the job easier. Many of the guidelines
+listed below are often given as general program design guidelines.
+
+### Separate Compilation Capabilities
+
+#### guideline
+
+- Place the specification of each library unit package in a separate
+  file from its body.
+- Avoid defining library unit subprograms that are not intended to be
+  used as main programs. If such subprograms are defined, then create
+  an explicit specification, in a separate file, for each library unit
+  subprogram.
+- Minimize the use of subunits.
+- In preference to subunits, use child library units to structure a
+  subsystem into manageable units.
+- Place each subunit in a separate file.
+- Use a consistent file naming convention.
+- In preference to nesting in a package body, use a private child and
+  with it to the parent body.
+- Use private child unit specifications for data and subprograms that
+  are required by (other) child units that extend a parent unit's
+  abstraction or services.
+
+#### example
+
+The file names below illustrate one possible file organization and
+associated consistent naming convention. The library unit name uses the
+adb suffix for the body. The suffix ads indicates the specification, and
+any files containing subunits use names constructed by separating the
+body name from the subunit name with an underscore:
+
+`text_io.ads — the specification`  
+`text_io.adb — the body`  
+`text_io_integer_io.adb — a subunit`  
+`text_io_fixed_io.adb — a subunit`  
+`text_io_float_io.adb — a subunit`  
+`text_io_enumeration_io.adb — a subunit`
+
+Depending on what characters your file system allows you to use in file
+names, you could show the distinction between parent and subunit name
+more clearly in the file name. If your file system allows the "\#"
+character, for example, you could separate the body name from the
+subunit name with a \#:
+
+`text_io.ads — the specification`  
+`text_io.adb — the body`  
+`text_io#integer_io.adb — a subunit`  
+`text_io#fixed_io.adb — a subunit`  
+`text_io#float_io.adb — a subunit`  
+`text_io#enumeration_io.adb — a subunit`
+
+Some operating systems are case-sensitive, although Ada itself is not a
+case-sensitive language. For example, you could choose a convention of
+all lowercase file names.
+
+#### rationale
+
+The main reason for the emphasis on separate files in this guideline is
+to minimize the amount of recompilation required after each change.
+Typically, during software development, bodies of units are updated far
+more often than specifications. If the body and specification reside in
+the same file, then the specification will be compiled each time the
+body is compiled, even though the specification has not changed. Because
+the specification defines the interface between the unit and all of its
+users, this recompilation of the specification typically makes
+recompilation of all users necessary in order to verify compliance with
+the specification. If the specifications and bodies of the users also
+reside together, then any users of these units will also have to be
+recompiled and so on. The ripple effect can force a huge number of
+compilations that could have been avoided, severely slowing the
+development and test phase of a project. This is why you should place
+specifications of all library units (nonnested units) in separate files
+from their bodies.
+
+Library unit subprograms should be minimized. The only real use for
+library unit subprograms is as the main subprogram. In almost all other
+cases, it is better to embed the subprogram into a package. This
+provides a place (the package body) to localize data needed by the
+subprogram. Moreover, it cuts down on the number of separate modules in
+the system.
+
+In general, you should use a separate specification for any library
+subprogram that is mentioned in a with clause. This makes the with'ing
+unit dependent on the library subprogram specification, not its body.
+
+You should minimize the use of subunits because they create maintenance
+problems. Declarations appearing in the parent body are visible in the
+subunit, increasing the amount of data global to the subunit and, thus,
+increasing the potential ripple effect of changes. Subunits hinder reuse
+because they provide an incentive to put otherwise reusable code in the
+subunit directly rather than in a common routine called from multiple
+subprograms.
+
+With the availability of child library units in Ada 95, you can avoid
+most uses of subunits. For example, instead of using a subunit for a
+large nested body, you should try to encapsulate this code in a child
+library unit and add the necessary context clauses. You can modify the
+body of the child unit without having to recompile any of the other
+units in a subsystem.
+
+An additional benefit of using multiple, separate files is that it
+allows different implementors to modify different parts of the system at
+the same time with conventional editors, which do not allow multiple
+concurrent updates to a single file.
+
+Finally, keeping bodies and specifications separate makes it possible to
+have multiple bodies for the same specification or multiple
+specifications for the same body. Although Ada requires that there be
+exactly one specification per body in a system at any given time, it can
+still be useful to maintain multiple bodies or multiple specifications
+for use in different builds of a system. For example, a single
+specification may have multiple bodies, each of which implements the
+same functionality with a different tradeoff of time versus space
+efficiency, or, for machine-dependent code, there may be one body for
+each target machine. Maintaining multiple package specifications can
+also be useful during development and test. You may develop one
+specification for delivery to your customer and another for unit
+testing. The first one would export only those subprograms intended to
+be called from outside of the package during normal operation of the
+system. The second one would export all subprograms of the package so
+that each of them could be independently tested.
+
+A consistent file naming convention is recommended to make it easier to
+manage the large number of files that may result from following this
+guideline.
+
+In implementing the abstraction defined in a package specification, you
+often need to write supporting subprograms that manipulate the internal
+representation of the data. These subprograms should not be exported on
+the interface. You have a choice of whether to place them in the package
+body of the parent program or in a child package named in a context
+clause of the parent package body. When you place them in the parent
+package body, you make them inaccessible to all clients of the parent,
+including extensions of the parent declared in child packages. If these
+subprograms are needed to implement extensions of the parent
+abstraction, you would be forced to modify both the parent specification
+and the body because you would have to declare the extensions within the
+parent specification. This technique would then force recompilation of
+the entire package (specification and body) as well as all its clients.
+
+Alternatively, you can implement the supporting subprograms in a private
+child package. Because the parent unit's specification is not modified,
+neither it nor its clients need to be recompiled. The data and
+subprograms that might have declared in the parent unit body must now be
+declared in the private child unit's specification to make them visible
+to both the parent unit body and to any child units that extend the
+parent unit's services or abstractions. (See also Guidelines 4.1.6 and
+4.2.) This use of private child units will generally minimize
+recompilations within the unit family and among its clients.
+
+In declaring the child package private, you achieve a similar effect to
+declaring it in the parent package body to the extent that clients of
+the parent cannot name the private child in a context clause. You gain
+flexibility because now you can extend the parent abstraction using
+child packages without having to recompile the parent specification or
+its body, assuming that you do not otherwise modify the parent or its
+body. This added flexibility will usually compensate for the increased
+dependency between units, in this case, the additional context clause on
+the parent body (and other child package bodies) that names the private
+child package of supporting subprograms.
+
+### Configuration Pragmas
+
+#### guideline
+
+- When possible, express configuration pragmas through compiler
+  options or other means that do not require modifications to the
+  source code.
+- When configuration pragmas must be placed in source code, consider
+  isolating them to one compilation unit per partition; if specified,
+  the main subprogram for the partition is recommended.
+
+#### rationale
+
+Configuration pragmas are generally used to select a partition-wide or
+system-wide option. Usually, they reflect either high-level software
+architecture decisions (e.g., pragma Task_Dispatching_Policy) or the
+use of the software in a particular application domain (e.g.,
+safety-critical software). If a configuration pragma is embedded within
+a software component and that component is reused in a different context
+where the pragma is no longer appropriate, then it may cause problems in
+the new application. Such problems can include the rejection by the
+compilation system of otherwise legal source code or unexpected behavior
+at run-time. These problems can be significant given the wide scope of a
+configuration pragma. In addition, maintenance of the original system
+may require that some of these system-wide decisions be changed. If the
+configuration pragmas are scattered throughout the software, it may be
+difficult to locate the lines that need to change.
+
+As a result, it is recommended that all configuration pragmas be kept in
+a single compilation unit if possible to make them easy to locate and
+modify as needed. If this compilation unit is unlikely to be reused
+(e.g., a main subprogram), then the likelihood of conflicts with future
+reusers is reduced. Finally, if these system-wide decisions are
+indicated without embedding them in the code at all, such as through a
+compiler option, then the problems described above are even less likely
+to occur.
+
+#### exceptions
+
+Certain pragmas (e.g., pragma Suppress) can be used in several forms,
+including as a configuration pragma. This guideline does not apply to
+such pragmas when they are not used as a configuration pragma.
+
+### Subprograms
+
+#### guideline
+
+- Use subprograms to enhance abstraction.
+- Restrict each subprogram to the performance of a single action.
+
+#### example
+
+Your program is required to draw a menu of user options as part of a
+menu-driven user interface package. Because the contents of the menu can
+vary depending on the user state, the proper way to do this is to write
+a subprogram to draw the menu. This way, the output subprogram has one
+purpose and the way to determine the menu content is described
+elsewhere.
+
+```ada
+...
+----------------------------------------------------------------------
+procedure Draw_Menu
+      (Title   : in    String;
+       Options : in    Menu) is
+   ...
+begin  -- Draw_Menu
+   Ada.Text_IO.New_Page;
+   Ada.Text_IO.New_Line;
+   Ada.Text_IO.Set_Col (Right_Column);
+   Ada.Text_IO.Put_Line (Title);
+   Ada.Text_IO.New_Line;
+   for Choice in Alpha_Numeric loop
+     if Options (Choice) /= Empty_Line then
+         Valid_Option (Choice) := True;
+         Ada.Text_IO.Set_Col (Left_Column);
+         Ada.Text_IO.Put (Choice & " -- ");
+         Ada.Text_IO.Put_Line (Options (Choice));
+     end if;
+     ...
+   end loop;
+end Draw_Menu;
+----------------------------------------------------------------------
+```
+
+#### rationale
+
+Subprograms are an extremely effective and well-understood abstraction
+technique. Subprograms increase program readability by hiding the
+details of a particular activity. It is not necessary that a subprogram
+be called more than once to justify its existence.
+
+#### notes
+
+Guideline 10.7.1 discusses dealing with the overhead of subroutine
+calls.
+
+### Functions
+
+#### guideline
+
+- Use a function when the subprogram's primary purpose is to provide a
+  single value.
+- Minimize the side effect of a function.
+- Consider using a parameterless function when the value does not need
+  to be static.
+- Use a parameterless function (instead of a constant) if the value
+  should be inherited by types derived from the type.
+- Use a parameterless function if the value itself is subject to
+  change.
+
+#### example
+
+Although reading a character from a file will change what character is
+read next, this is accepted as a minor side effect compared to the
+primary purpose of the following function:
+
+```ada
+function Next_Character return Character is separate;
+```
+
+However, the use of a function like this could lead to a subtle problem.
+Any time the order of evaluation is undefined, the order of the values
+returned by the function will effectively be undefined. In this example,
+the order of the characters placed in Word and the order that the
+following two characters are given to the Suffix parameters are unknown.
+No implementation of the Next_Character function can guarantee which
+character will go where:
+
+```ada
+   Word : constant String := String'(1 .. 5 => Next_Character);
+begin  -- Start_Parsing
+   Parse(Keyword => Word,
+         Suffix1 => Next_Character,
+         Suffix2 => Next_Character);
+end Start_Parsing;
+```
+
+Of course, if the order is unimportant (as in a random number
+generator), then the order of evaluation is unimportant.
+
+The following example shows the use of a parameterless function instead
+of a constant:
+
+```ada
+type T is private;
+function Nil return T;        -- This function is a derivable operation of type T
+function Default return T;    -- Also derivable, and the value can be changed by
+                              -- recompiling the body of the function
+```
+
+This same example could have been written using constants:
+
+```ada
+type T is private;
+Nil : constant T;
+Default : constant T;
+```
+
+#### rationale
+
+A side effect is a change to any variable that is not local to the
+subprogram. This includes changes to variables by other subprograms and
+entries during calls from the function if the changes persist after the
+function returns. Side effects are discouraged because they are
+difficult to understand and maintain. Additionally, the Ada language
+does not define the order in which functions are evaluated when they
+occur in expressions or as actual parameters to subprograms. Therefore,
+a program that depends on the order in which side effects of functions
+occur is erroneous. Avoid using side effects anywhere.
+
+### Packages
+
+#### guideline
+
+- Use packages for information hiding.
+- Use packages with tagged types and private types for abstract data
+  types.
+- Use packages to model abstract entities appropriate to the problem
+  domain.
+- Use packages to group together related type and object declarations
+  (e.g., common declarations for two or more library units).
+- Encapsulate machine dependencies in packages. Place a software
+  interface to a particular device in a package to facilitate a change
+  to a different device.
+- Place low-level implementation decisions or interfaces in
+  subprograms within packages.
+- Use packages and subprograms to encapsulate and hide program details
+  that may change (Nissen and Wallis 1984).
+
+#### example
+
+Reading the names and other attributes of external files is highly
+machine dependent. A package called Directory could contain type and
+subprogram declarations to support a generalized view of an external
+directory that contains external files. Its internals may, in turn,
+depend on other packages more specific to the hardware or operating
+system:
+
+```ada
+package Directory is
+
+   type Directory_Listing is limited private;
+
+   procedure Read_Current_Directory (D : in out Directory_Listing);
+
+   generic
+      with procedure Process (Filename : in String);
+   procedure Iterate (Over : in Directory_Listing);
+
+   ...
+
+private
+
+   type Directory_Listing is ...
+
+end Directory;
+
+---------------------------------------------------------------
+
+package body Directory is
+
+   -- This procedure is machine dependent
+   procedure Read_Current_Directory (D : in out Directory_Listing) is separate;
+
+   procedure Iterate (Over : in Directory_Listing) is
+      ...
+   begin
+      ...
+
+      Process (Filename);
+
+      ...
+   end Iterate;
+
+   ...
+
+end Directory;
+```
+
+#### rationale
+
+Packages are the principal structuring facility in Ada. They are
+intended to be used as direct support for abstraction, information
+hiding, and modularization. For example, they are useful for
+encapsulating machine dependencies as an aid to portability. A single
+specification can have multiple bodies isolating implementation-specific
+information so other parts of the code do not need to change.
+
+Encapsulating areas of potential change helps to minimize the effort
+required to implement that change by preventing unnecessary dependencies
+among unrelated parts of the system.
+
+#### notes
+
+The most prevalent objection to this guideline usually involves
+performance penalties. See Guideline 10.7.1 for a discussion about
+subprogram overhead.
+
+### Child Library Units
+
+#### guideline
+
+- If a new library unit represents a logical extension to the original
+  abstraction, define it as a child library unit.
+- If a new library unit is independent (e.g., introduces a new
+  abstraction that depends only in part on the existing one), then
+  encapsulate the new abstraction in a separate library unit.
+- Use child packages to implement a subsystem.
+- Use public child units for those parts of a subsystem that should be
+  visible to clients of the subsystem.
+- Use private child units for those parts of a subsystem that should
+  not be visible to clients of the subsystem.
+- Use private child units for local declarations used only in
+  implementing the package specification.
+- Use child packages to implement constructors, even when they return
+  access values.
+
+#### example
+
+The following example of a windowing system is taken from Cohen et al.
+(1993) and illustrates some of the uses of child units in designing
+subsystems. The parent (root) package declares the types, subtypes, and
+constants that its clients and subsystems need. Individual child
+packages provide specific parts of the windowing abstraction, such as
+atoms, fonts, graphic output, cursors, and keyboard information:
+
+```ada
+package X_Windows is
+   ...
+private
+   ...
+end X_Windows;
+
+package X_Windows.Atoms is
+   type Atom is private;
+   ...
+private
+   ...
+end X_Windows.Atoms;
+
+package X_Windows.Fonts is
+   type Font is private;
+   ...
+private
+   ...
+end X_Windows.Fonts;
+
+package X_Windows.Graphic_Output is
+   type Graphic_Context is private;
+   type Image is private;
+   ...
+private
+   ...
+end X_Windows.Graphic_Output;
+
+package X_Windows.Cursors is
+   ...
+end X_Windows.Cursors;
+
+package X_Windows.Keyboard is
+   ...
+end X_Windows.Keyboard;
+```
+
+#### rationale
+
+The user can create more precise packages with less cluttered
+interfaces, using child library packages to extend the interfaces as
+needed. The parent contains only the relevant functionality. The parent
+provides a general-purpose interface, while the child units provide more
+complete programming interfaces, tailored to that aspect of an
+abstraction that they are extending or defining.
+
+Child packages build on the modular strength of Ada where "the distinct
+specification and body decouple the user interface to a package (the
+specification) from its implementation (the body)" (Rationale 1995,
+§II.7). Child packages provide the added capability of being able to
+extend a parent package without recompiling the parent or the parent's
+clients.
+
+Child packages allow you to write logically distinct packages that share
+a private type. The visibility rules give the private part of the child
+specification and the body of the child visibility into the private part
+of the parent. Thus, you can avoid creating a monolithic package for the
+sake of developing abstractions that share a private type and need to
+know its representation. The private representation is not available to
+clients of the package, so the abstraction in the package and its
+children is maintained.
+
+Using private child packages for local declarations enables you to have
+available the support declarations you need when implementing both the
+parent package and extensions to the parent package. You enhance the
+maintainability of your program by using a common set of support
+declarations (data representations, data manipulation subprograms). You
+can modify the internal representation and the implementation of the
+support subprograms without modifying or recompiling the rest of your
+subsystem because these support subprograms are implemented in the body
+of the private child package. See also Guidelines 4.1.1, 4.2.1, 8.4.1,
+and 8.4.8.
+
+See also Guideline 9.4.1 for a discussion of the use of child library
+units in creating a tagged type hierarchy.
+
+### Cohesion
+
+#### guideline
+
+- Make each package serve a single purpose.
+- Use packages to group related data, types, and subprograms.
+- Avoid collections of unrelated objects and subprograms (NASA 1987;
+  Nissen and Wallis 1984).
+- Consider restructuring a system to move two highly related units
+  into the same package (or package hierarchy) or to move relatively
+  independent units into separate packages.
+
+#### example
+
+As a bad example, a package named Project_Definitions is obviously a
+"catch all" for a particular project and is likely to be a jumbled mess.
+It probably has this form to permit project members to incorporate a
+single with clause into their software.
+
+Better examples are packages called Display_Format_Definitions,
+containing all the types and constants needed by some specific display
+in a specific format, and Cartridge_Tape_Handler, containing all the
+types, constants, and subprograms that provide an interface to a
+special-purpose device.
+
+#### rationale
+
+The degree to which the entities in a package are related has a direct
+impact on the ease of understanding packages and programs made up of
+packages. There are different criteria for grouping, and some criteria
+are less effective than others. Grouping the class of data or activity
+(e.g., initialization modules) or grouping data or activities based on
+their timing characteristics is less effective than grouping based on
+function or need to communicate through data (Charette 1986).
+
+The "correct" structuring of a system can make a tremendous difference
+in the maintainability of a system. Although it may seem painful at the
+time, it is important to restructure if the initial structuring is not
+quite right.
+
+See also Guideline 5.4.2 on heterogeneous data.
+
+#### notes
+
+Traditional subroutine libraries often group functionally unrelated
+subroutines. Even such libraries should be broken into a collection of
+packages, each containing a logically cohesive set of subprograms.
+
+### Data Coupling
+
+#### guideline
+
+- Avoid declaring variables in package specifications.
+
+#### example
+
+This is part of a compiler. Both the package handling error messages and
+the package containing the code generator need to know the current line
+number. Rather than storing this in a shared variable of type Natural,
+the information is stored in a package that hides the details of how
+such information is represented and makes it available with access
+routines:
+
+```ada
+-------------------------------------------------------------------------
+package Compilation_Status is
+   type Line_Number is range 1 .. 2_500_000;
+   function Source_Line_Number return Line_Number;
+end Compilation_Status;
+-------------------------------------------------------------------------
+with Compilation_Status;
+package Error_Message_Processing is
+   -- Handle compile-time diagnostic.
+end Error_Message_Processing;
+-------------------------------------------------------------------------
+with Compilation_Status;
+
+package Code_Generation is
+   -- Operations for code generation.
+end Code_Generation;
+-------------------------------------------------------------------------
+```
+
+#### rationale
+
+Strongly coupled program units can be difficult to debug and very
+difficult to maintain. By protecting shared data with access functions,
+the coupling is lessened. This prevents dependence on the data
+structure, and access to the data can be controlled.
+
+#### notes
+
+The most prevalent objection to this guideline usually involves
+performance penalties. When a variable is moved to the package body,
+subprograms to access the variable must be provided and the overhead
+involved during each call to those subprograms is introduced. See
+Guideline 10.7.1 for a discussion about subprogram overhead.
+
+### Tasks
+
+#### guideline
+
+- Use tasks to model abstract, asynchronous entities within the
+  problem domain.
+- Use tasks to define concurrent algorithms for multiprocessor
+  architectures.
+- Use tasks to perform concurrent, cyclic, or prioritized activities
+  (NASA 1987).
+
+#### rationale
+
+The rationale for this guideline is given under Guideline 6.1.2. Chapter
+6 discusses tasking in more detail.
+
+### Protected Types
+
+#### guideline
+
+- Use protected types to control or synchronize access to data or
+  devices.
+- Use protected types to implement synchronization tasks, such as a
+  passive resource monitor.
+
+#### example
+
+See example in Guideline 6.1.1.
+
+#### rationale
+
+The rationale for this guideline is given under Guideline 6.1.1. Chapter
+6 discusses concurrency and protected types in more detail.

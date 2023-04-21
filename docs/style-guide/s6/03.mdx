@@ -1,0 +1,391 @@
+---
+title: 6.3 Termination
+---
+
+The ability of tasks to interact with each other using Ada's intertask
+communication features makes it especially important to manage planned
+or unplanned (e.g., in response to a catastrophic exception condition)
+termination in a disciplined way. To do otherwise can lead to a
+proliferation of undesired and unpredictable side effects as a result of
+the termination of a single task. The guidelines on termination focus on
+the termination of tasks. Wherever possible, you should use protected
+objects (see Guideline 6.1.1), thus avoiding the termination problems
+associated with tasks.
+
+### Avoiding Undesired Termination
+
+#### guideline
+
+- Consider using an exception handler for a rendezvous within the main
+  loop inside each task.
+
+#### example
+
+In the following example, an exception raised using the primary sensor
+is used to change Mode to Degraded still allowing execution of the
+system:
+
+```ada
+...
+loop
+
+   Recognize_Degraded_Mode:
+      begin
+
+         case Mode is
+            when Primary =>
+               select
+                  Current_Position_Primary.Request_New_Coordinates (X, Y);
+               or
+                  delay 0.25;
+                  -- Decide whether to switch modes;
+               end select;
+
+            when Degraded =>
+
+               Current_Position_Backup.Request_New_Coordinates (X, Y);
+
+         end case;
+
+         ...
+      exception
+         when Tasking_Error | Program_Error =>
+            Mode := Degraded;
+      end Recognize_Degraded_Mode;
+
+end loop;
+...
+```
+
+#### rationale
+
+Allowing a task to terminate might not support the requirements of the
+system. Without an exception handler for the rendezvous within the main
+task loop, the functions of the task might not be performed.
+
+#### notes
+
+The use of an exception handler is the only way to guarantee recovery
+from an entry call to an abnormal task. Use of the 'Terminated attribute
+to test a task's availability before making the entry call can introduce
+a race condition where the tested task fails after the test but before
+the entry call (see Guideline 6.2.3).
+
+### Normal Termination
+
+#### guideline
+
+- Do not create nonterminating tasks unintentionally.
+- Explicitly shut down tasks that depend on library packages.
+- Confirm that a task is terminated before freeing it with
+  Ada.Unchecked_Deallocation.
+- Consider using a select statement with a terminate alternative
+  rather than an accept statement alone.
+- Consider providing a terminate alternative for every selective
+  accept that does not require an else part or a delay .
+- Do not declare or create a task within a user-defined Finalize
+  procedure after the environment task has finished waiting for other
+  tasks.
+
+#### example
+
+This task will never terminate:
+
+```ada
+---------------------------------------------------------------------
+task body Message_Buffer is
+   ...
+begin  -- Message_Buffer
+   loop
+      select
+         when Head /= Tail => -- Circular buffer not empty
+            accept Retrieve (Value :    out Element) do
+               ...
+            end Retrieve;
+
+      or
+         when not ((Head  = Index'First and then
+                    Tail  = Index'Last) or else
+                   (Head /= Index'First and then
+                    Tail  = Index'Pred(Head))    )
+                 => -- Circular buffer not full
+            accept Store (Value : in     Element);
+      end select;
+   end loop;
+...
+end Message_Buffer;
+---------------------------------------------------------------------
+```
+
+#### rationale
+
+The implicit environment task does not terminate until all other tasks
+have terminated. The environment task serves as a master for all other
+tasks created as part of the execution of the partition; it awaits
+termination of all such tasks in order to perform finalization of any
+remaining objects of the partition. Thus, a partition will exist until
+all library tasks are terminated.
+
+A nonterminating task is a task whose body consists of a nonterminating
+loop with no selective accept with terminate or a task that depends on a
+library package. Execution of a subprogram or block containing a task
+cannot complete until the task terminates. Any task that calls a
+subprogram containing a nonterminating task will be delayed
+indefinitely.
+
+A task that depends on a library package cannot be forced to terminate
+using a selective accept construct with alternative and should be
+terminated explicitly during program shutdown. One way to explicitly
+shut down tasks that depend on library packages is to provide them with
+exit entries and have the main subprogram call the exit entry just
+before it terminates.
+
+The Ada Reference Manual (1995, §13.11.2) states that a bounded error
+results from freeing a discriminated, unterminated task object. The
+danger lies in deallocating the discriminants as a result of freeing the
+task object. The effect of unterminated tasks containing bounded errors
+at the end of program execution is undefined.
+
+Execution of an accept statement or of a selective accept statement
+without an else part, a delay, or a terminate alternative cannot proceed
+if no task ever calls the entry(s) associated with that statement. This
+could result in deadlock. Following the guideline to provide a terminate
+alternative for every selective accept without an else or a delay
+entails programming multiple termination points in the task body. A
+reader can easily "know where to look" for the normal termination points
+in a task body. The termination points are the end of the body's
+sequence of statements and alternatives to select statements.
+
+When the environment task has been terminated, either normally or
+abnormally, the language does not specify whether to await a task
+activated during finalization of the controlled objects in a partition.
+While the environment task is waiting for all other tasks in the
+partition to complete, starting up a new task during finalization
+results in a bounded error (Ada Reference Manual 1995, §10.2). The
+exception Program_Error can be raised during creation or activation of
+such a task.
+
+#### exceptions
+
+If you are implementing a cyclic executive, you might need a scheduling
+task that does not terminate. It has been said that no real-time system
+should be programmed to terminate. This is extreme. Systematic shutdown
+of many real-time systems is a desirable safety feature.
+
+If you are considering programming a task not to terminate, be certain
+that it is not a dependent of a block or subprogram from which the
+task's caller(s) will ever expect to return. Because entire programs can
+be candidates for reuse (see Chapter 8), note that the task (and
+whatever it depends upon) will not terminate. Also be certain that for
+any other task that you do wish to terminate, its termination does not
+await this task's termination. Reread and fully understand the Ada
+Reference Manual (1995, §9.3) on "Task Dependence-Termination of Tasks."
+
+### The Abort Statement
+
+#### guideline
+
+- Avoid using the abort statement.
+- Consider using the asynchronous select statement rather than the
+  abort statement.
+- Minimize uses of the asynchronous select statement.
+- Avoid assigning nonatomic global objects from a task or from the
+  abortable part of an asynchronous select statement.
+
+#### example
+
+If required in the application, provide a task entry for orderly
+shutdown.
+
+The following example of asynchronous transfer of control shows a
+database transaction. The database operation may be cancelled (through a
+special input key) unless the commit transaction has begun. The code is
+extracted from the Rationale (1995, §9.4):
+
+```ada
+with Ada.Finalization;
+package Txn_Pkg is
+   type Txn_Status is (Incomplete, Failed, Succeeded);
+   type Transaction is new Ada.Finalization.Limited_Controlled with private;
+   procedure Finalize (Txn : in out transaction);
+   procedure Set_Status (Txn    : in out Transaction;
+                         Status : in     Txn_Status);
+private
+   type Transaction is new Ada.Finalization.Limited_Controlled with
+      record
+         Status : Txn_Status := Incomplete;
+         pragma Atomic (Status);
+         . . . -- More components
+      end record;
+end Txn_Pkg;
+-----------------------------------------------------------------------------
+package body Txn_Pkg is
+   procedure Finalize (Txn : in out Transaction) is
+   begin
+      -- Finalization runs with abort and ATC deferred
+      if Txn.Status = Succeeded then
+         Commit (Txn);
+      else
+         Rollback (Txn);
+      end if;
+   end Finalize;
+   . . . -- body of procedure Set_Status
+end Txn_Pkg;
+----------------------------------------------------------------------------
+-- sample code block showing how Txn_Pkg could be used:
+declare
+   Database_Txn : Transaction;
+   -- declare a transaction, will commit or abort during finalization
+begin
+   select  -- wait for a cancel key from the input device
+      Input_Device.Wait_For_Cancel;
+      -- the Status remains Incomplete, so that the transaction will not commit
+   then abort  -- do the transaction
+      begin
+         Read (Database_Txn, . . .);
+         Write (Database_Txn, . . .);
+         . . .
+         Set_Status (Database_Txn, Succeeded);
+         -- set status to ensure the transaction is committed
+      exception
+         when others =>
+            Ada.Text_IO.Put_Line ("Operation failed with unhandled exception:");
+            Set_Status (Database_Txn, Failed);
+      end;
+   end select;
+   -- Finalize on Database_Txn will be called here and, based on the recorded
+   -- status, will either commit or abort the transaction.
+end;
+```
+
+#### rationale
+
+When an abort statement is executed, there is no way to know what the
+targeted task was doing beforehand. Data for which the target task is
+responsible might be left in an inconsistent state. The overall effect
+on the system of aborting a task in such an uncontrolled way requires
+careful analysis. The system design must ensure that all tasks depending
+on the aborted task can detect the termination and respond
+appropriately.
+
+Tasks are not aborted until they reach an abort completion point such as
+beginning or end of elaboration, a delay statement, an accept statement,
+an entry call, a select statement, task allocation, or the execution of
+an exception handler. Consequently, the abort statement might not
+release processor resources as soon as you might expect. It also might
+not stop a runaway task because the task might be executing an infinite
+loop containing no abort completion points. There is no guarantee that a
+task will not abort until an abort completion point in multiprocessor
+systems, but the task will almost always stop running right away.
+
+An asynchronous select statement allows an external event to cause a
+task to begin execution at a new point, without having to abort and
+restart the task (Rationale 1995, §9.3). Because the triggering
+statement and the abortable statement execute in parallel until one of
+them completes and forces the other to be abandoned, you need only one
+thread of control. The asynchronous select statement improves
+maintainability because the abortable statements are clearly delimited
+and the transfer cannot be mistakenly redirected.
+
+In task bodies and in the abortable part of an asynchronous select, you
+should avoid assigning to nonatomic global objects, primarily because of
+the risk of an abort occurring before the nonatomic assignment
+completes. If you have one or more abort statements in your application
+and the assignment is disrupted, the target object can become abnormal,
+and subsequent uses of the object lead to erroneous execution (Ada
+Reference Manual 1995, §9.8). In the case of scalar objects, you can use
+the attribute 'Valid, but there is no equivalent attribute for nonscalar
+objects. (See Guideline 5.9.1 for a discussion of the 'Valid attribute.)
+You also can still safely assign to local objects and call operations of
+global protected objects.
+
+### Abnormal Termination
+
+#### guideline
+
+- Place an exception handler for others at the end of a task body.
+- Consider having each exception handler at the end of a task body
+  report the task's demise.
+- Do not rely on the task status to determine whether a rendezvous can
+  be made with the task.
+
+#### example
+
+This is one of many tasks updating the positions of blips on a radar
+screen. When started, it is given part of the name by which its parent
+knows it. Should it terminate due to an exception, it signals the fact
+in one of its parent's data structures:
+
+```ada
+task type Track (My_Index : Track_Index) is
+   ...
+end Track;
+---------------------------------------------------------------------
+task body Track is
+     Neutral : Boolean := True;
+begin  -- Track
+   select
+      accept ...
+      ...
+   or
+      terminate;
+   end select;
+   ...
+exception
+   when others =>
+      if not Neutral then
+         Station(My_Index).Status := Dead;
+      end if;
+end Track;
+---------------------------------------------------------------------
+```
+
+#### rationale
+
+A task will terminate if an exception is raised within it for which it
+has no handler. In such a case, the exception is not propagated outside
+of the task (unless it occurs during a rendezvous). The task simply dies
+with no notification to other tasks in the program. Therefore, providing
+exception handlers within the task, and especially a handler for others,
+ensures that a task can regain control after an exception occurs. If the
+task cannot proceed normally after handling an exception, this affords
+it the opportunity to shut itself down cleanly and to notify tasks
+responsible for error recovery necessitated by the abnormal termination
+of the task.
+
+You should not use the task status to determine whether a rendezvous can
+be made with the task. If Task A depends on Task B and Task A checks the
+status flag before it rendezvouses with Task B, there is a potential
+that Task B fails between the status test and the rendezvous. In this
+case, Task A must provide an exception handler to handle the
+Tasking_Error exception raised by the call to an entry of an abnormal
+task (see Guideline 6.3.1).
+
+### Circular Task Calls
+
+#### guideline
+
+- Do not call a task entry that directly or indirectly results in a
+  call to an entry of the original calling task.
+
+#### rationale
+
+A software failure known as task deadlock will occur if a task calls one
+of its own entries directly or indirectly via a circular chain of calls.
+
+### Setting Exit Status
+
+#### guideline
+
+- Avoid race conditions in setting an exit status code from the main
+  program when using the procedure
+  Ada.Command_Line.Set_Exit_Status.
+- In a program with multiple tasks, encapsulate, serialize, and check
+  calls to the procedure Ada.Command_Line.Set_Exit_Status.
+
+#### rationale
+
+In accordance with the rules of Ada, tasks in library-level packages may
+terminate after the main program task. If the program permits multiple
+tasks to use Set_Exit_Status, then there can be no guarantee that any
+particular status value is the one actually returned.

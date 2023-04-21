@@ -1,0 +1,1170 @@
+---
+title: 8.3 Adaptability
+---
+
+Reusable parts often need to be changed before they can be used in a
+specific application. They should be structured so that change is easy
+and as localized as possible. One way of achieving adaptability is to
+create general parts with complete functionality, only a subset of which
+might be needed in a given application. Another way to achieve
+adaptability is to use Ada's generic construct to produce parts that can
+be appropriately instantiated with different parameters. Both of these
+approaches avoid the error-prone process of adapting a part by changing
+its code but have limitations and can carry some overhead. Anticipated
+changes, that is, changes that can be reasonably foreseen by the
+developer of the part, should be provided for as far as possible.
+Unanticipated changes can only be accommodated by carefully structuring
+a part to be adaptable. Many of the considerations pertaining to
+maintainability apply. If the code is of high quality, clear, and
+conforms to well-established design principles such as information
+hiding, it is easier to adapt in unforeseen ways.
+
+### Complete Functionality
+
+#### guideline
+
+- Provide core functionality in a reusable part or set of parts so
+  that the functionality in this abstraction can be meaningfully
+  extended by its reusers.
+- More specifically, provide initialization and finalization
+  procedures for every data structure that may contain dynamic data.
+- For data structures needing initialization and finalization,
+  consider deriving them, when possible, from the types
+  Ada.Finalization.Controlled or Ada.Finalization.Limited_Controlled.
+
+#### example
+
+```ada
+   Incoming : Queue;
+   ...
+   Set_Initial (Incoming);     -- initialization operation
+   ...
+   if Is_Full (Incoming) then  -- query operation
+      ...
+   end if;
+   ...
+   Clean_Up (Incoming);        -- finalization operation
+```
+
+#### rationale
+
+This functionality is particularly important in designing/programming an
+abstraction. You have to balance the completeness of the abstraction
+against its extensibility. Completeness ensures that you have configured
+the abstraction correctly, without built-in assumptions about its
+execution environment. It also ensures the proper separation of
+functions so that they are useful to the current application and, in
+other combinations, to other applications. Extensibility ensures that
+reusers can add functionality by extension, using tagged type
+hierarchies (see Guideline 8.4.8 and Chapter 9) or child library
+packages (see Guidelines 4.1.6, 8.4.1, and 9.4.1).
+
+In designing for reuse, you need to think in terms of clean
+abstractions. If you provide too little functionality and rely on your
+reusers to extend the abstraction, they risk having an abstraction that
+lacks cohesion. This hodgepodge abstraction has inherited many
+operations, not all of which are necessary or work together.
+
+When a reusable part can be implemented reasonably using dynamic data,
+then any application that must control memory can use the initialization
+and finalization routines to guard against memory leakage. Then, if data
+structures become dynamic, the applications that are sensitive to these
+concerns can be easily adapted.
+
+The predefined types Ada.Finalization.Controlled or
+Ada.Finalization.Limited_Controlled provide automatic, user-definable
+initialization, adjustment, and finalization procedures. When you
+declare controlled types and objects, you are guaranteed that the
+compiler will insert the necessary calls to initialization, adjustment,
+and finalization, making your code less error-prone and more
+maintainable. When overriding the Initialize and Finalize routines on
+the controlled types, make sure to call the parent Initialize or
+Finalize.
+
+#### notes
+
+The example illustrates end condition functions. An abstraction should
+be automatically initialized before its user gets a chance to damage it.
+When that is not possible, it should be supplied with initialization
+operations. In any case, it needs finalization operations. One way to
+supply the initialization and finalization operations is to derive the
+abstraction from the predefined types Ada.Finalization.Controlled or
+Ada.Finalization.Limited_Controlled. Wherever possible, query
+operations should be provided to determine when limits are about to be
+exceeded, so that the user can avoid causing exceptions to be raised.
+
+It is also useful to provide reset operations for many objects. To see
+that a reset and an initiation can be different, consider the analogous
+situation of a "warm boot" and a "cold boot" on a personal computer.
+
+Even if all of these operations are not appropriate for the abstraction,
+the exercise of considering them aids in formulating a complete set of
+operations, others of which may be used by another application.
+
+Some implementations of the language link all subprograms of a package
+into the executable file, ignoring whether they are used or not, making
+unused operations a liability (see Guideline 8.4.5). In such cases,
+where the overhead is significant, create a copy of the fully functional
+part and comment out the unused operations with an indication that they
+are redundant in this application.
+
+### Generic Units
+
+#### guideline
+
+- Use generic units to avoid code duplication.
+- Parameterize generic units for maximum adaptability.
+- Reuse common instantiations of generic units, as well as the generic
+  units themselves.
+
+#### rationale
+
+Ada does not allow data types to be passed as actual parameters to
+subprograms during execution. Such parameters must be specified as
+generic formal parameters to a generic unit when it is instantiated.
+Therefore, if you want to write a subprogram for which there is
+variation from call to call in the data type of objects on which it
+operates, then you must write the subprogram as a generic unit and
+instantiate it once for each combination of data type parameters. The
+instantiations of the unit can then be called as regular subprograms.
+
+You can pass subprograms as actual parameters either by declaring
+access-to-subprogram values or generic formal subprogram parameters. See
+Guideline 5.3.4 for a discussion of the tradeoffs.
+
+If you find yourself writing two very similar routines differing only in
+the data type they operate on or the subprograms they call, then it is
+probably better to write the routine once as a generic unit and
+instantiate it twice to get the two versions you need. When the need
+arises later to modify the two routines, the change only needs to be
+made in one place. This greatly facilitates maintenance.
+
+Once you have made such a choice, consider other aspects of the routine
+that these two instances may have in common but that are not essential
+to the nature of the routine. Factor these out as generic formal
+parameters. When the need arises later for a third similar routine, it
+can be automatically produced by a third instantiation if you have
+foreseen all the differences between it and the other two. A
+parameterized generic unit can be very reusable.
+
+It may seem that the effort involved in writing generic rather than
+nongeneric units is substantial. However, making units generic is not
+much more difficult or time-consuming than making them nongeneric once
+you become familiar with the generic facilities. It is, for the most
+part, a matter of practice. Also, any effort put into the development of
+the unit will be recouped when the unit is reused, as it surely will be
+if it is placed in a reuse library with sufficient visibility. Do not
+limit your thinking about potential reuse to the application you are
+working on or to other applications with which you are very familiar.
+Applications with which you are not familiar or future applications
+might be able to reuse your software.
+
+After writing a generic unit and placing it in your reuse library, the
+first thing you are likely to do is to instantiate it once for your
+particular needs. At this time, it is a good idea to consider whether
+there are instantiations that are very likely to be widely used. If so,
+place each such instantiation in your reuse library so that they can be
+found and shared by others.
+
+See also Guideline 9.3.5.
+
+### Formal Private and Limited Private Types
+
+#### guideline
+
+- Consider using a limited private type for a generic formal type when
+  you do not need assignment on objects of the type inside the generic
+  body.
+- Consider using a nonlimited private type for a generic formal type
+  when you need normal assignment on objects of the type inside the
+  body of the generic.
+- Consider using a formal tagged type derived from
+  Ada.Finalization.Controlled when you need to enforce special
+  assignment semantics on objects of the type in the body of the
+  generic.
+- Export the least restrictive type that maintains the integrity of
+  the data and abstraction while allowing alternate implementations.
+- Consider using a limited private abstract type for generic formal
+  types of a generic that extends a formal private tagged type.
+
+#### example
+
+The first example shows a case of a template providing only a data
+structure, a case in which assignment is clearly not needed in the body
+of the generic:
+
+```ada
+------------------------------------------------------------------------
+generic
+   type Element_Type is limited private;
+package Generic_Doubly_Linked_Lists is
+   type Cell_Type;
+   type List_Type is access all Element_Type;
+   type Cell_Type is
+      record
+         Data     : Element_Type;
+         Next     : List_Type;
+         Previous : List_Type;
+      end record;
+end Generic_Doubly_Linked_Lists;
+```
+
+The second example shows a template that composes new operations out of
+(nonassignment) operations passed as generic formal parameters:
+
+```ada
+generic
+   type Element_Type is limited private;
+   with procedure Process_Element (X : in out Element_Type);
+   type List_Type is array (Positive range <>) of Element_Type;
+procedure Process_List (L : in out List_Type);
+procedure Process_List (L : in out List_Type) is
+begin -- Process_List
+   for I in L'Range loop
+      Process_Element (L(I));
+   end loop;
+end Process_List;
+------------------------------------------------------------------------
+generic
+   type Domain_Type is limited private;
+   type Intermediate_Type is limited private;
+   type Range_Type is limited private;
+   with function Left (X : Intermediate_Type) return Range_Type;
+   with function Right (X : Domain_Type) return Intermediate_Type;
+function Generic_Composition (X : Domain_Type) return Range_Type;
+-- the function Left o Right
+function Generic_Composition (X : Domain_Type) return Range_Type is
+begin  -- generic_Composition
+   return Left (Right (X));
+end Generic_Composition;
+```
+
+The third example shows how to use Ada's controlled types to provide
+special assignment semantics:
+
+```ada
+with Ada.Finalization;
+generic
+   type Any_Element is new Ada.Finalization.Controlled with private;
+   Maximum_Stack_Size : in Natural := 100;
+package Bounded_Stack is
+   type Stack is private;
+   procedure Push (On_Top      : in out Stack;
+                   New_Element : in     Any_Element);
+   procedure Pop  (From_Top    : in out Stack;
+                   Top_Element :    out Any_Element);
+   Overflow  : exception;
+   Underflow : exception;
+   ...
+private
+   type Stack_Information;
+   type Stack is access Stack_Information;
+end Bounded_Stack;
+```
+
+#### rationale
+
+For a generic component to be usable in as many contexts as possible, it
+should minimize the assumptions that it makes about its environment and
+should make explicit any assumptions that are necessary. In Ada, the
+assumptions made by generic units can be stated explicitly by the types
+of the generic formal parameters. A limited private generic formal type
+prevents the generic unit from making any assumptions about the
+structure of objects of the type or about operations defined for such
+objects. A private (nonlimited) generic formal type allows the
+assumption that assignment and equality comparison operations are
+defined for the type. Thus, a limited private data type cannot be
+specified as the actual parameter for a private generic formal type.
+
+In general, you should choose the private or limited private generic
+formal type based on the need for assignment inside a generic. Limited
+private types should be used for abstractions that do not need
+assignment, as in the first two examples above. In the third example,
+where assignment is needed, a type derived from a controlled type is
+specified to ensure that the correct assignment semantics will be
+available. If you need equality in the body of the generic, you may need
+to redefine equality as well to get the correct semantics; you would
+then need to include a formal generic subprogram parameter for the =
+function.
+
+The situation is reversed for types exported by a reusable part. For
+exported types, the restrictions specified by limited and limited
+private are restrictions on the user of the part, not on the part
+itself. To provide maximum capability to the user of a reusable part,
+export types with as few restrictions as possible. Apply restrictions as
+necessary to protect the integrity of the exported data structures and
+the abstraction for the various implementations envisioned for that
+generic.
+
+Because they are so restrictive, limited private types are not always
+the best choice for types exported by a reusable part. In a case where
+it makes sense to allow the user to make copies of and compare data
+objects, and when the underlying data type does not involve access types
+(so that the entire data structure gets copied or compared), then it is
+better to export a (nonlimited) private type. In a case where it makes
+sense to allow the user to make copies of and compare data objects and
+when the underlying data type involves access types (so that the entire
+data structure gets copied or compared), then it is better to export a
+controlled type and an (overridden) equality operation. In cases where
+it does not detract from the abstraction to reveal even more about the
+type, then a nonprivate type (e.g., a numeric, enumerated, record, or
+array type) should be used.
+
+One use of generic units is to create a mixin generic (see Guideline
+8.3.8) to extend a tagged type. In this situation, you want to use the
+most restrictive type as the generic formal type, that is, a formal type
+that is both limited and abstract. When you instantiate the generic, if
+the actual type is nonlimited, the type extension will also be
+nonlimited. In the generic package, you must declare the type extension
+as abstract. The instantiator of the generic can then extend the type
+again to achieve the desired mixin configuration.
+
+#### notes
+
+The predefined packages, Sequential_IO and Direct_IO, take private
+types. This will complicate I/O requirements for limited private types
+and should be considered during design.
+
+There are also some cases where you must use a limited private formal
+type. These cases arise when the formal type has an access discriminant,
+or the formal is used as the parent type in defining a type extension
+that itself includes a component of a limited type (e.g., task type), or
+the formal defines a new discriminant part with an access discriminant.
+
+### Using Generic Units to Encapsulate Algorithms
+
+#### guideline
+
+- Use generic units to encapsulate algorithms independently of data
+  type.
+
+#### example
+
+This is the specification of a generic sort procedure:
+
+```ada
+------------------------------------------------------------------------
+generic
+   type Element is private;
+   type Data    is array (Positive range <>) of Element;
+   with function Should_Precede (Left  : in     Element;
+                                 Right : in     Element)
+          return Boolean is <>;
+ with procedure Swap (Left  : in out Element;
+                        Right : in out Element) is <>;
+procedure Generic_Sort (Data_To_Sort : in out Data);
+------------------------------------------------------------------------
+```
+
+The generic body looks just like a regular procedure body and can make
+full use of the generic formal parameters in implementing the sort
+algorithm:
+
+```ada
+------------------------------------------------------------------------
+procedure Generic_Sort (Data_To_Sort : in out Data) is
+begin
+   ...
+   for I in Data_To_Sort'Range loop
+      ...
+         ...
+         if Should_Precede (Data_To_Sort(J), Data_To_Sort(I)) then
+            Swap(Data_To_Sort(I), Data_To_Sort(J));
+         end if;
+         ...
+      ...
+   end loop;
+   ...
+end Generic_Sort;
+------------------------------------------------------------------------
+```
+
+The generic procedure can be instantiated as:
+
+```ada
+   type Integer_Array is array (Positive range <>) of Integer;
+   function Should_Precede (Left  : in     Integer;
+                            Right : in     Integer)
+     return Boolean;
+
+   procedure Swap (Left  : in out Integer;
+                   Right : in out Integer);
+   procedure Sort is
+      new Generic_Sort (Element => Integer,
+                        Data    => Integer_Array);
+```
+
+or:
+
+```ada
+   subtype String_80    is String (1 .. 80);
+   type    String_Array is array (Positive range <>) of String_80;
+   function Should_Precede (Left  : in     String_80;
+                            Right : in     String_80)
+     return Boolean;
+
+   procedure Swap (Left  : in out String_80;
+                   Right : in out String_80);
+
+   procedure Sort is
+      new Generic_Sort (Element => String_80,
+                        Data    => String_Array);
+```
+
+and called as:
+
+```ada
+   Integer_Array_1 : Integer_Array (1 .. 100);
+   ...
+   Sort (Integer_Array_1);
+```
+
+or:
+
+```ada
+   String_Array_1  : String_Array  (1 .. 100);
+   ...
+   Sort (String_Array_1);
+```
+
+#### rationale
+
+A sort algorithm can be described independently of the data type being
+sorted. This generic procedure takes the Element data type as a generic
+limited private type parameter so that it assumes as little as possible
+about the data type of the objects actually being operated on. It also
+takes Data as a generic formal parameter so that instantiations can have
+entire arrays passed to them for sorting. Finally, it explicitly
+requires the two operators that it needs to do the sort: Should_Precede
+and Swap. The sort algorithm is encapsulated without reference to any
+data type. The generic can be instantiated to sort an array of any data
+type. 8.3.5 Using Generic Units for Data Abstraction
+
+#### guideline
+
+- Consider using abstract data types (not to be confused with Ada's
+  abstract types) in preference to abstract data objects.
+- Consider using generic units to implement abstract data types
+  independently of their component data type.
+
+#### example
+
+This example presents a series of different techniques that can be used
+to generate abstract data types and objects. A discussion of the merits
+of each follows in the rationale section below. The first is an abstract
+data object (ADO), which can be used to encapsulate an abstract state
+machine. It encapsulates one stack of integers:
+
+```ada
+------------------------------------------------------------------------
+package Bounded_Stack is
+   subtype Element is Integer;
+   Maximum_Stack_Size : constant := 100;
+   procedure Push (New_Element : in     Element);
+   procedure Pop  (Top_Element :    out Element);
+   Overflow  : exception;
+   Underflow : exception;
+   ...
+end Bounded_Stack;
+------------------------------------------------------------------------
+```
+
+The second example is an abstract data type (ADT). It differs from the
+ADO by exporting the Stack type, which allows the user to declare any
+number of stacks of integers. Because multiple stacks may now exist, it
+is necessary to specify a Stack argument on calls to Push and Pop:
+
+```ada
+------------------------------------------------------------------------
+package Bounded_Stack is
+   subtype Element is Integer;
+   type    Stack   is limited private;
+   Maximum_Stack_Size : constant := 100;
+   procedure Push (On_Top      : in out Stack;
+                   New_Element : in     Element);
+   procedure Pop  (From_Top    : in out Stack;
+                   Top_Element :    out Element);
+   Overflow  : exception;
+   Underflow : exception;
+   ...
+private
+   type Stack_Information;
+   type Stack is access Stack_Information;
+end Bounded_Stack;
+------------------------------------------------------------------------
+```
+
+The third example is a parameterless generic abstract data object
+(GADO). It differs from the ADO (the first example) simply by being
+generic, so that the user can instantiate it multiple times to obtain
+multiple stacks of integers:
+
+```ada
+------------------------------------------------------------------------
+generic
+package Bounded_Stack is
+   subtype Element is Integer;
+   Maximum_Stack_Size : constant := 100;
+   procedure Push (New_Element : in     Element);
+   procedure Pop  (Top_Element :    out Element);
+   Overflow  : exception;
+   Underflow : exception;
+   ...
+end Bounded_Stack;
+------------------------------------------------------------------------
+```
+
+The fourth example is a slight variant on the third, still a GADO but
+with parameters. It differs from the third example by making the data
+type of the stack a generic parameter so that stacks of data types other
+than Integer can be created. Also, Maximum_Stack_Size has been made a
+generic parameter that defaults to 100 but can be specified by the user,
+rather than a constant defined by the package:
+
+```ada
+------------------------------------------------------------------------
+generic
+   type Element is private;
+   Maximum_Stack_Size : in Natural := 100;
+package Bounded_Stack is
+   procedure Push (New_Element : in     Element);
+   procedure Pop  (Top_Element :    out Element);
+   Overflow  : exception;
+   Underflow : exception;
+   ...
+end Bounded_Stack;
+------------------------------------------------------------------------
+```
+
+The fifth example is a generic abstract data type (GADT). It differs
+from the GADO in the fourth example in the same way that the ADT in the
+second example differed from the ADO in the first example; it exports
+the Stack type, which allows the user to declare any number of stacks:
+
+```ada
+------------------------------------------------------------------------
+generic
+   type Element is private;
+   Maximum_Stack_Size : in Natural := 100;
+package Bounded_Stack is
+   type Stack is private;
+   procedure Push (On_Top      : in out Stack;
+                   New_Element : in     Element);
+   procedure Pop  (From_Top    : in out Stack;
+                   Top_Element :    out Element);
+   Overflow  : exception;
+   Underflow : exception;
+   ...
+private
+   type Stack_Information;
+   type Stack is access Stack_Information;
+end Bounded_Stack;
+------------------------------------------------------------------------
+```
+
+#### rationale
+
+The biggest advantage of an ADT over an ADO (or a GADT over a GADO) is
+that the user of the package can declare as many objects as desired with
+an ADT. These objects can be declared as standalone variables or as
+components of arrays and records. They can also be passed as parameters.
+None of this is possible with an ADO, where the single data object is
+encapsulated inside of the package. Furthermore, an ADO provides no more
+protection of the data structure than an ADT. When a private type is
+exported by the ADT package, as in the example above, then for both the
+ADO and ADT, the only legal operations that can modify the data are
+those defined explicitly by the package (in this case, Push and Pop).
+For these reasons, an ADT or GADT is almost always preferable to an ADO
+or GADO, respectively.
+
+A GADO is similar to an ADT in one way: it allows multiple objects to be
+created by the user. With an ADT, multiple objects can be declared using
+the type defined by the ADT package. With a GADO (even a GADO with no
+generic formal parameters, as shown in the third example), the package
+can be instantiated multiple times to produce multiple objects. However,
+the similarity ends there. The multiple objects produced by the
+instantiations suffer from all restrictions described above for ADOs;
+they cannot be used in arrays or records or passed as parameters.
+Furthermore, the objects are each of a different type, and no operations
+are defined to operate on more than one of them at a time. For example,
+there cannot be an operation to compare two such objects or to assign
+one to another. The multiple objects declared using the type defined by
+an ADT package suffer from no such restrictions; they can be used in
+arrays and records and can be passed as parameters. Also, they are all
+declared to be of the same type, so that it is possible for the ADT
+package to provide operations to assign, compare, copy, etc. For these
+reasons, an ADT is almost always preferable to a parameterless GADO.
+
+The biggest advantage of a GADT or GADO over an ADT or ADO,
+respectively, is that the GADT and GADO are generic and can thus be
+parameterized with types, subprograms, and other configuration
+information. Thus, as shown above, a single generic package can support
+bounded stacks of any data type and any stack size, while the ADT and
+ADO above are restricted to stacks of Integer, no more than 100 in size.
+For this reason, a GADO or GADT is almost always preferable to an ADO or
+ADT.
+
+The list of examples above is given in order of increasing power and
+flexibility, starting with an ADO and ending with a GADT. These
+advantages are not expensive in terms of complexity or development time.
+The specification of the GADT above is not significantly harder to write
+or understand than the specification of the ADO. The bodies are also
+nearly identical.
+
+Compare the body for the simplest version, the ADO:
+
+---
+
+package body Bounded_Stack is
+
+` type Stack_Slots is array (Natural range <>) of Element;`  
+` type Stack_Information is`  
+` record`  
+` Slots : Stack_Slots (1 .. Maximum_Stack_Size);`  
+` Index : Natural := 0;`  
+` end record;`  
+` Stack : Stack_Information;`  
+` ---------------------------------------------------------------------`  
+` procedure Push (New_Element : in Element) is`  
+` begin`  
+` if Stack.Index >= Maximum_Stack_Size then`  
+` raise Overflow;`  
+` end if;`  
+` Stack.Index := Stack.Index + 1;`  
+` Stack.Slots(Stack.Index) := New_Element;`  
+` end Push;`  
+` ---------------------------------------------------------------------`  
+` procedure Pop (Top_Element : out Element) is`  
+` begin`  
+` if Stack.Index <= 0 then`  
+` raise Underflow;`  
+` end if;`  
+` Top_Element := Stack.Slots(Stack.Index);`  
+` Stack.Index := Stack.Index - 1;`  
+` end Pop;`  
+` ---------------------------------------------------------------------`  
+` ...`
+
+end Bounded_Stack;
+
+---
+
+with the body for the most powerful and flexible version, the GADT:
+
+---
+
+package body Bounded_Stack is
+
+` type Stack_Slots is array (Natural range <>) of Element;`  
+` type Stack_Information is`  
+` record`  
+` Slots : Stack_Slots (1 .. Maximum_Stack_Size);`  
+` Index : Natural := 0;`  
+` end record;`  
+` ---------------------------------------------------------------------`  
+` procedure Push (On_Top : in out Stack;`  
+` New_Element : in Element) is`  
+` begin`  
+` if On_Top.Index >= Maximum_Stack_Size then`  
+` raise Overflow;`  
+` end if;`  
+` On_Top.Index := On_Top.Index + 1;`  
+` On_Top.Slots(On_Top.Index) := New_Element;`  
+` end Push;`  
+` ---------------------------------------------------------------------`  
+` procedure Pop (From_Top : in out Stack;`  
+` Top_Element : out Element) is`  
+` begin`  
+` if From_Top.Index <= 0 then`  
+` raise Underflow;`  
+` end if;`  
+` Top_Element := From_Top.Slots(From_Top.Index);`
+
+` From_Top.Index := From_Top.Index - 1;`  
+` end Pop;`  
+` ---------------------------------------------------------------------`  
+` ...`
+
+end Bounded_Stack;
+
+---
+
+There is only one difference. The ADO declares a local object called
+Stack, while the GADT has one additional parameter (called Stack) on
+each of the exported procedures Push and Pop.
+
+### Iterators
+
+#### guideline
+
+- Provide iterators for traversing complex data structures within
+  reusable parts.
+- Consider providing both active and passive iterators.
+- Protect the iterators from errors due to modification of the data
+  structure during iteration.
+- Document the behavior of the iterators when the data structure is
+  modified during traversal.
+
+#### example
+
+Ada provides several mechanisms for building reusable iterators. The
+following examples discuss the alternatives of "simple" generics, access
+discriminants, and type extension. The terms active and passive are used
+to differentiate whether the iteration mechanism (i.e., the way in which
+the complex data structure is traversed) is exposed or hidden. A passive
+iterator hides the traversal (e.g., looping mechanism) and consists of a
+single operation, iterate, that is parameterized by the processing you
+do on each element of the data structure. By contrast, an active
+iterator exposes the primitive operations by which you traverse the data
+structure (Booch 1987).
+
+The first example shows a generic package that defines an abstract list
+data type, with both active and passive iterators for traversing a list:
+
+```ada
+------------------------------------------------------------------------
+generic
+   type Element is limited private;
+   ...
+package Unbounded_List is
+   type List is limited private;
+   procedure Insert (New_Element : in     Element;
+                     Into        : in out List);
+   -- Passive (generic) iterator.
+   generic
+      with procedure Process (Each : in out Element);
+   procedure Iterate (Over : in     List);
+   -- Active iterator
+   type Iterator is limited private;
+
+   procedure Initialize (Index         : in out Iterator;
+                         Existing_List : in     List);
+
+   function  More       (Index         : in     Iterator)
+     return Boolean;
+
+   -- The procedure Get_Next combines an "Advance" and "Current" function
+   procedure Get_Next   (Index           : in out Iterator;
+                         Current_Element :    out Element);
+   ...
+private
+   ...
+end Unbounded_List;
+------------------------------------------------------------------------
+```
+
+After instantiating the generic package and declaring a list as:
+
+```ada
+------------------------------------------------------------------------
+with Unbounded_List;
+procedure List_User is
+   type Employee is ...;
+   package Roster is
+      new Unbounded_List (Element => Employee, ...);
+   Employee_List : Roster.List;
+```
+
+the passive iterator is instantiated, specifying the name of the routine
+that should be called for each list element when the iterator is called.
+
+```ada
+   ---------------------------------------------------------------------
+   procedure Process_Employee (Each : in out Employee) is
+   begin
+      ...
+      -- Perform the required action for EMPLOYEE here.
+   end Process_Employee;
+   ---------------------------------------------------------------------
+   procedure Process_All is
+      new Roster.Iterate (Process => Process_Employee);
+```
+
+The passive iterator can then be called as:
+
+```ada
+begin  -- List_User
+   Process_All (Employee_List);
+end List_User;
+------------------------------------------------------------------------
+```
+
+Alternatively, the active iterator can be used without the second
+instantiation required by the passive iterator:
+
+```ada
+   Iterator         : Roster.Iterator;
+   Current_Employee : Employee;
+   procedure Process_Employee (Each : in     Employee) is separate;
+begin  -- List_User
+   Roster.Initialize (Index         => Iterator,
+                      Existing_List => Employee_List);
+
+   while Roster.More (Iterator) loop
+
+      Roster.Get_Next (Index           => Iterator,
+                       Current_Element => Current_Employee);
+
+      Process_Employee (Current_Employee);
+
+   end loop;
+end List_User;
+------------------------------------------------------------------------
+```
+
+The second example shows a code excerpt from Rationale (1995, §3.7.1) on
+how to construct iterators using access discriminants:
+
+```ada
+generic
+   type Element is private;
+package Sets is
+   type Set is limited private;
+   ... -- various set operations
+   type Iterator (S : access Set) is limited private;
+   procedure Start (I : Iterator);
+   function Done (I : Iterator) return Boolean;
+   procedure Next (I : in out Iterator);
+   ...  -- other iterator operations
+private
+   type Node;
+   type Ptr is access Node;
+   type Node is
+      record
+         E    : Element;
+         Next : Ptr;
+      end record;
+   type Set is new Ptr;
+   type Iterator (S : access Set) is
+      record
+         This : Ptr;
+      end record;
+end Sets;
+package body Sets is
+   ...  -- bodies of the various set operations
+   procedure Start (I : in out Iterator) is
+   begin
+      I.This := Ptr(I.S.all);
+   end Start;
+   function Done (I : Iterator) return Boolean is
+   begin
+      return I.This = null;
+   end Done;
+   procedure Next (I : in out Iterator) is
+   begin
+      I.This := I.This.Next;
+   end Next;
+   ...
+end Sets;
+```
+
+The iterator operations allow you to iterate over the elements of the
+set with the component This of the iterator object accessing the current
+element. The access discriminant always points to the enclosing set to
+which the current element belongs.
+
+The third example uses code fragments from Rationale (1995, §4.4.4) to
+show an iterator using type extension and dispatching:
+
+```ada
+type Element is ...
+package Sets is
+   type Set is limited private;
+   -- various set operations
+   type Iterator is abstract tagged null record;
+   procedure Iterate (S : in Set; IC : in out Iterator'Class);
+   procedure Action (E : in out Element;
+                     I : in out Iterator) is abstract;
+private
+   -- definition of Node, Ptr (to Node), and Set
+end Sets;
+package body Sets is
+   ...
+   procedure Iterate (S : in Set; IC : in out Iterator'Class) is
+      This : Ptr := Ptr (S);
+   begin
+      while This /= null loop
+         Action (This.E, IC);  -- dispatch
+         This := This.Next;
+      end loop;
+   end Iterate;
+end Sets;
+```
+
+The general purpose iterator looks like this:
+
+```ada
+package Sets.Something is
+   procedure Do_Something (S : Set; P : Parameters);
+end Sets.Something;
+package body Sets.Something is
+   type My_Iterator is new Iterator with
+      record
+         -- components for parameters and workspace
+      end record;
+   procedure Action (E : in out Element;
+                     I : in out My_Iterator) is
+   begin
+      -- do something to element E using data from iterator I
+   end Action;
+   procedure Do_Something (S : Set; P : Parameters) is
+      I : My_Iterator;
+   begin  -- Do_Something
+      ...  -- copy parameters into iterator
+      Iterate (S, I);
+      ... copy any results from iterator back to parameters
+   end Do_Something;
+
+end Sets.Something;
+```
+
+#### rationale
+
+Iteration over complex data structures is often required and, if not
+provided by the part itself, can be difficult to implement without
+violating information hiding principles.
+
+Active and passive iterators each have their advantages, but neither is
+appropriate in all situations. Therefore, it is recommended that both be
+provided to give the user a choice of which to use in each situation.
+
+Passive iterators are simpler and less error-prone than active
+iterators, in the same way that the for loop is simpler and less
+error-prone than the while loop. There are fewer mistakes that the user
+can make in using a passive iterator. Simply instantiate it with the
+routine to be executed for each list element, and call the instantiation
+for the desired list. Active iterators require more care by the user.
+Care must be taken to invoke the iterator operations in the proper
+sequence and to associate the proper iterator variable with the proper
+list variable. It is possible for a change made to the software during
+maintenance to introduce an error, perhaps an infinite loop.
+
+On the other hand, active iterators are more flexible than passive
+iterators. With a passive iterator, it is difficult to perform multiple,
+concurrent, synchronized iterations. For example, it is much easier to
+use active iterators to iterate over two sorted lists, merging them into
+a third sorted list. Also, for multidimensional data structures, a small
+number of active iterator routines may be able to replace a large number
+of passive iterators, each of which implements one combination of the
+active iterators. Finally, active iterators can be passed as generic
+formal parameters while passive iterators cannot because passive
+iterators are themselves generic, and generic units cannot be passed as
+parameters to other generic units.
+
+For either type of iterator, semantic questions can arise about what
+happens when the data structure is modified as it is being iterated.
+When writing an iterator, be sure to consider this possibility, and
+indicate with comments the behavior that occurs in such a case. It is
+not always obvious to the user what to expect. For example, to determine
+the "closure" of a mathematical "set" with respect to some operation, a
+common algorithm is to iterate over the members of the set, generating
+new elements and adding them to the set. In such a case, it is important
+that elements added to the set during the iteration be encountered
+subsequently during the iteration. On the other hand, for other
+algorithms, it may be important that the iterated set is the same set
+that existed at the beginning of the iteration. In the case of a
+prioritized list data structure, if the list is iterated in priority
+order, it may be important that elements inserted at lower priority than
+the current element during iteration not be encountered subsequently
+during the iteration but that elements inserted at a higher priority
+should be encountered. In any case, make a conscious decision about how
+the iterator should operate, and document that behavior in the package
+specification.
+
+Deletions from the data structure also pose a problem for iterators. It
+is a common mistake for a user to iterate over a data structure,
+deleting it piece by piece during the iteration. If the iterator is not
+prepared for such a situation, it is possible to end up dereferencing a
+null pointer or committing a similar error. Such situations can be
+prevented by storing extra information with each data structure, which
+indicates whether it is currently being iterated, and using this
+information to disallow any modifications to the data structure during
+iteration. When the data structure is declared as a limited private
+type, as should usually be the case when iterators are involved, the
+only operations defined on the type are declared explicitly in the
+package that declares the type, making it possible to add such tests to
+all modification operations.
+
+The Rationale (1995, §4.4.4) notes that the access discriminant and type
+extension techniques are inversions of each other. In the access
+discriminant approach, you have to write out the looping mechanism for
+each action. In the type extension approach, you write one loop and
+dispatch to the desired action. Thus, an iterator that uses the access
+discriminant technique would be considered active, while an iterator
+that uses the type extension technique would be considered passive.
+
+#### notes
+
+You can use an access to subprogram type as an alternative to generic
+instantiation, using a nongeneric parameter as a pointer to subprogram.
+You would then apply the referenced subprogram to every element in a
+collection ( Rationale 1995, §3.7.2). There are drawbacks to this
+approach, however, because you cannot use it to create a general purpose
+iterator. Anonymous access to subprogram parameters is not allowed in
+Ada; thus, the following fragment is illegal:
+
+```ada
+procedure Iterate (C      : Collection;
+                   Action : access procedure (E : in out Element));
+```
+
+The formal parameter Action must be of a named access subtype, as in:
+
+```ada
+type Action_Type is access procedure (E : in out Element);
+procedure Iterate (C      : Collection;
+                   Action : Action_Type);
+```
+
+In order for this to work, you must make sure that the action subprogram
+is in scope and not defined internal to another subprogram. If it is
+defined as a nested procedure, it would be illegal to access it. See the
+Rationale (1995, §4.4.4) for a more complete example.
+
+For further discussion of passive and active iterators, see the
+Rationale (1995, §3.7.1 and §4.4.4), Ross (1989), and Booch (1987).
+
+### Decimal Type Output and Information Systems Annex
+
+#### guideline
+
+- Localize the currency symbol, digits separator, radix mark, and fill
+  character in picture output.
+- Consider using the \# character in picture layouts so that the
+  edited numeric output lengths are invariant across currency symbols
+  of different lengths.
+
+#### example
+
+```ada
+with Ada.Text_IO.Editing;
+package Currency is
+
+   type Dollars is delta 0.01 digits 10;
+   type Marks   is delta 0.01 digits 10;
+
+   package Dollar_Output is
+      new Ada.Text_IO.Editing.Decimal_Output
+             (Num                => Dollars,
+              Default_Currency   => "$",
+              Default_Fill       => '*',
+              Default_Separator  => ',',
+              Default_Radix_Mark => '.');
+
+   package Mark_Output is
+      new Ada.Text_IO.Editing.Decimal_Output
+             (Num                => Marks,
+              Default_Currency   => "DM",
+              Default_Fill       => '*',
+              Default_Separator  => '.',
+              Default_Radix_Mark => ',');
+
+end Currency;
+with Ada.Text_IO.Editing;
+with Currency;  use Currency;
+procedure Test_Picture_Editing is
+
+   DM_Amount     : Marks;
+   Dollar_Amount : Dollars;
+
+   Amount_Picture : constant Ada.Text_IO.Editing.Picture
+      := Ada.Text_IO.Editing.To_Picture ("##ZZ_ZZZ_ZZ9.99");
+
+begin   -- Test_Picture_Editing
+
+   DM_Amount     := 1_234_567.89;
+   Dollar_Amount := 1_234_567.89;
+
+   DM_Output.Put (Item => DM_Amount,
+                  Pic  => Amount_Picture);
+
+   Dollar_Output.Put (Item => Dollar_Amount,
+                      Pic  => Amount_Picture);
+
+end Test_Picture_Editing;
+```
+
+#### rationale
+
+Currencies differ in how they are displayed in a report. Currencies use
+different symbols of different lengths (e.g., the American $, the German
+DM, and the Austrian ÖS). They use different symbols to separate digits.
+The United States and the United Kingdom use the comma to separate
+groups of thousands, whereas Continental Europe uses the period. The
+United States and the United Kingdom use a period as a decimal point;
+Continental Europe uses the comma. For a program involving financial
+calculations that is to be reused across countries, you need to take
+these differences into account. By encapsulating them, you limit the
+impact of change in adapting the financial package.
+
+### Implementing Mixins
+
+#### guideline
+
+- Consider using abstract tagged types and generics to define reusable
+  units of functionality that can be "mixed into" core abstractions
+  (also known as mixins).
+
+#### example
+
+Note the use of an abstract tagged type as a generic formal parameter
+and as the exported extended type in the pattern that follows, excerpted
+from the Rationale (1995, §4.6.2):
+
+```ada
+generic
+   type S is abstract tagged private;
+package P is
+   type T is abstract new S with private;
+   -- operations on T
+private
+   type T is abstract new S with
+      record
+         -- additional components
+      end record;
+end P;
+```
+
+The following code shows how the generic might be instantiated to
+"mixin" the desired features in the final type extension. See also
+Guideline 9.5.1 for a related example of code.
+
+```ada
+-- Assume that packages P1, P2, P3, and P4 are generic packages which take a tagged
+-- type as generic formal type parameter and which export a tagged type T
+package Q is
+   type My_T is new Basic_T with private;
+   ... -- exported operations
+private
+   package Feature_1 is new P1 (Basic_T);
+   package Feature_2 is new P2 (Feature_1.T);
+   package Feature 3 is new P3 (Feature_2.T);
+   package Feature_4 is new P4 (Feature_3.T);
+   -- etc.
+   type My_T is new Feature_4.T with null record;
+end Q;
+```
+
+#### rationale
+
+The Rationale (1995, §4.6.2) discusses the use of a generic template to
+define the properties to be mixed in to your abstraction:
+
+The generic template defines the mixin. The type supplied as generic
+actual parameter determines the parent . . . the body provides the
+operations and the specification exports the extended type.
+
+If you have defined a series of generic mixin packages, you would then
+serialize the instantiations. The actual parameter to the next
+instantiation is the exported tagged type from the previous
+instantiation. This is shown in the second code segment in the example.
+Each extension is derived from a previous extension, so you have a
+linearized succession of overriding subprograms. Because they are
+linearized, you have a derivation order you can use to resolve any
+conflicts.
+
+You should encapsulate one extension (and related operations) per
+generic package. This provides a better separation of concerns and more
+maintainable, reusable components.
+
+See Guideline 9.5.1 for a full discussion of the use of mixins.

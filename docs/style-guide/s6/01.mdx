@@ -1,0 +1,858 @@
+---
+title: 6.1 Concurrency Options
+---
+
+Many problems map naturally to a concurrent programming solution. By
+understanding and correctly using the Ada language concurrency features,
+you can produce solutions that are largely independent of target
+implementation. Tasks provide a means, within the Ada language, of
+expressing concurrent, asynchronous threads of control and relieving
+programmers from the problem of explicitly controlling multiple
+concurrent activities. Protected objects serve as a building block to
+support other synchronization paradigms. Tasks cooperate to perform the
+required activities of the software. Synchronization and mutual
+exclusion are required between individual tasks. The Ada rendezvous and
+protected objects provide powerful mechanisms for both synchronization
+and mutual exclusion.
+
+### Protected Objects
+
+#### guideline
+
+- Consider using protected objects to provide mutually exclusive
+  access to data.
+- Consider using protected objects to control or synchronize access to
+  data shared by multiple tasks .
+- Consider using protected objects to implement synchronization, such
+  as a passive resource monitor.
+- Consider encapsulating protected objects in the private part or body
+  of a package.
+- Consider using a protected procedure to implement an interrupt
+  handler.
+- Do not attach a protected procedure handler to a hardware interrupt
+  if that interrupt has a maximum priority greater than the ceiling
+  priority assigned to the handler.
+- Avoid the use of global variables in entry barriers.
+- Avoid the use of barrier expressions with side effects.
+
+#### example
+
+```ada
+generic
+   type Item is private;
+   Maximum_Buffer_Size : in Positive;
+package Bounded_Buffer_Package is
+
+   subtype Buffer_Index is Positive range 1..Maximum_Buffer_Size;
+   subtype Buffer_Count is Natural  range 0..Maximum_Buffer_Size;
+   type    Buffer_Array is array (Buffer_Index) of Item;
+
+   protected type Bounded_Buffer is
+      entry Get (X : out Item);
+      entry Put (X : in Item);
+   private
+      Get_Index : Buffer_Index := 1;
+      Put_Index : Buffer_Index := 1;
+      Count     : Buffer_Count := 0;
+      Data      : Buffer_Array;
+   end Bounded_Buffer;
+
+end Bounded_Buffer_Package;
+
+------------------------------------------------------------------
+package body Bounded_Buffer_Package is
+
+   protected body Bounded_Buffer is
+
+      entry Get (X : out Item) when Count > 0 is
+      begin
+         X := Data(Get_Index);
+         Get_Index := (Get_Index mod Maximum_Buffer_Size) + 1;
+         Count := Count - 1;
+      end Get;
+
+      entry Put (X : in Item) when Count < Maximum_Buffer_Size is
+      begin
+         Data(Put_Index) := X;
+         Put_Index  := (Put_Index mod Maximum_Buffer_Size) + 1;
+         Count := Count + 1;
+      end Put;
+
+   end Bounded_Buffer;
+
+end Bounded_Buffer_Package;
+```
+
+#### rationale
+
+Protected objects are intended to provide a "lightweight" mechanism for
+mutual exclusion and data synchronization. You should use a task only
+when you need to introduce explicitly a new, concurrent thread of
+control (see Guideline 6.1.2).
+
+Protected objects offer a low overhead, efficient means to coordinate
+access to shared data. A protected type declaration is similar to a
+program unit and consists of both a specification and a body. The data
+to be protected must be declared in the specification, as well as the
+operations that can be used to manipulate this data. If some operations
+are only allowed conditionally, entries must be provided. Ada 95 rules
+require that entry barriers be evaluated at the end of procedure calls
+and entry calls on protected objects. Entry barriers should avoid
+referring to global variables so that the underlying assumptions of the
+state of the protected object are not violated. Protected procedures and
+entries should be used to change the state of a protected object.
+
+Most clients of an abstraction do not need to know how it is
+implemented, whether it is a regular abstraction or a shared
+abstraction. A protected type is inherently a limited type, and you can
+use protected types to implement a limited private type exported by a
+package. As pointed out in Guideline 5.3.3, abstractions are best
+implemented using private types (possibly derived from controlled types)
+or limited private types, providing appropriate operations that overcome
+the restrictiveness imposed by the use of private types.
+
+The Rationale (1995, §9.1) describes the interrupt handling features
+that make the protected procedure the recommended building block:
+
+A protected procedure is very well suited to act as an interrupt handler
+for a number of reasons; they both typically have a short bounded
+execution time, do not arbitrarily block, have a limited context and
+finally they both have to integrate with the priority model. The
+nonblocking critical region matches the needs of an interrupt handler,
+as well as the needs of non-interrupt-level code to synchronize with an
+interrupt handler. The entry barrier construct allows an interrupt
+handler to signal a normal task by changing the state of a component of
+the protected object and thereby making a barrier true.
+
+When using protected procedures for interrupt handling, you must ensure
+that the ceiling priority of the handler is at least as high as the
+maximum possible priority of the interrupt to be handled. With
+priority-ceiling locking, the delivery of an interrupt with a higher
+priority than the ceiling priority of the handler will result in
+erroneous execution (Ada Reference Manual 1995, §C.3.1).
+
+A global variable could be changed by another task or even by a call of
+a protected function. These changes will not be acted upon promptly.
+Therefore, you should not use a global variable in an entry barrier.
+
+Side effects in barrier expressions can cause undesirable dependencies.
+Therefore, you should avoid the use of barrier expressions that can
+cause side effects.
+
+See also Guideline .
+
+#### exceptions
+
+If the client of the abstraction containing the protected object must
+use a select statement with an entry call, you must expose the protected
+object on the package interface.
+
+### Tasks
+
+#### guideline
+
+- Use tasks to model selected asynchronous threads of control within
+  the problem domain.
+- Consider using tasks to define concurrent algorithms.
+- Consider using rendezvous when your application requires synchronous
+  unbuffered communication.
+
+#### example
+
+The naturally concurrent objects within the problem domain can be
+modeled as Ada tasks.
+
+```ada
+-- The following example of a stock exchange simulation shows how naturally
+-- concurrent objects within the problem domain can be modeled as Ada tasks.
+
+-------------------------------------------------------------------------
+
+-- Protected objects are used for the Display and for the Transaction_Queue
+-- because they only need a mutual exclusion mechanism.
+
+protected Display is
+   entry Shift_Tape_Left;
+   entry Put_Character_On_Tape (C : in Character);
+end Display;
+
+protected Transaction_Queue is
+   entry Put (T : in     Transaction);
+   entry Get (T :    out Transaction);
+   function Is_Empty return Boolean;
+end Transaction_Queue;
+
+-------------------------------------------------------------------------
+
+-- A task is needed for the Ticker_Tape because it has independent cyclic
+-- activity.  The Specialist and the Investor are best modeled with tasks
+-- since they perform different actions simultaneously, and should be
+-- asynchronous threads of control.
+
+task Ticker_Tape;
+
+task Specialist is
+   entry Buy  (Order : in Order_Type);
+   entry Sell (Order : in Order_Type);
+end Specialist;
+
+task Investor;
+-------------------------------------------------------------------------
+task body Ticker_Tape is
+   ...
+begin
+   loop
+      Display.Shift_Tape_Left;
+
+      if not More_To_Send (Current_Tape_String) and then
+         not Transaction_Queue.Is_Empty
+      then
+         Transaction_Queue.Get (Current_Tape_Transaction);
+         ... -- convert Transaction to string
+      end if;
+
+      if More_To_Send (Current_Tape_String) then
+         Display.Put_Character_On_Tape (Next_Char);
+      end if;
+
+      delay until Time_To_Shift_Tape;
+      Time_To_Shift_Tape := Time_To_Shift_Tape + Shift_Interval;
+   end loop;
+end Ticker_Tape;
+
+task body Specialist is
+   ...
+
+   loop
+      select
+         accept Buy  (Order : in Order_Type) do
+            ...
+         end Buy;
+         ...
+      or
+         accept Sell (Order : in Order_Type) do
+            ...
+         end Sell;
+         ...
+      else
+         -- match orders
+         ...
+         Transaction_Queue.Put (New_Transaction);
+         ...
+      end select;
+   end loop;
+
+end Specialist;
+
+task body Investor is
+   ...
+begin
+
+   loop
+      -- some algorithm that determines whether the investor
+      -- buys or sells, quantity, price, etc
+
+      ...
+
+      if ... then
+         Specialist.Buy (Order);
+      end if;
+
+      if ... then
+         Specialist.Sell (Order);
+      end if;
+   end loop;
+
+end Investor;
+```
+
+Multiple tasks that implement the decomposition of a large, matrix
+multiplication algorithm are an example of an opportunity for real
+concurrency in a multiprocessor target environment. In a single
+processor target environment, this approach may not be justified due to
+the overhead incurred from context switching and the sharing of system
+resources.
+
+A task that updates a radar display every 30 milliseconds is an example
+of a cyclic activity supported by a task.
+
+A task that detects an over-temperature condition in a nuclear reactor
+and performs an emergency shutdown of the systems is an example of a
+task to support a high-priority activity.
+
+#### rationale
+
+These guidelines reflect the intended uses of tasks. They all revolve
+around the fact that a task has its own thread of control separate from
+the main subprogram (or environment task) of a partition. The conceptual
+model for a task is a separate program with its own virtual processor.
+This provides the opportunity to model entities from the problem domain
+in terms more closely resembling those entities and the opportunity to
+handle physical devices as a separate concern from the main algorithm of
+the application. Tasks also allow naturally concurrent activities that
+can be mapped to multiple processors within a partition when available.
+
+You should use tasks for separate threads of control. When you
+synchronize tasks, you should use the rendezvous mechanism only when you
+are trying to synchronize actual processes (e.g., specify a
+time-sensitive ordering relationship or tightly coupled interprocess
+communication). For most synchronization needs, however, you should use
+protected objects (see Guideline 6.1.1), which are more flexible and can
+minimize unnecessary bottlenecks. Additionally, passive tasks are
+probably better modeled through protected objects than active tasks.
+
+Resources shared between multiple tasks, such as devices, require
+control and synchronization because their operations are not atomic.
+Drawing a circle on a display might require that many low-level
+operations be performed without interruption by another task. A display
+manager would ensure that no other task accesses the display until all
+these operations are complete.
+
+### Discriminants
+
+#### guideline
+
+- Consider using discriminants to minimize the need for an explicit
+  initialization operation (Rationale 1995, §9.1).
+- Consider using discriminants to control composite components of the
+  protected objects, including setting the size of an entry family
+  (Rationale 1995, §9.1).
+- Consider using a discriminant to set the priority of a protected
+  object (Rationale 1995, §9.1).
+- Consider using a discriminant to identify an interrupt to a
+  protected object (Rationale 1995, §9.1).
+- Consider declaring a task type with a discriminant to indicate
+  (Rationale 1995, §9.6):
+  - Priority, storage size, and size of entry families of individual
+    tasks of a type
+  - Data associated with a task (through an access discriminant)
+
+#### example
+
+The following code fragment shows how a task type with discriminant can
+be used to associate data with a task (Rationale 1995, §9.6):
+
+```ada
+type Task_Data is
+   record
+      ...  -- data for task to work on
+   end record;
+task type Worker (D : access Task_Data) is
+   ...
+end;
+-- When you declare a task object of type Worker, you explicitly associate this task with
+-- its data through the discriminant D
+Data_for_Worker_X : aliased Task_Data := ...;
+X : Worker (Data_for_Worker_X'Access);
+```
+
+The following example shows how to use discriminants to associate data
+with tasks, thus allowing the tasks to be parameterized when they are
+declared and eliminating the need for an initial rendezvous with the
+task:
+
+```ada
+task type Producer (Channel : Channel_Number; ID : ID_Number);
+
+task body Producer is
+begin
+
+   loop
+
+      ... -- generate an item
+
+      Buffer.Put (New_Item);
+
+   end loop;
+end Producer;
+
+...
+
+Keyboard : Producer (Channel => Keyboard_Channel, ID => 1);
+Mouse    : Producer (Channel => Mouse_Channel,    ID => 2);
+```
+
+The next example shows how an initial rendezvous can be used to
+associate data with tasks. This is more complicated and more error prone
+than the previous example. This method is no longer needed in Ada 95 due
+to the availability of discriminants with task types and protected
+types:
+
+```ada
+task type Producer is
+   entry Initialize (Channel : in Channel_Number; ID : in ID_Number);
+end Producer;
+
+task body Producer is
+   IO_Channel  : Channel_Number;
+   Producer_ID : ID_Number;
+begin
+
+   accept Initialize (Channel : in Channel_Number; ID : in ID_Number) do
+      IO_Channel  := Channel;
+      Producer_ID := ID;
+   end;
+
+   loop
+
+      ... -- generate an item
+
+      Buffer.Put (New_Item);
+
+   end loop;
+end Producer;
+
+...
+
+Keyboard : Producer;
+Mouse    : Producer;
+
+...
+
+begin
+   ...
+   Keyboard.Initialize (Channel => Keyboard_Channel, ID => 1);
+   Mouse.Initialize    (Channel => Mouse_Channel,    ID => 2);
+   ...
+```
+
+#### rationale
+
+Using discriminants to parameterize protected objects provides a
+low-overhead way of specializing the protected object. You avoid having
+to declare and call special subprograms solely for the purpose of
+passing this information to the protected object.
+
+Task discriminants provide a way for you to identify or parameterize a
+task without the overhead of an initial rendezvous. For example, you can
+use this discriminant to initialize a task or tell it who it is (from
+among an array of tasks) (Rationale 1995, §II.9). More importantly, you
+can associate the discriminant with specific data. When you use an
+access discriminant, you can bind the data securely to the task because
+the access discriminant is constant and cannot be detached from the task
+(Rationale 1995, §9.6). This reduces and might eliminate bottlenecks in
+the parallel activation of tasks (Rationale 1995, §9.6).
+
+#### notes
+
+Using an access discriminant to initialize a task has a potential danger
+in that the data being referenced could change after the rendezvous.
+This possibility and its effects should be considered and, if necessary,
+appropriate actions taken (e.g., copy the referenced data and not rely
+on the data pointed to by the discriminant after initialization).
+
+### Anonymous Task Types and Protected Types
+
+#### guideline
+
+- Consider using single task declarations to declare unique instances
+  of concurrent tasks.
+- Consider using single protected declarations to declare unique
+  instances of protected objects.
+
+#### example
+
+The following example illustrates the syntactic differences between the
+kinds of tasks and protected objects discussed here. Buffer is static,
+but its type is anonymous. No type name is declared to enable you to
+declare further objects of the same type.
+
+```ada
+task      Buffer;
+```
+
+Because it is declared explicitly, the task type Buffer_Manager is not
+anonymous. Channel is static and has a name, and its type is not
+anonymous.
+
+```ada
+task type Buffer_Manager;
+Channel : Buffer_Manager;
+```
+
+#### rationale
+
+The use of anonymous tasks and protected objects of anonymous type
+avoids a proliferation of task and protected types that are only used
+once, and the practice communicates to maintainers that there are no
+other tasks or protected objects of that type. If the need arises later
+to have additional tasks or protected objects of the same type, then the
+work required to convert an anonymous task to a task type or an
+anonymous protected object to a protected type is minimal.
+
+The consistent and logical use of task and protected types, when
+necessary, contributes to understandability. Identical tasks can be
+declared using a common task type. Identical protected objects can be
+declared using a common protected type. Dynamically allocated task or
+protected structures are necessary when you must create and destroy
+tasks or protected objects dynamically or when you must reference them
+by different names.
+
+#### notes
+
+Though changing the task or protected object from an anonymous type to a
+declared type is trivial, structural changes to the software
+architecture might not be trivial. Introduction of multiple tasks or
+protected objects of the declared type might require the scope of the
+type to change and might change the behavior of the network of
+synchronizing tasks and protected objects.
+
+### Dynamic Tasks
+
+#### guideline
+
+- Minimize dynamic creation of tasks because of the potentially high
+  startup overhead; reuse tasks by having them wait for new work on
+  some appropriate entry queue.
+
+#### example
+
+The approach used in the following example is not recommended. The
+example shows why caution is required with dynamically allocated task
+and protected objects. It illustrates how a dynamic task can be
+disassociated from its name:
+
+```ada
+task type Radar_Track;
+type      Radar_Track_Pointer is access Radar_Track;
+Current_Track : Radar_Track_Pointer;
+---------------------------------------------------------------------
+task body Radar_Track is
+begin
+   loop
+      -- update tracking information
+      ...
+      -- exit when out of range
+      delay 1.0;
+   end loop;
+...
+end Radar_Track;
+---------------------------------------------------------------------
+...
+loop
+   ...
+   -- Radar_Track tasks created in previous passes through the loop
+   -- cannot be accessed from Current_Track after it is updated.
+   -- Unless some code deals with non-null values of Current_Track,
+   -- (such as an array of existing tasks)
+   -- this assignment leaves the existing Radar_Track task running with
+   -- no way to signal it to abort or to instruct the system to
+   -- reclaim its resources.
+
+   Current_Track := new Radar_Track;
+   ...
+end loop;
+```
+
+#### rationale
+
+Starting up a task has significant overhead in many implementations. If
+an application has a need for dynamically created tasks, the tasks
+should be implemented with a top-level loop so that after such a task
+completes its given job, it can cycle back and wait for a new job.
+
+You can use dynamically allocated tasks and protected objects when you
+need to allow the number of tasks and protected objects to vary during
+execution. When you must ensure that tasks are activated in a particular
+order, you should use dynamically allocated tasks because the Ada
+language does not define an activation order for statically allocated
+task objects. In using dynamically allocated tasks and protected
+objects, you face the same issues as with any use of the heap.
+
+### Priorities
+
+#### guideline
+
+- Do not rely on pragma Priority unless your compiler supports the
+  Real-Time Annex (Ada Reference Manual 1995, Annex D) and priority
+  scheduling.
+- Minimize risk of priority inversion by use of protected objects and
+  ceiling priority.
+- Do not rely upon task priorities to achieve a particular sequence of
+  task execution.
+
+#### example
+
+For example, let the tasks have the following priorities:
+
+```ada
+task T1 is
+   pragma Priority (High);
+end T1;
+
+task T2 is
+   pragma Priority (Medium);
+end T2;
+
+task Server is
+   entry Operation (...);
+end Server;
+
+----------------------------
+task body T1 is
+begin
+   ...
+   Server.Operation (...);
+   ...
+end T1;
+task body T2 is
+begin
+   ...
+   Server.Operation (...);
+   ...
+end T2;
+
+task body Server is
+begin
+   ...
+   accept Operation (...);
+   ...
+end Server;
+```
+
+At some point in its execution, T1 is blocked. Otherwise, T2 and Server
+might never execute. If T1 is blocked, it is possible for T2 to reach
+its call to Server's entry (Operation) before T1. Suppose this has
+happened and that T1 now makes its entry call before Server has a chance
+to accept T2's call.
+
+This is the timeline of events so far:
+
+T1 blocks T2 calls Server.Operation T1 unblocks T1 calls
+Server.Operation—Does Server accept the call from T1 or from T2?
+
+You might expect that, due to its higher priority, T1's call would be
+accepted by Server before that of T2. However, entry calls are queued in
+first-in-first-out (FIFO) order and not queued in order of priority
+(unless pragma Queueing_Policy is used). Therefore, the synchronization
+between T1 and Server is not affected by T1's priority. As a result, the
+call from T2 is accepted first. This is a form of priority inversion.
+(Annex D can change the default policy of FIFO queues.)
+
+A solution might be to provide an entry for a High priority user and an
+entry for a Medium priority user.
+
+```ada
+---------------------------------------------------------------------
+task Server is
+   entry Operation_High_Priority;
+   entry Operation_Medium_Priority;
+   ...
+end Server;
+---------------------------------------------------------------------
+task body Server is
+begin
+   loop
+      select
+         accept Operation_High_Priority do
+            Operation;
+         end Operation_High_Priority;
+      else  -- accept any priority
+         select
+            accept Operation_High_Priority do
+               Operation;
+            end Operation_High_Priority;
+         or
+            accept Operation_Medium_Priority do
+               Operation;
+            end Operation_Medium_Priority;
+         or
+            terminate;
+         end select;
+      end select;
+   end loop;
+...
+end Server;
+---------------------------------------------------------------------
+```
+
+However, in this approach, T1 still waits for one execution of Operation
+when T2 has already gained control of the task Server. In addition, the
+approach increases the communication complexity (see Guideline 6.2.6).
+
+#### rationale
+
+The pragma Priority allows relative priorities to be placed on tasks to
+accomplish scheduling. Precision becomes a critical issue with
+hard-deadline scheduling. However, there are certain problems associated
+with using priorities that warrant caution.
+
+Priority inversion occurs when lower priority tasks are given service
+while higher priority tasks remain blocked. In the first example, this
+occurred because entry queues are serviced in FIFO order, not by
+priority. There is another situation referred to as a race condition . A
+program like the one in the first example might often behave as expected
+as long as T1 calls Server.Operation only when T2 is not already using
+Server.Operation or waiting. You cannot rely on T1 always winning the
+race because that behavior would be due more to fate than to the
+programmed priorities. Race conditions change when either adding code to
+an unrelated task or porting this code to a new target.
+
+You should not rely upon task priorities to achieve an exact sequence of
+execution or rely upon them to achieve mutual exclusion. Although the
+underlying dispatching model is common to all Ada 95 implementations,
+there might be differences in dispatching, queuing, and locking policies
+for tasks and protected objects. All of these factors might lead to
+different sequences of execution. If you need to ensure a sequence of
+execution, you should make use of Ada's synchronization mechanisms,
+i.e., protected objects or rendezvous.
+
+#### notes
+
+Work is being done to minimize these problems, including the
+introduction of a scheduling algorithm known as the priority ceiling
+protocol (Goodenough and Sha 1988). The priority ceiling protocol
+reduces the blocking time that causes priority inversion to only one
+critical region (defined by the entries in a task). The protocol also
+eliminates deadlock (unless a task recursively tries to access a
+critical region) by giving a ceiling priority to each task accessing a
+resource that is as high as the priority of any task that ever accesses
+that resource. This protocol is based on priority inheritance and, thus,
+deviates from the standard Ada tasking paradigm, which supports priority
+ceiling emulation instead of the priority ceiling blocking that occurs
+with priority inheritance.
+
+Priorities are used to control when tasks run relative to one another.
+When both tasks are not blocked waiting at an entry, the highest
+priority task is given precedence. However, the most critical tasks in
+an application do not always have the highest priority. For example,
+support tasks or tasks with small periods might have higher priorities
+because they need to run frequently.
+
+All production-quality validated Ada 95 compilers will probably support
+pragma Priority. However, you should use caution unless (Annex D is
+specifically supported.
+
+There is currently no universal consensus on how to apply the basic
+principles of rate monotonic scheduling (RMS) to the Ada 95 concurrency
+model. One basic principle of RMS is to arrange all periodic tasks so
+that tasks with shorter periods have higher priorities than tasks with
+longer periods. However, with Ada 95, it might be faster to raise the
+priorities of tasks whose jobs suddenly become critical than to wait for
+an executive task to reschedule them. In this case, priority inversion
+can be minimized using a protected object with pragma
+Locking_Policy(Ceiling_Locking) as the server instead of a task.
+
+### Delay Statements
+
+#### guideline
+
+- Do not depend on a particular delay being achievable (Nissen and
+  Wallis 1984).
+- Use a delay until not a delay statement to delay until a specific
+  time has been reached.
+- Avoid using a busy waiting loop instead of a delay.
+
+#### example
+
+The phase of a periodic task is the fraction of a complete cycle elapsed
+as measured from a specified reference point. In the following example,
+an inaccurate delay causes the phase of the periodic task to drift over
+time (i.e., the task starts later and later in the cycle):
+
+Periodic:
+
+```ada
+   loop
+      delay Interval;
+      ...
+   end loop Periodic;
+```
+
+To avoid an inaccurate delay drift, you should use the delay until
+statement. The following example (Rationale 1995, §9.3) shows how to
+satisfy a periodic requirement with an average period:
+
+```ada
+task body Poll_Device is
+   use type Ada.Real_Time.Time;
+   use type Ada.Real_Time.Time_Span;
+
+   Poll_Time :          Ada.Real_Time.Time := ...; -- time to start polling
+   Period    : constant Ada.Real_Time.Time_Span := Ada.Real_Time.Milliseconds (10);
+begin
+   loop
+      delay until Poll_Time;
+      ... -- Poll the device
+      Poll_Time := Poll_Time + Period;
+   end loop;
+end Poll_Device;
+```
+
+#### rationale
+
+There are two forms of delay statement. The delay will cause a delay for
+at least a specified time interval. The delay until causes a delay until
+an absolute wake-up time. You should choose the form appropriate to your
+application.
+
+The Ada language definition only guarantees that the delay time is a
+minimum. The meaning of a delay or delay until statement is that the
+task is not scheduled for execution before the interval has expired. In
+other words, a task becomes eligible to resume execution as soon as the
+amount of time has passed. However, there is no guarantee of when (or
+if) it is scheduled after that time because the required resources for
+that task might not be available at the expiration of the delay .
+
+A busy wait can interfere with processing by other tasks. It can consume
+the very processor resource necessary for completion of the activity for
+which it is waiting. Even a loop with a delay can have the impact of
+busy waiting if the planned wait is significantly longer than the delay
+interval. If a task has nothing to do, it should be blocked at an accept
+or select statement, an entry call, or an appropriate delay.
+
+The expiration time for a relative delay is rounded up to the nearest
+clock tick. If you use the real-time clock features provided by (Annex
+D, however, clock ticks are guaranteed to be no greater than one
+millisecond (Ada Reference Manual 1995, §D.8).
+
+#### notes
+
+You need to ensure the arithmetic precision of the calculation
+Poll_Time := Poll_Time + Period; to avoid drift.
+
+### Extensibility and Concurrent Structures
+
+#### guideline
+
+- Carefully consider the placement of components of protected types
+  within a tagged type inheritance hierarchy.
+- Consider using generics to provide extensibility of data types
+  requiring the restrictions provided by protected objects.
+
+#### rationale
+
+Once a component of a protected type is added to an inheritance
+hierarchy of an abstract data type, further extensibility of that data
+type is impaired. When you constrain the concurrent behavior of a type
+(i.e., introduce a protected type component), you lose the ability to
+modify that behavior in subsequent derivations. Therefore, when the need
+arises for a version of an abstract data type to impose the restrictions
+provided by protected objects, the opportunity for reuse is maximized by
+adding the protected objects at the leaves of the inheritance hierarchy.
+
+The reusability of common protected operations (e.g., mutually exclusive
+read/write operations) can be maximized by using generic implementations
+of abstract data types. These generic implementations then provide
+templates that can be instantiated with data types specific to
+individual applications.
+
+#### notes
+
+You can address synchronization within an inheritance hierarchy in one
+of three ways:
+
+- You can declare the root as a limited tagged type with a component
+  that belongs to a protected type and give the tagged type primitive
+  operations that work by invoking the protected operations of that
+  component.
+- Given a tagged type implementing an abstract data type (perhaps
+  resulting from several extensions), you can declare a protected type
+  with a component belonging to the tagged type. The body of each
+  protected operation would then invoke the corresponding operation of
+  the abstract data type. The protected operations provide mutual
+  exclusion.
+- You can use a hybrid approach where you declare a protected type
+  with a component of some tagged type. You then use this protected
+  type to implement a new root tagged type (not a descendant of the
+  original tagged type).

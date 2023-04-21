@@ -1,0 +1,322 @@
+---
+title: 10.5 Algorithms
+---
+
+### Mod and rem Operators
+
+#### guideline
+
+- Use incremental schemes instead of mod and rem when measured
+  performance indicates.
+
+#### example
+
+```ada
+   -- Using mod
+   for I in 0 .. N loop
+      Update (Arr (I mod Modulus));
+   end loop;
+
+   -- Avoiding mod
+   J := 0;
+   for I in 0 .. N loop
+      Update (Arr (J));
+      J := J + 1;
+      if J = Modulus then
+         J := 0;
+      end if;
+   end loop;
+```
+
+#### rationale
+
+Determine the impact of using the mod and rem operators. One of the
+above styles may be significantly more efficient than the other.
+
+### Short-Circuit Operators
+
+#### guideline
+
+- Use the short-circuit control form when measured performance
+  indicates.
+
+#### example
+
+```ada
+   -- Nested "if"
+   if Last >= Target_Length then
+      if Buffer (1 .. Target_Length) = Target then
+         ...
+      end if;
+   end if;
+
+   -- "and then"
+   if Last >= Target_Length and then Buffer (1 .. Target_Length) = Target then
+      ...
+   end if;
+```
+
+#### rationale
+
+Determine the impact of using nested if statements versus using the `and then` or `or else` operator. One of the above may be significantly more
+efficient than the other.
+
+### Case Statement Versus elsif
+
+#### guideline
+
+- Use the case statement when measured performance indicates.
+
+#### example
+
+```ada
+   subtype Small_Int is Integer range 1 .. 5;
+   Switch : Small_Int;
+   ...
+   -- Case statement
+   case Switch is
+      when 1 => ...
+      when 2 => ...
+      when 3 => ...
+      when 4 => ...
+      when 5 => ...
+   end case;
+
+   -- "elsif construct"
+   if Switch = 1 then
+      ...
+   elsif Switch = 2 then
+      ...
+   elsif Switch = 3 then
+      ...
+   elsif Switch = 4 then
+      ...
+   elsif Switch = 5 then
+      ...
+   end if;
+```
+
+#### rationale
+
+Determine the impact of using case statements versus the elsif
+construct. If the case statement is implemented using a small jump
+table, then it may be significantly more efficient than the if .. then
+.. elsif construct.
+
+See also Guideline 8.4.6 for a discussion of the table-driven
+programming alternative.
+
+### Checking for Constraint Errors
+
+#### guideline
+
+- Use hard-coded constraint checking when measured performance
+  indicates.
+
+#### example
+
+```ada
+   subtype Small_Int is Positive range Lower .. Upper;
+   Var : Small_Int;
+   ...
+
+   -- Using exception handler
+   Double:
+      begin
+         Var := 2 * Var;
+      exception
+         when Constraint_Error =>
+            ...
+      end Double;
+
+      -- Using hard-coded check
+      if Var > Upper / 2 then
+         ...
+      else
+         Var := 2 * Var;
+      end if;
+```
+
+#### rationale
+
+Determine the impact of using exception handlers to detect constraint
+errors. If the exception handling mechanism is slow, then hard-coded
+checking may be more efficient.
+
+### Order of Array Processing
+
+#### guideline
+
+- Use column-first processing of two-dimensional arrays when measured
+  performance indicates.
+
+#### example
+
+```ada
+    type Table_Type is array (Row_Min .. Row_Max, Col_Min .. Col_Max) of ...
+    Table : Table_Type;
+    ...
+    -- Row-order processing
+    for Row in Row_Min .. Row_Max loop
+       for Col in Col_Min .. Col_Max loop
+          -- Process Table (Row, Col)
+       end loop;
+    end loop;
+    -- Column-order processing
+    for Col in Col_Min .. Col_Max loop
+       for Row in Row_Min .. Row_Max loop
+          -- Process Table (Row, Col)
+       end loop;
+    end loop;
+```
+
+#### rationale
+
+Determine the impact of processing two-dimensional arrays in row-major
+order versus column-major order. While most Ada compilers are likely to
+use row-major order, it is not a requirement. In the presence of good
+optimization, there may be no significant difference in the above
+examples. Using static array bounds is also likely to be significant
+here. See Guidelines 10.4.1 and 10.4.2.
+
+### Assigning Alternatives
+
+#### guideline
+
+- Use overwriting for conditional assignment when measured performance
+  indicates.
+
+#### example
+
+```ada
+   -- Using "if .. else"
+   if Condition then
+      Var := One_Value;
+   else
+      Var := Other_Value;
+   end if;
+   -- Using overwriting
+   Var := Other_Value;
+   if Condition then
+      Var := One_Value;
+   end if;
+```
+
+#### rationale
+
+Determine the impact of styles of assigning alternative values. The
+examples illustrate two common methods of doing this; for many systems,
+the performance difference is significant.
+
+### Packed Boolean Array Shifts
+
+#### guideline
+
+- When measured performance indicates, perform packed Boolean array
+  shift operations by using slice assignments rather than repeated
+  bit-wise assignment.
+
+#### example
+
+```ada
+   subtype Word_Range is Integer range 0 .. 15;
+   type Flag_Word is array (Word_Range) of Boolean;
+   pragma Pack (Flag_Word);
+   Word : Flag_Word;
+   ...
+
+   -- Loop to shift by one bit
+   for Index in 0 .. 14 loop
+      Word (Index) := Word (Index + 1);
+   end loop;
+   Word (15) := False;
+
+   -- Use slice assignment to shift by one bit
+   Word (0 .. 14) := Word (1 .. 15);
+   Word (15) := False;
+```
+
+#### rationale
+
+Determine the impact of slice manipulation when shifting packed Boolean
+arrays. For Ada 83 implementations using packed Boolean arrays, shift
+operations may be much faster when slice assignments are used as opposed
+to for loop moving one component at a time. For Ada 95 implementations,
+consider using modular types instead (see Guideline 10.6.3).
+
+### Subprogram Dispatching
+
+#### guideline
+
+- Use static subprogram dispatching when measured performance
+  indicates.
+
+#### example
+
+The term "static dispatching" in this example refers to the use of
+if/elsif sequences to explicitly determine which subprograms to call
+based on certain conditions:
+
+```ada
+    -- (1) Dispatching where tag is not known at compile time
+    --     (See ACES V2.0 test "a9_ob_class_wide_dynamic_01")
+    -- Object_Type is a tagged type
+    -- The_Pointer designates Object_Type'Class;
+    -- Subclass1_Pointer designates Subclass1 (derived from Object_Type)
+    -- Subclass2_Pointer designates Subclass2 (derived from Subclass1)
+    -- Subclass3_Pointer designates Subclass3 (derived from Subclass2)
+    Random_Value := Simple_Random; -- Call to a random number generator
+    if Random_Value < 1.0/3.0 then
+       The_Pointer := Subclass1_Pointer;
+    elsif Random_Value > 2.0/3.0 then
+       The_Pointer := Subclass2_Pointer;
+    else
+       The_Pointer := Subclass3_Pointer;
+    end if;
+    Process (The_Pointer.all);  -- Tag is unknown
+    -- (2) Tag is determinable at compile time (static dispatching)
+    --     (See ACES V2.0, test "a9_ob_class_wide_static_01")
+    -- Object_Type is a tagged type
+    -- The_Pointer designates Object_Type'Class;
+    -- Subclass1_Pointer designates Subclass1 (derived from Object_Type)
+    -- Subclass2_Pointer designates Subclass2 (derived from Subclass1)
+    -- Subclass3_Pointer designates Subclass3 (derived from Subclass2)
+    Random_Value := Simple_Random; -- Call to a random number generator
+    if Random_Value < 1.0/3.0 then
+       Process (Subclass1_Pointer.all);
+    elsif Random_Value > 2.0/3.0 then
+       Process (Subclass2_Pointer.all);
+    else
+       Process (Subclass3_Pointer.all);
+    end if;
+    -- (3) No tagged types are involved (no dispatching)
+    --     (See ACES V2.0, test "ap_ob_class_wide_01")
+    -- Object_type is a discriminated type with variants; possible
+    -- discriminant values are Subclass1, Subclass2, and Subclass3
+    -- All the pointers designate values of Object_Type
+    -- Subclass1_Pointer := new Object_Type (Subclass1);
+    -- Subclass2_Pointer := new Object_Type (Subclass2);
+    -- Subclass3_Pointer := new Object_Type (Subclass3);
+    -- There is only one "Process" procedure (operating on Object_Type)
+    Random_Value := Simple_Random; -- Call to a random number generator
+    if Random_Value < 1.0/3.0 then
+       Process (Subclass1_Pointer.all);
+    elsif Random_Value > 2.0/3.0 then
+       Process (Subclass2_Pointer.all);
+    else
+       Process (Subclass3_Pointer.all);
+    end if;
+```
+
+#### rationale
+
+Determine the impact of dynamic and static subprogram dispatching. The
+compiler may generate much more efficient code for one form of
+dispatching than the other.
+
+#### notes
+
+Dynamic dispatching will almost certainly be more efficient than an
+explicit if . . . elsif sequence. However, you should be aware of any
+optimizing decisions made by a compiler that might affect this
+situation.

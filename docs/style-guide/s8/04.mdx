@@ -1,0 +1,527 @@
+---
+title: 8.4 Independence
+---
+
+A reusable part should be as independent as possible from other reusable
+parts. A potential user is less inclined to reuse a part if that part
+requires the use of other parts that seem unnecessary. The "extra
+baggage" of the other parts wastes time and space. A user would like to
+be able to reuse only that part that is perceived as useful. The concept
+of a "part" is intentionally vague here. A single package does not need
+to be independent of each other package in a reuse library if the
+"parts" from that library that are typically reused are entire
+subsystems. If the entire subsystem is perceived as providing a useful
+function, the entire subsystem is reused. However, the subsystem should
+not be tightly coupled to all the other subsystems in the reuse library
+so that it is difficult or impossible to reuse the subsystem without
+reusing the entire library. Coupling between reusable parts should only
+occur when it provides a strong benefit perceptible to the user.
+
+### Subsystem Design
+
+#### guideline
+
+- Consider structuring subsystems so that operations that are only
+  used in a particular context are in different child packages than
+  operations used in a different context.
+- Consider declaring context-independent functionality in the parent
+  package and context-dependent functionality in child packages.
+
+#### rationale
+
+The generic unit is a basic building block. Generic parameterization can
+be used to break dependencies between program units so that they can be
+reused separately. However, it is often the case that a set of units,
+particularly a set of packages, are to be reused together as a
+subsystem. In this case, the packages can be collected into a hierarchy
+of child packages, with private packages to hide internal details. The
+hierarchy may or may not be generic. Using the child packages allows
+subsystems to be reused without incorporating too many extraneous
+operations because the unused child packages can be discarded in the new
+environment.
+
+See also Guidelines 4.1.6 and 8.3.1.
+
+### Using Generic Parameters to Reduce Coupling
+
+#### guideline
+
+- Minimize with clauses on reusable parts, especially on their
+  specifications.
+- Consider using generic parameters instead of with statements to
+  reduce the number of context clauses on a reusable part.
+- Consider using generic formal package parameters to import directly
+  all the types and operations defined in an instance of a preexisting
+  generic.
+
+#### example
+
+A procedure like the following:
+
+```ada
+------------------------------------------------------------------------
+with Package_A;
+procedure Produce_And_Store_A is
+   ...
+begin  -- Produce_And_Store_A
+   ...
+   Package_A.Produce (...);
+   ...
+   Package_A.Store (...);
+   ...
+end Produce_And_Store_A;
+------------------------------------------------------------------------
+```
+
+can be rewritten as a generic unit:
+
+```ada
+------------------------------------------------------------------------
+generic
+   with procedure Produce (...);
+   with procedure Store   (...);
+procedure Produce_And_Store;
+------------------------------------------------------------------------
+procedure Produce_And_Store is
+   ...
+begin  -- Produce_And_Store
+   ...
+   Produce (...);
+   ...
+   Store   (...);
+   ...
+end Produce_And_Store;
+------------------------------------------------------------------------
+```
+
+and then instantiated:
+
+```ada
+------------------------------------------------------------------------
+with Package_A;
+with Produce_And_Store;
+procedure Produce_And_Store_A is
+   new Produce_And_Store (Produce => Package_A.Produce,
+                          Store   => Package_A.Store);
+------------------------------------------------------------------------
+```
+
+#### rationale
+
+Context (with) clauses specify the names of other units upon which this
+unit depends. Such dependencies cannot and should not be entirely
+avoided, but it is a good idea to minimize the number of them that occur
+in the specification of a unit. Try to move them to the body, leaving
+the specification independent of other units so that it is easier to
+understand in isolation. Also, organize your reusable parts in such a
+way that the bodies of the units do not contain large numbers of
+dependencies on each other. Partitioning your library into independent
+functional areas with no dependencies spanning the boundaries of the
+areas is a good way to start. Finally, reduce dependencies by using
+generic formal parameters instead of with statements, as shown in the
+example above. If the units in a library are too tightly coupled, then
+no single part can be reused without reusing most or all of the library.
+
+The first (nongeneric) version of Produce_And_Store_A above is
+difficult to reuse because it depends on Package_A that may not be
+general purpose or generally available. If the operation
+Produce_And_Store has reuse potential that is reduced by this
+dependency, a generic unit and an instantiation should be produced as
+shown above. The with clause for Package_A has been moved from the
+Produce_And_Store generic procedure, which encapsulates the reusable
+algorithm to the Produce_And_Store_A instantiation. Instead of naming
+the package that provides the required operations, the generic unit
+simply lists the required operations themselves. This increases the
+independence and reusability of the generic unit.
+
+This use of generic formal parameters in place of with clauses also
+allows visibility at a finer granularity. The with clause on the
+nongeneric version of Produce_And_Store_A makes all of the contents
+of Package_A visible to Produce_And_Store_A, while the generic
+parameters on the generic version make only the Produce and Store
+operations available to the generic instantiation.
+
+Generic formal packages allow for "safer and simpler composition of
+generic abstractions" ( Rationale 1995, §12.6). The generic formal
+package allows you to group a set of related types and their operations
+into a single unit, avoiding having to list each type and operation as
+an individual generic formal parameter. This technique allows you to
+show clearly that you are extending the functionality of one generic
+with another generic, effectively parameterizing one abstraction with
+another.
+
+### Coupling Due to Pragmas
+
+#### guideline
+
+- In the specification of a generic library unit, use pragma
+  Elaborate_Body.
+
+#### example
+
+```ada
+---------------------------------------------------------------------------
+generic
+   ...
+package Stack is
+
+   pragma Elaborate_Body (Stack); -- in case the body is not yet elaborated
+
+   ...
+end Stack;
+---------------------------------------------------------------------------
+with Stack;
+package My_Stack is
+   new Stack (...);
+---------------------------------------------------------------------------
+package body Stack is
+begin
+   ...
+end Stack;
+---------------------------------------------------------------------------
+```
+
+#### rationale
+
+The elaboration order of compilation units is only constrained to follow
+the compilation order. Furthermore, any time you have an instantiation
+as a library unit or an instantiation in a library package, Ada requires
+that you elaborate the body of the generic being instantiated before
+elaborating the instantiation itself. Because a generic library unit
+body may be compiled after an instantiation of that generic, the body
+may not necessarily be elaborated at the time of the instantiation,
+causing a Program_Error. Using pragma Elaborate_Body avoids this by
+requiring that the generic unit body be elaborated immediately after the
+specification, whatever the compilation order.
+
+When there is clear requirement for a recursive dependency, you should
+use pragma Elaborate_Body. This situation arises, for example, when you
+have a recursive dependency (i.e., package A's body depends on package
+B's specification and package B's body depends on package A's
+specification).
+
+#### notes
+
+Pragma Elaborate_All controls the order of elaboration of one unit with
+respect to another. This is another way of coupling units and should be
+avoided when possible in reusable parts because it restricts the number
+of configurations in which the reusable parts can be combined.
+Recognize, however, that pragma Elaborate_All provides a better
+guarantee of elaboration order because if using this pragma uncovers
+elaboration problems, they will be reported at link time (as opposed to
+a run-time execution error).
+
+Any time you call a subprogram (typically a function) during the
+elaboration of a library unit, the body of the subprogram must have been
+elaborated before the library unit. You can ensure this elaboration
+happens by adding a pragma Elaborate_Body for the unit containing the
+function. If, however, that function calls other functions, then it is
+safer to put a pragma Elaborate_All on the unit containing the
+function.
+
+For a discussion of the pragmas Pure and Preelaborate, see also the Ada
+Reference Manual (1995, §10.2.1) and the Rationale (1995, §10.3). If you
+use either pragma Pure or Preelaborate, you will not need the pragma
+Elaborate_Body.
+
+The idea of a registry is fundamental to many object-oriented
+programming frameworks. Because other library units will need to call it
+during their elaboration, you need to make sure that the registry itself
+is elaborated early. Note that the registry should only depend on the
+root types of the type hierarchies and that the registry should only
+hold "class-wide" pointers to the objects, not more specific pointers.
+The root types should not themselves depend on the registry. See Chapter
+9 for a more complete discussion of the use of object-oriented features.
+
+### Part Families
+
+#### guideline
+
+- Create families of generic or other parts with similar
+  specifications.
+
+#### example
+
+The Booch parts (Booch 1987) are an example of the application of this
+guideline.
+
+#### rationale
+
+Different versions of similar parts (e.g., bounded versus unbounded
+stacks) may be needed for different applications or to change the
+properties of a given application. Often, the different behaviors
+required by these versions cannot be obtained using generic parameters.
+Providing a family of parts with similar specifications makes it easy
+for the programmer to select the appropriate one for the current
+application or to substitute a different one if the needs of the
+application change.
+
+#### notes
+
+A reusable part that is structured from subparts that are members of
+part families is particularly easy to tailor to the needs of a given
+application by substitution of family members.
+
+Guideline 9.2.4 discusses the use of tagged types in building different
+versions of similar parts (i.e., common interface, multiple
+implementations).
+
+### Conditional Compilation
+
+#### guideline
+
+- Structure reusable code to take advantage of dead code removal by
+  the compiler.
+
+#### example
+
+```ada
+------------------------------------------------------------------------
+package Matrix_Math is
+   ...
+   type Algorithm is (Gaussian, Pivoting, Choleski, Tri_Diagonal);
+   generic
+      Which_Algorithm : in     Algorithm := Gaussian;
+   procedure Invert ( ... );
+end Matrix_Math;
+------------------------------------------------------------------------
+package body Matrix_Math is
+   ...
+   ---------------------------------------------------------------------
+   procedure Invert ( ... ) is
+      ...
+   begin  -- Invert
+      case Which_Algorithm is
+         when Gaussian     => ... ;
+         when Pivoting     => ... ;
+         when Choleski     => ... ;
+         when Tri_Diagonal => ... ;
+      end case;
+   end Invert;
+   ---------------------------------------------------------------------
+end Matrix_Math;
+------------------------------------------------------------------------
+```
+
+#### rationale
+
+Some compilers omit object code corresponding to parts of the program
+that they detect can never be executed. Constant expressions in
+conditional statements take advantage of this feature where it is
+available, providing a limited form of conditional compilation. When a
+part is reused in an implementation that does not support this form of
+conditional compilation, this practice produces a clean structure that
+is easy to adapt by deleting or commenting out redundant code where it
+creates an unacceptable overhead.
+
+This feature should be used when other factors prevent the code from
+being separated into separate program units. In the above example, it
+would be preferable to have a different procedure for each algorithm.
+But the algorithms may differ in slight but complex ways to make
+separate procedures difficult to maintain.
+
+#### caution
+
+Be aware of whether your implementation supports dead code removal, and
+be prepared to take other steps to eliminate the overhead of redundant
+code if necessary.
+
+### Table-Driven Programming
+
+#### guideline
+
+- Write table-driven reusable parts wherever possible and appropriate.
+
+#### example
+
+The epitome of table-driven reusable software is a parser generation
+system. A specification of the form of the input data and of its output,
+along with some specialization code, is converted to tables that are to
+be "walked" by preexisting code using predetermined algorithms in the
+parser produced. Other forms of "application generators" work similarly.
+
+#### rationale
+
+Table-driven (sometimes known as data-driven) programs have behavior
+that depends on data with'ed at compile time or read from a file at
+run-time. In appropriate circumstances, table-driven programming
+provides a very powerful way of creating general-purpose, easily
+tailorable, reusable parts.
+
+See Guideline 5.3.4 for a short discussion of using access-to-subprogram
+types in implementing table-driven programs.
+
+#### notes
+
+Consider whether differences in the behavior of a general-purpose part
+could be defined by some data structure at compile- or run-time, and if
+so, structure the part to be table-driven. The approach is most likely
+to be applicable when a part is designed for use in a particular
+application domain but needs to be specialized for use in a specific
+application within the domain. Take particular care in commenting the
+structure of the data needed to drive the part.
+
+Table-driven programs are often more efficient and easier to read than
+the corresponding case or if-elsif-else networks to compute the item
+being sought or looked up.
+
+### String Handling
+
+#### guideline
+
+- Use the predefined packages for string handling.
+
+#### example
+
+Writing code such as the following is no longer necessary in Ada 95:
+
+```ada
+function Upper_Case (S : String) return String is
+
+   subtype Lower_Case_Range is Character range 'a'..'z';
+
+   Temp : String := S;
+   Offset : constant := Character'Pos('A') - Character'Pos('a');
+
+begin
+   for Index in Temp'Range loop
+      if Temp(Index) in Lower_Case_Range then
+         Temp(Index) := Character'Val (Character'Pos(Temp(Index)) + Offset);
+      end if;
+   end loop;
+   return Temp;
+end Upper_Case;
+
+with Ada.Characters.Latin_1;
+function Trim (S : String) return String is
+   Left_Index  : Positive := S'First;
+   Right_Index : Positive := S'Last;
+   Space : constant Character := Ada.Characters.Latin_1.Space;
+begin
+   while (Left_Index < S'Last) and then (S(Left_Index) = Space) loop
+      Left_Index := Positive'Succ(Left_Index);
+   end loop;
+
+   while (Right_Index > S'First) and then (S(Right_Index) = Space) loop
+      Right_Index := Positive'Pred(Right_Index);
+   end loop;
+
+   return S(Left_Index..Right_Index);
+end Trim;
+```
+
+Assuming a variable S of type String, the following expression:
+
+```ada
+Upper_Case(Trim(S))
+```
+
+can now be replaced by more portable and preexisting language-defined
+operations such as:
+
+```ada
+with Ada.Characters.Handling;  use Ada.Characters.Handling;
+with Ada.Strings;              use Ada.Strings;
+with Ada.Strings.Fixed;        use Ada.Strings.Fixed;
+
+...
+To_Upper (Trim (Source => S, Side => Both))
+```
+
+#### rationale
+
+The predefined Ada language environment includes string handling
+packages to encourage portability. They support different categories of
+strings: fixed length, bounded length, and unbounded length. They also
+support subprograms for string construction, concatenation, copying,
+selection, ordering, searching, pattern matching, and string
+transformation. You no longer need to define your own string handling
+packages.
+
+### Tagged Type Hierarchies
+
+#### guideline
+
+- Consider using hierarchies of tagged types to promote generalization
+  of software for reuse.
+- Consider using a tagged type hierarchy to decouple a generalized
+  algorithm from the details of dependency on specific types.
+
+#### example
+
+```ada
+with Wage_Info;
+package Personnel is
+   type Employee is abstract tagged limited private;
+   type Employee_Ptr is access all Employee'Class;
+   ...
+   procedure Compute_Wage (E : Employee) is abstract;
+private
+   type Employee is tagged limited record
+      Name  : ...;
+      SSN   : ... ;
+      Rates : Wage_Info.Tax_Info;
+      ...
+   end record;
+end Personnel;
+package Personnel.Part_Time is
+   type Part_Timer is new Employee with private;
+   ...
+   procedure Compute_Wage (E : Part_Timer);
+private
+   ...
+end Personnel.Part_Time;
+package Personnel.Full_Time is
+   type Full_Timer is new Employee with private;
+   ...
+   procedure Compute_Wage (E : Full_Timer);
+private
+   ...
+end Personnel.Full_Time;
+```
+
+Given the following array declaration:
+
+```ada
+type Employee_List is array (Positive range <>) of Personnel.Employee_Ptr;
+```
+
+you can write a procedure that computes the wage of each employee,
+regardless of the different types of employees that you create. The
+Employee_List consists of an array of pointers to the various kinds of
+employees, each of which has an individual Compute_Wage procedure. (The
+primitive Compute_Wage is declared as an abstract procedure and,
+therefore, must be overridden by all descendants.) You will not need to
+modify the payroll code as you specialize the kinds of employees:
+
+```ada
+procedure Compute_Payroll (Who : Employee_List) is
+begin -- Compute_Payroll
+   for E in Who'Range loop
+      Compute_Wage (Who(E).all);
+   end loop;
+end Compute_Payroll;
+```
+
+#### rationale
+
+The general algorithm can depend polymorphically on objects of the
+class-wide type of the root tagged type without caring what specialized
+types are derived from the root type. The generalized algorithm does not
+need to be changed if additional types are added to the type hierarchy.
+See also Guideline 5.4.2. Furthermore, the child package hierarchy then
+mirrors the inheritance hierarchy.
+
+A general root tagged type can define the common properties and have
+common operations for a hierarchy of more specific types. Software that
+depends only on this root type will be general, in that it can be used
+with objects of any of the more specific types. Further, the general
+algorithms of clients of the root type do not have to be changed as more
+specific types are added to the type hierarchy. This is a particularly
+effective way to organize object-oriented software for reuse.
+
+Separating the hierarchy of derived tagged types into individual
+packages enhances reusability by reducing the number of items in package
+interfaces. It also allows you to with only the capabilities needed.
+
+See also Guidelines 9.2, 9.3.1, 9.3.5, and 9.4.1.

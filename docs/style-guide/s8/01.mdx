@@ -1,0 +1,180 @@
+---
+title: 8.1 Understanding and Clarity
+---
+
+It is particularly important that parts intended for reuse should be
+easy to understand. What the part does, how to use it, what anticipated
+changes might be made to it in the future, and how it works are facts
+that must be immediately apparent from inspection of the comments and
+the code itself. For maximum readability of reusable parts, follow the
+guidelines in Chapter 3, some of which are repeated more strongly below.
+
+### Application-Independent Naming
+
+#### guideline
+
+- Select the least restrictive names possible for reusable parts and
+  their identifiers .
+- Select the generic name to avoid conflicting with the naming
+  conventions of instantiations of the generic.
+- Use names that indicate the behavioral characteristics of the
+  reusable part, as well as its abstraction.
+
+#### example
+
+General-purpose stack abstraction:
+
+```ada
+------------------------------------------------------------------------
+generic
+   type Item is private;
+package Bounded_Stack is
+   procedure Push (New_Item    : in     Item);
+   procedure Pop  (Newest_Item :    out Item);
+   ...
+end Bounded_Stack;
+------------------------------------------------------------------------
+```
+
+Renamed appropriately for use in current application:
+
+```ada
+with Bounded_Stack;
+
+...
+
+   type Tray is ...
+   package Tray_Stack is
+      new Bounded_Stack (Item => Tray);
+```
+
+#### rationale
+
+Choosing a general or application-independent name for a reusable part
+encourages its wide reuse. When the part is used in a specific context,
+it can be instantiated (if generic) or renamed with a more specific
+name.
+
+When there is an obvious choice for the simplest, clearest name for a
+reusable part, it is a good idea to leave that name for use by the
+reuser of the part, choosing a longer, more descriptive name for the
+reusable part. Thus, Bounded_Stack is a better name than Stack for a
+generic stack package because it leaves the simpler name Stack available
+to be used by an instantiation.
+
+Include indications of the behavioral characteristics (but not
+indications of the implementation) in the name of a reusable part so
+that multiple parts with the same abstraction (e.g., multiple stack
+packages) but with different restrictions (bounded, unbounded, etc.) can
+be stored in the same Ada library and used as part of the same Ada
+program.
+
+### Abbreviations
+
+#### guideline
+
+- Do not use abbreviations in identifier or unit names.
+
+#### example
+
+```ada
+------------------------------------------------------------------------
+with Ada.Calendar;
+package Greenwich_Mean_Time is
+   function Clock return Ada.Calendar.Time;
+   ...
+end Greenwich_Mean_Time;
+------------------------------------------------------------------------
+```
+
+The following abbreviation may not be clear when used in an application:
+
+```ada
+with Ada.Calendar;
+with Greenwich_Mean_Time;
+...
+   function Get_GMT return Ada.Calendar.Time renames
+          Greenwich_Mean_Time.Clock;
+```
+
+#### rationale
+
+This is a stronger guideline than Guideline 3.1.4. However well
+commented, an abbreviation may cause confusion in some future reuse
+context. Even universally accepted abbreviations, such as GMT for
+Greenwich Mean Time, can cause problems and should be used only with
+great caution.
+
+The difference between this guideline and Guideline 3.1.4 involves
+issues of domain. When the domain is well-defined, abbreviations and
+acronyms that are accepted in that domain will clarify the meaning of
+the application. When that same code is removed from its domain-specific
+context, those abbreviations may become meaningless.
+
+In the example above, the package, Greenwich_Mean_Time, could be used
+in any application without loss of meaning. But the function Get_GMT
+could easily be confused with some other acronym in a different domain.
+
+#### notes
+
+See Guideline 5.7.2 concerning the proper use of the renames clause. If
+a particular application makes extensive use of the
+Greenwich_Mean_Time domain, it may be appropriate to rename the
+package GMT within that application:
+
+with Greenwich_Mean_Time; ...
+
+` package GMT renames Greenwich_Mean_Time;`
+
+### Generic Formal Parameters
+
+#### guideline
+
+- Document the expected behavior of generic formal parameters just as
+  you document any package specification.
+
+#### example
+
+The following example shows how a very general algorithm can be
+developed but must be clearly documented to be used:
+
+```ada
+------------------------------------------------------------------------
+generic
+   -- Index provides access to values in a structure.  For example,
+   -- an array, A.
+   type Index is (<>);
+   type Element is private;
+   type Element_Array is array (Index range <>) of Element;
+   -- The function, Should_Precede, does NOT compare the indexes
+   -- themselves; it compares the elements of the structure.
+   -- The function Should_Precede is provided rather than a "Less_Than" function
+   -- because the sort criterion need not be smallest first.
+   with function Should_Precede (Left  : in     Element;
+                                 Right : in     Element)
+     return Boolean;
+   -- This procedure swaps values of the structure (the mode won't
+   -- allow the indexes themselves to be swapped!)
+   with procedure Swap (Index1 : in     Index;
+                        Index2 : in     Index;
+                        A      : in out Element_Array);
+   -- After the call to Quick_Sort, the indexed structure will be
+   -- sorted:
+   --     For all i,j in First..Last :  i<j  =>  A(i) < A(j).
+procedure Quick_Sort (First : in     Index := Index'First;
+                      Last  : in     Index := Index'Last);
+------------------------------------------------------------------------
+```
+
+#### rationale
+
+The generic capability is one of Ada's strongest features because of its
+formalization. However, not all of the assumptions made about generic
+formal parameters can be expressed directly in Ada. It is important that
+any user of a generic know exactly what that generic needs in order to
+behave correctly.
+
+In a sense, a generic specification is a contract where the instantiator
+must supply the formal parameters and, in return, receives a working
+instance of the specification. Both parties are best served when the
+contract is complete and clear about all assumptions.

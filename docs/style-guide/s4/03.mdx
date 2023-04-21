@@ -1,0 +1,179 @@
+---
+title: 4.3 Exceptions
+---
+
+This section addresses the issue of exceptions in the context of program
+structures. It discusses how exceptions should be used as part of the
+interface to a unit, including what exceptions to declare and raise and
+under what conditions to raise them. Information on how to handle,
+propagate, and avoid raising exceptions is found in Guideline 5.8.
+Guidelines on how to deal with portability issues are in Guideline 7.5.
+
+### Using Exceptions to Help Define an Abstraction
+
+#### guideline
+
+- For unavoidable internal errors for which no user recovery is
+  possible, declare a single user-visible exception. Inside the
+  abstraction, provide a way to distinguish between the different
+  internal errors.
+- Do not borrow an exception name from another context.
+- Export (declare visibly to the user) the names of all exceptions
+  that can be raised.
+- In a package, document which exceptions can be raised by each
+  subprogram and task entry.
+- Do not raise exceptions for internal errors that can be avoided or
+  corrected within the unit.
+- Do not raise the same exception to report different kinds of errors
+  that are distinguishable by the user of the unit.
+- Provide interrogative functions that allow the user of a unit to
+  avoid causing exceptions to be raised.
+- When possible, avoid changing state information in a unit before
+  raising an exception.
+- Catch and convert or handle all predefined and compiler-defined
+  exceptions at the earliest opportunity.
+- Do not explicitly raise predefined or implementation-defined
+  exceptions.
+- Never let an exception propagate beyond its scope.
+
+#### example
+
+This package specification defines two exceptions that enhance the
+abstraction:
+
+```ada
+-------------------------------------------------------------------------
+generic
+   type Element is private;
+package Stack is
+
+   function Stack_Empty return Boolean;
+   function Stack_Full  return Boolean;
+
+   procedure Pop  (From_Top :    out Element);
+   procedure Push (Onto_Top : in     Element);
+
+   -- Raised when Pop is used on empty stack.
+   Underflow : exception;
+
+   -- Raised when Push is used on full stack.
+   Overflow  : exception;
+
+end Stack;
+-------------------------------------------------------------------------
+...
+----------------------------------------------------------------------
+procedure Pop (From_Top :    out Element) is
+begin
+   ...
+
+   if Stack_Empty then
+      raise Underflow;
+
+   else -- Stack contains at least one element
+      Top_Index := Top_Index - 1;
+      From_Top  := Data(Top_Index + 1);
+
+   end if;
+end Pop;
+--------------------------------------------------------------------
+...
+```
+
+#### rationale
+
+Exceptions should be used as part of an abstraction to indicate error
+conditions that the abstraction is unable to prevent or correct. Because
+the abstraction is unable to correct such an error, it must report the
+error to the user. In the case of a usage error (e.g., attempting to
+invoke operations in the wrong sequence or attempting to exceed a
+boundary condition), the user may be able to correct the error. In the
+case of an error beyond the control of the user, the user may be able to
+work around the error if there are multiple mechanisms available to
+perform the desired operation. In other cases, the user may have to
+abandon use of the unit, dropping into a degraded mode of limited
+functionality. In any case, the user must be notified.
+
+Exceptions are a good mechanism for reporting such errors because they
+provide an alternate flow of control for dealing with errors. This
+allows error-handling code to be kept separate from the code for normal
+processing. When an exception is raised, the current operation is
+aborted and control is transferred directly to the appropriate exception
+handler.
+
+Several of the guidelines above exist to maximize the ability of the
+user to distinguish and correct different kinds of errors. Declaring new
+exception names, rather than raising exceptions declared in other
+packages, reduces the coupling between packages and also makes different
+exceptions more distinguishable. Exporting the names of all exceptions
+that a unit can raise, rather than declaring them internally to the
+unit, makes it possible for users of the unit to refer to the names in
+exception handlers. Otherwise, the user would be able to handle the
+exception only with an others handler. Finally, use comments to document
+exactly which of the exceptions declared in a package can be raised by
+each subprogram or task entry making it possible for the user to know
+which exception handlers are appropriate in each situation.
+
+In situations where there are errors for which the abstraction user can
+take no intelligent action (e.g., there is no workaround or degraded
+mode), it is better to export a single internal error exception. Within
+the package, you should consider distinguishing between the different
+internal errors. For instance, you could record or handle different
+kinds of internal error in different ways. When you propagate the error
+to the user, however, you should use a special internal error exception,
+indicating that no user recovery is possible. You should also provide
+relevant information when you propagate the error, using the facilities
+provided in Ada.Exceptions. Thus, for any abstraction, you effectively
+provide N + 1 different exceptions: N different recoverable errors and
+one irrecoverable error for which there is no mapping to the
+abstraction. Both the application requirements and what the client
+needs/wants in terms of error information help you identify the
+appropriate exceptions for an abstraction.
+
+Because they cause an immediate transfer of control, exceptions are
+useful for reporting unrecoverable errors, which prevent an operation
+from being completed, but not for reporting status or modes incidental
+to the completion of an operation. They should not be used to report
+internal errors that a unit was able to correct invisibly to the user.
+
+To provide the user with maximum flexibility, it is a good idea to
+provide interrogative functions that the user can call to determine
+whether an exception would be raised if a subprogram or task entry were
+invoked. The function Stack_Empty in the above example is such a
+function. It indicates whether Underflow would be raised if Pop were
+called. Providing such functions makes it possible for the user to avoid
+triggering exceptions.
+
+To support error recovery by its user, a unit should try to avoid
+changing state during an invocation that raises an exception. If a
+requested operation cannot be completely and correctly performed, then
+the unit should either detect this before changing any internal state
+information or should revert to the state at the time of the request.
+For example, after raising the exception Underflow, the stack package in
+the above example should remain in exactly the same state it was in when
+Pop was called. If it were to partially update its internal data
+structures for managing the stack, then future Push and Pop operations
+would not perform correctly. This is always desirable, but not always
+possible.
+
+User-defined exceptions should be used instead of predefined or
+compiler-defined exceptions because they are more descriptive and more
+specific to the abstraction. The predefined exceptions are very general
+and can be triggered by many different situations. Compiler-defined
+exceptions are nonportable and have meanings that are subject to change
+even between successive releases of the same compiler. This introduces
+too much uncertainty for the creation of useful handlers.
+
+If you are writing an abstraction, remember that the user does not know
+about the units you use in your implementation. That is an effect of
+information hiding. If any exception is raised within your abstraction,
+you must catch it and handle it. The user is not able to provide a
+reasonable handler if the original exception is allowed to propagate out
+of the body of your abstraction. You can still convert the exception
+into a form intelligible to the user if your abstraction cannot
+effectively recover on its own.
+
+Converting an exception means raising a user-defined exception in the
+handler for the original exception. This introduces a meaningful name
+for export to the user of the unit. Once the error situation is couched
+in terms of the application, it can be handled in those terms.

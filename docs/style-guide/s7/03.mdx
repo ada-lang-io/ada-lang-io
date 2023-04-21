@@ -1,0 +1,154 @@
+---
+title: 7.3 Tasking
+---
+
+The definition of tasking in the Ada language leaves many
+characteristics of the tasking model up to the implementor. This allows
+a vendor to make appropriate tradeoffs for the intended application
+domain, but it also diminishes the portability of designs and code
+employing the tasking features. In some respects, this diminished
+portability is an inherent characteristic of concurrency approaches (see
+Nissen and Wallis 1984, 37). A discussion of Ada tasking dependencies
+when employed in a distributed target environment is beyond the scope of
+this book. For example, multiprocessor task scheduling, interprocessor
+rendezvous, and the distributed sense of time through package Calendar
+are all subject to differences between implementations. For more
+information, Nissen and Wallis (1984) and ARTEWG (1986) touch on these
+issues, and Volz et al. (1985) is one of many research articles
+available.
+
+If the Real-Time Systems Annex is supported, then many concurrency
+aspects are fully defined and, therefore, a program can rely on these
+features while still being portable to other implementations that
+conform to the Real-Time Systems Annex. The following sections provide
+guidelines based on the absence of this annex.
+
+### Task Activation Order
+
+#### guideline
+
+- Do not depend on the order in which task objects are activated when
+  declared in the same declarative list.
+
+#### rationale
+
+The order in which task objects are activated is left undefined in the
+Ada Reference Manual (1995, §9.2). See also Guideline 6.1.5.
+
+### Delay Statements
+
+#### guideline
+
+- Do not depend on a particular delay being achievable (Nissen and
+  Wallis 1984).
+- Never use knowledge of the execution pattern of tasks to achieve
+  timing requirements.
+
+#### rationale
+
+The rationale for this appears in Guideline 6.1.7. In addition, the
+treatment of delay statements varies from implementation to
+implementation, thereby hindering portability.
+
+Using knowledge of the execution pattern of tasks to achieve timing
+requirements is nonportable. Ada does not specify the underlying
+scheduling algorithm, and there is no guarantee that system clock ticks
+will be consistently precise between different systems. Thus, when you
+change system clocks, your delay behavior also changes.
+
+### Package Calendar, Type Duration, and System.Tick
+
+#### guideline
+
+- Do not assume a correlation between System.Tick and type Duration
+  (see Guidelines 6.1.7 and 7.4.2).
+
+#### rationale
+
+Such a correlation is not required, although it may exist in some
+implementations.
+
+### Select Statement Evaluation Order
+
+#### guideline
+
+- Do not depend on the order in which guard conditions are evaluated
+  or on the algorithm for choosing among several open select
+  alternatives.
+
+#### rationale
+
+The language does not define the order of these conditions, so assume
+that they are arbitrary.
+
+### Task Scheduling Algorithm
+
+#### guideline
+
+- Do not assume that tasks execute uninterrupted until they reach a
+  synchronization point.
+- Use pragma Priority to distinguish general levels of importance only
+  (see Guideline 6.1.6).
+
+#### rationale
+
+The Ada tasking model requires that tasks be synchronized only through
+the explicit means provided in the language (i.e., rendezvous, task
+dependence, pragma Atomic). The scheduling algorithm is not defined by
+the language and may vary from time sliced to preemptive priority. Some
+implementations provide several choices that a user may select for the
+application.
+
+#### notes
+
+The number of priorities may vary between implementations. In addition,
+the manner in which tasks of the same priority are handled may vary
+between implementations even if the implementations use the same general
+scheduling algorithm.
+
+#### exceptions
+
+In real-time systems, it is often necessary to tightly control the
+tasking algorithm to obtain the required performance. For example,
+avionics systems are frequently driven by cyclic events with limited
+asynchronous interruptions. A nonpreemptive tasking model is
+traditionally used to obtain the greatest performance in these
+applications. Cyclic executives can be programmed in Ada, as can a
+progression of scheduling schemes from cyclic through
+multiple-frame-rate to full asynchrony (MacLaren 1980), although an
+external clock is usually required.
+
+### Abort
+
+#### guideline
+
+- Avoid using the abort statement.
+
+#### rationale
+
+The rationale for this appears in Guideline 6.3.3. In addition,
+treatment of the abort statement varies from implementation to
+implementation, thereby hindering portability.
+
+### Unprotected Shared Variables and Pragmas Atomic and Volatile
+
+#### guideline
+
+- Do not use unprotected shared variables.
+- Consider using protected types to provide data synchronization.
+- Have tasks communicate through the rendezvous mechanism.
+- Do not use unprotected shared variables as a task synchronization
+  device.
+- Consider using protected objects to encapsulate shared data.
+- Use pragma Atomic or Volatile only when you are forced to by
+  run-time system deficiencies.
+
+#### example
+
+See Guidelines 6.1.1 and 6.1.2.
+
+#### rationale
+
+The rationale for this appears in Guidelines 6.1.1 and 6.2.4. In
+addition, the treatment of unprotected shared variables varies from
+implementation to implementation, thereby hindering portability.

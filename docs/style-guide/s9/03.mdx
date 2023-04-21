@@ -1,0 +1,575 @@
+---
+title: 9.3 Tagged Type Operations
+---
+
+You can use three options when you define the operations on a tagged
+type and its descendants. These categories are primitive abstract,
+primitive nonabstract, and class-wide operations. An abstract operation
+must be overridden for a nonabstract derived type. A nonabstract
+operation may be redefined for a subclass. A class-wide operation cannot
+be overridden by a subclass definition. A class-wide operation can be
+redefined for the derivation class rooted in the derived type; however,
+this practice is discouraged because of the ambiguities it introduces in
+the code. Through careful usage of these options, you can ensure that
+your abstractions preserve class-wide properties, as discussed in
+Guideline 9.2.1. As stated above, this principle requires that any type
+that is visibly derived from some parent type must fully support the
+semantics of the parent type.
+
+### Primitive Operations and Redispatching
+
+#### guideline
+
+- Consider declaring a primitive abstract operation based on the
+  absence of a meaningful "default" behavior.
+- Consider declaring a primitive nonabstract operation based on the
+  presence of a meaningful "default" behavior.
+- When overriding an operation, the overriding subprogram should not
+  raise exceptions that are not known to the users of the overridden
+  subprogram.
+- If redispatching is used in the implementation of the operations of
+  a type, with the specific intent that some of the redispatched-to
+  operations be overridden by specializations for the derived types,
+  then document this intent clearly in the specification as part of
+  the "interface" of a parent type with its derived types.
+- When redispatching is used (for any reason) in the implementation of
+  a primitive operation of a tagged type, then document (in some
+  project-consistent way) this use in the body of the operation
+  subprogram so that it can be easily found during maintenance.
+
+#### example
+
+This example (Volan 1994) is intended to show a clean derivation of a
+square from a rectangle. You do not want to derive Square from Rectangle
+because Rectangle has semantics that are inappropriate for Square. (For
+instance, you can make a rectangle with any arbitrary height and width,
+but you should not be able to make a square this way.) Instead, both
+Square and Rectangle should be derived from some common abstract type,
+such as:
+
+```ada
+Any_Rectangle:
+type Figure is abstract tagged
+   record
+      ...
+   end record;
+type Any_Rectangle is abstract new Figure with private;
+-- No Make function for this; it's abstract.
+function Area (R: Any_Rectangle) return Float;
+  -- Overrides abstract Area function inherited from Figure.
+  -- Computes area as Width(R) * Height(R), which it will
+  -- invoke via dispatching calls.
+function Width (R: Any_Rectangle) return Float is abstract;
+function Height (R: Any_Rectangle) return Float is abstract;
+type Rectangle is new Any_Rectangle with private;
+function Make_Rectangle (Width, Height: Float) return Rectangle;
+function Width (R: Rectangle) return Float;
+function Height (R: Rectangle) return Float;
+-- Area for Rectangle inherited from Any_Rectangle
+type Square is new Any_Rectangle with private;
+function Make_Square (Side_Length: Float) return Square;
+function Side_Length (S: Square) return Float;
+function Width (S: Square) return Float;
+function Height (S: Square) return Float;
+-- Area for Square inherited from Any_Rectangle
+...
+-- In the body, you could just implement Width and Height for
+-- Square as renamings of Side_Length:
+function Width (S: Square) return Float renames Side_Length;
+function Height (S: Square) return Float renames Side_Length;
+function Area (R: Any_Rectangle) return Float is
+begin
+  return Width(Any_Rectangle'Class(R)) * Height(Any_Rectangle'Class(R));
+  -- Casting [sic, i.e., converting] to the class-wide type causes the function calls to
+  -- dynamically dispatch on the 'Tag of R.
+  -- [sic, i.e., redispatch on the tag of R.]
+end Area;
+
+Alternatively, you could just wait until defining types Rectangle and Square to provide actual Area functions:
+
+type Any_Rectangle is abstract new Figure with private;
+-- Inherits abstract Area function from Figure,
+-- but that's okay, Any_Rectangle is abstract too.
+function Width (R: Any_Rectangle) return Float is abstract;
+function Height (R: Any_Rectangle) return Float is abstract;
+type Rectangle is new Any_Rectangle with private;
+function Make_Rectangle (Width, Height: Float) return Rectangle;
+function Width (R: Rectangle) return Float;
+function Height (R: Rectangle) return Float;
+function Area (R: Rectangle) return Float; -- Overrides Area from Figure
+type Square is new Any_Rectangle with private;
+function Make_Square (Side_Length: Float) return Square;
+function Side_Length (S: Square) return Float;
+function Width (S: Square) return Float;
+function Height (S: Square) return Float;
+function Area (S: Square) return Float;  -- Overrides Area from Figure
+...
+function Area (R: Rectangle) return Float is
+begin
+  return Width(R) * Height(R); -- Non-dispatching calls
+end Area;
+function Area (S: Square) return Float is
+begin
+  return Side_Length(S) ** 2;
+end Area;
+```
+
+#### rationale
+
+The behavior of a nonabstract operation can be interpreted as the
+expected behavior for all members of the class; therefore, the behavior
+must be a meaningful default for all descendants. If the operation must
+be tailored based on the descendant abstraction (e.g., computing the
+area of a geometric shape depends on the specific shape), then the
+operation should be primitive and possibly abstract. The effect of
+making the operation abstract is that it guarantees that each descendant
+must define its own version of the operation. Thus, when there is no
+acceptable basic behavior, an abstract operation is appropriate because
+a new version of the operation must be provided with each derivation.
+
+All operations declared in the same package as the tagged type and
+following the tagged type's declaration but before the next type
+declaration are considered its primitive operations. Therefore, when a
+new type is derived from the tagged type, it inherits the primitive
+operations. If there are any operations that you do not want to be
+inherited, you must choose whether to declare them as class-wide
+operations (see Guideline 9.3.2) or to declare them in a separate
+package (e.g., a child package).
+
+Exceptions are part of the semantics of the class. By modifying the
+exceptions, you are violating the semantic properties of the class-wide
+type (see Guideline 9.2.1).
+
+There are (at least) two distinct users of a tagged type and its
+primitives. The "ordinary" user uses the type and its primitives without
+enhancement. The "extending" user extends the type by deriving a type
+based on the existing (tagged) type. Extending users and maintainers
+must determine the ramifications of a possibly incorrect extension. The
+guidelines here try to strike a balance between too much documentation
+(that can then easily get out of synch with the actual code) and an
+appropriate level of documentation to enhance the maintainability of the
+code.
+
+One of the major maintenance headaches associated with inheritance and
+dynamic binding relates to undocumented interdependencies among
+primitive (dispatching) operations of tagged types (the equivalent of
+"methods" in typical object-oriented terminology). If a derived type
+inherits some and overrides other primitive operations, there is the
+question of what indirect effects on the inherited primitives are
+produced. If no redispatching is used, the primitives may be inherited
+as "black boxes." If redispatching is used internally, then when
+inherited, the externally visible behavior of an operation may change,
+depending on what other primitives are overridden. Maintenance problems
+(here, finding and fixing bugs) occur when someone overrides incorrectly
+(on purpose or by accident) an operation used in redispatching. Because
+this overriding can invalidate the functioning of another operation
+defined perhaps several levels of inheritance up from the incorrect
+operation, it can be extremely difficult to track down.
+
+In the object-oriented paradigm, redispatching is often used to
+parameterize abstractions. In other words, certain primitives are
+intended to be overridden precisely because they are redispatching.
+These primitives may even be declared as abstract, requiring that they
+be overridden. Because they are redispatching, they act as "parameters"
+for the other operations. Although in Ada much of this parameterization
+can be done using generics, there are cases where the redispatching
+approach leads to a clearer object-oriented design. When you document
+the redispatching connection between the operations that are to be
+overridden and the operations that use them, you make the intended use
+of the type much clearer.
+
+Hence, any use of redispatching within a primitive should be considered
+part of the "interface" of the primitive, at least as far as any
+inheritor, and requires documentation at the specification level. The
+alternative (i.e., not providing such documentation in the
+specification) is to have to delve deep into the code of all the classes
+in the derivation hierarchy in order to map out the redispatching calls.
+Such detective work compromises the black-box nature of object-oriented
+class definitions. Note that if you follow Guideline 9.2.1 on preserving
+the semantics of the class-wide dispatching operations in the extensions
+of derived types, you will minimize or avoid the problems discussed here
+about redispatching.
+
+### Class-Wide Operations
+
+#### guideline
+
+- Consider using a class-wide operation (i.e., an operation with
+  parameter\[s\] of a class-wide type) when an operation can be
+  written, compiled, and tested without knowing all the possible
+  descendants of a given tagged type (Barnes 1996).
+- Consider using a class-wide operation when you do not want an
+  operation to be inherited and/or overridden.
+
+#### example
+
+The following example is adapted from Barnes (1996) using the geometric
+objects from the example of Guideline 9.2.1 and declaring the following
+functions as primitives in the package specification:
+
+```ada
+
+function Area (O : in Object) return Float;
+
+function Area (C : in Circle) return Float;
+
+function Area (S : in Shape) return Float;
+```
+
+A function for computing the moment of a force about a fulcrum can now
+be created using a class-wide type as follows:
+
+```ada
+
+function Moment (OC : Object'Class) return Float is
+begin
+   return OC.X_Coord*Area(OC);
+end Moment;
+```
+
+Because Moment accepts the class-wide formal parameter of Object'Class,
+it can be called with an actual parameter that is any derivation of type
+Object. Assuming that all derivations of type object have defined a
+function for Area, Moment will dispatch to the appropriate function when
+called. For example:
+
+```ada
+C : Circle;
+M : Float;
+
+...
+
+-- Moment will dispatch to the Area function for the Circle type.
+M := Moment(C);
+```
+
+#### rationale
+
+The use of class-wide operations avoids unnecessary duplication of code.
+Run-time dispatching may be used where necessary to invoke appropriate
+type-specific operations based on an operand's tag.
+
+See also Guideline 8.4.3 for a discussion of class-wide pointers in an
+object-oriented programming framework registry.
+
+### Constructors
+
+Ada does not define a unique syntax for constructors. In Ada a
+constructor for a type is defined as an operation that produces as a
+result a constructed object, i.e., an initialized instance of the type.
+
+#### guideline
+
+- Avoid declaring a constructor as a primitive abstract operation.
+- Use a primitive abstract operation to declare an initialization
+  function or constructor only when objects of the inheriting derived
+  types will not require additional parameters for initialization.
+- Consider using access discriminants to provide parameters to default
+  initialization.
+- Use constructors for explicit initialization.
+- Consider splitting the initialization and construction of an object.
+- Consider declaring a constructor operation in a child package.
+- Consider declaring a constructor operation to return an access value
+  to the constructed object (Dewar 1995).
+
+#### example
+
+The following example illustrates the declaration of a constructor in a
+child package:
+
+```ada
+--------------------------------------------------------------------------
+package Game is
+   type Game_Piece is tagged ...
+   ...
+
+end Game;
+--------------------------------------------------------------------------
+package Game.Constructors is
+   function Make_Piece return Game_Piece;
+   ...
+end Game.Constructors;
+--------------------------------------------------------------------------
+```
+
+The following example shows how to split the initialization and
+construction of an object:
+
+```ada
+type Vehicle is tagged ...
+
+procedure Initialize (Self : in out Vehicle;
+                      Make : in     String);
+
+...
+
+type Car is new Vehicle with ... ;
+type Car_Ptr is access all Car'Class;
+
+...
+
+procedure Initialize (Self  : in out Car_Ptr;
+                      Make  : in     String;
+                      Model : in     String) is
+begin -- Initialize
+   Initialize (Vehicle (Self.all), Make);
+   ...
+   -- initialization of Car
+end Initialize;
+
+function Create (Make  : in String;
+                 Model : in String) return Car_Ptr is
+   Temp_Ptr : Car_Ptr;
+begin -- Create
+   Temp_Ptr := new Car;
+   Initialize (Temp_Ptr, Make, Model);
+   return Temp_Ptr;
+end Create;
+```
+
+#### rationale
+
+Constructor operations for the types in a type hierarchy (assuming
+tagged types and their derivatives) usually differ in their parameter
+profiles. The constructor will typically need more parameters because of
+the added components in the descendant types. You run into a problem
+when you let constructor operations be inherited because you now have
+operations for which there is no meaningful implementation (default or
+overridden). Effectively, you violate the class-wide properties (see
+Guideline 9.2.1) because the root constructor will not successfully
+construct a descendant object. Inherited operations cannot add
+parameters to their parameter profile, so these are inappropriate to use
+as constructors.
+
+You cannot initialize a limited type at its declaration, so you may need
+to use an access discriminant and rely on default initialization. For a
+tagged type, however, you should not assume that any default
+initialization is sufficient, and you should declare constructors. For
+limited types, the constructors must be separate procedures or functions
+that return an access to the limited type.
+
+The example shows using a constructor in a child package. By declaring
+constructor operations in either a child package or a nested package,
+you avoid the problems associated with making them primitive operations.
+Because they are no longer primitive operations, they cannot be
+inherited. By declaring them in a child package (see also Guidelines
+4.1.6 and 4.2.2 on using child packages versus nested packages), you
+gain the ability to change them without affecting the clients of the
+parent package (Taft 1995b).
+
+You should put the construction logic and initialization logic in
+distinct subprograms so that you are able to call the initialization
+routine for the parent tagged type.
+
+#### notes
+
+When you extend a tagged type (regardless whether it is an abstract
+type), you can choose to declare as abstract some of the additional
+operations. Doing so, however, means that the derived type must also be
+declared as abstract. If this newly derived type has inherited any
+functions that name it as the return type, these inherited functions now
+also become abstract (Barnes 1996). If one of these primitive functions
+served as the constructor function, you have now violated the first
+guideline in that the constructor has become a primitive abstract
+operation.
+
+### Equality
+
+#### guideline
+
+- When you redefine the "=" operator on a tagged type, make sure that
+  it has the expected behavior in extensions of this type and override
+  it if necessary.
+
+#### example
+
+The following example is adapted from the discussion of equality and
+inheritance in Barnes (1996):
+
+```ada
+----------------------------------------------------------------------------
+package Object_Package is
+
+   Epsilon : constant Float := 0.01;
+
+   type Object is tagged
+      record
+         X_Coordinate : Float;
+         Y_Coordinate : Float;
+      end record;
+
+   function "=" (A, B : Object) return Boolean;
+
+end Object_Package;
+----------------------------------------------------------------------------
+package body Object_Package is
+
+   -- redefine equality to be when two objects are located within a delta
+   -- of the same point
+   function "=" (A, B : Object) return Boolean is
+   begin
+      return (A.X_Coordinate - B.X_Coordinate) ** 2
+           + (A.Y_Coordinate - B.Y_Coordinate) ** 2 < Epsilon**2;
+   end "=";
+
+end Object_Package;
+
+----------------------------------------------------------------------------
+with Object_Package;  use Object_Package;
+package Circle_Package_1 is
+   type Circle is new Object with
+      record
+         Radius : Float;
+      end record;
+  function "=" (A, B : Circle) return Boolean;
+end Circle_Package_1;
+----------------------------------------------------------------------------
+package body Circle_Package_1 is
+
+   -- Equality is overridden, otherwise two circles must have exactly
+   -- equal radii to be considered equal.
+   function "=" (A, B : Circle) return Boolean is
+   begin
+      return (Object(A) = Object(B)) and
+             (abs (A.Radius - B.Radius) < Epsilon);
+   end "=";
+
+end Circle_Package_1;
+----------------------------------------------------------------------------
+with Object_Package;  use Object_Package;
+package Circle_Package_2 is
+
+   type Circle is new Object with
+      record
+         Radius : Float;
+      end record;
+
+   -- don't override equality in this package
+
+end Circle_Package_2;
+----------------------------------------------------------------------------
+with Object_Package;
+with Circle_Package_1;
+with Circle_Package_2;
+with Ada.Text_IO;
+procedure Equality_Test is
+   use type Object_Package.Object;
+   use type Circle_Package_1.Circle;
+   use type Circle_Package_2.Circle;
+   Object_1 : Object_Package.Object;
+   Object_2 : Object_Package.Object;
+   Circle_1 : Circle_Package_1.Circle;
+   Circle_2 : Circle_Package_1.Circle;
+   Circle_3 : Circle_Package_2.Circle;
+   Circle_4 : Circle_Package_2.Circle;
+begin
+   Object_1 := (X_Coordinate => 1.000, Y_Coordinate => 2.000);
+   Object_2 := (X_Coordinate => 1.005, Y_Coordinate => 2.000);
+   -- These Objects are considered equal.  Equality has been redefined to be
+   -- when two objects are located within a delta of the same point.
+   if Object_1 = Object_2 then
+      Ada.Text_IO.Put_Line ("Objects equal.");
+   else
+      Ada.Text_IO.Put_Line ("Objects not equal.");
+   end if;
+   Circle_1 := (X_Coordinate => 1.000, Y_Coordinate => 2.000, Radius => 5.000);
+   Circle_2 := (X_Coordinate => 1.005, Y_Coordinate => 2.000, Radius => 5.005);
+   -- These Circles are considered equal.  Equality has been redefined to be
+   -- when the X-Y locations of the circles and their radii are both within
+   -- the delta.
+   if Circle_1 = Circle_2 then
+      Ada.Text_IO.Put_Line ("Circles equal.");
+   else
+      Ada.Text_IO.Put_Line ("Circles not equal.");
+   end if;
+   Circle_3 := (X_Coordinate => 1.000, Y_Coordinate => 2.000, Radius => 5.000);
+   Circle_4 := (X_Coordinate => 1.005, Y_Coordinate => 2.000, Radius => 5.005);
+   -- These Circles are not considered equal because predefined equality of
+   -- the extension component Radius will evaluate to False.
+   if Circle_3 = Circle_4 then
+      Ada.Text_IO.Put_Line ("Circles equal.");
+   else
+      Ada.Text_IO.Put_Line ("Circles not equal.");
+   end if;
+end Equality_Test;
+```
+
+#### rationale
+
+Equality is applied to all components of a record. When you extend a
+tagged type and compare two objects of the derived type for equality,
+the parent components as well as the new extension components will be
+compared. Therefore, when you redefine equality on a tagged type and
+define extensions on this type, the parent components are compared using
+the redefined equality. The extension components are also compared,
+using either predefined equality or some other redefined equality if
+appropriate. The behavior of inherited equality differs from the
+behavior of other inherited operations. When other primitives are
+inherited, if you do not override the inherited primitive, it can only
+operate on the parent components of the object of the extended type.
+Equality, on the other hand, generally does the right thing.
+
+### Polymorphism
+
+#### guideline
+
+- Consider using class-wide programming to provide run-time, dynamic
+  polymorphism when constructing larger, reusable, extensible
+  frameworks.
+- When possible, use class-wide programming rather than variant
+  records.
+- Use class-wide programming to provide a consistent interface across
+  the set of types in the tagged type hierarchy (i.e., class).
+- Consider using generics to define a new type in terms of an existing
+  type, either as an extension or as a container, collection, or
+  composite data structure.
+- Avoid using type extensions for parameterized abstractions when
+  generics provide a more appropriate mechanism.
+
+#### example
+
+```ada
+  generic
+     type Element is private;
+  package Stack is
+     ...
+  end Stack;
+
+is preferable to:
+
+  package Stack is
+     type Element is tagged null record;
+     -- Elements to be put on the stack must be of a descendant type
+     -- of this type.
+     ...
+  end Stack;
+```
+
+#### rationale
+
+Both generics and class-wide types allow a single algorithm to be
+applicable to multiple, specific types. With generics, you achieve
+polymorphism across unrelated types because the type used in the
+instantiation must match the generic formal part. You specify required
+operations using generic formal subprograms, constructing them as needed
+for a given instantiation. Generics are ideal for capturing relatively
+small, reusable algorithms and programming idioms, for example, sorting
+algorithms, maps, bags, and iterators. As generics become large,
+however, they become unwieldy, and each instantiation may involve
+additional generated code. Class-wide programming, including class-wide
+types and type extension, is more appropriate for building a large
+subsystem because you avoid the additional generated code and unwieldy
+properties of generics.
+
+Class-wide programming enables you to take a set of heterogeneous data
+structures and provide a homogeneous-looking interface across the whole
+set. See also Guideline 9.2.1 on using tagged types to describe
+heterogeneous polymorphic data.
+
+In object-oriented programming languages without generic capabilities,
+it was common to use inheritance to achieve much the same effect.
+However, this technique is generally less clear and more cumbersome to
+use than the equivalent explicit generic definition. The nongeneric,
+inheritance approach can always be recovered using a specific
+instantiation of the generic. Also see Guidelines 5.3.2 and 5.4.7 for a
+discussion of self-referential data structures.

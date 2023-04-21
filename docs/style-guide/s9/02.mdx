@@ -1,0 +1,625 @@
+---
+title: 9.2 Tagged Type Hierarchies
+---
+
+You should use inheritance primarily as a mechanism for implementing a
+class hierarchy from an object-oriented design. A class hierarchy should
+be a generalization/specialization ("is-a") relationship. This
+relationship may also be referred to as "is-a-kind-of," not to be
+confused with "is an instance of." This "is-a" usage of inheritance is
+in contrast to other languages in which inheritance is used also to
+provide the equivalent of the Ada context clauses with and use. In Ada,
+you first identify the external modules of interest via with clauses and
+then choose selectively whether to make only the name of the module
+(package) visible or its contents (via a use clause).
+
+### Tagged Types
+
+#### guideline
+
+- Consider using type extension when designing an is-a
+  (generalization/specialization) hierarchy.
+- Use tagged types to preserve a common interface across differing
+  implementations (Taft 1995a).
+- When defining a tagged type in a package, consider including a
+  definition of a general access type to the corresponding class-wide
+  type.
+- In general, define only one tagged type per package.
+
+#### example
+
+Consider the type structure for a set of two-dimensional geometric
+objects positioned in a Cartesian coordinate system (Barnes 1996). The
+ancestor or root type Object is a tagged record. The components common
+to this type and all its descendants are an x and y coordinate. Various
+descendant types include points, circles, and arbitrary shapes. Except
+for points, these descendant types extend the root type with additional
+components; for example, the circle adds a radius component:
+
+```ada
+type Object is tagged
+   record
+      X_Coord : Float;
+      Y_Coord : Float;
+   end record;
+
+type Circle is new Object with
+   record
+      Radius : Float;
+   end record;
+
+type Point is new Object with null record;
+
+type Shape is new Object with
+   record
+      -- other components
+      ...
+   end record;
+```
+
+The following is an example of general access type to the corresponding
+class-wide type:
+
+```ada
+package Employee is
+   type Object is tagged limited private;
+   type Reference is access all Object'class;
+   ...
+private
+   ...
+end Employee;
+```
+
+#### rationale
+
+You can derive new types from both tagged and untagged types, but the
+effects of this derivation are different. When you derive from an
+untagged type, you are creating a new type whose implementation is
+identical to the parent. Values of the derived types are subject to
+strong type checking; thus, you cannot mix the proverbial apples and
+oranges. When you derive a new type from an untagged type, you are not
+allowed to extend it with new components. You are effectively creating a
+new interface without changing the underlying implementation (Taft
+1995a).
+
+In deriving from a tagged type, you can extend the type with new
+components. Each descendant can extend a common interface (the
+parent's). The union of a tagged type and its descendants form a class,
+and a class offers some unique features not available to untagged
+derivations. You can write class-wide operations that can be applied to
+any object that is a member of the class. You can also provide new
+implementations for the descendants of tagged types, either by
+overriding inherited primitive operations or by creating new primitive
+operations. Finally, tagged types can be used as the basis for multiple
+inheritance building blocks (see Guideline 9.5.1).
+
+Reference semantics are very commonly used in object-oriented
+programming. In particular, heterogeneous polymorphic data structures
+based on tagged types require the use of access types. It is convenient
+to have a common definition for such a type provided to any client of
+the package defining the tagged type. A heterogeneous polymorphic data
+structure is a composite data structure (such as an array) whose
+elements have a homogeneous interface (i.e., an access to class-wide
+type) and whose elements' implementations are heterogeneous (i.e., the
+implementation of the elements uses different specific types). See also
+Guidelines 9.3.5 on polymorphism and 9.4.1 on managing visibility of
+tagged type hierarchies.
+
+In Ada, the primitive operations of a type are implicitly associated
+with the type through scoping rules. The definition of a tagged type and
+a set of operations corresponds together to the "traditional"
+object-oriented programming concept of a "class." Putting these into a
+package provides a clean encapsulation mechanism.
+
+#### exceptions
+
+If the root of the hierarchy does not define a complete set of values
+and operations, then use an abstract tagged type (see Guideline 9.2.4).
+This abstract type can be thought of as the least common denominator of
+the class, essentially a conceptual and incomplete type.
+
+If a descendant needs to remove one of the components or primitive
+operations of its ancestor, it may not be appropriate to extend the
+tagged type.
+
+An exception to using reference semantics is when a type is exported
+that would not be used in a data structure or made part of a collection.
+
+If the implementation of two tagged types requires mutual visibility and
+the two types are generally used together, then it may be best to define
+them together in one package, though thought should be given to using
+child packages instead (see Guideline 9.4.1). Also, it can be convenient
+to define a small hierarchy of (completely) abstract types (or a small
+part of a larger hierarchy) all in one package specification; however,
+the negative impact on maintainability may outweigh the convenience. You
+do not provide a package body in this situation unless you have declared
+nonabstract operations on members of the hierarchy.
+
+### Properties of Dispatching Operations
+
+#### guideline
+
+- The implementation of the dispatching operations of each type in a
+  derivation class rooted in a tagged type T should conform to the
+  expected semantics of the corresponding dispatching operations of
+  the class-wide type T'Class.
+
+#### example
+
+The key point of both of the alternatives in the following example is
+that it must be possible to use the class-wide type
+Transaction.Object'Class polymorphically without having to study the
+implementations of each of the types derived from the root type
+Transaction.Object. In addition, new transactions can be added to the
+derivation class without invalidating the existing transaction
+processing code. These are the important practical consequences of the
+design rule captured in the guideline:
+
+```ada
+with Database;
+package Transaction is
+
+   type Object (Data : access Database.Object'Class) is abstract tagged limited
+      record
+         Has_Executed : Boolean := False;
+      end record;
+
+   function Is_Valid (T : Object) return Boolean;
+   -- checks that Has_Executed is False
+
+   procedure Execute (T : in out Object);
+   -- sets Has_Executed to True
+
+   Is_Not_Valid : exception;
+
+end Transaction;
+```
+
+The precondition of Execute(T) for all T in Transaction.Object'Class is
+that Is_Valid(T) is True. The postcondition is the T.Has_Executed =
+True. This model is trivially satisfied by the root type
+Transaction.Object.
+
+Consider the following derived type:
+
+```ada
+with Transaction;
+with Personnel;
+package Pay_Transaction is
+   type Object is new Transaction.Object with
+      record
+         Employee     : Personnel.Name;
+         Hours_Worked : Personnel.Time;
+      end record;
+   function Is_Valid (T : Object) return Boolean;
+   -- checks that Employee is a valid name, Hours_Worked is a valid
+   -- amount of work time and Has_Executed = False
+   procedure Has_Executed (T : in out Object);
+   -- computes the pay earned by the Employee for the given Hours_Worked
+   -- and updates this in the database T.Data, then sets Has_Executed to True
+end Pay_Transaction;
+```
+
+The precondition for the specific operation Pay_Transaction.Execute(T)
+is that Pay_Transaction.Is_Valid(T) is True, which is the same
+precondition as for the dispatching operation Execute on the class-wide
+type. (The actual validity check is different, but the statement of the
+"precondition" is the same.) The postcondition for
+Pay_Transaction.Execute(T) includes T.Has_Executed = True but also
+includes the appropriate condition on T.Data for computation of pay.
+
+The class-wide transaction type can then be properly used as follows:
+
+```ada
+type Transaction_Reference is access all Transaction.Object'Class;
+type Transaction_List is array (Positive range <>) of Transaction_Reference;
+procedure Process (Action : in Transaction_List) is
+begin
+   for I in Action'Range loop
+   -- Note that calls to Is_Valid and Execute are dispatching
+      if Transaction.Is_Valid(Action(I).all) then
+         -- the precondition for Execute is satisfied
+         Transaction.Execute(Action(I).all);
+         -- the postcondition Action(I).Has_Executed = True is
+         -- guaranteed to be satisfied (as well as any stronger conditions
+         -- depending on the specific value of Action(I))
+      else
+         -- deal with the error
+         ...
+      end if;
+   end loop;
+end Process;
+```
+
+If you had not defined the operation Is_Valid on transactions, then the
+validity condition for pay computation (valid name and hours worked)
+would have to directly become the precondition for
+Pay_Transaction.Execute. But this would be a "stronger" precondition
+than that on the class-wide dispatching operation, violating the
+guideline. As a result of this violation, there would be no way to
+guarantee the precondition of a dispatching call to Execute, leading to
+unexpected failures.
+
+An alternative resolution to this problem is to define an exception to
+be raised by an Execute operation when the transaction is not valid.
+This behavior becomes part of the semantic model for the class-wide
+type: the precondition for Execute(T) becomes simply True (i.e., always
+valid), but the postcondition becomes "either" the exception is not
+raised and Has_Executed = True "or" the exception is raised and
+Has_Executed = False. The implementations of Execute in all derived
+transaction types would then need to satisfy the new postcondition. It
+is important that the "same" exception be raised by "all"
+implementations because this is part of the expected semantic model of
+the class-wide type.
+
+With the alternative approach, the above processing loop becomes:
+
+```ada
+procedure Process (Action : in Transaction_List) is
+begin
+
+   for I in Action'Range loop
+
+    Process_A_Transaction:
+      begin
+
+         -- there is no precondition for Execute
+         Transaction.Execute (Action(I).all);
+         -- since no exception was raised, the postcondition
+         -- Action(I).Has_Executed = True is guaranteed (as well as
+         -- any stronger condition depending on the specific value of
+         -- Action(I))
+
+      exception
+         when Transaction.Is_Not_Valid =>
+            -- the exception was raised, so Action(I).Has_Executed = False
+
+            -- deal with the error
+            ...
+
+      end Process_A_Transaction;
+
+   end loop;
+
+end Process;
+```
+
+#### rationale
+
+All the properties expected of a class-wide type by clients of that type
+should be meaningful for any specific types in the derivation class of
+the class-wide type. This rule is related to the object-oriented
+programming "substitutability principle" for consistency between the
+semantics of an object-oriented superclass and its subclasses (Wegner
+and Zdonik 1988). However, the separation of the polymorphic class-wide
+type T'Class from the root specific type T in Ada 95 clarifies this
+principle as a design rule on derivation classes rather than a
+correctness principle for derivation itself.
+
+When a dispatching operation is used on a variable of a class-wide type
+T'Class, the actual implementation executed will depend dynamically on
+the actual tag of the value in the variable. In order to rationally use
+T'Class, it must be possible to understand the semantics of the
+operations on T'Class without having to study the implementation of the
+operations for each of the types in the derivation class rooted in T.
+Further, a new type added to this derivation class should not invalidate
+this overall understanding of T'Class because this could invalidate
+existing uses of the class-wide type. Thus, there needs to be an overall
+set of semantic properties of the operations of T'Class that is
+preserved by the implementations of the corresponding dispatching
+operations of all the types in the derivation class.
+
+One way to capture the semantic properties of an operation is to define
+a "precondition" that must be true before the operation is invoked and a
+"postcondition" that must be true (given the precondition) after the
+operation has executed. You can (formally or informally) define pre- and
+postconditions for each operation of T'Class without reference to the
+implementations of dispatching operations of specific types. These
+semantic properties define the "minimum" set of properties common to all
+types in the derivation class. To preserve this minimum set of
+properties, the implementation of the dispatching operations of all the
+types in the derivation class rooted in T (including the root type T)
+should have (the same or) weaker preconditions than the corresponding
+operations of T'Class and (the same or) stronger postconditions than the
+T'Class operations. This means that any invocation of a dispatching
+operation on T'Class will result in the execution of an implementation
+that requires no more than what is expected of the dispatching operation
+in general (though it could require less) and delivers a result that is
+no less than what is expected (though it could do more).
+
+#### exceptions
+
+Tagged types and type extension may sometimes be used primarily for type
+implementation reasons rather than for polymorphism and dispatching. In
+particular, a nontagged private type may be implemented using a type
+extension of a tagged type. In such cases, it may not be necessary for
+the implementation of the derived type to preserve the semantic
+properties of the class-wide type because the membership of the new type
+in the tagged type derivation class will not generally be known to
+clients of the type.
+
+### Controlled Types
+
+#### guideline
+
+- Consider using a controlled type whenever a type allocates resources
+  that must be deallocated or otherwise "cleaned up" on destruction or
+  overwriting.
+- Use a derivation from a controlled type in preference to providing
+  an explicit "cleanup" operation that must be called by clients of
+  the type.
+- When overriding the adjustment and finalization procedures derived
+  from controlled types, define the finalization procedure to undo the
+  effects of the adjustment procedure.
+- Derived type initialization procedures should call the
+  initialization procedure of their parent as part of their
+  type-specific initialization.
+- Derived type finalization procedures should call the finalization
+  procedure of their parent as part of their type-specific
+  finalization.
+- Consider deriving a data structure's components rather than the
+  enclosing data structure from a controlled type.
+
+#### example
+
+The following example demonstrates the use of controlled types in the
+implementation of a simple linked list. Because the Linked_List type is
+derived from Ada.Finalization.Controlled, the Finalize procedure will be
+called automatically when objects of the Linked_List type complete
+their scope of execution:
+
+```ada
+with Ada.Finalization;
+package Linked_List_Package is
+   type Iterator is private;
+   type Data_Type is ...
+   type Linked_List is new Ada.Finalization.Controlled with private;
+   function Head (List : Linked_List) return Iterator;
+   procedure Get_Next (Element  : in out Iterator;
+                       Data     :    out Data_Type);
+   procedure Add (List     : in out Linked_List;
+                  New_Data : in     Data_Type);
+   procedure Finalize (List : in out Linked_List); -- reset Linked_List structure
+   -- Initialize and Adjust are left to the default implementation.
+private
+   type Node;
+   type Node_Ptr is access Node;
+   type Node is
+      record
+         Data : Data_Type;
+         Next : Node_Ptr;
+      end record;
+   type Iterator is new Node_Ptr;
+   type Linked_List is new Ada.Finalization.Controlled with
+      record
+         Number_Of_Items : Natural := 0;
+         Root            : Node_Ptr;
+      end record;
+end Linked_List_Package;
+--------------------------------------------------------------------------
+package body Linked_List_Package is
+
+   function Head (List : Linked_List) return Iterator is
+      Head_Node_Ptr : Iterator;
+   begin
+      Head_Node_Ptr := Iterator (List.Root);
+      return Head_Node_Ptr;  -- Return the head element of the list
+   end Head;
+
+   procedure Get_Next (Element : in out Iterator;
+                       Data    :    out Data_Type) is
+   begin
+      --
+      -- Given an element, return the next element (or null)
+      --
+   end Get_Next;
+
+   procedure Add (List     : in out Linked_List;
+                  New_Data : in     Data_Type) is
+   begin
+      --
+      -- Add a new element to the head of the list
+      --
+   end Add;
+
+   procedure Finalize (List : in out Linked_List) is
+   begin
+      -- Release all storage used by the linked list
+      --   and reinitialize.
+   end Finalize;
+
+end Linked_List_Package;
+```
+
+#### rationale
+
+The three controlling operations, Initialize, Adjust, and Finalize,
+serve as automatically called procedures that control three primitive
+activities in the life of an object (Ada Reference Manual 1995, §7.6).
+When an assignment to an object of a type derived from Controlled
+occurs, adjustment and finalization work in tandem. Finalization cleans
+up the object being overwritten (e.g., reclaims heap space), then
+adjustment finishes the assignment work once the value being assigned
+has been copied (e.g., to implement a deep copy).
+
+You can ensure that the derived type's initialization is consistent with
+that of the parent by calling the parent type's initialization from the
+derived type's initialization.
+
+You can ensure that the derived type's finalization is consistent with
+that of the parent by calling the parent type's finalization from the
+derived type's finalization.
+
+In general, you should call parent initialization before
+descendant-specific initialization. Similarly, you should call parent
+finalization after descendant-specific finalization. (You may position
+the parent initialization and/or finalization at the beginning or end of
+the procedure.)
+
+### Abstract Types
+
+#### guideline
+
+- Consider using abstract types and operations in creating
+  classification schemes, for example, a taxonomy, in which only the
+  leaf objects will be meaningful in the application.
+- Consider declaring root types and internal nodes in a type tree as
+  abstract.
+- Consider using abstract types for generic formal derived types.
+- Consider using abstract types to develop different implementations
+  of a single abstraction.
+
+#### example
+
+In a banking application, there are a wide variety of account types,
+each with different features and restrictions. Some of the variations
+are fees, overdraft protection, minimum balances, allowable account
+linkages (e.g., checking and savings), and rules on opening the account.
+Common to all bank accounts are ownership attributes: unique account
+number, owner name(s), and owner tax identification number(s). Common
+operations across all types of accounts are opening, depositing,
+withdrawing, providing current balance, and closing. The common
+attributes and operations describe the conceptual bank account. This
+idealized bank account can form the root of a
+generalization/specialization hierarchy that describes the bank's array
+of products. By using abstract tagged types, you ensure that only
+account objects corresponding to a specific product will be created.
+Because any abstract operations must be overridden with each derivation,
+you ensure that any restrictions for a specialized account are
+implemented (e.g., how and when the account-specific fee structure is
+applied):
+
+```ada
+--------------------------------------------------------------------------
+package Bank_Account_Package is
+
+   type Bank_Account_Type is abstract tagged limited private;
+   type Money is delta 0.01 digits 15;
+
+   -- The following abstract operations must be overridden for
+   --   each derivation, thus ensuring that any restrictions
+   --   for specialized accounts will be implemented.
+
+   procedure Open (Account : in out Bank_Account_Type) is abstract;
+
+   procedure Close (Account : in out Bank_Account_Type) is abstract;
+
+   procedure Deposit (Account : in out Bank_Account_Type;
+                      Amount  : in     Money) is abstract;
+
+   procedure Withdraw (Account : in out Bank_Account_Type;
+                       Amount  : in     Money) is abstract;
+
+   function Balance (Account : Bank_Account_Type)
+     return Money is abstract;
+
+private
+   type Account_Number_Type is ...
+   type Account_Owner_Type  is ...
+   type Tax_ID_Number_Type  is ...
+
+   type Bank_Account_Type is abstract tagged limited
+      record
+         Account_Number : Account_Number_Type;
+         Account_Owner  : Account_Owner_Type;
+         Tax_ID_Number  : Tax_ID_Number_Type;
+      end record;
+end Bank_Account_Package;
+--------------------------------------------------------------------------
+-- Now, other specialized accounts such as a savings account can
+-- be derived from Bank_Account_Type as in the following example.
+-- Note that abstract types are still used to ensure that only
+-- account objects corresponding to specific products will be
+-- created.with Bank_Account_Package;
+with Bank_Account_Package;
+package Savings_Account_Package is
+   type Savings_Account_Type is abstract
+      new Bank_Account_Package.Bank_Account_Type with private;
+   -- We must override the abstract operations provided
+   --   by Bank_Account_Package.  Since we are still declaring
+   --   these operations to be abstract, they must also be
+   --   overridden by the specializations of Savings_Account_Type.
+   procedure Open (Account : in out Savings_Account_Type) is abstract;
+   procedure Close (Account : in out Savings_Account_Type) is abstract;
+
+   procedure Deposit (Account : in out Savings_Account_Type;
+                      Amount  : in     Bank_Account_Package.Money) is abstract;
+
+   procedure Withdraw (Account : in out Savings_Account_Type;
+                       Amount  : in     Bank_Account_Package.Money) is abstract;
+
+   function Balance (Account : Savings_Account_Type)
+     return Bank_Account_Package.Money is abstract;
+
+private
+   type Savings_Account_Type is abstract
+      new Bank_Account_Package.Bank_Account_Type with
+         record
+            Minimum_Balance : Bank_Account_Package.Money;
+         end record;
+end Savings_Account_Package;
+
+--------------------------------------------------------------------------
+```
+
+See the abstract set package in Guideline 9.5.1 for an example of
+creating an abstraction with a single interface and the potential for
+multiple implementations. The example only shows one possible
+implementation; however, you could provide an alternate implementation
+of the Hashed_Set abstraction using other data structures.
+
+#### rationale
+
+In many classification schemes, for example, a taxonomy, only objects at
+the leaves of the classification tree are meaningful in the application.
+In other words, the root of the hierarchy does not define a complete set
+of values and operations for use by the application. The use of
+"abstract" guarantees that there will be no objects of the root or
+intermediate nodes. Concrete derivations of the abstract types and
+subprograms are required so that the leaves of the tree become objects
+that a client can manipulate.
+
+You can only declare abstract subprograms when the root type is also
+abstract. This is useful as you build an abstraction that forms the
+basis for a family of abstractions. By declaring the primitive
+subprograms to be abstract, you can write the "common class-wide parts
+of a system . . . without being dependent on the properties of any
+specific type at all" (Rationale 1995, §4.2).
+
+Abstract types and operations can help you resolve problems when your
+tagged type hierarchy violates the expected semantics of the class-wide
+type dispatching operations. The Rationale (1995, §4.2) explains:
+
+> When building an abstraction that is to form the basis of a class
+> of types, it is often convenient not to provide actual subprograms for
+> the root type but just abstract subprograms which can be replaced when
+> inherited. This is only allowed if the root type is declared as
+> abstract; objects of an abstract type cannot exist. This technique
+> enables common class-wide parts of a system to be written without being
+> dependent on the properties of any specific type at all. Dispatching
+> always works because it is known that there can never be any objects of
+> the abstract type and so the abstract subprograms could never be called.
+
+See Guidelines 8.3.8 and 9.2.1.
+
+The multiple inheritance techniques discussed in Guideline 9.5.1 make
+use of abstract tagged types. The basic abstraction is defined using an
+abstract tagged (limited) private type (whose full type declaration is a
+null record) with a small set of abstract primitive operations. While
+abstract operations have no bodies and thus cannot be called, they are
+inherited. Derivatives of the abstraction then extend the root type with
+components that provide the data representation and override the
+abstract operations to provide callable implementations (Rationale 1995,
+§4.4.3). This technique allows you to build multiple implementations of
+a single abstraction. You declare a single interface and vary the
+specifics of the data representation and operation implementation.
+
+#### notes
+
+When you use abstract data types as described in this guideline, you can
+have multiple implementations of the same abstraction available to you
+within a single program. This technique differs from the idea of writing
+multiple package bodies to provide different implementations of the
+abstraction defined in a package specification because with the package
+body technique, you can only include one of the implementations (i.e.,
+bodies) in your program.

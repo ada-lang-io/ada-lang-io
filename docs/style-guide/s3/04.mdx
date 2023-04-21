@@ -1,0 +1,148 @@
+---
+title: 3.4 Using Types
+---
+
+Strong typing promotes reliability in software. The type definition of
+an object defines all legal values and operations and allows the
+compiler to check for and identify potential errors during compilation.
+In addition, the rules of type allow the compiler to generate code to
+check for violations of type constraints at execution time. Using these
+Ada compiler's features facilitates earlier and more complete error
+detection than that which is available with less strongly typed
+languages.
+
+### Declaring Types
+
+#### guideline
+
+- Limit the range of scalar types as much as possible.
+- Seek information about possible values from the application.
+- Do not reuse any of the subtype names in package Standard.
+- Use subtype declarations to improve program readability (Booch
+  1987).
+- Use derived types and subtypes in concert (see Guideline 5.3.1).
+
+#### example
+
+```ada
+subtype Card_Image is String (1 .. 80);
+Input_Line : Card_Image := (others => ' ');
+-- restricted integer type:
+type    Day_Of_Leap_Year     is                  range 1 .. 366;
+subtype Day_Of_Non_Leap_Year is Day_Of_Leap_Year range 1 .. 365;
+```
+
+By the following declaration, the programmer means, "I haven't the
+foggiest idea how many," but the actual base range will show up buried
+in the code or as a system parameter:
+
+```ada
+Employee_Count : Integer;
+```
+
+#### rationale
+
+Eliminating meaningless values from the legal range improves the
+compiler's ability to detect errors when an object is set to an invalid
+value. This also improves program readability. In addition, it forces
+you to carefully think about each use of objects declared to be of the
+subtype.
+
+Different implementations provide different sets of values for most of
+the predefined types. A reader cannot determine the intended range from
+the predefined names. This situation is aggravated when the predefined
+names are overloaded.
+
+The names of an object and its subtype can clarify their intended use
+and document low-level design decisions. The example above documents a
+design decision to restrict the software to devices whose physical
+parameters are derived from the characteristics of punch cards. This
+information is easy to find for any later changes, thus enhancing
+program maintainability.
+
+You can rename a type by declaring a subtype without a constraint (Ada
+Reference Manual 1995, §8.5). You cannot overload a subtype name;
+overloading only applies to callable entities. Enumeration literals are
+treated as parameterless functions and so are included in this rule.
+
+Types can have highly constrained sets of values without eliminating
+useful values. Usage as described in Guideline 5.3.1 eliminates many
+flag variables and type conversions within executable statements. This
+renders the program more readable while allowing the compiler to enforce
+strong typing constraints.
+
+#### notes
+
+Subtype declarations do not define new types, only constraints for
+existing types.
+
+Any deviation from this guideline detracts from the advantages of the
+strong typing facilities of the Ada language.
+
+#### exceptions
+
+There are cases where you do not have a particular dependence on any
+range of numeric values. Such situations occur, for example, with array
+indices (e.g., a list whose size is not fixed by any particular
+semantics). See Guideline 7.2.1 for a discussion of appropriate uses of
+predefined types.
+
+### Enumeration Types
+
+#### guideline
+
+- Use enumeration types instead of numeric codes.
+- Only if absolutely necessary, use representation clauses to match
+  requirements of external devices.
+
+#### example
+
+Use:
+
+```ada
+type Color is (Blue, Red, Green, Yellow);
+```
+
+rather than:
+
+```ada
+Blue   : constant := 1;
+Red    : constant := 2;
+Green  : constant := 3;
+Yellow : constant := 4;
+```
+
+and add the following if necessary:
+
+```ada
+for Color use (Blue   => 1,
+               Red    => 2,
+               Green  => 3,
+               Yellow => 4);
+```
+
+#### rationale
+
+Enumerations are more robust than numeric codes; they leave less
+potential for errors resulting from incorrect interpretation and from
+additions to and deletions from the set of values during maintenance.
+Numeric codes are holdovers from languages that have no user-defined
+types.
+
+In addition, Ada provides a number of attributes ('Pos, 'Val, 'Succ,
+'Pred, 'Image, and 'Value) for enumeration types that, when used, are
+more reliable than user-written operations on encodings.
+
+A numeric code may at first seem appropriate to match external values.
+Instead, these situations call for a representation clause on the
+enumeration type. The representation clause documents the "encoding." If
+the program is properly structured to isolate and encapsulate hardware
+dependencies (see Guideline 7.1.5), the numeric code ends up in an
+interface package where it can be easily found and replaced if the
+requirements change.
+
+In general, avoid using representation clauses for enumeration types.
+When there is no obvious ordering of the enumeration literals, an
+enumeration representation can create portability problems if the
+enumeration type must be reordered to accommodate a change in
+representation order on the new platform.

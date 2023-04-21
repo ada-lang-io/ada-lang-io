@@ -1,0 +1,352 @@
+---
+title: 5.3 Types
+---
+
+In addition to determining the possible values for variables and subtype
+names, type distinctions can be very valuable aids in developing safe,
+readable, and understandable code. Types clarify the structure of your
+data and can limit or restrict the operations performed on that data.
+
+<i>
+  "Keeping types distinct has been found to be a very powerful means of detecting logical mistakes
+  when a program is written and to give valuable assistance whenever the program is being
+  subsequently maintained"
+</i> (Pyle 1985 ). Take advantage of Ada's strong typing capability in the form of subtypes, derived
+types, task types, protected types, private types, and limited private types.
+
+The guidelines encourage much code to be written to ensure strong
+typing. While it might appear that there would be execution penalties
+for this amount of code, this is usually not the case. In contrast to
+other conventional languages, Ada has a less direct relationship between
+the amount of code that is written and the size of the resulting
+executable program. Most of the strong type checking is performed at
+compilation time rather than execution time, so the size of the
+executable code is not greatly affected.
+
+For guidelines on specific kinds of data structures and tagged types,
+see 9.2.1 , respectively.
+
+### Derived Types and Subtypes
+
+#### guideline
+
+- Use existing types as building blocks by deriving new types from
+  them.
+- Use range constraints on subtypes.
+- Define new types, especially derived types, to include the largest
+  set of possible values, including boundary values.
+- Constrain the ranges of derived types with subtypes, excluding
+  boundary values.
+- Use type derivation rather than type extension when there are no
+  meaningful components to add to the type.
+
+#### example
+
+Type `Table` is a building block for the creation of new types:
+
+    type Table is
+       record
+          Count : List_Size  := Empty;
+          List  : Entry_List := Empty_List;
+       end record;
+    type Telephone_Directory  is new Table;
+    type Department_Inventory is new Table;
+
+The following are distinct types that cannot be intermixed in operations
+that are not programmed explicitly to use them both:
+
+    type Dollars is new Number;
+    type Cents   is new Number;
+
+Below, `Source_Tail` has a value outside the range of `Listing_Paper`
+when the line is empty. All the indices can be mixed in expressions, as
+long as the results fall within the correct subtypes:
+
+    type Columns          is range First_Column - 1 .. Listing_Width + 1;
+
+    subtype Listing_Paper is Columns range First_Column .. Listing_Width;
+    subtype Dumb_Terminal is Columns range First_Column .. Dumb_Terminal_Width;
+    type Line             is array (Columns range <>) of Bytes;
+    subtype Listing_Line  is Line (Listing_Paper);
+    subtype Terminal_Line is Line (Dumb_Terminal);
+    Source_Tail : Columns       := Columns'First;
+    Source      : Listing_Line;
+    Destination : Terminal_Line;
+    ...
+    Destination(Destination'First .. Source_Tail - Destination'Last) :=
+          Source(Columns'Succ(Destination'Last) .. Source_Tail);
+
+#### rationale
+
+The name of a derived type can make clear its intended use and avoid
+proliferation of similar type definitions. Objects of two derived types,
+even though derived from the same type, cannot be mixed in operations
+unless such operations are supplied explicitly or one is converted to
+the other explicitly. This prohibition is an enforcement of strong
+typing.
+
+Define new types, derived types, and subtypes cautiously and
+deliberately. The concepts of subtype and derived type are not
+equivalent, but they can be used to advantage in concert. A subtype
+limits the range of possible values for a type but does not define a new
+type.
+
+Types can have highly constrained sets of values without eliminating
+useful values. Used in concert, derived types and subtypes can eliminate
+many flag variables and type conversions within executable statements.
+This renders the program more readable, enforces the abstraction, and
+allows the compiler to enforce strong typing constraints.
+
+Many algorithms begin or end with values just outside the normal range.
+If boundary values are not compatible within subexpressions, algorithms
+can be needlessly complicated. The program can become cluttered with
+flag variables and special cases when it could just test for zero or
+some other sentinel value just outside normal range.
+
+The type `Columns` and the subtype `Listing_Paper` in the example above
+demonstrate how to allow sentinel values. The subtype `Listing_Paper`
+could be used as the type for parameters of subprograms declared in the
+specification of a package. This would restrict the range of values that
+could be specified by the caller. Meanwhile, the type `Columns` could be
+used to store such values internally to the body of the package,
+allowing `First_Column - 1` to be used as a sentinel value. This
+combination of types and subtypes allows compatibility between subtypes
+within subexpressions without type conversions as would happen with
+derived types.
+
+The choice between type derivation and type extension depends on what
+kind of changes you expect to occur to objects in the type. In general,
+type derivation is a very simple form of inheritance: the derived types
+inherit the structure, operations, and values of the parent type
+(Rationale 1995, §4.2 ). Although you can add operations, you cannot
+augment the data structure. You can derive from either scalar or
+composite types.
+
+Type extension is a more powerful form of inheritance, only applied to
+`tagged` records, in which you can augment both the type's components
+and operations. When the record implements an abstraction with the
+potential for reuse and/or extension, it is a good candidate for making
+it `tagged`. Similarly, if the abstraction is a member of a family of
+abstractions with well-defined variable and common properties, you
+should consider a `tagged` record.
+
+#### notes
+
+The price of the reduction in the number of independent type
+declarations is that subtypes and derived types change when the base
+type is redefined. This trickle-down of changes is sometimes a blessing
+and sometimes a curse. However, usually it is intended and beneficial.
+
+### Anonymous Types
+
+#### guideline
+
+- Avoid anonymous array types.
+- Use anonymous array types for array variables only when no suitable
+  type exists or can be created and the array will not be referenced
+  as a whole (e.g., used as a subprogram parameter).
+- Use access parameters and access discriminants to guarantee that the
+  parameter or discriminant is treated as a constant.
+
+#### example
+
+Use:
+
+    type Buffer_Index is range 1 .. 80;
+    type Buffer       is array (Buffer_Index) of Character;
+    Input_Line : Buffer;
+
+rather than:
+
+    Input_Line : array (Buffer_Index) of Character;
+
+#### rationale
+
+Although Ada allows anonymous types, they have limited usefulness and
+complicate program modification. For example, except for arrays, a
+variable of anonymous type can never be used as an actual parameter
+because it is not possible to define a formal parameter of the same
+type. Even though this may not be a limitation initially, it precludes a
+modification in which a piece of code is changed to a subprogram.
+Although you can declare the anonymous array to be aliased, you cannot
+use this access value as an actual parameter in a subprogram because the
+subprogram's formal parameter declaration requires a type mark. Also,
+two variables declared using the same anonymous type declaration are
+actually of different types.
+
+Even though the implicit conversion of array types during parameter
+passing is supported in Ada, it is difficult to justify not using the
+type of the parameter. In most situations, the type of the parameter is
+visible and easily substituted in place of an anonymous array type. The
+use of an anonymous array type implies that the array is only being used
+as a convenient way to implement a collection of values. It is
+misleading to use an anonymous type, and then treat the variable as an
+object.
+
+When you use an access parameter or access discriminant, the anonymous
+type is essentially declared inside the subprogram or object itself
+(Rationale 1995, §3.7.1 ). Thus, you have no way of declaring another
+object of the same type, and the object is treated as a constant. In the
+case of a self-referential data structure (see
+
+` Guideline 5.4.6 ), you need the access parameter to be able to`
+
+manipulate the data the discriminant accesses (Rationale 1995, §3.7.1 ).
+
+#### notes
+
+For anonymous task types, see Guideline 6.1.4 .
+
+#### exceptions
+
+If you are creating a unique table, for example, the periodic table of
+the elements, consider using an anonymous array type.
+
+### Private Types
+
+#### guideline
+
+- Derive from controlled types in preference to using limited private
+  types.
+- Use limited private types in preference to private types.
+- Use private types in preference to nonprivate types.
+- Explicitly export needed operations rather than easing restrictions.
+
+#### example
+
+    ------------------------------------------------------------------------
+    with Ada.Finalization;
+    package Packet_Telemetry is
+       type Frame_Header is new Ada.Finalization.Controlled with private;
+       type Frame_Data   is private;
+       type Frame_Codes  is (Main_Bus_Voltage, Transmitter_1_Power);
+       ...
+    private
+       type Frame_Header is new Ada.Finalization.Controlled with
+          record
+             ...
+          end record;
+       -- override adjustment and finalization to get correct assignment semantics
+       procedure Adjust (Object : in out Frame_Header);
+       procedure Finalize (Object : in out Frame_Header);
+       type Frame_Data is
+          record
+             ...
+          end record;
+       ...
+    end Packet_Telemetry;
+    ------------------------------------------------------------------------
+
+#### rationale
+
+Limited private types and private types support abstraction and
+information hiding better than nonprivate types. The more restricted the
+type, the better information hiding is served. This, in turn, allows the
+implementation to change without affecting the rest of the program.
+While there are many valid reasons to export types, it is better to try
+the preferred route first, loosening the restrictions only as necessary.
+If it is necessary for a user of the package to use a few of the
+restricted operations, it is better to export the operations explicitly
+and individually via exported subprograms than to drop a level of
+restriction. This practice retains the restrictions on other operations.
+
+Limited private types have the most restricted set of operations
+available to users of a package. Of the types that must be made
+available to users of a package, as many as possible should be derived
+from the controlled types or limited private. Controlled types give you
+the ability to adjust assignment and to finalize values, so you no
+longer need to create limited private types to guarantee a client that
+assignment and equality obey deep copy/comparison semantics. Therefore,
+it is possible to export a slightly less restrictive type (i.e., private
+type that extends `Ada.Finalization.Controlled`) that has an adjustable
+assignment operator and overridable equality operator. See also
+Guideline 5.4.5 .
+
+The operations available to limited private types are membership tests,
+selected components, components for the selections of any discriminant,
+qualification and explicit conversion, and attributes `'Base` and
+`'Size`. Objects of a limited private type also have the attribute
+`'Constrained` if there are discriminants. None of these operations
+allows the user of the package to manipulate objects in a way that
+depends on the structure of the type.
+
+#### notes
+
+The predefined packages `Direct_IO` and `Sequential_IO`do not accept
+limited private types as generic parameters. This restriction should be
+considered when I/O operations are needed for a type.
+
+See Guideline 8.3.3 for a discussion of the use of private and limited
+private types in generic units.
+
+### Subprogram Access Types
+
+#### guideline
+
+- Use access-to-subprogram types for indirect access to subprograms.
+- Wherever possible, use abstract tagged types and dispatching rather
+  than access-to-subprogram types to implement dynamic selection and
+  invocation of subprograms.
+
+#### example
+
+The following example is taken from the Rationale (1995, §3.7.2) :
+
+    generic
+       type Float_Type is digits <>;
+    package Generic_Integration is
+       type Integrand is access function (X : Float_Type) return Float_Type;
+       function Integrate (F        : Integrand;
+                           From     : Float_Type;
+                           To       : Float_Type;
+                           Accuracy : Float_Type := 10.0*Float_Type'Model_Epsilon)
+         return Float_Type;
+    end Generic_Integration;
+    with Generic_Integration;
+    procedure Try_Estimate (External_Data : in     Data_Type;
+                            Lower         : in     Float;
+                            Upper         : in     Float;
+                            Answer        :    out Float) is
+       -- external data set by other means
+       function Residue (X : Float) return Float is
+          Result : Float;
+       begin  -- Residue
+          -- compute function value dependent upon external data
+          return Result;
+       end Residue;
+       package Float_Integration is
+          new Generic_Integration (Float_Type => Float);
+
+       use Float_Integration;
+    begin -- Try_Estimate
+       ...
+       Answer := Integrate (F    => Residue'Access,
+                            From => Lower,
+                            To   => Upper);
+    end Try_Estimate;
+
+#### rationale
+
+Access-to-subprogram types allow you to create data structures that
+contain subprogram references. There are many uses for this feature, for
+instance, implementing state machines, call backs in the X Window
+System, iterators (the operation to be applied to each element of a
+list), and numerical algorithms (e.g., integration function) (Rationale
+1995, §3.7.2 ).
+
+You can achieve the same effect as access-to-subprogram types for
+dynamic selection by using abstract tagged types. You declare an
+abstract type with one abstract operation and then use an
+access-to-class-wide type to get the dispatching effect. This technique
+provides greater flexibility and type safety than access-to-subprogram
+types (Ada Reference Manual 1995, §3.10.2 ).
+
+Access-to-subprogram types are useful in implementing dynamic selection.
+References to the subprograms can be stored directly in the data
+structure. In a finite state machine, for example, a single data
+structure can describe the action to be taken on state transitions.
+Strong type checking is maintained because Ada 95 requires that the
+designated subprogram has the same parameter/result profile as the one
+specified in the subprogram access type.
+
+See also Guideline 7.3.2 .

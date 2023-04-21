@@ -1,0 +1,258 @@
+---
+title: 5.5 Expressions
+---
+
+Properly coded expressions can enhance the readability and
+understandability of a program. Poorly coded expressions can turn a
+program into a maintainer's nightmare.
+
+### Range Values
+
+#### guideline
+
+- Use `'First` or `'Last` instead of numeric literals to represent the
+  first or last values of a range.
+- Use `'Range` or the subtype name of the range instead of `'First .. 'Last`.
+
+#### example
+
+    type Temperature      is range All_Time_Low .. All_Time_High;
+    type Weather_Stations is range            1 ..  Max_Stations;
+    Current_Temperature : Temperature := 60;
+    Offset              : Temperature;
+    ...
+    for I in Weather_Stations loop
+       Offset := Current_Temperature - Temperature'First;
+       ...
+    end loop;
+
+#### rationale
+
+In the example above, it is better to use `Weather_Stations` in the
+`for` loop than to use `Weather_Stations'First` `.. Weather_Stations'Last` or `1 .. Max_Stations` because it is clearer,
+less error-prone, and less dependent on the definition of the type
+`Weather_Stations`. Similarly, it is better to use `Temperature'First`
+in the offset calculation than to use `All_Time_Low` because the code
+will still be correct if the definition of the subtype `Temperature` is
+changed. This enhances program reliability.
+
+#### caution
+
+When you implicitly specify ranges and attributes like this, be careful
+that you use the correct subtype name. It is easy to refer to a very
+large range without realizing it. For example, given the declarations:
+
+    type    Large_Range is new Integer;
+    subtype Small_Range is Large_Range range 1 .. 10;
+
+    type Large_Array is array (Large_Range) of Integer;
+    type Small_Array is array (Small_Range) of Integer;
+
+then the first declaration below works fine, but the second one is
+probably an accident and raises an exception on most machines because it
+is requesting a huge array (indexed from the smallest integer to the
+largest one):
+
+    Array_1 : Small_Array;
+    Array_2 : Large_Array;
+
+### Array Attributes
+
+#### guideline
+
+- Use array attributes `'First`, `'Last`, or `'Length` instead of
+  numeric literals for accessing arrays.
+- Use the `'Range` of the array instead of the name of the index
+  subtype to express a range.
+- Use `'Range` instead of `'First .. 'Last` to express a range.
+
+#### example
+
+    subtype Name_String is String (1 .. Name_Length);
+    File_Path : Name_String := (others => ' ');
+    ...
+    for I in File_Path'Range loop
+       ...
+    end loop;
+
+#### rationale
+
+In the example above, it is better to use `Name_String'Range` in the
+`for` loop than to use `Name_String_Size`, `Name_String'First .. Name_String'Last`, or `1 .. 30` because it is clearer, less error-prone,
+and less dependent on the definitions of `Name_String` and
+`Name_String_Size`. If `Name_String` is changed to have a different
+index type or if the bounds of the array are changed, this will still
+work correctly. This enhances program reliability.
+
+### Parenthetical Expressions
+
+#### guideline
+
+- Use parentheses to specify the order of subexpression evaluation to
+  clarify expressions (NASA 1987 ).
+- Use parentheses to specify the order of evaluation for
+  subexpressions whose correctness depends on left to right
+  evaluation.
+
+#### example
+
+    (1.5 * X**2)/A - (6.5*X + 47.0)
+    2*I + 4*Y + 8*Z + C
+
+#### rationale
+
+The Ada rules of operator precedence are defined in the Ada Reference
+Manual (1995, §4.5) and follow the same commonly accepted precedence of
+algebraic operators. The strong typing facility in Ada combined with the
+common precedence rules make many parentheses unnecessary. However, when
+an uncommon combination of operators occurs, it may be helpful to add
+parentheses even when the precedence rules apply. The expression:
+
+    5 + ((Y ** 3) mod 10)
+
+is clearer, and equivalent to:
+
+    5 + Y**3 mod 10
+
+The rules of evaluation do specify left to right evaluation for
+operators with the same precedence level. However, it is the most
+commonly overlooked rule of evaluation when checking expressions for
+correctness.
+
+### Positive Forms of Logic
+
+#### guideline
+
+- Avoid names and constructs that rely on the use of negatives.
+- Choose names of flags so they represent states that can be used in
+  positive form.
+
+#### example
+
+Use:
+
+    if Operator_Missing then
+
+rather than either:
+
+    if not Operator_Found then
+
+or:
+
+    if not Operator_Missing then
+
+#### rationale
+
+Relational expressions can be more readable and understandable when
+stated in a positive form. As an aid in choosing the name, consider that
+the most frequently used branch in a conditional construct should be
+encountered first.
+
+#### exceptions
+
+There are cases in which the negative form is unavoidable. If the
+relational expression better reflects what is going on in the code, then
+inverting the test to adhere to this guideline is not recommended.
+
+### Short Circuit Forms of the Logical Operators
+
+#### guideline
+
+- Use short-circuit forms of the logical operators to specify the
+  order of conditions when the failure of one condition means that the
+  other condition will raise an exception.
+
+#### example
+
+Use:
+
+    if Y /= 0 or else (X/Y) /= 10 then
+
+or:
+
+    if Y /= 0 then
+       if (X/Y) /= 10 then
+
+rather than either:
+
+    if Y /= 0 and (X/Y) /= 10 then
+
+or:
+
+    if (X/Y) /= 10 then
+
+to avoid `Constraint_Error.`
+
+Use:
+
+    if Target /= null and then Target.Distance < Threshold then
+
+rather than:
+
+    if Target.Distance < Threshold then
+
+to avoid referencing a field in a nonexistent object.
+
+#### rationale
+
+The use of short-circuit control forms prevents a class of
+data-dependent errors or exceptions that can occur as a result of
+expression evaluation. The short-circuit forms guarantee an order of
+evaluation and an `exit` from the sequence of relational expressions as
+soon as the expression's result can be determined.
+
+In the absence of short-circuit forms, Ada does not provide a guarantee
+of the order of expression evaluation, nor does the language guarantee
+that evaluation of a relational expression is abandoned when it becomes
+clear that it evaluates to `False` (for `and`) or `True` (for `or`).
+
+#### notes
+
+If it is important that all parts of a given expression always be
+evaluated, the expression probably violates Guideline 4.1.4 , which
+limits side-effects in functions.
+
+### Accuracy of Operations With Real Operands
+
+#### guideline
+
+- Use `<=` and `>=` in relational expressions with real operands
+  instead of `=`.
+
+#### example
+
+    Current_Temperature   : Temperature :=       0.0;
+    Temperature_Increment : Temperature := 1.0 / 3.0;
+    Maximum_Temperature   : constant    :=     100.0;
+    ...
+    loop
+       ...
+       Current_Temperature :=
+             Current_Temperature + Temperature_Increment;
+       ...
+       exit when Current_Temperature >= Maximum_Temperature;
+       ...
+    end loop;
+
+#### rationale
+
+Fixed- and floating-point values, even if derived from similar
+expressions, may not be exactly equal. The imprecise, finite
+representations of real numbers in hardware always have round-off errors
+so that any variation in the construction path or history of two real
+numbers has the potential for resulting in different numbers, even when
+the paths or histories are mathematically equivalent.
+
+The Ada definition of model intervals also means that the use of `<=` is
+more portable than either `<` or `=`.
+
+#### notes
+
+Floating-point arithmetic is treated in Guideline 7.2.7 .
+
+#### exceptions
+
+If your application must test for an exact value of a real number (e.g.,
+testing the precision of the arithmetic on a certain machine), then the
+`=` would have to be used. But never use `=` on real operands as a
+condition to exit a loop .
