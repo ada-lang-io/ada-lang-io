@@ -21,14 +21,13 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <p>[ A composite type (other than an array or interface type) can have discriminants, which parameterize the type. A <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code> specifies the discriminants of a composite type. A discriminant of an object is a component of the object, and is either of a discrete type or an access type. An <code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code> in the declaration of a view of a type specifies that the discriminants of the type are unknown for the given view; all subtypes of such a view are indefinite subtypes.] <br /></p>
 
 <AnnotatedOnly>
-<MarginText>1.a/2</MarginText>
-<Admonition type="aarm" aarm="glossary-entry">
-<strong></strong>A discriminant is a parameter for a composite type. It can control, for example, the bounds of a component of the type if the component is an array. A discriminant for a task type can be used to pass data to a task of the type upon creation.<br /></Admonition>
+<MarginText>1.a/5</MarginText>
+<Admonition type="aarm" aarm="note">
+<strong>Term entry: </strong><strong>discriminant</strong> &mdash; parameter for a composite type, which can control, for example, the bounds of a component that is an array<br /><br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>2</MarginText>
 <AnnotatedOnly>
-<MarginText>2.a/2</MarginText>
+<MarginText>1.b/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>A view of a type, and all subtypes of the view, have <em>unknown discriminants</em> when the number or names of the discriminants, if any, are unknown at the point of the type declaration for the view. A <code><a href="../AA-3/AA-3.7#S0059">discriminant_part</a></code> of ({"<"}{">"}) is used to indicate unknown discriminants. <br /></Admonition>
@@ -38,20 +37,20 @@ import MarginInfo from "@site/src/components/MarginInfo";
 #### Language Design Principles
 
 <AnnotatedOnly>
-<MarginText>2.b/2</MarginText>
+<MarginText>1.c/2</MarginText>
 <MarginInfo items={["AI95-00402-01"]} />
 <Admonition type="aarm" aarm="note">
 When an access discriminant is initialized at the time of object creation with an allocator of an anonymous type, the allocated object and the object with the discriminant are tied together for their lifetime. They should be allocated out of the same storage pool, and then at the end of the lifetime of the enclosing object, finalized and reclaimed together. In this case, the allocated object is called a coextension (see <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>). <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>2.c/2</MarginText>
+<MarginText>1.d/2</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>The above principle when applied to a nonlimited type implies that such an object may be copied only to a shorter-lived object, because attempting to assign it to a longer-lived object would fail because the access discriminants would not match. In a copy, the lifetime connection between the enclosing object and the allocated object does not exist. The allocated object is tied in the above sense only to the original object. Other copies have only secondary references to it.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>2.d/2</MarginText>
+<MarginText>1.e/2</MarginText>
 <Admonition type="aarm" aarm="note">
 Note that when an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> appears as a constraint on an access discriminant in a <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> that is elaborated independently from object creation, no such connection exists. For example, if a named constrained subtype is declared via "<strong>subtype</strong> Constr <strong>is</strong> Rec(Acc_Discrim ={">"} <strong>new</strong> T);" or if such an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> appears in the <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> for a component, the allocator is evaluated when the <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> is elaborated, and hence its lifetime is typically longer than the objects or components that will later be subject to the constraint. In these cases, the allocated object should not be reclaimed until the <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> goes out of scope. <br /></Admonition>
 </AnnotatedOnly>
@@ -59,25 +58,25 @@ Note that when an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> appe
 
 #### Syntax
 
-<MarginText>3</MarginText>
+<MarginText>2</MarginText>
 
 <CodeBlock>
 <code>discriminant_part</code><a id="S0059"></a><code> ::= </code><code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code> | <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code><br />
 
 </CodeBlock>
-<MarginText>4</MarginText>
+<MarginText>3</MarginText>
 
 <CodeBlock>
 <code>unknown_discriminant_part</code><a id="S0060"></a><code> ::= </code>({"<"}{">"})<br />
 
 </CodeBlock>
-<MarginText>5</MarginText>
+<MarginText>4</MarginText>
 
 <CodeBlock>
 <code>known_discriminant_part</code><a id="S0061"></a><code> ::= </code><br />   (<code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code> {"{"}; <code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code>{"}"})<br />
 
 </CodeBlock>
-<MarginText>6/5</MarginText>
+<MarginText>5/5</MarginText>
 <MarginInfo items={["AI95-00231-01", "AI12-0398-1"]} />
 
 <CodeBlock>
@@ -85,13 +84,13 @@ Note that when an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> appe
 
 </CodeBlock>
 <AnnotatedOnly>
-<MarginText>6.a/5</MarginText>
+<MarginText>5.a/5</MarginText>
 <MarginInfo items={["AI12-0398-1"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>Only implementation-defined aspects are allowed on discriminants in Ada 2022. Implementers are cautioned that any aspect allowed on a discriminant will need conformance rules. If, for instance, an aspect changed the representation of a discriminant, rules would be needed to ensure that the representation is the same for all views of the type (partial and full). <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>7</MarginText>
+<MarginText>6</MarginText>
 
 <CodeBlock>
 <code>default_expression</code><a id="S0063"></a><code> ::= </code><code><a href="../AA-4/AA-4.4#S0132">expression</a></code><br />
@@ -100,159 +99,159 @@ Note that when an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> appe
 
 #### Name Resolution Rules
 
-<MarginText>8</MarginText>
+<MarginText>7</MarginText>
 <p>The expected type for the <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> of a <code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code> is that of the corresponding discriminant. <br /></p>
 
 
 #### Legality Rules
 
-<MarginText>9/2</MarginText>
+<MarginText>8/2</MarginText>
 <MarginInfo items={["AI95-00098-01", "AI95-00251-01"]} />
 <p>{"{"}<em>8652/0007</em>{"}"} A <code><a href="../AA-3/AA-3.7#S0059">discriminant_part</a></code> is only permitted in a declaration for a composite type that is not an array or interface type [(this includes generic formal types)]. A type declared with a <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code> is called a <em>discriminated</em> type, as is a type that inherits (known) discriminants. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>9.a</MarginText>
+<MarginText>8.a</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Discriminants on array types were considered, but were omitted to ease (existing) implementations. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9.b</MarginText>
+<MarginText>8.b</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>Note that the above definition for &ldquo;discriminated type&rdquo; does not include types declared with an <code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code>. This seems consistent with Ada 83, where such types (in a generic formal part) would not be considered discriminated types. Furthermore, the full type for a type with unknown discriminants need not even be composite, much less have any discriminants.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9.b.1/1</MarginText>
+<MarginText>8.b.1/1</MarginText>
 <MarginInfo items={["AI95-00098-01"]} />
 <Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0007</em>{"}"} On the other hand, <code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code>s cannot be applied to type declarations that cannot have a <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code>. There is no point in having unknown discriminants on a type that can never have discriminants (for instance, a formal modular type), even when these are allowed syntactically. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>10/2</MarginText>
+<MarginText>9/2</MarginText>
 <MarginInfo items={["AI95-00231-01", "AI95-00254-01"]} />
 <p>The subtype of a discriminant may be defined by an optional <code><a href="../AA-3/AA-3.10#S0083">null_exclusion</a></code> and a <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>, in which case the <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> shall denote a discrete or access subtype, or it may be defined by an <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code>. A discriminant that is defined by an <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code> is called an <em>access discriminant</em> and is of an anonymous access type. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>10.a/2</MarginText>
+<MarginText>9.a/2</MarginText>
 <MarginInfo items={["AI95-00230-01"]} />
 <Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.b</MarginText>
+<MarginText>9.b</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>Note that discriminants of a named access type are not considered &ldquo;access discriminants&rdquo;. Similarly, &ldquo;access parameter&rdquo; only refers to a formal parameter defined by an <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code>. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>10.1/3</MarginText>
+<MarginText>9.1/3</MarginText>
 <MarginInfo items={["AI95-00402-01", "AI05-0214-1"]} />
 <p><code><a href="../AA-3/AA-3.7#S0063">Default_expression</a></code>s shall be provided either for all or for none of the discriminants of a <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code>. No <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>s are permitted in a <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code> in a declaration of a nonlimited tagged type [or a generic formal type].<br /></p>
 
 <AnnotatedOnly>
-<MarginText>10.c/2</MarginText>
+<MarginText>9.c/2</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The all-or-none rule is related to the rule that a discriminant constraint shall specify values for all discriminants. One could imagine a different rule that allowed a constraint to specify only some of the discriminants, with the others provided by default. Having defaults for discriminants has a special significance &mdash; it allows objects of the type to be unconstrained, with the discriminants alterable as part of assigning to the object.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.d/3</MarginText>
+<MarginText>9.d/3</MarginText>
 <MarginInfo items={["AI05-0214-1"]} />
 <Admonition type="aarm" aarm="note">
 Defaults for discriminants of tagged types are disallowed so that every object of a nonlimited tagged type is constrained, either by an explicit constraint, or by its initial discriminant values. This substantially simplifies the semantic rules and the implementation of inherited dispatching operations. We don't need this rule for limited tagged types, as the discriminants of such objects cannot be changed after the object is created in any case &mdash; no full-object assignment is supported, and that is required to change discriminant values. For generic formal types, the restriction simplifies the type matching rules. If one simply wants a "default" value for the discriminants, a constrained subtype can be declared for future use. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>11/3</MarginText>
+<MarginText>10/3</MarginText>
 <MarginInfo items={["AI95-00230-01", "AI95-00402-01", "AI95-00419-01", "AI05-0063-1"]} />
 <p>A <code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code> for an access discriminant may have a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> only in the declaration for an immutably limited type (see <a href="../AA-7/AA-7.5">7.5</a>). In addition to the places where Legality Rules normally apply (see <a href="../AA-12/AA-12.3">12.3</a>), this rule applies also in the private part of an instance of a generic unit. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>11.a/3</MarginText>
+<MarginText>10.a/3</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>This rule implies that a type can have a default for an access discriminant if the type is limited, but not if the only reason it's limited is because of a limited component. Compare the definition of limited type and immutably limited type in <a href="../AA-7/AA-7.5">7.5</a>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>11.b/3</MarginText>
+<MarginText>10.b/3</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>A (nonformal) limited private type can always have a default for an access discriminant, because having the default itself makes the type immutably limited. Such a private type must necessarily have a full type with the same access discriminant with a default, and thus the full type will always be immutably limited (if legal). <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>11.c/2</MarginText>
+<MarginText>10.c/2</MarginText>
 <MarginInfo items={["AI95-00230-01"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>We considered the following rules for access discriminants: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>11.d</MarginText>
+<MarginText>10.d</MarginText>
 <ul>
 <li>If a type has an access discriminant, this automatically makes it limited, just like having a limited component automatically makes a type limited. This was rejected because it decreases program readability, and because it seemed error prone (two bugs in a previous version of the RM9X were attributable to this rule).<br /></li>
-<MarginText>11.e/2</MarginText>
+<MarginText>10.e/2</MarginText>
 <li>A type with an access discriminant shall be limited. This is equivalent to the rule we actually chose for Ada 95, except that it allows a type to have an access discriminant if it is limited just because of a limited component. For example, any record containing a task would be allowed to have an access discriminant, whereas the actual rule requires &ldquo;<strong>limited</strong> <strong>record</strong>&rdquo;. This rule was also rejected due to readability concerns, and because would interact badly with the rules for limited types that &ldquo;become nonlimited&rdquo;.<br /></li>
-<MarginText>11.e.1/3</MarginText>
+<MarginText>10.e.1/3</MarginText>
 <MarginInfo items={["AI05-0063-1"]} />
 <li>A type may have an access discriminant if it is an immutably limited type. This was the rule chosen for Ada 95.<br /></li>
-<MarginText>11.f/2</MarginText>
+<MarginText>10.f/2</MarginText>
 <li>Any type may have an access discriminant. For nonlimited type, there is no special accessibility for access discriminants; they're the same as any other anonymous access component. For a limited type, they have the special accessibility of Ada 95. However, this doesn't work because a limited partial view can have a nonlimited full view -- giving the two views different accessibility.<br /></li>
-<MarginText>11.f.1/3</MarginText>
+<MarginText>10.f.1/3</MarginText>
 <MarginInfo items={["AI05-0063-1"]} />
 <li>Any type may have an access discriminant, as above. However, special accessibility rules only apply to types that are immutably limited (task, protected, and explicitly limited records). However, this breaks privacy; worse, Legality Rules depend on the definition of accessibility.<br /></li>
-<MarginText>11.f.2/3</MarginText>
+<MarginText>10.f.2/3</MarginText>
 <MarginInfo items={["AI05-0063-1"]} />
 <li>Any type may have an access discriminant, as above. Limited types have special accessibility, while nonlimited types have normal accessibility. However, a limited partial view with an access discriminant can only be completed by an immutably limited type. That prevents accessibility from changing. A runtime accessibility check is required on generic formal types with access discriminants. However, changing between limited and nonlimited types would have far-reaching consequences for access discriminants &mdash; which is uncomfortable.<br /></li>
-<MarginText>11.g/2</MarginText>
+<MarginText>10.g/2</MarginText>
 <li>Any type may have an access discriminant. All types have special accessibility. This was considered early during the Ada 9X process, but was dropped for &ldquo;unpleasant complexities&rdquo;, which unfortunately aren't recorded. It does seem that an accessibility check would be needed on assignment of such a type, to avoid copying an object with a discriminant pointing to a local object into a more global object (and thus creating a dangling pointer).<br /></li>
-<MarginText>11.h/2</MarginText>
+<MarginText>10.h/2</MarginText>
 <li>Any type may have an access discriminant, but access discriminants cannot have defaults. All types have special accessibility. This gets rid of the problems on assignment (you couldn't change such a discriminant), but it would be horribly incompatible with Ada 95.<br /></li>
-<MarginText>11.h.1/3</MarginText>
+<MarginText>10.h.1/3</MarginText>
 <MarginInfo items={["AI05-0063-1"]} />
 <li>Any type may have an access discriminant, but access discriminants may have defaults only if they are of an immutably limited type. This is the rule chosen for Ada 2005, as it is not incompatible, and it doesn't require weird accessibility checks. <br /></li>
 </ul>
 </AnnotatedOnly>
-<MarginText>12/2</MarginText>
+<MarginText>11/2</MarginText>
 <MarginInfo items={["AI95-00402-01"]} />
 <p><em>This paragraph was deleted.</em><br /></p>
 
-<MarginText>13</MarginText>
+<MarginText>12</MarginText>
 <p>For a type defined by a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>, if a <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code> is provided in its declaration, then: <br /></p>
 
-<MarginText>14</MarginText>
+<MarginText>13</MarginText>
 <ul>
 <li>The parent subtype shall be constrained;<br /></li>
-<MarginText>15</MarginText>
+<MarginText>14</MarginText>
 <li>If the parent type is not a tagged type, then each discriminant of the derived type shall be used in the constraint defining the parent subtype;<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>15.a</MarginText>
+<MarginText>14.a</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
 <strong></strong>This ensures that the new discriminant can share storage with an existing discriminant.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>16</MarginText>
+<MarginText>15</MarginText>
 <ul>
 <li>If a discriminant is used in the constraint defining the parent subtype, the subtype of the discriminant shall be statically compatible (see <a href="../AA-4/AA-4.9#Subclause_4.9.1">4.9.1</a>) with the subtype of the corresponding parent discriminant. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>16.a</MarginText>
+<MarginText>15.a</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This ensures that on conversion (or extension via an extension aggregate) to a distantly related type, if the discriminants satisfy the target type's requirements they satisfy all the intermediate types' requirements as well. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>16.b</MarginText>
+<MarginText>15.b</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>There is no requirement that the new discriminant have the same (or any) <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> as the parent's discriminant. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>17/3</MarginText>
+<MarginText>16/3</MarginText>
 <MarginInfo items={["AI05-0102-1"]} />
 <p><em>This paragraph was deleted.</em><br /></p>
 
 <AnnotatedOnly>
-<MarginText>17.a/3</MarginText>
+<MarginText>16.a/3</MarginText>
 <Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
 </AnnotatedOnly>
@@ -260,96 +259,96 @@ Defaults for discriminants of tagged types are disallowed so that every object o
 
 #### Static Semantics
 
-<MarginText>18</MarginText>
+<MarginText>17</MarginText>
 <p>A <code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code> declares a discriminant; the <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> denotes its subtype unless it is an access discriminant, in which case the discriminant's subtype is the anonymous access-to-variable subtype defined by the <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code>.<br /></p>
 
-<MarginText>19</MarginText>
+<MarginText>18</MarginText>
 <p>[For a type defined by a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>, each discriminant of the parent type is either inherited, constrained to equal some new discriminant of the derived type, or constrained to the value of an expression.] When inherited or constrained to equal some new discriminant, the parent discriminant and the discriminant of the derived type are said to <em>correspond</em>. Two discriminants also correspond if there is some common discriminant to which they both correspond. A discriminant corresponds to itself as well. If a discriminant of a parent type is constrained to a specific value by a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>, then that discriminant is said to be <em>specified</em> by that <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>19.a</MarginText>
+<MarginText>18.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The correspondence relationship is transitive, symmetric, and reflexive. That is, if A corresponds to B, and B corresponds to C, then A, B, and C each corresponds to A, B, and C in all combinations.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>20</MarginText>
+<MarginText>19</MarginText>
 <p>A <code><a href="../AA-3/AA-3.2#S0029">constraint</a></code> that appears within the definition of a discriminated type <em>depends on a discriminant</em> of the type if it names the discriminant as a bound or discriminant value. A <code><a href="../AA-3/AA-3.6#S0056">component_definition</a></code> depends on a discriminant if its <code><a href="../AA-3/AA-3.2#S0029">constraint</a></code> depends on the discriminant, or on a discriminant that corresponds to it. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>20.a</MarginText>
+<MarginText>19.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>A <code><a href="../AA-3/AA-3.2#S0029">constraint</a></code> in a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code> is not considered to <em>depend</em> on a discriminant of the task type, even if it names it. It is only the <code><a href="../AA-3/AA-3.2#S0029">constraint</a></code>s in the type definition itself that are considered dependents. Similarly for protected types. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>21</MarginText>
+<MarginText>20</MarginText>
 <p>A component <em>depends on a discriminant</em> if: <br /></p>
 
-<MarginText>22</MarginText>
+<MarginText>21</MarginText>
 <ul>
 <li>Its <code><a href="../AA-3/AA-3.6#S0056">component_definition</a></code> depends on the discriminant; or <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>22.a</MarginText>
+<MarginText>21.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>A component does <em>not</em> depend on a discriminant just because its <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> refers to the discriminant.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>23</MarginText>
+<MarginText>22</MarginText>
 <ul>
 <li>It is declared in a <code><a href="../AA-3/AA-3.8#S0071">variant_part</a></code> that is governed by the discriminant; or<br /></li>
-<MarginText>24</MarginText>
+<MarginText>23</MarginText>
 <li>It is a component inherited as part of a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>, and the <code><a href="../AA-3/AA-3.2#S0029">constraint</a></code> of the <em>parent_</em><code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> depends on the discriminant; or <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>24.a</MarginText>
+<MarginText>23.a</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>When the parent subtype depends on a discriminant, the parent part of the derived type is treated like a discriminant-dependent component. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>24.b</MarginText>
+<MarginText>23.b</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Because of this rule, we don't really need to worry about &ldquo;corresponding&rdquo; discriminants, since all the inherited components will be discriminant-dependent if there is a new <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code> whose discriminants are used to constrain the old discriminants. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>25</MarginText>
+<MarginText>24</MarginText>
 <ul>
 <li>It is a subcomponent of a component that depends on the discriminant. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>25.a</MarginText>
+<MarginText>24.a</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The concept of discriminant-dependent (sub)components is primarily used in various rules that disallow renaming or 'Access, or specify that certain discriminant-changing assignments are erroneous. The goal is to allow implementations to move around or change the size of discriminant-dependent subcomponents upon a discriminant-changing assignment to an enclosing object. The above definition specifies that all subcomponents of a discriminant-dependent component or parent part are themselves discriminant-dependent, even though their presence or size does not in fact depend on a discriminant. This is because it is likely that they will move in a discriminant-changing assignment if they are a component of one of several discriminant-dependent parts of the same record. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>26</MarginText>
+<MarginText>25</MarginText>
 <p>Each value of a discriminated type includes a value for each component of the type that does not depend on a discriminant[; this includes the discriminants themselves]. The values of discriminants determine which other component values are present in the value of the discriminated type. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>26.a</MarginText>
+<MarginText>25.a</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>Which values are present might depend on discriminants of some ancestor type that are constrained in an intervening <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>. That's why we say "values of discriminants" instead of "values of <em>the</em> discriminants" &mdash; a subtle point.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>27</MarginText>
+<MarginText>26</MarginText>
 <p>A type declared with a <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code> is said to have <em>known discriminants</em>; its first subtype is unconstrained. A type declared with an <code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code> is said to have <em>unknown discriminants</em>. A type declared without a <code><a href="../AA-3/AA-3.7#S0059">discriminant_part</a></code> has no discriminants, unless it is a derived type; if derived, such a type has the same sort of discriminants (known, unknown, or none) as its parent (or ancestor) type. A tagged class-wide type also has unknown discriminants. [Any subtype of a type with unknown discriminants is an unconstrained and indefinite subtype (see <a href="../AA-3/AA-3.2">3.2</a> and <a href="../AA-3/AA-3.3">3.3</a>).] <br /></p>
 
 <AnnotatedOnly>
-<MarginText>27.a/2</MarginText>
+<MarginText>26.a/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>An <code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code> &ldquo;({"<"}{">"})&rdquo; is only permitted in the declaration of a (generic or nongeneric) private type, private extension, incomplete type, or formal derived type. Hence, only such types, descendants thereof, and class-wide types can have unknown discriminants. An <code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code> is used to indicate that the corresponding actual or full type might have discriminants without defaults, or be an unconstrained array subtype. Tagged class-wide types are also considered to have unknown discriminants because discriminants can be added by type extensions, so the total number of discriminants of any given value of a tagged class-wide type is not known at compile time.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>27.b/2</MarginText>
+<MarginText>26.b/2</MarginText>
 <MarginInfo items={["AI95-00287-01"]} />
 <Admonition type="aarm" aarm="note">
 A subtype with unknown discriminants is indefinite, and hence an object of such a subtype needs explicit initialization. A limited private type with unknown discriminants is &ldquo;extremely&rdquo; limited; objects of such a type  can be initialized only by subprograms (either procedures with a parameter of the type, or a function returning the type) declared in the package. Subprograms declared elsewhere can operate on and even return the type, but they can only initialize the object by calling (ultimately) a subprogram in the package declaring the type. Such a type is useful for keeping complete control over object creation within the package declaring the type.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>27.c</MarginText>
+<MarginText>26.c</MarginText>
 <Admonition type="aarm" aarm="note">
 A partial view of a type might have unknown discriminants, while the full view of the same type might have known, unknown, or no discriminants. <br /></Admonition>
 </AnnotatedOnly>
@@ -357,62 +356,62 @@ A partial view of a type might have unknown discriminants, while the full view o
 
 #### Dynamic Semantics
 
-<MarginText>28/2</MarginText>
+<MarginText>27/2</MarginText>
 <MarginInfo items={["AI95-00230-01", "AI95-00416-01"]} />
 <p>For an access discriminant, its <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code> is elaborated when the value of the access discriminant is defined: by evaluation of its <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>, by elaboration of a <code><a href="../AA-3/AA-3.7#S0064">discriminant_constraint</a></code>, or by an assignment that initializes the enclosing object. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>28.a/2</MarginText>
+<MarginText>27.a/2</MarginText>
 <MarginInfo items={["AI95-00231-01", "AI95-00416-01"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The conversion of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> defining the access discriminant to the anonymous access type raises Program_Error for an object created by an allocator of an access type T, if the initial value is an access parameter that designates a view whose accessibility level is deeper than that of T. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>29</MarginText>
+<MarginText>28</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 1   If a discriminated type has <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>s for its discriminants, then unconstrained variables of the type are permitted, and the values of the discriminants can be changed by an assignment to such a variable. If defaults are not provided for the discriminants, then all variables of the type are constrained, either by explicit constraint or by their initial value; the values of the discriminants of such a variable cannot be changed after initialization. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>29.a</MarginText>
+<MarginText>28.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>This connection between discriminant defaults and unconstrained variables can be a source of confusion. For Ada 95, we considered various ways to break the connection between defaults and unconstrainedness, but ultimately gave up for lack of a sufficiently simple and intuitive alternative.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>29.b</MarginText>
+<MarginText>28.b</MarginText>
 <Admonition type="aarm" aarm="note">
 An unconstrained discriminated subtype with defaults is called a <em>mutable</em> subtype, and a variable of such a subtype is called a mutable variable, because the discriminants of such a variable can change. There are no mutable arrays (that is, the bounds of an array object can never change), because there is no way in the language to define default values for the bounds. Similarly, there are no mutable class-wide subtypes, because there is no way to define the default tag, and defaults for discriminants are not allowed in the tagged case. Mutable tags would also require a way for the maximum possible size of such a class-wide subtype to be known. (In some implementations, all mutable variables are allocated with the maximum possible size. This approach is appropriate for real-time applications where implicit use of the heap is inappropriate.)<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>30</MarginText>
+<MarginText>29</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 2   The <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> for a discriminant of a type is evaluated when an object of an unconstrained subtype of the type is created.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>31</MarginText>
+<MarginText>30</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 3   Assignment to a discriminant of an object (after its initialization) is not allowed, since the name of a discriminant is a constant; neither <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s nor assignments inherent in passing as an <strong>in out</strong> or <strong>out</strong> parameter are allowed. Note however that the value of a discriminant can be changed by assigning to the enclosing object, presuming it is an unconstrained variable. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>31.a/2</MarginText>
+<MarginText>30.a/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>An <code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code> is permitted only in the declaration of a private type (including generic formal private), private extension, incomplete type, or generic formal derived type. These are the things that will have a corresponding completion or generic actual, which will either define the discriminants, or say there are none. The ({"<"}{">"}) indicates that the actual/full subtype might be an indefinite subtype. An <code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code> is not permitted in a normal untagged derived type declaration, because there is no separate full type declaration for such a type. Note that ({"<"}{">"}) allows unconstrained array bounds; those are somewhat like undefaulted discriminants.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>31.b</MarginText>
+<MarginText>30.b</MarginText>
 <Admonition type="aarm" aarm="note">
 For a derived type, either the discriminants are inherited as is, or completely respecified in a new <code><a href="../AA-3/AA-3.7#S0059">discriminant_part</a></code>. In this latter case, each discriminant of the parent type shall be constrained, either to a specific value, or to equal one of the new discriminants. Constraining a parent type's discriminant to equal one of the new discriminants is like a renaming of the discriminant, except that the subtype of the new discriminant can be more restrictive than that of the parent's one. In any case, the new discriminant can share storage with the parent's discriminant. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>32</MarginText>
+<MarginText>31</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 4   A discriminant that is of a named access type is not called an access discriminant; that term is used only for discriminants defined by an <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code>. <br /></Admonition>
 </AnnotatedOnly>
@@ -420,19 +419,19 @@ NOTE 4   A discriminant that is of a named access type is not called an access d
 
 #### Examples
 
-<MarginText>33</MarginText>
+<MarginText>32</MarginText>
 <p><em>Examples of discriminated types:</em> <br /></p>
 
-<MarginText>34</MarginText>
+<MarginText>33</MarginText>
 <CodeBlock language="ada">
 type Buffer(Size : Buffer_Size := 100)  is        -- see <a href="../AA-3/AA-3.5#Subclause_3.5.4">3.5.4</a>{"\n"}   record{"\n"}      Pos   : Buffer_Size := 0;{"\n"}      Value : String(1 .. Size);{"\n"}   end record;{"\n"}
-<MarginText>35</MarginText>
+<MarginText>34</MarginText>
 type Matrix_Rec(Rows, Columns : Integer) is{"\n"}   record{"\n"}      Mat : Matrix(1 .. Rows, 1 .. Columns);       -- see <a href="../AA-3/AA-3.6">3.6</a>{"\n"}   end record;{"\n"}
-<MarginText>36</MarginText>
+<MarginText>35</MarginText>
 type Square(Side : Integer) is new{"\n"}   Matrix_Rec(Rows ={">"} Side, Columns ={">"} Side);{"\n"}
-<MarginText>37</MarginText>
+<MarginText>36</MarginText>
 type Double_Square(Number : Integer) is{"\n"}   record{"\n"}      Left  : Square(Number);{"\n"}      Right : Square(Number);{"\n"}   end record;{"\n"}
-<MarginText>38/3</MarginText>
+<MarginText>37/3</MarginText>
 <MarginInfo items={["AI95-00433-01", "AI05-0229-1"]} />
 task type Worker(Prio : System.Priority; Buf : access Buffer){"\n"}   with Priority ={">"} Prio is -- see <a href="../AA-D/AA-D.1">D.1</a>{"\n"}   -- discriminants used to parameterize the task type (see <a href="../AA-9/AA-9.1">9.1</a>){"\n"}   entry Fill;{"\n"}   entry Drain;{"\n"}end Worker;{"\n"}
 
@@ -443,20 +442,20 @@ task type Worker(Prio : System.Priority; Buf : access Buffer){"\n"}   with Prior
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>38.a</MarginText>
+<MarginText>37.a</MarginText>
 <Admonition type="aarm" aarm="note">
 The syntax for a <code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code> is modified to allow an <em>access discriminant</em>, with a type specified by an <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code> (see <a href="../AA-3/AA-3.10">3.10</a>).<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>38.b/2</MarginText>
+<MarginText>37.b/2</MarginText>
 <MarginInfo items={["AI95-00251-01"]} />
 <Admonition type="aarm" aarm="note">
 Discriminants are allowed on all composite types other than array and interface types.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>38.c</MarginText>
+<MarginText>37.c</MarginText>
 <Admonition type="aarm" aarm="note">
 Discriminants may be of an access type. <br /></Admonition>
 </AnnotatedOnly>
@@ -467,7 +466,7 @@ Discriminants may be of an access type. <br /></Admonition>
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>38.d</MarginText>
+<MarginText>37.d</MarginText>
 <Admonition type="aarm" aarm="note">
 <code><a href="../AA-3/AA-3.7#S0059">Discriminant_part</a></code>s are not elaborated, though an <code><a href="../AA-3/AA-3.10#S0084">access_definition</a></code> is elaborated when the discriminant is initialized.<br /></Admonition>
 </AnnotatedOnly>
@@ -478,14 +477,14 @@ Discriminants may be of an access type. <br /></Admonition>
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>38.e/2</MarginText>
+<MarginText>37.e/2</MarginText>
 <MarginInfo items={["AI95-00230-01", "AI95-00402-01", "AI95-00416-01"]} />
 <Admonition type="aarm" aarm="note">
 Access discriminants (anonymous access types used as a discriminant) can be used on any type allowing discriminants. Defaults aren't allowed on discriminants of nonlimited types, however, so that accessibility problems don't happen on assignment.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>38.f/2</MarginText>
+<MarginText>37.f/2</MarginText>
 <MarginInfo items={["AI95-00231-01"]} />
 <Admonition type="aarm" aarm="note">
 <code><a href="../AA-3/AA-3.10#S0083">null_exclusion</a></code> can be used in the declaration of a discriminant. <br /></Admonition>
@@ -497,35 +496,35 @@ Access discriminants (anonymous access types used as a discriminant) can be used
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>38.g/2</MarginText>
+<MarginText>37.g/2</MarginText>
 <MarginInfo items={["AI95-00098-01"]} />
 <Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0007</em>{"}"} <strong>Corrigendum:</strong> The wording was clarified so that types that cannot have discriminants cannot have an <code><a href="../AA-3/AA-3.7#S0060">unknown_discriminant_part</a></code>.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>38.h/2</MarginText>
+<MarginText>37.h/2</MarginText>
 <MarginInfo items={["AI95-00251-01"]} />
 <Admonition type="aarm" aarm="note">
 Added wording to prevent interfaces from having discriminants. We don't want interfaces to have any components.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>38.i/2</MarginText>
+<MarginText>37.i/2</MarginText>
 <MarginInfo items={["AI95-00254-01"]} />
 <Admonition type="aarm" aarm="note">
 Removed wording which implied or required an access discriminant to have an access-to-object type (anonymous access types can now be access-to-subprogram types as well).<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>38.j/3</MarginText>
+<MarginText>37.j/3</MarginText>
 <MarginInfo items={["AI95-00326-01", "AI05-0299-1"]} />
 <Admonition type="aarm" aarm="note">
 Fixed the wording of the introduction to this subclause to reflect that both incomplete and partial views can have unknown discriminants. That was always true, but for some reason this wording specified partial views.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>38.k/2</MarginText>
+<MarginText>37.k/2</MarginText>
 <MarginInfo items={["AI95-00419-01"]} />
 <Admonition type="aarm" aarm="note">
 Changed the wording to use the new term &ldquo;explicitly limited record&rdquo;, which makes the intent much clearer (and eliminates confusion with derived types that happen to contain the reserved word <strong>limited</strong>). <br /></Admonition>
@@ -537,7 +536,7 @@ Changed the wording to use the new term &ldquo;explicitly limited record&rdquo;,
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>38.l/3</MarginText>
+<MarginText>37.l/3</MarginText>
 <MarginInfo items={["AI05-0063-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Changed the rules for when access discriminants can have defaults to depend on the new definition for immutably limited types; this will help ensure that unusual corner cases are properly handled. Note that the Ada 2005 rule was unintentionally incompatible with the Ada 95 rule (as enforced by the ACATS); this change brings it back into alignment with actual practice. So there should be no practical incompatibility. <br /></Admonition>
@@ -549,7 +548,7 @@ Changed the wording to use the new term &ldquo;explicitly limited record&rdquo;,
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>38.m/3</MarginText>
+<MarginText>37.m/3</MarginText>
 <MarginInfo items={["AI05-0214-1"]} />
 <Admonition type="aarm" aarm="note">
 A limited tagged type may now have defaults for its discriminants. <br /></Admonition>
@@ -561,7 +560,7 @@ A limited tagged type may now have defaults for its discriminants. <br /></Admon
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>38.n/3</MarginText>
+<MarginText>37.n/3</MarginText>
 <MarginInfo items={["AI05-0102-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Moved implicit conversion Legality Rule to <a href="../AA-8/AA-8.6">8.6</a>. <br /></Admonition>
@@ -573,7 +572,7 @@ A limited tagged type may now have defaults for its discriminants. <br /></Admon
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>38.o/5</MarginText>
+<MarginText>37.o/5</MarginText>
 <MarginInfo items={["AI12-0398-1"]} />
 <Admonition type="aarm" aarm="note">
 Discriminants now can have an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>, allowing the specification of (implementation-defined) aspects for individual discriminants. <br /></Admonition>
@@ -711,9 +710,9 @@ NOTE   The rules of the language ensure that a discriminant of an object always 
 
 #### Examples
 
-<MarginText>14/3</MarginText>
-<MarginInfo items={["AI05-0299-1"]} />
-<p><em>Examples (using types declared above in subclause <a href="../AA-3/AA-3.7">3.7</a>):</em> <br /></p>
+<MarginText>14/5</MarginText>
+<MarginInfo items={["AI05-0299-1", "AI12-0449-1"]} />
+<p><em>Examples (using types declared above in  <a href="../AA-3/AA-3.7">3.7</a>):</em> <br /></p>
 
 <MarginText>15</MarginText>
 <CodeBlock language="ada">

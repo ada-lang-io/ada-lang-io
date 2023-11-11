@@ -102,8 +102,8 @@ end Interfaces.Fortran;{"\n"}
 #### Implementation Permissions
 
 <MarginText>21/5</MarginText>
-<MarginInfo items={["AI12-0058-1", "AI12-0263-1"]} />
-<p>An implementation may add additional declarations to the Fortran interface packages. For example, declarations are permitted for the character types corresponding to Fortran character kinds 'ascii' and 'iso_10646', which in turn correspond to ISO/IEC 646:1991 and to UCS-4 as specified in ISO/IEC 10646:2017 . <br /></p>
+<MarginInfo items={["AI12-0058-1", "AI12-0263-1", "AI12-0450-1"]} />
+<p>An implementation may add additional declarations to the Fortran interface packages. For example, declarations are permitted for the character types corresponding to Fortran character kinds 'ascii' and 'iso_10646', which in turn correspond to ISO/IEC 646:1991 and to UCS-4 as specified in ISO/IEC 10646:2020 . <br /></p>
 
 <AnnotatedOnly>
 <MarginText>21.a.1/5</MarginText>
@@ -168,17 +168,17 @@ with Interfaces.Fortran;{"\n"}use Interfaces.Fortran;{"\n"}procedure Ada_Applica
    type Fortran_Matrix is {"\n"}      array (Fortran_Integer  range {"<"}{">"},{"\n"}             Fortran_Integer  range {"<"}{">"}) of Double_Precision{"\n"}      with Convention ={">"} Fortran;                  -- stored in Fortran's{"\n"}                                                   -- column-major order{"\n"}   procedure Invert (Rank : in Fortran_Integer; X : in out Fortran_Matrix){"\n"}      with Import ={">"} True, Convention ={">"} Fortran; -- a Fortran subroutine{"\n"}
 <MarginText>32</MarginText>
    Rank      : constant Fortran_Integer := 100;{"\n"}   My_Matrix : Fortran_Matrix (1 .. Rank, 1 .. Rank);{"\n"}
-<MarginText>32.1/5</MarginText>
+<MarginText>33/5</MarginText>
 <MarginInfo items={["AI12-0058-1"]} />
    Precision: constant := 6;{"\n"}   type Standard_Deviation is digits Precision{"\n"}      with Convention ={">"} Fortran;{"\n"}   Deviation : Standard_Deviation;{"\n"}      -- Declarations to match the following Fortran declarations:{"\n"}      --   integer, parameter :: precision = selected_real_kind(p=6){"\n"}      --   real(precision) :: deviation{"\n"}
-<MarginText>33</MarginText>
-begin{"\n"}
 <MarginText>34</MarginText>
+begin{"\n"}
+<MarginText>35</MarginText>
    ...{"\n"}   My_Matrix := ...;{"\n"}   ...{"\n"}   Invert (Rank, My_Matrix);{"\n"}   ...{"\n"}
-<MarginText>34.1/5</MarginText>
+<MarginText>36/5</MarginText>
 <MarginInfo items={["AI12-0058-1"]} />
    Deviation := ...;{"\n"}   ...{"\n"}
-<MarginText>35</MarginText>
+<MarginText>37</MarginText>
 end Ada_Application;{"\n"}
 
 </CodeBlock>
@@ -188,7 +188,7 @@ end Ada_Application;{"\n"}
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>35.a/5</MarginText>
+<MarginText>37.a/5</MarginText>
 <MarginInfo items={["AI12-0058-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> The package Double_Precision_Complex_Types and associated types are added to package Interfaces.Fortran. In unusual circumstances, this could cause an incompatibility; we don't document it as an incompatibility as implementations are allowed to add declarations to this package, so that risk of an incompatibility is present for any move from one version of an implementation to another (not to mention to another implementation). As such, the language-defined additions make no change in the risk of incompatibility. <br /></Admonition>

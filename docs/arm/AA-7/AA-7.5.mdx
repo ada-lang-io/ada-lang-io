@@ -41,87 +41,92 @@ In Ada 83, in the two places where limited types were defined by the language, n
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>1.d/2</MarginText>
-<Admonition type="aarm" aarm="glossary-entry">
-<strong></strong>A limited type is a type for which copying (such as in an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>) is not allowed. A nonlimited type is a type for which copying is allowed.<br /></Admonition>
+<MarginText>1.d/5</MarginText>
+<Admonition type="aarm" aarm="note">
+<strong>Term entry: </strong><strong>limited type</strong> &mdash; type for which copying (such as in an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>) is not allowed<br /><br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>2</MarginText>
+<AnnotatedOnly>
+<MarginText>1.e/5</MarginText>
+<Admonition type="aarm" aarm="note">
+<strong>Term entry: </strong><strong>nonlimited type</strong> &mdash; type for which copying is allowed<br /></Admonition>
+</AnnotatedOnly>
+
 
 #### Legality Rules
 
-<MarginText>3/2</MarginText>
+<MarginText>2/2</MarginText>
 <MarginInfo items={["AI95-00419-01"]} />
 <p>If a tagged record type has any limited components, then the reserved word <strong>limited</strong> shall appear in its <code><a href="../AA-3/AA-3.8#S0066">record_type_definition</a></code>. [If the reserved word <strong>limited</strong> appears in the definition of a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>, its parent type and any progenitor interfaces shall be limited.] <br /></p>
 
 <AnnotatedOnly>
-<MarginText>3.a.1/5</MarginText>
+<MarginText>2.a.1/5</MarginText>
 <MarginInfo items={["AI95-00419-01", "AI12-0005-1"]} />
 <Admonition type="aarm" aarm="proof">
 <strong></strong>The rule about the parent type being required to be limited can be found in <a href="../AA-3/AA-3.4">3.4</a>. Rules about progenitor interfaces can be found in <a href="../AA-3/AA-3.9#Subclause_3.9.4">3.9.4</a>;  specifically, a nonlimited interface can appear only on a nonlimited type. We repeat these rules here to gather these scattered rules in one obvious place. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>3.a</MarginText>
+<MarginText>2.a</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This prevents tagged limited types from becoming nonlimited. Otherwise, the following could happen: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>3.b</MarginText>
+<MarginText>2.b</MarginText>
 <CodeBlock language="ada">
 package P is{"\n"}    type T is limited private;{"\n"}    type R is tagged{"\n"}        record -- Illegal!{"\n"}               -- This should say &ldquo;limited record&rdquo;.{"\n"}            X : T;{"\n"}        end record;{"\n"}private{"\n"}    type T is new Integer; -- R becomes nonlimited here.{"\n"}end P;{"\n"}
-<MarginText>3.c/2</MarginText>
+<MarginText>2.c/2</MarginText>
 package Q is{"\n"}    type R2 is new R with{"\n"}        record{"\n"}            Y : Some_Task_Type;{"\n"}        end record;{"\n"}end Q;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>3.d/2</MarginText>
+<MarginText>2.d/2</MarginText>
 <MarginInfo items={["AI95-00230-01"]} />
 <Admonition type="aarm" aarm="note">
 If the above were legal, then assignment would be defined for R'Class in the body of P, which is bad news, given the task. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>3.1/5</MarginText>
+<MarginText>2.1/5</MarginText>
 <MarginInfo items={["AI95-00287-01", "AI95-00318-02", "AI05-0147-1", "AI12-0172-1", "AI12-0236-1", "AI12-0317-1"]} />
 <p>In the following contexts, an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a limited type is  permitted only if each of its operative constituents is newly constructed (see <a href="../AA-4/AA-4.4">4.4</a>) : <br /></p>
 
-<MarginText>3.2/2</MarginText>
+<MarginText>2.2/2</MarginText>
 <ul>
 <li>the initialization <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> (see <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>)<br /></li>
-<MarginText>3.3/2</MarginText>
+<MarginText>2.3/2</MarginText>
 <li>the <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> of a <code><a href="../AA-3/AA-3.8#S0070">component_declaration</a></code> (see <a href="../AA-3/AA-3.8">3.8</a>)<br /></li>
-<MarginText>3.4/2</MarginText>
+<MarginText>2.4/2</MarginText>
 <li>the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0109">record_component_association</a></code> (see <a href="../AA-4/AA-4.3#Subclause_4.3.1">4.3.1</a>)<br /></li>
-<MarginText>3.5/2</MarginText>
+<MarginText>2.5/2</MarginText>
 <li>the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> for an <code><a href="../AA-4/AA-4.3#S0112">ancestor_part</a></code> of an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> (see <a href="../AA-4/AA-4.3#Subclause_4.3.2">4.3.2</a>)<br /></li>
-<MarginText>3.6/2</MarginText>
+<MarginText>2.6/2</MarginText>
 <li>an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code> or the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-4/AA-4.3#S0118">array_component_association</a></code> (see <a href="../AA-4/AA-4.3#Subclause_4.3.3">4.3.3</a>)<br /></li>
-<MarginText>3.7/5</MarginText>
+<MarginText>2.7/5</MarginText>
 <MarginInfo items={["AI12-0127-1"]} />
 <li>the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0121">record_delta_aggregate</a></code> (see <a href="../AA-4/AA-4.3#Subclause_4.3.4">4.3.4</a>) <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>3.d.1/5</MarginText>
+<MarginText>2.d.1/5</MarginText>
 <MarginInfo items={["AI12-0127-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>We don't need to mention the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an <code><a href="../AA-4/AA-4.3#S0122">array_delta_aggregate</a></code> here, as its type cannot be limited (see <a href="../AA-4/AA-4.3#Subclause_4.3.4">4.3.4</a>), and thus neither can its <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>. Similarly, we do not need any rules for components of a <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> nor the elements of a <code><a href="../AA-4/AA-4.3#S0123">container_aggregate</a></code>, as neither are allowed to be limited (see <a href="../AA-4/AA-4.3#Subclause_4.3.4">4.3.4</a> and <a href="../AA-4/AA-4.3#Subclause_4.3.5">4.3.5</a>) <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>3.8/5</MarginText>
+<MarginText>2.8/5</MarginText>
 <ul>
 <li>the <code><a href="../AA-4/AA-4.7#S0163">qualified_expression</a></code> of an initialized allocator (see <a href="../AA-4/AA-4.8">4.8</a>)<br /></li>
-<MarginText>3.9/5</MarginText>
+<MarginText>2.9/5</MarginText>
 <li>the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a return statement (see <a href="../AA-6/AA-6.5">6.5</a>)<br /></li>
-<MarginText>3.10/5</MarginText>
+<MarginText>2.10/5</MarginText>
 <MarginInfo items={["AI05-0177-1", "AI12-0157-1"]} />
 <li>the return expression of an expression function (see <a href="../AA-6/AA-6.8">6.8</a>)<br /></li>
-<MarginText>3.11/5</MarginText>
+<MarginText>2.11/5</MarginText>
 <li>the <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code> or actual parameter for a formal object of mode <strong>in</strong> (see <a href="../AA-12/AA-12.4">12.4</a>)<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>3.e/2</MarginText>
+<MarginText>2.e/2</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>All of these contexts normally require copying; by restricting the uses as above, we can require the new object to be built-in-place. <br /></Admonition>
 </AnnotatedOnly>
@@ -129,132 +134,132 @@ If the above were legal, then assignment would be defined for R'Class in the bod
 
 #### Static Semantics
 
-<MarginText>4/3</MarginText>
+<MarginText>3/3</MarginText>
 <MarginInfo items={["AI95-00419-01", "AI05-0178-1"]} />
 <p>A view of a type is <em>limited</em> if it is one of the following: <br /></p>
 
-<MarginText>5/2</MarginText>
+<MarginText>4/2</MarginText>
 <MarginInfo items={["AI95-00411-01", "AI95-00419-01"]} />
 <ul>
 <li>a type with the reserved word <strong>limited</strong>, <strong>synchronized</strong>, <strong>task</strong>, or <strong>protected</strong> in its definition; <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>5.a</MarginText>
+<MarginText>4.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that there is always a &ldquo;definition&rdquo;, conceptually, even if there is no syntactic category called &ldquo;..._definition&rdquo;.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>5.b/2</MarginText>
+<MarginText>4.b/2</MarginText>
 <MarginInfo items={["AI95-00419-01"]} />
 <Admonition type="aarm" aarm="note">
 This includes interfaces of the above kinds, derived types with the reserved word <strong>limited</strong>, as well as task and protected types. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>6/3</MarginText>
+<MarginText>5/3</MarginText>
 <MarginInfo items={["AI95-00419-01", "AI05-0087-1"]} />
 <ul>
 <li>a class-wide type whose specific type is limited;<br /></li>
-<MarginText>7/2</MarginText>
+<MarginText>6/2</MarginText>
 <MarginInfo items={["AI95-00419-01"]} />
 <li>a composite type with a limited component;<br /></li>
-<MarginText>7.1/3</MarginText>
+<MarginText>6.1/3</MarginText>
 <MarginInfo items={["AI05-0178-1"]} />
 <li>an incomplete view;<br /></li>
-<MarginText>7.2/2</MarginText>
+<MarginText>6.2/2</MarginText>
 <MarginInfo items={["AI95-00419-01"]} />
 <li>a derived type whose parent is limited and is not an interface.<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>7.a/2</MarginText>
+<MarginText>6.a/2</MarginText>
 <MarginInfo items={["AI95-00419-01"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Limitedness is not inherited from interfaces; it must be explicitly specified when the parent is an interface. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.b/2</MarginText>
+<MarginText>6.b/2</MarginText>
 <MarginInfo items={["AI95-00419-01"]} />
 <Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>A derived type can become nonlimited if <strong>limited</strong> does not appear and the derivation takes place in the visible part of a child package, and the parent type is nonlimited as viewed from the private part or body of the child package. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.c/2</MarginText>
+<MarginText>6.c/2</MarginText>
 <MarginInfo items={["AI95-00419-01"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>We considered a rule where limitedness was always inherited from the parent for derived types, but in the case of a type whose parent is an interface, this meant that the first interface is treated differently than other interfaces. It also would have forced users to declare dummy nonlimited interfaces just to get the limitedness right. We also considered a syntax like <strong>not limited</strong> to specify nonlimitedness when the parent was limited, but that was unsavory. The rule given is more uniform and simpler to understand.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.d/2</MarginText>
+<MarginText>6.d/2</MarginText>
 <MarginInfo items={["AI95-00419-01"]} />
 <Admonition type="aarm" aarm="note">
 The rules for interfaces are asymmetrical, but the language is not: if the parent interface is limited, the presence of the word <strong>limited</strong> determines the limitedness, and nonlimited progenitors are illegal by the rules in <a href="../AA-3/AA-3.9#Subclause_3.9.4">3.9.4</a> if <strong>limited</strong> is present. If the parent interface is nonlimited, the word <strong>limited</strong> is illegal by the rules in <a href="../AA-3/AA-3.4">3.4</a>. The net effect is that the order of the interfaces doesn't matter. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>8</MarginText>
+<MarginText>7</MarginText>
 <p>Otherwise, the type is nonlimited.<br /></p>
 
-<MarginText>9</MarginText>
+<MarginText>8</MarginText>
 <p>[There are no predefined equality operators for a limited type.]<br /></p>
 
-<MarginText>9.1/3</MarginText>
+<MarginText>8.1/3</MarginText>
 <MarginInfo items={["AI05-0052-1"]} />
 <p>A type is <em>immutably limited</em> if it is one of the following:<br /></p>
 
-<MarginText>9.2/3</MarginText>
+<MarginText>8.2/3</MarginText>
 <ul>
 <li>An explicitly limited record type;<br /></li>
-<MarginText>9.3/3</MarginText>
+<MarginText>8.3/3</MarginText>
 <MarginInfo items={["AI05-0217-1"]} />
 <li>A record extension with the reserved word <strong>limited</strong>;<br /></li>
-<MarginText>9.4/3</MarginText>
+<MarginText>8.4/3</MarginText>
 <li>A nonformal limited private type that is tagged or has at least one access discriminant with a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>;<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>9.a/3</MarginText>
+<MarginText>8.a/3</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The full type in both of these cases must necessarily be immutably limited. We need to include private types as much as possible so that we aren't unintentionally discouraging the use of private types. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>9.5/3</MarginText>
+<MarginText>8.5/3</MarginText>
 <ul>
 <li>A task type, a protected type, or a synchronized interface;<br /></li>
-<MarginText>9.6/3</MarginText>
+<MarginText>8.6/3</MarginText>
 <li>A type derived from an immutably limited type.<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>9.b/3</MarginText>
+<MarginText>8.b/3</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>An immutably limited type is a type that cannot become nonlimited subsequently in a private part or in a child unit. If a view of the type makes it immutably limited, then no copying (assignment) operations are ever available for objects of the type. This allows other properties; for instance, it is safe for such objects to have access discriminants that have defaults or designate other limited objects. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9.c/3</MarginText>
+<MarginText>8.c/3</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>A nonsynchronized limited interface type is not immutably limited; a type derived from it can be nonlimited. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>9.7/3</MarginText>
+<MarginText>8.7/3</MarginText>
 <MarginInfo items={["AI05-0052-1"]} />
 <p>A descendant of a generic formal limited private type is presumed to be immutably limited except within the body of a generic unit or a body declared within the declarative region of a generic unit, if the formal type is declared within the formal part of the generic unit.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>9.d/3</MarginText>
+<MarginText>8.d/3</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>In an instance, a type is descended from the actual type corresponding to the formal, and all rules are rechecked in the specification. Bodies are excepted so that we assume the worst there; the complex wording is required to handle children of generics and unrelated bodies properly. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10/5</MarginText>
+<MarginText>9/5</MarginText>
 <MarginInfo items={["AI95-00287-01", "AI95-00318-02", "AI05-0067-1", "AI12-0442-1"]} />
 <Admonition type="aarm" aarm="note">
 NOTE 1   While it is allowed to write initializations of limited objects, such initializations never copy a limited object. The source of such an assignment operation will  be an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> or <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>, and such <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s and <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s will  be built directly in the target object (see <a href="../AA-7/AA-7.6">7.6</a>). <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.a/2</MarginText>
+<MarginText>9.a/2</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>This isn't quite true if the type can become nonlimited (see below); <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s only are required to be build-in-place for &ldquo;really&rdquo; limited types. <br /></Admonition>
 </AnnotatedOnly>
@@ -265,25 +270,25 @@ NOTE 1   While it is allowed to write initializations of limited objects, such i
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>17</MarginText>
+<MarginText>16</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 2   As illustrated in <a href="../AA-7/AA-7.3#Subclause_7.3.1">7.3.1</a>, an untagged limited type can become nonlimited under certain circumstances. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>17.a</MarginText>
+<MarginText>16.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Limited private types do not become nonlimited; instead, their full view can be nonlimited, which has a similar effect.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>17.b</MarginText>
+<MarginText>16.b</MarginText>
 <Admonition type="aarm" aarm="note">
 It is important to remember that a single nonprivate type can be both limited and nonlimited in different parts of its scope. In other words, &ldquo;limited&rdquo; is a property that depends on where you are in the scope of the type. We don't call this a &ldquo;view property&rdquo; because there is no particular declaration to declare the nonlimited view.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>17.c</MarginText>
+<MarginText>16.c</MarginText>
 <Admonition type="aarm" aarm="note">
 Tagged types never become nonlimited. <br /></Admonition>
 </AnnotatedOnly>
@@ -291,36 +296,49 @@ Tagged types never become nonlimited. <br /></Admonition>
 
 #### Examples
 
-<MarginText>18</MarginText>
+<MarginText>17</MarginText>
 <p><em>Example of a package with a limited type:</em> <br /></p>
 
-<MarginText>19</MarginText>
+<MarginText>18</MarginText>
 <CodeBlock language="ada">
 package IO_Package is{"\n"}   type File_Name is limited private;{"\n"}
-<MarginText>20</MarginText>
+<MarginText>19</MarginText>
    procedure Open (F : in out File_Name);{"\n"}   procedure Close(F : in out File_Name);{"\n"}   procedure Read (F : in File_Name; Item : out Integer);{"\n"}   procedure Write(F : in File_Name; Item : in  Integer);{"\n"}private{"\n"}   type File_Name is{"\n"}      limited record{"\n"}         Internal_Name : Integer := 0;{"\n"}      end record;{"\n"}end IO_Package;{"\n"}
-<MarginText>21</MarginText>
+<MarginText>20</MarginText>
 package body IO_Package is{"\n"}   Limit : constant := 200;{"\n"}   type File_Descriptor is record  ...  end record;{"\n"}   Directory : array (1 .. Limit) of File_Descriptor;{"\n"}   ...{"\n"}   procedure Open (F : in out File_Name) is  ...  end;{"\n"}   procedure Close(F : in out File_Name) is  ...  end;{"\n"}   procedure Read (F : in File_Name; Item : out Integer) is ... end;{"\n"}   procedure Write(F : in File_Name; Item : in  Integer) is ... end;{"\n"}begin{"\n"}   ...{"\n"}end IO_Package;{"\n"}
 
 </CodeBlock>
-<AnnotatedOnly>
+<MarginText>21/5</MarginText>
+<MarginInfo items={["AI12-0440-1", "AI12-0452-1"]} />
+<p>In the example, an outside subprogram making use of IO_Package can  obtain a file name by calling Open and later use it in calls to Read and Write. Thus, outside the package, a file name obtained from Open acts as a kind of password; its internal properties (such as containing a numeric value) are not known and no other operations (such as addition or comparison of internal names) can be performed on a file name. Most importantly, clients of the package cannot make copies of objects of type File_Name.<br /></p>
+
 <MarginText>22/5</MarginText>
-<MarginInfo items={["AI12-0440-1"]} />
+<MarginInfo items={["AI12-0442-1", "AI12-0452-1"]} />
+<p>This example is characteristic of any case where complete control over the operations of a type is desired. Such packages serve a dual purpose. They prevent a user from making use of the internal structure of the type. They also implement the notion of an encapsulated data type where the only operations on the type are those given in the package specification.<br /></p>
+
+<MarginText>23/5</MarginText>
+<MarginInfo items={["AI12-0442-1", "AI12-0452-1"]} />
+<p>The fact that the full view of File_Name is explicitly declared <strong>limited</strong> means that parameter passing will always be by reference and function results will always be built directly in the result object (see <a href="../AA-6/AA-6.2">6.2</a> and <a href="../AA-6/AA-6.5">6.5</a>).<br /></p>
+
+<AnnotatedOnly>
+<MarginText>24/5</MarginText>
+<MarginInfo items={["AI12-0452-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 3   <em>Notes on the example:</em> In the example above, an outside subprogram making use of IO_Package can  obtain a file name by calling Open and later use it in calls to Read and Write. Thus, outside the package, a file name obtained from Open acts as a kind of password; its internal properties (such as containing a numeric value) are not known and no other operations (such as addition or comparison of internal names) can be performed on a file name. Most importantly, clients of the package cannot make copies of objects of type File_Name.<br /></Admonition>
+ <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>23</MarginText>
+<MarginText>25/5</MarginText>
+<MarginInfo items={["AI12-0452-1"]} />
 <Admonition type="aarm" aarm="note">
-This example is characteristic of any case where complete control over the operations of a type is desired. Such packages serve a dual purpose. They prevent a user from making use of the internal structure of the type. They also implement the notion of an encapsulated data type where the only operations on the type are those given in the package specification.<br /></Admonition>
+ <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>24/2</MarginText>
-<MarginInfo items={["AI95-00318-02"]} />
+<MarginText>26/5</MarginText>
+<MarginInfo items={["AI95-00318-02", "AI12-0452-1"]} />
 <Admonition type="aarm" aarm="note">
-The fact that the full view of File_Name is explicitly declared <strong>limited</strong> means that parameter passing will always be by reference and function results will always be built directly in the result object (see <a href="../AA-6/AA-6.2">6.2</a> and <a href="../AA-6/AA-6.5">6.5</a>).<br /></Admonition>
+ <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -329,7 +347,7 @@ The fact that the full view of File_Name is explicitly declared <strong>limited<
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>24.a</MarginText>
+<MarginText>26.a</MarginText>
 <Admonition type="aarm" aarm="note">
 The restrictions in RM83-7.4.4(4), which disallowed <strong>out</strong> parameters of limited types in certain cases, are removed. <br /></Admonition>
 </AnnotatedOnly>
@@ -340,7 +358,7 @@ The restrictions in RM83-7.4.4(4), which disallowed <strong>out</strong> paramet
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>24.b/3</MarginText>
+<MarginText>26.b/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
 <Admonition type="aarm" aarm="note">
 Since limitedness and privateness are orthogonal in Ada 95 (and to some extent in Ada 83), this is now its own subclause rather than being a subclause of <a href="../AA-7/AA-7.3">7.3</a>, &ldquo;<a href="../AA-7/AA-7.3">Private Types and Private Extensions</a>&rdquo;. <br /></Admonition>
@@ -352,7 +370,7 @@ Since limitedness and privateness are orthogonal in Ada 95 (and to some extent i
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>24.c/2</MarginText>
+<MarginText>26.c/2</MarginText>
 <MarginInfo items={["AI95-00287-01", "AI95-00318-02"]} />
 <Admonition type="aarm" aarm="note">
 Limited types now have an assignment operation, but its use is restricted such that all uses are build-in-place. This is accomplished by restricting uses to <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s and <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s. <code><a href="../AA-4/AA-4.3#S0106">Aggregate</a></code>s were not allowed to have a limited type in Ada 95, which causes a compatibility issue discussed in <a href="../AA-4/AA-4.3">4.3</a>, &ldquo;<a href="../AA-4/AA-4.3">Aggregates</a>&rdquo;. Compatibility issues with return statements for limited <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>s are discussed in <a href="../AA-6/AA-6.5">6.5</a>, &ldquo;<a href="../AA-6/AA-6.5">Return Statements</a>&rdquo;. <br /></Admonition>
@@ -364,7 +382,7 @@ Limited types now have an assignment operation, but its use is restricted such t
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>24.d/2</MarginText>
+<MarginText>26.d/2</MarginText>
 <MarginInfo items={["AI95-00411-01", "AI95-00419-01"]} />
 <Admonition type="aarm" aarm="note">
 Rewrote the definition of limited to ensure that interfaces are covered, but that limitedness is not inherited from interfaces. Derived types that explicitly include <strong>limited</strong> are now also covered. <br /></Admonition>
@@ -376,42 +394,42 @@ Rewrote the definition of limited to ensure that interfaces are covered, but tha
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>24.e/3</MarginText>
+<MarginText>26.e/3</MarginText>
 <MarginInfo items={["AI05-0052-1", "AI05-0217-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Added a definition for immutably limited types, so that the fairly complex definition does not need to be repeated in rules elsewhere in the Reference Manual.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>24.f/3</MarginText>
+<MarginText>26.f/3</MarginText>
 <MarginInfo items={["AI05-0067-1", "AI05-0299-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> The built-in-place rules are consolidated in <a href="../AA-7/AA-7.6">7.6</a>, and thus they are removed from this subclause.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>24.g/3</MarginText>
+<MarginText>26.g/3</MarginText>
 <MarginInfo items={["AI05-0087-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Fixed an oversight: class-wide types were never defined to be limited, even if their associated specific type is. It is thought that this oversight was never implemented incorrectly by any compiler, thus we have not classified it as an incompatibility.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>24.h/3</MarginText>
+<MarginText>26.h/3</MarginText>
 <MarginInfo items={["AI05-0147-1"]} />
 <Admonition type="aarm" aarm="note">
 Allowed <code><a href="../AA-4/AA-4.5#S0148">conditional_expression</a></code>s in limited constructor contexts &mdash; we want to treat these as closely to parentheses as possible.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>24.i/3</MarginText>
+<MarginText>26.i/3</MarginText>
 <MarginInfo items={["AI05-0177-1"]} />
 <Admonition type="aarm" aarm="note">
 Added wording so that expression functions can return limited entities.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>24.j/3</MarginText>
+<MarginText>26.j/3</MarginText>
 <MarginInfo items={["AI05-0178-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Added incomplete views to the list of reasons for a view of a type to be limited. This is not a change as the definition already was in <a href="../AA-3/AA-3.10#Subclause_3.10.1">3.10.1</a>. But it is much better to have all of the reasons for limitedness together. <br /></Admonition>
@@ -423,7 +441,7 @@ Added wording so that expression functions can return limited entities.<br /></A
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>24.k/5</MarginText>
+<MarginText>26.k/5</MarginText>
 <MarginInfo items={["AI12-0172-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> A <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> can be used in an expression used in a limited context. This is harmless (no object will be created if an exception is raised instead), useful, and thus appears to have been an omission when <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code>s were added to the language. <br /></Admonition>
@@ -435,7 +453,7 @@ Added wording so that expression functions can return limited entities.<br /></A
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>24.l/5</MarginText>
+<MarginText>26.l/5</MarginText>
 <MarginInfo items={["AI12-0127-1"]} />
 <Admonition type="aarm" aarm="note">
 Added the <em>base_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-4/AA-4.3#S0120">delta_aggregate</a></code> as a limited context. <br /></Admonition>

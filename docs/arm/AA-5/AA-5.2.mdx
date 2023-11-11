@@ -135,9 +135,9 @@ Don't confuse the term &ldquo;assignment operation&rdquo; with the <code><a href
 <MarginText>13</MarginText>
 <ul>
 <li>The value of the target becomes the converted value.<br /></li>
-<MarginText>14/3</MarginText>
-<MarginInfo items={["AI05-0299-1"]} />
-<li>If any part of the target is controlled, its value is adjusted as explained in subclause <a href="../AA-7/AA-7.6">7.6</a>. <br /></li>
+<MarginText>14/5</MarginText>
+<MarginInfo items={["AI05-0299-1", "AI12-0449-1"]} />
+<li>If any part of the target is controlled, its value is adjusted as explained in  <a href="../AA-7/AA-7.6">7.6</a>. <br /></li>
 </ul>
 <AnnotatedOnly>
 <MarginText>14.a</MarginText>
@@ -180,10 +180,10 @@ The determination of the type of the variable of an <code><a href="../AA-5/AA-5.
 <CodeBlock language="ada">
 Value := Max_Value - 1;{"\n"}Shade := Blue;{"\n"}
 <MarginText>19</MarginText>
-Next_Frame(F)(M, N) := 2.5;        --  see <a href="../AA-4/AA-4.1#Subclause_4.1.1">4.1.1</a>{"\n"}U := Dot_Product(V, W);            --  see <a href="../AA-6/AA-6.3">6.3</a>{"\n"}
+Next_Frame(F)(M, N) := 2.5;        -- see <a href="../AA-4/AA-4.1#Subclause_4.1.1">4.1.1</a>{"\n"}U := Dot_Product(V, W);            -- see <a href="../AA-6/AA-6.3">6.3</a>{"\n"}
 <MarginText>20/4</MarginText>
 <MarginInfo items={["AI12-0056-1"]} />
-Writer := (Status ={">"} Open, Unit ={">"} Printer, Line_Count ={">"} 60);  -- see <a href="../AA-3/AA-3.8#Subclause_3.8.1">3.8.1</a>{"\n"}Next.all := (72074, null, Head);   --  see <a href="../AA-3/AA-3.10#Subclause_3.10.1">3.10.1</a>{"\n"}
+Writer := (Status ={">"} Open, Unit ={">"} Printer, Line_Count ={">"} 60);{"\n"}                                   -- see <a href="../AA-3/AA-3.8#Subclause_3.8.1">3.8.1</a>{"\n"}Next.all := (72074, null, Head);   -- see <a href="../AA-3/AA-3.10#Subclause_3.10.1">3.10.1</a>{"\n"}
 
 </CodeBlock>
 <MarginText>21</MarginText>
@@ -193,7 +193,7 @@ Writer := (Status ={">"} Open, Unit ={">"} Printer, Line_Count ={">"} 60);  -- s
 <CodeBlock language="ada">
 I, J : Integer range 1 .. 10 := 5;{"\n"}K    : Integer range 1 .. 20 := 15;{"\n"} ...{"\n"}
 <MarginText>23</MarginText>
-I := J;  --  identical ranges{"\n"}K := J;  --  compatible ranges{"\n"}J := K;  --  will raise Constraint_Error if K {">"} 10{"\n"}
+I := J;  -- identical ranges{"\n"}K := J;  -- compatible ranges{"\n"}J := K;  -- will raise Constraint_Error if K {">"} 10{"\n"}
 
 </CodeBlock>
 <MarginText>24</MarginText>
@@ -203,15 +203,20 @@ I := J;  --  identical ranges{"\n"}K := J;  --  compatible ranges{"\n"}J := K;  
 <CodeBlock language="ada">
 A : String(1 .. 31);{"\n"}B : String(3 .. 33);{"\n"} ...{"\n"}
 <MarginText>26</MarginText>
-A := B;  --  same number of components{"\n"}
+A := B;  -- same number of components{"\n"}
 <MarginText>27</MarginText>
-A(1 .. 9)  := "tar sauce";{"\n"}A(4 .. 12) := A(1 .. 9);  --  A(1 .. 12) = "tartar sauce"{"\n"}
+A(1 .. 9)  := "tar sauce";{"\n"}A(4 .. 12) := A(1 .. 9);  -- A(1 .. 12) = "tartar sauce"{"\n"}
 
 </CodeBlock>
+<MarginText>28/5</MarginText>
+<MarginInfo items={["AI12-0452-1"]} />
+<p><code><a href="../AA-5/AA-5.2#S0173">Assignment_statement</a></code>s are well-defined even in the case of overlapping slices of the same array, because the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> and <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> are both evaluated before copying the value into the variable. In the above example, an implementation yielding A(1 .. 12) = "tartartartar" would be incorrect.<br /></p>
+
 <AnnotatedOnly>
-<MarginText>28</MarginText>
+<MarginText>29/5</MarginText>
+<MarginInfo items={["AI12-0452-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   <em>Notes on the examples:</em> <code><a href="../AA-5/AA-5.2#S0173">Assignment_statement</a></code>s are allowed even in the case of overlapping slices of the same array, because the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> and <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> are both evaluated before copying the value into the variable. In the above example, an implementation yielding A(1 .. 12) = "tartartartar" would be incorrect. <br /></Admonition>
+ <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -220,7 +225,7 @@ NOTE 1   <em>Notes on the examples:</em> <code><a href="../AA-5/AA-5.2#S0173">As
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>28.a</MarginText>
+<MarginText>29.a</MarginText>
 <Admonition type="aarm" aarm="note">
 We now allow user-defined finalization and value adjustment actions as part of <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s (see <a href="../AA-7/AA-7.6">7.6</a>, &ldquo;<a href="../AA-7/AA-7.6">Assignment and Finalization</a>&rdquo;). <br /></Admonition>
 </AnnotatedOnly>
@@ -231,13 +236,13 @@ We now allow user-defined finalization and value adjustment actions as part of <
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>28.b</MarginText>
+<MarginText>29.b</MarginText>
 <Admonition type="aarm" aarm="note">
 The special case of array assignment is subsumed by the concept of a subtype conversion, which is applied for all kinds of types, not just arrays. For arrays it provides &ldquo;sliding&rdquo;. For numeric types it provides conversion of a value of a universal type to the specific type of the target. For other types, it generally has no run-time effect, other than a constraint check.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>28.c</MarginText>
+<MarginText>29.c</MarginText>
 <Admonition type="aarm" aarm="note">
 We now cover in a general way in <a href="../AA-3/AA-3.7#Subclause_3.7.2">3.7.2</a> the erroneous execution possible due to changing the value of a discriminant when the variable in an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is a subcomponent that depends on discriminants. <br /></Admonition>
 </AnnotatedOnly>
@@ -248,21 +253,21 @@ We now cover in a general way in <a href="../AA-3/AA-3.7#Subclause_3.7.2">3.7.2<
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>28.d/2</MarginText>
+<MarginText>29.d/2</MarginText>
 <MarginInfo items={["AI95-00287-01"]} />
 <Admonition type="aarm" aarm="note">
 The change of the limited check from a resolution rule to a legality rule is not quite upward compatible. For example <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>28.e/2</MarginText>
+<MarginText>29.e/2</MarginText>
 <CodeBlock language="ada">
 type AccNonLim is access NonLim;{"\n"}function Foo (Arg : in Integer) return AccNonLim;{"\n"}type AccLim is access Lim;{"\n"}function Foo (Arg : in Integer) return AccLim;{"\n"}Foo(2).all := Foo(1).all;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>28.f/2</MarginText>
+<MarginText>29.f/2</MarginText>
 <Admonition type="aarm" aarm="note">
 where NonLim is a nonlimited type and Lim is a limited type. The assignment is legal in Ada 95 (only the first Foo would be considered), and is ambiguous in Ada 2005. We made the change because we want limited types to be as similar to nonlimited types as possible. Limited expressions are now allowed in all other contexts (with a similar incompatibility), and it would be odd if assignments had different resolution rules (which would eliminate ambiguities in some cases). Moreover, examples like this one are rare, as they depend on assigning into overloaded function calls. <br /></Admonition>
 </AnnotatedOnly>
@@ -310,8 +315,8 @@ where NonLim is a nonlimited type and Lim is a limited type. The assignment is l
 #### Dynamic Semantics
 
 <MarginText>5/5</MarginText>
-<MarginInfo items={["AI12-0125-3", "AI12-0322-1"]} />
-<p>For the execution of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> with one or more <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code>s appearing in its <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> <em>V</em> of the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is evaluated first to determine the object denoted by <em>V</em>, and then the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is evaluated with the evaluation of each <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> yielding a constant view of the the target whose properties are otherwise identical to those of the view provided by <em>V</em>. The remainder of the execution of the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is as given in subclause <a href="../AA-5/AA-5.2">5.2</a>.<br /></p>
+<MarginInfo items={["AI12-0125-3", "AI12-0322-1", "AI12-0449-1"]} />
+<p>For the execution of an <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> with one or more <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code>s appearing in its <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> <em>V</em> of the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is evaluated first to determine the object denoted by <em>V</em>, and then the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is evaluated with the evaluation of each <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> yielding a constant view of the target whose properties are otherwise identical to those of the view provided by <em>V</em>. The remainder of the execution of the <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> is as given in <a href="../AA-5/AA-5.2">5.2</a>.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>5.a/5</MarginText>
@@ -336,10 +341,10 @@ where NonLim is a nonlimited type and Lim is a limited type. The assignment is l
 <MarginText>7/5</MarginText>
 <MarginInfo items={["AI12-0125-3", "AI12-0379-1", "AI12-0442-1"]} />
 <CodeBlock language="ada">
-Board(1, 1) := @ + 1.0;  -- An abbreviation for Board(1, 1) := Board(1, 1) + 1.0;{"\n"}                       -- (Board is declared in <a href="../AA-3/AA-3.6#Subclause_3.6.1">3.6.1</a>).{"\n"}
+Board(1, 1) := @ + 1.0;{"\n"}            -- An abbreviation for Board(1, 1) := Board(1, 1) + 1.0;{"\n"}            -- (Board is declared in <a href="../AA-3/AA-3.6#Subclause_3.6.1">3.6.1</a>).{"\n"}
 <MarginText>8/5</MarginText>
 <MarginInfo items={["AI12-0125-3"]} />
-My_Complex_Array : array (1 .. Max) of Complex; -- See <a href="../AA-3/AA-3.3#Subclause_3.3.2">3.3.2</a>, <a href="../AA-3/AA-3.8">3.8</a>.{"\n"}...{"\n"}-- Square the element in the Count (see <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>) position:{"\n"}My_Complex_Array (Count) := (Re ={">"} @.Re**2 - @.Im**2,{"\n"}                             Im ={">"} 2.0 * @.Re * @.Im);{"\n"}   -- A target_name can be used multiple times and as a prefix if desired.{"\n"}
+My_Complex_Array : array (1 .. Max) of Complex; -- See <a href="../AA-3/AA-3.3#Subclause_3.3.2">3.3.2</a>, <a href="../AA-3/AA-3.8">3.8</a>.{"\n"}...{"\n"}-- Square the element in the Count (see <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>) position:{"\n"}My_Complex_Array (Count) := (Re ={">"} @.Re**2 - @.Im**2,{"\n"}                             Im ={">"} 2.0 * @.Re * @.Im);{"\n"}   -- A target_name can be used multiple times and{"\n"}   -- as a prefix if desired.{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>

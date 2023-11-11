@@ -123,305 +123,304 @@ If an implementation shares code for instances of generic bodies, it should be a
 <p>Every type extension is also a tagged type, and is a <em>record extension</em> or a <em>private extension</em> of some other tagged type, or a noninterface synchronized tagged type (see <a href="../AA-3/AA-3.9#Subclause_3.9.4">3.9.4</a>). A record extension is defined by a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> with a <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code> (see <a href="../AA-3/AA-3.9#Subclause_3.9.1">3.9.1</a>)[, which may include the definition of additional components]. A private extension, which is a partial view of a record extension or of a synchronized tagged type, can be declared in the visible part of a package (see <a href="../AA-7/AA-7.3">7.3</a>) or in a generic formal part (see <a href="../AA-12/AA-12.5#Subclause_12.5.1">12.5.1</a>). <br /></p>
 
 <AnnotatedOnly>
-<MarginText>2.a</MarginText>
-<Admonition type="aarm" aarm="glossary-entry">
-<strong></strong>The objects of a tagged type have a run-time type tag, which indicates the specific type with which the object was originally created. An operand of a class-wide tagged type can be used in a dispatching call; the tag indicates which subprogram body to invoke. Nondispatching calls, in which the subprogram body to invoke is determined at compile time, are also allowed. Tagged types may be extended with additional components.<br /></Admonition>
+<MarginText>2.a/5</MarginText>
+<Admonition type="aarm" aarm="note">
+<strong>Term entry: </strong><strong>tagged type</strong> &mdash; type whose objects each have a run-time type tag, which indicates the specific type for which the object was originally created<br /><br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>3</MarginText>
 <AnnotatedOnly>
-<MarginText>3.a/2</MarginText>
+<MarginText>2.b/2</MarginText>
 <MarginInfo items={["AI95-00218-03"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>If a tagged type is declared other than in a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, it is impossible to add new primitive subprograms for that type, although it can inherit primitive subprograms, and those can be overridden. If the user incorrectly thinks a certain subprogram is primitive when it is not, and tries to call it with a dispatching call, an error message will be given at the call site. Similarly, by using an <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code> (see <a href="../AA-6/AA-6.1">6.1</a>), the user can declare that a subprogram is intended to be overriding, and get an error message when they made a mistake. The use of <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code>s is highly recommended in new code that does not need to be compatible with Ada 95.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>4</MarginText>
+<MarginText>3</MarginText>
 <p>An object of a tagged type has an associated (run-time) <em>tag</em> that identifies the specific tagged type used to create the object originally. [ The tag of an operand of a class-wide tagged type <em>T</em>'Class controls which subprogram body is to be executed when a primitive subprogram of type <em>T</em> is applied to the operand (see <a href="../AA-3/AA-3.9#Subclause_3.9.2">3.9.2</a>); using a tag to control which body to execute is called <em>dispatching</em>.] <br /></p>
 
-<MarginText>5/2</MarginText>
+<MarginText>4/2</MarginText>
 <MarginInfo items={["AI95-00344-01"]} />
 <p>The tag of a specific tagged type identifies the <code><a href="../AA-3/AA-3.2#S0024">full_type_declaration</a></code> of the type, and for a type extension, is sufficient to uniquely identify the type among all descendants of the same ancestor. If a declaration for a tagged type occurs within a <code><a href="../AA-12/AA-12.1#S0312">generic_package_declaration</a></code>, then the corresponding type declarations in distinct instances of the generic package are associated with distinct tags. For a tagged type that is local to a generic package body and with all of its ancestors (if any) also local to the generic body, the language does not specify whether repeated instantiations of the generic body result in distinct tags. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>5.a/2</MarginText>
+<MarginText>4.a/2</MarginText>
 <MarginInfo items={["AI95-00344-01"]} />
 <Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>5.a.1/2</MarginText>
+<MarginText>4.a.1/2</MarginText>
 <MarginInfo items={["AI95-00344-01"]} />
 <Admonition type="aarm" aarm="implementation-note">
 <strong></strong>In most cases, a tag need only identify a particular tagged type declaration, and can therefore be a simple link-time-known address. However, for tag checks (see <a href="../AA-3/AA-3.9#Subclause_3.9.2">3.9.2</a>) it is essential that each descendant (that currently exists) of a given type have a unique tag. Hence, for types declared in shared generic bodies where an ancestor comes from outside the generic, or for types declared at a deeper level than an ancestor, the tag needs to be augmented with some kind of dynamic descriptor (which may be a static link, global display, instance descriptor pointer, or combination). This implies that type Tag may need to be two words, the second of which is normally null, but in these identified special cases needs to include a static link or equivalent. Within an object of one of these types with a two-word tag, the two parts of the tag would typically be separated, one part as the first word of the object, the second placed in the first extension part that corresponds to a type declared more nested than its parent or declared in a shared generic body when the parent is declared outside. Alternatively, by using an extra level of indirection, the type Tag could remain a single-word.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>5.b/2</MarginText>
+<MarginText>4.b/2</MarginText>
 <MarginInfo items={["AI95-00344-01"]} />
 <Admonition type="aarm" aarm="note">
 For types that are not type extensions (even for ones declared in nested scopes), we do not require that repeated elaborations of the same <code><a href="../AA-3/AA-3.2#S0024">full_type_declaration</a></code> correspond to distinct tags. This was done so that Ada 2005 implementations of tagged types could maintain representation compatibility with Ada 95 implementations. Only type extensions that were not allowed in Ada 95 require additional information with the tag. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>5.c/2</MarginText>
+<MarginText>4.c/2</MarginText>
 <MarginInfo items={["AI95-00344-01"]} />
 <Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>The wording &ldquo;is sufficient to uniquely identify the type among all descendants of the same ancestor&rdquo; only applies to types that currently exist. It is not necessary to distinguish between descendants that currently exist, and descendants of the same type that no longer exist. For instance, the address of the stack frame of the subprogram that created the tag is sufficient to meet the requirements of this rule, even though it is possible, after the subprogram returns, that a later call of the subprogram could have the same stack frame and thus have an identical tag. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>6</MarginText>
+<MarginText>5</MarginText>
 <p>The following language-defined library package exists: <br /></p>
 
-<MarginText>7/5</MarginText>
+<MarginText>6/5</MarginText>
 <MarginInfo items={["AI95-00362-01", "AI12-0241-1", "AI12-0302-1", "AI12-0399-1"]} />
 <CodeBlock language="ada">
 package Ada.Tags  {"\n"}    with  Preelaborate, Nonblocking, Global ={">"} in out synchronized is {"\n"}    type Tag is private {"\n"}       with  Preelaborable_Initialization ;{"\n"}
-<MarginText>7.1/2</MarginText>
+<MarginText>6.1/2</MarginText>
 <MarginInfo items={["AI95-00260-02"]} />
     No_Tag : constant Tag;{"\n"}
-<MarginText>8/2</MarginText>
+<MarginText>7/2</MarginText>
 <MarginInfo items={["AI95-00400-01"]} />
     function Expanded_Name(T : Tag) return String;{"\n"}    function Wide_Expanded_Name(T : Tag) return Wide_String;{"\n"}    function Wide_Wide_Expanded_Name(T : Tag) return Wide_Wide_String;{"\n"}    function External_Tag(T : Tag) return String;{"\n"}    function Internal_Tag(External : String) return Tag;{"\n"}
-<MarginText>8.1/2</MarginText>
+<MarginText>7.1/2</MarginText>
 <MarginInfo items={["AI95-00344-01"]} />
-    function Descendant_Tag(External : String; Ancestor : Tag) return Tag;{"\n"}    function Is_Descendant_At_Same_Level(Descendant, Ancestor : Tag){"\n"}        return Boolean;{"\n"}
-<MarginText>8.2/2</MarginText>
+    function Descendant_Tag(External : String;{"\n"}                            Ancestor : Tag) return Tag;{"\n"}    function Is_Descendant_At_Same_Level(Descendant, Ancestor : Tag){"\n"}        return Boolean;{"\n"}
+<MarginText>7.2/2</MarginText>
 <MarginInfo items={["AI95-00260-02"]} />
     function Parent_Tag (T : Tag) return Tag;{"\n"}
-<MarginText>8.3/2</MarginText>
+<MarginText>7.3/2</MarginText>
 <MarginInfo items={["AI95-00405-01"]} />
     type Tag_Array is array (Positive range {"<"}{">"}) of Tag;{"\n"}
-<MarginText>8.4/2</MarginText>
+<MarginText>7.4/2</MarginText>
 <MarginInfo items={["AI95-00405-01"]} />
     function Interface_Ancestor_Tags (T : Tag) return Tag_Array;{"\n"}
-<MarginText>8.5/3</MarginText>
+<MarginText>7.5/3</MarginText>
 <MarginInfo items={["AI05-0173-1"]} />
     function Is_Abstract (T : Tag) return Boolean;{"\n"}
-<MarginText>9</MarginText>
+<MarginText>8</MarginText>
     Tag_Error : exception;{"\n"}
-<MarginText>10</MarginText>
+<MarginText>9</MarginText>
 private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Tags;{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
-<MarginText>10.a</MarginText>
+<MarginText>9.a</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>Tag is a nonlimited, definite subtype, because it needs the equality operators, so that tag checking makes sense. Also, equality, assignment, and object declaration are all useful capabilities for this subtype.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.b</MarginText>
+<MarginText>9.b</MarginText>
 <Admonition type="aarm" aarm="note">
 For an object X and a type T, &ldquo;X'Tag = T'Tag&rdquo; is not needed, because a membership test can be used. However, comparing the tags of two objects cannot be done via membership. This is one reason to allow equality for type Tag. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>10.1/2</MarginText>
+<MarginText>9.1/2</MarginText>
 <MarginInfo items={["AI95-00260-02"]} />
 <p>No_Tag is the default initial value of type Tag. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>10.c/2</MarginText>
+<MarginText>9.c/2</MarginText>
 <MarginInfo items={["AI95-00260-02"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This is similar to the requirement that all access values be initialized to <strong>null</strong>. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>11/2</MarginText>
+<MarginText>10/2</MarginText>
 <MarginInfo items={["AI95-00400-01"]} />
 <p>The function Wide_Wide_Expanded_Name returns the full expanded name of the first subtype of the specific type identified by the tag, in upper case, starting with a root library unit. The result is implementation defined if the type is declared within an unnamed <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></code>. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>11.a</MarginText>
+<MarginText>10.a</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>This name, as well as each <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of it, does not denote a <code><a href="../AA-8/AA-8.5#S0238">renaming_declaration</a></code>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>11.b/2</MarginText>
+<MarginText>10.b/2</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The result of Tags.Wide_Wide_Expanded_Name for types declared within an unnamed <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></code>.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>11.1/2</MarginText>
+<MarginText>10.1/2</MarginText>
 <MarginInfo items={["AI95-00400-01"]} />
 <p>The function Expanded_Name (respectively, Wide_Expanded_Name) returns the same sequence of graphic characters as that defined for Wide_Wide_Expanded_Name, if all the graphic characters are defined in Character (respectively, Wide_Character); otherwise, the sequence of characters is implementation defined, but no shorter than that returned by Wide_Wide_Expanded_Name for the same value of the argument. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>11.c/2</MarginText>
+<MarginText>10.c/2</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The sequence of characters of the value returned by Tags.Expanded_Name (respectively, Tags.Wide_Expanded_Name) when some of the graphic characters of Tags.Wide_Wide_Expanded_Name are not defined in Character (respectively, Wide_Character).<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>12</MarginText>
+<MarginText>11</MarginText>
 <p>The function External_Tag returns a string to be used in an external representation for the given tag. The call External_Tag(S'Tag) is equivalent to the <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> S'External_Tag (see <a href="../AA-13/AA-13.3">13.3</a>). <br /></p>
 
 <AnnotatedOnly>
-<MarginText>12.a</MarginText>
+<MarginText>11.a</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>It might seem redundant to provide both the function External_Tag and the attribute External_Tag. The function is needed because the attribute can't be applied to values of type Tag. The attribute is needed so that it can be specified via an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>12.1/2</MarginText>
+<MarginText>11.1/2</MarginText>
 <MarginInfo items={["AI95-00417-01"]} />
 <p>The string returned by the functions Expanded_Name, Wide_Expanded_Name, Wide_Wide_Expanded_Name, and External_Tag has lower bound 1.<br /></p>
 
-<MarginText>13/2</MarginText>
+<MarginText>12/2</MarginText>
 <MarginInfo items={["AI95-00279-01"]} />
 <p>The function Internal_Tag returns a tag that corresponds to the given external tag, or raises Tag_Error if the given string is not the external tag for any specific type of the partition. Tag_Error is also raised if the specific type identified is a library-level type whose tag has not yet been created (see <a href="../AA-13/AA-13.14">13.14</a>).<br /></p>
 
 <AnnotatedOnly>
-<MarginText>13.a/3</MarginText>
+<MarginText>12.a/3</MarginText>
 <MarginInfo items={["AI95-00279-01", "AI05-0005-1"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The check for uncreated library-level types prevents a reference to the type before execution reaches the freezing point of the type. This is important so that T'Class'Input or an instance of Tags.Generic_Dispatching_Constructor do not try to create an object of a type that hasn't been frozen (which might not have yet elaborated its constraints). We don't require this behavior for non-library-level types as the tag can be created multiple times and possibly multiple copies can exist at the same time, making the check complex. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>13.1/3</MarginText>
+<MarginText>12.1/3</MarginText>
 <MarginInfo items={["AI95-00344-01", "AI05-0113-1"]} />
 <p>The function Descendant_Tag returns the (internal) tag for the type that corresponds to the given external tag and is both a descendant of the type identified by the Ancestor tag and has the same accessibility level as the identified ancestor. Tag_Error is raised if External is not the external tag for such a type. Tag_Error is also raised if the specific type identified is a library-level type whose tag has not yet been created, or if the given external tag identifies more than one type that has the appropriate Ancestor and accessibility level.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>13.b/2</MarginText>
+<MarginText>12.b/2</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>Descendant_Tag is used by T'Class'Input to identify the type identified by an external tag. Because there can be multiple elaborations of a given type declaration, Internal_Tag does not have enough information to choose a unique such type. Descendant_Tag does not return the tag for types declared at deeper accessibility levels than the ancestor because there could be ambiguity in the presence of recursion or multiple tasks. Descendant_Tag can be used in constructing a user-defined replacement for T'Class'Input.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>13.b.1/3</MarginText>
+<MarginText>12.b.1/3</MarginText>
 <MarginInfo items={["AI05-0113-1"]} />
 <Admonition type="aarm" aarm="note">
 Rules for specifying external tags will usually prevent an external tag from identifying more than one type. However, an external tag can identify multiple types if a generic body contains a derivation of a tagged type declared outside of the generic, and there are multiple instances at the same accessibility level as the type. (The Reference Manual allows default external tags to not be unique in this case.) <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>13.2/2</MarginText>
+<MarginText>12.2/2</MarginText>
 <MarginInfo items={["AI95-00344-01"]} />
 <p>The function Is_Descendant_At_Same_Level returns True if the Descendant tag identifies a type that is both a descendant of the type identified by Ancestor and at the same accessibility level. If not, it returns False.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>13.c/2</MarginText>
+<MarginText>12.c/2</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>Is_Descendant_At_Same_Level (or something similar to it) is used by T'Class'Output to determine whether the item being written is at the same accessibility level as T. It may be used to determine prior to using T'Class'Output whether Tag_Error will be raised, and also can be used in constructing a user-defined replacement for T'Class'Output. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>13.3/3</MarginText>
+<MarginText>12.3/3</MarginText>
 <MarginInfo items={["AI05-0115-1"]} />
 <p>For the purposes of the dynamic semantics of functions Descendant_Tag and Is_Descendant_At_Same_Level, a tagged type T2 is a <em>descendant</em> of a type T1 if it is the same as T1, or if its parent type or one of its progenitor types is a descendant of type T1 by this rule[, even if at the point of the declaration of T2, one of the derivations in the chain is not visible].<br /></p>
 
 <AnnotatedOnly>
-<MarginText>13.c.1/3</MarginText>
+<MarginText>12.c.1/3</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>In other contexts, &ldquo;descendant&rdquo; is dependent on visibility, and the particular view a derived type has of its parent type. See <a href="../AA-7/AA-7.3#Subclause_7.3.1">7.3.1</a>. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>13.4/4</MarginText>
+<MarginText>12.4/4</MarginText>
 <MarginInfo items={["AI95-00260-02", "AI12-0056-1"]} />
 <p>The function Parent_Tag returns the tag of the parent type of the type whose tag is T. If the type does not have a parent type (that is, it was not defined by a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code>), then No_Tag is returned.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>13.d/4</MarginText>
+<MarginText>12.d/4</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The parent type is always the parent of the full type; a private extension appears to define a parent type, but it does not (only the various forms of derivation do that). As this is a run-time operation, ignoring privacy is OK. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>13.5/3</MarginText>
+<MarginText>12.5/3</MarginText>
 <MarginInfo items={["AI95-00405-01"]} />
 <p>The function Interface_Ancestor_Tags returns an array containing the tag of each interface ancestor type of the type whose tag is T, other than T itself. The lower bound of the returned array is 1, and the order of the returned tags is unspecified. Each tag appears in the result exactly once.[ If the type whose tag is T has no interface ancestors, a null array is returned.]<br /></p>
 
 <AnnotatedOnly>
-<MarginText>13.e/2</MarginText>
+<MarginText>12.e/2</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The result of Interface_Ancestor_Tags includes the tag of the parent type, if the parent is an interface.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>13.f/2</MarginText>
+<MarginText>12.f/2</MarginText>
 <Admonition type="aarm" aarm="note">
 Indirect interface ancestors are included in the result of Interface_Ancestor_Tags. That's because where an interface appears in the derivation tree has no effect on the semantics of the type; the only interesting property is whether the type has an interface as an ancestor. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>13.6/3</MarginText>
+<MarginText>12.6/3</MarginText>
 <MarginInfo items={["AI05-0173-1"]} />
 <p>The function Is_Abstract returns True if the type whose tag is T is abstract, and False otherwise.<br /></p>
 
-<MarginText>14</MarginText>
+<MarginText>13</MarginText>
 <p>For every subtype S of a tagged type <em>T</em> (specific or class-wide), the following attributes are defined: <br /></p>
 
-<MarginText>15</MarginText>
+<MarginText>14</MarginText>
 <dt><br/>S'Class</dt>
 <dl>
 <dd>S'Class denotes a subtype of the class-wide type (called <em>T</em>'Class in this document) for the class rooted at <em>T</em> (or if S already denotes a class-wide subtype, then S'Class is the same as S).<br /></dd>
-<MarginText>16</MarginText>
+<MarginText>15</MarginText>
 <dd>S'Class is unconstrained. However, if S is constrained, then the values of S'Class are only those that when converted to the type <em>T</em> belong to S. <br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>16.a</MarginText>
+<MarginText>15.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>This attribute is defined for both specific and class-wide subtypes. The definition is such that S'Class'Class is the same as S'Class.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>16.b</MarginText>
+<MarginText>15.b</MarginText>
 <Admonition type="aarm" aarm="note">
 Note that if S is constrained, S'Class is only partially constrained, since there might be additional discriminants added in descendants of <em>T</em> which are not constrained. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>16.c/2</MarginText>
+<MarginText>15.c/2</MarginText>
 <MarginInfo items={["AI95-00326-01"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The Class attribute is not defined for untagged subtypes (except for incomplete types and private types whose full view is tagged &mdash; see <a href="../AA-J/AA-J.11">J.11</a> and <a href="../AA-7/AA-7.3#Subclause_7.3.1">7.3.1</a>) so as to preclude implicit conversion in the absence of run-time type information. If it were defined for untagged subtypes, it would correspond to the concept of universal types provided for the predefined numeric classes. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>17</MarginText>
+<MarginText>16</MarginText>
 <dt><br/>S'Tag</dt>
 <dl>
 <dd>S'Tag denotes the tag of the type <em>T</em> (or if <em>T</em> is class-wide, the tag of the root type of the corresponding class). The value of this attribute is of type Tag. <br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>17.a</MarginText>
+<MarginText>16.a</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>S'Class'Tag equals S'Tag, to avoid generic contract model problems when S'Class is the actual type associated with a generic formal derived type.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>18</MarginText>
+<MarginText>17</MarginText>
 <p>Given a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> X that is of a class-wide tagged type [(after any implicit dereference)], the following attribute is defined: <br /></p>
 
-<MarginText>19</MarginText>
+<MarginText>18</MarginText>
 <dt><br/>X'Tag</dt>
 <dl>
 <dd>X'Tag denotes the tag of X. The value of this attribute is of type Tag. <br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>19.a</MarginText>
+<MarginText>18.a</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>X'Tag is not defined if X is of a specific type. This is primarily to avoid confusion that might result about whether the Tag attribute should reflect the tag of the type of X, or the tag of X. No such confusion is possible if X is of a class-wide type. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>19.1/2</MarginText>
+<MarginText>18.1/2</MarginText>
 <MarginInfo items={["AI95-00260-02", "AI95-00441-01"]} />
 <p>The following language-defined generic function exists:<br /></p>
 
-<MarginText>19.2/5</MarginText>
+<MarginText>18.2/5</MarginText>
 <MarginInfo items={["AI05-0229-1", "AI12-0241-1", "AI12-0302-1"]} />
 <CodeBlock language="ada">
 generic{"\n"}    type T ({"<"}{">"}) is abstract tagged limited private;{"\n"}    type Parameters ({"<"}{">"}) is limited private;{"\n"}    with function Constructor (Params : not null access Parameters){"\n"}        return T is abstract;{"\n"}function Ada.Tags.Generic_Dispatching_Constructor{"\n"}   (The_Tag : Tag;{"\n"}    Params  : not null access Parameters) return T'Class{"\n"}   with Preelaborate, Convention ={">"} Intrinsic,{"\n"}        Nonblocking, Global ={">"} in out synchronized; {"\n"}
 
 </CodeBlock>
-<MarginText>19.3/2</MarginText>
+<MarginText>18.3/2</MarginText>
 <MarginInfo items={["AI95-00260-02"]} />
 <p>Tags.Generic_Dispatching_Constructor provides a mechanism to create an object of an appropriate type from just a tag value. The function Constructor is expected to create the object given a reference to an object of type Parameters.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>19.b/2</MarginText>
+<MarginText>18.b/2</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>This specification is designed to make it easy to create dispatching constructors for streams; in particular, this can be used to construct overridings for T'Class'Input.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.c/5</MarginText>
+<MarginText>18.c/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="note">
 Note that almost any tagged type can be used in an instance of Generic_Dispatching_Constructor. Using a tagged incomplete view or a tagged partial view before the completion of the type in such an instance would be illegal; all other tagged types can be used in an instance of Generic_Dispatching_Constructor . <br /></Admonition>
@@ -430,69 +429,69 @@ Note that almost any tagged type can be used in an instance of Generic_Dispatchi
 
 #### Dynamic Semantics
 
-<MarginText>20</MarginText>
+<MarginText>19</MarginText>
 <p>The tag associated with an object of a tagged type is determined as follows: <br /></p>
 
-<MarginText>21</MarginText>
+<MarginText>20</MarginText>
 <ul>
 <li>The tag of a stand-alone object, a component, or an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code> of a specific tagged type <em>T</em> identifies <em>T</em>. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>21.a</MarginText>
+<MarginText>20.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>The tag of a formal parameter of type <em>T</em> is not necessarily the tag of <em>T</em>, if, for example, the actual was a type conversion. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>22/5</MarginText>
+<MarginText>21/5</MarginText>
 <MarginInfo items={["AI12-0437-1"]} />
 <ul>
 <li>The tag of an object created by an allocator for an access type with a specific designated tagged type <em>T</em>  identifies <em>T</em>. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>22.a</MarginText>
+<MarginText>21.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>The tag of an object designated by a value of such an access type might not be <em>T</em>, if, for example, the access value is the result of a type conversion.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>23</MarginText>
+<MarginText>22</MarginText>
 <ul>
 <li>The tag of an object of a class-wide tagged type is that of its initialization expression. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>23.a</MarginText>
+<MarginText>22.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The tag of an object (even a class-wide one) cannot be changed after it is initialized, since a &ldquo;class-wide&rdquo; <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> raises Constraint_Error if the tags don't match, and a &ldquo;specific&rdquo; <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code> does not affect the tag. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>24</MarginText>
+<MarginText>23</MarginText>
 <ul>
 <li>The tag of the result returned by a function whose result type is a specific tagged type <em>T</em> identifies <em>T</em>. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>24.a/2</MarginText>
+<MarginText>23.a/2</MarginText>
 <MarginInfo items={["AI95-00318-02"]} />
 <Admonition type="aarm" aarm="implementation-note">
 <strong></strong>For a limited tagged type, the return object is &ldquo;built in place&rdquo; in the ultimate result object with the appropriate tag. For a nonlimited type, a new anonymous object with the appropriate tag is created as part of the function return. See <a href="../AA-6/AA-6.5">6.5</a>, &ldquo;<a href="../AA-6/AA-6.5">Return Statements</a>&rdquo;. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>25/2</MarginText>
+<MarginText>24/2</MarginText>
 <MarginInfo items={["AI95-00318-02"]} />
 <ul>
 <li>The tag of the result returned by a function with a class-wide result type is that of the return object. <br /></li>
 </ul>
-<MarginText>26</MarginText>
+<MarginText>25</MarginText>
 <p>The tag is preserved by type conversion and by parameter passing. The tag of a value is the tag of the associated object (see <a href="../AA-6/AA-6.2">6.2</a>).<br /></p>
 
-<MarginText>26.1/3</MarginText>
+<MarginText>25.1/3</MarginText>
 <MarginInfo items={["AI95-00260-02", "AI95-00344-01", "AI95-00405-01", "AI05-0092-1", "AI05-0262-1"]} />
 <p>Tag_Error is raised by a call of Descendant_Tag, Expanded_Name, External_Tag, Interface_Ancestor_Tags, Is_Abstract, Is_Descendant_At_Same_Level, Parent_Tag, Wide_Expanded_Name, or Wide_Wide_Expanded_Name if any tag passed is No_Tag.<br /></p>
 
-<MarginText>26.2/2</MarginText>
+<MarginText>25.2/2</MarginText>
 <MarginInfo items={["AI95-00260-02"]} />
 <p>An instance of Tags.Generic_Dispatching_Constructor raises Tag_Error if The_Tag does not represent a concrete descendant of T or if the innermost master (see <a href="../AA-7/AA-7.6#Subclause_7.6.1">7.6.1</a>) of this descendant is not also a master of the instance. Otherwise, it dispatches to the primitive function denoted by the formal Constructor for the type identified by The_Tag, passing Params, and returns the result. Any exception raised by the function is propagated.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>26.a/2</MarginText>
+<MarginText>25.a/2</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The tag check checks both that The_Tag is in T'Class, and that it is not abstract. These checks are similar to the ones required by streams for T'Class'Input (see <a href="../AA-13/AA-13.13#Subclause_13.13.2">13.13.2</a>). In addition, there is a check that the tag identifies a type declared on the current dynamic call chain, and not a more nested type or a type declared by another task. This check is not necessary for streams, because the stream attributes are declared at the same dynamic level as the type used. <br /></Admonition>
 </AnnotatedOnly>
@@ -500,24 +499,24 @@ Note that almost any tagged type can be used in an instance of Generic_Dispatchi
 
 #### Erroneous Execution
 
-<MarginText>26.3/2</MarginText>
+<MarginText>25.3/2</MarginText>
 <MarginInfo items={["AI95-00260-02"]} />
 <p>If an internal tag provided to an instance of Tags.Generic_Dispatching_Constructor or to any subprogram declared in package Tags identifies either a type that is not library-level and whose tag has not been created (see <a href="../AA-13/AA-13.14">13.14</a>), or a type that does not exist in the partition at the time of the call, then execution is erroneous.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>26.b/2</MarginText>
+<MarginText>25.b/2</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>One reason that a type might not exist in the partition is that the tag refers to a type whose declaration was elaborated as part of an execution of a <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> which has been left (see <a href="../AA-7/AA-7.6#Subclause_7.6.1">7.6.1</a>).<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>26.c/2</MarginText>
+<MarginText>25.c/2</MarginText>
 <Admonition type="aarm" aarm="note">
 We exclude tags of library-level types from the current execution of the partition, because misuse of such tags should always be detected. T'Tag freezes the type (and thus creates the tag), and Internal_Tag and Descendant_Tag cannot return the tag of a library-level type that has not been created. All ancestors of a tagged type must be frozen no later than the (full) declaration of a type that uses them, so Parent_Tag and Interface_Ancestor_Tags cannot return a tag that has not been created. Finally, library-level types never cease to exist while the partition is executing. Thus, if the tag comes from a library-level type, there cannot be erroneous execution (the use of Descendant_Tag rather than Internal_Tag can help ensure that the tag is of a library-level type). This is also similar to the rules for T'Class'Input (see <a href="../AA-13/AA-13.13#Subclause_13.13.2">13.13.2</a>). <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>26.d/2</MarginText>
+<MarginText>25.d/2</MarginText>
 <MarginInfo items={["AI95-00344-01"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>Ada 95 allowed Tag_Error in this case, or expected the functions to work. This worked because most implementations used tags constructed at link-time, and each elaboration of the same <code><a href="../AA-3/AA-3.2#S0023">type_declaration</a></code> produced the same tag. However, Ada 2005 requires at least part of the tags to be dynamically constructed for a type derived from a type at a shallower level. For dynamically constructed tags, detecting the error can be expensive and unreliable. To see this, consider a program containing two tasks. Task A creates a nested tagged type, passes the tag to task B (which saves it), and then terminates. The nested tag (if dynamic) probably will need to refer in some way to the stack frame for task A. If task B later tries to use the tag created by task A, the tag's reference to the stack frame of A probably is a dangling pointer. Avoiding this would require some sort of protected tag manager, which would be a bottleneck in a program's performance. Moreover, we'd still have a race condition; if task A terminated after the tag check, but before the tag was used, we'd still have a problem. That means that all of these operations would have to be serialized. That could be a significant performance drain, whether or not nested tagged types are ever used. Therefore, we allow execution to become erroneous as we do for other dangling pointers. If the implementation can detect the error, we recommend that Tag_Error be raised. <br /></Admonition>
@@ -526,12 +525,12 @@ We exclude tags of library-level types from the current execution of the partiti
 
 #### Implementation Permissions
 
-<MarginText>27/2</MarginText>
+<MarginText>26/2</MarginText>
 <MarginInfo items={["AI95-00260-02", "AI95-00279-01"]} />
 <p>The implementation of Internal_Tag and Descendant_Tag may raise Tag_Error if no specific type corresponding to the string External passed as a parameter exists in the partition at the time the function is called, or if there is no such type whose innermost master is a master of the point of the function call. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>27.a/2</MarginText>
+<MarginText>26.a/2</MarginText>
 <MarginInfo items={["AI95-00260-02", "AI95-00279-01", "AI95-00344-01"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>Locking would be required to ensure that the mapping of strings to tags never returned tags of types which no longer exist, because types can cease to exist (because they belong to another task, as described above) during the execution of these operations. Moreover, even if these functions did use locking, that would not prevent the type from ceasing to exist at the instant that the function returned. Thus, we do not require the overhead of locking; hence the word &ldquo;may&rdquo; in this rule. <br /></Admonition>
@@ -540,51 +539,52 @@ We exclude tags of library-level types from the current execution of the partiti
 
 #### Implementation Advice
 
-<MarginText>27.1/3</MarginText>
+<MarginText>26.1/3</MarginText>
 <MarginInfo items={["AI95-00260-02", "AI05-0113-1"]} />
 <p>Internal_Tag should return the tag of a type, if one exists, whose innermost master is a master of the point of the function call. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>27.b/3</MarginText>
+<MarginText>26.b/3</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>Tags.Internal_Tag should return the tag of a type, if one exists, whose innermost master is a master of the point of the function call.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>27.c/2</MarginText>
+<MarginText>26.c/2</MarginText>
 <MarginInfo items={["AI95-00260-02", "AI95-00344-01"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>It's not helpful if Internal_Tag returns the tag of some type in another task when one is available in the task that made the call. We don't require this behavior (because it requires the same implementation techniques we decided not to insist on previously), but encourage it. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>27.d/3</MarginText>
+<MarginText>26.d/3</MarginText>
 <MarginInfo items={["AI05-0113-1"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>There is no Advice for the result of Internal_Tag if no such type exists. In most cases, the Implementation Permission can be used to raise Tag_Error, but some other tag can be returned as well. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>28/5</MarginText>
+<MarginText>27/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
 <Admonition type="aarm" aarm="note">
 NOTE 1   A type declared with the reserved word <strong>tagged</strong> is  normally  declared in a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, so that new primitive subprograms can be declared for it.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>29</MarginText>
+<MarginText>28</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 2   Once an object has been created, its tag never changes.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>30</MarginText>
+<MarginText>29/5</MarginText>
+<MarginInfo items={["AI12-0447-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 3   Class-wide types are defined to have unknown discriminants (see <a href="../AA-3/AA-3.7">3.7</a>). This means that objects of a class-wide type have to be explicitly initialized (whether created by an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> or an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>), and that <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s have to be explicitly qualified with a specific type when their expected type is class-wide.<br /></Admonition>
+NOTE 3   Class-wide types are defined to have unknown discriminants (see <a href="../AA-3/AA-3.7">3.7</a>). This means that, by the rules in <a href="../AA-3/AA-3.7">3.7</a> for objects with unknown discriminants, objects of a class-wide type are illegal unless they are  explicitly initialized (whether created by an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> or an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>), and that <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>s are illegal unless they are  explicitly qualified with a specific type when their expected type is class-wide.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>31/2</MarginText>
+<MarginText>30/2</MarginText>
 <MarginInfo items={["AI95-00260-02", "AI95-00326-01"]} />
 <Admonition type="aarm" aarm="note">
 NOTE 4   The capability provided by Tags.Generic_Dispatching_Constructor is sometimes known as a <em>factory</em>. <br /></Admonition>
@@ -593,13 +593,13 @@ NOTE 4   The capability provided by Tags.Generic_Dispatching_Constructor is some
 
 #### Examples
 
-<MarginText>32</MarginText>
+<MarginText>31</MarginText>
 <p><em>Examples of tagged record types:</em> <br /></p>
 
-<MarginText>33</MarginText>
+<MarginText>32</MarginText>
 <CodeBlock language="ada">
 type Point is tagged{"\n"}  record{"\n"}    X, Y : Real := 0.0;{"\n"}  end record;{"\n"}
-<MarginText>34</MarginText>
+<MarginText>33</MarginText>
 type Expression is tagged null record;{"\n"}  -- Components will be added by each extension{"\n"}
 
 </CodeBlock>
@@ -609,7 +609,7 @@ type Expression is tagged null record;{"\n"}  -- Components will be added by eac
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>34.a</MarginText>
+<MarginText>33.a</MarginText>
 <Admonition type="aarm" aarm="note">
 Tagged types are a new concept. <br /></Admonition>
 </AnnotatedOnly>
@@ -620,14 +620,14 @@ Tagged types are a new concept. <br /></Admonition>
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>34.b/2</MarginText>
+<MarginText>33.b/2</MarginText>
 <MarginInfo items={["AI95-00279-01"]} />
 <Admonition type="aarm" aarm="correction">
 <strong>Amendment </strong> Added wording specifying that Internal_Tag must raise Tag_Error if the tag of a library-level type has not yet been created. Ada 95 gave an Implementation Permission to do this; we require it to avoid erroneous execution when streaming in an object of a library-level type that has not yet been elaborated. This is technically inconsistent; a program that used Internal_Tag outside of streaming and used a compiler that didn't take advantage of the Implementation Permission would not have raised Tag_Error, and may have returned a useful tag. (If the tag was used in streaming, the program would have been erroneous.) Since such a program would not have been portable to a compiler that did take advantage of the Implementation Permission, this is not a significant inconsistency.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>34.c/2</MarginText>
+<MarginText>33.c/2</MarginText>
 <MarginInfo items={["AI95-00417-01"]} />
 <Admonition type="aarm" aarm="note">
 We now define the lower bound of the string returned from [[Wide_]Wide_]Expanded_Name and External_Name. This makes working with the returned string easier, and is consistent with many other string-returning functions in Ada. This is technically an inconsistency; if a program depended on some other lower bound for the string returned from one of these functions, it could fail when compiled with Ada 2005. Such code is not portable even between Ada 95 implementations, so it should be very rare. <br /></Admonition>
@@ -639,7 +639,7 @@ We now define the lower bound of the string returned from [[Wide_]Wide_]Expanded
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>34.d/3</MarginText>
+<MarginText>33.d/3</MarginText>
 <MarginInfo items={["AI95-00260-02", "AI95-00344-01", "AI95-00400-01", "AI95-00405-01", "AI05-0005-1"]} />
 <Admonition type="aarm" aarm="note">
 Constant No_Tag, and functions Parent_Tag, Interface_Ancestor_Tags, Descendant_Tag, Is_Descendant_At_Same_Level, Wide_Expanded_Name, and Wide_Wide_Expanded_Name are added to Ada.Tags. If Ada.Tags is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with the same <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> as a new entity in Ada.Tags is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. <br /></Admonition>
@@ -651,14 +651,14 @@ Constant No_Tag, and functions Parent_Tag, Interface_Ancestor_Tags, Descendant_T
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>34.e/2</MarginText>
+<MarginText>33.e/2</MarginText>
 <MarginInfo items={["AI95-00362-01"]} />
 <Admonition type="aarm" aarm="note">
 Ada.Tags is now defined to be preelaborated.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>34.f/2</MarginText>
+<MarginText>33.f/2</MarginText>
 <MarginInfo items={["AI95-00260-02"]} />
 <Admonition type="aarm" aarm="note">
 Generic function Tags.Generic_Dispatching_Constructor is new. <br /></Admonition>
@@ -670,14 +670,14 @@ Generic function Tags.Generic_Dispatching_Constructor is new. <br /></Admonition
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>34.g/2</MarginText>
+<MarginText>33.g/2</MarginText>
 <MarginInfo items={["AI95-00318-02"]} />
 <Admonition type="aarm" aarm="note">
 We talk about return objects rather than return expressions, as functions can return using an <code><a href="../AA-6/AA-6.5#S0225">extended_return_statement</a></code>.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>34.h/2</MarginText>
+<MarginText>33.h/2</MarginText>
 <MarginInfo items={["AI95-00344-01"]} />
 <Admonition type="aarm" aarm="note">
 Added wording to define that tags for all descendants of a tagged type must be distinct. This is needed to ensure that more nested type extensions will work properly. The wording does not require implementation changes for types that were allowed in Ada 95. <br /></Admonition>
@@ -689,7 +689,7 @@ Added wording to define that tags for all descendants of a tagged type must be d
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>34.i/3</MarginText>
+<MarginText>33.i/3</MarginText>
 <MarginInfo items={["AI05-0113-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Added wording specifying that Dependent_Tag must raise Tag_Error if there is more than one type which matches the requirements. If an implementation had returned a random tag of the matching types, a program may have worked properly. However, such a program would not be portable (another implementation may return a different tag) and the conditions that would cause the problem are unlikely (most likely, a tagged type extension declared in a generic body with multiple instances in the same scope). <br /></Admonition>
@@ -701,7 +701,7 @@ Added wording to define that tags for all descendants of a tagged type must be d
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>34.j/3</MarginText>
+<MarginText>33.j/3</MarginText>
 <MarginInfo items={["AI05-0173-1"]} />
 <Admonition type="aarm" aarm="note">
 Function Is_Abstract is added to Ada.Tags. If Ada.Tags is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with the <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> Is_Abstract is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. <br /></Admonition>
@@ -713,7 +713,7 @@ Function Is_Abstract is added to Ada.Tags. If Ada.Tags is referenced in a <code>
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>34.k/3</MarginText>
+<MarginText>33.k/3</MarginText>
 <MarginInfo items={["AI05-0115-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> We explicitly define the meaning of "descendant" at runtime, so that it does not depend on visibility as does the usual meaning. <br /></Admonition>
@@ -929,9 +929,10 @@ NOTE 2   When an extension is declared immediately within a body, primitive subp
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>8</MarginText>
+<MarginText>8/5</MarginText>
+<MarginInfo items={["AI12-0447-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 3   A <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a component (including a discriminant) of the parent type is not allowed within the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code>. Similarly, a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a component defined within the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code> is not allowed within the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code>. It is permissible to use a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a discriminant of the record extension, providing there is a new <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code> in the enclosing type declaration. (The full rule is given in <a href="../AA-3/AA-3.8">3.8</a>.) <br /></Admonition>
+NOTE 3   By the rules given in <a href="../AA-3/AA-3.8">3.8</a>, a  <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a component (including a discriminant) of the parent type is illegal  within the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code>. Similarly, a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a component defined within the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code> is illegal  within the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code>. A  <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a discriminant of the record extension is legal, providing that it refers to a discriminant defined in  a new <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code> in the enclosing type declaration.  <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -941,9 +942,10 @@ NOTE 3   A <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a c
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9</MarginText>
+<MarginText>9/5</MarginText>
+<MarginInfo items={["AI12-0447-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 4   Each visible component of a record extension has to have a unique name, whether the component is (visibly) inherited from the parent type or declared in the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code> (see <a href="../AA-8/AA-8.3">8.3</a>). <br /></Admonition>
+NOTE 4   By the rules given in <a href="../AA-8/AA-8.3">8.3</a>, each  visible component of a record extension will  have a unique name, whether the component is (visibly) inherited from the parent type or declared in the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code> . <br /></Admonition>
 </AnnotatedOnly>
 
 
@@ -958,16 +960,16 @@ type Painted_Point is new Point with{"\n"}  record{"\n"}    Paint : Color := Whi
 <MarginText>12</MarginText>
 Origin : constant Painted_Point := (X | Y ={">"} 0.0, Paint ={">"} Black);{"\n"}
 <MarginText>13</MarginText>
-type Literal is new Expression with{"\n"}  record                 -- a leaf in an Expression tree{"\n"}    Value : Real;{"\n"}  end record;{"\n"}
+type Literal is new Expression with{"\n"}  record               -- a leaf in an Expression tree{"\n"}    Value : Real;{"\n"}  end record;{"\n"}
 <MarginText>14/5</MarginText>
 <MarginInfo items={["AI12-0404-1"]} />
-type Expr_Ptr is access all Expression'Class;{"\n"}                               -- see <a href="../AA-3/AA-3.9">3.9</a> {"\n"}
+type Expr_Ptr is access all Expression'Class;{"\n"}                             -- see <a href="../AA-3/AA-3.9">3.9</a> {"\n"}
 <MarginText>15</MarginText>
-type Binary_Operation is new Expression with{"\n"}  record                 -- an internal node in an Expression tree{"\n"}    Left, Right : Expr_Ptr;{"\n"}  end record;{"\n"}
+type Binary_Operation is new Expression with{"\n"}  record               -- an internal node in an Expression tree{"\n"}    Left, Right : Expr_Ptr;{"\n"}  end record;{"\n"}
 <MarginText>16</MarginText>
 type Addition is new Binary_Operation with null record;{"\n"}type Subtraction is new Binary_Operation with null record;{"\n"}  -- No additional components needed for these extensions{"\n"}
 <MarginText>17</MarginText>
-Tree : Expr_Ptr :=         -- A tree representation of &ldquo;5.0 + (13.0&ndash;7.0)&rdquo;{"\n"}   new Addition'({"\n"}      Left  ={">"} new Literal'(Value ={">"} 5.0),{"\n"}      Right ={">"} new Subtraction'({"\n"}         Left  ={">"} new Literal'(Value ={">"} 13.0),{"\n"}         Right ={">"} new Literal'(Value ={">"} 7.0)));{"\n"}
+Tree : Expr_Ptr :=     -- A tree representation of &ldquo;5.0 + (13.0&ndash;7.0)&rdquo;{"\n"}   new Addition'({"\n"}      Left  ={">"} new Literal'(Value ={">"} 5.0),{"\n"}      Right ={">"} new Subtraction'({"\n"}         Left  ={">"} new Literal'(Value ={">"} 13.0),{"\n"}         Right ={">"} new Literal'(Value ={">"} 7.0)));{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
@@ -1518,17 +1520,16 @@ Added wording to clarify that the Put_Image attribute is a dispatching operation
 <p>[ An <em>abstract type</em> is a tagged type intended for use as an ancestor of other types, but which is not allowed to have objects of its own. An <em>abstract subprogram</em> is a subprogram that has no body, but is intended to be overridden at some point when inherited. Because objects of an abstract type cannot be created, a dispatching call to an abstract subprogram always dispatches to some overriding body.] <br /></p>
 
 <AnnotatedOnly>
-<MarginText>1.a.1/2</MarginText>
-<Admonition type="aarm" aarm="glossary-entry">
-<strong></strong>An abstract type is a tagged type intended for use as an ancestor of other types, but which is not allowed to have objects of its own.<br /></Admonition>
+<MarginText>1.a.1/5</MarginText>
+<Admonition type="aarm" aarm="note">
+<strong>Term entry: </strong><strong>abstract type</strong> &mdash; tagged type intended for use as an ancestor of other types, but which is not allowed to have objects of its own<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>2</MarginText>
 
 #### Language Design Principles
 
 <AnnotatedOnly>
-<MarginText>2.a/3</MarginText>
+<MarginText>1.a/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
 <Admonition type="aarm" aarm="note">
 An abstract subprogram has no body, so the rules in this subclause are designed to ensure (at compile time) that the body will never be invoked. We do so primarily by disallowing the creation of values of the abstract type. Therefore, since type conversion and parameter passing don't change the tag, we know we will never get a class-wide value with a tag identifying an abstract type. This means that we only have to disallow nondispatching calls on abstract subprograms (dispatching calls will never reach them). <br /></Admonition>
@@ -1537,7 +1538,7 @@ An abstract subprogram has no body, so the rules in this subclause are designed 
 
 #### Syntax
 
-<MarginText>2.1/3</MarginText>
+<MarginText>1.1/3</MarginText>
 <MarginInfo items={["AI95-00218-03", "AI95-00348-01", "AI05-0183-1"]} />
 
 <CodeBlock>
@@ -1547,295 +1548,295 @@ An abstract subprogram has no body, so the rules in this subclause are designed 
 
 #### Static Semantics
 
-<MarginText>2.2/2</MarginText>
+<MarginText>1.2/2</MarginText>
 <MarginInfo items={["AI95-00345-01"]} />
 <p>Interface types (see <a href="../AA-3/AA-3.9#Subclause_3.9.4">3.9.4</a>) are abstract types. In addition, a tagged type that has the reserved word <strong>abstract</strong> in its declaration is an abstract type. The class-wide type (see <a href="../AA-3/AA-3.4#Subclause_3.4.1">3.4.1</a>) rooted at an abstract type is not itself an abstract type. <br /></p>
 
 
 #### Legality Rules
 
-<MarginText>3/2</MarginText>
+<MarginText>2/2</MarginText>
 <MarginInfo items={["AI95-00345-01"]} />
 <p>Only a tagged type shall have the reserved word <strong>abstract</strong> in its declaration. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>3.a</MarginText>
+<MarginText>2.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Untagged types are never abstract, even though they can have primitive abstract subprograms. Such subprograms cannot be called, unless they also happen to be dispatching operations of some tagged type, and then only via a dispatching call.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>3.b</MarginText>
+<MarginText>2.b</MarginText>
 <Admonition type="aarm" aarm="note">
 Class-wide types are never abstract. If T is abstract, then it is illegal to declare a stand-alone object of type T, but it is OK to declare a stand-alone object of type T'Class; the latter will get a tag from its initial value, and this tag will necessarily be different from T'Tag. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>4/2</MarginText>
+<MarginText>3/2</MarginText>
 <MarginInfo items={["AI95-00260-02", "AI95-00348-01"]} />
 <p>A subprogram declared by an <code><a href="../AA-3/AA-3.9#S0076">abstract_subprogram_declaration</a></code> or a <code><a href="../AA-12/AA-12.6#S0337">formal_abstract_subprogram_declaration</a></code> (see <a href="../AA-12/AA-12.6">12.6</a>) is an <em>abstract subprogram</em>. If it is a primitive subprogram of a tagged type, then the tagged type shall be abstract. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>4.a</MarginText>
+<MarginText>3.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that for a private type, this applies to both views. The following is illegal: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>4.b</MarginText>
+<MarginText>3.b</MarginText>
 <CodeBlock language="ada">
 package P is{"\n"}    type T is abstract tagged private;{"\n"}    function Foo (X : T) return Boolean is abstract; -- Illegal!{"\n"}private{"\n"}    type T is tagged null record; -- Illegal!{"\n"}    X : T;{"\n"}    Y : Boolean := Foo (T'Class (X));{"\n"}end P;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>4.c</MarginText>
+<MarginText>3.c</MarginText>
 <Admonition type="aarm" aarm="note">
 The full view of T is not abstract, but has an abstract operation Foo, which is illegal. The two lines marked "--<em> Illegal!</em>" are illegal when taken together. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>4.d/2</MarginText>
+<MarginText>3.d/2</MarginText>
 <MarginInfo items={["AI95-00310-01"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>We considered disallowing untagged types from having abstract primitive subprograms. However, we rejected that plan, because it introduced some silly anomalies, and because such subprograms are harmless. For example: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>4.e/1</MarginText>
+<MarginText>3.e/1</MarginText>
 <CodeBlock language="ada">
 package P is{"\n"}   type Field_Size is range 0..100;{"\n"}   type T is abstract tagged null record;{"\n"}   procedure Print(X : in T; F : in Field_Size := 0) is abstract;{"\n"}  . . .{"\n"}package Q is{"\n"}   type My_Field_Size is new Field_Size;{"\n"}   -- implicit declaration of Print(X : T; F : My_Field_Size := 0) is abstract;{"\n"}end Q;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>4.f</MarginText>
+<MarginText>3.f</MarginText>
 <Admonition type="aarm" aarm="note">
 It seemed silly to make the derivative of My_Field_Size illegal, just because there was an implicitly declared abstract subprogram that was not primitive on some tagged type. Other rules could be formulated to solve this problem, but the current ones seem like the simplest.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>4.g/2</MarginText>
+<MarginText>3.g/2</MarginText>
 <MarginInfo items={["AI95-00310-01"]} />
 <Admonition type="aarm" aarm="note">
 In Ada 2005, abstract primitive subprograms of an untagged type may be used to &ldquo;undefine&rdquo; an operation. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>4.h/2</MarginText>
+<MarginText>3.h/2</MarginText>
 <MarginInfo items={["AI95-00260-02"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that the second sentence does not apply to abstract formal subprograms, as they are never primitive operations of a type. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>5/3</MarginText>
+<MarginText>4/3</MarginText>
 <MarginInfo items={["AI95-00251-01", "AI95-00334-01", "AI95-00391-01", "AI05-0097-1", "AI05-0198-1"]} />
 <p>If a type has an implicitly declared primitive subprogram that is inherited or is a predefined operator, and the corresponding primitive subprogram of the parent or ancestor type is abstract or is a function with a controlling access result, or if a type other than a nonabstract null extension inherits a function with a controlling result, then: <br /></p>
 
 <AnnotatedOnly>
-<MarginText>5.a/3</MarginText>
+<MarginText>4.a/3</MarginText>
 <MarginInfo items={["AI05-0068-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>These rules apply to each view of the type individually. That is necessary to preserve privacy. For instance, in the following example: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>5.b/3</MarginText>
+<MarginText>4.b/3</MarginText>
 <CodeBlock language="ada">
 package P is{"\n"}   type I is interface;{"\n"}   procedure Op (X : I) is abstract;{"\n"}end P;{"\n"}
-<MarginText>5.c/3</MarginText>
+<MarginText>4.c/3</MarginText>
 with P;{"\n"}package Q is{"\n"}   type T is abstract new P.I with private;{"\n"}   -- Op inherited here.{"\n"}private{"\n"}   type T is abstract new P.I with null record;{"\n"}   procedure Op (X : T) is null;{"\n"}end Q;{"\n"}
-<MarginText>5.d/3</MarginText>
+<MarginText>4.d/3</MarginText>
 with Q;{"\n"}package R is{"\n"}   type T2 is new Q.T with null record;{"\n"}   -- Illegal. Op inherited here, but requires overriding.{"\n"}end R;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>5.e/3</MarginText>
+<MarginText>4.e/3</MarginText>
 <Admonition type="aarm" aarm="note">
 If this did not depend on the view, this would be legal. But in that case, the fact that Op is overridden in the private part would be visible; package R would have to be illegal if no overriding was in the private part.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>5.f/3</MarginText>
+<MarginText>4.f/3</MarginText>
 <Admonition type="aarm" aarm="note">
 Note that this means that whether an inherited subprogram is abstract or concrete depends on where it inherited. In the case of Q, Q.Op in the visible part is abstract, while Q.Op in the private part is concrete. That is, R is illegal since it is an unrelated unit (and thus it cannot see the private part), but if R had been a private child of Q, it would have been legal. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>6/2</MarginText>
+<MarginText>5/2</MarginText>
 <MarginInfo items={["AI95-00251-01", "AI95-00334-01"]} />
 <ul>
 <li>If the type is abstract or untagged, the implicitly declared subprogram is <em>abstract</em>. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>6.a</MarginText>
+<MarginText>5.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Note that it is possible to override a concrete subprogram with an abstract one. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>7/5</MarginText>
+<MarginText>6/5</MarginText>
 <MarginInfo items={["AI95-00391-01", "AI12-0080-1", "AI12-0444-1"]} />
 <ul>
 <li>Otherwise, the subprogram shall be overridden with a nonabstract subprogram or, in the case of a private extension inheriting a nonabstract function with a controlling result, have a full type that is a null extension[; for a type declared in the visible part of a package, the overriding may be either in the visible or the private part]. Such a subprogram is said to <em>require overriding</em>. However, if the type is a generic formal type, the subprogram is allowed to be inherited as is, without being  overridden for the formal type itself; [a nonabstract version will necessarily be provided by the actual type.] <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>7.a/2</MarginText>
+<MarginText>6.a/2</MarginText>
 <MarginInfo items={["AI95-00228-01", "AI95-00391-01"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>A function that returns the parent type requires overriding for a type extension (or becomes abstract for an abstract type) because conversion from a parent type to a type extension is not defined, and function return semantics is defined in terms of conversion (other than for a null extension; see below). (Note that parameters of mode <strong>in out</strong> or <strong>out</strong> do not have this problem, because the tag of the actual is not changed.)<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.b</MarginText>
+<MarginText>6.b</MarginText>
 <Admonition type="aarm" aarm="note">
 Note that the overriding required above can be in the private part, which allows the following: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.c</MarginText>
+<MarginText>6.c</MarginText>
 <CodeBlock language="ada">
 package Pack1 is{"\n"}    type Ancestor is abstract ...;{"\n"}    procedure Do_Something(X : in Ancestor) is abstract;{"\n"}end Pack1;{"\n"}
-<MarginText>7.d</MarginText>
+<MarginText>6.d</MarginText>
 with Pack1; use Pack1;{"\n"}package Pack2 is{"\n"}    type T1 is new Ancestor with record ...;{"\n"}        -- A concrete type.{"\n"}    procedure Do_Something(X : in T1); -- Have to override.{"\n"}end Pack2;{"\n"}
-<MarginText>7.e</MarginText>
+<MarginText>6.e</MarginText>
 with Pack1; use Pack1;{"\n"}with Pack2; use Pack2;{"\n"}package Pack3 is{"\n"}    type T2 is new Ancestor with private;{"\n"}        -- A concrete type.{"\n"}private{"\n"}    type T2 is new T1 with -- Parent different from ancestor.{"\n"}      record ... end record;{"\n"}    -- Here, we inherit Pack2.Do_Something.{"\n"}end Pack3;{"\n"}    {"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>7.f/2</MarginText>
+<MarginText>6.f/2</MarginText>
 <MarginInfo items={["AI95-00228-01"]} />
 <Admonition type="aarm" aarm="note">
 T2 inherits an abstract Do_Something, but T2 is not abstract, so Do_Something has to be overridden. However, it is OK to override it in the private part. In this case, we override it by inheriting a concrete version from a different type. Nondispatching calls to Pack3.Do_Something are allowed both inside and outside package Pack3, as the client &ldquo;knows&rdquo; that the subprogram was necessarily overridden somewhere.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.g/2</MarginText>
+<MarginText>6.g/2</MarginText>
 <MarginInfo items={["AI95-00391-01"]} />
 <Admonition type="aarm" aarm="note">
 For a null extension, the result of a function with a controlling result is defined in terms of an <code><a href="../AA-4/AA-4.3#S0111">extension_aggregate</a></code> with a <strong>null record</strong> extension part (see <a href="../AA-3/AA-3.4">3.4</a>). This means that these restrictions on functions with a controlling result do not have to apply to null extensions.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.h/2</MarginText>
+<MarginText>6.h/2</MarginText>
 <MarginInfo items={["AI95-00391-01"]} />
 <Admonition type="aarm" aarm="note">
 However, functions with controlling access results still require overriding. Changing the tag in place might clobber a preexisting object, and allocating new memory would possibly change the pool of the object, leading to storage leaks. Moreover, copying the object isn't possible for limited types. We don't need to restrict functions that have an access return type of an untagged type, as derived types with primitive subprograms have to have the same representation as their parent type. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>8/5</MarginText>
+<MarginText>7/5</MarginText>
 <MarginInfo items={["AI12-0413-1"]} />
 <p>A call on an abstract subprogram shall be a dispatching call; nondispatching calls to an abstract subprogram are not allowed. In addition to the places where Legality Rules normally apply (see <a href="../AA-12/AA-12.3">12.3</a>), these rules also apply in the private part of an instance of a generic unit. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>8.a/5</MarginText>
+<MarginText>7.a/5</MarginText>
 <MarginInfo items={["AI95-00310-01", "AI12-0413-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>If an abstract subprogram is not a dispatching operation of some tagged type, then it cannot be called at all. In Ada 2005, such subprograms are not even considered by name resolution (see <a href="../AA-6/AA-6.4">6.4</a>). However, this rule is still needed for cases that can arise in the instance of a generic specification where Name Resolution Rules are not reapplied, but Legality Rules are, when the equality operator for an untagged record type is abstract, while the operator for the formal type is not abstract (see <a href="../AA-12/AA-12.5">12.5</a>). <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>8.1/5</MarginText>
+<MarginText>7.1/5</MarginText>
 <MarginInfo items={["AI12-0189-1", "AI12-0292-1", "AI12-0320-1"]} />
 <p>If the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> or <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> given in an <code><a href="../AA-5/AA-5.5#S0187">iterator_procedure_call</a></code> (see <a href="../AA-5/AA-5.5#Subclause_5.5.3">5.5.3</a>) denotes an abstract subprogram, the subprogram shall be a dispatching subprogram.<br /></p>
 
-<MarginText>9/5</MarginText>
+<MarginText>8/5</MarginText>
 <MarginInfo items={["AI05-0073-1", "AI05-0203-1", "AI12-0437-1"]} />
 <p>The type of an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>,  of an object created by an <code><a href="../AA-3/AA-3.3#S0032">object_declaration</a></code> or an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>, or of a generic formal object of mode <strong>in</strong>, shall not be abstract. The type of the target of an assignment operation (see <a href="../AA-5/AA-5.2">5.2</a>) shall not be abstract. The type of a component shall not be abstract. If the result type of a function is abstract, then the function shall be abstract. If a function has an access result type designating an abstract type, then the function shall be abstract. The type denoted by a <code><a href="../AA-6/AA-6.5#S0226">return_subtype_indication</a></code> (see <a href="../AA-6/AA-6.5">6.5</a>) shall not be abstract. A generic function shall not have an abstract result type or an access result type designating an abstract type. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>9.a</MarginText>
+<MarginText>8.a</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This ensures that values of an abstract type cannot be created, which ensures that a dispatching call to an abstract subprogram will not try to execute the nonexistent body.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9.b</MarginText>
+<MarginText>8.b</MarginText>
 <Admonition type="aarm" aarm="note">
 Generic formal objects of mode <strong>in</strong> are like constants; therefore they should be forbidden for abstract types. Generic formal objects of mode <strong>in out</strong> are like renamings; therefore, abstract types are OK for them, though probably not terribly useful.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9.c/3</MarginText>
+<MarginText>8.c/3</MarginText>
 <MarginInfo items={["AI05-0073-1"]} />
 <Admonition type="aarm" aarm="note">
 Generic functions returning a formal abstract type are illegal because any instance would have to be instantiated with a nonabstract type in order to avoid violating the function rule (generic functions cannot be declared abstract). But that would be an implied contract; it would be better for the contract to be explicit by the formal type not being declared abstract. Moreover, the implied contract does not add any capability. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>10</MarginText>
+<MarginText>9</MarginText>
 <p>If a partial view is not abstract, the corresponding full view shall not be abstract. If a generic formal type is abstract, then for each primitive subprogram of the formal that is not abstract, the corresponding primitive subprogram of the actual shall not be abstract. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>10.a</MarginText>
+<MarginText>9.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>By contrast, we allow the actual type to be nonabstract even if the formal type is declared abstract. Hence, the most general formal tagged type possible is "<strong>type</strong> T({"<"}{">"}) <strong>is abstract tagged limited private</strong>;".<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.b</MarginText>
+<MarginText>9.b</MarginText>
 <Admonition type="aarm" aarm="note">
 For an abstract private extension declared in the visible part of a package, it is only possible for the full type to be nonabstract if the private extension has no abstract dispatching operations. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.c/2</MarginText>
+<MarginText>9.c/2</MarginText>
 <MarginInfo items={["AI95-00294-01"]} />
 <Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>In the sentence about primitive subprograms above, there is some ambiguity as to what is meant by &ldquo;corresponding&rdquo; in the case where an inherited operation is overridden.  This is best explained by an example, where the implicit declarations are shown as comments: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.d/2</MarginText>
+<MarginText>9.d/2</MarginText>
 <CodeBlock language="ada">
 package P1 is{"\n"}   type T1 is abstract tagged null record;{"\n"}   procedure P (X : T1); -- (1){"\n"}end P1;{"\n"}
-<MarginText>10.e/2</MarginText>
+<MarginText>9.e/2</MarginText>
 package P2 is{"\n"}   type T2 is abstract new P1.T1 with null record;{"\n"}   -- procedure P (X : T2); -- (2){"\n"}   procedure P (X : T2) is abstract; -- (3){"\n"}end P2;{"\n"}
-<MarginText>10.f/2</MarginText>
+<MarginText>9.f/2</MarginText>
 generic{"\n"}   type D is abstract new P1.T1 with private;{"\n"}   -- procedure P (X : D); -- (4){"\n"}procedure G (X : D);{"\n"}
-<MarginText>10.g/2</MarginText>
+<MarginText>9.g/2</MarginText>
 procedure I is new G (P2.T2); -- Illegal.{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>10.h/2</MarginText>
+<MarginText>9.h/2</MarginText>
 <Admonition type="aarm" aarm="note">
 Type T2 inherits a nonabstract procedure P (2) from the primitive procedure P (1) of T1. P (2) is overridden by the explicitly declared abstract procedure P (3). Type D inherits a nonabstract procedure P (4) from P (1). In instantiation I, the operation corresponding to P (4) is the one which is not overridden, that is, P (3): the overridden operation P (2) does not &ldquo;reemerge&rdquo;. Therefore, the instantiation is illegal. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>11/3</MarginText>
+<MarginText>10/3</MarginText>
 <MarginInfo items={["AI05-0073-1"]} />
 <p>For an abstract type declared in a visible part, an abstract primitive subprogram shall not be declared in the private part, unless it is overriding an abstract subprogram implicitly declared in the visible part. For a tagged type declared in a visible part, a primitive function with a controlling result or a controlling access result shall not be declared in the private part, unless it is overriding a function implicitly declared in the visible part. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>11.a</MarginText>
+<MarginText>10.a</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The &ldquo;visible part&rdquo; could be that of a package or a generic package. This rule is needed because a nonabstract type extension declared outside the package would not know about any abstract primitive subprograms or primitive functions with controlling results declared in the private part, and wouldn't know that they need to be overridden with nonabstract subprograms. The rule applies to a tagged record type or record extension declared in a visible part, just as to a tagged private type or private extension. The rule applies to explicitly and implicitly declared abstract subprograms: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>11.b</MarginText>
+<MarginText>10.b</MarginText>
 <CodeBlock language="ada">
 package Pack is{"\n"}    type T is abstract new T1 with private;{"\n"}private{"\n"}    type T is abstract new T2 with record ... end record;{"\n"}    ...{"\n"}end Pack;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>11.c</MarginText>
+<MarginText>10.c</MarginText>
 <Admonition type="aarm" aarm="note">
 The above example would be illegal if T1 has a nonabstract primitive procedure P, but T2 overrides P with an abstract one; the private part should override P with a nonabstract version. On the other hand, if the P were abstract for both T1 and T2, the example would be legal as is. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>12/2</MarginText>
+<MarginText>11/2</MarginText>
 <MarginInfo items={["AI95-00260-02"]} />
 <p>A generic actual subprogram shall not be an abstract subprogram unless the generic formal subprogram is declared by a <code><a href="../AA-12/AA-12.6#S0337">formal_abstract_subprogram_declaration</a></code>. The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> for the Access, Unchecked_Access, or Address attributes shall not denote an abstract subprogram. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>12.a</MarginText>
+<MarginText>11.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>An <code><a href="../AA-3/AA-3.9#S0076">abstract_subprogram_declaration</a></code> is not syntactically a <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code>. Nonetheless, an abstract subprogram is a subprogram, and an <code><a href="../AA-3/AA-3.9#S0076">abstract_subprogram_declaration</a></code> is a declaration of a subprogram.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>12.b/2</MarginText>
+<MarginText>11.b/2</MarginText>
 <MarginInfo items={["AI95-00260-02"]} />
 <Admonition type="aarm" aarm="note">
 The part about generic actual subprograms includes those given by default. Of course, an abstract formal subprogram's actual subprogram can be abstract. <br /></Admonition>
@@ -1844,24 +1845,25 @@ The part about generic actual subprograms includes those given by default. Of co
 
 #### Dynamic Semantics
 
-<MarginText>12.1/2</MarginText>
+<MarginText>11.1/2</MarginText>
 <MarginInfo items={["AI95-00348-01"]} />
 <p>The elaboration of an <code><a href="../AA-3/AA-3.9#S0076">abstract_subprogram_declaration</a></code> has no effect. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>13</MarginText>
+<MarginText>12/5</MarginText>
+<MarginInfo items={["AI12-0447-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   Abstractness is not inherited; to declare an abstract type, the reserved word <strong>abstract</strong> has to be used in the declaration of the type extension. <br /></Admonition>
+NOTE 1   Abstractness is not inherited; a type is abstract only if  the reserved word <strong>abstract</strong> is  used in the declaration of the type extension. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>13.a</MarginText>
+<MarginText>12.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>A derived type can be abstract even if its parent is not. Similarly, an inherited concrete subprogram can be overridden with an abstract subprogram. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>14</MarginText>
+<MarginText>13</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 2   A class-wide type is never abstract. Even if a class is rooted at an abstract type, the class-wide type for the class is not abstract, and an object of the class-wide type can be created; the tag of such an object will identify some nonabstract type in the class. <br /></Admonition>
 </AnnotatedOnly>
@@ -1869,19 +1871,23 @@ NOTE 2   A class-wide type is never abstract. Even if a class is rooted at an ab
 
 #### Examples
 
-<MarginText>15</MarginText>
+<MarginText>14</MarginText>
 <p><em>Example of an abstract type representing a set of natural numbers:</em> <br /></p>
 
-<MarginText>16</MarginText>
+<MarginText>15</MarginText>
 <CodeBlock language="ada">
 package Sets is{"\n"}    subtype Element_Type is Natural;{"\n"}    type Set is abstract tagged null record;{"\n"}    function Empty return Set is abstract;{"\n"}    function Union(Left, Right : Set) return Set is abstract;{"\n"}    function Intersection(Left, Right : Set) return Set is abstract;{"\n"}    function Unit_Set(Element : Element_Type) return Set is abstract;{"\n"}    procedure Take(Element : out Element_Type;{"\n"}                   From : in out Set) is abstract;{"\n"}end Sets;{"\n"}
 
 </CodeBlock>
+<MarginText>16/5</MarginText>
+<MarginInfo items={["AI12-0442-1", "AI12-0452-1"]} />
+<p>Given the above abstract type, one can derive various (nonabstract) extensions of the type, representing alternative implementations of a set. One possibility is to use a bit vector, but impose an upper bound on the largest element representable, while another possible implementation is a hash table, trading off space for flexibility.<br /></p>
+
 <AnnotatedOnly>
 <MarginText>17/5</MarginText>
-<MarginInfo items={["AI12-0442-1"]} />
+<MarginInfo items={["AI12-0452-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 3   <em>Notes on the example:</em> Given the above abstract type, one can  derive various (nonabstract) extensions of the type, representing alternative implementations of a set. One possibility is to  use a bit vector, but impose an upper bound on the largest element representable, while another possible implementation is  a hash table, trading off space for flexibility. <br /></Admonition>
+ <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -2026,31 +2032,30 @@ An optional <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></cod
 <p>[An interface type is an abstract tagged type that provides a restricted form of multiple inheritance. A tagged type, task type, or protected type may have one or more interface types as ancestors.] <br /></p>
 
 <AnnotatedOnly>
-<MarginText>1.a/2</MarginText>
-<Admonition type="aarm" aarm="glossary-entry">
-<strong></strong>An interface type is a form of abstract tagged type which has no components or concrete operations except possibly null procedures. Interface types are used for composing other interfaces and tagged types and thereby provide multiple inheritance. Only an interface type can be used as a progenitor of another type.<br /></Admonition>
+<MarginText>1.a/5</MarginText>
+<Admonition type="aarm" aarm="note">
+<strong>Term entry: </strong><strong>interface type</strong> &mdash; abstract tagged type that has no components or concrete operations except possibly null procedures<br /><br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>2</MarginText>
 
 #### Language Design Principles
 
 <AnnotatedOnly>
-<MarginText>2.a/2</MarginText>
+<MarginText>1.b/2</MarginText>
 <MarginInfo items={["AI95-00251-01", "AI95-00345-01"]} />
 <Admonition type="aarm" aarm="note">
 The rules are designed so that an interface can be used as either a parent type or a progenitor type without changing the meaning. That's important so that the order that interfaces are specified in a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> is not significant. In particular, we want: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>2.b/2</MarginText>
+<MarginText>1.c/2</MarginText>
 <CodeBlock language="ada">
 type Con1 is new Int1 and Int2 with null record;{"\n"}type Con2 is new Int2 and Int1 with null record;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>2.c/2</MarginText>
+<MarginText>1.d/2</MarginText>
 <Admonition type="aarm" aarm="note">
 to mean exactly the same thing. <br /></Admonition>
 </AnnotatedOnly>
@@ -2058,14 +2063,14 @@ to mean exactly the same thing. <br /></Admonition>
 
 #### Syntax
 
-<MarginText>3/2</MarginText>
+<MarginText>2/2</MarginText>
 <MarginInfo items={["AI95-00251-01", "AI95-00345-01"]} />
 
 <CodeBlock>
 <code>interface_type_definition</code><a id="S0077"></a><code> ::= </code><br />    [<strong>limited</strong> | <strong>task</strong> | <strong>protected</strong> | <strong>synchronized</strong>] <strong>interface</strong> [<strong>and</strong> <code><a href="../AA-3/AA-3.9#S0078">interface_list</a></code>]<br />
 
 </CodeBlock>
-<MarginText>4/2</MarginText>
+<MarginText>3/2</MarginText>
 <MarginInfo items={["AI95-00251-01", "AI95-00419-01"]} />
 
 <CodeBlock>
@@ -2075,129 +2080,127 @@ to mean exactly the same thing. <br /></Admonition>
 
 #### Static Semantics
 
-<MarginText>5/2</MarginText>
+<MarginText>4/2</MarginText>
 <MarginInfo items={["AI95-00251-01"]} />
 <p>An interface type (also called an <em>interface</em>) is a specific abstract tagged type that is defined by an <code><a href="../AA-3/AA-3.9#S0077">interface_type_definition</a></code>.<br /></p>
 
-<MarginText>6/2</MarginText>
+<MarginText>5/2</MarginText>
 <MarginInfo items={["AI95-00345-01"]} />
 <p>An interface with the reserved word <strong>limited</strong>, <strong>task</strong>, <strong>protected</strong>, or <strong>synchronized</strong> in its definition is termed, respectively, a <em>limited interface</em>, a <em>task interface</em>, a <em>protected interface</em>, or a <em>synchronized interface</em>. In addition, all task and protected interfaces are synchronized interfaces, and all synchronized interfaces are limited interfaces. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>6.a/2</MarginText>
-<Admonition type="aarm" aarm="glossary-entry">
-<strong></strong>A synchronized entity is one that will work safely with multiple tasks at one time. A synchronized interface can be an ancestor of a task or a protected type. Such a task or protected type is called a synchronized tagged type.<br /></Admonition>
+<MarginText>5.a/5</MarginText>
+<Admonition type="aarm" aarm="note">
+<strong>Term entry: </strong><strong>synchronized</strong> &mdash; can be safely operated on by multiple tasks concurrently<br /><br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>7</MarginText>
-<MarginText>8/2</MarginText>
+<MarginText>6/2</MarginText>
 <MarginInfo items={["AI95-00345-01", "AI95-00443-01"]} />
 <p>[A task or protected type derived from an interface is a tagged type.] Such a tagged type is called a <em>synchronized</em> tagged type, as are synchronized interfaces and private extensions whose declaration includes the reserved word <strong>synchronized</strong>.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>8.a/2</MarginText>
+<MarginText>6.a/2</MarginText>
 <Admonition type="aarm" aarm="proof">
 <strong></strong>The full definition of tagged types given in <a href="../AA-3/AA-3.9">3.9</a> includes task and protected types derived from interfaces. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>8.b/2</MarginText>
+<MarginText>6.b/2</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The class-wide type associated with a tagged task type (including a task interface type) is a task type, because &ldquo;task&rdquo; is one of the language-defined classes of types (see <a href="../AA-3/AA-3.2">3.2</a>). However, the class-wide type associated with an interface is <em>not</em> an interface type, as &ldquo;interface&rdquo; is <em>not</em> one of the language-defined classes (as it is not closed under derivation). In this sense, &ldquo;interface&rdquo; is similar to &ldquo;abstract&rdquo;. The class-wide type associated with an interface is a concrete (nonabstract) indefinite tagged composite type.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>8.c/2</MarginText>
+<MarginText>6.c/2</MarginText>
 <Admonition type="aarm" aarm="note">
 &ldquo;Private extension&rdquo; includes generic formal private extensions, as explained in <a href="../AA-12/AA-12.5#Subclause_12.5.1">12.5.1</a>. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>9/2</MarginText>
+<MarginText>7/2</MarginText>
 <MarginInfo items={["AI95-00345-01"]} />
 <p>A task interface is an [abstract] task type. A protected interface is an [abstract] protected type. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>9.a/2</MarginText>
+<MarginText>7.a/2</MarginText>
 <Admonition type="aarm" aarm="proof">
 <strong></strong>The &ldquo;abstract&rdquo; follows from the definition of an interface type. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9.b/2</MarginText>
+<MarginText>7.b/2</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This ensures that task operations (like abort and the Terminated attribute) can be applied to a task interface type and the associated class-wide type. While there are no protected type operations, we apply the same rule to protected interfaces for consistency. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>10/2</MarginText>
+<MarginText>8/2</MarginText>
 <MarginInfo items={["AI95-00251-01"]} />
 <p>[An interface type has no components.] <br /></p>
 
 <AnnotatedOnly>
-<MarginText>10.a/2</MarginText>
+<MarginText>8.a/2</MarginText>
 <Admonition type="aarm" aarm="proof">
 <strong></strong>This follows from the syntax and the fact that discriminants are not allowed for interface types. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>11/2</MarginText>
+<MarginText>9/2</MarginText>
 <MarginInfo items={["AI95-00419-01"]} />
 <p>An <em>interface_</em><code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> in an <code><a href="../AA-3/AA-3.9#S0078">interface_list</a></code> names a <em>progenitor subtype</em>; its type is the <em>progenitor type</em>. An interface type inherits user-defined primitive subprograms from each progenitor type in the same way that a derived type inherits user-defined primitive subprograms from its progenitor types (see <a href="../AA-3/AA-3.4">3.4</a>). <br /></p>
 
 <AnnotatedOnly>
-<MarginText>11.a.1/2</MarginText>
-<Admonition type="aarm" aarm="glossary-entry">
-<strong></strong>A progenitor of a derived type is one of the types given in the definition of the derived type other than the first. A progenitor is always an interface type. Interfaces, tasks, and protected types may also have progenitors.<br /></Admonition>
+<MarginText>9.a/5</MarginText>
+<Admonition type="aarm" aarm="note">
+<strong>Term entry: </strong><strong>progenitor</strong> &mdash; type given in the interface list, if any, of an interface, task, protected, or derived type definition<br /><br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>12</MarginText>
 
 #### Legality Rules
 
-<MarginText>13/2</MarginText>
+<MarginText>10/2</MarginText>
 <MarginInfo items={["AI95-00251-01"]} />
 <p>All user-defined primitive subprograms of an interface type shall be abstract subprograms or null procedures.<br /></p>
 
-<MarginText>14/2</MarginText>
+<MarginText>11/2</MarginText>
 <MarginInfo items={["AI95-00251-01"]} />
 <p>The type of a subtype named in an <code><a href="../AA-3/AA-3.9#S0078">interface_list</a></code> shall be an interface type.<br /></p>
 
-<MarginText>15/2</MarginText>
+<MarginText>12/2</MarginText>
 <MarginInfo items={["AI95-00251-01", "AI95-00345-01"]} />
 <p>A type derived from a nonlimited interface shall be nonlimited.<br /></p>
 
-<MarginText>16/2</MarginText>
+<MarginText>13/2</MarginText>
 <MarginInfo items={["AI95-00345-01"]} />
 <p>An interface derived from a task interface shall include the reserved word <strong>task</strong> in its definition; any other type derived from a task interface shall be a private extension or a task type declared by a task declaration (see <a href="../AA-9/AA-9.1">9.1</a>).<br /></p>
 
-<MarginText>17/2</MarginText>
+<MarginText>14/2</MarginText>
 <MarginInfo items={["AI95-00345-01"]} />
 <p>An interface derived from a protected interface shall include the reserved word <strong>protected</strong> in its definition; any other type derived from a protected interface shall be a private extension or a protected type declared by a protected declaration (see <a href="../AA-9/AA-9.4">9.4</a>).<br /></p>
 
-<MarginText>18/2</MarginText>
+<MarginText>15/2</MarginText>
 <MarginInfo items={["AI95-00345-01"]} />
 <p>An interface derived from a synchronized interface shall include one of the reserved words <strong>task</strong>, <strong>protected</strong>, or <strong>synchronized</strong> in its definition; any other type derived from a synchronized interface shall be a private extension, a task type declared by a task declaration, or a protected type declared by a protected declaration.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>18.a/2</MarginText>
+<MarginText>15.a/2</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>We require that an interface descendant of a task, protected, or synchronized interface repeat the explicit kind of interface it will be, rather than simply inheriting it, so that a reader is always aware of whether the interface provides synchronization and whether it may be implemented only by a task or protected type. The only place where inheritance of the kind of interface might be useful would be in a generic if you didn't know the kind of the actual interface. However, the value of that is low because you cannot implement an interface properly if you don't know whether it is a task, protected, or synchronized interface. Hence, we require the kind of the actual interface to match the kind of the formal interface (see <a href="../AA-12/AA-12.5#Subclause_12.5.5">12.5.5</a>). <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>19/2</MarginText>
+<MarginText>16/2</MarginText>
 <MarginInfo items={["AI95-00345-01"]} />
 <p>No type shall be derived from both a task interface and a protected interface.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>19.a</MarginText>
+<MarginText>16.a</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This prevents a single private extension from inheriting from both a task and a protected interface. For a private type, there can be no legal completion. For a generic formal derived type, there can be no possible matching type (so no instantiation could be legal). This rule provides early detection of the errors. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>20/2</MarginText>
+<MarginText>17/2</MarginText>
 <MarginInfo items={["AI95-00251-01"]} />
 <p>In addition to the places where Legality Rules normally apply (see <a href="../AA-12/AA-12.3">12.3</a>), these rules apply also in the private part of an instance of a generic unit. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>20.a/3</MarginText>
+<MarginText>17.a/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>This paragraph is intended to apply to all of the Legality Rules in this subclause. We cannot allow interface types which do not obey these rules, anywhere. Luckily, deriving from a formal type (which might be an interface) is not allowed for any tagged types in a generic body. So checking in the private part of a generic covers all of the cases. <br /></Admonition>
@@ -2206,83 +2209,83 @@ to mean exactly the same thing. <br /></Admonition>
 
 #### Dynamic Semantics
 
-<MarginText>21/3</MarginText>
+<MarginText>18/3</MarginText>
 <MarginInfo items={["AI95-00251-01", "AI05-0070-1"]} />
 <p>The elaboration of an <code><a href="../AA-3/AA-3.9#S0077">interface_type_definition</a></code> creates the interface type and its first subtype. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>21.a/3</MarginText>
+<MarginText>18.a/3</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>There is no other effect. An <code><a href="../AA-3/AA-3.9#S0078">interface_list</a></code> is made up of <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>s, which do not need to be elaborated, so the <code><a href="../AA-3/AA-3.9#S0078">interface_list</a></code> does not either. This is consistent with the handling of <code><a href="../AA-3/AA-3.7#S0059">discriminant_part</a></code>s. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>22/5</MarginText>
+<MarginText>19/5</MarginText>
 <MarginInfo items={["AI95-00411-01", "AI12-0440-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   Nonlimited interface types have predefined nonabstract equality operators. These can  be overridden with user-defined abstract equality operators. Such operators will then require an explicit overriding for any nonabstract descendant of the interface. <br /></Admonition>
+NOTE   Nonlimited interface types have predefined nonabstract equality operators. These can  be overridden with user-defined abstract equality operators. Such operators will then require an explicit overriding for any nonabstract descendant of the interface. <br /></Admonition>
 </AnnotatedOnly>
 
 
 #### Examples
 
-<MarginText>23/2</MarginText>
+<MarginText>20/2</MarginText>
 <MarginInfo items={["AI95-00433-01"]} />
 <p><em>Example of a limited interface and a synchronized interface extending it:</em><br /></p>
 
-<MarginText>24/2</MarginText>
+<MarginText>21/2</MarginText>
 <CodeBlock language="ada">
 type Queue is limited interface;{"\n"}procedure Append(Q : in out Queue; Person : in Person_Name) is abstract;{"\n"}procedure Remove_First(Q      : in out Queue;{"\n"}                       Person :    out Person_Name) is abstract;{"\n"}function Cur_Count(Q : in Queue) return Natural is abstract;{"\n"}function Max_Count(Q : in Queue) return Natural is abstract;{"\n"}-- See <a href="../AA-3/AA-3.10#Subclause_3.10.1">3.10.1</a> for Person_Name.{"\n"}
-<MarginText>25/3</MarginText>
+<MarginText>22/3</MarginText>
 <MarginInfo items={["AI05-0004-1"]} />
 Queue_Error : exception;{"\n"}-- Append raises Queue_Error if Cur_Count(Q) = Max_Count(Q){"\n"}-- Remove_First raises Queue_Error if Cur_Count(Q) = 0{"\n"}
-<MarginText>26/2</MarginText>
-type Synchronized_Queue is synchronized interface and Queue; -- see <a href="../AA-9/AA-9.11">9.11</a>{"\n"}procedure Append_Wait(Q      : in out Synchronized_Queue;{"\n"}                      Person : in     Person_Name) is abstract;{"\n"}procedure Remove_First_Wait(Q      : in out Synchronized_Queue;{"\n"}                            Person :    out Person_Name) is abstract;{"\n"}
-<MarginText>27/2</MarginText>
+<MarginText>23/2</MarginText>
+type Synchronized_Queue is{"\n"}                      synchronized interface and Queue; -- see <a href="../AA-9/AA-9.11">9.11</a>{"\n"}procedure Append_Wait(Q      : in out Synchronized_Queue;{"\n"}                      Person : in     Person_Name) is abstract;{"\n"}procedure Remove_First_Wait(Q      : in out Synchronized_Queue;{"\n"}                            Person :    out Person_Name) is abstract;{"\n"}
+<MarginText>24/2</MarginText>
 ...{"\n"}
-<MarginText>28/2</MarginText>
+<MarginText>25/2</MarginText>
 procedure Transfer(From   : in out Queue'Class;{"\n"}                   To     : in out Queue'Class;{"\n"}                   Number : in     Natural := 1) is{"\n"}   Person : Person_Name;{"\n"}begin{"\n"}   for I in 1..Number loop{"\n"}      Remove_First(From, Person);{"\n"}      Append(To, Person);{"\n"}   end loop;{"\n"}end Transfer;{"\n"}
 
 </CodeBlock>
-<MarginText>29/5</MarginText>
+<MarginText>26/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
 <p>This defines a Queue interface defining a queue of people. (A similar design is possible  to define any kind of queue simply by replacing Person_Name by an appropriate type.) The Queue interface has four dispatching operations, Append, Remove_First, Cur_Count, and Max_Count. The body of a class-wide operation, Transfer is also shown. Every nonabstract extension of Queue will  provide implementations for at least its four dispatching operations, as they are abstract. Any object of a type derived from Queue can  be passed to Transfer as either the From or the To operand. The two operands can be of different types in a  given call.<br /></p>
 
-<MarginText>30/5</MarginText>
+<MarginText>27/5</MarginText>
 <MarginInfo items={["AI12-0440-1"]} />
 <p>The Synchronized_Queue interface inherits the four dispatching operations from Queue and adds two additional dispatching operations, which wait if necessary rather than raising the Queue_Error exception. This synchronized interface can  only be implemented by a task or protected type, and as such ensures safe concurrent access.<br /></p>
 
-<MarginText>31/2</MarginText>
+<MarginText>28/2</MarginText>
 <MarginInfo items={["AI95-00433-01"]} />
 <p><em>Example use of the interface:</em><br /></p>
 
-<MarginText>32/3</MarginText>
+<MarginText>29/3</MarginText>
 <MarginInfo items={["AI05-0004-1"]} />
 <CodeBlock language="ada">
 type Fast_Food_Queue is new Queue with record ...;{"\n"}procedure Append(Q : in out Fast_Food_Queue; Person : in Person_Name);{"\n"}procedure Remove_First(Q : in out Fast_Food_Queue; {"\n"}                       Person : out Person_Name);{"\n"}function Cur_Count(Q : in Fast_Food_Queue) return Natural;{"\n"}function Max_Count(Q : in Fast_Food_Queue) return Natural;{"\n"}
-<MarginText>33/2</MarginText>
+<MarginText>30/2</MarginText>
 ...{"\n"}
-<MarginText>34/2</MarginText>
+<MarginText>31/2</MarginText>
 Cashier, Counter : Fast_Food_Queue;{"\n"}
-<MarginText>35/5</MarginText>
+<MarginText>32/5</MarginText>
 <MarginInfo items={["AI12-0312-1"]} />
 ...{"\n"}-- Add Casey  (see <a href="../AA-3/AA-3.10#Subclause_3.10.1">3.10.1</a>) to the cashier's queue:{"\n"}Append (Cashier, Casey );{"\n"}-- After payment, move Casey  to the sandwich counter queue:{"\n"}Transfer (Cashier, Counter);{"\n"}...{"\n"}
 
 </CodeBlock>
-<MarginText>36/5</MarginText>
+<MarginText>33/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
 <p>An interface such as Queue can be used directly as the parent of a new type (as shown here), or can be used as a progenitor when a type is derived. In either case, the primitive operations of the interface are inherited. For Queue, the implementation of the four inherited routines will necessarily  be provided. Inside the call of Transfer, calls will dispatch to the implementations of Append and Remove_First for type Fast_Food_Queue.<br /></p>
 
-<MarginText>37/2</MarginText>
+<MarginText>34/2</MarginText>
 <MarginInfo items={["AI95-00433-01"]} />
 <p><em>Example of a task interface:</em><br /></p>
 
-<MarginText>38/2</MarginText>
+<MarginText>35/2</MarginText>
 <CodeBlock language="ada">
 type Serial_Device is task interface;  -- see <a href="../AA-9/AA-9.1">9.1</a>{"\n"}procedure Read (Dev : in Serial_Device; C : out Character) is abstract;{"\n"}procedure Write(Dev : in Serial_Device; C : in  Character) is abstract;{"\n"}
 
 </CodeBlock>
-<MarginText>39/2</MarginText>
+<MarginText>36/2</MarginText>
 <p>The Serial_Device interface has two dispatching operations which are intended to be implemented by task entries (see 9.1).<br /></p>
 
 <AnnotatedOnly>
@@ -2291,7 +2294,7 @@ type Serial_Device is task interface;  -- see <a href="../AA-9/AA-9.1">9.1</a>{"
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>39.a/2</MarginText>
+<MarginText>36.a/2</MarginText>
 <MarginInfo items={["AI95-00251-01", "AI95-00345-01"]} />
 <Admonition type="aarm" aarm="note">
 Interface types are new. They provide multiple inheritance of interfaces, similar to the facility provided in Java and other recent language designs. <br /></Admonition>
@@ -2303,7 +2306,7 @@ Interface types are new. They provide multiple inheritance of interfaces, simila
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>39.b/3</MarginText>
+<MarginText>36.b/3</MarginText>
 <MarginInfo items={["AI05-0070-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Corrected the definition of elaboration for an <code><a href="../AA-3/AA-3.9#S0077">interface_type_definition</a></code> to match that of other type definitions. <br /></Admonition>

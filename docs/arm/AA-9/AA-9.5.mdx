@@ -39,7 +39,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <li>If it is a <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> or expanded name that denotes the declaration (or body) of the operation, then the target object is implicitly specified to be the current instance of the task or protected unit immediately enclosing the operation; a call using such a name is defined to be an <em>internal call</em>;<br /></li>
 <MarginText>4/3</MarginText>
 <MarginInfo items={["AI05-0291-1"]} />
-<li>If it is a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> that is not an expanded name, then the target object is explicitly specified to be the  object denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code>; a call using such a name is defined to be an <em>external call</em>; <br /></li>
+<li>If it is a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> that is not an expanded name, then the target object is explicitly specified to be the object denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code>; a call using such a name is defined to be an <em>external call</em>; <br /></li>
 </ul>
 <AnnotatedOnly>
 <MarginText>4.a</MarginText>
@@ -55,8 +55,9 @@ protected type Pt is{"\n"}  procedure Op1;{"\n"}  procedure Op2;{"\n"}end Pt;{"\
 PO : Pt;{"\n"}Other_Object : Some_Other_Protected_Type;{"\n"}
 <MarginText>4.d</MarginText>
 protected body Pt is{"\n"}  procedure Op1 is begin ... end Op1;{"\n"}
-<MarginText>4.e</MarginText>
-  procedure Op2 is{"\n"}  begin{"\n"}    Op1; -- An internal call.{"\n"}    Pt.Op1; -- Another internal call.{"\n"}    PO.Op1; -- An external call. It the current instance is PO, then{"\n"}            -- this is a bounded error (see <a href="../AA-9/AA-9.5#Subclause_9.5.1">9.5.1</a>).{"\n"}    Other_Object.Some_Op; -- An external call.{"\n"}  end Op2;{"\n"}end Pt;{"\n"}
+<MarginText>4.e/5</MarginText>
+<MarginInfo items={["AI12-0005-1"]} />
+  procedure Op2 is{"\n"}  begin{"\n"}    Op1; -- An internal call.{"\n"}    Pt.Op1; -- Another internal call.{"\n"}    PO.Op1; -- An external call. If  the current instance is PO, then{"\n"}            -- this is a bounded error (see <a href="../AA-9/AA-9.5#Subclause_9.5.1">9.5.1</a>).{"\n"}    Other_Object.Some_Op; -- An external call.{"\n"}  end Op2;{"\n"}end Pt;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
@@ -223,7 +224,7 @@ protected body Pt is{"\n"}  procedure Op1 is begin ... end Op1;{"\n"}
 <MarginText>21/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2", "AI12-0439-1"]} />
 <dl>
-<dd>{"}"} When aspect Nonblocking is False for an entity, the entity can contain a potentially blocking operation; such an entity <em>allows blocking</em>. If the aspect is True for an entity, the entity is said to be <em>nonblocking</em>.<br /></dd>
+<dd>When aspect Nonblocking is False for an entity, the entity can contain a potentially blocking operation; such an entity <em>allows blocking</em>. If the aspect is True for an entity, the entity is said to be <em>nonblocking</em>.<br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>21.a/5</MarginText>
@@ -326,7 +327,7 @@ protected body Pt is{"\n"}  procedure Op1 is begin ... end Op1;{"\n"}
 <MarginText>32/5</MarginText>
 <MarginInfo items={["AI12-0064-2"]} />
 <dl>
-<dd>Unless directly specified, for any other program unit, first  subtype, or formal object, the Nonblocking aspect of the entity is determined by the Nonblocking aspect for the innermost program unit enclosing the entity.<br /></dd>
+<dd>Unless directly specified, for any other program unit, first subtype, or formal object, the Nonblocking aspect of the entity is determined by the Nonblocking aspect for the innermost program unit enclosing the entity.<br /></dd>
 <MarginText>33/5</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0374-2"]} />
 <dd>If not specified for a library unit, the Nonblocking aspect is True if the library unit is declared pure, or False otherwise.<br /></dd>
@@ -582,7 +583,7 @@ This check occurs when the equality operator is declared, so this rule effective
 <MarginText>72/3</MarginText>
 <MarginInfo items={["AI05-0030-2", "AI05-0215-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   The <code><a href="../AA-9/AA-9.5#S0256">synchronization_kind</a></code> By_Protected_Procedure implies that the operation will not block. <br /></Admonition>
+NOTE   The <code><a href="../AA-9/AA-9.5#S0256">synchronization_kind</a></code> By_Protected_Procedure implies that the operation will not block. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -990,7 +991,7 @@ Moved the definition of potentially blocking operations to <a href="../AA-9/AA-9
 <MarginInfo items={["AI12-0398-1"]} />
 
 <CodeBlock>
-<code>entry_index_specification</code><a id="S0263"></a><code> ::= </code><strong>for</strong> <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> <strong>in</strong> <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code> [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>] <br />
+<code>entry_index_specification</code><a id="S0263"></a><code> ::= </code><br />    <strong>for</strong> <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> <strong>in</strong> <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code> [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>] <br />
 
 </CodeBlock>
 <MarginText>9</MarginText>
@@ -1166,10 +1167,10 @@ Nested <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s for the
 <p>{"{"}<em>8652/0002</em>{"}"} The elaboration of an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> for an entry family consists of the elaboration of the <code><a href="../AA-3/AA-3.6#S0055">discrete_subtype_definition</a></code>, as described in <a href="../AA-3/AA-3.8">3.8</a>. The elaboration of an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> for a single entry has no effect. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>22.a/3</MarginText>
-<MarginInfo items={["AI05-0299-1"]} />
+<MarginText>22.a/5</MarginText>
+<MarginInfo items={["AI05-0299-1", "AI12-0449-1"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The elaboration of the declaration of a protected subprogram has no effect, as specified in subclause <a href="../AA-6/AA-6.1">6.1</a>. The default initialization of an object of a task or protected type is covered in <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>. <br /></Admonition>
+<strong></strong>The elaboration of the declaration of a protected subprogram has no effect, as specified in  <a href="../AA-6/AA-6.1">6.1</a>. The default initialization of an object of a task or protected type is covered in <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>23</MarginText>
@@ -1181,7 +1182,7 @@ Nested <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>s for the
 
 <MarginText>24/5</MarginText>
 <MarginInfo items={["AI12-0193-1"]} />
-<p>For the execution of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, the <code><a href="../AA-9/AA-9.5#S0259">entry_index</a></code>, if any, is first evaluated and converted to the entry index subtype; this index value identifies which entry of the family is to be accepted. Further execution of the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> is then blocked until a caller of the corresponding entry is selected (see <a href="../AA-9/AA-9.5#Subclause_9.5.3">9.5.3</a>), whereupon the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code>, if any, of the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> is executed, with the formal parameters associated with the corresponding actual parameters of the selected entry call. Execution of the rendezvous consists of the execution of the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code>,  performance of any postcondition or type invariant checks associated with the entry, and any initialization or finalization associated with these checks, as described in <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a> and <a href="../AA-7/AA-7.3#Subclause_7.3.2">7.3.2</a>. After execution of the rendezvous, the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> completes and is left. [The two tasks then proceed independently.] When an exception is propagated from the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, the same exception is also raised by the execution of the corresponding <code><a href="../AA-9/AA-9.5#S0264">entry_call_statement</a></code>. <br /></p>
+<p>For the execution of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, the <code><a href="../AA-9/AA-9.5#S0259">entry_index</a></code>, if any, is first evaluated and converted to the entry index subtype; this index value identifies which entry of the family is to be accepted. Further execution of the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> is then blocked until a caller of the corresponding entry is selected (see <a href="../AA-9/AA-9.5#Subclause_9.5.3">9.5.3</a>), whereupon the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code>, if any, of the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> is executed, with the formal parameters associated with the corresponding actual parameters of the selected entry call. Execution of the rendezvous consists of the execution of the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code>, performance of any postcondition or type invariant checks associated with the entry, and any initialization or finalization associated with these checks, as described in <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a> and <a href="../AA-7/AA-7.3#Subclause_7.3.2">7.3.2</a>. After execution of the rendezvous, the <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> completes and is left. [The two tasks then proceed independently.] When an exception is propagated from the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, the same exception is also raised by the execution of the corresponding <code><a href="../AA-9/AA-9.5#S0264">entry_call_statement</a></code>. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>24.a</MarginText>
@@ -1731,19 +1732,19 @@ Note that in the strange case where a <code><a href="../AA-9/AA-9.1#S0248">task_
 <p>The execution of a <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code> begins with the following sequence of steps: <br /></p>
 
 <MarginText>7.1/5</MarginText>
-<dt><br/>a)</dt>
+<dt><br/>1.</dt>
 <dl>
 <dd>The <em>procedure_or_entry_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is evaluated. This includes evaluation of the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> (if any) identifying the target task or protected object and of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> (if any) identifying the entry within an entry family.<br /></dd>
 <MarginText>7.2/5</MarginText>
-<dt><br/>b)</dt>
+<dt><br/>2.</dt>
 <MarginInfo items={["AI12-0335-1"]} />
 <dd>If the target object is not a part of a formal parameter of the innermost enclosing callable construct, a check is made that the accessibility level of the target object is not equal to or deeper than the level of the innermost enclosing callable construct. If this check fails, Program_Error is raised.<br /></dd>
 <MarginText>7.3/5</MarginText>
-<dt><br/>c)</dt>
+<dt><br/>3.</dt>
 <MarginInfo items={["AI12-0090-1"]} />
 <dd>Precondition checks are performed as for a call to the requeue target.<br /></dd>
 <MarginText>7.4/5</MarginText>
-<dt><br/>d)</dt>
+<dt><br/>4.</dt>
 <dd>The <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> or <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> enclosing the <code><a href="../AA-9/AA-9.5#S0265">requeue_statement</a></code> is then completed[, finalized, and left (see <a href="../AA-7/AA-7.6#Subclause_7.6.1">7.6.1</a>)].<br /></dd>
 </dl>
 <MarginText>8</MarginText>
@@ -1798,7 +1799,7 @@ Note that in the strange case where a <code><a href="../AA-9/AA-9.1#S0248">task_
 <MarginText>17/5</MarginText>
 <MarginInfo items={["AI12-0300-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   A requeue is permitted from a single entry to an entry of an entry family, or vice  versa. The entry index, if any, plays no part in the subtype conformance check between the profiles of the two entries; an entry index is part of the <em>entry_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> for an entry of a family. <br /></Admonition>
+NOTE   A requeue is permitted from a single entry to an entry of an entry family, or vice  versa. The entry index, if any, plays no part in the subtype conformance check between the profiles of the two entries; an entry index is part of the <em>entry_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> for an entry of a family. <br /></Admonition>
 </AnnotatedOnly>
 
 
