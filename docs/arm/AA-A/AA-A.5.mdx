@@ -191,8 +191,9 @@ end Ada.Numerics.Generic_Elementary_Functions;{"\n"}
 <strong></strong>It is anticipated that an Ada binding to IEC 559:1989 will be developed in the future. As part of such a binding, the Machine_Overflows attribute of a conformant floating point type will be specified to yield False, which will permit both the predefined arithmetic operations and implementations of the elementary functions to deliver signed infinities (and set the overflow flag defined by the binding) instead of raising Constraint_Error in overflow situations, when traps are disabled. Similarly, it is appropriate for the elementary functions to deliver signed infinities (and set the zero-divide flag defined by the binding) instead of raising Constraint_Error at poles, when traps are disabled. Finally, such a binding should also specify the behavior of the elementary functions, when sensible, given parameters with infinite values. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>35</MarginText>
-<p>When one parameter of a function with multiple parameters represents a pole and another is outside the function's domain, the latter takes precedence (i.e., Numerics.Argument_Error is raised). <br /></p>
+<MarginText>35/5</MarginText>
+<MarginInfo items={["AI12-0453-1"]} />
+<p>When one parameter of a function with multiple parameters represents a pole and another is outside the function's domain, the latter takes precedence and  Numerics.Argument_Error is raised . <br /></p>
 
 
 #### Implementation Requirements
@@ -239,9 +240,10 @@ end Ada.Numerics.Generic_Elementary_Functions;{"\n"}
 <strong></strong>The sign of a zero result from some of the operators or functions in Numerics.Generic_Elementary_Functions, when Float_Type'Signed_Zeros is True.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>47</MarginText>
+<MarginText>47/5</MarginText>
+<MarginInfo items={["AI12-0453-1"]} />
 <ul>
-<li>[A zero result that is not a prescribed result (i.e., one that results from rounding or underflow) has the correct mathematical sign.] <br /></li>
+<li>[A zero result that is not a prescribed result (that is , one that results from rounding or underflow) has the correct mathematical sign.] <br /></li>
 </ul>
 <AnnotatedOnly>
 <MarginText>47.a</MarginText>
@@ -639,9 +641,9 @@ NOTE 2   Within a given implementation, a repeatable random number sequence can 
 
 <AnnotatedOnly>
 <MarginText>50/5</MarginText>
-<MarginInfo items={["AI12-0442-1"]} />
+<MarginInfo items={["AI12-0442-1", "AI12-0447-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 3   A given implementation of the Random function in Numerics.Float_Random is not guaranteed to  be capable of delivering the values 0.0 or 1.0. Applications will be more portable if they  assume that these values, or values sufficiently close to them to behave indistinguishably from them, can occur. If a sequence of random integers from some  range is necessary , it is preferred that the application uses one of  the Random functions  in an appropriate instantiation of Numerics.Discrete_Random, rather than transforming the result of the Random function in Numerics.Float_Random.  <br /></Admonition>
+NOTE 3   A given implementation of the Random function in Numerics.Float_Random is not guaranteed to  be capable of delivering the values 0.0 or 1.0. Applications will be more portable if they  assume that these values, or values sufficiently close to them to behave indistinguishably from them, can occur. If a sequence of random integers from some  range is necessary , the application should use one of the Random functions  in an appropriate instantiation of Numerics.Discrete_Random, rather than transforming the result of the Random function in Numerics.Float_Random.  <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -656,7 +658,7 @@ This paragraph was deleted. {"\n"}
 <MarginText>51.a/5</MarginText>
 <MarginInfo items={["AI12-0144-1", "AI12-0442-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>One might think that a simple transformation of the result of the floating point Random function such as Integer(Float(M) * Random(G)) <strong>mod</strong> M would give a uniform distribution. But this is only true if the period of the underlying generator is a multiple of M. (This usually requires that M be a power of two.) In other cases, the <strong>mod</strong> operation maps slightly more random values to a some result values than others. It is easy to see this: consider a 4-bit random integer (with a range of 0 .. 15). If one <strong>mod</strong>s this by 6 to get a value in 0 .. 5 (to which one would add 1 to get the value of a die roll), 3 values would be mapped to each value 0 .. 3, but only 2 values would be mapped to 4 and 5. Even when the input is uniformly distributed, the output clearly is not. A similar effect occurs regardless of the number of bits in the random integer. Since it takes care to get this right, users should use the provided functions (which presumably do this correctly &ndash;  contains a correct algorithm) and resist the urge to &ldquo;roll-their-own&rdquo;. <br /></Admonition>
+<strong></strong>One might think that a simple transformation of the result of the floating point Random function such as Integer(Float(M) * Random(G)) <strong>mod</strong> M would give a uniform distribution. But this is only true if the period of the underlying generator is a multiple of M. (This usually requires that M be a power of two.) In other cases, the <strong>mod</strong> operation maps slightly more random values to some result values than others. It is easy to see this: consider a 4-bit random integer (with a range of 0 .. 15). If one <strong>mod</strong>s this by 6 to get a value in 0 .. 5 (to which one would add 1 to get the value of a die roll), 3 values would be mapped to each value 0 .. 3, but only 2 values would be mapped to 4 and 5. Even when the input is uniformly distributed, the output clearly is not. A similar effect occurs regardless of the number of bits in the random integer. Since it takes care to get this right, users should use the provided functions (which presumably do this correctly &ndash;  contains a correct algorithm) and resist the urge to &ldquo;roll-their-own&rdquo;. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -707,10 +709,15 @@ with Ada.Numerics.Discrete_Random;{"\n"}procedure Flip_A_Coin is{"\n"}   type Co
 with Ada.Numerics.Float_Random;{"\n"}procedure Parallel_Simulation is{"\n"}   use Ada.Numerics.Float_Random;{"\n"}   task type Worker is{"\n"}      entry Initialize_Generator (Initiator : in Integer);{"\n"}      ...{"\n"}   end Worker;{"\n"}   W : array (1 .. 10) of Worker;{"\n"}   task body Worker is{"\n"}      G : Generator;{"\n"}      Probability_Of_Event : Uniformly_Distributed;{"\n"}   begin{"\n"}      accept Initialize_Generator (Initiator : in Integer) do{"\n"}         Reset (G, Initiator);{"\n"}      end Initialize_Generator;{"\n"}      loop{"\n"}         ...{"\n"}         Probability_Of_Event := Random(G);{"\n"}         ...{"\n"}      end loop;{"\n"}   end Worker;{"\n"}begin{"\n"}   -- Initialize the generators in the Worker tasks to different states{"\n"}   for I in W'Range loop{"\n"}      W(I).Initialize_Generator (I);{"\n"}   end loop;{"\n"}   ... -- Wait for the Worker tasks to terminate{"\n"}end Parallel_Simulation;{"\n"}
 
 </CodeBlock>
+<MarginText>61/5</MarginText>
+<MarginInfo items={["AI12-0452-1"]} />
+<p>Although each Worker task initializes its generator to a different state, those states will be the same in every execution of the program. The generator states can be initialized uniquely in each program execution by instantiating Ada.Numerics.Discrete_Random for the type Integer in the main procedure, resetting the generator obtained from that instance to a time-dependent state, and then using random integers obtained from that generator to initialize the generators in each Worker task.<br /></p>
+
 <AnnotatedOnly>
-<MarginText>61</MarginText>
+<MarginText>62/5</MarginText>
+<MarginInfo items={["AI12-0452-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializes its generator to a different state, those states will be the same in every execution of the program. The generator states can be initialized uniquely in each program execution by instantiating Ada.Numerics.Discrete_Random for the type Integer in the main procedure, resetting the generator obtained from that instance to a time-dependent state, and then using random integers obtained from that generator to initialize the generators in each Worker task. <br /></Admonition>
+ <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -719,7 +726,7 @@ NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializ
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>61.a/2</MarginText>
+<MarginText>62.a/2</MarginText>
 <MarginInfo items={["AI95-00360-01"]} />
 <Admonition type="aarm" aarm="correction">
 <strong>Amendment </strong> Type Generator in Numerics.Float_Random and in an instance of Numerics.Discrete_Random is defined to need finalization. If the restriction No_Nested_Finalization (see <a href="../AA-D/AA-D.7">D.7</a>) applies to the partition, and Generator does not have a controlled part, it will not be allowed in local objects in Ada 2005 whereas it would be allowed in original Ada 95. Such code is not portable, as another Ada compiler may have a controlled part in Generator, and thus would be illegal. <br /></Admonition>
@@ -731,7 +738,7 @@ NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializ
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>61.b/3</MarginText>
+<MarginText>62.b/3</MarginText>
 <MarginInfo items={["AI95-00089-01", "AI05-0005-1"]} />
 <Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0050</em>{"}"} <strong>Corrigendum:</strong> Made the passing of an incorrect Image of a generator a bounded error, as it might not be practical to check for problems (if a generator consists of several related values). <br /></Admonition>
@@ -743,7 +750,7 @@ NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializ
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>61.c/3</MarginText>
+<MarginText>62.c/3</MarginText>
 <MarginInfo items={["AI05-0280-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Specified the implicit initial value for (sub)type State. This was unspecified in Ada 95 and Ada 2005, so a program depending on some other initial value is very unlikely and certainly was not portable. An implementation can use default expressions, aspect Default_Value, or aspect Default_Component_Value to keep the representation of the type unchanged while meeting this new requirement. <br /></Admonition>
@@ -755,7 +762,7 @@ NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializ
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>61.d/5</MarginText>
+<MarginText>62.d/5</MarginText>
 <MarginInfo items={["AI12-0144-1"]} />
 <Admonition type="aarm" aarm="note">
  The function Random with First and Last parameters is new. <br /></Admonition>
@@ -769,26 +776,26 @@ NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializ
 #### Static Semantics
 
 <MarginText>1</MarginText>
-<p>The following <em>representation-oriented attributes</em> are defined for every subtype S of a floating point type T. <br /></p>
+<p>The following <em>representation-oriented attributes</em> are defined for every subtype S of a floating point type <em>T</em>. <br /></p>
 
 <MarginText>2</MarginText>
 <dt><br/>S'Machine_Radix</dt>
 <dl>
-<dd>Yields the radix of the hardware representation of the type T. The value of this attribute is of the type <em>universal_integer</em>. <br /></dd>
+<dd>Yields the radix of the hardware representation of the type <em>T</em>. The value of this attribute is of the type <em>universal_integer</em>. <br /></dd>
 </dl>
 <MarginText>3</MarginText>
-<p>The values of other representation-oriented attributes of a floating point subtype, and of the &ldquo;primitive function&rdquo; attributes of a floating point subtype described later, are defined in terms of a particular representation of nonzero values called the <em>canonical form</em>. The canonical form (for the type T) is the form<br />    ± mantissa · T'Machine_Radixexponent<br />where <br /></p>
+<p>The values of other representation-oriented attributes of a floating point subtype, and of the &ldquo;primitive function&rdquo; attributes of a floating point subtype described later, are defined in terms of a particular representation of nonzero values called the <em>canonical form</em>. The canonical form (for the type <em>T</em>) is the form<br />    ± <em>mantissa</em> · <em>T</em>'Machine_Radix<em>exponent</em><br />where <br /></p>
 
 <MarginText>4</MarginText>
 <ul>
-<li><em>mantissa</em> is a fraction in the number base T'Machine_Radix, the first digit of which is nonzero, and<br /></li>
+<li><em>mantissa</em> is a fraction in the number base <em>T</em>'Machine_Radix, the first digit of which is nonzero, and<br /></li>
 <MarginText>5</MarginText>
 <li><em>exponent</em> is an integer. <br /></li>
 </ul>
 <MarginText>6</MarginText>
 <dt><br/>S'Machine_Mantissa</dt>
 <dl>
-<dd>Yields the largest value of p such that every value expressible in the canonical form (for the type T), having a p-digit <em>mantissa</em> and an <em>exponent</em> between T'Machine_Emin and T'Machine_Emax, is a machine number (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type T. This attribute yields a value of the type <em>universal_integer</em>. <br /></dd>
+<dd>Yields the largest value of <em>p</em> such that every value expressible in the canonical form (for the type <em>T</em>), having a <em>p</em>-digit <em>mantissa</em> and an <em>exponent</em> between <em>T</em>'Machine_Emin and <em>T</em>'Machine_Emax, is a machine number (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type <em>T</em>. This attribute yields a value of the type <em>universal_integer</em>. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>6.a</MarginText>
@@ -799,10 +806,10 @@ NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializ
 <MarginText>7</MarginText>
 <dt><br/>S'Machine_Emin</dt>
 <dl>
-<dd>Yields the smallest (most negative) value of <em>exponent</em> such that every value expressible in the canonical form (for the type T), having a <em>mantissa</em> of T'Machine_Mantissa digits, is a machine number (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type T. This attribute yields a value of the type <em>universal_integer</em>.<br /></dd>
+<dd>Yields the smallest (most negative) value of <em>exponent</em> such that every value expressible in the canonical form (for the type <em>T</em>), having a <em>mantissa</em> of <em>T</em>'Machine_Mantissa digits, is a machine number (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type <em>T</em>. This attribute yields a value of the type <em>universal_integer</em>.<br /></dd>
 <MarginText>8</MarginText>
 <dt><br/>S'Machine_Emax</dt>
-<dd>Yields the largest (most positive) value of <em>exponent</em> such that every value expressible in the canonical form (for the type T), having a <em>mantissa</em> of T'Machine_Mantissa digits, is a machine number (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type T. This attribute yields a value of the type <em>universal_integer</em>. <br /></dd>
+<dd>Yields the largest (most positive) value of <em>exponent</em> such that every value expressible in the canonical form (for the type <em>T</em>), having a <em>mantissa</em> of <em>T</em>'Machine_Mantissa digits, is a machine number (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type <em>T</em>. This attribute yields a value of the type <em>universal_integer</em>. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>8.a</MarginText>
@@ -813,10 +820,10 @@ NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializ
 <MarginText>9</MarginText>
 <dt><br/>S'Denorm</dt>
 <dl>
-<dd>Yields the value True if every value expressible in the form<br />    ± mantissa · T'Machine_RadixT'Machine_Emin<br />where <em>mantissa</em> is a nonzero T'Machine_Mantissa-digit fraction in the number base T'Machine_Radix, the first digit of which is zero, is a machine number (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. <br /></dd>
+<dd>Yields the value True if every value expressible in the form<br />    ± <em>mantissa</em> · <em>T</em>'Machine_Radix<em>T</em>'Machine_Emin<br />where <em>mantissa</em> is a nonzero <em>T</em>'Machine_Mantissa-digit fraction in the number base <em>T</em>'Machine_Radix, the first digit of which is zero, is a machine number (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type <em>T</em>; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. <br /></dd>
 </dl>
 <MarginText>10</MarginText>
-<p>The values described by the formula in the definition of S'Denorm are called <em>denormalized numbers</em>. A nonzero machine number that is not a denormalized number is a <em>normalized number</em>. A normalized number x of a given type T is said to be <em>represented in canonical form</em> when it is expressed in the canonical form (for the type T) with a <em>mantissa</em> having T'Machine_Mantissa digits; the resulting form is the <em>canonical-form representation</em> of x. <br /></p>
+<p>The values described by the formula in the definition of S'Denorm are called <em>denormalized numbers</em>. A nonzero machine number that is not a denormalized number is a <em>normalized number</em>. A normalized number <em>x</em> of a given type <em>T</em> is said to be <em>represented in canonical form</em> when it is expressed in the canonical form (for the type <em>T</em>) with a <em>mantissa</em> having <em>T</em>'Machine_Mantissa digits; the resulting form is the <em>canonical-form representation</em> of <em>x</em>. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>10.a</MarginText>
@@ -827,7 +834,7 @@ NOTE 4   <em>Notes on the last example:</em> Although each Worker task initializ
 <MarginText>11</MarginText>
 <dt><br/>S'Machine_Rounds</dt>
 <dl>
-<dd>Yields the value True if rounding is performed on inexact results of every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. <br /></dd>
+<dd>Yields the value True if rounding is performed on inexact results of every predefined operation that yields a result of the type <em>T</em>; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>11.a</MarginText>
@@ -852,34 +859,34 @@ Technically, this attribute should yield False when extended registers are used,
 <MarginText>12</MarginText>
 <dt><br/>S'Machine_Overflows</dt>
 <dl>
-<dd>Yields the value True if overflow and divide-by-zero are detected and reported by raising Constraint_Error for every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean.<br /></dd>
+<dd>Yields the value True if overflow and divide-by-zero are detected and reported by raising Constraint_Error for every predefined operation that yields a result of the type <em>T</em>; yields the value False otherwise. The value of this attribute is of the predefined type Boolean.<br /></dd>
 <MarginText>13</MarginText>
 <dt><br/>S'Signed_Zeros</dt>
-<dd>Yields the value True if the hardware representation for the type T has the capability of representing both positively and negatively signed zeros, these being generated and used by the predefined operations of the type T as specified in IEC 559:1989; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. <br /></dd>
+<dd>Yields the value True if the hardware representation for the type <em>T</em> has the capability of representing both positively and negatively signed zeros, these being generated and used by the predefined operations of the type <em>T</em> as specified in IEC 559:1989; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. <br /></dd>
 </dl>
 <MarginText>14</MarginText>
-<p>For every value x of a floating point type T, the <em>normalized exponent</em> of x is defined as follows: <br /></p>
+<p>For every value <em>x</em> of a floating point type <em>T</em>, the <em>normalized exponent</em> of <em>x</em> is defined as follows: <br /></p>
 
 <MarginText>15</MarginText>
 <ul>
 <li>the normalized exponent of zero is (by convention) zero;<br /></li>
 <MarginText>16</MarginText>
-<li>for nonzero x, the normalized exponent of x is the unique integer k such that T'Machine_Radixk&ndash;1 &le; |x| {"<"} T'Machine_Radixk. <br /></li>
+<li>for nonzero <em>x</em>, the normalized exponent of <em>x</em> is the unique integer <em>k</em> such that <em>T</em>'Machine_Radix<em>k</em>&ndash;1 &le; |<em>x</em>| {"<"} <em>T</em>'Machine_Radix<em>k</em>. <br /></li>
 </ul>
 <AnnotatedOnly>
 <MarginText>16.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The normalized exponent of a normalized number x is the value of <em>exponent</em> in the canonical-form representation of x.<br /></Admonition>
+<strong></strong>The normalized exponent of a normalized number <em>x</em> is the value of <em>exponent</em> in the canonical-form representation of <em>x</em>.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>16.b</MarginText>
 <Admonition type="aarm" aarm="note">
-The normalized exponent of a denormalized number is less than the value of T'Machine_Emin. <br /></Admonition>
+The normalized exponent of a denormalized number is less than the value of <em>T</em>'Machine_Emin. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>17</MarginText>
-<p>The following <em>primitive function attributes</em> are defined for any subtype S of a floating point type T. <br /></p>
+<p>The following <em>primitive function attributes</em> are defined for any subtype S of a floating point type <em>T</em>. <br /></p>
 
 <MarginText>18</MarginText>
 <dt><br/>S'Exponent</dt>
@@ -893,7 +900,7 @@ function S'Exponent (X : T){"\n"}  return universal_integer{"\n"}
 </CodeBlock>
 <MarginText>20</MarginText>
 <dl>
-<dd>The function yields the normalized exponent of X.<br /></dd>
+<dd>The function yields the normalized exponent of <em>X</em>.<br /></dd>
 <MarginText>21</MarginText>
 <dt><br/>S'Fraction</dt>
 <dd>S'Fraction denotes a function with the following specification: <br /></dd>
@@ -905,24 +912,24 @@ function S'Fraction (X : T){"\n"}  return T{"\n"}
 </CodeBlock>
 <MarginText>23</MarginText>
 <dl>
-<dd>The function yields the value X · T'Machine_Radix&ndash;k, where k is the normalized exponent of X. A zero result[, which can only occur when X is zero,] has the sign of X. <br /></dd>
+<dd>The function yields the value <em>X</em> · <em>T</em>'Machine_Radix&ndash;<em>k</em>, where <em>k</em> is the normalized exponent of <em>X</em>. A zero result[, which can only occur when <em>X</em> is zero,] has the sign of <em>X</em>. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>23.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Informally, when X is a normalized number, the result is the value obtained by replacing the <em>exponent</em> by zero in the canonical-form representation of X. <br /></Admonition>
+<strong></strong>Informally, when <em>X</em> is a normalized number, the result is the value obtained by replacing the <em>exponent</em> by zero in the canonical-form representation of <em>X</em>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>23.b</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Except when X is zero, the magnitude of the result is greater than or equal to the reciprocal of T'Machine_Radix and less than one; consequently, the result is always a normalized number, even when X is a denormalized number. <br /></Admonition>
+<strong></strong>Except when <em>X</em> is zero, the magnitude of the result is greater than or equal to the reciprocal of <em>T</em>'Machine_Radix and less than one; consequently, the result is always a normalized number, even when <em>X</em> is a denormalized number. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>23.c</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>When X is a denormalized number, the result is the value obtained by replacing the <em>exponent</em> by zero in the canonical-form representation of the result of scaling X up sufficiently to normalize it. <br /></Admonition>
+<strong></strong>When <em>X</em> is a denormalized number, the result is the value obtained by replacing the <em>exponent</em> by zero in the canonical-form representation of the result of scaling <em>X</em> up sufficiently to normalize it. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>24</MarginText>
@@ -937,18 +944,18 @@ function S'Compose (Fraction : T;{"\n"}                    Exponent : universal_
 </CodeBlock>
 <MarginText>26</MarginText>
 <dl>
-<dd>Let v be the value Fraction · T'Machine_RadixExponent&ndash;k, where k is the normalized exponent of Fraction. If v is a machine number of the type T, or if |v| &ge; T'Model_Small, the function yields v; otherwise, it yields either one of the machine numbers of the type T adjacent to v. Constraint_Error is optionally raised if v is outside the base range of S. A zero result has the sign of Fraction when S'Signed_Zeros is True. <br /></dd>
+<dd>Let <em>v</em> be the value <em>Fraction</em> · <em>T</em>'Machine_Radix<em>Exponent</em>&ndash;<em>k</em>, where <em>k</em> is the normalized exponent of <em>Fraction</em>. If <em>v</em> is a machine number of the type <em>T</em>, or if |<em>v</em>| &ge; <em>T</em>'Model_Small, the function yields <em>v</em>; otherwise, it yields either one of the machine numbers of the type <em>T</em> adjacent to <em>v</em>. Constraint_Error is optionally raised if <em>v</em> is outside the base range of S. A zero result has the sign of <em>Fraction</em> when S'Signed_Zeros is True. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>26.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Informally, when Fraction and v are both normalized numbers, the result is the value obtained by replacing the <em>exponent</em> by Exponent in the canonical-form representation of Fraction. <br /></Admonition>
+<strong></strong>Informally, when <em>Fraction</em> and <em>v</em> are both normalized numbers, the result is the value obtained by replacing the <em>exponent</em> by <em>Exponent</em> in the canonical-form representation of <em>Fraction</em>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>26.b</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>If Exponent is less than T'Machine_Emin and Fraction is nonzero, the result is either zero, T'Model_Small, or (if T'Denorm is True) a denormalized number. <br /></Admonition>
+<strong></strong>If <em>Exponent</em> is less than <em>T</em>'Machine_Emin and <em>Fraction</em> is nonzero, the result is either zero, <em>T</em>'Model_Small, or (if <em>T</em>'Denorm is True) a denormalized number. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>27</MarginText>
@@ -963,18 +970,19 @@ function S'Scaling (X : T;{"\n"}                    Adjustment : universal_integ
 </CodeBlock>
 <MarginText>29</MarginText>
 <dl>
-<dd>Let v be the value X · T'Machine_RadixAdjustment. If v is a machine number of the type T, or if |v| &ge; T'Model_Small, the function yields v; otherwise, it yields either one of the machine numbers of the type T adjacent to v. Constraint_Error is optionally raised if v is outside the base range of S. A zero result has the sign of X when S'Signed_Zeros is True. <br /></dd>
+<dd>Let <em>v</em> be the value <em>X</em> · <em>T</em>'Machine_Radix<em>Adjustment</em>. If <em>v</em> is a machine number of the type <em>T</em>, or if |<em>v</em>| &ge; <em>T</em>'Model_Small, the function yields <em>v</em>; otherwise, it yields either one of the machine numbers of the type <em>T</em> adjacent to <em>v</em>. Constraint_Error is optionally raised if <em>v</em> is outside the base range of S. A zero result has the sign of <em>X</em> when S'Signed_Zeros is True. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>29.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Informally, when X and v are both normalized numbers, the result is the value obtained by increasing the <em>exponent</em> by Adjustment in the canonical-form representation of X. <br /></Admonition>
+<strong></strong>Informally, when <em>X</em> and <em>v</em> are both normalized numbers, the result is the value obtained by increasing the <em>exponent</em> by <em>Adjustment</em> in the canonical-form representation of <em>X</em>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>29.b</MarginText>
+<MarginText>29.b/5</MarginText>
+<MarginInfo items={["AI12-0453-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>If Adjustment is sufficiently small (i.e., sufficiently negative), the result is either zero, T'Model_Small, or (if T'Denorm is True) a denormalized number. <br /></Admonition>
+<strong></strong>If <em>Adjustment</em> is sufficiently small (that is , sufficiently negative), the result is either zero, <em>T</em>'Model_Small, or (if <em>T</em>'Denorm is True) a denormalized number. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>30</MarginText>
@@ -987,9 +995,10 @@ function S'Scaling (X : T;{"\n"}                    Adjustment : universal_integ
 function S'Floor (X : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<MarginText>32</MarginText>
+<MarginText>32/5</MarginText>
+<MarginInfo items={["AI12-0453-1"]} />
 <dl>
-<dd>The function yields the value &lfloor;X&rfloor;, i.e., the largest (most positive) integral value less than or equal to X. When X is zero, the result has the sign of X; a zero result otherwise has a positive sign.<br /></dd>
+<dd>The function yields the value &lfloor;<em>X</em>&rfloor;, that is , the largest (most positive) integral value less than or equal to <em>X</em>. When <em>X</em> is zero, the result has the sign of <em>X</em>; a zero result otherwise has a positive sign.<br /></dd>
 <MarginText>33</MarginText>
 <dt><br/>S'Ceiling</dt>
 <dd>S'Ceiling denotes a function with the following specification: <br /></dd>
@@ -999,9 +1008,10 @@ function S'Floor (X : T){"\n"}  return T{"\n"}
 function S'Ceiling (X : T){"\n"}  return T{"\n"}
 
 </CodeBlock>
-<MarginText>35</MarginText>
+<MarginText>35/5</MarginText>
+<MarginInfo items={["AI12-0453-1"]} />
 <dl>
-<dd>The function yields the value &lceil;X&rceil;, i.e., the smallest (most negative) integral value greater than or equal to X. When X is zero, the result has the sign of X; a zero result otherwise has a negative sign when S'Signed_Zeros is True.<br /></dd>
+<dd>The function yields the value &lceil;<em>X</em>&rceil;, that is , the smallest (most negative) integral value greater than or equal to <em>X</em>. When <em>X</em> is zero, the result has the sign of <em>X</em>; a zero result otherwise has a negative sign when S'Signed_Zeros is True.<br /></dd>
 <MarginText>36</MarginText>
 <dt><br/>S'Rounding</dt>
 <dd>S'Rounding denotes a function with the following specification: <br /></dd>
@@ -1013,7 +1023,7 @@ function S'Rounding (X : T){"\n"}  return T{"\n"}
 </CodeBlock>
 <MarginText>38</MarginText>
 <dl>
-<dd>The function yields the integral value nearest to X, rounding away from zero if X lies exactly halfway between two integers. A zero result has the sign of X when S'Signed_Zeros is True.<br /></dd>
+<dd>The function yields the integral value nearest to <em>X</em>, rounding away from zero if <em>X</em> lies exactly halfway between two integers. A zero result has the sign of <em>X</em> when S'Signed_Zeros is True.<br /></dd>
 <MarginText>39</MarginText>
 <dt><br/>S'Unbiased_Rounding</dt>
 <dd>S'Unbiased_Rounding denotes a function with the following specification: <br /></dd>
@@ -1025,7 +1035,7 @@ function S'Unbiased_Rounding (X : T){"\n"}  return T{"\n"}
 </CodeBlock>
 <MarginText>41</MarginText>
 <dl>
-<dd>The function yields the integral value nearest to X, rounding toward the even integer if X lies exactly halfway between two integers. A zero result has the sign of X when S'Signed_Zeros is True.<br /></dd>
+<dd>The function yields the integral value nearest to <em>X</em>, rounding toward the even integer if <em>X</em> lies exactly halfway between two integers. A zero result has the sign of <em>X</em> when S'Signed_Zeros is True.<br /></dd>
 <MarginText>41.1/2</MarginText>
 <dt><br/>S'Machine_Rounding</dt>
 <MarginInfo items={["AI95-00267-01"]} />
@@ -1038,7 +1048,7 @@ function S'Machine_Rounding (X : T){"\n"}  return T{"\n"}
 </CodeBlock>
 <MarginText>41.3/2</MarginText>
 <dl>
-<dd>The function yields the integral value nearest to X. If X lies exactly halfway between two integers, one of those integers is returned, but which of them is returned is unspecified. A zero result has the sign of X when S'Signed_Zeros is True. This function provides access to the rounding behavior which is most efficient on the target processor.<br /></dd>
+<dd>The function yields the integral value nearest to <em>X</em>. If <em>X</em> lies exactly halfway between two integers, one of those integers is returned, but which of them is returned is unspecified. A zero result has the sign of <em>X</em> when S'Signed_Zeros is True. This function provides access to the rounding behavior which is most efficient on the target processor.<br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>41.a.1/2</MarginText>
@@ -1058,7 +1068,7 @@ function S'Truncation (X : T){"\n"}  return T{"\n"}
 </CodeBlock>
 <MarginText>44</MarginText>
 <dl>
-<dd>The function yields the value &lceil;X&rceil; when X is negative, and &lfloor;X&rfloor; otherwise. A zero result has the sign of X when S'Signed_Zeros is True.<br /></dd>
+<dd>The function yields the value &lceil;<em>X</em>&rceil; when <em>X</em> is negative, and &lfloor;<em>X</em>&rfloor; otherwise. A zero result has the sign of <em>X</em> when S'Signed_Zeros is True.<br /></dd>
 <MarginText>45</MarginText>
 <dt><br/>S'Remainder</dt>
 <dd>S'Remainder denotes a function with the following specification: <br /></dd>
@@ -1070,18 +1080,18 @@ function S'Remainder (X, Y : T){"\n"}  return T{"\n"}
 </CodeBlock>
 <MarginText>47</MarginText>
 <dl>
-<dd>For nonzero Y, let v be the value X &ndash; n · Y, where n is the integer nearest to the exact value of X/Y; if |n &ndash; X/Y| = 1/2, then n is chosen to be even. If v is a machine number of the type T, the function yields v; otherwise, it yields zero. Constraint_Error is raised if Y is zero. A zero result has the sign of X when S'Signed_Zeros is True. <br /></dd>
+<dd>For nonzero <em>Y</em>, let <em>v</em> be the value <em>X</em> &ndash; <em>n</em> · <em>Y</em>, where <em>n</em> is the integer nearest to the exact value of <em>X</em>/<em>Y</em>; if |<em>n</em> &ndash; <em>X</em>/<em>Y</em>| = 1/2, then <em>n</em> is chosen to be even. If <em>v</em> is a machine number of the type <em>T</em>, the function yields <em>v</em>; otherwise, it yields zero. Constraint_Error is raised if <em>Y</em> is zero. A zero result has the sign of <em>X</em> when S'Signed_Zeros is True. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>47.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The magnitude of the result is less than or equal to one-half the magnitude of Y. <br /></Admonition>
+<strong></strong>The magnitude of the result is less than or equal to one-half the magnitude of <em>Y</em>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>47.b</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Given machine numbers X and Y of the type T, v is necessarily a machine number of the type T, except when Y is in the neighborhood of zero, X is sufficiently close to a multiple of Y, and T'Denorm is False. <br /></Admonition>
+<strong></strong>Given machine numbers <em>X</em> and <em>Y</em> of the type <em>T</em>, <em>v</em> is necessarily a machine number of the type <em>T</em>, except when <em>Y</em> is in the neighborhood of zero, <em>X</em> is sufficiently close to a multiple of <em>Y</em>, and <em>T</em>'Denorm is False. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>48</MarginText>
@@ -1096,12 +1106,12 @@ function S'Adjacent (X, Towards : T){"\n"}  return T{"\n"}
 </CodeBlock>
 <MarginText>50</MarginText>
 <dl>
-<dd>If Towards = X, the function yields X; otherwise, it yields the machine number of the type T adjacent to X in the direction of Towards, if that machine number exists. If the result would be outside the base range of S, Constraint_Error is raised. When T'Signed_Zeros is True, a zero result has the sign of X. When Towards is zero, its sign has no bearing on the result. <br /></dd>
+<dd>If <em>Towards</em> = <em>X</em>, the function yields <em>X</em>; otherwise, it yields the machine number of the type <em>T</em> adjacent to <em>X</em> in the direction of <em>Towards</em>, if that machine number exists. If the result would be outside the base range of S, Constraint_Error is raised. When <em>T</em>'Signed_Zeros is True, a zero result has the sign of <em>X</em>. When <em>Towards</em> is zero, its sign has no bearing on the result. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>50.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The value of S'Adjacent(0.0, 1.0) is the smallest normalized positive number of the type T when T'Denorm is False and the smallest denormalized positive number of the type T when T'Denorm is True. <br /></Admonition>
+<strong></strong>The value of S'Adjacent(0.0, 1.0) is the smallest normalized positive number of the type <em>T</em> when <em>T</em>'Denorm is False and the smallest denormalized positive number of the type <em>T</em> when <em>T</em>'Denorm is True. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>51</MarginText>
@@ -1116,7 +1126,7 @@ function S'Copy_Sign (Value, Sign : T){"\n"}  return T{"\n"}
 </CodeBlock>
 <MarginText>53</MarginText>
 <dl>
-<dd>If the value of Value is nonzero, the function yields a result whose magnitude is that of Value and whose sign is that of Sign; otherwise, it yields the value zero. Constraint_Error is optionally raised if the result is outside the base range of S. A zero result has the sign of Sign when S'Signed_Zeros is True. <br /></dd>
+<dd>If the value of <em>Value</em> is nonzero, the function yields a result whose magnitude is that of <em>Value</em> and whose sign is that of <em>Sign</em>; otherwise, it yields the value zero. Constraint_Error is optionally raised if the result is outside the base range of S. A zero result has the sign of <em>Sign</em> when S'Signed_Zeros is True. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>53.a</MarginText>
@@ -1136,28 +1146,28 @@ function S'Leading_Part (X : T;{"\n"}                         Radix_Digits : uni
 </CodeBlock>
 <MarginText>56</MarginText>
 <dl>
-<dd>Let v be the value T'Machine_Radixk&ndash;Radix_Digits, where k is the normalized exponent of X. The function yields the value <br /></dd>
+<dd>Let <em>v</em> be the value <em>T</em>'Machine_Radix<em>k</em>&ndash;<em>Radix_Digits</em>, where <em>k</em> is the normalized exponent of <em>X</em>. The function yields the value <br /></dd>
 </dl>
 <MarginText>57</MarginText>
 <ul>
-<li>&lfloor;X/v&rfloor; · v, when X is nonnegative and Radix_Digits is positive;<br /></li>
+<li>&lfloor;<em>X</em>/<em>v</em>&rfloor; · <em>v</em>, when <em>X</em> is nonnegative and <em>Radix_Digits</em> is positive;<br /></li>
 <MarginText>58</MarginText>
-<li>&lceil;X/v&rceil; · v, when X is negative and Radix_Digits is positive. <br /></li>
+<li>&lceil;<em>X</em>/<em>v</em>&rceil; · <em>v</em>, when <em>X</em> is negative and <em>Radix_Digits</em> is positive. <br /></li>
 </ul>
 <MarginText>59</MarginText>
 <dl>
-<dd>Constraint_Error is raised when Radix_Digits is zero or negative. A zero result[, which can only occur when X is zero,] has the sign of X. <br /></dd>
+<dd>Constraint_Error is raised when <em>Radix_Digits</em> is zero or negative. A zero result[, which can only occur when <em>X</em> is zero,] has the sign of <em>X</em>. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>59.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Informally, if X is nonzero, the result is the value obtained by retaining only the specified number of (leading) significant digits of X (in the machine radix), setting all other digits to zero. <br /></Admonition>
+<strong></strong>Informally, if <em>X</em> is nonzero, the result is the value obtained by retaining only the specified number of (leading) significant digits of <em>X</em> (in the machine radix), setting all other digits to zero. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>59.b</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>The result can be obtained by first scaling X up, if necessary to normalize it, then masking the mantissa so as to retain only the specified number of leading digits, then scaling the result back down if X was scaled up. <br /></Admonition>
+<strong></strong>The result can be obtained by first scaling <em>X</em> up, if necessary to normalize it, then masking the mantissa so as to retain only the specified number of leading digits, then scaling the result back down if <em>X</em> was scaled up. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>60</MarginText>
@@ -1172,7 +1182,7 @@ function S'Machine (X : T){"\n"}  return T{"\n"}
 </CodeBlock>
 <MarginText>62</MarginText>
 <dl>
-<dd>If X is a machine number of the type T, the function yields X; otherwise, it yields the value obtained by rounding or truncating X to either one of the adjacent machine numbers of the type T. Constraint_Error is raised if rounding or truncating X to the precision of the machine numbers results in a value outside the base range of S. A zero result has the sign of X when S'Signed_Zeros is True. <br /></dd>
+<dd>If <em>X</em> is a machine number of the type <em>T</em>, the function yields <em>X</em>; otherwise, it yields the value obtained by rounding or truncating <em>X</em> to either one of the adjacent machine numbers of the type <em>T</em>. Constraint_Error is raised if rounding or truncating <em>X</em> to the precision of the machine numbers results in a value outside the base range of S. A zero result has the sign of <em>X</em> when S'Signed_Zeros is True. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>62.a/3</MarginText>
@@ -1188,34 +1198,35 @@ function S'Machine (X : T){"\n"}  return T{"\n"}
 </AnnotatedOnly>
 
 <MarginText>63</MarginText>
-<p>The following <em>model-oriented attributes</em> are defined for any subtype S of a floating point type T. <br /></p>
+<p>The following <em>model-oriented attributes</em> are defined for any subtype S of a floating point type <em>T</em>. <br /></p>
 
 <MarginText>64</MarginText>
 <dt><br/>S'Model_Mantissa</dt>
 <dl>
-<dd>If the Numerics Annex is not supported, this attribute yields an implementation defined value that is greater than or equal to &lceil;d · log(10) / log(T'Machine_Radix)&rceil; + 1, where d is the requested decimal precision of T, and less than or equal to the value of T'Machine_Mantissa. See <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a> for further requirements that apply to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_integer</em>.<br /></dd>
+<dd>If the Numerics Annex is not supported, this attribute yields an implementation defined value that is greater than or equal to &lceil;<em>d</em> · log(10) / log(<em>T</em>'Machine_Radix)&rceil; + 1, where <em>d</em> is the requested decimal precision of <em>T</em>, and less than or equal to the value of <em>T</em>'Machine_Mantissa. See <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a> for further requirements that apply to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_integer</em>.<br /></dd>
 <MarginText>65</MarginText>
 <dt><br/>S'Model_Emin</dt>
-<dd>If the Numerics Annex is not supported, this attribute yields an implementation defined value that is greater than or equal to the value of T'Machine_Emin. See <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a> for further requirements that apply to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_integer</em>.<br /></dd>
+<dd>If the Numerics Annex is not supported, this attribute yields an implementation defined value that is greater than or equal to the value of <em>T</em>'Machine_Emin. See <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a> for further requirements that apply to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_integer</em>.<br /></dd>
 <MarginText>66</MarginText>
 <dt><br/>S'Model_Epsilon</dt>
-<dd>Yields the value T'Machine_Radix1 &ndash; T'Model_Mantissa. The value of this attribute is of the type <em>universal_real</em>. <br /></dd>
+<dd>Yields the value <em>T</em>'Machine_Radix1 &ndash; <em>T</em>'Model_Mantissa. The value of this attribute is of the type <em>universal_real</em>. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>66.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>In most implementations, this attribute yields the absolute value of the difference between one and the smallest machine number of the type T above one which, when added to one, yields a machine number different from one. Further discussion can be found in <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a>. <br /></Admonition>
+<strong></strong>In most implementations, this attribute yields the absolute value of the difference between one and the smallest machine number of the type <em>T</em> above one which, when added to one, yields a machine number different from one. Further discussion can be found in <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a>. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>67</MarginText>
 <dt><br/>S'Model_Small</dt>
 <dl>
-<dd>Yields the value T'Machine_RadixT'Model_Emin &ndash; 1. The value of this attribute is of the type <em>universal_real</em>. <br /></dd>
+<dd>Yields the value <em>T</em>'Machine_Radix<em>T</em>'Model_Emin &ndash; 1. The value of this attribute is of the type <em>universal_real</em>. <br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>67.a</MarginText>
+<MarginText>67.a/5</MarginText>
+<MarginInfo items={["AI12-0453-1"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>In most implementations, this attribute yields the smallest positive normalized number of the type T, i.e. the number corresponding to the positive underflow threshold. In some implementations employing a radix-complement representation for the type T, the positive underflow threshold is closer to zero than is the negative underflow threshold, with the consequence that the smallest positive normalized number does not coincide with the positive underflow threshold (i.e., it exceeds the latter). Further discussion can be found in <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a>. <br /></Admonition>
+<strong></strong>In most implementations, this attribute yields the smallest positive normalized number of the type <em>T</em>, that is,  the number corresponding to the positive underflow threshold. In some implementations employing a radix-complement representation for the type <em>T</em>, the positive underflow threshold is closer to zero than is the negative underflow threshold, with the consequence that the smallest positive normalized number does not coincide with the positive underflow threshold that is , it exceeds the latter). Further discussion can be found in <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a>. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>68</MarginText>
@@ -1233,10 +1244,10 @@ function S'Model (X : T){"\n"}  return T{"\n"}
 <dd>If the Numerics Annex is not supported, the meaning of this attribute is implementation defined; see <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a> for the definition that applies to implementations supporting the Numerics Annex.<br /></dd>
 <MarginText>71</MarginText>
 <dt><br/>S'Safe_First</dt>
-<dd>Yields the lower bound of the safe range (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type T. If the Numerics Annex is not supported, the value of this attribute is implementation defined; see <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a> for the definition that applies to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_real</em>.<br /></dd>
+<dd>Yields the lower bound of the safe range (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type <em>T</em>. If the Numerics Annex is not supported, the value of this attribute is implementation defined; see <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a> for the definition that applies to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_real</em>.<br /></dd>
 <MarginText>72</MarginText>
 <dt><br/>S'Safe_Last</dt>
-<dd>Yields the upper bound of the safe range (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type T. If the Numerics Annex is not supported, the value of this attribute is implementation defined; see <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a> for the definition that applies to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_real</em>. <br /></dd>
+<dd>Yields the upper bound of the safe range (see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) of the type <em>T</em>. If the Numerics Annex is not supported, the value of this attribute is implementation defined; see <a href="../AA-G/AA-G.2#Subclause_G.2.2">G.2.2</a> for the definition that applies to implementations supporting the Numerics Annex. The value of this attribute is of the type <em>universal_real</em>. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>72.a</MarginText>
@@ -1316,18 +1327,18 @@ The Machine_Rounding attribute is new. <br /></Admonition>
 #### Static Semantics
 
 <MarginText>1</MarginText>
-<p>The following <em>representation-oriented</em> attributes are defined for every subtype S of a fixed point type T. <br /></p>
+<p>The following <em>representation-oriented</em> attributes are defined for every subtype S of a fixed point type <em>T</em>. <br /></p>
 
 <MarginText>2</MarginText>
 <dt><br/>S'Machine_Radix</dt>
 <dl>
-<dd>Yields the radix of the hardware representation of the type T. The value of this attribute is of the type <em>universal_integer</em>.<br /></dd>
+<dd>Yields the radix of the hardware representation of the type <em>T</em>. The value of this attribute is of the type <em>universal_integer</em>.<br /></dd>
 <MarginText>3</MarginText>
 <dt><br/>S'Machine_Rounds</dt>
-<dd>Yields the value True if rounding is performed on inexact results of every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean.<br /></dd>
+<dd>Yields the value True if rounding is performed on inexact results of every predefined operation that yields a result of the type <em>T</em>; yields the value False otherwise. The value of this attribute is of the predefined type Boolean.<br /></dd>
 <MarginText>4</MarginText>
 <dt><br/>S'Machine_Overflows</dt>
-<dd>Yields the value True if overflow and divide-by-zero are detected and reported by raising Constraint_Error for every predefined operation that yields a result of the type T; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. <br /></dd>
+<dd>Yields the value True if overflow and divide-by-zero are detected and reported by raising Constraint_Error for every predefined operation that yields a result of the type <em>T</em>; yields the value False otherwise. The value of this attribute is of the predefined type Boolean. <br /></dd>
 </dl>
 <AnnotatedOnly>
 

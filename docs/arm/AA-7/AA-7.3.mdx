@@ -257,8 +257,9 @@ Note that there wouldn't be any difficulty to implement the first option, so the
 <MarginInfo items={["AI95-00419-01", "AI95-00443-01"]} />
 <p>If the reserved word <strong>limited</strong> appears in a <code><a href="../AA-7/AA-7.3#S0233">private_extension_declaration</a></code>, the ancestor type shall be a limited type. If the reserved word <strong>synchronized</strong> appears in a <code><a href="../AA-7/AA-7.3#S0233">private_extension_declaration</a></code>, the ancestor type shall be a limited interface.<br /></p>
 
-<MarginText>9</MarginText>
-<p>If the declaration of a partial view includes a <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code>, then the <code><a href="../AA-3/AA-3.2#S0024">full_type_declaration</a></code> shall have a fully conforming [(explicit)] <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code> [(see <a href="../AA-6/AA-6.3#Subclause_6.3.1">6.3.1</a>, &ldquo;<a href="../AA-6/AA-6.3#Subclause_6.3.1">Conformance Rules</a>&rdquo;)]. [The ancestor subtype may be unconstrained; the parent subtype of the full view is required to be constrained (see <a href="../AA-3/AA-3.7">3.7</a>).] <br /></p>
+<MarginText>9/5</MarginText>
+<MarginInfo items={["AI12-0449-1"]} />
+<p>If the declaration of a partial view includes a <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code>, then the <code><a href="../AA-3/AA-3.2#S0024">full_type_declaration</a></code> shall have a fully conforming [(explicit)] <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code> [(see <a href="../AA-6/AA-6.3#Subclause_6.3.1">6.3.1</a> )]. [The ancestor subtype may be unconstrained; the parent subtype of the full view is required to be constrained (see <a href="../AA-3/AA-3.7">3.7</a>).] <br /></p>
 
 <AnnotatedOnly>
 <MarginText>9.a</MarginText>
@@ -619,8 +620,8 @@ An optional <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></cod
 <p>A type is a <em>descendant</em> of the full view of some ancestor of its parent type only if the current view it has of its parent is a descendant of the full view of that ancestor. More generally, at any given place, a type is descended from the same view of an ancestor as that from which the current view of its parent is descended. This view determines what characteristics are inherited from the ancestor[, and, for example, whether the type is considered to be a descendant of a record type, or a descendant only through record extensions of a more distant ancestor].<br /></p>
 
 <MarginText>5.3/5</MarginText>
-<MarginInfo items={["AI05-0115-1", "AI12-0065-1", "AI12-0140-1"]} />
-<p>[Furthermore, it is possible for there to be places where a derived type is known to be derived indirectly from an ancestor type, but is not a descendant of even a partial view of the ancestor type, because the parent of the derived type is not visibly a descendant of the ancestor.  In this case, the derived type inherits no characteristics from that ancestor, but nevertheless is within the derivation class of the ancestor for the purposes of type conversion, the "covers" relationship, and matching against a formal derived type. In this case the derived type is effectively a <em>descendant</em> of an incomplete view of the ancestor.]<br /></p>
+<MarginInfo items={["AI05-0115-1", "AI12-0065-1", "AI12-0140-1", "AI12-0451-1"]} />
+<p>[Furthermore, it is possible for there to be places where a derived type is known to be derived indirectly from an ancestor type, but is not a descendant of even a partial view of the ancestor type, because the parent of this  derived type is not visibly a descendant of the ancestor. In this case, the derived type inherits no characteristics from that ancestor, but nevertheless is within the derivation class of the ancestor for the purposes of type conversion, the "covers" relationship, and matching against a formal derived type. In this case the derived type is effectively a <em>descendant</em> of an incomplete view of the ancestor.]<br /></p>
 
 <AnnotatedOnly>
 <MarginText>5.a/3</MarginText>
@@ -811,22 +812,37 @@ package body Key_Manager is{"\n"}   Last_Key : Key := Null_Key;{"\n"}   procedur
    function "{"<"}" (X, Y : Key) return Boolean is{"\n"}   begin{"\n"}      return Natural(X) {"<"} Natural(Y);{"\n"}   end "{"<"}";{"\n"}end Key_Manager;{"\n"}
 
 </CodeBlock>
+<MarginText>18/5</MarginText>
+<MarginInfo items={["AI12-0452-1"]} />
+<p>Outside of the package Key_Manager, the operations available for objects of type Key include assignment, the comparison for equality or inequality, the procedure Get_Key and the operator "{"<"}"; they do not include other relational operators such as "{">"}=", or arithmetic operators.<br /></p>
+
+<MarginText>19/5</MarginText>
+<MarginInfo items={["AI12-0440-1", "AI12-0452-1"]} />
+<p>The explicitly declared operator "{"<"}" hides the predefined operator "{"<"}" implicitly declared by the <code><a href="../AA-3/AA-3.2#S0024">full_type_declaration</a></code>. Within the body of the function, an explicit conversion of X and Y to the subtype Natural is necessary to invoke the "{"<"}" operator of the parent type. Alternatively, the result of the function can be written as <strong>not</strong> (X {">"}= Y), since the operator "{">"}=" is not redefined.<br /></p>
+
+<MarginText>20/5</MarginText>
+<MarginInfo items={["AI12-0452-1"]} />
+<p>The value of the variable Last_Key, declared in the package body, remains unchanged between calls of the procedure Get_Key. (See also the NOTEs of <a href="../AA-7/AA-7.2">7.2</a>.)<br /></p>
+
 <AnnotatedOnly>
-<MarginText>18</MarginText>
+<MarginText>21/5</MarginText>
+<MarginInfo items={["AI12-0452-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 4   <em>Notes on the example:</em> Outside of the package Key_Manager, the operations available for objects of type Key include assignment, the comparison for equality or inequality, the procedure Get_Key and the operator "{"<"}"; they do not include other relational operators such as "{">"}=", or arithmetic operators.<br /></Admonition>
+ <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19</MarginText>
+<MarginText>22/5</MarginText>
+<MarginInfo items={["AI12-0452-1"]} />
 <Admonition type="aarm" aarm="note">
-The explicitly declared operator "{"<"}" hides the predefined operator "{"<"}" implicitly declared by the <code><a href="../AA-3/AA-3.2#S0024">full_type_declaration</a></code>. Within the body of the function, an explicit conversion of X and Y to the subtype Natural is necessary to invoke the "{"<"}" operator of the parent type. Alternatively, the result of the function can  be written as <strong>not</strong> (X {">"}= Y), since the operator "{">"}=" is not redefined.<br /></Admonition>
+ <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20</MarginText>
+<MarginText>23/5</MarginText>
+<MarginInfo items={["AI12-0452-1"]} />
 <Admonition type="aarm" aarm="note">
-The value of the variable Last_Key, declared in the package body, remains unchanged between calls of the procedure Get_Key. (See also the NOTES of <a href="../AA-7/AA-7.2">7.2</a>.) <br /></Admonition>
+ <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -835,13 +851,13 @@ The value of the variable Last_Key, declared in the package body, remains unchan
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.a</MarginText>
+<MarginText>23.a</MarginText>
 <Admonition type="aarm" aarm="note">
 The phrase in RM83-7.4.2(7), &ldquo;...after the full type declaration&rdquo;, doesn't work in the presence of child units, so we define that rule in terms of visibility.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.b</MarginText>
+<MarginText>23.b</MarginText>
 <Admonition type="aarm" aarm="note">
 The definition of the Constrained attribute for private types has been moved to &ldquo;Obsolescent Features&rdquo;. (The Constrained attribute of an object has not been moved there.) <br /></Admonition>
 </AnnotatedOnly>
@@ -852,14 +868,14 @@ The definition of the Constrained attribute for private types has been moved to 
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.c/2</MarginText>
+<MarginText>23.c/2</MarginText>
 <MarginInfo items={["AI95-00033-01"]} />
 <Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0018</em>{"}"} <strong>Corrigendum:</strong> Clarified when additional operations are declared.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.d/2</MarginText>
+<MarginText>23.d/2</MarginText>
 <MarginInfo items={["AI95-00287-01"]} />
 <Admonition type="aarm" aarm="note">
 Revised the note on operations of partial views to reflect that limited types do have an assignment operation, but not <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s. <br /></Admonition>
@@ -871,14 +887,14 @@ Revised the note on operations of partial views to reflect that limited types do
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.e/3</MarginText>
+<MarginText>23.e/3</MarginText>
 <MarginInfo items={["AI05-0029-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Revised the wording to say that predefined operations still exist even if they are never declared, because it is possible to reference them in a generic unit.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.f/3</MarginText>
+<MarginText>23.f/3</MarginText>
 <MarginInfo items={["AI05-0115-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Clarified that the characteristics of a descendant of a private type depend on the visibility of the full view of the direct ancestor. This has to be the case (so that privacy is not violated), but it wasn't spelled out in earlier versions of Ada. <br /></Admonition>
@@ -890,14 +906,14 @@ Revised the note on operations of partial views to reflect that limited types do
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.g/4</MarginText>
+<MarginText>23.g/4</MarginText>
 <MarginInfo items={["AI12-0065-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Clarified the clarification added by AI05-0115-1, as it turned out to not be that clear. Hopefully this version is better.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.h/5</MarginText>
+<MarginText>23.h/5</MarginText>
 <MarginInfo items={["AI12-0140-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Clarified the constraints and properties that apply to a designated subtype. This additional wording does not mean to change existing practice. <br /></Admonition>
@@ -942,26 +958,31 @@ Revised the note on operations of partial views to reflect that limited types do
 <strong>Aspect Description for </strong><strong>Type_Invariant'Class: </strong>A condition that will hold true for all objects in a class of types.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>4</MarginText>
+<AnnotatedOnly>
+<MarginText>3.c/5</MarginText>
+<Admonition type="aarm" aarm="note">
+<strong>Term entry: </strong><strong>invariant</strong> &mdash; assertion that is expected to be True for all objects of a given private type when viewed from outside the defining package<br /></Admonition>
+</AnnotatedOnly>
+
 
 #### Name Resolution Rules
 
-<MarginText>5/3</MarginText>
+<MarginText>4/3</MarginText>
 <MarginInfo items={["AI05-0146-1"]} />
 <p>The expected type for an invariant expression is any boolean type.<br /></p>
 
-<MarginText>6/5</MarginText>
+<MarginText>5/5</MarginText>
 <MarginInfo items={["AI05-0146-1", "AI12-0150-1", "AI12-0159-1", "AI12-0199-1"]} />
 <p>[Within an invariant expression, the identifier of the first subtype of the associated type denotes the current instance of the type.] Within an invariant expression for the Type_Invariant aspect of a type <em>T</em>, the type of this current instance is <em>T</em>. Within an invariant expression for the Type_Invariant'Class aspect of a type <em>T</em>, the type of this current instance is interpreted as though it had a (notional) nonabstract type <em>NT</em> that is a visible formal derived type whose ancestor type is <em>T</em>.[ The effect of this interpretation is that the only operations that can be applied to this current instance are those defined for such a formal derived type.]<br /></p>
 
 <AnnotatedOnly>
-<MarginText>6.a/3</MarginText>
+<MarginText>5.a/3</MarginText>
 <Admonition type="aarm" aarm="proof">
 <strong></strong>The first sentence is given formally in <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.b/4</MarginText>
+<MarginText>5.b/4</MarginText>
 <MarginInfo items={["AI12-0159-1"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The rules for Type_Invariant'Class ensure that the invariant expression is well-defined for any type descended from <em>T</em>. <br /></Admonition>
@@ -970,72 +991,72 @@ Revised the note on operations of partial views to reflect that limited types do
 
 #### Legality Rules
 
-<MarginText>7/3</MarginText>
+<MarginText>6/3</MarginText>
 <MarginInfo items={["AI05-0146-1"]} />
 <p>[The Type_Invariant'Class aspect shall not be specified for an untagged type.] The Type_Invariant aspect shall not be specified for an abstract type.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>7.a/3</MarginText>
+<MarginText>6.a/3</MarginText>
 <Admonition type="aarm" aarm="proof">
 <strong></strong>The first sentence is given formally in <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>7.1/5</MarginText>
+<MarginText>6.1/5</MarginText>
 <MarginInfo items={["AI12-0042-1", "AI12-0382-1"]} />
 <p>If a type extension occurs immediately within the visible part of a package specification, at a point where a private operation of some ancestor is visible and inherited, and a Type_Invariant'Class expression applies to that ancestor, then the inherited operation shall be abstract or shall be overridden. <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>8/3</MarginText>
+<MarginText>7/3</MarginText>
 <MarginInfo items={["AI05-0250-1"]} />
 <p>[If the Type_Invariant aspect is specified for a type <em>T</em>, then the invariant expression applies to <em>T</em>.]<br /></p>
 
-<MarginText>9/5</MarginText>
+<MarginText>8/5</MarginText>
 <MarginInfo items={["AI05-0146-1", "AI12-0199-1"]} />
 <p>If the Type_Invariant'Class aspect is specified for a tagged type <em>T</em>, then a <em>corresponding expression</em> also applies to each nonabstract descendant <em>T1</em> of <em>T</em> [(including <em>T</em> itself if it is nonabstract)]. The corresponding expression is constructed from the associated expression as follows: <br /></p>
 
-<MarginText>9.1/5</MarginText>
+<MarginText>8.1/5</MarginText>
 <MarginInfo items={["AI12-0199-1"]} />
 <ul>
 <li>References to nondiscriminant components of <em>T</em> (or to <em>T</em> itself) are replaced with references to the corresponding components of <em>T1</em> (or to <em>T1</em> as a whole).<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>9.a.1/5</MarginText>
+<MarginText>8.a.1/5</MarginText>
 <MarginInfo items={["AI12-0199-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The only nondiscriminant components visible at the point of such an aspect specification are necessarily inherited from some nonprivate ancestor. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>9.2/5</MarginText>
+<MarginText>8.2/5</MarginText>
 <MarginInfo items={["AI12-0199-1"]} />
 <ul>
 <li>References to discriminants of <em>T</em> are replaced with references to the corresponding discriminant of <em>T1</em>, or to the specified value for the discriminant, if the discriminant is specified by the <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> for some type that is an ancestor of <em>T1</em> and a descendant of <em>T</em> (see <a href="../AA-3/AA-3.7">3.7</a>). <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>9.a/5</MarginText>
+<MarginText>8.a/5</MarginText>
 <Admonition type="aarm" aarm="proof">
 <em>This paragraph was deleted.</em><strong></strong> <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9.b/5</MarginText>
+<MarginText>8.b/5</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>The associated expression from which the corresponding expression is constructed is the one that applies to the descendant type; "applies" is formally defined in <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>9.3/5</MarginText>
+<MarginText>8.3/5</MarginText>
 <MarginInfo items={["AI12-0075-1", "AI12-0191-1"]} />
 <p>For a nonabstract type <em>T</em>, a callable entity is said to be a <em>boundary entity</em> for <em>T</em> if it is declared within the immediate scope of <em>T</em> (or by an instance of a generic unit, and the generic is declared within the immediate scope of type <em>T</em>), or is the Read or Input stream-oriented attribute of type <em>T</em>, and either:<br /></p>
 
-<MarginText>9.4/5</MarginText>
+<MarginText>8.4/5</MarginText>
 <ul>
 <li><em>T</em> is a private type or a private extension and the callable entity is visible outside the immediate scope of type T or overrides an inherited operation that is visible outside the immediate scope of <em>T</em>; or<br /></li>
-<MarginText>9.5/5</MarginText>
+<MarginText>8.5/5</MarginText>
 <li><em>T</em> is a record extension, and the callable entity is a primitive operation visible outside the immediate scope of type <em>T</em> or overrides an inherited operation that is visible outside the immediate scope of <em>T</em>.<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>9.c/5</MarginText>
+<MarginText>8.c/5</MarginText>
 <MarginInfo items={["AI12-0191-1"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>A boundary entity for type <em>T</em> is one that might require an invariant check for <em>T</em>. It includes subprograms that don't (visibly) involve T; since we don't want to break privacy, we can't statically know if some private type has some part of <em>T</em>. We'll reduce the set when we describe the actual checks. <br /></Admonition>
@@ -1044,213 +1065,213 @@ Revised the note on operations of partial views to reflect that limited types do
 
 #### Dynamic Semantics
 
-<MarginText>10/4</MarginText>
+<MarginText>9/4</MarginText>
 <MarginInfo items={["AI05-0146-1", "AI05-0247-1", "AI05-0290-1", "AI12-0150-1"]} />
 <p>If one or more invariant expressions apply to a nonabstract type <em>T</em>, then an invariant check is performed at the following places, on the specified object(s):<br /></p>
 
-<MarginText>11/4</MarginText>
+<MarginText>10/4</MarginText>
 <MarginInfo items={["AI12-0133-1"]} />
 <ul>
 <li>After successful initialization of an object of type <em>T</em> by default (see <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>), the check is performed on the new object unless the partial view of <em>T</em> has unknown discriminants;<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>11.a/4</MarginText>
+<MarginText>10.a/4</MarginText>
 <MarginInfo items={["AI12-0133-1"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The check applies everywhere, even in the package body, because default initialization has to work the same for clients as it does within the package. As such, checks within the package are either harmless or will uncover a bug that could also happen to a client. However, if the partial view of the type has unknown discriminants, no client of the package can declare a default-initialized object. Therefore, no invariant check is needed, as all default initialized objects are necessarily inside the package. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>11.1/5</MarginText>
+<MarginText>10.1/5</MarginText>
 <MarginInfo items={["AI12-0049-1", "AI12-0191-1"]} />
 <ul>
 <li>After successful explicit initialization of the completion of a deferred constant whose nominal type has  a part of type <em>T</em>, if the completion is inside the immediate scope of the full view of <em>T</em>, and the deferred constant is visible outside the immediate scope of <em>T</em>, the check is performed on the part(s) of type <em>T</em>;<br /></li>
-<MarginText>12/3</MarginText>
+<MarginText>11/3</MarginText>
 <li>After successful conversion to type <em>T</em>, the check is performed on the result of the conversion;<br /></li>
-<MarginText>13/3</MarginText>
+<MarginText>12/3</MarginText>
 <MarginInfo items={["AI05-0146-1", "AI05-0269-1"]} />
 <li>For a view conversion, outside the immediate scope of <em>T</em>, that converts from a descendant of <em>T</em> (including <em>T</em> itself) to an ancestor of type <em>T</em> (other than <em>T</em> itself), a check is performed on the part of the object that is of type <em>T</em>:<br /></li>
 </ul>
-<MarginText>14/3</MarginText>
+<MarginText>13/3</MarginText>
 <ul>
 <li>after assigning to the view conversion; and<br /></li>
-<MarginText>15/3</MarginText>
+<MarginText>14/3</MarginText>
 <li>after successful return from a call that passes the view conversion as an <strong>in out</strong> or <strong>out</strong> parameter. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>15.a/3</MarginText>
+<MarginText>14.a/3</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>For a single view conversion that converts between distantly related types, this rule could be triggered for multiple types and thus multiple invariant checks may be needed. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>15.b/3</MarginText>
+<MarginText>14.b/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
 <Admonition type="aarm" aarm="implementation-note">
 <strong></strong>For calls to inherited subprograms (including dispatching calls), the implied view conversions mean that a wrapper is probably needed. (See the Note at the bottom of this subclause for more on the model of checks for inherited subprograms.)<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>15.c/3</MarginText>
+<MarginText>14.c/3</MarginText>
 <Admonition type="aarm" aarm="note">
 For view conversions involving class-wide types, the exact checks needed may not be known at compile-time. One way to deal with this is to have an implicit dispatching operation that is given the object to check and the tag of the target of the conversion, and which first checks if the passed tag is not for itself, and if not, checks the its invariant on the object and then calls the operation of its parent type. If the tag is for itself, the operation is complete. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>16/5</MarginText>
+<MarginText>15/5</MarginText>
 <MarginInfo items={["AI12-0075-1", "AI12-0146-1", "AI12-0191-1", "AI12-0193-1"]} />
 <ul>
 <li>Upon  successful return from a call on any callable entity which is a boundary entity for <em>T</em>, an invariant  check is performed on each object which is subject to an invariant check for <em>T</em>. In the case of a call to a protected operation, the check is performed before the end of the protected action. In the case of a call to a task entry, the check is performed before the end of the rendezvous . The following objects of a callable entity are subject to an invariant check for <em>T</em>: <br /></li>
-<MarginText>17/5</MarginText>
+<MarginText>16/5</MarginText>
 <MarginInfo items={["AI05-0146-1", "AI05-0269-1", "AI12-0075-1"]} />
 <li> <br /></li>
 <li><em>Paragraph 16 was merged above.</em> <br /></li>
-<MarginText>18/5</MarginText>
+<MarginText>17/5</MarginText>
 <MarginInfo items={["AI05-0146-1", "AI05-0269-1", "AI12-0042-1", "AI12-0075-1", "AI12-0191-1"]} />
 <li>a result with a nominal type that has a part  of type <em>T</em>; <br /></li>
-<MarginText>19/5</MarginText>
+<MarginText>18/5</MarginText>
 <MarginInfo items={["AI12-0042-1", "AI12-0191-1"]} />
 <li>an <strong>out</strong> or <strong>in out</strong> parameter whose nominal type has a part of type <em>T</em>; <br /></li>
-<MarginText>19.1/5</MarginText>
+<MarginText>18.1/5</MarginText>
 <MarginInfo items={["AI12-0075-1", "AI12-0191-1"]} />
 <li>an access-to-object parameter or result whose designated nominal type has a part of type <em>T</em>; or<br /></li>
-<MarginText>20/5</MarginText>
+<MarginText>19/5</MarginText>
 <MarginInfo items={["AI05-0289-1", "AI12-0042-1", "AI12-0044-1", "AI12-0075-1", "AI12-0191-1"]} />
 <li>for a procedure or entry, an <strong>in</strong> parameter whose nominal type has a part of type <em>T</em>. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>20.a/5</MarginText>
+<MarginText>19.a/5</MarginText>
 <MarginInfo items={["AI12-0167-1", "AI12-0191-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>This is a Dynamic Semantics rule, so we ignore privacy when determining if a check is needed. We do, however, use the nominal type of objects to determine if a part of type <em>T</em> is present; therefore, parts that aren't known at compile-time (after ignoring privacy) are never subject to an invariant check. This is preferable, as we don't want overhead associated with the possibility that there <em>might</em> exist an extension of a tagged type that has a part of type <em>T</em>. (See the "leaks" note below for avoidance advice.) <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>20.1/5</MarginText>
+<MarginText>19.1/5</MarginText>
 <MarginInfo items={["AI12-0044-1", "AI12-0075-1"]} />
 <ul>
 <li> <br /></li>
-<MarginText>20.2/5</MarginText>
+<MarginText>19.2/5</MarginText>
 <MarginInfo items={["AI12-0044-1", "AI12-0075-1"]} />
 <li> <br /></li>
-<MarginText>20.3/5</MarginText>
+<MarginText>19.3/5</MarginText>
 <MarginInfo items={["AI12-0044-1", "AI12-0075-1", "AI12-0149-1"]} />
 <li> <br /></li>
-<MarginText>20.4/5</MarginText>
+<MarginText>19.4/5</MarginText>
 <MarginInfo items={["AI12-0042-1", "AI12-0044-1", "AI12-0075-1"]} />
 <li> <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>20.b/4</MarginText>
+<MarginText>19.b/4</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>We don't check <strong>in</strong> parameters for functions to avoid infinite recursion for calls to public functions appearing in invariant expressions. Such function calls are unavoidable for class-wide invariants and likely for other invariants. This is the simplest rule that avoids trouble, and functions are much more likely to be queries that don't modify their parameters than other callable entities. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>20.5/5</MarginText>
+<MarginText>19.5/5</MarginText>
 <MarginInfo items={["AI12-0042-1", "AI12-0075-1"]} />
 <ul>
 <li> <br /></li>
-<MarginText>20.6/5</MarginText>
+<MarginText>19.6/5</MarginText>
 <MarginInfo items={["AI12-0075-1"]} />
 <li> <br /></li>
-<MarginText>20.7/5</MarginText>
+<MarginText>19.7/5</MarginText>
 <MarginInfo items={["AI12-0075-1"]} />
 <li> <br /></li>
-<MarginText>21/5</MarginText>
+<MarginText>20/5</MarginText>
 <MarginInfo items={["AI05-0146-1", "AI05-0269-1", "AI12-0075-1", "AI12-0338-1"]} />
-<li>If the nominal type of a formal parameter (or the designated nominal type of an access-to-object parameter or result) is incomplete at the point of the declaration of the callable entity, and if the completion of that incomplete type does not occur in the same declaration list as the incomplete declaration, then  for purposes of the preceding rules the nominal type is considered to have no parts  of type <em>T</em>.<br /></li>
-<MarginText>21.1/4</MarginText>
+<li>If the nominal type of a formal parameter (or the designated nominal type of an access-to-object parameter or result) is incomplete at the point of the declaration of the callable entity, and if the completion of that incomplete type does not occur in the same declaration list as the incomplete declaration, then for purposes of the preceding rules the nominal type is considered to have no parts  of type <em>T</em>.<br /></li>
+<MarginText>20.1/4</MarginText>
 <MarginInfo items={["AI12-0042-1"]} />
 <li>For a view conversion to a class-wide type occurring within the immediate scope of <em>T</em>, from a specific type that is a descendant of <em>T</em> (including <em>T</em> itself), a check is performed on the part of the object that is of type <em>T</em>.<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>21.a/4</MarginText>
+<MarginText>20.a/4</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>Class-wide objects are treated as though they exist outside the scope of every type, and may be passed across package "boundaries" freely without further invariant checks.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>21.b/5</MarginText>
+<MarginText>20.b/5</MarginText>
 <MarginInfo items={["AI12-0167-1"]} />
 <Admonition type="aarm" aarm="note">
 Despite this model, if an object of type <em>T</em> that is a component of a class-wide object is modified within the scope of the full view of type <em>T</em>, then there is no invariant check for <em>T</em> at that point. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>22/4</MarginText>
+<MarginText>21/4</MarginText>
 <MarginInfo items={["AI05-0290-1", "AI12-0080-1", "AI12-0159-1"]} />
 <p>If performing checks is required by the Type_Invariant or Type_Invariant'Class assertion policies (see <a href="../AA-11/AA-11.4#Subclause_11.4.2">11.4.2</a>) in effect at the point of the corresponding aspect specification applicable to a given type, then the respective invariant expression is considered <em>enabled</em>.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>22.a/3</MarginText>
+<MarginText>21.a/3</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>If a class-wide invariant expression is enabled for a type, it remains enabled when inherited by descendants of that type, even if the policy in effect is Ignore for the inheriting type. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>23/3</MarginText>
+<MarginText>22/3</MarginText>
 <MarginInfo items={["AI05-0146-1", "AI05-0250-1", "AI05-0289-1", "AI05-0290-1"]} />
 <p>The invariant check consists of the evaluation of each enabled invariant expression that applies to <em>T</em>, on each of the objects specified above. If any of these evaluate to False, Assertions.Assertion_Error is raised at the point of the object initialization, conversion, or call. If a given call requires more than one evaluation of an invariant expression, either for multiple objects of a single type or for multiple types with invariants, the evaluations are performed in an arbitrary order, and if one of them evaluates to False, it is not specified whether the others are evaluated. Any invariant check is performed prior to copying back any by-copy <strong>in out</strong> or <strong>out</strong> parameters. Invariant checks, any postcondition check, and any constraint or predicate checks associated with <strong>in out</strong> or <strong>out</strong> parameters are performed in an arbitrary order.<br /></p>
 
-<MarginText>23.1/4</MarginText>
+<MarginText>22.1/4</MarginText>
 <MarginInfo items={["AI12-0150-1", "AI12-0159-1"]} />
 <p>For an invariant check on a value of type <em>T1</em> based on a class-wide invariant expression inherited from an ancestor type <em>T</em>, any operations within the invariant expression that were resolved as primitive operations of the (notional) formal derived type <em>NT</em> are bound to the corresponding operations of type <em>T1</em> in the evaluation of the invariant expression for the check on <em>T1</em>.<br /></p>
 
-<MarginText>24/3</MarginText>
+<MarginText>23/3</MarginText>
 <MarginInfo items={["AI05-0146-1", "AI05-0247-1", "AI05-0250-1"]} />
 <p>The invariant checks performed on a call are determined by the subprogram or entry actually invoked, whether directly, as part of a dispatching call, or as part of a call through an access-to-subprogram value.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>24.a/5</MarginText>
+<MarginText>23.a/5</MarginText>
 <MarginInfo items={["AI12-0149-1", "AI12-0167-1", "AI12-0210-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Type invariant checks are intended to prevent invariant-violating values from inadvertently "leaking out"; that is, code which cannot see the completion of the private type should not be able to reference invariant-violating values of the type (assuming the type invariant condition itself is well behaved - for example, no uses of global variables during evaluation of the invariant expression). This goal is not completely achieved; such leaking is possible but, importantly, it requires assistance (deliberate or not) of some form from the package that declares the invariant-bearing private type (or a child unit thereof); a client of a well-crafted package cannot use these holes to obtain an invariant-violating value without help. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>24.b/5</MarginText>
+<MarginText>23.b/5</MarginText>
 <MarginInfo items={["AI12-0210-1"]} />
 <Admonition type="aarm" aarm="note">
 The list of known techniques whereby this kind of leak can occur (ignoring things like erroneous execution and the various forms of unchecked type conversion) consists of:<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>24.c/5</MarginText>
+<MarginText>23.c/5</MarginText>
 <ul>
 <li>A boundary entity might assign an invariant-violating value to a global variable that is visible to client code.<br /></li>
-<MarginText>24.d/5</MarginText>
+<MarginText>23.d/5</MarginText>
 <MarginInfo items={["AI12-0149-1"]} />
 <li>Invariant checks on subprogram return are not performed on objects that are accessible only through access-valued components of other objects. This can only cause a leak if there is a type with access-valued components that is used as a parameter or result type of a boundary entity. For a type <em>T</em> that has a type invariant, avoiding the declaration of types with access-valued components designating objects with parts of <em>T</em> in the package that contains <em>T</em> is sufficient to prevent this leak.<br /></li>
-<MarginText>24.e/5</MarginText>
+<MarginText>23.e/5</MarginText>
 <li>A client could call through an access-to-subprogram value and reach a subprogram body that has visibility on the full declaration of a type; no invariant checks will be performed if the designated subprogram is not itself a boundary subprogram. This leak can only happen if an access-to-subprogram value of a subprogram that is not visible to clients is passed out to clients.<br /></li>
-<MarginText>24.f/5</MarginText>
+<MarginText>23.f/5</MarginText>
 <MarginInfo items={["AI12-0167-1", "AI12-0191-1"]} />
 <li>Invariant checks are only performed for parts of the nominal type for tagged parameters and function results. This means that components of extensions are not checked (these would be very expensive to check as any tagged type <em>might</em> have such an extension in the future, even though that would be very unlikely). For this leak to occur for a type <em>T</em> that has a type invariant, the body of a boundary entity of <em>T</em> needs to have visibility on a type extension that has components of <em>T</em> or access-to-<em>T</em> and also has an ancestor type (or class) as a parameter or result of the subprogram.<br /></li>
-<MarginText>24.g/5</MarginText>
+<MarginText>23.g/5</MarginText>
 <MarginInfo items={["AI12-0338-1"]} />
 <li>Invariant checks are not performed for parts of incomplete types when the completion is not available. For this leak to occur for a type <em>T</em> that has a type invariant and is declared in a package <em>P</em>, one has to use a <strong>limited with</strong> on a package that has <em>P</em> in its semantic closure, and then use a type from that package as a parameter or result of a boundary subprogram for <em>T</em> (or as the designated type of a parameter or result of such a subprogram).<br /></li>
-<MarginText>24.h/5</MarginText>
+<MarginText>23.h/5</MarginText>
 <MarginInfo items={["AI12-0210-1"]} />
 <li>Consider a package <em>P</em> which declares an invariant-bearing private type <em>T</em> and a generic package <em>P.G1</em>, which in turn declares another generic package <em>P.G1.G2</em>. Outside of package <em>P</em>, there are declarations of an instantiation <em>I1</em> of <em>P.G1</em> and an instantiation <em>I2</em> of <em>I1.G2</em>. <em>I2</em> can declare visible subprograms whose bodies see the full view of <em>T</em> and yet these subprograms are not boundary subprograms (because the generic <em>I1.G2</em> is not declared within the immediate scope of <em>T</em> - <em>G1.G2</em> is, but that's irrelevant). So a call to one of these subprograms from outside of <em>P</em> could yield an invariant-violating value. So long as a nested generic of a nested generic unit of <em>P</em> is not declared, no such leaks are possible.<br /></li>
 </ul>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>24.i/5</MarginText>
+<MarginText>23.i/5</MarginText>
 <MarginInfo items={["AI12-0210-1"]} />
 <Admonition type="aarm" aarm="note">
 All of these leaks require cooperation of some form (as detailed above) from within the immediate scope of the invariant-bearing type.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>24.j/5</MarginText>
+<MarginText>23.j/5</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
 <strong></strong>The implementation might want to produce a warning if a private extension has an ancestor type that is a visible extension, and an invariant expression depends on the value of one of the components from a visible extension part. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>25/3</MarginText>
+<MarginText>24/3</MarginText>
 <MarginInfo items={["AI05-0250-1", "AI05-0269-1"]} />
 <Admonition type="aarm" aarm="note">
 NOTE   For a call of a primitive subprogram of type <em>NT</em> that is inherited from type <em>T</em>, the specified checks of the specific invariants of both the types <em>NT</em> and <em>T</em> are performed. For a call of a primitive subprogram of type <em>NT</em> that is overridden for type <em>NT</em>, the specified checks of the specific invariants of only type <em>NT</em> are performed.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>25.a/3</MarginText>
+<MarginText>24.a/3</MarginText>
 <Admonition type="aarm" aarm="proof">
 <strong></strong>This follows from the definition of a call on an inherited subprogram as view conversions of the parameters of the type and a call to the original subprogram (see <a href="../AA-3/AA-3.4">3.4</a>), along with the normal invariant checking rules. In particular, the call to the original subprogram takes care of any checks needed on type <em>T</em>, and the checks required on view conversions take care of any checks needed on type <em>NT</em>, specifically on <strong>in out</strong> and <strong>out</strong> parameters. We require this in order that the semantics of an explicitly defined wrapper that does nothing but call the original subprogram is the same as that of an inherited subprogram. <br /></Admonition>
 </AnnotatedOnly>
@@ -1258,42 +1279,42 @@ NOTE   For a call of a primitive subprogram of type <em>NT</em> that is inherite
 
 #### Examples
 
-<MarginText>26/5</MarginText>
+<MarginText>25/5</MarginText>
 <MarginInfo items={["AI12-0312-1", "AI12-0429-1"]} />
 <p><em>Example of a work scheduler where only urgent work can be scheduled for weekends:</em><br /></p>
 
-<MarginText>27/5</MarginText>
+<MarginText>26/5</MarginText>
 <CodeBlock language="ada">
 package Work_Orders is{"\n"}
-<MarginText>28/5</MarginText>
+<MarginText>27/5</MarginText>
    -- See 3.5.1 for type declarations of Level, Day, and Weekday{"\n"}
-<MarginText>29/5</MarginText>
+<MarginText>28/5</MarginText>
    type Work_Order is private with{"\n"}     Type_Invariant ={">"} Day_Scheduled (Work_Order) in Weekday{"\n"}                       or else Priority (Work_Order) = Urgent;{"\n"}
-<MarginText>30/5</MarginText>
+<MarginText>29/5</MarginText>
    function Schedule_Work (Urgency  : in Level;{"\n"}                           To_Occur : in Day) return Work_Order{"\n"}     with Pre ={">"} Urgency = Urgent or else To_Occur in Weekday;{"\n"}
-<MarginText>31/5</MarginText>
+<MarginText>30/5</MarginText>
    function Day_Scheduled (Order : in Work_Order) return Day;{"\n"}
-<MarginText>32/5</MarginText>
+<MarginText>31/5</MarginText>
    function Priority (Order : in Work_Order) return Level;{"\n"}
-<MarginText>33/5</MarginText>
+<MarginText>32/5</MarginText>
    procedure Change_Priority (Order        : in out Work_Order;{"\n"}                              New_Priority : in     Level;{"\n"}                              Changed      : out    Boolean){"\n"}      with Post ={">"} Changed = (Day_Scheduled(Order) in Weekday{"\n"}                              or else Priority(Order) = Urgent);{"\n"}
-<MarginText>34/5</MarginText>
+<MarginText>33/5</MarginText>
 private{"\n"}
-<MarginText>35/5</MarginText>
+<MarginText>34/5</MarginText>
    type Work_Order is record{"\n"}      Scheduled : Day;{"\n"}      Urgency   : Level;{"\n"}   end record;{"\n"}
-<MarginText>36/5</MarginText>
+<MarginText>35/5</MarginText>
 end Work_Orders;{"\n"}
-<MarginText>37/5</MarginText>
+<MarginText>36/5</MarginText>
 package body Work_Orders is{"\n"}
-<MarginText>38/5</MarginText>
+<MarginText>37/5</MarginText>
    function Schedule_Work (Urgency  : in Level;{"\n"}                           To_Occur : in Day) return Work_Order is{"\n"}     (Scheduled ={">"} To_Occur, Urgency ={">"} Urgency);{"\n"}
-<MarginText>39/5</MarginText>
+<MarginText>38/5</MarginText>
    function Day_Scheduled (Order : in Work_Order) return Day is{"\n"}     (Order.Scheduled);{"\n"}
-<MarginText>40/5</MarginText>
+<MarginText>39/5</MarginText>
    function Priority (Order : in Work_Order) return Level is{"\n"}     (Order.Urgency);{"\n"}
-<MarginText>41/5</MarginText>
+<MarginText>40/5</MarginText>
    procedure Change_Priority (Order        : in out Work_Order;{"\n"}                              New_Priority : in     Level;{"\n"}                              Changed      : out    Boolean) is{"\n"}   begin{"\n"}      -- Ensure type invariant is not violated{"\n"}      if Order.Urgency = Urgent or else (Order.Scheduled in Weekday) then{"\n"}         Changed := True;{"\n"}         Order.Urgency := New_Priority;{"\n"}      else{"\n"}         Changed := False;{"\n"}      end if;{"\n"}   end Change_Priority;{"\n"}
-<MarginText>42/5</MarginText>
+<MarginText>41/5</MarginText>
 end Work_Orders;{"\n"}
 
 </CodeBlock>
@@ -1303,7 +1324,7 @@ end Work_Orders;{"\n"}
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>42.a/3</MarginText>
+<MarginText>41.a/3</MarginText>
 <MarginInfo items={["AI05-0146-1", "AI05-0247-1", "AI05-0250-1", "AI05-0289-1"]} />
 <Admonition type="aarm" aarm="note">
 Type_Invariant aspects are new. <br /></Admonition>
@@ -1315,42 +1336,42 @@ Type_Invariant aspects are new. <br /></Admonition>
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>42.b/4</MarginText>
+<MarginText>41.b/4</MarginText>
 <MarginInfo items={["AI12-0042-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Clarified the definition of when invariant checks occur for inherited subprograms. This might cause checks to be added or removed in some cases. These are all rare cases involving class-wide type invariants and either record extensions or multiple levels of derivation. Additionally, implementations probably make the checks as the intent seems clear, even though the formal language did not include them. So we do not expect this to be a problem in practice.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>42.c/4</MarginText>
+<MarginText>41.c/4</MarginText>
 <MarginInfo items={["AI12-0042-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added invariant checks for conversions to class-wide types. This might cause an invariant check to fail in some cases where they would not be made in the original definition of Ada 2012. Such cases represent a hole where a value that fails an invariant could "leak out" of a package, and as such will detect far more bugs than it causes.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>42.d/4</MarginText>
+<MarginText>41.d/4</MarginText>
 <MarginInfo items={["AI12-0044-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Removed the invariant check for <strong>in</strong> parameters of functions, so that typical invariants don't cause infinite recursion. This is strictly inconsistent, as the Ada 2012 definition has this check; therefore, programs could depend on Assertion_Error being raised upon the return from some call on a public function. However, as the intent of assertion checking is to uncover bugs, a program that depends on a bug occurring seems very unlikely.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>42.e/4</MarginText>
+<MarginText>41.e/4</MarginText>
 <MarginInfo items={["AI12-0049-1", "AI12-0149-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added an invariant check for deferred constants and for access values returned from functions, so they cannot be used to &ldquo;leak&rdquo; values that violate the invariant from a package. This is strictly inconsistent, as the Ada 2012 definition is missing these checks; therefore, programs could depend on using values that violate an invariant outside of the package of definition. These will not raise Assertion_Error in Ada 2012 as defined in the Ada 2012 Reference Manual, but ought to do so (as noted by this change). As these are a violation of the intent of invariants, we think that this change will mainly reveal bugs rather than cause them.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>42.f/4</MarginText>
+<MarginText>41.f/4</MarginText>
 <MarginInfo items={["AI12-0150-1", "AI12-0159-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Eliminated unintentional redispatching from class-wide type invariants. This means that a different body might be evaluated for a type invariant check where the value has a different tag than that of the type. The change means that the behavior of Type_Invariant and Type_Invariant'Class will be the same for a particular subprogram, and that the known behavior of the operations can be assumed. We expect that this change will primarily fix bugs, as it will make class-wide type invariants work more like expected. In the case where redispatching is desired, an explicit conversion to a class-wide type can be used.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>42.g/5</MarginText>
+<MarginText>41.g/5</MarginText>
 <MarginInfo items={["AI12-0199-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Class-wide type invariants are no longer checked for abstract types. Thus, a program that previously raised Assertion_Error because of a call to a concrete subprogram of an abstract type will no longer do so. However, programs that depend on assertion failure are likely to be very rare, some explicit conversion to the abstract type is needed to get static binding, and additionally many such checks would call abstract functions (likely causing some compiler failure). As such, this incompatibility most likely will never be seen in practice. <br /></Admonition>
@@ -1362,7 +1383,7 @@ Type_Invariant aspects are new. <br /></Admonition>
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>42.h/5</MarginText>
+<MarginText>41.h/5</MarginText>
 <MarginInfo items={["AI12-0042-1", "AI12-0382-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> A private operation that is inherited in the visible part of a package to which a class-wide invariant applies now requires overriding. This is a very unlikely situation, and will prevent problems with invariant checks being added to routines that assume that they don't have them.  <br /></Admonition>
@@ -1374,7 +1395,7 @@ Type_Invariant aspects are new. <br /></Admonition>
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>42.i/4</MarginText>
+<MarginText>41.i/4</MarginText>
 <MarginInfo items={["AI12-0041-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Class-wide type invariants can now be specified on interfaces as well as private types. <br /></Admonition>
@@ -1386,35 +1407,35 @@ Type_Invariant aspects are new. <br /></Admonition>
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>42.j/4</MarginText>
+<MarginText>41.j/4</MarginText>
 <MarginInfo items={["AI12-0133-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Clarified that all objects that are initialized by default should have an invariant check, and added an exception for types with unknown discriminants, as in that case the client cannot declare a default-initialized object. This exception to the check is formally inconsistent, but since it is only removing an assertion failure that occurs where no assertion should be checked anyway (meaning it's more likely to fix a bug than cause one), and programs depending on assertion failure should be very rare outside of test cases, we don't document this as inconsistent.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>42.k/5</MarginText>
+<MarginText>41.k/5</MarginText>
 <MarginInfo items={["AI12-0075-1", "AI12-0191-1"]} />
 <Admonition type="aarm" aarm="note">
 Defined the term &ldquo;boundary entity&rdquo; to separate the static rules from the dynamic rules, and allow rules in other subclauses to reference these rules. No semantic change is intended.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>42.l/5</MarginText>
+<MarginText>41.l/5</MarginText>
 <MarginInfo items={["AI12-0191-1"]} />
 <Admonition type="aarm" aarm="note">
 Clarified that invariant checks only apply to parts of the nominal type of objects.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>42.m/5</MarginText>
+<MarginText>41.m/5</MarginText>
 <MarginInfo items={["AI12-0193-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Clarified when type invariant checks happen for protected actions and entry calls.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>42.n/5</MarginText>
+<MarginText>41.n/5</MarginText>
 <MarginInfo items={["AI12-0338-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Clarified that type invariant checks do not occur for parts of incomplete types unless the completion is available. <br /></Admonition>
@@ -1441,31 +1462,30 @@ Clarified that invariant checks only apply to parts of the nominal type of objec
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>2.a.1/5</MarginText>
-<Admonition type="aarm" aarm="glossary-entry">
-<strong></strong>A default initial condition is a property that holds for every default-initialized object of a given type.<br /></Admonition>
+<MarginText>2.b/5</MarginText>
+<Admonition type="aarm" aarm="note">
+<strong>Term entry: </strong><strong>default initial condition</strong> &mdash; property that holds for every default-initialized object of a given type<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>3</MarginText>
 
 #### Name Resolution Rules
 
-<MarginText>4/5</MarginText>
+<MarginText>3/5</MarginText>
 <MarginInfo items={["AI12-0265-1"]} />
 <p>The expected type for a default initial condition expression is any boolean type.<br /></p>
 
-<MarginText>5/5</MarginText>
+<MarginText>4/5</MarginText>
 <MarginInfo items={["AI12-0397-1"]} />
 <p>Within a default initial condition expression associated with a declaration for a type T, a name that denotes the declaration is interpreted as a current instance of a notional (nonabstract) formal derived type NT with ancestor T, that has directly visible primitive operations.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>5.a/5</MarginText>
+<MarginText>4.a/5</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This is analogous to the rule for Post'Class (see <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>) and ensures that the expression is well-defined for any descendant of type T. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>5.b/5</MarginText>
+<MarginText>4.b/5</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The operations of NT are also nonabstract, so the rule against a call of an abstract subprogram does not trigger for a default initial condition for an abstract type. Note that, presuming T is tagged, it is possible to call class-wide operations of the type T given an object of type NT. Similarly it is possible to explicitly convert an object of type NT to a subtype of T, and pass it to a nonprimitive operation expecting a parameter of type T. [Note that one cannot directly convert to (the first subtype of) T since it represents the current instance of the type within the aspect expression, but one can convert to a subtype of T (including a subtype that matches the first subtype).] <br /></Admonition>
 </AnnotatedOnly>
@@ -1473,52 +1493,52 @@ Clarified that invariant checks only apply to parts of the nominal type of objec
 
 #### Legality Rules
 
-<MarginText>6/5</MarginText>
+<MarginText>5/5</MarginText>
 <MarginInfo items={["AI12-0265-1"]} />
 <p>The Default_Initial_Condition aspect shall not be specified for a type whose partial view has unknown discriminants[, whether explicitly declared or inherited].<br /></p>
 
 
 #### Static Semantics
 
-<MarginText>7/5</MarginText>
+<MarginText>6/5</MarginText>
 <MarginInfo items={["AI12-0265-1"]} />
 <p>If the Default_Initial_Condition aspect is specified for a type T, then the default initial condition expression applies to T and to all descendants of T.<br /></p>
 
 
 #### Dynamic Semantics
 
-<MarginText>8/5</MarginText>
+<MarginText>7/5</MarginText>
 <MarginInfo items={["AI12-0265-1", "AI12-0397-1"]} />
 <p>If one or more default initial condition expressions apply to a [(nonabstract)] type T, then a default initial condition check is performed after successful initialization of an object of type T by default (see <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>). In the case of a controlled type, the check is performed after the call to the type's Initialize procedure (see <a href="../AA-7/AA-7.6">7.6</a>).<br /></p>
 
 <AnnotatedOnly>
-<MarginText>8.a/5</MarginText>
+<MarginText>7.a/5</MarginText>
 <MarginInfo items={["AI12-0397-1"]} />
 <Admonition type="aarm" aarm="proof">
 <strong></strong>If T is an abstract type, then there will never be an initialization of an object of the type. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>9/5</MarginText>
+<MarginText>8/5</MarginText>
 <MarginInfo items={["AI12-0265-1"]} />
 <p>If performing checks is required by the Default_Initial_Condition assertion policy (see <a href="../AA-11/AA-11.4#Subclause_11.4.2">11.4.2</a>) in effect at the point of the corresponding <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> applicable to a given type, then the respective default initial condition expression is considered enabled.<br /></p>
 
-<MarginText>10/5</MarginText>
+<MarginText>9/5</MarginText>
 <MarginInfo items={["AI12-0265-1", "AI12-0397-1"]} />
 <p>The default initial condition check consists of the evaluation of each enabled default initial condition expression that applies to T. Any operations within such an expression that were resolved as primitive operations of the (notional) formal derived type NT, are in the evaluation of the expression resolved as for a formal derived type in an instance with T as the actual type for NT (see <a href="../AA-12/AA-12.5#Subclause_12.5.1">12.5.1</a>). These evaluations, if there are more than one, are performed in an arbitrary order. If any of these evaluate to False, Assertions.Assertion_Error is raised at the point of the object initialization.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>10.a/5</MarginText>
+<MarginText>9.a/5</MarginText>
 <MarginInfo items={["AI12-0397-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Just as is true for a formal derived type (see <a href="../AA-12/AA-12.5#Subclause_12.5.1">12.5.1</a>), for a tagged type T, the controlling tag of a call on a primitive of NT will cause the body of the corresponding primitive of T to be executed. For an untagged type T, invoking a primitive of NT will cause the body of the operation of the type where the aspect originated to be executed, with conversions performed as for an inherited subprogram. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>11/5</MarginText>
+<MarginText>10/5</MarginText>
 <MarginInfo items={["AI12-0272-1"]} />
 <p>[For a generic formal type T, default initial condition checks performed are as determined by the actual type, along with any default initial condition of the formal type itself.]<br /></p>
 
 <AnnotatedOnly>
-<MarginText>11.a/5</MarginText>
+<MarginText>10.a/5</MarginText>
 <Admonition type="aarm" aarm="proof">
 <strong></strong>This follows from the general dynamic semantics rules given above, but we mention it explicitly so that there can be no doubt that it is intended. <br /></Admonition>
 </AnnotatedOnly>
@@ -1526,27 +1546,27 @@ Clarified that invariant checks only apply to parts of the nominal type of objec
 
 #### Implementation Permissions
 
-<MarginText>12/5</MarginText>
+<MarginText>11/5</MarginText>
 <MarginInfo items={["AI12-0332-1"]} />
 <p>Implementations may extend the syntax or semantics of the Default_Initial_Condition aspect in an implementation-defined manner.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>12.a/5</MarginText>
+<MarginText>11.a/5</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>Any extensions of the Default_Initial_Condition aspect.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>12.b/5</MarginText>
+<MarginText>11.b/5</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This is intended to allow preexisting usages from SPARK 2014 to remain acceptable in conforming implementations, as well as to provide future flexibility. Note the word &ldquo;extend&rdquo; in this permission; we expect that any aspect usage that conforms with the (other) rules of this clause will be accepted by any Ada implementation, regardless of any implementation-defined extensions. <br /></Admonition>
+<strong></strong>This is intended to allow preexisting usages from SPARK 2014 to remain acceptable in conforming implementations, as well as to provide future flexibility. Note the word &ldquo;extend&rdquo; in this permission; we expect that any aspect usage that conforms with the (other) rules of this subclause will be accepted by any Ada implementation, regardless of any implementation-defined extensions. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>13/5</MarginText>
+<MarginText>12/5</MarginText>
 <MarginInfo items={["AI12-0312-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   For an example of the use of this aspect, see the Vector container definition in <a href="../AA-A/AA-A.18#Subclause_A.18.2">A.18.2</a>. <br /></Admonition>
+NOTE   For an example of the use of this aspect, see the Vector container definition in <a href="../AA-A/AA-A.18#Subclause_A.18.2">A.18.2</a>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1555,7 +1575,7 @@ NOTE 1   For an example of the use of this aspect, see the Vector container defi
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>13.a/5</MarginText>
+<MarginText>12.a/5</MarginText>
 <MarginInfo items={["AI12-0265-1", "AI12-0272-1", "AI12-0397-1"]} />
 <Admonition type="aarm" aarm="note">
 Aspect Default_Initial_Condition is new. <br /></Admonition>
@@ -1570,113 +1590,112 @@ Aspect Default_Initial_Condition is new. <br /></Admonition>
 <p>Certain characteristics of an object of a given type are unchanged by most of the primitive operations of the type. Such characteristics are called <em>stable properties</em> of the type.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>1.a.1/5</MarginText>
-<Admonition type="aarm" aarm="glossary-entry">
-<strong></strong>A stable property is a characteristic associated with objects of a given type that is preserved by many of the primitive operations of the type.<br /></Admonition>
+<MarginText>1.a/5</MarginText>
+<Admonition type="aarm" aarm="note">
+<strong>Term entry: </strong><strong>stable property</strong> &mdash; characteristic associated with objects of a given type that is preserved by many of the primitive operations of the type<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>2</MarginText>
 
 #### Static Semantics
 
-<MarginText>3/5</MarginText>
+<MarginText>2/5</MarginText>
 <MarginInfo items={["AI12-0187-1"]} />
 <p>A <em>property function</em> of type <em>T</em> is a function with a single parameter of type <em>T</em> or of a class-wide type that covers <em>T</em>.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>3.a/5</MarginText>
+<MarginText>2.a/5</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This provides restrictions on name resolution so overloaded functions can be used as a stable property function. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>4/5</MarginText>
+<MarginText>3/5</MarginText>
 <MarginInfo items={["AI12-0285-1", "AI12-0324-1", "AI12-0388-1"]} />
 <p>A <em>type property aspect definition</em> is a list of <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s written in the syntax of a <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code>. A <em>subprogram property aspect definition</em> is a list of <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s, each optionally preceded by reserved word <strong>not</strong>, also written in the syntax of a <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code>.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>4.a/5</MarginText>
+<MarginText>3.a/5</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>A single <code><a href="../AA-4/AA-4.1#S0091">name</a></code> would technically be a parenthesized <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> rather than an <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>; we mean to include that here. We say "syntax of a <code><a href="../AA-4/AA-4.3#S0114">positional_array_aggregate</a></code>" to hopefully clarify that the specification is in no other way an actual <code><a href="../AA-4/AA-4.3#S0106">aggregate</a></code>. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>5/5</MarginText>
+<MarginText>4/5</MarginText>
 <MarginInfo items={["AI12-0187-1", "AI12-0272-1"]} />
 <p>For a nonformal private type, nonformal private extension, or full type that does not have a partial view, the following language-defined aspects may be specified with an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>):<br /></p>
 
-<MarginText>6/5</MarginText>
+<MarginText>5/5</MarginText>
 <MarginInfo items={["AI12-0187-1", "AI12-0285-1", "AI12-0405-1"]} />
 <dt><br/>Stable_Properties</dt>
 <dl>
 <dd>This aspect shall be specified by a type property aspect definition; each <code><a href="../AA-4/AA-4.1#S0091">name</a></code> shall statically denote a single property function of the type. This aspect defines the <em>specific stable property functions</em> of the associated type.<br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>6.a/5</MarginText>
+<MarginText>5.a/5</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>We do not allow this aspect on generic formal types, as it is only meaningful for primitive subprograms and generic formal types have no such subprograms. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.b/5</MarginText>
+<MarginText>5.b/5</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Class-wide aspects are only allowed on tagged types (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>), so we don't say that here. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.c/5</MarginText>
+<MarginText>5.c/5</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Stable_Properties: </strong>A list of functions describing characteristics that usually are unchanged by primitive operations of the type or an individual primitive subprogram.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>7/5</MarginText>
+<MarginText>6/5</MarginText>
 <MarginInfo items={["AI12-0187-1", "AI12-0285-1"]} />
 <dt><br/>Stable_Properties'Class</dt>
 <dl>
 <dd>This aspect shall be specified by a type property aspect definition; each <code><a href="../AA-4/AA-4.1#S0091">name</a></code> shall statically denote a single property function of the type. This aspect defines the <em>class-wide stable property functions</em> of the associated type. [Unlike most class-wide aspects, Stable_Properties'Class is not inherited by descendant types and subprograms, but the enhanced class-wide postconditions are inherited in the normal manner.]<br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>7.a/5</MarginText>
+<MarginText>6.a/5</MarginText>
 <Admonition type="aarm" aarm="proof">
 <strong></strong>Class-wide inheritance has to be explicitly defined. Here we are not making such a definition, so there is no inheritance. <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a> defines the inheritance of class-wide postconditions. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.b/5</MarginText>
+<MarginText>6.b/5</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>Since class-wide postconditions are inherited by descendants, we don't need the stable property functions to be inherited; if they were inherited, we'd be duplicating the checks, which we don't want. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.c/5</MarginText>
+<MarginText>6.c/5</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Class-wide aspects are only allowed on primitive subprograms of tagged types (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>), so we don't say that here. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.d/5</MarginText>
+<MarginText>6.d/5</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Stable_Properties'Class: </strong>A list of functions describing characteristics that usually are unchanged by primitive operations of a class of types or a primitive subprogram for such a class.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>8/5</MarginText>
+<MarginText>7/5</MarginText>
 <MarginInfo items={["AI12-0405-1"]} />
 <p>The specific and class-wide stable properties of a type together comprise the stable properties of the type. <br /></p>
 
-<MarginText>9/5</MarginText>
+<MarginText>8/5</MarginText>
 <MarginInfo items={["AI12-0187-1"]} />
 <p>For a primitive subprogram, the following language-defined aspects may be specified with an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>):<br /></p>
 
-<MarginText>10/5</MarginText>
+<MarginText>9/5</MarginText>
 <MarginInfo items={["AI12-0187-1", "AI12-0285-1"]} />
 <dt><br/>Stable_Properties</dt>
 <dl>
 <dd>This aspect shall be specified by a subprogram property aspect definition; each <code><a href="../AA-4/AA-4.1#S0091">name</a></code> shall statically denote a single property function of a type for which the associated subprogram is primitive.<br /></dd>
-<MarginText>11/5</MarginText>
+<MarginText>10/5</MarginText>
 <MarginInfo items={["AI12-0187-1", "AI12-0285-1"]} />
 <dt><br/>Stable_Properties'Class</dt>
 <dd>This aspect shall be specified by a subprogram property aspect definition; each <code><a href="../AA-4/AA-4.1#S0091">name</a></code> shall statically denote a single property function of a tagged type for which the associated subprogram is primitive. [Unlike most class-wide aspects, Stable_Properties'Class is not inherited by descendant subprograms, but the enhanced class-wide postconditions are inherited in the normal manner.]<br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>11.a/5</MarginText>
+<MarginText>10.a/5</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The subprogram versions of Stable_Properties are provided to allow overriding the stable properties of a type for an individual primitive subprogram. While they can be used even if the type has no stable properties, that is not an intended use (as simply modifying the postcondition directly makes more sense for something that only happens in one place). <br /></Admonition>
 </AnnotatedOnly>
@@ -1684,159 +1703,159 @@ Aspect Default_Initial_Condition is new. <br /></Admonition>
 
 #### Legality Rules
 
-<MarginText>12/5</MarginText>
+<MarginText>11/5</MarginText>
 <MarginInfo items={["AI12-0187-1"]} />
 <p>A stable property function of a type <em>T</em> shall have a nonlimited return type and shall be:<br /></p>
 
-<MarginText>13/5</MarginText>
+<MarginText>12/5</MarginText>
 <ul>
 <li>a primitive function with a single parameter of mode <strong>in</strong> of type <em>T</em>; or<br /></li>
-<MarginText>14/5</MarginText>
+<MarginText>13/5</MarginText>
 <li>a function that is declared immediately within the declarative region in which an ancestor type of <em>T</em> is declared and has a single parameter of mode <strong>in</strong> of a class-wide type that covers <em>T</em>. <br /></li>
 </ul>
-<MarginText>15/5</MarginText>
+<MarginText>14/5</MarginText>
 <MarginInfo items={["AI12-0187-1", "AI12-0285-1"]} />
 <p>In a subprogram property aspect definition for a subprogram <em>S</em>:<br /></p>
 
-<MarginText>16/5</MarginText>
+<MarginText>15/5</MarginText>
 <ul>
 <li>all or none of the items shall be preceded by <strong>not</strong>;<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>16.a/5</MarginText>
+<MarginText>15.a/5</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Mixing <strong>not</strong> functions with regular functions is not allowed. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>17/5</MarginText>
+<MarginText>16/5</MarginText>
 <ul>
 <li>any property functions mentioned after <strong>not</strong> shall be a stable property function of a type for which <em>S</em> is primitive. <br /></li>
 </ul>
-<MarginText>18/5</MarginText>
+<MarginText>17/5</MarginText>
 <MarginInfo items={["AI12-0405-1"]} />
 <p>If a <code><a href="../AA-8/AA-8.5#S0242">subprogram_renaming_declaration</a></code> declares a primitive subprogram of a type <em>T</em>, then the renamed callable entity shall also be a primitive subprogram of type <em>T</em> and the two primitive subprograms shall have the same specific stable property functions and the same class-wide stable property functions (see below).<br /></p>
 
 
 #### Static Semantics
 
-<MarginText>19/5</MarginText>
+<MarginText>18/5</MarginText>
 <MarginInfo items={["AI12-0187-1"]} />
 <p>For a primitive subprogram <em>S</em> of a type <em>T</em>, the specific stable property functions of <em>S</em> for type <em>T</em> are:<br /></p>
 
-<MarginText>20/5</MarginText>
+<MarginText>19/5</MarginText>
 <ul>
 <li>if <em>S</em> has an aspect Stable_Properties specified that does not include <strong>not</strong>, those functions denoted in the aspect Stable_Properties for <em>S</em> that have a parameter of <em>T</em> or <em>T</em>'Class;<br /></li>
-<MarginText>21/5</MarginText>
+<MarginText>20/5</MarginText>
 <li>if <em>S</em> has an aspect Stable_Properties specified that includes <strong>not</strong>, those functions denoted in the aspect Stable_Properties for <em>T</em>, excluding those denoted in the aspect Stable_Properties for <em>S</em>;<br /></li>
-<MarginText>22/5</MarginText>
+<MarginText>21/5</MarginText>
 <li>if <em>S</em> does not have an aspect Stable_Properties, those functions denoted in the aspect Stable_Properties for <em>T</em>, if any.<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>22.a/5</MarginText>
+<MarginText>21.a/5</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>A primitive subprogram can be primitive for more than one type, and thus there can be more than one such set of specific stable properties for a subprogram. Thus we say &ldquo;specific stable property functions for subprogram <em>S</em> for type <em>T</em>&rdquo;. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>23/5</MarginText>
+<MarginText>22/5</MarginText>
 <MarginInfo items={["AI12-0187-1"]} />
 <p>A similar definition applies for class-wide stable property functions by replacing aspect Stable_Properties with aspect Stable_Properties'Class in the above definition.<br /></p>
 
-<MarginText>24/5</MarginText>
+<MarginText>23/5</MarginText>
 <MarginInfo items={["AI12-0187-1"]} />
 <p>The <em>explicit</em> specific postcondition expression for a subprogram <em>S</em> is the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> directly specified for <em>S</em> with the Post aspect. Similarly, the <em>explicit</em> class-wide postcondition expression for a subprogram <em>S</em> is the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> directly specified for <em>S</em> with the Post'Class aspect.<br /></p>
 
-<MarginText>25/5</MarginText>
+<MarginText>24/5</MarginText>
 <MarginInfo items={["AI12-0187-1"]} />
 <p>For a primitive subprogram <em>S</em> of a type <em>T</em> that has a parameter <em>P</em> of type <em>T</em>, the parameter is <em>excluded from stable property checks</em> if:<br /></p>
 
-<MarginText>26/5</MarginText>
+<MarginText>25/5</MarginText>
 <ul>
 <li><em>S</em> is a stable property function of <em>T</em>;<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>26.a/5</MarginText>
+<MarginText>25.a/5</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This prevents possible infinite recursion, where the postcondition calls the function itself (directly or indirectly). <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>27/5</MarginText>
+<MarginText>26/5</MarginText>
 <ul>
 <li><em>P</em> has mode <strong>out</strong>;<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>27.a/5</MarginText>
+<MarginText>26.a/5</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>A parameter of mode <strong>out</strong> doesn't necessarily have a defined input value, so there is no old value to compare with. Ideally, the postcondition will include expressions defining the values of the stable properties after the call, but we do not try to ensure this. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>28/5</MarginText>
+<MarginText>27/5</MarginText>
 <ul>
 <li>the Global aspect of <em>S</em> is <strong>null</strong>, and <em>P</em> has mode <strong>in</strong> and the mode is not overridden by a global aspect.<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>28.a/5</MarginText>
+<MarginText>27.a/5</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>An <strong>in</strong> parameter of a Global ={">"} <strong>null</strong> subprogram cannot be modified, even if it has indirect parts, without violating the Global aspect. Thus, there is no need to assert that the properties don't change. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>29/5</MarginText>
+<MarginText>28/5</MarginText>
 <MarginInfo items={["AI12-0187-1", "AI12-0324-1", "AI12-0405-1"]} />
 <p>For every primitive subprogram <em>S</em> of a type <em>T</em> that is not an abstract subprogram or null procedure, the specific postcondition expression of <em>S</em> is modified to include expressions of the form <em>F</em>(<em>P</em>) = <em>F</em>(<em>P</em>)'Old, all <strong>and</strong>ed with each other and any explicit specific postcondition expression, with one such equality included for each specific stable property function <em>F</em> of <em>S</em> for type <em>T</em> that does not occur in the explicit specific postcondition expression of <em>S</em>, and <em>P</em> is each parameter of <em>S</em> that has type <em>T</em> and is not excluded from stable property checks. The resulting specific postcondition expression of <em>S</em> is used in place of the explicit specific postcondition expression of <em>S</em> [when interpreting the meaning of the postcondition as defined in <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>].<br /></p>
 
 <AnnotatedOnly>
-<MarginText>29.a/5</MarginText>
+<MarginText>28.a/5</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>There is one F(P) = F(P)'Old subexpression for every combination of a specific stable property function of type <em>T</em> and a parameter of type <em>T</em>. For instance, if there are three specific stable property functions for type <em>T</em> and two parameters of type <em>T</em>, then there are six such subexpressions appended to the postcondition.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>29.b/5</MarginText>
+<MarginText>28.b/5</MarginText>
 <Admonition type="aarm" aarm="note">
 The resulting specific postcondition is evaluated as described in <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>. One hopes that compilers can be smart enough to prove that many of these added postcondition subexpressions cannot fail, but that is not required here. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>29.c/5</MarginText>
+<MarginText>28.c/5</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>Null procedures and abstract subprograms are excluded as they do not allow specific postconditions. Moreover, for null procedures, static analysis tools can be certain that their parameters aren't modified so there is no need to assert that the properties don't change. Abstract subprograms cannot be directly called. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>30/5</MarginText>
+<MarginText>29/5</MarginText>
 <MarginInfo items={["AI12-0187-1", "AI12-0324-1", "AI12-0405-1"]} />
 <p>For every primitive subprogram <em>S</em> of a type <em>T</em>, the class-wide postcondition expression of <em>S</em> is modified to include expressions of the form <em>F</em>(<em>P</em>) = <em>F</em>(<em>P</em>)'Old, all <strong>and</strong>ed with each other and any explicit class-wide postcondition expression, with one such equality included for each class-wide stable property function <em>F</em> of <em>S</em> for type <em>T</em> that does not occur in any class-wide postcondition expression that applies to <em>S</em>, and <em>P</em> is each parameter of <em>S</em> that has type <em>T</em> and is not excluded from stable property checks. The resulting class-wide postcondition expression of <em>S</em> is used in place of the explicit class-wide postcondition expression of <em>S</em> [when interpreting the meaning of the postcondition as defined in <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>].<br /></p>
 
 <AnnotatedOnly>
-<MarginText>30.a/5</MarginText>
+<MarginText>29.a/5</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>We suppress stable property expressions if the property function appears in the explicit class-wide postcondition, or in any inherited class-wide postconditions. If we didn't do that, we could have conflicting requirements in an inherited postcondition and the current one. We also avoid redundant property checks. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>30.b/5</MarginText>
+<MarginText>29.b/5</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The resulting class-wide postcondition is evaluated as described in <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>. In particular, the enhanced class-wide postcondition <em>is</em> the class-wide postcondition for <em>S</em>, and therefore inherited postconditions include any stable property expressions for <em>S</em>.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>30.c/5</MarginText>
+<MarginText>29.c/5</MarginText>
 <MarginInfo items={["AI12-0405-1"]} />
 <Admonition type="aarm" aarm="note">
 In the case of a derived type <em>T</em>, when the preceding rules refer to &ldquo;every primitive subprogram <em>S</em> of a type <em>T</em>&rdquo;, the referenced set of subprograms includes any inherited subprograms. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>31/5</MarginText>
+<MarginText>30/5</MarginText>
 <MarginInfo items={["AI12-0405-1"]} />
 <p>The equality operation that is used in the aforementioned equality expressions is as described in the case of an individual membership test whose <code><a href="../AA-4/AA-4.4#S0137">membership_choice</a></code> is a <em>choice_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> (see <a href="../AA-4/AA-4.5#Subclause_4.5.2">4.5.2</a>).<br /></p>
 
-<MarginText>32/5</MarginText>
+<MarginText>31/5</MarginText>
 <MarginInfo items={["AI12-0405-1"]} />
 <p>The Post expression additions described above are enabled or disabled depending on the Post assertion policy that is in effect at the point of declaration of the subprogram <em>S</em>. A similar rule applies to the Post'Class expression additions. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>33/5</MarginText>
+<MarginText>32/5</MarginText>
 <MarginInfo items={["AI12-0112-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   For an example of the use of these aspects, see the Vector container definition in <a href="../AA-A/AA-A.18#Subclause_A.18.2">A.18.2</a>. <br /></Admonition>
+NOTE   For an example of the use of these aspects, see the Vector container definition in <a href="../AA-A/AA-A.18#Subclause_A.18.2">A.18.2</a>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1845,7 +1864,7 @@ NOTE 1   For an example of the use of these aspects, see the Vector container de
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>33.a/5</MarginText>
+<MarginText>32.a/5</MarginText>
 <MarginInfo items={["AI12-0187-1", "AI12-0285-1", "AI12-0405-1"]} />
 <Admonition type="aarm" aarm="note">
 These aspects are new. <br /></Admonition>

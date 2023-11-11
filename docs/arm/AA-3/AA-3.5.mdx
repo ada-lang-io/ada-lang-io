@@ -56,10 +56,10 @@ import MarginInfo from "@site/src/components/MarginInfo";
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>5.b/3</MarginText>
-<MarginInfo items={["AI05-0299-1"]} />
+<MarginText>5.b/5</MarginText>
+<MarginInfo items={["AI05-0299-1", "AI12-0449-1"]} />
 <Admonition type="aarm" aarm="note">
-We say "the expected type is ..." or "the type is expected to be ..." depending on which reads better. They are fundamentally equivalent, and both feed into the type resolution rules of subclause <a href="../AA-8/AA-8.6">8.6</a>.<br /></Admonition>
+We say "the expected type is ..." or "the type is expected to be ..." depending on which reads better. They are fundamentally equivalent, and both feed into the type resolution rules of  <a href="../AA-8/AA-8.6">8.6</a>.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -194,12 +194,12 @@ function S'Succ(Arg : S'Base){"\n"}  return S'Base{"\n"}
 </CodeBlock>
 <MarginText>24</MarginText>
 <dl>
-<dd>For an enumeration type, the function returns the value whose position number is one more than that of the value of Arg; Constraint_Error is raised if there is no such value of the type. For an integer type, the function returns the result of adding one to the value of Arg. For a fixed point type, the function returns the result of adding <em>small</em> to the value of Arg. For a floating point type, the function returns the machine number (as defined in <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) immediately above the value of Arg; Constraint_Error is raised if there is no such machine number. <br /></dd>
+<dd>For an enumeration type, the function returns the value whose position number is one more than that of the value of <em>Arg</em>; Constraint_Error is raised if there is no such value of the type. For an integer type, the function returns the result of adding one to the value of <em>Arg</em>. For a fixed point type, the function returns the result of adding <em>small</em> to the value of <em>Arg</em>. For a floating point type, the function returns the machine number (as defined in <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) immediately above the value of <em>Arg</em>; Constraint_Error is raised if there is no such machine number. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>24.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>S'Succ for a modular integer subtype wraps around if the value of Arg is S'Base'Last. S'Succ for a signed integer subtype might raise Constraint_Error if the value of Arg is S'Base'Last, or it might return the out-of-base-range value S'Base'Last+1, as is permitted for all predefined numeric operations. <br /></Admonition>
+<strong></strong>S'Succ for a modular integer subtype wraps around if the value of <em>Arg</em> is S'Base'Last. S'Succ for a signed integer subtype might raise Constraint_Error if the value of <em>Arg</em> is S'Base'Last, or it might return the out-of-base-range value S'Base'Last+1, as is permitted for all predefined numeric operations. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>25</MarginText>
@@ -214,12 +214,12 @@ function S'Pred(Arg : S'Base){"\n"}  return S'Base{"\n"}
 </CodeBlock>
 <MarginText>27</MarginText>
 <dl>
-<dd>For an enumeration type, the function returns the value whose position number is one less than that of the value of Arg; Constraint_Error is raised if there is no such value of the type. For an integer type, the function returns the result of subtracting one from the value of Arg. For a fixed point type, the function returns the result of subtracting <em>small</em> from the value of Arg. For a floating point type, the function returns the machine number (as defined in <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) immediately below the value of Arg; Constraint_Error is raised if there is no such machine number. <br /></dd>
+<dd>For an enumeration type, the function returns the value whose position number is one less than that of the value of <em>Arg</em>; Constraint_Error is raised if there is no such value of the type. For an integer type, the function returns the result of subtracting one from the value of <em>Arg</em>. For a fixed point type, the function returns the result of subtracting <em>small</em> from the value of <em>Arg</em>. For a floating point type, the function returns the machine number (as defined in <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>) immediately below the value of <em>Arg</em>; Constraint_Error is raised if there is no such machine number. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>27.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>S'Pred for a modular integer subtype wraps around if the value of Arg is S'Base'First. S'Pred for a signed integer subtype might raise Constraint_Error if the value of Arg is S'Base'First, or it might return the out-of-base-range value S'Base'First&ndash;1, as is permitted for all predefined numeric operations. <br /></Admonition>
+<strong></strong>S'Pred for a modular integer subtype wraps around if the value of <em>Arg</em> is S'Base'First. S'Pred for a signed integer subtype might raise Constraint_Error if the value of <em>Arg</em> is S'Base'First, or it might return the out-of-base-range value S'Base'First&ndash;1, as is permitted for all predefined numeric operations. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>27.1/5</MarginText>
@@ -433,7 +433,7 @@ function S'Wide_Value(Arg : Wide_String){"\n"}  return S'Base{"\n"}
 <dd>This function returns a value given an image of the value as a Wide_String, ignoring any leading or trailing spaces.<br /></dd>
 <MarginText>43/5</MarginText>
 <MarginInfo items={["AI95-00285-01", "AI05-0264-1", "AI12-0020-1"]} />
-<dd>For the evaluation of a call on S'Wide_Value for an enumeration subtype S, if the sequence of characters of the parameter (ignoring leading and trailing spaces) has the syntax of an enumeration literal and if it corresponds to a literal of the type of S (or corresponds to the result of S'Wide_Image for a value of the type, assuming a default implementation of S'Put_Image), the result is the corresponding enumeration value; otherwise, Constraint_Error is raised. For a numeric subtype S, the evaluation of a call on S'Wide_Value with Arg of type Wide_String is equivalent to a call on S'Wide_Wide_Value for a corresponding Arg of type Wide_Wide_String. <br /></dd>
+<dd>For the evaluation of a call on S'Wide_Value for an enumeration subtype S, if the sequence of characters of the parameter (ignoring leading and trailing spaces) has the syntax of an enumeration literal and if it corresponds to a literal of the type of S (or corresponds to the result of S'Wide_Image for a value of the type, assuming a default implementation of S'Put_Image), the result is the corresponding enumeration value; otherwise, Constraint_Error is raised. For a numeric subtype S, the evaluation of a call on S'Wide_Value with <em>Arg</em> of type Wide_String is equivalent to a call on S'Wide_Wide_Value for a corresponding <em>Arg</em> of type Wide_Wide_String. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>43.a/2</MarginText>
@@ -470,7 +470,7 @@ function S'Value(Arg : String){"\n"}  return S'Base{"\n"}
 <dd>This function returns a value given an image of the value as a String, ignoring any leading or trailing spaces.<br /></dd>
 <MarginText>55/5</MarginText>
 <MarginInfo items={["AI95-00285-01", "AI05-0264-1", "AI12-0020-1"]} />
-<dd>For the evaluation of a call on S'Value for an enumeration subtype S, if the sequence of characters of the parameter (ignoring leading and trailing spaces) has the syntax of an enumeration literal and if it corresponds to a literal of the type of S (or corresponds to the result of S'Image for a value of the type, assuming a default implementation of S'Put_Image), the result is the corresponding enumeration value; otherwise, Constraint_Error is raised. For a numeric subtype S, the evaluation of a call on S'Value with Arg of type String is equivalent to a call on S'Wide_Wide_Value for a corresponding Arg of type Wide_Wide_String. <br /></dd>
+<dd>For the evaluation of a call on S'Value for an enumeration subtype S, if the sequence of characters of the parameter (ignoring leading and trailing spaces) has the syntax of an enumeration literal and if it corresponds to a literal of the type of S (or corresponds to the result of S'Image for a value of the type, assuming a default implementation of S'Put_Image), the result is the corresponding enumeration value; otherwise, Constraint_Error is raised. For a numeric subtype S, the evaluation of a call on S'Value with <em>Arg</em> of type String is equivalent to a call on S'Wide_Wide_Value for a corresponding <em>Arg</em> of type Wide_Wide_String. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>55.a/2</MarginText>
@@ -782,7 +782,7 @@ All of the Image-family attributes have been moved to <a href="../AA-4/AA-4.10">
 <MarginText>3</MarginText>
 
 <CodeBlock>
-<code>enumeration_literal_specification</code><a id="S0039"></a><code> ::= </code> <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> | <code><a href="../AA-3/AA-3.5#S0040">defining_character_literal</a></code><br />
+<code>enumeration_literal_specification</code><a id="S0039"></a><code> ::= </code><br />    <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> | <code><a href="../AA-3/AA-3.5#S0040">defining_character_literal</a></code><br />
 
 </CodeBlock>
 <MarginText>4</MarginText>
@@ -865,14 +865,14 @@ All of the Image-family attributes have been moved to <a href="../AA-4/AA-4.10">
 <AnnotatedOnly>
 <MarginText>12</MarginText>
 <Admonition type="aarm" aarm="note">
-NOTE 1   If an enumeration literal occurs in a context that does not otherwise suffice to determine the type of the literal, then qualification by the name of the enumeration type is one way to resolve the ambiguity (see <a href="../AA-4/AA-4.7">4.7</a>). <br /></Admonition>
+NOTE   If an enumeration literal occurs in a context that does not otherwise suffice to determine the type of the literal, then qualification by the name of the enumeration type is one way to resolve the ambiguity (see <a href="../AA-4/AA-4.7">4.7</a>). <br /></Admonition>
 </AnnotatedOnly>
 
 
 #### Examples
 
 <MarginText>13</MarginText>
-<p><em>Examples of enumeration types and subtypes: </em><br /></p>
+<p><em>Examples of enumeration types and subtypes:</em> <br /></p>
 
 <MarginText>14/5</MarginText>
 <MarginInfo items={["AI12-0386-1"]} />
@@ -881,7 +881,7 @@ type Day        is (Mon, Tue, Wed, Thu, Fri, Sat, Sun);{"\n"}type Month_Name is 
 <MarginText>15</MarginText>
 type Hexa       is ('A', 'B', 'C', 'D', 'E', 'F');{"\n"}type Mixed      is ('A', 'B', '*', B, None, '?', '%');{"\n"}
 <MarginText>16</MarginText>
-subtype Weekday is Day   range Mon .. Fri;{"\n"}subtype Major   is Suit  range Hearts .. Spades;{"\n"}subtype Rainbow is Color range Red .. Blue;  --  the Color Red, not the Light{"\n"}
+subtype Weekday is Day   range Mon .. Fri;{"\n"}subtype Major   is Suit  range Hearts .. Spades;{"\n"}subtype Rainbow is Color range Red .. Blue;{"\n"}                               -- the Color Red, not the Light{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
@@ -936,23 +936,23 @@ We emphasize the fact that an enumeration literal denotes a function, which is c
 <p>An enumeration type is said to be a <em>character type</em> if at least one of its enumeration literals is a <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>.<br /></p>
 
 <MarginText>2/5</MarginText>
-<MarginInfo items={["AI95-00285-01", "AI05-0181-1", "AI05-0262-1", "AI05-0266-1", "AI12-0263-1"]} />
-<p> The predefined type Character is a character type whose values correspond to the 256 code points of Row 00 (also known as Latin-1) of the ISO/IEC 10646:2017  Basic Multilingual Plane (BMP). Each of the graphic characters of Row 00 of the BMP has a corresponding <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> in Character. Each of the nongraphic characters of Row 00 has a corresponding language-defined name, which is not usable as an enumeration literal, but which is usable with the attributes Image, Wide_Image, Wide_Wide_Image, Value, Wide_Value, and Wide_Wide_Value; these names are given in the definition of type Character in <a href="../AA-A/AA-A.1">A.1</a>, &ldquo;<a href="../AA-A/AA-A.1">The Package Standard</a>&rdquo;, but are set in <em>italics</em>. <br /></p>
+<MarginInfo items={["AI95-00285-01", "AI05-0181-1", "AI05-0262-1", "AI05-0266-1", "AI12-0263-1", "AI12-0450-1"]} />
+<p> The predefined type Character is a character type whose values correspond to the 256 code points of Row 00 (also known as Latin-1) of the ISO/IEC 10646:2020  Basic Multilingual Plane (BMP). Each of the graphic characters of Row 00 of the BMP has a corresponding <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> in Character. Each of the nongraphic characters of Row 00 has a corresponding language-defined name, which is not usable as an enumeration literal, but which is usable with the attributes Image, Wide_Image, Wide_Wide_Image, Value, Wide_Value, and Wide_Wide_Value; these names are given in the definition of type Character in <a href="../AA-A/AA-A.1">A.1</a>, &ldquo;<a href="../AA-A/AA-A.1">The Package Standard</a>&rdquo;, but are set in <em>italics</em>. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>2.a/5</MarginText>
-<MarginInfo items={["AI05-0262-1", "AI12-0263-1"]} />
+<MarginInfo items={["AI05-0262-1", "AI12-0263-1", "AI12-0450-1"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong><em>Code point</em> is defined in ISO/IEC 10646:2017 . <br /></Admonition>
+<strong></strong><em>Code point</em> is defined in ISO/IEC 10646:2020 . <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>3/5</MarginText>
-<MarginInfo items={["AI95-00285-01", "AI05-0262-1", "AI12-0263-1"]} />
-<p> The predefined type Wide_Character is a character type whose values correspond to the 65536 code points of the ISO/IEC 10646:2017  Basic Multilingual Plane (BMP). Each of the graphic characters of the BMP has a corresponding <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> in Wide_Character. The first 256 values of Wide_Character have the same <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> or language-defined name as defined for Character. Each of the <code>graphic_character</code>s has a corresponding <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>.<br /></p>
+<MarginInfo items={["AI95-00285-01", "AI05-0262-1", "AI12-0263-1", "AI12-0450-1"]} />
+<p> The predefined type Wide_Character is a character type whose values correspond to the 65536 code points of the ISO/IEC 10646:2020  Basic Multilingual Plane (BMP). Each of the graphic characters of the BMP has a corresponding <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> in Wide_Character. The first 256 values of Wide_Character have the same <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> or language-defined name as defined for Character. Each of the <code>graphic_character</code>s has a corresponding <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code>.<br /></p>
 
 <MarginText>4/5</MarginText>
-<MarginInfo items={["AI95-00285-01", "AI05-0262-1", "AI12-0263-1"]} />
-<p> The predefined type Wide_Wide_Character is a character type whose values correspond to the 2147483648 code points of the ISO/IEC 10646:2017  character set. Each of the <code>graphic_character</code>s has a corresponding <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> in Wide_Wide_Character. The first 65536 values of Wide_Wide_Character have the same <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> or language-defined name as defined for Wide_Character.<br /></p>
+<MarginInfo items={["AI95-00285-01", "AI05-0262-1", "AI12-0263-1", "AI12-0450-1"]} />
+<p> The predefined type Wide_Wide_Character is a character type whose values correspond to the 2147483648 code points of the ISO/IEC 10646:2020  character set. Each of the <code>graphic_character</code>s has a corresponding <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> in Wide_Wide_Character. The first 65536 values of Wide_Wide_Character have the same <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> or language-defined name as defined for Wide_Character.<br /></p>
 
 <MarginText>5/3</MarginText>
 <MarginInfo items={["AI95-00285-01", "AI05-0262-1"]} />
@@ -980,10 +980,10 @@ NOTE 1   The language-defined library package Characters.Latin_1 (see <a href=".
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9/3</MarginText>
-<MarginInfo items={["AI05-0299-1"]} />
+<MarginText>9/5</MarginText>
+<MarginInfo items={["AI05-0299-1", "AI12-0449-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 2   A conventional character set such as <em>EBCDIC</em> can be declared as a character type; the internal codes of the characters can be specified by an <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code> as explained in subclause <a href="../AA-13/AA-13.4">13.4</a>. <br /></Admonition>
+NOTE 2   A conventional character set such as <em>EBCDIC</em> can be declared as a character type; the internal codes of the characters can be specified by an <code><a href="../AA-13/AA-13.4#S0350">enumeration_representation_clause</a></code> as explained in  <a href="../AA-13/AA-13.4">13.4</a>. <br /></Admonition>
 </AnnotatedOnly>
 
 
@@ -1167,13 +1167,13 @@ Changed "code position" to "code point" consistently throughout the standard, as
 <MarginText>2</MarginText>
 
 <CodeBlock>
-<code>integer_type_definition</code><a id="S0041"></a><code> ::= </code><code><a href="../AA-3/AA-3.5#S0042">signed_integer_type_definition</a></code> | <code><a href="../AA-3/AA-3.5#S0043">modular_type_definition</a></code><br />
+<code>integer_type_definition</code><a id="S0041"></a><code> ::= </code><br />    <code><a href="../AA-3/AA-3.5#S0042">signed_integer_type_definition</a></code> | <code><a href="../AA-3/AA-3.5#S0043">modular_type_definition</a></code><br />
 
 </CodeBlock>
 <MarginText>3</MarginText>
 
 <CodeBlock>
-<code>signed_integer_type_definition</code><a id="S0042"></a><code> ::= </code><strong>range</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> .. <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code><br />
+<code>signed_integer_type_definition</code><a id="S0042"></a><code> ::= </code><br />    <strong>range</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> .. <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code><br />
 
 </CodeBlock>
 <AnnotatedOnly>
@@ -1563,7 +1563,7 @@ function S'Pos(Arg : S'Base){"\n"}  return universal_integer{"\n"}
 </CodeBlock>
 <MarginText>4</MarginText>
 <dl>
-<dd>This function returns the position number of the value of Arg, as a value of type <em>universal_integer</em>.<br /></dd>
+<dd>This function returns the position number of the value of <em>Arg</em>, as a value of type <em>universal_integer</em>.<br /></dd>
 <MarginText>5</MarginText>
 <dt><br/>S'Val</dt>
 <dd>S'Val denotes a function with the following specification: <br /></dd>
@@ -1575,7 +1575,7 @@ function S'Val(Arg : universal_integer){"\n"}  return S'Base{"\n"}
 </CodeBlock>
 <MarginText>7</MarginText>
 <dl>
-<dd>This function returns a value of the type of S whose position number equals the value of Arg. For the evaluation of a call on S'Val, if there is no value in the base range of its type with the given position number, Constraint_Error is raised. <br /></dd>
+<dd>This function returns a value of the type of S whose position number equals the value of <em>Arg</em>. For the evaluation of a call on S'Val, if there is no value in the base range of its type with the given position number, Constraint_Error is raised. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>7.a</MarginText>
@@ -1650,8 +1650,7 @@ NOTE 1   Indexing and loop iteration use values of discrete types.<br /></Admoni
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10/3</MarginText>
-<MarginInfo items={["AI05-0299-1"]} />
+<MarginText>10</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 2   The predefined operations of a discrete type include the assignment operation, qualification, the membership tests, and the relational operators; for a boolean type they include the short-circuit control forms and the logical operators; for an integer type they include type conversion to and from other numeric types, as well as the binary and unary adding operators &ndash; and +, the multiplying operators, the unary operator <strong>abs</strong>, and the exponentiation operator. The assignment operation is described in <a href="../AA-5/AA-5.2">5.2</a>. The other predefined operations are described in Clause <a href="../AA-4/">4</a>.<br /></Admonition>
 </AnnotatedOnly>
@@ -1682,9 +1681,10 @@ NOTE 4   For a subtype of a discrete type, the result delivered by the attribute
 <MarginText>14</MarginText>
 <p><em>Examples of attributes of discrete subtypes: </em><br /></p>
 
-<MarginText>15</MarginText>
+<MarginText>15/5</MarginText>
+<MarginInfo items={["AI12-0449-1"]} />
 <CodeBlock language="ada">
---  For the types and subtypes declared in subclause <a href="../AA-3/AA-3.5#Subclause_3.5.1">3.5.1</a> the following hold: {"\n"}
+--  For the types and subtypes declared in  <a href="../AA-3/AA-3.5#Subclause_3.5.1">3.5.1</a> the following hold: {"\n"}
 <MarginText>16</MarginText>
 --  Color'First   = White,   Color'Last   = Black{"\n"}--  Rainbow'First = Red,     Rainbow'Last = Blue{"\n"}
 <MarginText>17</MarginText>
@@ -1739,7 +1739,7 @@ The attributes S'First_Valid and S'Last_Valid are new. <br /></Admonition>
 <MarginText>2</MarginText>
 
 <CodeBlock>
-<code>real_type_definition</code><a id="S0044"></a><code> ::= </code><br />   <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> | <code><a href="../AA-3/AA-3.5#S0047">fixed_point_definition</a></code><br />
+<code>real_type_definition</code><a id="S0044"></a><code> ::= </code><br />    <code><a href="../AA-3/AA-3.5#S0045">floating_point_definition</a></code> | <code><a href="../AA-3/AA-3.5#S0047">fixed_point_definition</a></code><br />
 
 </CodeBlock>
 
@@ -1808,7 +1808,7 @@ The attributes S'First_Valid and S'Last_Valid are new. <br /></Admonition>
 <AnnotatedOnly>
 <MarginText>9</MarginText>
 <Admonition type="aarm" aarm="note">
-NOTE 1   As stated, real literals are of the anonymous predefined real type <em>universal_real</em>. Other real types have no literals. However, the overload resolution rules (see <a href="../AA-8/AA-8.6">8.6</a>) allow expressions of the type <em>universal_real</em> whenever a real type is expected.<br /></Admonition>
+NOTE   As stated, real literals are of the anonymous predefined real type <em>universal_real</em>. Other real types have no literals. However, the overload resolution rules (see <a href="../AA-8/AA-8.6">8.6</a>) allow expressions of the type <em>universal_real</em> whenever a real type is expected.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1841,13 +1841,13 @@ All discussion of model numbers, safe ranges, and machine numbers is moved to <a
 <MarginText>2</MarginText>
 
 <CodeBlock>
-<code>floating_point_definition</code><a id="S0045"></a><code> ::= </code><br />  <strong>digits</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> [<code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code>]<br />
+<code>floating_point_definition</code><a id="S0045"></a><code> ::= </code><br />    <strong>digits</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> [<code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code>]<br />
 
 </CodeBlock>
 <MarginText>3</MarginText>
 
 <CodeBlock>
-<code>real_range_specification</code><a id="S0046"></a><code> ::= </code><br />  <strong>range</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> .. <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code><br />
+<code>real_range_specification</code><a id="S0046"></a><code> ::= </code><br />    <strong>range</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> .. <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code><br />
 
 </CodeBlock>
 
@@ -1973,7 +1973,7 @@ All discussion of model numbers, safe ranges, and machine numbers is moved to <a
 <AnnotatedOnly>
 <MarginText>18</MarginText>
 <Admonition type="aarm" aarm="note">
-NOTE 1   If a floating point subtype is unconstrained, then assignments to variables of the subtype involve only Overflow_Checks, never Range_Checks. <br /></Admonition>
+NOTE   If a floating point subtype is unconstrained, then assignments to variables of the subtype involve only Overflow_Checks, never Range_Checks. <br /></Admonition>
 </AnnotatedOnly>
 
 
@@ -1988,7 +1988,7 @@ type Coefficient is digits 10 range -1.0 .. 1.0;{"\n"}
 <MarginText>21</MarginText>
 type Real is digits 8;{"\n"}type Mass is digits 7 range 0.0 .. 1.0E35;{"\n"}
 <MarginText>22</MarginText>
-subtype Probability is Real range 0.0 .. 1.0;   --   a subtype with a smaller range{"\n"}
+subtype Probability is Real range 0.0 .. 1.0;{"\n"}       -- a subtype with a smaller range{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
@@ -2084,26 +2084,26 @@ NOTE 2   As for all types, objects of a floating point type have Size and Addres
 <MarginText>2</MarginText>
 
 <CodeBlock>
-<code>fixed_point_definition</code><a id="S0047"></a><code> ::= </code><code><a href="../AA-3/AA-3.5#S0048">ordinary_fixed_point_definition</a></code> | <code><a href="../AA-3/AA-3.5#S0049">decimal_fixed_point_definition</a></code><br />
+<code>fixed_point_definition</code><a id="S0047"></a><code> ::= </code><br />    <code><a href="../AA-3/AA-3.5#S0048">ordinary_fixed_point_definition</a></code> | <code><a href="../AA-3/AA-3.5#S0049">decimal_fixed_point_definition</a></code><br />
 
 </CodeBlock>
 <MarginText>3</MarginText>
 
 <CodeBlock>
-<code>ordinary_fixed_point_definition</code><a id="S0048"></a><code> ::= </code><br />   <strong>delta</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>  <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code><br />
+<code>ordinary_fixed_point_definition</code><a id="S0048"></a><code> ::= </code><br />    <strong>delta</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>  <code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code><br />
 
 </CodeBlock>
 <MarginText>4</MarginText>
 
 <CodeBlock>
-<code>decimal_fixed_point_definition</code><a id="S0049"></a><code> ::= </code><br />   <strong>delta</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> <strong>digits</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> [<code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code>]<br />
+<code>decimal_fixed_point_definition</code><a id="S0049"></a><code> ::= </code><br />    <strong>delta</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> <strong>digits</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> [<code><a href="../AA-3/AA-3.5#S0046">real_range_specification</a></code>]<br />
 
 </CodeBlock>
 <MarginText>5/4</MarginText>
 <MarginInfo items={["AI12-0152-1"]} />
 
 <CodeBlock>
-<code>digits_constraint</code><a id="S0050"></a><code> ::= </code><br />   <strong>digits</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> [<code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>]<br />
+<code>digits_constraint</code><a id="S0050"></a><code> ::= </code><br />    <strong>digits</strong> <em>static_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code> [<code><a href="../AA-3/AA-3.5#S0036">range_constraint</a></code>]<br />
 
 </CodeBlock>
 
