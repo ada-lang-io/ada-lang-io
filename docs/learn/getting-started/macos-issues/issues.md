@@ -6,7 +6,6 @@ draft: true
 # Issues
 
 - [Linking error](#linking-error)
-- [Alire crate versions for macOS](#mac-special-index)
 
 ## <a name="linking-error">Linking error</a>
 
@@ -72,30 +71,3 @@ Find out which set of developer tools you have installed by `xcrun --show-sdk-pa
 Go to the [Apple Developer "More Downloads"](https://developer.apple.com/download/all/) page (you'll need a free account, you may need a separate Apple ID) and select the beta package matching your current developer tools: download and install it. The _beta 2_ set is known to work, _beta 3_ is available (18 November 2003).
 
 > Note for the Xcode betas: they come as `.xip` files, which need to be extracted using Apple's proprietary _xip_ tool: `xip --expand package.xip`. You'll need to tell macOS to use the beta using `xcode-select --switch`.
-
-## <a name="mac-special-index">Alire crate versions for macOS</a>
-
-There's a Mac-special index which holds crate versions that
-
-- support Apple silicon,
-- overcome some issues that arise from macOS features.
-
-For example, _gprbuild_ can try to build static standalone libraries, where the 'standalone' part means that the library will be automatically elaborated. It does this using features available in GNU binutils, but not in Mach-O binary. Alternative versions of crates that normally would attempt this are provided (`libadalang`, `langkit_support`).
-
-The crates provided are:
-
-- Tools
-  - `gnat_macos_aarch64=13.1.1`, native GNAT for Apple silicon.
-  - `gprbuild=23.0.1-mac-aarch64`, matching gprbuild (avoids you having to say `--target=aarch64-apple-darwin` at every compilation!)
-- Libraries
-  - `langkit_support-23.0.1`, builds a plain static library.
-  - `libadalang-23.0.1`, likewise.
-
-To install:
-
-```
-$ alr index \
-   --add=git+https://github.com/simonjwright/alire-index.mac.git \
-   --before=community \
-   --name=index_for_mac
-```
