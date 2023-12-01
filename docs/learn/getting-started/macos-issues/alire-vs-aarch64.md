@@ -1,6 +1,5 @@
 ---
 sidebar_position: 3
-draft: true
 ---
 
 # Alire vs Apple silicon
