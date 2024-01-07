@@ -232,6 +232,10 @@ const config = {
                 href: "https://arg.adaic.org/home"
               },
               {
+                label: "Ada Europe",
+                href: "https://ada-europe.org/"
+              },
+              {
                 label: "GitHub",
                 href: `https://github.com/${gitHubUserName}/${gitHubProjectName}`,
                 className: "fa-icon footer__image footer-github-link"
