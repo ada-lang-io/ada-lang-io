@@ -71,20 +71,71 @@ documentation
   Wikibook](https://en.wikibooks.org/wiki/Ada_Programming) has been a great
   source of knowledge for many years and many people. Nonetheless, it could use
   some clean-ups, completition and updates related to _Ada 2022._
+- **SPARK:** SPARK does not have as much documentation as Ada does. This is just
+  natural as it is a newer system and it is also a much more complex and advance
+  one. Therefore, SPARK could use some extra examples, guides and help from the
+  community.
+- **Translations:** the Ada community is all over the world and there are many
+  people whose are not fluent in english. If you speak a different language and
+  you feel like translating content to it would help other people, go ahead!
+  Luckily, nowdays, most people are somewhat fluent in english to be able to
+  read it and understand it, so translation work is not as necessary as it used
+  to be.
 
 ## Toolchains
 
-## Graphics and Games
+- **[Alire](https://alire.ada.dev/):** Alire is one of the most important tools
+  for the Ada community, regardless of the experience that one may have with the
+  language. Alire is always looking for testers for new releases, feedback,
+  improvements and fixes. If you are looking for a project to help with, Alire
+  would be great!
+  - **Add new packages:** one of the easiest ways to help Alire is by adding Ada
+    projects and packages to the index and making them available for the entire
+    community.
+  - **Help with the documentation.**
+  - **Help build and test Alire** in new architectures.
+  - **Improve the [compiler
+    packaging](https://github.com/alire-project/GNAT-FSF-builds)** of Alire by
+    adding new architecture and testing it more.
+  - **Package [GNAT-LLVM](https://github.com/AdaCore/gnat-llvm/).**
 
 ## Libraries and Tools
 
+TODO: Mention SWIG4Ada
+
+TODO: crypto, mention WolfSSL and SPARKNaCl
+
+## Graphics and Games
+
+TODO: Mention SDL2Ada
+TODO: Mention GTK-Ada
+
+## Web development
+
+TODO: Mention AWS, AdaWebpack (Ada-WASM)
+
 ## Operating Systems
+
+TODO: Add mentions of Ironclad, Muen, HiRTOS, M2OS.
+TODO: Mention RTEMS?
+
+TODO: Mention Zephyr, FreeRTOS, SeL4, NuttX, RIOT and
+[ThreadX](https://threadx.io/) and point to the compiler section as they need
+compiler support. Mention that FreeRTOS is partially supported by Simon's RTS
+for Cortex devices.
+
+TODO: improve support for limited profiles in embedded OSes (Jorvik, Ravenscar)
 
 ## Embedded Systems
 
+TODO: Add Ada_Drivers_Library TODO: Create more HALs TODO: Improve svd2ada and
+startup-gen TODO: Add SweetAda as a multiarch development platform. Docs could
+use a bit of help. TODO: Mention AVR-Ada?
+
 ## Compilers
 
-The proposals here are quite advance, therefore, they are not recommended for people unfamiliar with the Ada language.
+The proposals here are quite advance, therefore, they are not recommended for
+people unfamiliar with the Ada language.
 
 - **Mainlining more patches to upstream GNAT:** GNAT/GCC-Ada is a wonderful
   piece of technology, and thanks to it being based on the GCC compiler
@@ -98,7 +149,9 @@ The proposals here are quite advance, therefore, they are not recommended for pe
   - **[Android](https://source.android.com/):** in the past there were some
     versions of GNAT that had support for Android. Some patches for Android
     support can be found in [this
-    repository](https://github.com/search?q=repo%3Ajrmarino%2Fdraco%20path%3A%2F%5Emisc%5C%2Fflux13%5C%2F%2F%20android&type=code). Nontheless, Ada also supports Android with WASM, [see this demo](https://blog.adacore.com/android-application-with-ada-and-webassembly).
+    repository](https://github.com/search?q=repo%3Ajrmarino%2Fdraco%20path%3A%2F%5Emisc%5C%2Fflux13%5C%2F%2F%20android&type=code). Nontheless,
+    Ada also supports Android with WASM, [see this
+    demo](https://blog.adacore.com/android-application-with-ada-and-webassembly).
   - **[OpenBSD](https://www.openbsd.org/):** OpenBSD has supported GNAT for a
     few architectures for a long while, however, the patches to add support have
     never been mainlined. The patches can be found in their ports tree or in
@@ -123,6 +176,19 @@ The proposals here are quite advance, therefore, they are not recommended for pe
   - **[Illumos](https://www.illumos.org/):** Illumos is the continuation of
     OpenSolaris as an open source project. It currently has no Ada support
     within GNAT.
-- **[GNAT-LLVM](https://github.com/AdaCore/gnat-llvm/):** the GNAT-LLVM project is fairly new but very promissing. It would be nice to test it, help with the documentation and create cool demos, see [this Ada-WASM example](https://github.com/godunko/adawebpack).
-- **Bootstrapping GNAT:** GNAT currently requires the a previous version to compile itself. Sadly, there was never an originial public version of GNAT that did not have such requirement. This means, that GNAT cannot be compiled without already having a working copy of a GNAT installation. The [GNAT Bootstrapping project](https://fossil.irvise.xyz/gnat-bootstrap/home) aims to create a small, minimal compiler together with the [live-bootstrap project](https://github.com/fosslinux/live-bootstrap/) in order to build an initial GNAT compiler.
+- **[GNAT-LLVM](https://github.com/AdaCore/gnat-llvm/):** the GNAT-LLVM project
+  is fairly new but very promissing. It would be nice to test it, help with the
+  documentation and create cool demos, see [this Ada-WASM
+  example](https://github.com/godunko/adawebpack).
+- **Bootstrapping GNAT:** GNAT currently requires the a previous version to
+  compile itself. Sadly, there was never an originial public version of GNAT
+  that did not have such requirement. This means, that GNAT cannot be compiled
+  without already having a working copy of a GNAT installation. The [GNAT
+  Bootstrapping project](https://fossil.irvise.xyz/gnat-bootstrap/home) aims to
+  create a small, minimal compiler together with the [live-bootstrap
+  project](https://github.com/fosslinux/live-bootstrap/) in order to build an
+  initial GNAT compiler.
   - **Requirements:** Scheme and compiler programming knowledge.
+- **[HAC](https://github.com/zertovitch/hac):** HAC is a small and limited Ada
+  compiler, but it could make use of some help for those interested in compilers
+  and Ada.
