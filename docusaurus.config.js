@@ -249,7 +249,7 @@ const config = {
           width: 128,
           height: 128
         },
-        copyright: `Copyright © ${new Date().getFullYear()} and licensed under Apache 2.0 unless otherwise noted, by the ${gitHubProjectName} developers. Built with Docusaurus.`
+        copyright: `Copyright © ${new Date().getFullYear()} and licensed under Apache 2.0 unless otherwise noted, by the ${gitHubProjectName} developers. Built with <a href="https://docusaurus.io/">Docusaurus</a>.`
       },
       prism: {
         theme: lightCodeTheme,
