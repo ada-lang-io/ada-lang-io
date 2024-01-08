@@ -32,7 +32,7 @@ their own take and point of view.
 - **Helping newcomers:** Ada has a constant influx of new and curious people
   wanting to try the language and learn it. One of the most important parts of
   the learning experience is the community and how it welcomes and aids
-  _newbees._ The Ada community could use a few more people willing to help and
+  _newbies._ The Ada community could use a few more people willing to help and
   guide new programmers with their first few steps into the language.
 - **Blog posts:** writing blogs is always a nice way to share knowledge,
   experience, tips and anything in between. Ada could use a little more of
@@ -42,12 +42,15 @@ their own take and point of view.
   presence there (if it is suitable!).
   - **Example:** the [Awesome WASM Lang
     repository](https://github.com/appcypher/awesome-wasm-langs) lists all the
-    languages that support targetting WASM. Ada supports WASM! but it is not on
-    the list. It would be great if someone did a Pull Request.
+    languages that support targetting WASM. Ada supports WASM! ~~but it is not
+    on the list. It would be great if someone did a Pull Request.~~ Thanks to
+    [mgrojo](https://github.com/mgrojo) for his [pull
+    request](https://github.com/appcypher/awesome-wasm-langs/pull/135). It did't
+    even require writing a single line of Ada code, it is that simple!
 - **Conferences:** if you feel confident with your speaking and teaching skill,
-  going to a conference and showing off Ada is a great way to attrack the
+  going to a conference and showing off Ada is a great way to attract the
   curious eyes of the audience. The topics here are also quite broad, ranging
-  from simple and short tutorial all the way to niche and advance features of
+  from simple and short tutorial all the way to niche and advanced features of
   the language.
 
 ## Documentation
@@ -59,28 +62,36 @@ documentation](https://docs.adacore.com/live/wave/gnat_rm/html/gnat_rm/gnat_rm.h
 Nonetheless, things could be much better, specially for individual projects and
 libraries. Documentation for individual tools will be listed in their respective
 categories. Here are the main places which could use help with their
-documentation
+documentation:
 
 - **Ada-Lang.io:** you can help grow the documentation, guides, experience of
   this webpage, which tends to be one of the first resources that new people to
-  the language make. The [Learn section](./learn/why-ada/) could use some extra
+  the language take. The [Learn section](./learn/why-ada/) could use some extra
   hands, specially with the addition completion of [How-Tos](./category/how-tos)
   and [Tips and Tricks](./category/tips-and-tricks). The addition of SPARK
   documentation would also be greatly welcomed.
 - **Ada Wikibook:** the [Ada
   Wikibook](https://en.wikibooks.org/wiki/Ada_Programming) has been a great
   source of knowledge for many years and many people. Nonetheless, it could use
-  some clean-ups, completition and updates related to _Ada 2022._
+  some clean-ups, completion and updates related to _Ada 2022._
 - **SPARK:** SPARK does not have as much documentation as Ada does. This is just
-  natural as it is a newer system and it is also a much more complex and advance
-  one. Therefore, SPARK could use some extra examples, guides and help from the
-  community.
+  natural as it is a newer system and it is also a much more complex and
+  advanced one. Therefore, SPARK could use some extra examples, guides and help
+  from the community.
 - **Translations:** the Ada community is all over the world and there are many
   people whose are not fluent in english. If you speak a different language and
   you feel like translating content to it would help other people, go ahead!
   Luckily, nowdays, most people are somewhat fluent in english to be able to
   read it and understand it, so translation work is not as necessary as it used
   to be.
+
+## Teaching
+
+TODO: Mention [Alice](https://github.com/alice-adventures/Alice)
+TODO: Mention [Elixir](https://exercism.org/). This requires mentors!!
+TODO: Mention [GeeksforGeeks](https://www.geeksforgeeks.org/)
+TODO: Mention [Rosetta Code](https://rosettacode.org/wiki/Rosetta_Code)
+TODO: Mention [Tutorials Point](https://www.tutorialspoint.com/)?
 
 ## Toolchains
 
@@ -96,7 +107,7 @@ documentation
   - **Help build and test Alire** in new architectures.
   - **Improve the [compiler
     packaging](https://github.com/alire-project/GNAT-FSF-builds)** of Alire by
-    adding new architecture and testing it more.
+    adding a new architecture and testing it more.
   - **Package [GNAT-LLVM](https://github.com/AdaCore/gnat-llvm/).**
 
 ## Libraries and Tools
@@ -132,14 +143,38 @@ TODO: Add Ada_Drivers_Library TODO: Create more HALs TODO: Improve svd2ada and
 startup-gen TODO: Add SweetAda as a multiarch development platform. Docs could
 use a bit of help. TODO: Mention AVR-Ada?
 
+## Performance and benchmarks
+
+Ada tends to be shown in a lot of benchmarks, and that should be no surprise, as
+we are a highly optimizable, compiled programming language that does nor use
+garbage collection and leverages some of the best compiler infraestructure in
+the world (GCC and LLVM). However, we do not tend to rank at the top. "Why is
+that?" one may ask... Well... Most Ada code used for benchmarking porpuses has
+not been receiving the same amount of effort and care that other programming
+languages have. Let's fix this!
+
+The following proposals are meant to be undertaken by people familiar with Ada
+and HPC (High Performance Computing):
+
+- **[The Computer Language Benchmarks
+  Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html):**
+  Ada programs could be optimised to utilise newer language constructs,
+  algorithmic design and, once available and if useful, the new Ada 2022
+  `parallel` keyword. This should yield better results than the already (and
+  performant) programs. I believe we can improve our times quite a bit!
+- **[Programming Language and Compiler
+  Benchmarks](https://programming-language-benchmarks.vercel.app/):** Ada is not
+  even listed in this competition! The task would require providing performant
+  Ada examples for this language benchmark comparison.
+
 ## Compilers
 
-The proposals here are quite advance, therefore, they are not recommended for
+The proposals here are quite advanced, therefore, they are not recommended for
 people unfamiliar with the Ada language.
 
 - **Mainlining more patches to upstream GNAT:** GNAT/GCC-Ada is a wonderful
   piece of technology, and thanks to it being based on the GCC compiler
-  infraestructure, it can target a large number of Operating Systems and
+  infrastructure, it can target a large number of Operating Systems and
   architectures. However, GNAT/GCC-Ada requires a bit of setup and additional
   files that are needed in order to compile Ada code for these targets. The most
   common architecture/OS pairs are already present inside GCC, but some
@@ -177,15 +212,15 @@ people unfamiliar with the Ada language.
     OpenSolaris as an open source project. It currently has no Ada support
     within GNAT.
 - **[GNAT-LLVM](https://github.com/AdaCore/gnat-llvm/):** the GNAT-LLVM project
-  is fairly new but very promissing. It would be nice to test it, help with the
+  is fairly new but very promising. It would be nice to test it, help with the
   documentation and create cool demos, see [this Ada-WASM
   example](https://github.com/godunko/adawebpack).
-- **Bootstrapping GNAT:** GNAT currently requires the a previous version to
-  compile itself. Sadly, there was never an originial public version of GNAT
-  that did not have such requirement. This means, that GNAT cannot be compiled
-  without already having a working copy of a GNAT installation. The [GNAT
-  Bootstrapping project](https://fossil.irvise.xyz/gnat-bootstrap/home) aims to
-  create a small, minimal compiler together with the [live-bootstrap
+- **Bootstrapping GNAT:** GNAT currently requires a previous version to compile
+  itself. Sadly, there was never an original public version of GNAT that did
+  not have such requirement. This means, that GNAT cannot be compiled without
+  already having a working copy of a GNAT installation. The [GNAT Bootstrapping
+  project](https://fossil.irvise.xyz/gnat-bootstrap/home) aims to create a
+  small, minimal compiler together with the [live-bootstrap
   project](https://github.com/fosslinux/live-bootstrap/) in order to build an
   initial GNAT compiler.
   - **Requirements:** Scheme and compiler programming knowledge.
