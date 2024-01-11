@@ -140,6 +140,21 @@ For intermediate and seasoned Ada and SPARK users:
     packaging](https://github.com/alire-project/GNAT-FSF-builds)** of Alire by
     adding a new architecture and testing it more.
   - **Package [GNAT-LLVM](https://github.com/AdaCore/gnat-llvm/).**
+- **Operating System's Packages:** Ada is not widely packaged in a lot of
+  distributions' default package manager. A lot of people initially try to use
+  the system's provided package only to find out that Ada is not packaged or
+  poorly packaged. It would be very benefitial to a lot of new (and seasoned)
+  Ada users to have a nice out-of-the-box experience with their operating
+  system.
+  - **Guix:** help package a working toolchain for the supported
+    architectres. Package Alire.
+  - **OpenSUSE:** extend the `gcc-ada` packaging to all the supported
+    architectures. Create cross-compilation toolchains. Package Alire.
+  - **RedHat and Fedora:** improve the support of the Ada toolchain. Package
+    Alire.
+  - **FreeBSD:** improve the current port and extend support to other
+    architectures. Update the packaged version.
+  - **NetBSD:** update the compiler and patches. Check support for NetBSD 10.
 
 ## Libraries and Tools
 
@@ -177,9 +192,17 @@ TODO: Mention GTK-Ada
 
 ### Web development
 
-TODO: Mention AWS
-
-TODO: AdaWebpack (Ada-WASM)
+- **[AWS (Ada Web Services)](https://github.com/AdaCore/aws):** AWS is the
+  standard web framework for Ada. It has some rough edges regarding TLS
+  certificates, supporting newer web standards and documentation. All of these
+  points could make use of a few willing hands.
+- **[AdaWebpack (Ada-WASM)](https://github.com/godunko/adawebpack/):** WASM is
+  the new cool kid in the web world and not without reason. It allows to run
+  traditionally compiled languages in the browser, and Ada is no
+  exception. AdaWebpack is a project that supports compiling Ada to WASM. Its
+  support could be improved and more apps could be created with it. [Here is a
+  cool example](https://github.com/reznikmm/android_app_demo) of a spinning cube
+  (running on WebGL) and the Ada app compiled to WASM in Android!
 
 ### Cryptography and safety
 
