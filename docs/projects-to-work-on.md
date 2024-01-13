@@ -109,15 +109,15 @@ For beginners and new Ada programmers:
 
 For intermediate and seasoned Ada and SPARK users:
 
-- **[Alice](https://github.com/alice-adventures/Alice):** Alice is
-  work-in-progress platform that is focused on teaching Ada and SPARK by
-  focusing on high quality lessons and solutions (excelence as it is indicated
-  in Alice's documentation). One could help develop its infraestructure, testing
-  and adding lessons and tasks to it.
-- **[Exercism](https://exercism.org/):** Execism is a learning platform where
-  students solve problems (with varying degrees of complexity) and then a tutor
-  or reviewer can give them feedback if necessary. Ada used to have an entry in
-  the website [see deprecated
+- **[Alice](https://github.com/alice-adventures/Alice)** is work-in-progress
+  platform that is focused on teaching Ada and SPARK by focusing on high quality
+  lessons and solutions (excelence as it is indicated in Alice's
+  documentation). One could help develop its infraestructure, testing and adding
+  lessons and tasks to it.
+- **[Exercism](https://exercism.org/)** is a learning platform where students
+  solve problems (with varying degrees of complexity) and then a tutor or
+  reviewer can give them feedback if necessary. Ada used to have an entry in the
+  website [see deprecated
   repo](https://github.com/exercism/DEPRECATED-ada). However, due to the lack of
   exercises and people willing to carry out the work maintaining it and helping
   students, it is no longer available. I would be great if it could be brought
@@ -126,8 +126,8 @@ For intermediate and seasoned Ada and SPARK users:
 
 ## Toolchains
 
-- **[Alire](https://alire.ada.dev/):** Alire is one of the most important tools
-  for the Ada community, regardless of the experience that one may have with the
+- **[Alire](https://alire.ada.dev/)** is one of the most important tools for the
+  Ada community, regardless of the experience that one may have with the
   language. Alire is always looking for testers for new releases, feedback,
   improvements and fixes. If you are looking for a project to help with, Alire
   would be great!
@@ -135,7 +135,7 @@ For intermediate and seasoned Ada and SPARK users:
     projects and packages to the index and making them available for the entire
     community.
   - **Help with the documentation.**
-  - **Help build and test Alire** in new architectures.
+  - **Help build and test Alire in new architectures.**
   - **Improve the [compiler
     packaging](https://github.com/alire-project/GNAT-FSF-builds)** of Alire by
     adding a new architecture and testing it more.
@@ -155,6 +155,9 @@ For intermediate and seasoned Ada and SPARK users:
   - **FreeBSD:** improve the current port and extend support to other
     architectures. Update the packaged version.
   - **NetBSD:** update the compiler and patches. Check support for NetBSD 10.
+- **[Ravenports](http://www.ravenports.com/)** is a package manager similar to
+  [pkgsrc](https://www.pkgsrc.org/). Help test it, package programs in it and
+  help grow its OS support.
 
 ## Libraries and Tools
 
@@ -168,8 +171,9 @@ For intermediate and seasoned Ada and SPARK users:
   programers, can easily pick them up and start using their functionality.
   - **Ideas:**
     - **[ImGUI](https://github.com/ocornut/imgui)** is a widely use GUI
-      library. If C++ bindings prove too much, then
-      [cImGUI](https://github.com/cimgui/cimgui) could be used as a base.
+      library. There is already an
+      [Ada-binding](https://github.com/michael-hardeman/ImGui-Ada), but it could
+      be updated and added to Alire.
     - **[stb](https://github.com/nothings/stb)** is a collection of C
       header-only utilities in the public domain.
     - **[raylib](https://github.com/raysan5/raylib)** is a collection of simple
@@ -177,6 +181,7 @@ For intermediate and seasoned Ada and SPARK users:
     - **[ccv](https://github.com/liuliu/ccv)** and
       **[OpenCV](https://opencv.org/)** are libraries geared towards computer
       vision and processing.
+    - **And many more!**
 - **[SWIG4Ada](https://github.com/charlie5/swig4ada):** Ada has outstanding
   support for creating bindings to other languages, specially C, Fortran and
   Cobol. GCC also has a method for creating bindings to C++ projects, however,
@@ -186,16 +191,22 @@ For intermediate and seasoned Ada and SPARK users:
 
 ### Graphics and Games
 
-TODO: Mention SDL2Ada
-
-TODO: Mention GTK-Ada
+- **[SDLAda](https://github.com/Lucretia/sdlada):** the bindings to SDL still
+  have some missing pieces/functions that need to be finalised, which can be
+  found in the link's README page. This could be a great start for people
+  wanting to get into game/graphics programming with Ada.
+- **[GTKAda](https://github.com/AdaCore/gtkada)** is the GTK binding to Ada. It
+  is poorly documented, there are not many tutorials nor blogposts about using
+  it. Therefore, documentation would be a great starting point for someone
+  wanting to get into GTK and Ada. Moreover, the bindings still target GTK3. If
+  you are feeling adventurous, you may want to try and help update it to GTK4!
 
 ### Web development
 
-- **[AWS (Ada Web Services)](https://github.com/AdaCore/aws):** AWS is the
-  standard web framework for Ada. It has some rough edges regarding TLS
-  certificates, supporting newer web standards and documentation. All of these
-  points could make use of a few willing hands.
+- **[AWS (Ada Web Services)](https://github.com/AdaCore/aws)** is the standard
+  web framework for Ada. It has some rough edges regarding TLS certificates,
+  supporting newer web standards and documentation. All of these points could
+  make use of a few willing hands.
 - **[AdaWebpack (Ada-WASM)](https://github.com/godunko/adawebpack/):** WASM is
   the new cool kid in the web world and not without reason. It allows to run
   traditionally compiled languages in the browser, and Ada is no
@@ -203,6 +214,9 @@ TODO: Mention GTK-Ada
   support could be improved and more apps could be created with it. [Here is a
   cool example](https://github.com/reznikmm/android_app_demo) of a spinning cube
   (running on WebGL) and the Ada app compiled to WASM in Android!
+- **[AWA (Ada Web Applications)](https://github.com/stcarrez/ada-awa)** is a
+  collection of tools in order to build Web applications using Ada. Help by
+  using it, testing and documenting it!
 
 ### Cryptography and safety
 
@@ -217,53 +231,82 @@ TODO: Mention GTK-Ada
   would be nice seing it receive a bit more marketing in non-Ada environments
   and projects implemented with it!
 
+### Miscellaneous
+
+- **[Ressource-Embedder](https://gitlab.com/stcarrez/resource-embedder)** is a
+  resource embedder for Ada, Go and C programs. It allows the user to load data
+  as part of the executable! You can help by utilising and promoting it.
+
 ## Operating Systems
 
 The Ada ecosystem sports some of the most interesting kernels/OSes out
-there. Operating System development tends to be labeled as an advance
+there. Operating System development tends to be labeled as an advanced
 topic. However, if you are learning, thanks to Ada's clear syntax, it becomes
 much easier to understand them, use them and even contribute to an OS. Here is a
 list of kernels/OSes written in pure Ada/SPARK that may greatly benefit from the
 community:
 
-- **[Ironclad](https://ironclad.cx/):** it is a fairly new kernel that strives
-  to be POSIX compatible. It partially written in SPARK, making it much more
-  robust and safe by default. It aims to support x86, ARM and RISC-V
-  architectures. You can contribute to it or you can help grow the
+- **[Ironclad](https://ironclad.cx/)** is a fairly new kernel that strives to be
+  POSIX compatible. It partially written in SPARK, making it much more robust
+  and safe by default. It aims to support x86, ARM and RISC-V architectures. You
+  can contribute to it or you can help grow the
   [Gloire](https://github.com/streaksu/Gloire) OS distribution, which uses
   Ironclad as its kernel.
-- **[HiRTOS](https://github.com/jgrivera67/HiRTOS):** it is a high integrity
-  RTOS kernel as well as a separation kernel written in SPARK. Go and give it a
-  try! One can even install it using Alire! It currently targets the ARM
-  Cortex-R52 CPU. One could try and port it to a different CPU.
-- **[Muen](https://muen.codelabs.ch/):** it is a separation kernel fully written
-  in SPARK. It has been certified by some large military bodies for their internal
+- **[HiRTOS](https://github.com/jgrivera67/HiRTOS)** is a high integrity RTOS
+  kernel as well as a separation kernel written in SPARK. Go and give it a try!
+  One can even install it using Alire! It currently targets the ARM Cortex-R52
+  CPU. One could try and port it to a different CPU.
+- **[Muen](https://muen.codelabs.ch/)** is a separation kernel fully written in
+  SPARK. It has been certified by some large military bodies for their internal
   use. It also sports some drivers fully written in SPARK!
-- **[M2OS](https://m2os.unican.es/):** it is a small RTOS that was created from
-  the same people behind the Ada OS [Marte](https://marte.unican.es/).
+- **[M2OS](https://m2os.unican.es/)** is a small RTOS that was created from the
+  same people behind the Ada OS [Marte](https://marte.unican.es/).
 
 There are some well known Operating Systems that allow users to run Ada programs
 in them directly even if they are written in a different language. You may want
 to use them, improve the Ada support they have or write examples or blog posts
 about their use:
 
-- **[RTEMS](https://www.rtems.org):** it is a POSIX RTOS that is widely used in
+- **[RTEMS](https://www.rtems.org)** is a POSIX RTOS that is widely used in
   the aerospace industry. It has official Ada support. However, its use is not
   clearly documented nor widely known about; this could be fixed.
 
 ## Embedded Programming
 
-TODO: Add Ada_Drivers_Library
+- **[Ada Drivers Library](https://github.com/AdaCore/Ada_Drivers_Library)** is a
+  collection of drivers for microcontollers and embedded boards. You can help by
+  utilising it, testing the built-in drivers and specially by helping improve
+  drivers and boards that are not yet present.
 
-TODO: Create more HALs
+- **Create more HALs:** HAL (Hardware Abstraction Layer) is a piece of code that
+  abstracts the device away from the code. This is what generally drivers do. By
+  implementing a HAL the low level aspects of the hardware are not needed in
+  order to program the device, which makes the experience of embedded
+  programming a lot more pleasant and readable. Ada has quite a few HALs (see
+  the Ada Drivers Library), but we are nowhere near close to other communities,
+  eventhough we exceed at embedded programming.
 
-TODO: Improve svd2ada and startup-gen
+- **Improve [svd2ada](https://github.com/AdaCore/svd2ada) and
+  [startup-gen](https://github.com/AdaCore/startup-gen).** These two tools allow
+  for the quick creation of a initial HAL layer. There are a few issues and
+  limitations in their Github page which could be improved.
 
-TODO: Add SweetAda as a multiarch development platform. Docs could use a bit of help.
+- **Help the [SweetAda](https://github.com/gabriele-galeotti/SweetAda)
+  development framework.** SweetAda is a terrific framework designed to bring
+  Ada support to as many architectures as possible. It would greatly benefit
+  from more testing and specially documentation.
 
-TODO: improve support for limited profiles in embedded OSes (Jorvik, Ravenscar)
+- **Improve support for tasking profiles in embedded OSes (Jorvik, Ravenscar).**
+  This is a very advanced topic, but an important one. Embedded systems
+  generally do not support tasking due to the limited support that the language
+  has for them. Therefore, specialised profiles that allow for some basic,
+  real-time and safe tasking abilities need to be created. It would be great to
+  see more CPUs/Boards with support for the Jorvik and Ravenscar profiles.
 
-TODO: Mention AVR-Ada?
+- **[AVR-Ada](https://github.com/RREE/AVRAda_Doc)** is a embedded development
+  library that brings support for a large number of AVR devices to the Ada
+  programming language. You can help by creating more examples, promoting it and
+  expanding its capabilities.
 
 ## Performance and benchmarks
 
@@ -311,8 +354,8 @@ people unfamiliar with the Ada language.
     repository](https://github.com/search?q=repo%3Ajrmarino%2Fdraco%20path%3A%2F%5Emisc%5C%2Fflux13%5C%2F%2F%20android&type=code). Nontheless,
     Ada also supports Android with WASM, [see this
     demo](https://blog.adacore.com/android-application-with-ada-and-webassembly).
-  - **[OpenBSD](https://www.openbsd.org/):** OpenBSD has supported GNAT for a
-    few architectures for a long while, however, the patches to add support have
+  - **[OpenBSD](https://www.openbsd.org/)** has supported GNAT for a few
+    architectures for a long while, however, the patches to add support have
     never been mainlined. The patches can be found in their ports tree or in
     [this Github
     mirror](https://github.com/openbsd/ports/tree/master/lang/gcc/11/patches)
@@ -321,24 +364,23 @@ people unfamiliar with the Ada language.
     [here](https://github.com/jrmarino/draco/tree/master/misc/flux13). Adding
     support for other architectures can somewhat easily be done. Thank to
     J. Marino for his work.
-  - **[FreeBSD](https://www.freebsd.org/):** FreeBSD support within GNAT could
+  - **[FreeBSD](https://www.freebsd.org/)** support within GNAT could
     use quite a bit of help. This is [the current patch used by
     FreeBSD](https://gitlab.com/FreeBSD/freebsd-ports/-/tree/main/lang/gnat12/files).
 - **Adding support for more OSes:** support could be added to the following
   "full-fledged" Operating Systems:
-  - **[Ironclad](https://ironclad.cx/):** it is a POSIX compatible RTOS
-    completely written in Ada. It currently has no RTS (RunTime System) support
-    for compiling Ada programs targetting it.
-  - **[Illumos](https://www.illumos.org/):** it is the continuation of
-    OpenSolaris as an open source project. It currently has no Ada support
-    within GNAT.
-  - **[Gnode](https://genode.org/):** it is an OS framework that is based on
+  - **[Ironclad](https://ironclad.cx/)** is a POSIX compatible RTOS completely
+    written in Ada. It currently has no RTS (RunTime System) support for
+    compiling Ada programs targetting it.
+  - **[Illumos](https://www.illumos.org/)** is the continuation of OpenSolaris
+    as an open source project. It currently has no Ada support within GNAT.
+  - **[Gnode](https://genode.org/)** is an OS framework that is based on
     components and separation of concerns and security.
-  - **[Haiku](https://www.haiku-os.org/):** it is a reemplementation of BeOS.
+  - **[Haiku](https://www.haiku-os.org/)** is a reemplementation of BeOS.
   - **Microkernel and RTOS Systems:** there are quite a few other OSes that we
     could support. They are either widely used or best in class for their target
     audience.
-    - **[Zephyr](https://www.zephyrproject.org/):** it is an RTOS that has been
+    - **[Zephyr](https://www.zephyrproject.org/)** is an RTOS that has been
       gaining a lot of traction and support. Initial support for the Zephyr RTOS
       was started [here](https://github.com/ila-embsys/zephyr-ada-gnat-rts).
     - **[se4L](https://sel4.systems/)** is a secure, verified RTOS microkernel
@@ -381,6 +423,6 @@ people unfamiliar with the Ada language.
   project](https://github.com/fosslinux/live-bootstrap/) in order to build an
   initial GNAT compiler.
   - **Requirements:** Scheme and compiler programming knowledge.
-- **[HAC](https://github.com/zertovitch/hac):** HAC is a small and limited Ada
+- **[HAC](https://github.com/zertovitch/hac)** is a small and limited Ada
   compiler, but it could make use of some help for those interested in compilers
   and Ada.
