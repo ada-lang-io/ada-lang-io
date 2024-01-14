@@ -25,7 +25,7 @@ personal projects will not be promoted here, but feel free to work on those too!
 
 ## Ada Advocacy
 
-Ada does not have a lot going in the marketing department, lets fix that! All
+Ada does not have a lot going in the marketing department, let's fix that! All
 these proposals apply regardless of your Ada experience, each person will have
 their own take and point of view.
 
@@ -33,20 +33,23 @@ their own take and point of view.
   wanting to try the language and learn it. One of the most important parts of
   the learning experience is the community and how it welcomes and aids
   _newbies._ The Ada community could use a few more people willing to help and
-  guide new programmers with their first few steps into the language.
+  guide new programmers with their first few steps into the language. You will
+  find links to various sites where learners frequently ask questions in the
+  **Community** column of the ada-lang.io footer.
 - **Blog posts:** writing blogs is always a nice way to share knowledge,
-  experience, tips and anything in between. Ada could use a little more of
-  that. And don't forget to share the blog posts with the community afterwards!
+  experience, tips and anything in between. The Ada community could have a
+  little more of that. And don't forget to share the blog posts with the
+  community afterwards!
 - **Forums, social media and language discussions:** there are a lot of general
-  discussions going on in the internet, we should make Ada have a bit more
+  discussions going on in the Internet, we should make Ada have a bit more
   presence there (if it is suitable!).
   - **Example:** the [Awesome WASM Lang
     repository](https://github.com/appcypher/awesome-wasm-langs) lists all the
     languages that support targetting WASM. Ada supports WASM! ~~but it is not
     on the list. It would be great if someone did a Pull Request.~~ Thanks to
     [mgrojo](https://github.com/mgrojo) for his [pull
-    request](https://github.com/appcypher/awesome-wasm-langs/pull/135). It did't
-    even require writing a single line of Ada code, it is that simple!
+    request](https://github.com/appcypher/awesome-wasm-langs/pull/135). It
+    didn't even require writing a single line of Ada code, it is that simple!
 - **Conferences:** if you feel confident with your speaking and teaching skill,
   going to a conference and showing off Ada is a great way to attract the
   curious eyes of the audience. The topics here are also quite broad, ranging
@@ -78,17 +81,26 @@ documentation:
   natural as it is a newer system and it is also a much more complex and
   advanced one. Therefore, SPARK could use some extra examples, guides and help
   from the community.
+- **Improve the Standard Library documentation.** Ada has an advanced Standard
+  Library that is carefully documented in the Ada standard and in the [GNAT
+  Reference
+  Manual](https://docs.adacore.com/live/wave/gnat_rm/html/gnat_rm/gnat_rm.html). However,
+  there are not many examples regarding its use. It is also not easy to
+  read/digest documents describing the Standard Library. Better documentation
+  would be useful for the larger Ada community and newcomers. Writing examples
+  and documentation for the Standatd Library would also be very useful for new
+  Ada programmers, as it makes for a wonderful practical learning experience.
 - **Translations:** the Ada community is all over the world and there are many
-  people whose are not fluent in english. If you speak a different language and
+  people who are not fluent in English. If you speak a different language and
   you feel like translating content to it would help other people, go ahead!
-  Luckily, nowdays, most people are somewhat fluent in english to be able to
+  Luckily, nowadays, most people are somewhat fluent in English to be able to
   read it and understand it, so translation work is not as necessary as it used
   to be.
 
 ## Teaching
 
 While Ada is a very readable and easy to learn language, its community does not
-shine when it comes do diverse and ever-present documentation. If you would like
+shine when it comes to diverse and omnipresent documentation. If you would like
 to help fix this, here are a few ideas.
 
 For beginners and new Ada programmers:
@@ -109,10 +121,10 @@ For beginners and new Ada programmers:
 
 For intermediate and seasoned Ada and SPARK users:
 
-- **[Alice](https://github.com/alice-adventures/Alice)** is work-in-progress
+- **[Alice](https://github.com/alice-adventures/Alice)** is a work-in-progress
   platform that is focused on teaching Ada and SPARK by focusing on high quality
-  lessons and solutions (excelence as it is indicated in Alice's
-  documentation). One could help develop its infraestructure, testing and adding
+  lessons and solutions (excellence as it is indicated in Alice's
+  documentation). One could help develop its infrastructure, testing and adding
   lessons and tasks to it.
 - **[Exercism](https://exercism.org/)** is a learning platform where students
   solve problems (with varying degrees of complexity) and then a tutor or
@@ -120,7 +132,7 @@ For intermediate and seasoned Ada and SPARK users:
   website [see deprecated
   repo](https://github.com/exercism/DEPRECATED-ada). However, due to the lack of
   exercises and people willing to carry out the work maintaining it and helping
-  students, it is no longer available. I would be great if it could be brought
+  students, it is no longer available. It would be great if it could be brought
   back. Nonetheless, Alice, see above, is trying to achive a similar goal while
   being focused on Ada/SPARK.
 
@@ -131,11 +143,11 @@ For intermediate and seasoned Ada and SPARK users:
   language. Alire is always looking for testers for new releases, feedback,
   improvements and fixes. If you are looking for a project to help with, Alire
   would be great!
-  - **Add new packages:** one of the easiest ways to help Alire is by adding Ada
-    projects and packages to the index and making them available for the entire
-    community.
+  - **Add new crates:** one of the easiest ways to help Alire is by adding Ada
+    applications and libraries (called crates) to the index and making them
+    available for the entire community.
   - **Help with the documentation.**
-  - **Help build and test Alire in new architectures.**
+  - **Help build Alire in new architectures (for example RISC-V).**
   - **Improve the [compiler
     packaging](https://github.com/alire-project/GNAT-FSF-builds)** of Alire by
     adding a new architecture and testing it more.
@@ -147,7 +159,7 @@ For intermediate and seasoned Ada and SPARK users:
   Ada users to have a nice out-of-the-box experience with their operating
   system.
   - **Guix:** help package a working toolchain for the supported
-    architectres. Package Alire.
+    architectures. Package Alire.
   - **OpenSUSE:** extend the `gcc-ada` packaging to all the supported
     architectures. Create cross-compilation toolchains. Package Alire.
   - **RedHat and Fedora:** improve the support of the Ada toolchain. Package
@@ -170,7 +182,7 @@ For intermediate and seasoned Ada and SPARK users:
   well-known and widely-used projects so that both, new and seasoned Ada
   programers, can easily pick them up and start using their functionality.
   - **Ideas:**
-    - **[ImGUI](https://github.com/ocornut/imgui)** is a widely use GUI
+    - **[ImGUI](https://github.com/ocornut/imgui)** is a widely used GUI
       library. There is already an
       [Ada-binding](https://github.com/michael-hardeman/ImGui-Ada), but it could
       be updated and added to Alire.
@@ -228,7 +240,7 @@ For intermediate and seasoned Ada and SPARK users:
   places. Promoting it would also be a benefit.
 - **[SPARKNaCl](https://github.com/rod-chapman/SPARKNaCl/)** is a cryptographic
   library fully proven in SPARK with no runtime nor external dependencies. It
-  would be nice seing it receive a bit more marketing in non-Ada environments
+  would be nice seeing it receive a bit more marketing in non-Ada environments
   and projects implemented with it!
 
 ### Miscellaneous
@@ -282,9 +294,9 @@ about their use:
   abstracts the device away from the code. This is what generally drivers do. By
   implementing a HAL the low level aspects of the hardware are not needed in
   order to program the device, which makes the experience of embedded
-  programming a lot more pleasant and readable. Ada has quite a few HALs (see
-  the Ada Drivers Library), but we are nowhere near close to other communities,
-  eventhough we exceed at embedded programming.
+  programming a lot more pleasant and comprehensible. Ada has quite a few HALs
+  (see the Ada Drivers Library), but we are nowhere near to other communities,
+  even though we exceed at embedded programming.
 
 - **Improve [svd2ada](https://github.com/AdaCore/svd2ada) and
   [startup-gen](https://github.com/AdaCore/startup-gen).** These two tools allow
@@ -298,12 +310,13 @@ about their use:
 
 - **Improve support for tasking profiles in embedded OSes (Jorvik, Ravenscar).**
   This is a very advanced topic, but an important one. Embedded systems
-  generally do not support tasking due to the limited support that the language
-  has for them. Therefore, specialised profiles that allow for some basic,
-  real-time and safe tasking abilities need to be created. It would be great to
-  see more CPUs/Boards with support for the Jorvik and Ravenscar profiles.
+  generally do not support tasking due to the limited support that the runtime
+  implementation has for them. Therefore, specialised profiles that allow for
+  some basic, real-time and safe tasking abilities need to be created. It would
+  be great to see more CPUs/Boards with support for the Jorvik and Ravenscar
+  profiles.
 
-- **[AVR-Ada](https://github.com/RREE/AVRAda_Doc)** is a embedded development
+- **[AVR-Ada](https://github.com/RREE/AVRAda_Doc)** is an embedded development
   library that brings support for a large number of AVR devices to the Ada
   programming language. You can help by creating more examples, promoting it and
   expanding its capabilities.
@@ -311,12 +324,12 @@ about their use:
 ## Performance and benchmarks
 
 Ada tends to be shown in a lot of benchmarks, and that should be no surprise, as
-we are a highly optimizable, compiled programming language that does nor use
-garbage collection and leverages some of the best compiler infraestructure in
-the world (GCC and LLVM). However, we do not tend to rank at the top. "Why is
-that?" one may ask... Well... Most Ada code used for benchmarking porpuses has
-not been receiving the same amount of effort and care that other programming
-languages have. Let's fix this!
+it is a highly optimizable, compiled programming language that does not use
+garbage collection and leverages some of the best compiler infrastructure in the
+world (GCC and LLVM). However, we do not tend to rank at the top. "Why is that?"
+one may ask... Well... Most Ada code used for benchmarking purposes has not been
+receiving the same amount of effort and care that other programming languages
+have. Let's fix this!
 
 The following proposals are meant to be undertaken by people familiar with Ada
 and HPC (High Performance Computing):
@@ -325,8 +338,8 @@ and HPC (High Performance Computing):
   Game](https://benchmarksgame-team.pages.debian.net/benchmarksgame/index.html):**
   Ada programs could be optimised to utilise newer language constructs,
   algorithmic design and, once available and if useful, the new Ada 2022
-  `parallel` keyword. This should yield better results than the already (and
-  performant) programs. I believe we can improve our times quite a bit!
+  `parallel` keyword. This should yield better results than the current, already
+  performant programs. I believe we can improve our times quite a bit!
 - **[Programming Language and Compiler
   Benchmarks](https://programming-language-benchmarks.vercel.app/):** Ada is not
   even listed in this competition! The task would require providing performant
@@ -351,7 +364,7 @@ people unfamiliar with the Ada language.
     code in the GCC/GNAT source code. However, it has not been tested nor used
     in a long while and it seems to have fallen in disrepair. Some patches for
     Android support can be found in [this
-    repository](https://github.com/search?q=repo%3Ajrmarino%2Fdraco%20path%3A%2F%5Emisc%5C%2Fflux13%5C%2F%2F%20android&type=code). Nontheless,
+    repository](https://github.com/search?q=repo%3Ajrmarino%2Fdraco%20path%3A%2F%5Emisc%5C%2Fflux13%5C%2F%2F%20android&type=code). Nonetheless,
     Ada also supports Android with WASM, [see this
     demo](https://blog.adacore.com/android-application-with-ada-and-webassembly).
   - **[OpenBSD](https://www.openbsd.org/)** has supported GNAT for a few
@@ -362,7 +375,7 @@ people unfamiliar with the Ada language.
   - **[NetBSD](http://netbsd.org/):** updated GCC patches to add support for
     NetBSD (amd64) can be found
     [here](https://github.com/jrmarino/draco/tree/master/misc/flux13). Adding
-    support for other architectures can somewhat easily be done. Thank to
+    support for other architectures can somewhat easily be done. Thanks to
     J. Marino for his work.
   - **[FreeBSD](https://www.freebsd.org/)** support within GNAT could
     use quite a bit of help. This is [the current patch used by
@@ -385,7 +398,7 @@ people unfamiliar with the Ada language.
       was started [here](https://github.com/ila-embsys/zephyr-ada-gnat-rts).
     - **[se4L](https://sel4.systems/)** is a secure, verified RTOS microkernel
       for x86, ARM and RISC-V devices.
-    - **[FreeRTOS](https://freertos.org/)** is a widely use RTOS for
+    - **[FreeRTOS](https://freertos.org/)** is a widely used RTOS for
       microcontrollers. There are [some Ada
       ports](https://github.com/simonjwright/cortex-gnat-rts) that have support
       for it. However, mainline support would be preferred.
@@ -394,20 +407,20 @@ people unfamiliar with the Ada language.
     - **[Apache Nuttx](https://nuttx.apache.org/)** is a RTOS for embedded
       devices.
     - **[Minix 3](https://www.minix3.org/)** is one of the most well-known
-      microkernels. It has enough POSIX support that is can run the NetBSD
+      microkernels. It has enough POSIX support that is able to run the NetBSD
       userland on top of it.
     - **[RT-Thread](https://www.rt-thread.io/)** is a new RTOS for embedded
       devices.
-    - **[RIOT](https://www.osrtos.com/rtos/riot/)** is a RTOS for small embedded
-      systems.
+    - **[RIOT](https://www.osrtos.com/rtos/riot/)** is an RTOS for small
+      embedded systems.
   - **Unikernels:** these kernels have been created to run a single application
     and be the most secure possible as they have the smallest surface. The Ada
     community should ensure that Ada applications can run on these kernels.
     - **[Mirage OS](https://mirage.io/)** is a well-known unikernel written in
       OCaml. See also **[Solo5](https://github.com/Solo5/solo5).** For example,
       the [Muen](https://muen.codelabs.ch/) website runs on it.
-    - **[Unikraft](https://unikraft.org/)** is a unikernel focused on the
-      cloud and in security.
+    - **[Unikraft](https://unikraft.org/)** is a unikernel focused on the cloud
+      and security.
     - **[Toro](https://torokernel.io/)** is a unikernel written for
       microservices.
 - **[GNAT-LLVM](https://github.com/AdaCore/gnat-llvm/):** the GNAT-LLVM project
@@ -415,14 +428,20 @@ people unfamiliar with the Ada language.
   documentation and create cool demos, see [this Ada-WASM
   example](https://github.com/godunko/adawebpack).
 - **Bootstrapping GNAT:** GNAT currently requires a previous version to compile
-  itself. Sadly, there was never an original public version of GNAT that did
-  not have such requirement. This means, that GNAT cannot be compiled without
+  itself. Sadly, there was never an original public version of GNAT that did not
+  have such requirement. This means, that GNAT cannot be compiled without
   already having a working copy of a GNAT installation. The [GNAT Bootstrapping
   project](https://fossil.irvise.xyz/gnat-bootstrap/home) aims to create a
   small, minimal compiler together with the [live-bootstrap
   project](https://github.com/fosslinux/live-bootstrap/) in order to build an
   initial GNAT compiler.
   - **Requirements:** Scheme and compiler programming knowledge.
+- **Improve Ada 2022 support in GCC/GNAT:** there are still some Ada 2022
+  features that are yet to be implemented in GCC/GNAT, mainly the `parallel`
+  construct. You can help develop new features, tests them and improve the
+  current ones. For more information about the implementation of `parallel` in
+  GCC/GNAT, see [this forum
+  thread](https://forum.ada-lang.io/t/lightweight-parallelism-library-based-on-ada-2022-features/516/4)
 - **[HAC](https://github.com/zertovitch/hac)** is a small and limited Ada
   compiler, but it could make use of some help for those interested in compilers
   and Ada.
