@@ -91,7 +91,7 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     {
-      image: "img/ada_saw_coin.svg", // Used for og:image and twitter:iamge
+      image: "img/ada_logo.svg", // Used for og:image and twitter:iamge
       colorMode: {
         respectPrefersColorScheme: true
       },
@@ -99,7 +99,7 @@ const config = {
         title: "Ada",
         logo: {
           alt: "Ada",
-          src: "img/ada_saw_coin.svg",
+          src: "img/ada_logo.svg",
           width: 32,
           height: 32
         },
@@ -251,7 +251,7 @@ const config = {
         ],
         logo: {
           alt: "Alt",
-          src: "img/ada_saw_coin.svg",
+          src: "img/ada_logo.svg",
           width: 128,
           height: 128
         },
