@@ -28,7 +28,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <li>A set of types corresponding to the native COBOL types of the supported COBOL implementation (so-called &ldquo;internal COBOL representations&rdquo;), allowing Ada data to be passed as parameters to COBOL programs<br /></li>
 <MarginText>4/5</MarginText>
 <MarginInfo items={["AI12-0439-1"]} />
-<li>A set of types and constants reflecting external data representations such as can  be found in files or databases, allowing COBOL-generated data to be read by an Ada program, and Ada-generated data to be read by COBOL programs<br /></li>
+<li>A set of types and constants reflecting external data representations such as can be found in files or databases, allowing COBOL-generated data to be read by an Ada program, and Ada-generated data to be read by COBOL programs<br /></li>
 <MarginText>5</MarginText>
 <li>A generic package for converting between an Ada decimal type value and either an internal or external COBOL representation <br /></li>
 </ul>
@@ -41,7 +41,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>7/5</MarginText>
 <MarginInfo items={["AI12-0241-1", "AI12-0302-1"]} />
 <CodeBlock language="ada">
-package Interfaces.COBOL  {"\n"}   with  Preelaborate, Nonblocking, Global ={">"} in out synchronized is {"\n"}
+package Interfaces.COBOL {"\n"}   with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
 <MarginText>8</MarginText>
 -- Types and operations for internal data representations{"\n"}
 <MarginText>9</MarginText>
@@ -432,7 +432,7 @@ NOTE 1   An implementation is not required to support specifying aspect Conventi
 <MarginText>100/5</MarginText>
 <MarginInfo items={["AI12-0440-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 2   If an Ada subprogram is exported to COBOL, then a call from COBOL call can  specify either &ldquo;BY CONTENT&rdquo; or &ldquo;BY REFERENCE&rdquo;. <br /></Admonition>
+NOTE 2   If an Ada subprogram is exported to COBOL, then a call from COBOL call can specify either &ldquo;BY CONTENT&rdquo; or &ldquo;BY REFERENCE&rdquo;. <br /></Admonition>
 </AnnotatedOnly>
 
 
@@ -466,7 +466,7 @@ begin{"\n"}   Prog (Some_Record);{"\n"}   ...{"\n"}end Test_Call;{"\n"}
 with Interfaces.COBOL;{"\n"}with COBOL_Sequential_IO; -- Assumed to be supplied by implementation{"\n"}procedure Test_External_Formats is{"\n"}
 <MarginText>112/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-   -- Using data created by a COBOL program{"\n"}   -- Assume that a COBOL program has created a sequential file with{"\n"}   --  the following record structure, and that we want {"\n"}   --  process the records in an Ada program{"\n"}   --  01 EMPLOYEE-RECORD{"\n"}   --     05 NAME    PIC X(20).{"\n"}   --     05 SSN     PIC X(9).{"\n"}   --     05 SALARY  PIC 99999V99 USAGE COMP.{"\n"}   --     05 ADJUST  PIC S999V999 SIGN LEADING SEPARATE.{"\n"}   -- The COMP data is binary (32 bits), high-order byte first{"\n"}
+   -- Using data created by a COBOL program{"\n"}   -- Assume that a COBOL program has created a sequential file with{"\n"}   --  the following record structure, and that we want{"\n"}   --  process the records in an Ada program{"\n"}   --  01 EMPLOYEE-RECORD{"\n"}   --     05 NAME    PIC X(20).{"\n"}   --     05 SSN     PIC X(9).{"\n"}   --     05 SALARY  PIC 99999V99 USAGE COMP.{"\n"}   --     05 ADJUST  PIC S999V999 SIGN LEADING SEPARATE.{"\n"}   -- The COMP data is binary (32 bits), high-order byte first{"\n"}
 <MarginText>113</MarginText>
    package COBOL renames Interfaces.COBOL;{"\n"}
 <MarginText>114</MarginText>
@@ -492,7 +492,7 @@ begin{"\n"}   Open (COBOL_File, Name ={">"} "Some_File");{"\n"}
    loop{"\n"}     Read (COBOL_File, COBOL_Record);{"\n"}
 <MarginText>124/5</MarginText>
 <MarginInfo items={["AI12-0178-1"]} />
-     Ada_Record.Name := COBOL.To_Ada (COBOL_Record.Name);{"\n"}     Ada_Record.SSN  := COBOL.To_Ada (COBOL_Record.SSN);{"\n"}     Ada_Record.Salary :={"\n"}        To_Decimal(COBOL_Record.Salary, COBOL.High_Order_First);{"\n"}     Ada_Record.Adjust :={"\n"}        To_Decimal(COBOL_Record.Adjust, COBOL.Leading_Separate);{"\n"}     ... -- Process Ada_Record{"\n"}   end loop;{"\n"}exception{"\n"}   when End_Error ={">"} ...{"\n"}end Test_External_Formats;{"\n"}
+     Ada_Record.Name := COBOL.To_Ada(COBOL_Record.Name);{"\n"}     Ada_Record.SSN  := COBOL.To_Ada(COBOL_Record.SSN);{"\n"}     Ada_Record.Salary :={"\n"}        To_Decimal(COBOL_Record.Salary, COBOL.High_Order_First);{"\n"}     Ada_Record.Adjust :={"\n"}        To_Decimal(COBOL_Record.Adjust, COBOL.Leading_Separate);{"\n"}     ... -- Process Ada_Record{"\n"}   end loop;{"\n"}exception{"\n"}   when End_Error ={">"} ...{"\n"}end Test_External_Formats;{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>

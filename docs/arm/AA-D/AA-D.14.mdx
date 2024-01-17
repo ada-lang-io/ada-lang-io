@@ -176,7 +176,7 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Execution_Time
 
 <MarginText>28/5</MarginText>
 <MarginInfo items={["AI95-00307-01", "AI12-0444-1"]} />
-<p>Implementations targeted to machines with word size smaller than 32 bits may omit  support for the full range and granularity of the CPU_Time type.<br /></p>
+<p>Implementations targeted to machines with word size smaller than 32 bits may omit support for the full range and granularity of the CPU_Time type.<br /></p>
 
 
 #### Implementation Advice
@@ -231,52 +231,52 @@ If Interrupt_Clocks_Supported is True, it is now possible to determine the execu
 
 ## D.14.1  Execution Time Timers
 
-<MarginText>1/3</MarginText>
+<MarginText>1/3_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01", "AI05-0299-1"]} />
 <p>This subclause describes a language-defined package that provides a facility for calling a handler when a task has used a defined amount of CPU time. <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>2/2</MarginText>
+<MarginText>2/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>The following language-defined library package exists: <br /></p>
 
-<MarginText>3/5</MarginText>
+<MarginText>3/5_D.14.1</MarginText>
 <MarginInfo items={["AI12-0241-1", "AI12-0302-1"]} />
 <CodeBlock language="ada">
 with System;{"\n"}package Ada.Execution_Time.Timers{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}
-<MarginText>4/2</MarginText>
+<MarginText>4/2_D.14.1</MarginText>
    type Timer (T : not null access constant{"\n"}                       Ada.Task_Identification.Task_Id) is{"\n"}      tagged limited private;{"\n"}
-<MarginText>5/5</MarginText>
+<MarginText>5/5_D.14.1</MarginText>
 <MarginInfo items={["AI12-0241-1"]} />
    type Timer_Handler is{"\n"}      access protected procedure (TM : in out Timer){"\n"}      with Nonblocking ={">"} False;{"\n"}
-<MarginText>6/2</MarginText>
+<MarginText>6/2_D.14.1</MarginText>
    Min_Handler_Ceiling : constant System.Any_Priority :={"\n"}   implementation-defined;{"\n"}
-<MarginText>7/2</MarginText>
+<MarginText>7/2_D.14.1</MarginText>
    procedure Set_Handler (TM      : in out Timer;{"\n"}                          In_Time : in Time_Span;{"\n"}                          Handler : in Timer_Handler);{"\n"}   procedure Set_Handler (TM      : in out Timer;{"\n"}                          At_Time : in CPU_Time;{"\n"}                          Handler : in Timer_Handler);{"\n"}   function Current_Handler (TM : Timer) return Timer_Handler;{"\n"}   procedure Cancel_Handler (TM        : in out Timer;{"\n"}                             Cancelled :    out Boolean);{"\n"}
-<MarginText>8/2</MarginText>
+<MarginText>8/2_D.14.1</MarginText>
    function Time_Remaining (TM : Timer) return Time_Span;{"\n"}
-<MarginText>9/2</MarginText>
+<MarginText>9/2_D.14.1</MarginText>
    Timer_Resource_Error : exception;{"\n"}
-<MarginText>10/2</MarginText>
+<MarginText>10/2_D.14.1</MarginText>
 private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Execution_Time.Timers;{"\n"}
 
 </CodeBlock>
-<MarginText>11/2</MarginText>
+<MarginText>11/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>The type Timer represents an execution-time event for a single task and is capable of detecting execution-time overruns. The access discriminant T identifies the task concerned. The type Timer needs finalization (see <a href="../AA-7/AA-7.6">7.6</a>).<br /></p>
 
-<MarginText>12/2</MarginText>
+<MarginText>12/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>An object of type Timer is said to be <em>set</em> if it is associated with a nonnull value of type Timer_Handler and <em>cleared</em> otherwise. All Timer objects are initially cleared. <br /></p>
 
-<MarginText>13/2</MarginText>
+<MarginText>13/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>The type Timer_Handler identifies a protected procedure to be executed by the implementation when the timer expires. Such a protected procedure is called a <em>handler</em>. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>13.a/2</MarginText>
+<MarginText>13.a/2_D.14.1</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>Type Timer is tagged. This makes it possible to share a handler between several events. In simple cases, 'Access can be used to compare the parameter with a specific timer object (this works because a tagged type is a by-reference type). In more complex cases, a type extension of type Timer can be declared; a double type conversion can be used to access the extension data. An example of how this can be done can be found for the similar type Timing_Event, see <a href="../AA-D/AA-D.15">D.15</a>. <br /></Admonition>
 </AnnotatedOnly>
@@ -284,89 +284,89 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Execution_Time
 
 #### Dynamic Semantics
 
-<MarginText>14/2</MarginText>
+<MarginText>14/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>When a Timer object is created, or upon the first call of a Set_Handler procedure with the timer as parameter, the resources required to operate an execution-time timer based on the associated execution-time clock are allocated and initialized. If this operation would exceed the available resources, Timer_Resource_Error is raised.<br /></p>
 
-<MarginText>15/3</MarginText>
+<MarginText>15/3_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01", "AI05-0264-1"]} />
 <p>The procedures Set_Handler associate the handler Handler with the timer TM: if Handler is <strong>null</strong>, the timer is cleared; otherwise, it is set. The first procedure Set_Handler loads the timer TM with an interval specified by the Time_Span parameter. In this mode, the timer TM <em>expires</em> when the execution time of the task identified by TM.T.<strong>all</strong> has increased by In_Time; if In_Time is less than or equal to zero, the timer expires immediately. The second procedure Set_Handler loads the timer TM with the absolute value specified by At_Time. In this mode, the timer TM expires when the execution time of the task identified by TM.T.<strong>all</strong> reaches At_Time; if the value of At_Time has already been reached when Set_Handler is called, the timer expires immediately.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>15.a/2</MarginText>
+<MarginText>15.a/2_D.14.1</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
 <strong></strong>Since an access-to-constant can designate a variable, the Task_Id value designated by the discriminant of a Timer object can be changed after the object is created. Thus, an implementation cannot use the value of the Task_Id other than where this Reference Manual specifies. For instance, the Task_Id should be read when the timer is set, but it should not be used when the timer expires (as it may designate a different task at that point). <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>16/2</MarginText>
+<MarginText>16/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>A call of a procedure Set_Handler for a timer that is already set replaces the handler and the (absolute or relative) execution time; if Handler is not <strong>null</strong>, the timer remains set.<br /></p>
 
-<MarginText>17/2</MarginText>
+<MarginText>17/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>When a timer expires, the associated handler is executed, passing the timer as parameter. The initial action of the execution of the handler is to clear the event.<br /></p>
 
-<MarginText>18/3</MarginText>
+<MarginText>18/3_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01", "AI05-0264-1"]} />
 <p>The function Current_Handler returns the handler associated with the timer TM if that timer is set; otherwise, it returns <strong>null</strong>.<br /></p>
 
-<MarginText>19/3</MarginText>
+<MarginText>19/3_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01", "AI05-0264-1"]} />
 <p>The procedure Cancel_Handler clears the timer if it is set. Cancelled is assigned True if the timer was set prior to it being cleared; otherwise, it is assigned False.<br /></p>
 
-<MarginText>20/3</MarginText>
+<MarginText>20/3_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01", "AI05-0264-1"]} />
 <p>The function Time_Remaining returns the execution time interval that remains until the timer TM would expire, if that timer is set; otherwise, it returns Time_Span_Zero.<br /></p>
 
-<MarginText>21/2</MarginText>
+<MarginText>21/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>The constant Min_Handler_Ceiling is the minimum ceiling priority required for a protected object with a handler to ensure that no ceiling violation will occur when that handler is invoked.<br /></p>
 
-<MarginText>22/2</MarginText>
+<MarginText>22/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>As part of the finalization of an object of type Timer, the timer is cleared.<br /></p>
 
-<MarginText>23/2</MarginText>
+<MarginText>23/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>For all the subprograms defined in this package, Tasking_Error is raised if the task identified by TM.T.<strong>all</strong> has terminated, and Program_Error is raised if the value of TM.T.<strong>all</strong> is Task_Identification.Null_Task_Id.<br /></p>
 
-<MarginText>24/2</MarginText>
+<MarginText>24/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>An exception propagated from a handler invoked as part of the expiration of a timer has no effect.<br /></p>
 
 
 #### Erroneous Execution
 
-<MarginText>25/2</MarginText>
+<MarginText>25/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>For a call of any of the subprograms defined in this package, if the task identified by TM.T.<strong>all</strong> no longer exists, the execution of the program is erroneous.<br /></p>
 
 
 #### Implementation Requirements
 
-<MarginText>26/2</MarginText>
+<MarginText>26/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>For a given Timer object, the implementation shall perform the operations declared in this package atomically with respect to any of these operations on the same Timer object. The replacement of a handler by a call of Set_Handler shall be performed atomically with respect to the execution of the handler.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>26.a/2</MarginText>
+<MarginText>26.a/2_D.14.1</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This prevents various race conditions. In particular it ensures that if an event occurs when Set_Handler is changing the handler then either the new or old handler is executed in response to the appropriate event. It is never possible for a new handler to be executed in response to an old event <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>27/2</MarginText>
+<MarginText>27/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <p>When an object of type Timer is finalized, the system resources used by the timer shall be deallocated.<br /></p>
 
 
 #### Implementation Permissions
 
-<MarginText>28/3</MarginText>
+<MarginText>28/3_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01", "AI05-0264-1"]} />
 <p>Implementations may limit the number of timers that can be defined for each task. If this limit is exceeded, then Timer_Resource_Error is raised.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>29/2</MarginText>
+<MarginText>29/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <Admonition type="aarm" aarm="note">
 NOTE   A Timer_Handler can be associated with several Timer objects.<br /></Admonition>
@@ -378,7 +378,7 @@ NOTE   A Timer_Handler can be associated with several Timer objects.<br /></Admo
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>29.a/2</MarginText>
+<MarginText>29.a/2_D.14.1</MarginText>
 <MarginInfo items={["AI95-00307-01"]} />
 <Admonition type="aarm" aarm="note">
 The package Execution_Time.Timers is new. <br /></Admonition>
@@ -388,66 +388,66 @@ The package Execution_Time.Timers is new. <br /></Admonition>
 
 ## D.14.2  Group Execution Time Budgets
 
-<MarginText>1/3</MarginText>
+<MarginText>1/3_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01", "AI05-0299-1"]} />
 <p>This subclause describes a language-defined package to assign execution time budgets to groups of tasks. <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>2/2</MarginText>
+<MarginText>2/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>The following language-defined library package exists: <br /></p>
 
-<MarginText>3/5</MarginText>
+<MarginText>3/5_D.14.2</MarginText>
 <MarginInfo items={["AI05-0169-1", "AI12-0241-1", "AI12-0302-1"]} />
 <CodeBlock language="ada">
 with System;{"\n"}with System.Multiprocessors;{"\n"}package Ada.Execution_Time.Group_Budgets{"\n"}  with Nonblocking, Global ={">"} in out synchronized is{"\n"}
-<MarginText>4/3</MarginText>
+<MarginText>4/3_D.14.2</MarginText>
 <MarginInfo items={["AI05-0092-1", "AI05-0169-1"]} />
   type Group_Budget(CPU : System.Multiprocessors.CPU :={"\n"}                             System.Multiprocessors.CPU'First){"\n"}    is tagged limited private;{"\n"}
-<MarginText>5/5</MarginText>
+<MarginText>5/5_D.14.2</MarginText>
 <MarginInfo items={["AI12-0241-1"]} />
   type Group_Budget_Handler is access{"\n"}       protected procedure (GB : in out Group_Budget){"\n"}       with Nonblocking ={">"} False;{"\n"}
-<MarginText>6/2</MarginText>
+<MarginText>6/2_D.14.2</MarginText>
   type Task_Array is array (Positive range {"<"}{">"}) of{"\n"}                                  Ada.Task_Identification.Task_Id;{"\n"}
-<MarginText>7/2</MarginText>
+<MarginText>7/2_D.14.2</MarginText>
   Min_Handler_Ceiling : constant System.Any_Priority :={"\n"}    implementation-defined;{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
-<MarginText>7.a.1/3</MarginText>
+<MarginText>7.a.1/3_D.14.2</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The value of Min_Handler_Ceiling in Execution_Time.Group_Budgets.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>8/2</MarginText>
+<MarginText>8/2_D.14.2</MarginText>
 <CodeBlock language="ada">
   procedure Add_Task (GB : in out Group_Budget;{"\n"}                      T  : in Ada.Task_Identification.Task_Id);{"\n"}  procedure Remove_Task (GB: in out Group_Budget;{"\n"}                         T  : in Ada.Task_Identification.Task_Id);{"\n"}  function Is_Member (GB : Group_Budget;{"\n"}                      T : Ada.Task_Identification.Task_Id) return Boolean;{"\n"}  function Is_A_Group_Member{"\n"}     (T : Ada.Task_Identification.Task_Id) return Boolean;{"\n"}  function Members (GB : Group_Budget) return Task_Array;{"\n"}
-<MarginText>9/2</MarginText>
+<MarginText>9/2_D.14.2</MarginText>
   procedure Replenish (GB : in out Group_Budget; To : in Time_Span);{"\n"}  procedure Add (GB : in out Group_Budget; Interval : in Time_Span);{"\n"}  function Budget_Has_Expired (GB : Group_Budget) return Boolean;{"\n"}  function Budget_Remaining (GB : Group_Budget) return Time_Span;{"\n"}
-<MarginText>10/2</MarginText>
+<MarginText>10/2_D.14.2</MarginText>
   procedure Set_Handler (GB      : in out Group_Budget;{"\n"}                         Handler : in Group_Budget_Handler);{"\n"}  function Current_Handler (GB : Group_Budget){"\n"}     return Group_Budget_Handler;{"\n"}  procedure Cancel_Handler (GB        : in out Group_Budget;{"\n"}                            Cancelled : out Boolean);{"\n"}
-<MarginText>11/2</MarginText>
+<MarginText>11/2_D.14.2</MarginText>
   Group_Budget_Error : exception;{"\n"}
-<MarginText>12/2</MarginText>
+<MarginText>12/2_D.14.2</MarginText>
 private{"\n"}    --  not specified by the language{"\n"}end Ada.Execution_Time.Group_Budgets;{"\n"}
 
 </CodeBlock>
-<MarginText>13/2</MarginText>
+<MarginText>13/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>The type Group_Budget represents an execution time budget to be used by a group of tasks. The type Group_Budget needs finalization (see <a href="../AA-7/AA-7.6">7.6</a>). A task can belong to at most one group. Tasks of any priority can be added to a group.<br /></p>
 
-<MarginText>14/2</MarginText>
+<MarginText>14/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>An object of type Group_Budget has an associated nonnegative value of type Time_Span known as its <em>budget</em>, which is initially Time_Span_Zero. The type Group_Budget_Handler identifies a protected procedure to be executed by the implementation when the budget is <em>exhausted</em>, that is, reaches zero. Such a protected procedure is called a <em>handler</em>. <br /></p>
 
-<MarginText>15/2</MarginText>
+<MarginText>15/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>An object of type Group_Budget also includes a handler, which is a value of type Group_Budget_Handler. The handler of the object is said to be <em>set</em> if it is not null and <em>cleared</em> otherwise. The handler of all Group_Budget objects is initially cleared. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>15.a/2</MarginText>
+<MarginText>15.a/2_D.14.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>Type Group_Budget is tagged. This makes it possible to share a handler between several events. In simple cases, 'Access can be used to compare the parameter with a specific group budget object (this works because a tagged type is a by-reference type). In more complex cases, a type extension of type Group_Budget can be declared; a double type conversion can be used to access the extension data. An example of how this can be done can be found for the similar type Timing_Event, see <a href="../AA-D/AA-D.15">D.15</a>. <br /></Admonition>
 </AnnotatedOnly>
@@ -455,111 +455,111 @@ private{"\n"}    --  not specified by the language{"\n"}end Ada.Execution_Time.G
 
 #### Dynamic Semantics
 
-<MarginText>16/2</MarginText>
+<MarginText>16/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>The procedure Add_Task adds the task identified by T to the group GB; if that task is already a member of some other group, Group_Budget_Error is raised.<br /></p>
 
-<MarginText>17/2</MarginText>
+<MarginText>17/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>The procedure Remove_Task removes the task identified by T from the group GB; if that task is not a member of the group GB, Group_Budget_Error is raised. After successful execution of this procedure, the task is no longer a member of any group.<br /></p>
 
-<MarginText>18/3</MarginText>
+<MarginText>18/3_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01", "AI05-0264-1"]} />
 <p>The function Is_Member returns True if the task identified by T is a member of the group GB; otherwise, it returns False.<br /></p>
 
-<MarginText>19/3</MarginText>
+<MarginText>19/3_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01", "AI05-0264-1"]} />
 <p>The function Is_A_Group_Member returns True if the task identified by T is a member of some group; otherwise, it returns False.<br /></p>
 
-<MarginText>20/2</MarginText>
+<MarginText>20/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>The function Members returns an array of values of type Task_Identification.Task_Id identifying the members of the group GB. The order of the components of the array is unspecified.<br /></p>
 
-<MarginText>21/3</MarginText>
+<MarginText>21/3_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01", "AI05-0092-1", "AI05-0169-1"]} />
 <p>The procedure Replenish loads the group budget GB with To as the Time_Span value. The exception Group_Budget_Error is raised if the Time_Span value To is nonpositive. Any execution on CPU of any member of the group of tasks results in the budget counting down, unless exhausted. When the budget becomes exhausted (reaches Time_Span_Zero), the associated handler is executed if the handler of group budget GB is set. Nevertheless, the tasks continue to execute.<br /></p>
 
-<MarginText>22/2</MarginText>
+<MarginText>22/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>The procedure Add modifies the budget of the group GB. A positive value for Interval increases the budget. A negative value for Interval reduces the budget, but never below Time_Span_Zero. A zero value for Interval has no effect. A call of procedure Add that results in the value of the budget going to Time_Span_Zero causes the associated handler to be executed if the handler of the group budget GB is set.<br /></p>
 
-<MarginText>23/3</MarginText>
+<MarginText>23/3_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01", "AI05-0264-1"]} />
 <p>The function Budget_Has_Expired returns True if the budget of group GB is exhausted (equal to Time_Span_Zero); otherwise, it returns False.<br /></p>
 
-<MarginText>24/2</MarginText>
+<MarginText>24/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>The function Budget_Remaining returns the remaining budget for the group GB. If the budget is exhausted it returns Time_Span_Zero. This is the minimum value for a budget.<br /></p>
 
-<MarginText>25/3</MarginText>
+<MarginText>25/3_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01", "AI05-0264-1"]} />
 <p>The procedure Set_Handler associates the handler Handler with the Group_Budget GB: if Handler is <strong>null</strong>, the handler of Group_Budget is cleared; otherwise, it is set.<br /></p>
 
-<MarginText>26/2</MarginText>
+<MarginText>26/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>A call of Set_Handler for a Group_Budget that already has a handler set replaces the handler; if Handler is not <strong>null</strong>, the handler for Group_Budget remains set.<br /></p>
 
-<MarginText>27/3</MarginText>
+<MarginText>27/3_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01", "AI05-0264-1"]} />
 <p>The function Current_Handler returns the handler associated with the group budget GB if the handler for that group budget is set; otherwise, it returns <strong>null</strong>.<br /></p>
 
-<MarginText>28/3</MarginText>
+<MarginText>28/3_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01", "AI05-0264-1"]} />
 <p>The procedure Cancel_Handler clears the handler for the group budget if it is set. Cancelled is assigned True if the handler for the group budget was set prior to it being cleared; otherwise, it is assigned False.<br /></p>
 
-<MarginText>29/2</MarginText>
+<MarginText>29/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>The constant Min_Handler_Ceiling is the minimum ceiling priority required for a protected object with a handler to ensure that no ceiling violation will occur when that handler is invoked.<br /></p>
 
-<MarginText>30/2</MarginText>
+<MarginText>30/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>The precision of the accounting of task execution time to a Group_Budget is the same as that defined for execution-time clocks from the parent package.<br /></p>
 
-<MarginText>31/2</MarginText>
+<MarginText>31/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>As part of the finalization of an object of type Group_Budget all member tasks are removed from the group identified by that object.<br /></p>
 
-<MarginText>32/3</MarginText>
+<MarginText>32/3_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01", "AI05-0264-1"]} />
 <p>If a task is a member of a Group_Budget when it terminates, then as part of the finalization of the task it is removed from the group.<br /></p>
 
-<MarginText>33/2</MarginText>
+<MarginText>33/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>For all the operations defined in this package, Tasking_Error is raised if the task identified by T has terminated, and Program_Error is raised if the value of T is Task_Identification.Null_Task_Id.<br /></p>
 
-<MarginText>34/2</MarginText>
+<MarginText>34/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>An exception propagated from a handler invoked when the budget of a group of tasks becomes exhausted has no effect.<br /></p>
 
 
 #### Erroneous Execution
 
-<MarginText>35/2</MarginText>
+<MarginText>35/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>For a call of any of the subprograms defined in this package, if the task identified by T no longer exists, the execution of the program is erroneous. <br /></p>
 
 
 #### Implementation Requirements
 
-<MarginText>36/2</MarginText>
+<MarginText>36/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <p>For a given Group_Budget object, the implementation shall perform the operations declared in this package atomically with respect to any of these operations on the same Group_Budget object. The replacement of a handler, by a call of Set_Handler, shall be performed atomically with respect to the execution of the handler. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>36.a/2</MarginText>
+<MarginText>36.a/2_D.14.2</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This prevents various race conditions. In particular it ensures that if the budget is exhausted when Set_Handler is changing the handler then either the new or old handler is executed and the exhausting event is not lost. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>37/2</MarginText>
+<MarginText>37/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <Admonition type="aarm" aarm="note">
 NOTE 1   Clearing or setting of the handler of a group budget does not change the current value of the budget. Exhaustion or loading of a budget does not change whether the handler of the group budget is set or cleared.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>38/2</MarginText>
+<MarginText>38/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <Admonition type="aarm" aarm="note">
 NOTE 2   A Group_Budget_Handler can be associated with several Group_Budget objects. <br /></Admonition>
@@ -571,7 +571,7 @@ NOTE 2   A Group_Budget_Handler can be associated with several Group_Budget obje
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>38.a/2</MarginText>
+<MarginText>38.a/2_D.14.2</MarginText>
 <MarginInfo items={["AI95-00354-01"]} />
 <Admonition type="aarm" aarm="note">
 The package Execution_Time.Group_Budgets is new. <br /></Admonition>
@@ -583,7 +583,7 @@ The package Execution_Time.Group_Budgets is new. <br /></Admonition>
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>38.b/3</MarginText>
+<MarginText>38.b/3_D.14.2</MarginText>
 <MarginInfo items={["AI05-0169-1"]} />
 <Admonition type="aarm" aarm="note">
 A Group_Budget is now defined to work on a single processor. If an implementation managed to make this package work for programs running on a multiprocessor system, and a program depends on that fact, it could fail when ported to Ada 2012. We believe it is unlikely that such an implementation exists because of the difficulty of signalling other processors when the time reaches zero; in any case, depending on such an implementation is not portable. <br /></Admonition>
@@ -593,45 +593,45 @@ A Group_Budget is now defined to work on a single processor. If an implementatio
 
 ## D.14.3  Execution Time of Interrupt Handlers
 
-<MarginText>1/3</MarginText>
+<MarginText>1/3_D.14.3</MarginText>
 <MarginInfo items={["AI05-0170-1", "AI05-0299-1"]} />
 <p>This subclause describes a language-defined package to measure the execution time of interrupt handlers. <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>2/3</MarginText>
+<MarginText>2/3_D.14.3</MarginText>
 <MarginInfo items={["AI05-0170-1"]} />
 <p>The following language-defined library package exists: <br /></p>
 
-<MarginText>3/5</MarginText>
+<MarginText>3/5_D.14.3</MarginText>
 <MarginInfo items={["AI12-0241-1", "AI12-0302-1"]} />
 <CodeBlock language="ada">
 with Ada.Interrupts;{"\n"}package Ada.Execution_Time.Interrupts{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}   function Clock (Interrupt : Ada.Interrupts.Interrupt_Id){"\n"}        return CPU_Time;{"\n"}   function Supported (Interrupt : Ada.Interrupts.Interrupt_Id){"\n"}        return Boolean;{"\n"}end Ada.Execution_Time.Interrupts;{"\n"}
 
 </CodeBlock>
-<MarginText>4/3</MarginText>
+<MarginText>4/3_D.14.3</MarginText>
 <MarginInfo items={["AI05-0170-1"]} />
 <p>The execution time or CPU time of a given interrupt Interrupt is defined as the time spent by the system executing interrupt handlers identified by Interrupt, including the time spent executing run-time or system services on its behalf. The mechanism used to measure execution time is implementation defined. Time spent executing interrupt handlers is distinct from time spent executing any task. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>4.a/3</MarginText>
+<MarginText>4.a/3_D.14.3</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>The implementation-defined mechanism here is the same as that covered by the Documentation Requirements of <a href="../AA-D/AA-D.14">D.14</a>, so we don't repeat that requirement here. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>5/3</MarginText>
+<MarginText>5/3_D.14.3</MarginText>
 <MarginInfo items={["AI05-0170-1"]} />
 <p>For each interrupt, the execution time value is initially set to zero. <br /></p>
 
 
 #### Dynamic Semantics
 
-<MarginText>6/3</MarginText>
+<MarginText>6/3_D.14.3</MarginText>
 <MarginInfo items={["AI05-0170-1"]} />
 <p>The function Clock returns the current cumulative execution time of the interrupt identified by Interrupt. If Separate_Interrupt_Clocks_Supported is set to False the function raises Program_Error.<br /></p>
 
-<MarginText>7/3</MarginText>
+<MarginText>7/3_D.14.3</MarginText>
 <MarginInfo items={["AI05-0170-1", "AI05-0264-1"]} />
 <p>The function Supported returns True if the implementation is monitoring the execution time of the interrupt identified by Interrupt; otherwise, it returns False. For any Interrupt_Id Interrupt for which Supported(Interrupt) returns False, the function Clock(Interrupt) will return a value equal to Ada.Execution_Time.Time_Of(0).<br /></p>
 
@@ -641,7 +641,7 @@ with Ada.Interrupts;{"\n"}package Ada.Execution_Time.Interrupts{"\n"}   with Non
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>7.a/3</MarginText>
+<MarginText>7.a/3_D.14.3</MarginText>
 <MarginInfo items={["AI05-0170-1"]} />
 <Admonition type="aarm" aarm="note">
 The package Execution_Time.Interrupts is new. <br /></Admonition>

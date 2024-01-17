@@ -117,7 +117,7 @@ Remote subprogram calls are standardized since the RPC paradigm is widely-used, 
 
 <MarginText>17/5</MarginText>
 <MarginInfo items={["AI12-0183-1"]} />
-<p>All forms of remote subprogram calls are potentially blocking operations (see <a href="../AA-9/AA-9.5">9.5</a> ). <br /></p>
+<p>All forms of remote subprogram calls are potentially blocking operations (see <a href="../AA-9/AA-9.5">9.5</a>). <br /></p>
 
 <AnnotatedOnly>
 <MarginText>17.a</MarginText>
@@ -350,7 +350,7 @@ Clarified that remote subprogram calls are always to active partitions. <br /></
 
 ## E.4.1  Asynchronous Remote Calls
 
-<MarginText>1/3</MarginText>
+<MarginText>1/3_E.4.1</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <p>[This subclause introduces the aspect Asynchronous which can be specified to allow a remote subprogram call to return prior to completion of the execution of the corresponding remote subprogram body.] <br /></p>
 
@@ -359,26 +359,26 @@ Clarified that remote subprogram calls are always to active partitions. <br /></
 
 #### Static Semantics
 
-<MarginText>8/3</MarginText>
+<MarginText>8/3_E.4.1</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <p>For a remote procedure, the following language-defined representation aspect may be specified: <br /></p>
 
-<MarginText>8.1/3</MarginText>
+<MarginText>8.1/3_E.4.1</MarginText>
 <dt><br/>Asynchronous</dt>
 <dl>
 <dd>The type of aspect Asynchronous is Boolean. If directly specified, the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> shall be a static expression. If not specified, the aspect is False.<br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>8.a/3</MarginText>
+<MarginText>8.a/3_E.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Asynchronous: </strong>Remote procedure calls are asynchronous; the caller continues without waiting for the call to return.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>8.2/3</MarginText>
+<MarginText>8.2/3_E.4.1</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <p>For a remote access type, the following language-defined representation aspect may be specified: <br /></p>
 
-<MarginText>8.3/3</MarginText>
+<MarginText>8.3/3_E.4.1</MarginText>
 <dt><br/>Asynchronous</dt>
 <dl>
 <dd>The type of aspect Asynchronous is Boolean. If directly specified, the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> shall be a static expression. If not specified (including by inheritance), the aspect is False. <br /></dd>
@@ -386,29 +386,29 @@ Clarified that remote subprogram calls are always to active partitions. <br /></
 
 #### Legality Rules
 
-<MarginText>8.4/3</MarginText>
+<MarginText>8.4/3_E.4.1</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <p>If aspect Asynchronous is specified for a remote procedure, the formal parameters of the procedure shall all be of mode <strong>in</strong>.<br /></p>
 
-<MarginText>8.5/3</MarginText>
+<MarginText>8.5/3_E.4.1</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <p>If aspect Asynchronous is specified for a remote access type, the type shall be a remote access-to-class-wide type, or the type shall be a remote access-to-procedure type with the formal parameters of the designated profile of the type all of mode <strong>in</strong>. <br /></p>
 
 
 #### Dynamic Semantics
 
-<MarginText>9/3</MarginText>
+<MarginText>9/3_E.4.1</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <p>A remote call is <em>asynchronous</em> if it is a call to a procedure, or a call through a value of an access-to-procedure type, for which aspect Asynchronous is True. In addition, if aspect Asynchronous is True for a remote access-to-class-wide type, then a dispatching call on a procedure with a controlling operand designated by a value of the type is asynchronous if the formal parameters of the procedure are all of mode <strong>in</strong>. <br /></p>
 
 
 #### Implementation Requirements
 
-<MarginText>10</MarginText>
+<MarginText>10_E.4.1</MarginText>
 <p>Asynchronous remote procedure calls shall be implemented such that the corresponding body executes at most once as a result of the call. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>10.a</MarginText>
+<MarginText>10.a_E.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>It is not clear that this rule can be tested or even defined formally. <br /></Admonition>
 </AnnotatedOnly>
@@ -419,7 +419,7 @@ Clarified that remote subprogram calls are always to active partitions. <br /></
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>10.b/3</MarginText>
+<MarginText>10.b/3_E.4.1</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <Admonition type="aarm" aarm="note">
 Aspect Asynchronous is new; <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Asynchronous is now obsolescent. <br /></Admonition>
@@ -432,48 +432,48 @@ Aspect Asynchronous is new; <code><a href="../AA-2/AA-2.8#S0019">pragma</a></cod
 
 #### Examples
 
-<MarginText>1</MarginText>
+<MarginText>1_E.4.2</MarginText>
 <p><em>Example of using a remote access-to-class-wide type to achieve dynamic binding across active partitions:</em> <br /></p>
 
-<MarginText>2/5</MarginText>
+<MarginText>2/5_E.4.2</MarginText>
 <MarginInfo items={["AI12-0414-1"]} />
 <CodeBlock language="ada">
-package Tapes {"\n"}   with  Pure is {"\n"}   type Tape is abstract tagged limited private;{"\n"}   -- Primitive dispatching operations where{"\n"}   -- Tape is controlling operand{"\n"}   procedure Copy (From, To : access Tape;{"\n"}                   Num_Recs : in Natural) is abstract;{"\n"}   procedure Rewind (T : access Tape) is abstract;{"\n"}   -- More operations{"\n"}private{"\n"}   type Tape is ...{"\n"}end Tapes;{"\n"}
-<MarginText>3/5</MarginText>
+package Tapes{"\n"}   with Pure is{"\n"}   type Tape is abstract tagged limited private;{"\n"}   -- Primitive dispatching operations where{"\n"}   -- Tape is controlling operand{"\n"}   procedure Copy (From, To : access Tape;{"\n"}                   Num_Recs : in Natural) is abstract;{"\n"}   procedure Rewind (T : access Tape) is abstract;{"\n"}   -- More operations{"\n"}private{"\n"}   type Tape is ...{"\n"}end Tapes;{"\n"}
+<MarginText>3/5_E.4.2</MarginText>
 <MarginInfo items={["AI12-0414-1"]} />
-with Tapes;{"\n"}package Name_Server {"\n"}   with  Remote_Call_Interface is {"\n"}   -- Dynamic binding to remote operations is achieved{"\n"}   -- using the access-to-limited-class-wide type Tape_Ptr{"\n"}   type Tape_Ptr is access all Tapes.Tape'Class;{"\n"}   -- The following statically bound remote operations{"\n"}   -- allow for a name-server capability in this example{"\n"}   function  Find     (Name : String) return Tape_Ptr;{"\n"}   procedure Register (Name : in String; T : in Tape_Ptr);{"\n"}   procedure Remove   (T : in Tape_Ptr);{"\n"}   -- More operations{"\n"}end Name_Server;{"\n"}
-<MarginText>4</MarginText>
+with Tapes;{"\n"}package Name_Server{"\n"}   with Remote_Call_Interface is{"\n"}   -- Dynamic binding to remote operations is achieved{"\n"}   -- using the access-to-limited-class-wide type Tape_Ptr{"\n"}   type Tape_Ptr is access all Tapes.Tape'Class;{"\n"}   -- The following statically bound remote operations{"\n"}   -- allow for a name-server capability in this example{"\n"}   function  Find     (Name : String) return Tape_Ptr;{"\n"}   procedure Register (Name : in String; T : in Tape_Ptr);{"\n"}   procedure Remove   (T : in Tape_Ptr);{"\n"}   -- More operations{"\n"}end Name_Server;{"\n"}
+<MarginText>4_E.4.2</MarginText>
 package Tape_Driver is{"\n"}  -- Declarations are not shown, they are irrelevant here{"\n"}end Tape_Driver;{"\n"}
-<MarginText>5/5</MarginText>
+<MarginText>5/5_E.4.2</MarginText>
 <MarginInfo items={["AI12-0347-1"]} />
 with Tapes, Name_Server;{"\n"}package body Tape_Driver is{"\n"}   type New_Tape is new Tapes.Tape with ...{"\n"}   overriding{"\n"}   procedure Rewind (T : access New_Tape);{"\n"}   overriding{"\n"}   procedure Copy{"\n"}    (From, To : access New_Tape; Num_Recs: in Natural) is{"\n"}   begin{"\n"}     . . .{"\n"}   end Copy;{"\n"}   procedure Rewind (T : access New_Tape) is{"\n"}   begin{"\n"}      . . .{"\n"}   end Rewind;{"\n"}   -- Objects remotely accessible through use{"\n"}   -- of Name_Server operations{"\n"}   Tape1, Tape2 : aliased New_Tape;{"\n"}begin{"\n"}   Name_Server.Register ("NINE-TRACK",  Tape1'Access);{"\n"}   Name_Server.Register ("SEVEN-TRACK", Tape2'Access);{"\n"}end Tape_Driver;{"\n"}
-<MarginText>6</MarginText>
+<MarginText>6_E.4.2</MarginText>
 with Tapes, Name_Server;{"\n"}-- Tape_Driver is not needed and thus not mentioned in the <a href="../AA-10/AA-10.1#S0294">with_clause</a>{"\n"}procedure Tape_Client is{"\n"}   T1, T2 : Name_Server.Tape_Ptr;{"\n"}begin{"\n"}   T1 := Name_Server.Find ("NINE-TRACK");{"\n"}   T2 := Name_Server.Find ("SEVEN-TRACK");{"\n"}   Tapes.Rewind (T1);{"\n"}   Tapes.Rewind (T2);{"\n"}   Tapes.Copy (T1, T2, 3);{"\n"}end Tape_Client;{"\n"}
 
 </CodeBlock>
-<MarginText>7/5</MarginText>
+<MarginText>7/5_E.4.2</MarginText>
 <MarginInfo items={["AI12-0452-1"]} />
-<p><em>Discussion of  the example</em>: <br /></p>
+<p><em>Discussion of the example</em>: <br /></p>
 
 <AnnotatedOnly>
-<MarginText>7.a</MarginText>
+<MarginText>7.a_E.4.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>The example does not show the case where tapes are removed from or added to the system. In the former case, an appropriate exception needs to be defined to instruct the client to use another tape. In the latter, the Name_Server should have a query function visible to the clients to inform them about the availability of the tapes in the system. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>8/1</MarginText>
+<MarginText>8/1_E.4.2</MarginText>
 <p><em>This paragraph was deleted.</em><br /></p>
 
-<MarginText>9</MarginText>
+<MarginText>9_E.4.2</MarginText>
 <ul>
 <li>The package Tapes provides the necessary declarations of the type and its primitive operations.<br /></li>
-<MarginText>10</MarginText>
+<MarginText>10_E.4.2</MarginText>
 <li>Name_Server is a remote call interface package and is elaborated in a separate active partition to provide the necessary naming services (such as Register and Find) to the entire distributed program through remote subprogram calls.<br /></li>
-<MarginText>11</MarginText>
+<MarginText>11_E.4.2</MarginText>
 <li>Tape_Driver is a normal package that is elaborated in a partition configured on the processing node that is connected to the tape device(s). The abstract operations are overridden to support the locally declared tape devices (Tape1, Tape2). The package is not visible to its clients, but it exports the tape devices (as remote objects) through the services of the Name_Server. This allows for tape devices to be dynamically added, removed or replaced without requiring the modification of the clients' code.<br /></li>
-<MarginText>12/5</MarginText>
+<MarginText>12/5_E.4.2</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
-<li>The Tape_Client procedure references only declarations in the Tapes and Name_Server packages. Before using a tape for the first time, it will  query the Name_Server for a system-wide identity for that tape. From then on, it can use that identity to access the tape device.<br /></li>
-<MarginText>13</MarginText>
+<li>The Tape_Client procedure references only declarations in the Tapes and Name_Server packages. Before using a tape for the first time, it will query the Name_Server for a system-wide identity for that tape. From then on, it can use that identity to access the tape device.<br /></li>
+<MarginText>13_E.4.2</MarginText>
 <li>Values of remote access type Tape_Ptr include the necessary information to complete the remote dispatching operations that result from dereferencing the controlling operands T1 and T2.<br /></li>
 </ul>

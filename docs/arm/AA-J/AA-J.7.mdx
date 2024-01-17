@@ -69,30 +69,30 @@ Ada 83's <code>address_clause</code> is now called an <code><a href="../AA-J/AA-
 
 ## J.7.1  Interrupt Entries
 
-<MarginText>1</MarginText>
+<MarginText>1_J.7.1</MarginText>
 <p>[Implementations are permitted to allow the attachment of task entries to interrupts via the address clause. Such an entry is referred to as an <em>interrupt entry</em>.<br /></p>
 
-<MarginText>2</MarginText>
+<MarginText>2_J.7.1</MarginText>
 <p>The address of the task entry corresponds to a hardware interrupt in an implementation-defined manner. (See Ada.Interrupts.Reference in <a href="../AA-C/AA-C.3#Subclause_C.3.2">C.3.2</a>.)] <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>3</MarginText>
+<MarginText>3_J.7.1</MarginText>
 <p>The following attribute is defined:<br /></p>
 
-<MarginText>4</MarginText>
+<MarginText>4_J.7.1</MarginText>
 <p>For any task entry X: <br /></p>
 
-<MarginText>5</MarginText>
+<MarginText>5_J.7.1</MarginText>
 <dt><br/>X'Address </dt>
 <dl>
 <dd>For a task entry whose address is specified (an <em>interrupt entry</em>), the value refers to the corresponding hardware interrupt. For such an entry, as for any other task entry, the meaning of this value is implementation defined. The value of this attribute is of the type of the subtype System.Address.<br /></dd>
-<MarginText>6</MarginText>
+<MarginText>6_J.7.1</MarginText>
 <dd>Address may be specified for single entries via an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>. <br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>6.a</MarginText>
+<MarginText>6.a_J.7.1</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>Because of the equivalence of <code><a href="../AA-J/AA-J.7#S0368">at_clause</a></code>s and <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>s, an interrupt entry may be specified via either notation. <br /></Admonition>
 </AnnotatedOnly>
@@ -100,41 +100,41 @@ Ada 83's <code>address_clause</code> is now called an <code><a href="../AA-J/AA-
 
 #### Dynamic Semantics
 
-<MarginText>7</MarginText>
+<MarginText>7_J.7.1</MarginText>
 <p>As part of the initialization of a task object, the address clause for an interrupt entry is elaborated[, which evaluates the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of the address clause]. A check is made that the address specified is associated with some interrupt to which a task entry may be attached. If this check fails, Program_Error is raised. Otherwise, the interrupt entry is attached to the interrupt associated with the specified address.<br /></p>
 
-<MarginText>8</MarginText>
+<MarginText>8_J.7.1</MarginText>
 <p>Upon finalization of the task object, the interrupt entry, if any, is detached from the corresponding interrupt and the default treatment is restored.<br /></p>
 
-<MarginText>9</MarginText>
+<MarginText>9_J.7.1</MarginText>
 <p>While an interrupt entry is attached to an interrupt, the interrupt is reserved (see <a href="../AA-C/AA-C.3">C.3</a>).<br /></p>
 
-<MarginText>10</MarginText>
+<MarginText>10_J.7.1</MarginText>
 <p>An interrupt delivered to a task entry acts as a call to the entry issued by a hardware task whose priority is in the System.Interrupt_Priority range. It is implementation defined whether the call is performed as an ordinary entry call, a timed entry call, or a conditional entry call; which kind of call is performed can depend on the specific interrupt.<br /></p>
 
 
 #### Bounded (Run-Time) Errors
 
-<MarginText>11</MarginText>
+<MarginText>11_J.7.1</MarginText>
 <p>It is a bounded error to evaluate E'Caller (see <a href="../AA-C/AA-C.7#Subclause_C.7.1">C.7.1</a>) in an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> for an interrupt entry. The possible effects are the same as for calling Current_Task from an entry body. <br /></p>
 
 
 #### Documentation Requirements
 
-<MarginText>12</MarginText>
+<MarginText>12_J.7.1</MarginText>
 <p>The implementation shall document to which interrupts a task entry may be attached. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>12.a/2</MarginText>
+<MarginText>12.a/2_J.7.1</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Documentation Requirement: </strong>The interrupts to which a task entry may be attached.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>13</MarginText>
+<MarginText>13_J.7.1</MarginText>
 <p>The implementation shall document whether the invocation of an interrupt entry has the effect of an ordinary entry call, conditional call, or a timed call, and whether the effect varies in the presence of pending interrupts. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>13.a/2</MarginText>
+<MarginText>13.a/2_J.7.1</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Documentation Requirement: </strong>The type of entry call invoked for an interrupt entry.<br /></Admonition>
 </AnnotatedOnly>
@@ -142,34 +142,34 @@ Ada 83's <code>address_clause</code> is now called an <code><a href="../AA-J/AA-
 
 #### Implementation Permissions
 
-<MarginText>14</MarginText>
+<MarginText>14_J.7.1</MarginText>
 <p>The support for this subclause is optional.<br /></p>
 
-<MarginText>15</MarginText>
+<MarginText>15_J.7.1</MarginText>
 <p>Interrupts to which the implementation allows a task entry to be attached may be designated as reserved for the entire duration of program execution[; that is, not just when they have an interrupt entry attached to them].<br /></p>
 
-<MarginText>16/1</MarginText>
+<MarginText>16/1_J.7.1</MarginText>
 <MarginInfo items={["AI95-00111-01"]} />
 <p>{"{"}<em>8652/0077</em>{"}"} Interrupt entry calls may be implemented by having the hardware execute directly the appropriate <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>. Alternatively, the implementation is allowed to provide an internal interrupt handler to simulate the effect of a normal task calling the entry.<br /></p>
 
-<MarginText>17</MarginText>
+<MarginText>17_J.7.1</MarginText>
 <p>The implementation is allowed to impose restrictions on the specifications and bodies of tasks that have interrupt entries.<br /></p>
 
-<MarginText>18</MarginText>
+<MarginText>18_J.7.1</MarginText>
 <p>It is implementation defined whether direct calls (from the program) to interrupt entries are allowed.<br /></p>
 
-<MarginText>19</MarginText>
+<MarginText>19_J.7.1</MarginText>
 <p>If a <code><a href="../AA-9/AA-9.7#S0269">select_statement</a></code> contains both a <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> and an <code><a href="../AA-9/AA-9.7#S0273">accept_alternative</a></code> for an interrupt entry, then an implementation is allowed to impose further requirements for the selection of the <code><a href="../AA-9/AA-9.7#S0275">terminate_alternative</a></code> in addition to those given in <a href="../AA-9/AA-9.3">9.3</a>. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>20/1</MarginText>
+<MarginText>20/1_J.7.1</MarginText>
 <MarginInfo items={["AI95-00111-01"]} />
 <Admonition type="aarm" aarm="note">
 NOTE 1   {"{"}<em>8652/0077</em>{"}"} Queued interrupts correspond to ordinary entry calls. Interrupts that are lost if not immediately processed correspond to conditional entry calls. It is a consequence of the priority rules that an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> executed in response to an interrupt can be executed with the active priority at which the hardware generates the interrupt, taking precedence over lower priority tasks, without a scheduling action.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>21</MarginText>
+<MarginText>21_J.7.1</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 2   Control information that is supplied upon an interrupt can be passed to an associated interrupt entry as one or more parameters of mode <strong>in</strong>. <br /></Admonition>
 </AnnotatedOnly>
@@ -177,10 +177,10 @@ NOTE 2   Control information that is supplied upon an interrupt can be passed to
 
 #### Examples
 
-<MarginText>22</MarginText>
+<MarginText>22_J.7.1</MarginText>
 <p><em>Example of an interrupt entry:</em> <br /></p>
 
-<MarginText>23</MarginText>
+<MarginText>23_J.7.1</MarginText>
 <CodeBlock language="ada">
 task Interrupt_Handler is{"\n"}  entry Done;{"\n"}  for Done'Address use Ada.Interrupts.Reference(Ada.Interrupts.Names.Device_Done);{"\n"}end Interrupt_Handler;{"\n"}
 
@@ -191,7 +191,7 @@ task Interrupt_Handler is{"\n"}  entry Done;{"\n"}  for Done'Address use Ada.Int
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>23.a/2</MarginText>
+<MarginText>23.a/2_J.7.1</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="note">
 RM83-13.5.1 did not adequately address the problems associated with interrupts. This feature is now obsolescent and is replaced by the Ada 95 interrupt model as specified in the Systems Programming Annex. <br /></Admonition>
@@ -203,7 +203,7 @@ RM83-13.5.1 did not adequately address the problems associated with interrupts. 
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>23.b/2</MarginText>
+<MarginText>23.b/2_J.7.1</MarginText>
 <MarginInfo items={["AI95-00111-01"]} />
 <Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0077</em>{"}"} <strong>Corrigendum:</strong> The undefined term <em>accept body</em> was replaced by <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>. <br /></Admonition>

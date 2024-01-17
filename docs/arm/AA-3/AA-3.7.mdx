@@ -23,7 +23,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <AnnotatedOnly>
 <MarginText>1.a/5</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Term entry: </strong><strong>discriminant</strong> &mdash; parameter for a composite type, which can control, for example, the bounds of a component that is an array<br /><br /></Admonition>
+<strong>Term entry: </strong><strong>discriminant</strong> &mdash; parameter for a composite type, which can control, for example, the bounds of a component that is an array<br />Note: A discriminant for a task type can be used to pass data to a task of the type upon its creation.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -582,14 +582,14 @@ Discriminants now can have an <code><a href="../AA-13/AA-13.1#S0346">aspect_spec
 
 ## 3.7.1  Discriminant Constraints
 
-<MarginText>1</MarginText>
+<MarginText>1_3.7.1</MarginText>
 <p>A <code><a href="../AA-3/AA-3.7#S0064">discriminant_constraint</a></code> specifies the values of the discriminants for a given discriminated type. <br /></p>
 
 
 #### Language Design Principles
 
 <AnnotatedOnly>
-<MarginText>1.a/3</MarginText>
+<MarginText>1.a/3_3.7.1</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
 <Admonition type="aarm" aarm="note">
 The rules in this subclause are intentionally parallel to those given in <a href="../AA-4/AA-4.3#Subclause_4.3.1">4.3.1</a>, &ldquo;<a href="../AA-4/AA-4.3#Subclause_4.3.1">Record Aggregates</a>&rdquo;. <br /></Admonition>
@@ -598,68 +598,68 @@ The rules in this subclause are intentionally parallel to those given in <a href
 
 #### Syntax
 
-<MarginText>2</MarginText>
+<MarginText>2_3.7.1</MarginText>
 
 <CodeBlock>
 <code>discriminant_constraint</code><a id="S0064"></a><code> ::= </code><br />   (<code><a href="../AA-3/AA-3.7#S0065">discriminant_association</a></code> {"{"}, <code><a href="../AA-3/AA-3.7#S0065">discriminant_association</a></code>{"}"})<br />
 
 </CodeBlock>
-<MarginText>3/5</MarginText>
+<MarginText>3/5_3.7.1</MarginText>
 <MarginInfo items={["AI12-0212-1"]} />
 
 <CodeBlock>
-<code>discriminant_association</code><a id="S0065"></a><code> ::= </code><br />   [<em>discriminant_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> {"{"}'|'  <em>discriminant_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>{"}"} ={">"}] <code><a href="../AA-4/AA-4.4#S0132">expression</a></code><br />
+<code>discriminant_association</code><a id="S0065"></a><code> ::= </code><br />   [<em>discriminant_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> {"{"}'|' <em>discriminant_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>{"}"} ={">"}] <code><a href="../AA-4/AA-4.4#S0132">expression</a></code><br />
 
 </CodeBlock>
-<MarginText>4</MarginText>
+<MarginText>4_3.7.1</MarginText>
 <p class="Indented2">A <code><a href="../AA-3/AA-3.7#S0065">discriminant_association</a></code> is said to be <em>named</em> if it has one or more <em>discriminant_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>s; it is otherwise said to be <em>positional</em>. In a <code><a href="../AA-3/AA-3.7#S0064">discriminant_constraint</a></code>, any positional associations shall precede any named associations. <br /></p>
 
 
 #### Name Resolution Rules
 
-<MarginText>5</MarginText>
+<MarginText>5_3.7.1</MarginText>
 <p>Each <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> of a named <code><a href="../AA-3/AA-3.7#S0065">discriminant_association</a></code> shall resolve to denote a discriminant of the subtype being constrained; the discriminants so named are the <em>associated discriminants</em> of the named association. For a positional association, the <em>associated discriminant</em> is the one whose <code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code> occurred in the corresponding position in the <code><a href="../AA-3/AA-3.7#S0061">known_discriminant_part</a></code> that defined the discriminants of the subtype being constrained.<br /></p>
 
-<MarginText>6</MarginText>
+<MarginText>6_3.7.1</MarginText>
 <p>The expected type for the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> in a <code><a href="../AA-3/AA-3.7#S0065">discriminant_association</a></code> is that of the associated discriminant(s). <br /></p>
 
 
 #### Legality Rules
 
-<MarginText>7/3</MarginText>
+<MarginText>7/3_3.7.1</MarginText>
 <MarginInfo items={["AI95-00168-01", "AI95-00363-01", "AI05-0041-1"]} />
 <p>{"{"}<em>8652/0008</em>{"}"} A <code><a href="../AA-3/AA-3.7#S0064">discriminant_constraint</a></code> is only allowed in a <code><a href="../AA-3/AA-3.2#S0027">subtype_indication</a></code> whose <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code> denotes either an unconstrained discriminated subtype, or an unconstrained access subtype whose designated subtype is an unconstrained discriminated subtype. However, in the case of an access subtype, a <code><a href="../AA-3/AA-3.7#S0064">discriminant_constraint</a></code> is legal only if any dereference of a value of the access type is known to be constrained (see <a href="../AA-3/AA-3.3">3.3</a>). In addition to the places where Legality Rules normally apply (see <a href="../AA-12/AA-12.3">12.3</a>), these rules apply also in the private part of an instance of a generic unit.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>7.a.1/2</MarginText>
+<MarginText>7.a.1/2_3.7.1</MarginText>
 <MarginInfo items={["AI95-00168-01", "AI95-00363-01"]} />
 <Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em>{"{"}<em>8652/0008</em>{"}"} <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.a/2</MarginText>
+<MarginText>7.a/2_3.7.1</MarginText>
 <MarginInfo items={["AI95-00363-01"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The second rule is necessary to prevent objects from changing so that they no longer match their constraint. In Ada 95, we attempted to prevent this by banning every case where an aliased object could be unconstrained or be changed by an enclosing assignment. New ways to cause this problem were being discovered frequently, meaning that new rules had to be dreamed up to cover them. Meanwhile, aliased objects and components were getting more and more limited. In Ada 2005, we sweep away all of that cruft and replace it by a simple rule &ldquo;thou shalt not create an access subtype that can point to an item whose discriminants can be changed by assignment&rdquo;. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.b/3</MarginText>
+<MarginText>7.b/3_3.7.1</MarginText>
 <MarginInfo items={["AI05-0041-1"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>The second rule will only use the indefinite or dereference bullets in the definition of &ldquo;known to be constrained&rdquo;. The rule is worded in terms of &ldquo;known to be constrained&rdquo; in order to capture the special rules that apply in generic bodies (rather than repeating them and getting them subtly wrong). <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>8</MarginText>
+<MarginText>8_3.7.1</MarginText>
 <p>A named <code><a href="../AA-3/AA-3.7#S0065">discriminant_association</a></code> with more than one <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> is allowed only if the named discriminants are all of the same type. A <code><a href="../AA-3/AA-3.7#S0064">discriminant_constraint</a></code> shall provide exactly one value for each discriminant of the subtype being constrained.<br /></p>
 
-<MarginText>9/3</MarginText>
+<MarginText>9/3_3.7.1</MarginText>
 <MarginInfo items={["AI05-0102-1"]} />
 <p><em>This paragraph was deleted.</em><br /></p>
 
 <AnnotatedOnly>
-<MarginText>9.a/3</MarginText>
+<MarginText>9.a/3_3.7.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>In addition, <a href="../AA-8/AA-8.6">8.6</a> requires that the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> associated with an access discriminant is convertible (see <a href="../AA-4/AA-4.6">4.6</a>) to the anonymous access type. This implies both convertibility of designated types, and static accessibility. This implies that if an object of type T with an access discriminant is created by an allocator for an access type A, then it requires that the type of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> associated with the access discriminant have an accessibility level that is not statically deeper than that of A. This is to avoid dangling references.<br /></Admonition>
 </AnnotatedOnly>
@@ -667,42 +667,42 @@ The rules in this subclause are intentionally parallel to those given in <a href
 
 #### Dynamic Semantics
 
-<MarginText>10</MarginText>
+<MarginText>10_3.7.1</MarginText>
 <p>A <code><a href="../AA-3/AA-3.7#S0064">discriminant_constraint</a></code> is <em>compatible</em> with an unconstrained discriminated subtype if each discriminant value belongs to the subtype of the corresponding discriminant. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>10.a</MarginText>
+<MarginText>10.a_3.7.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The "dependent compatibility check" has been eliminated in Ada 95. Any checking on subcomponents is performed when (and if) an object is created.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.b</MarginText>
+<MarginText>10.b_3.7.1</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>There is no need to define compatibility with a constrained discriminated subtype, because one is not allowed to constrain it again.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>11</MarginText>
+<MarginText>11_3.7.1</MarginText>
 <p>A composite value <em>satisfies</em> a discriminant constraint if and only if each discriminant of the composite value has the value imposed by the discriminant constraint.<br /></p>
 
-<MarginText>12/5</MarginText>
+<MarginText>12/5_3.7.1</MarginText>
 <MarginInfo items={["AI12-0439-1"]} />
-<p>For the elaboration of a <code><a href="../AA-3/AA-3.7#S0064">discriminant_constraint</a></code>, the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s in the <code><a href="../AA-3/AA-3.7#S0065">discriminant_association</a></code>s are evaluated in an arbitrary order and converted to the type of the associated discriminant (which can  raise Constraint_Error &mdash; see <a href="../AA-4/AA-4.6">4.6</a>); the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a named association is evaluated (and converted) once for each associated discriminant. The result of each evaluation and conversion is the value imposed by the constraint for the associated discriminant. <br /></p>
+<p>For the elaboration of a <code><a href="../AA-3/AA-3.7#S0064">discriminant_constraint</a></code>, the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s in the <code><a href="../AA-3/AA-3.7#S0065">discriminant_association</a></code>s are evaluated in an arbitrary order and converted to the type of the associated discriminant (which can raise Constraint_Error &mdash; see <a href="../AA-4/AA-4.6">4.6</a>); the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a named association is evaluated (and converted) once for each associated discriminant. The result of each evaluation and conversion is the value imposed by the constraint for the associated discriminant. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>12.a</MarginText>
+<MarginText>12.a_3.7.1</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>We convert to the type, not the subtype, so that the definition of compatibility of discriminant constraints is not vacuous.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>13</MarginText>
+<MarginText>13_3.7.1</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE   The rules of the language ensure that a discriminant of an object always has a value, either from explicit or implicit initialization. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>13.a</MarginText>
+<MarginText>13.a_3.7.1</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>Although it is illegal to constrain a class-wide tagged subtype, it is possible to have a partially constrained class-wide subtype: If the subtype S is defined by T(A ={">"} B), then S'Class is partially constrained in the sense that objects of subtype S'Class have to have discriminants corresponding to A equal to B, but there can be other discriminants defined in extensions that are not constrained to any particular value. <br /></Admonition>
 </AnnotatedOnly>
@@ -710,11 +710,11 @@ NOTE   The rules of the language ensure that a discriminant of an object always 
 
 #### Examples
 
-<MarginText>14/5</MarginText>
+<MarginText>14/5_3.7.1</MarginText>
 <MarginInfo items={["AI05-0299-1", "AI12-0449-1"]} />
-<p><em>Examples (using types declared above in  <a href="../AA-3/AA-3.7">3.7</a>):</em> <br /></p>
+<p><em>Examples (using types declared above in <a href="../AA-3/AA-3.7">3.7</a>):</em> <br /></p>
 
-<MarginText>15</MarginText>
+<MarginText>15_3.7.1</MarginText>
 <CodeBlock language="ada">
 Large   : Buffer(200);  --  constrained, always 200 characters{"\n"}                        --   (explicit discriminant value){"\n"}Message : Buffer;       --  unconstrained, initially 100 characters{"\n"}                        --   (default discriminant value){"\n"}Basis   : Square(5);    --  constrained, always 5 by 5{"\n"}Illegal : Square;       --  illegal, a Square has to be constrained{"\n"}
 
@@ -725,7 +725,7 @@ Large   : Buffer(200);  --  constrained, always 200 characters{"\n"}            
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>15.a</MarginText>
+<MarginText>15.a_3.7.1</MarginText>
 <Admonition type="aarm" aarm="note">
 Dependent compatibility checks are no longer performed on subtype declaration. Instead they are deferred until object creation (see <a href="../AA-3/AA-3.3#Subclause_3.3.1">3.3.1</a>). This is upward compatible for a program that does not raise Constraint_Error. <br /></Admonition>
 </AnnotatedOnly>
@@ -736,7 +736,7 @@ Dependent compatibility checks are no longer performed on subtype declaration. I
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>15.b</MarginText>
+<MarginText>15.b_3.7.1</MarginText>
 <Admonition type="aarm" aarm="note">
 Everything in RM83-3.7.2(7-12), which specifies the initial values for discriminants, is now redundant with 3.3.1, 6.4.1, 8.5.1, and 12.4. Therefore, we don't repeat it here. Since the material is largely intuitive, but nevertheless complicated to state formally, it doesn't seem worth putting it in a "NOTE". <br /></Admonition>
 </AnnotatedOnly>
@@ -747,7 +747,7 @@ Everything in RM83-3.7.2(7-12), which specifies the initial values for discrimin
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>15.c/2</MarginText>
+<MarginText>15.c/2_3.7.1</MarginText>
 <MarginInfo items={["AI95-00168-01", "AI95-00363-01"]} />
 <Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0008</em>{"}"} The Corrigendum added a restriction on <code><a href="../AA-3/AA-3.7#S0064">discriminant_constraint</a></code>s for general access subtypes. Such constraints are prohibited if the designated type can be treated as constrained somewhere in the program. Ada 2005 goes further and prohibits such <code><a href="../AA-3/AA-3.7#S0064">discriminant_constraint</a></code>s if the designated type has (or might have, in the case of a formal type) defaults for its discriminants. The use of general access subtypes is rare, and this eliminates a boatload of problems that required many restrictions on the use of aliased objects and components (now lifted). Similarly, Ada 2005 prohibits <code><a href="../AA-3/AA-3.7#S0064">discriminant_constraint</a></code>s on any access type whose designated type has a partial view that is constrained. Such a type will not be constrained in the heap to avoid privacy problems. Again, the use of such subtypes is rare (they can only happen within the package and its child units). <br /></Admonition>
@@ -759,14 +759,14 @@ Everything in RM83-3.7.2(7-12), which specifies the initial values for discrimin
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>15.d/3</MarginText>
+<MarginText>15.d/3_3.7.1</MarginText>
 <MarginInfo items={["AI05-0041-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Revised the rules on access subtypes having discriminant constraints to depend on the &ldquo;known to be constrained&rdquo; rules. This centralizes the rules so that future fixes need to be made in only one place, as well as fixing bugs in obscure cases.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>15.e/3</MarginText>
+<MarginText>15.e/3_3.7.1</MarginText>
 <MarginInfo items={["AI05-0102-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Moved implicit conversion Legality Rule to <a href="../AA-8/AA-8.6">8.6</a>. <br /></Admonition>
@@ -776,37 +776,37 @@ Everything in RM83-3.7.2(7-12), which specifies the initial values for discrimin
 
 ## 3.7.2  Operations of Discriminated Types
 
-<MarginText>1</MarginText>
+<MarginText>1_3.7.2</MarginText>
 <p>[If a discriminated type has <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>s for its discriminants, then unconstrained variables of the type are permitted, and the discriminants of such a variable can be changed by assignment to the variable. For a formal parameter of such a type, an attribute is provided to determine whether the corresponding actual parameter is constrained or unconstrained.] <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>2</MarginText>
+<MarginText>2_3.7.2</MarginText>
 <p>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> A that is of a discriminated type [(after any implicit dereference)], the following attribute is defined: <br /></p>
 
-<MarginText>3/5</MarginText>
+<MarginText>3/5_3.7.2</MarginText>
 <dt><br/>A'Constrained</dt>
 <MarginInfo items={["AI05-0214-1", "AI12-0183-1"]} />
 <dl>
 <dd>Yields the value True if A denotes a constant, a value, a tagged object, or a constrained variable, and False otherwise. The value of this attribute is of the predefined type Boolean. <br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>3.a/3</MarginText>
+<MarginText>3.a/3_3.7.2</MarginText>
 <MarginInfo items={["AI05-0214-1"]} />
 <Admonition type="aarm" aarm="implementation-note">
 <strong></strong>This attribute is primarily used on parameters, to determine whether the discriminants can be changed as part of an assignment. The Constrained attribute is statically True for <strong>in</strong> parameters. For <strong>in out</strong> and <strong>out</strong> parameters of a discriminated type, the value of this attribute needs to be passed as an implicit parameter, in general. However, if the type is tagged or does not have defaults for its discriminants, the attribute is statically True, so no implicit parameter is needed. Parameters of a limited untagged type with defaulted discriminants need this implicit parameter, unless there are no nonlimited views, because they might be passed to a subprogram whose body has visibility on a nonlimited view of the type, and hence might be able to assign to the object and change its discriminants. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>3.b/4</MarginText>
+<MarginText>3.b/4_3.7.2</MarginText>
 <MarginInfo items={["AI05-0214-1", "AI12-0005-1"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>All tagged objects are known to be constrained (as nonlimited tagged types cannot have discriminant defaults, and limited tagged objects are immutably limited), and are always considered constrained by this attribute to avoid distributed overhead for parameters of limited class-wide types, as limited tagged objects may technically be unconstrained if they use defaulted discriminants. Such objects still cannot have their discriminants changed, as assignment is not supported for them, so there is no use for this attribute that would justify the overhead of passing it with all class-wide parameters. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>3.c/3</MarginText>
+<MarginText>3.c/3_3.7.2</MarginText>
 <MarginInfo items={["AI05-0005-1", "AI05-0214-1"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>If the type of A is a type derived from an untagged partial view of a tagged type such that it is not a tagged type, then A is not considered a tagged object, and A'Constrained can return either True or False depending on the nature of the object. <br /></Admonition>
@@ -815,11 +815,11 @@ Everything in RM83-3.7.2(7-12), which specifies the initial values for discrimin
 
 #### Erroneous Execution
 
-<MarginText>4</MarginText>
+<MarginText>4_3.7.2</MarginText>
 <p>The execution of a construct is erroneous if the construct has a constituent that is a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denoting a subcomponent that depends on discriminants, and the value of any of these discriminants is changed by this execution between evaluating the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> and the last use (within this execution) of the subcomponent denoted by the <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>4.a</MarginText>
+<MarginText>4.a_3.7.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>This rule applies to <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s, calls (except when the discriminant-dependent subcomponent is an <strong>in</strong> parameter passed by copy), <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>s, and <code><a href="../AA-4/AA-4.1#S0097">slice</a></code>s. Ada 83 only covered the first two cases. AI83-00585 pointed out the situation with the last two cases. The cases of <code><a href="../AA-8/AA-8.5#S0239">object_renaming_declaration</a></code>s and generic formal <strong>in out</strong> objects are handled differently, by disallowing the situation at compile time. <br /></Admonition>
 </AnnotatedOnly>
@@ -830,13 +830,13 @@ Everything in RM83-3.7.2(7-12), which specifies the initial values for discrimin
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>4.b/1</MarginText>
+<MarginText>4.b/1_3.7.2</MarginText>
 <Admonition type="aarm" aarm="note">
 For consistency with other attributes, we are allowing the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of Constrained to be a value as well as an object of a discriminated type, and also an implicit dereference. These extensions are not important capabilities, but there seems no reason to make this attribute different from other similar attributes. We are curious what most Ada 83 compilers do with F(1).X'Constrained.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>4.c</MarginText>
+<MarginText>4.c_3.7.2</MarginText>
 <Admonition type="aarm" aarm="note">
 We now handle in a general way the cases of erroneousness identified by AI83-00585, where the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> or <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> is discriminant-dependent, and the evaluation of the index or discrete range changes the value of a discriminant. <br /></Admonition>
 </AnnotatedOnly>
@@ -847,7 +847,7 @@ We now handle in a general way the cases of erroneousness identified by AI83-005
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>4.d</MarginText>
+<MarginText>4.d_3.7.2</MarginText>
 <Admonition type="aarm" aarm="note">
 We have moved all discussion of erroneous use of <code><a href="../AA-4/AA-4.1#S0091">name</a></code>s that denote discriminant-dependent subcomponents to this subclause. In Ada 83, it used to appear separately under <code><a href="../AA-5/AA-5.2#S0173">assignment_statement</a></code>s and subprogram calls. <br /></Admonition>
 </AnnotatedOnly>
@@ -858,7 +858,7 @@ We have moved all discussion of erroneous use of <code><a href="../AA-4/AA-4.1#S
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>4.e/3</MarginText>
+<MarginText>4.e/3_3.7.2</MarginText>
 <MarginInfo items={["AI05-0214-1"]} />
 <Admonition type="aarm" aarm="note">
 A'Constrained is now defined to return True for any A that is a tagged object. This doesn't change the result for any A allowed by previous versions of Ada; the change is necessary to avoid unnecessary overhead for limited tagged parameters. <br /></Admonition>

@@ -21,11 +21,11 @@ import MarginInfo from "@site/src/components/MarginInfo";
 
 <MarginText>2/3</MarginText>
 <MarginInfo items={["AI05-0243-1", "AI12-0417-1"]} />
-<p> A <em>categorization aspect</em>  restricts the declarations, child units, or semantic dependences of the library unit to which it applies. A <em>categorized library unit</em> is a library unit that has a categorization aspect that is True.<br /></p>
+<p>A <em>categorization aspect</em> restricts the declarations, child units, or semantic dependences of the library unit to which it applies. A <em>categorized library unit</em> is a library unit that has a categorization aspect that is True.<br /></p>
 
 <MarginText>3/3</MarginText>
 <MarginInfo items={["AI05-0243-1", "AI12-0417-1"]} />
-<p>The aspects  Shared_Passive, Remote_Types, and Remote_Call_Interface are categorization aspects . In addition, for the purposes of this Annex, the aspect Pure (see <a href="../AA-10/AA-10.2#Subclause_10.2.1">10.2.1</a>) is considered a categorization aspect  .<br /></p>
+<p>The aspects Shared_Passive, Remote_Types, and Remote_Call_Interface are categorization aspects. In addition, for the purposes of this Annex, the aspect Pure (see <a href="../AA-10/AA-10.2#Subclause_10.2.1">10.2.1</a>) is considered a categorization aspect.<br /></p>
 
 <MarginText>4/3</MarginText>
 <MarginInfo items={["AI95-00048-01", "AI05-0243-1"]} />
@@ -75,14 +75,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>12</MarginText>
 <p>Declared pure and shared passive library units are preelaborated. The declaration of a remote types or remote call interface library unit is required to be preelaborable. ]<br /></p>
 
-<p><em>Paragraph 13 and 14 were  deleted.</em> <br /></p>
-
-
-#### Implementation Permissions
-
-<MarginText>14/5</MarginText>
-<MarginInfo items={["AI12-0417-1"]} />
-<p> <br /></p>
+<p><em>Paragraph 13 and 14 were deleted.</em> <br /></p>
 
 <AnnotatedOnly>
 
@@ -138,114 +131,103 @@ Categorization pragmas are now obsolescent. <br /></Admonition>
 
 ## E.2.1  Shared Passive Library Units
 
-<MarginText>1</MarginText>
+<MarginText>1_E.2.1</MarginText>
 <p>[A shared passive library unit is used for managing global data shared between active partitions. The restrictions on shared passive library units prevent the data or tasks of one active partition from being accessible to another active partition through references implicit in objects declared in the shared passive library unit.] <br /></p>
 
 
 #### Language Design Principles
 
 <AnnotatedOnly>
-<MarginText>1.a</MarginText>
+<MarginText>1.a_E.2.1</MarginText>
 <Admonition type="aarm" aarm="note">
 The restrictions governing a shared passive library unit are designed to ensure that objects and subprograms declared in the package can be used safely from multiple active partitions, even though the active partitions live in different address spaces, and have separate run-time systems. <br /></Admonition>
 </AnnotatedOnly>
-
-
-#### Syntax
-
-<MarginText>2/5</MarginText>
-<MarginInfo items={["AI12-0417-1"]} />
-<p class="Indented2"> <br /></p>
-
-<MarginText>3/5</MarginText>
-<MarginInfo items={["AI12-0417-1"]} />
-<p class="Indented2">   <br /></p>
 
 <p><em>Paragraphs 2 and 3 were moved to <a href="../AA-J/">Annex J</a>, &ldquo;<a href="../AA-J/">Obsolescent Features</a>&rdquo;.</em> <br /></p>
 
 
 #### Legality Rules
 
-<MarginText>4/5</MarginText>
+<MarginText>4/5_E.2.1</MarginText>
 <MarginInfo items={["AI05-0243-1", "AI12-0417-1"]} />
-<p>When the library unit aspect (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>)   Shared_Passive of  a library unit is True, the library unit is a  <em>shared passive library unit</em> . The following restrictions apply to such a library unit:<br /></p>
+<p>When the library unit aspect (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>) Shared_Passive of a library unit is True, the library unit is a <em>shared passive library unit</em>. The following restrictions apply to such a library unit:<br /></p>
 
 <AnnotatedOnly>
-<MarginText>4.a/3</MarginText>
+<MarginText>4.a/3_E.2.1</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Shared_Passive: </strong>A given package is used to represent shared memory in a distributed system.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>5</MarginText>
+<MarginText>5_E.2.1</MarginText>
 <ul>
 <li>[it shall be preelaborable (see <a href="../AA-10/AA-10.2#Subclause_10.2.1">10.2.1</a>);] <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>5.a</MarginText>
+<MarginText>5.a_E.2.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>It cannot contain library-level declarations of protected objects with entries, nor of task objects. Task objects are disallowed because passive partitions don't have any threads of control of their own, nor any run-time system of their own. Protected objects with entries are disallowed because an entry queue contains references to calling tasks, and that would require in effect a pointer from a passive partition back to a task in some active partition. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>6/3</MarginText>
+<MarginText>6/3_E.2.1</MarginText>
 <MarginInfo items={["AI05-0243-1"]} />
 <ul>
 <li>it shall depend semantically only upon declared pure or shared passive <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s; <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>6.a</MarginText>
+<MarginText>6.a_E.2.1</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>Shared passive packages cannot depend semantically upon remote types packages because the values of an access type declared in a remote types package refer to the local heap of the active partition including the remote types package. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.b/3</MarginText>
+<MarginText>6.b/3_E.2.1</MarginText>
 <MarginInfo items={["AI05-0243-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>We say <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> here, so that limited views are allowed; those are not library units, but they are <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>7/5</MarginText>
+<MarginText>7/5_E.2.1</MarginText>
 <MarginInfo items={["AI95-00003-01", "AI12-0038-1", "AI12-0320-1"]} />
 <ul>
-<li>{"{"}<em>8652/0080</em>{"}"} it shall not contain a library-level declaration: <br /></li>
-<MarginText>7.1/5</MarginText>
+<li>{"{"}<em>8652/0080</em>{"}"} it shall not contain a library-level declaration:<br /></li>
+<MarginText>7.1/5_E.2.1</MarginText>
 <MarginInfo items={["AI12-0320-1"]} />
 <li>of an access type that designates a class-wide type; <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>7.a</MarginText>
+<MarginText>7.a_E.2.1</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>These kinds of access types are disallowed because the object designated by an access value of such a type could contain an implicit reference back to the active partition on whose behalf the designated object was created. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>7.2/5</MarginText>
+<MarginText>7.2/5_E.2.1</MarginText>
 <MarginInfo items={["AI12-0320-1"]} />
 <ul>
 <li>of a type with a part that is of a task type;<br /></li>
-<MarginText>7.3/5</MarginText>
+<MarginText>7.3/5_E.2.1</MarginText>
 <MarginInfo items={["AI12-0320-1"]} />
 <li>of a type with a part that is of a protected type with <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code>s; or<br /></li>
-<MarginText>7.4/5</MarginText>
+<MarginText>7.4/5_E.2.1</MarginText>
 <MarginInfo items={["AI12-0038-1", "AI12-0320-1"]} />
-<li> that contains a name that denotes a type declared within a declared-pure package, if that type has a part that is of an access type; for the purposes of this rule, the parts considered include those of the full views of any private types or private extensions.<br /></li>
+<li>that contains a name that denotes a type declared within a declared-pure package, if that type has a part that is of an access type; for the purposes of this rule, the parts considered include those of the full views of any private types or private extensions.<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>7.b/4</MarginText>
+<MarginText>7.b/4_E.2.1</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This rule breaks privacy by looking into the full views of private types. Avoiding privacy breakage here would have required disallowing the use in a shared passive package of any private type declared in a declared-pure package, which would have been severely incompatible. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>8</MarginText>
+<MarginText>8_E.2.1</MarginText>
 <p>Notwithstanding the definition of accessibility given in <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>, the declaration of a library unit P1 is not accessible from within the declarative region of a shared passive library unit P2, unless the shared passive library unit P2 depends semantically on P1. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>8.a</MarginText>
+<MarginText>8.a_E.2.1</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>We considered a more complex rule, but dropped it. This is the simplest rule that recognizes that a shared passive package may outlive some other library package, unless it depends semantically on that package. In a nondistributed program, all library packages are presumed to have the same lifetime.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>8.b/5</MarginText>
+<MarginText>8.b/5_E.2.1</MarginText>
 <MarginInfo items={["AI12-0417-1"]} />
 <Admonition type="aarm" aarm="note">
 Implementations may define additional aspects or pragmas that force two library packages to be in the same partition, or to have the same lifetime, which would allow this rule to be relaxed in the presence of such aspects or pragmas. <br /></Admonition>
@@ -254,34 +236,34 @@ Implementations may define additional aspects or pragmas that force two library 
 
 #### Static Semantics
 
-<MarginText>9</MarginText>
+<MarginText>9_E.2.1</MarginText>
 <p>A shared passive library unit is preelaborated.<br /></p>
 
 
 #### Post-Compilation Rules
 
-<MarginText>10</MarginText>
+<MarginText>10_E.2.1</MarginText>
 <p>A shared passive library unit shall be assigned to at most one partition within a given program.<br /></p>
 
-<MarginText>11</MarginText>
+<MarginText>11_E.2.1</MarginText>
 <p>Notwithstanding the rule given in <a href="../AA-10/AA-10.2">10.2</a>, a compilation unit in a given partition does not <em>need</em> (in the sense of <a href="../AA-10/AA-10.2">10.2</a>) the shared passive library units on which it depends semantically to be included in that same partition; they will typically reside in separate passive partitions.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>11.a/5</MarginText>
+<MarginText>11.a/5_E.2.1</MarginText>
 <MarginInfo items={["AI12-0359-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>This rule is necessary so that the shared data of a shared passive partition is not duplicated in each partition. It does not imply a particular implementation; in particular, code can be replicated in each active partition. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>11.b/5</MarginText>
+<MarginText>11.b/5_E.2.1</MarginText>
 <MarginInfo items={["AI12-0359-1"]} />
 <Admonition type="aarm" aarm="implementation-note">
 <strong></strong>One possible implementation for a shared passive partition is as a shared library that is mapped into the address space of of each active partition. In such case, both the code and the data of the passive partition would be mapped into the active partitions and directly called/accessed from each active partition. For instance, on Microsoft Windows a DLL has the correct semantics.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>11.c/5</MarginText>
+<MarginText>11.c/5_E.2.1</MarginText>
 <Admonition type="aarm" aarm="note">
 Alternatively, the shared data can be represented as a file or persistent memory, with the shared code being replicated in each active partition. Code replication is an as-if optimization; it should be impossible to tell where the code lives since no elaboration is necessary. <br /></Admonition>
 </AnnotatedOnly>
@@ -292,7 +274,7 @@ Alternatively, the shared data can be represented as a file or persistent memory
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>11.d/2</MarginText>
+<MarginText>11.d/2_E.2.1</MarginText>
 <MarginInfo items={["AI95-00003-01"]} />
 <Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0080</em>{"}"} <strong>Corrigendum:</strong> Corrected the wording to allow access types in blocks in shared passive generic packages. <br /></Admonition>
@@ -304,10 +286,10 @@ Alternatively, the shared data can be represented as a file or persistent memory
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>11.e/5</MarginText>
+<MarginText>11.e/5_E.2.1</MarginText>
 <MarginInfo items={["AI05-0243-1", "AI12-0417-1"]} />
 <Admonition type="aarm" aarm="note">
-Shared_Passive is now a categorization aspect, so it can be specified by an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>  <br /></Admonition>
+Shared_Passive is now a categorization aspect, so it can be specified by an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -316,7 +298,7 @@ Shared_Passive is now a categorization aspect, so it can be specified by an <cod
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>11.f/4</MarginText>
+<MarginText>11.f/4_E.2.1</MarginText>
 <MarginInfo items={["AI12-0038-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Uses of access types declared in declared-pure units are not allowed in library-level shared passive packages. These were allowed by Ada 2005 and Ada 2012, but it is unlikely that they work properly, as active partitions could disappear before the shared-passive partition. As such, the new errors are more likely to catch bugs than to cause them. <br /></Admonition>
@@ -328,7 +310,7 @@ Shared_Passive is now a categorization aspect, so it can be specified by an <cod
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>11.g/5</MarginText>
+<MarginText>11.g/5_E.2.1</MarginText>
 <MarginInfo items={["AI12-0417-1"]} />
 <Admonition type="aarm" aarm="note">
 The pragma Shared_Passive is now obsolescent. <br /></Admonition>
@@ -338,168 +320,157 @@ The pragma Shared_Passive is now obsolescent. <br /></Admonition>
 
 ## E.2.2  Remote Types Library Units
 
-<MarginText>1</MarginText>
+<MarginText>1_E.2.2</MarginText>
 <p>[A remote types library unit supports the definition of types intended for use in communication between active partitions.] <br /></p>
 
 
 #### Language Design Principles
 
 <AnnotatedOnly>
-<MarginText>1.a</MarginText>
+<MarginText>1.a_E.2.2</MarginText>
 <Admonition type="aarm" aarm="note">
 The restrictions governing a remote types package are similar to those for a declared pure package. However, the restrictions are relaxed deliberately to allow such a package to contain declarations that violate the stateless property of pure packages, though it is presumed that any state-dependent properties are essentially invisible outside the package. <br /></Admonition>
 </AnnotatedOnly>
-
-
-#### Syntax
-
-<MarginText>2/5</MarginText>
-<MarginInfo items={["AI12-0417-1"]} />
-<p class="Indented2"> <br /></p>
-
-<MarginText>3/5</MarginText>
-<MarginInfo items={["AI12-0417-1"]} />
-<p class="Indented2">   <br /></p>
 
 <p><em>Paragraphs 2 and 3 were moved to <a href="../AA-J/">Annex J</a>, &ldquo;<a href="../AA-J/">Obsolescent Features</a>&rdquo;.</em> <br /></p>
 
 
 #### Legality Rules
 
-<MarginText>4/5</MarginText>
+<MarginText>4/5_E.2.2</MarginText>
 <MarginInfo items={["AI05-0243-1", "AI12-0417-1"]} />
-<p>When the library unit aspect (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>)   Remote_Types of  a library unit is True, the library unit is a <em>remote types library unit</em> . The following restrictions apply to such a library unit:<br /></p>
+<p>When the library unit aspect (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>) Remote_Types of a library unit is True, the library unit is a <em>remote types library unit</em>. The following restrictions apply to such a library unit:<br /></p>
 
 <AnnotatedOnly>
-<MarginText>4.a/3</MarginText>
+<MarginText>4.a/3_E.2.2</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Remote_Types: </strong>Types in a given package may be used in remote procedure calls.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>5</MarginText>
+<MarginText>5_E.2.2</MarginText>
 <ul>
 <li>[it shall be preelaborable;]<br /></li>
-<MarginText>6/3</MarginText>
+<MarginText>6/3_E.2.2</MarginText>
 <MarginInfo items={["AI05-0206-1", "AI05-0243-1"]} />
 <li>it shall depend semantically only on declared pure <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s, shared passive library units, other remote types library units, or preelaborated normal library units that are mentioned only in private with clauses;<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>6.a/3</MarginText>
+<MarginText>6.a/3_E.2.2</MarginText>
 <MarginInfo items={["AI05-0243-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>We say declared pure <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> here, so that (all) limited views are allowed; those are not library units, but they are declared pure <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>7</MarginText>
+<MarginText>7_E.2.2</MarginText>
 <ul>
 <li>it shall not contain the declaration of any variable within the visible part of the library unit; <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>7.a</MarginText>
+<MarginText>7.a_E.2.2</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This is essentially a &ldquo;methodological&rdquo; restriction. A separate copy of a remote types package is included in each partition that references it, just like a normal package. Nevertheless, a remote types package is thought of as an &ldquo;essentially pure&rdquo; package for defining types to be used for interpartition communication, and it could be misleading to declare visible objects when no remote data access is actually being provided. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>8/2</MarginText>
+<MarginText>8/2_E.2.2</MarginText>
 <MarginInfo items={["AI95-00240-01", "AI95-00366-01"]} />
 <ul>
 <li>the full view of each type declared in the visible part of the library unit that has any available stream attributes shall support external streaming (see <a href="../AA-13/AA-13.13#Subclause_13.13.2">13.13.2</a>). <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>8.a</MarginText>
+<MarginText>8.a_E.2.2</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This is to prevent the use of the predefined Read and Write attributes of an access type as part of the Read and Write attributes of a visible type. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>8.b/2</MarginText>
+<MarginText>8.b/2_E.2.2</MarginText>
 <MarginInfo items={["AI95-00366-01"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Types that do not have available stream attributes are excluded from this rule; that means that attributes do not need to be specified for most limited types. It is only necessary to specify attributes for nonlimited types that have a part that is of any access type, and for extensions of limited types with available stream attributes where the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code> includes a subcomponent of an access type, where the access type does not have specified attributes. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>9/3</MarginText>
+<MarginText>9/3_E.2.2</MarginText>
 <MarginInfo items={["AI95-00164-01", "AI05-0060-1"]} />
 <p>{"{"}<em>8652/0082</em>{"}"} A named access type declared in the visible part of a remote types or remote call interface library unit is called a <em>remote access type</em>. Such a type shall be:<br /></p>
 
-<MarginText>9.1/1</MarginText>
+<MarginText>9.1/1_E.2.2</MarginText>
 <MarginInfo items={["AI95-00164-01"]} />
 <ul>
 <li>{"{"}<em>8652/0082</em>{"}"} an access-to-subprogram type, or<br /></li>
-<MarginText>9.2/3</MarginText>
+<MarginText>9.2/3_E.2.2</MarginText>
 <MarginInfo items={["AI95-00164-01", "AI05-0060-1"]} />
 <li>{"{"}<em>8652/0082</em>{"}"} a general access type that designates a class-wide limited private type, a class-wide limited interface type, or a class-wide private extension all of whose ancestors are either private extensions, limited interface types, or limited private types. <br /></li>
 </ul>
-<MarginText>9.3/1</MarginText>
+<MarginText>9.3/1_E.2.2</MarginText>
 <MarginInfo items={["AI95-00004-01"]} />
 <p>{"{"}<em>8652/0081</em>{"}"} A type that is derived from a remote access type is also a remote access type.<br /></p>
 
-<MarginText>9.4/5</MarginText>
+<MarginText>9.4/5_E.2.2</MarginText>
 <MarginInfo items={["AI12-0283-1"]} />
 <p>A remote access-to-subprogram type shall not be nonblocking (see <a href="../AA-9/AA-9.5">9.5</a>).<br /></p>
 
 <AnnotatedOnly>
-<MarginText>9.a/5</MarginText>
+<MarginText>9.a/5_E.2.2</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>All calls on remote subprograms are considered potentially blocking, so they cannot statically be allowed in nonblocking code. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9.b/5</MarginText>
+<MarginText>9.b/5_E.2.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The type declaration of a remote type is illegal if the Nonblocking aspect is True, either implicitly by inheritance or by explicit specification. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>10</MarginText>
+<MarginText>10_E.2.2</MarginText>
 <p>The following restrictions apply to the use of a remote access-to-subprogram type: <br /></p>
 
-<MarginText>11/2</MarginText>
+<MarginText>11/2_E.2.2</MarginText>
 <MarginInfo items={["AI95-00431-01"]} />
 <ul>
 <li>A value of a remote access-to-subprogram type shall be converted only to or from another (subtype-conformant) remote access-to-subprogram type;<br /></li>
-<MarginText>12</MarginText>
+<MarginText>12_E.2.2</MarginText>
 <li>The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an Access <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> that yields a value of a remote access-to-subprogram type shall statically denote a (subtype-conformant) remote subprogram. <br /></li>
 </ul>
-<MarginText>13</MarginText>
+<MarginText>13_E.2.2</MarginText>
 <p>The following restrictions apply to the use of a remote access-to-class-wide type: <br /></p>
 
-<MarginText>14/3</MarginText>
+<MarginText>14/3_E.2.2</MarginText>
 <MarginInfo items={["AI95-00047-01", "AI95-00240-01", "AI95-00366-01", "AI05-0060-1", "AI05-0101-1"]} />
 <ul>
 <li>{"{"}<em>8652/0083</em>{"}"} The primitive subprograms of the corresponding specific type shall only have access parameters if they are controlling formal parameters. The primitive functions of the corresponding specific type shall only have an access result if it is a controlling access result. Each noncontrolling formal parameter and noncontrolling result type shall support external streaming (see <a href="../AA-13/AA-13.13#Subclause_13.13.2">13.13.2</a>);<br /></li>
-<MarginText>14.1/3</MarginText>
+<MarginText>14.1/3_E.2.2</MarginText>
 <MarginInfo items={["AI05-0060-1", "AI05-0215-1", "AI05-0269-1"]} />
 <li>The corresponding specific type shall not have a primitive procedure with the Synchronization aspect specified unless the <code><a href="../AA-9/AA-9.5#S0256">synchronization_kind</a></code> is Optional (see <a href="../AA-9/AA-9.5">9.5</a>);<br /></li>
-<MarginText>15</MarginText>
+<MarginText>15_E.2.2</MarginText>
 <li>A value of a remote access-to-class-wide type shall be explicitly converted only to another remote access-to-class-wide type;<br /></li>
-<MarginText>16/4</MarginText>
+<MarginText>16/4_E.2.2</MarginText>
 <MarginInfo items={["AI12-0034-1"]} />
 <li>A value of a remote access-to-class-wide type shall be dereferenced (or implicitly converted to an anonymous access type) only as part of a dispatching call to a primitive operation of the designated type where the value designates a controlling operand of the call (see <a href="../AA-E/AA-E.4">E.4</a>, &ldquo;<a href="../AA-E/AA-E.4">Remote Subprogram Calls</a>&rdquo;); <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>16.a/4</MarginText>
+<MarginText>16.a/4_E.2.2</MarginText>
 <MarginInfo items={["AI12-0034-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Stream attributes of the designated type are not primitive operations of the designated type, and thus remote calls to them are prohibited by this rule. This is good, as the access parameter of a stream attribute does not have external streaming, and thus cannot be a parameter of a remote call. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>16.1/3</MarginText>
+<MarginText>16.1/3_E.2.2</MarginText>
 <MarginInfo items={["AI05-0101-1"]} />
 <ul>
 <li>A controlling access result value for a primitive function with any controlling operands of the corresponding specific type shall either be explicitly converted to a remote access-to-class-wide type or be part of a dispatching call where the value designates a controlling operand of the call;<br /></li>
-<MarginText>17/4</MarginText>
+<MarginText>17/4_E.2.2</MarginText>
 <MarginInfo items={["AI95-00366-01", "AI12-0085-1"]} />
 <li>The Storage_Pool attribute is not defined for a remote access-to-class-wide type; the expected type for an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> shall not be a remote access-to-class-wide type. A remote access-to-class-wide type shall not be an actual parameter for a generic formal access type. The Storage_Size attribute of a remote access-to-class-wide type yields 0. The Storage_Pool and Storage_Size aspects shall not be specified for a remote access-to-class-wide type. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>17.a/3</MarginText>
+<MarginText>17.a/3_E.2.2</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>All of these restrictions are because there is no storage pool associated with a remote access-to-class-wide type. The Storage_Size is defined to be 0 so that there is no conflict with the rules for pure units. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>17.b/4</MarginText>
+<MarginText>17.b/4_E.2.2</MarginText>
 <MarginInfo items={["AI12-0085-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The prohibition against specifying the Storage_Size aspect for an access-to-class-wide type applies to any method of doing that, including via either an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> or an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>. <br /></Admonition>
@@ -508,40 +479,40 @@ The restrictions governing a remote types package are similar to those for a dec
 
 #### Erroneous Execution
 
-<MarginText>17.1/4</MarginText>
+<MarginText>17.1/4_E.2.2</MarginText>
 <MarginInfo items={["AI12-0076-1"]} />
 <p>Execution is erroneous if some operation (other than the initialization or finalization of the object) modifies the value of a constant object declared in the visible part of a remote types package.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>17.c/4</MarginText>
+<MarginText>17.c/4_E.2.2</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>This could be accomplished via a self-referencing pointer or via squirrelling away a writable pointer to a controlled object. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>18/5</MarginText>
+<MarginText>18/5_E.2.2</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   A remote types library unit is not necessarily  pure, and the types it defines can  include levels of indirection implemented by using access types. User-specified Read and Write attributes (see <a href="../AA-13/AA-13.13#Subclause_13.13.2">13.13.2</a>) provide for sending values of such a type between active partitions, with Write marshalling the representation, and Read unmarshalling any levels of indirection.<br /></Admonition>
+NOTE 1   A remote types library unit is not necessarily pure, and the types it defines can include levels of indirection implemented by using access types. User-specified Read and Write attributes (see <a href="../AA-13/AA-13.13#Subclause_13.13.2">13.13.2</a>) provide for sending values of such a type between active partitions, with Write marshalling the representation, and Read unmarshalling any levels of indirection.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19/3</MarginText>
+<MarginText>19/3_E.2.2</MarginText>
 <MarginInfo items={["AI05-0060-1"]} />
 <Admonition type="aarm" aarm="note">
 NOTE 2   The value of a remote access-to-class-wide limited interface can designate an object of a nonlimited type derived from the interface.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20/5</MarginText>
+<MarginText>20/5_E.2.2</MarginText>
 <MarginInfo items={["AI05-0060-1", "AI12-0440-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 3   A remote access type can  designate a class-wide synchronized, protected, or task interface type. <br /></Admonition>
+NOTE 3   A remote access type can designate a class-wide synchronized, protected, or task interface type. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.a/3</MarginText>
+<MarginText>20.a/3_E.2.2</MarginText>
 <Admonition type="aarm" aarm="proof">
 <strong></strong>Synchronized, protected, and task interfaces are all considered limited interfaces, see <a href="../AA-3/AA-3.9#Subclause_3.9.4">3.9.4</a>. <br /></Admonition>
 </AnnotatedOnly>
@@ -552,7 +523,7 @@ NOTE 3   A remote access type can  designate a class-wide synchronized, protecte
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.b/3</MarginText>
+<MarginText>20.b/3_E.2.2</MarginText>
 <MarginInfo items={["AI95-00240-01", "AI05-0248-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong>Amendment </strong> The wording was changed from &ldquo;user-specified&rdquo; to &ldquo;available&rdquo; read and write attributes. (This was then further changed, see below.) This means that an access type with the attributes specified in the private part would originally have been sufficient to allow the access type to be used in a remote type, but that is no longer allowed. Similarly, the attributes of a remote type that has access components have to be specified in the visible part. These changes were made so that the rules were consistent with the rules introduced for the Corrigendum for stream attributes; moreover, legality should not depend on the contents of the private part. <br /></Admonition>
@@ -564,7 +535,7 @@ NOTE 3   A remote access type can  designate a class-wide synchronized, protecte
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.c/3</MarginText>
+<MarginText>20.c/3_E.2.2</MarginText>
 <MarginInfo items={["AI95-00366-01", "AI05-0005-1"]} />
 <Admonition type="aarm" aarm="note">
 Remote types that cannot be streamed (that is, have no available stream attributes) do not require the specification of stream attributes. This is necessary so that most extensions of Limited_Controlled do not need stream attributes defined (otherwise there would be a significant incompatibility, as Limited_Controlled would need stream attributes, and then all extensions of it also would need stream attributes). <br /></Admonition>
@@ -576,42 +547,42 @@ Remote types that cannot be streamed (that is, have no available stream attribut
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.d/2</MarginText>
+<MarginText>20.d/2_E.2.2</MarginText>
 <MarginInfo items={["AI95-00004-01"]} />
 <Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0081</em>{"}"} <strong>Corrigendum:</strong> Added missing wording so that a type derived from a remote access type is also a remote access type.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.e/2</MarginText>
+<MarginText>20.e/2_E.2.2</MarginText>
 <MarginInfo items={["AI95-00047-01"]} />
 <Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0083</em>{"}"} <strong>Corrigendum:</strong> Clarified that user-defined Read and Write attributes are required for the primitive subprograms corresponding to a remote access-to-class-wide type.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.f/2</MarginText>
+<MarginText>20.f/2_E.2.2</MarginText>
 <MarginInfo items={["AI95-00164-01"]} />
 <Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0082</em>{"}"} <strong>Corrigendum:</strong> Added missing wording so that a remote access type can designate an appropriate private extension.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.g/2</MarginText>
+<MarginText>20.g/2_E.2.2</MarginText>
 <MarginInfo items={["AI95-00366-01"]} />
 <Admonition type="aarm" aarm="note">
 Changed the wording to use the newly defined term <em>type that supports external streaming</em>, so that various issues with access types in pure units and implicitly declared attributes for type extensions are properly handled.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.h/2</MarginText>
+<MarginText>20.h/2_E.2.2</MarginText>
 <MarginInfo items={["AI95-00366-01"]} />
 <Admonition type="aarm" aarm="note">
 Defined Storage_Size to be 0 for remote access-to-class-wide types, rather than having it undefined. This eliminates issues with pure units requiring a defined storage size.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.i/2</MarginText>
+<MarginText>20.i/2_E.2.2</MarginText>
 <MarginInfo items={["AI95-00431-01"]} />
 <Admonition type="aarm" aarm="note">
 Corrected the wording so that a value of a local access-to-subprogram type cannot be converted to a remote access-to-subprogram type, as intended (and required by the ACATS). <br /></Admonition>
@@ -623,10 +594,10 @@ Corrected the wording so that a value of a local access-to-subprogram type canno
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.j/5</MarginText>
+<MarginText>20.j/5_E.2.2</MarginText>
 <MarginInfo items={["AI05-0101-1", "AI12-0005-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Added rules about the  returning of remote access-to-class-wide types; this had been missed in the past. While programs that returned unstreamable types from RCI functions were legal, it is not clear what they could have done (as the results could not be marshalled). Similarly, RCI functions that return remote controlling access types could try to save those values, but it is unlikely that a compiler would know how to do that usefully. Thus, it seems unlikely that any real programs will be impacted by these changes. <br /></Admonition>
+<strong></strong> Added rules about the returning of remote access-to-class-wide types; this had been missed in the past. While programs that returned unstreamable types from RCI functions were legal, it is not clear what they could have done (as the results could not be marshalled). Similarly, RCI functions that return remote controlling access types could try to save those values, but it is unlikely that a compiler would know how to do that usefully. Thus, it seems unlikely that any real programs will be impacted by these changes. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -635,24 +606,24 @@ Corrected the wording so that a value of a local access-to-subprogram type canno
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.k/3</MarginText>
+<MarginText>20.k/3_E.2.2</MarginText>
 <MarginInfo items={["AI05-0060-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Clarified that anonymous access types are never remote access types (and can be used in remote types units subject to the normal restrictions). Added wording to allow limited class-wide interfaces to be designated by remote access types.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.l/3</MarginText>
+<MarginText>20.l/3_E.2.2</MarginText>
 <MarginInfo items={["AI05-0206-1"]} />
 <Admonition type="aarm" aarm="note">
 Added wording to allow private withs of preelaborated normal units in the specification of a remote types unit.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.m/5</MarginText>
+<MarginText>20.m/5_E.2.2</MarginText>
 <MarginInfo items={["AI05-0243-1", "AI12-0417-1"]} />
 <Admonition type="aarm" aarm="note">
-Remote_Types is now a categorization aspect, so it can be specified by an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>  <br /></Admonition>
+Remote_Types is now a categorization aspect, so it can be specified by an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -661,35 +632,35 @@ Remote_Types is now a categorization aspect, so it can be specified by an <code>
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.n/4</MarginText>
+<MarginText>20.n/4_E.2.2</MarginText>
 <MarginInfo items={["AI12-0034-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Clarified that dispatching remote stream attribute calls are prohibited. We don't document this as an incompatibility, as the stream parameter cannot be marshalled for a remote call (it doesn't have external streaming), so it's impossible that any working program depends on this functionality.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.o/4</MarginText>
+<MarginText>20.o/4_E.2.2</MarginText>
 <MarginInfo items={["AI12-0076-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Explicitly stated that modifying a visible constant in a remote types package is erroneous. We don't document this as inconsistent as implementations certainly can still do whatever they were previously doing (no change is required); moreover, this case (and many more) were erroneous in Ada 2005 and before, so we're just restoring the previous semantics.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.p/4</MarginText>
+<MarginText>20.p/4_E.2.2</MarginText>
 <MarginInfo items={["AI12-0085-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Clarified that specifying the Storage_Pool or Storage_Size aspect for an access-to-class-wide type is not allowed. The intent is clear, and no implementation has ever allowed specifying the aspects (the attributes already cannot be specified), so we don't document this as an incompatibility.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.q/5</MarginText>
+<MarginText>20.q/5_E.2.2</MarginText>
 <MarginInfo items={["AI12-0283-1"]} />
 <Admonition type="aarm" aarm="note">
 Added a rule to ensure that potentially blocking remote calls are not considered nonblocking.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.r/5</MarginText>
+<MarginText>20.r/5_E.2.2</MarginText>
 <MarginInfo items={["AI12-0417-1"]} />
 <Admonition type="aarm" aarm="note">
 The pragma Remote_Types is now obsolescent.<br /></Admonition>
@@ -699,184 +670,161 @@ The pragma Remote_Types is now obsolescent.<br /></Admonition>
 
 ## E.2.3  Remote Call Interface Library Units
 
-<MarginText>1</MarginText>
+<MarginText>1_E.2.3</MarginText>
 <p>[A remote call interface library unit can be used as an interface for remote procedure calls (RPCs) (or remote function calls) between active partitions.] <br /></p>
 
 
 #### Language Design Principles
 
 <AnnotatedOnly>
-<MarginText>1.a</MarginText>
+<MarginText>1.a_E.2.3</MarginText>
 <Admonition type="aarm" aarm="note">
 The restrictions governing a remote call interface library unit are intended to ensure that the values of the actual parameters in a remote call can be meaningfully sent between two active partitions. <br /></Admonition>
 </AnnotatedOnly>
-
-
-#### Syntax
-
-<MarginText>2/5</MarginText>
-<MarginInfo items={["AI12-0417-1"]} />
-<p class="Indented2"> <br /></p>
-
-<MarginText>3/5</MarginText>
-<MarginInfo items={["AI12-0417-1"]} />
-<p class="Indented2">   <br /></p>
-
-<MarginText>4/5</MarginText>
-<MarginInfo items={["AI12-0417-1"]} />
-<p class="Indented2"> <br /></p>
-
-<MarginText>5/5</MarginText>
-<MarginInfo items={["AI12-0417-1"]} />
-<p class="Indented2">   <br /></p>
-
-<MarginText>6/5</MarginText>
-<MarginInfo items={["AI12-0417-1"]} />
-<p class="Indented2"> <br /></p>
 
 <p><em>Paragraphs 2 through 6 were moved to <a href="../AA-J/">Annex J</a>, &ldquo;<a href="../AA-J/">Obsolescent Features</a>&rdquo;.</em> <br /></p>
 
 
 #### Legality Rules
 
-<MarginText>7/5</MarginText>
+<MarginText>7/5_E.2.3</MarginText>
 <MarginInfo items={["AI95-00048-01", "AI05-0243-1", "AI12-0417-1"]} />
-<p>{"{"}<em>8652/0078</em>{"}"} When the library unit aspect (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>)   Remote_Call_Interface of  a library unit is True, the library unit is a <em>remote call interface (RCI)</em> . A subprogram declared in the visible part of such a library unit, or declared by such a library unit, is called a <em>remote subprogram</em>.<br /></p>
+<p>{"{"}<em>8652/0078</em>{"}"} When the library unit aspect (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>) Remote_Call_Interface of a library unit is True, the library unit is a <em>remote call interface (RCI)</em>. A subprogram declared in the visible part of such a library unit, or declared by such a library unit, is called a <em>remote subprogram</em>.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>7.a/3</MarginText>
+<MarginText>7.a/3_E.2.3</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Remote_Call_Interface: </strong>Subprograms in a given package may be used in remote procedure calls.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>8/3</MarginText>
+<MarginText>8/3_E.2.3</MarginText>
 <MarginInfo items={["AI05-0206-1", "AI05-0243-1"]} />
 <p>The declaration of an RCI library unit shall be preelaborable (see <a href="../AA-10/AA-10.2#Subclause_10.2.1">10.2.1</a>), and shall depend semantically only upon declared pure <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s, shared passive library units, remote types library units, other remote call interface library units, or preelaborated normal library units that are mentioned only in private with clauses.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>8.a/3</MarginText>
+<MarginText>8.a/3_E.2.3</MarginText>
 <MarginInfo items={["AI05-0243-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>We say declared pure <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code> here, so that (all) limited views are allowed; those are not library units, but they are declared pure <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>9/1</MarginText>
+<MarginText>9/1_E.2.3</MarginText>
 <MarginInfo items={["AI95-00048-01"]} />
 <p>{"{"}<em>8652/0078</em>{"}"} In addition, the following restrictions apply to an RCI library unit: <br /></p>
 
-<MarginText>10/1</MarginText>
+<MarginText>10/1_E.2.3</MarginText>
 <MarginInfo items={["AI95-00048-01"]} />
 <ul>
 <li>{"{"}<em>8652/0078</em>{"}"} its visible part shall not contain the declaration of a variable; <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>10.a/1</MarginText>
+<MarginText>10.a/1_E.2.3</MarginText>
 <MarginInfo items={["AI95-00048-01"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>{"{"}<em>8652/0078</em>{"}"} Remote call interface units do not provide remote data access. A shared passive package has to be used for that. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>11/1</MarginText>
+<MarginText>11/1_E.2.3</MarginText>
 <MarginInfo items={["AI95-00048-01"]} />
 <ul>
 <li>{"{"}<em>8652/0078</em>{"}"} its visible part shall not contain the declaration of a limited type; <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>11.a/2</MarginText>
+<MarginText>11.a/2_E.2.3</MarginText>
 <MarginInfo items={["AI95-00240-01", "AI95-00366-01"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>We disallow the declaration of task and protected types, since calling an entry or a protected subprogram implicitly passes an object of a limited type (the target task or protected object). We disallow other limited types since we require that such types have available Read and Write attributes, but we certainly don't want the Read and Write attributes themselves to involve remote calls (thereby defeating their purpose of marshalling the value for remote calls). <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>12/1</MarginText>
+<MarginText>12/1_E.2.3</MarginText>
 <MarginInfo items={["AI95-00048-01"]} />
 <ul>
 <li>{"{"}<em>8652/0078</em>{"}"} its visible part shall not contain a nested <code><a href="../AA-12/AA-12.1#S0310">generic_declaration</a></code>; <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>12.a</MarginText>
+<MarginText>12.a_E.2.3</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This is disallowed because the body of the nested generic would presumably have access to data inside the body of the RCI package, and if instantiated in a different partition, remote data access might result, which is not supported. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>13/3</MarginText>
+<MarginText>13/3_E.2.3</MarginText>
 <MarginInfo items={["AI95-00048-01", "AI05-0229-1"]} />
 <ul>
 <li>{"{"}<em>8652/0078</em>{"}"} it shall not be, nor shall its visible part contain, the declaration of a subprogram for which aspect Inline is True;<br /></li>
-<MarginText>13.1/5</MarginText>
+<MarginText>13.1/5_E.2.3</MarginText>
 <MarginInfo items={["AI12-0283-1"]} />
 <li>it shall not be, nor shall its visible part contain, the declaration of a subprogram that is nonblocking (see <a href="../AA-9/AA-9.5">9.5</a>);<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>13.a/5</MarginText>
+<MarginText>13.a/5_E.2.3</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>All such subprograms are remote subprograms, and all calls on remote subprograms are considered potentially blocking, so they cannot statically be allowed in nonblocking code. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>13.b/5</MarginText>
+<MarginText>13.b/5_E.2.3</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The type declaration of a remote subprogram is illegal if the Nonblocking aspect is True, either implicitly by inheritance or by explicit specification. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>14/3</MarginText>
+<MarginText>14/3_E.2.3</MarginText>
 <MarginInfo items={["AI95-00048-01", "AI95-00240-01", "AI95-00366-01", "AI05-0101-1"]} />
 <ul>
 <li>{"{"}<em>8652/0078</em>{"}"} it shall not be, nor shall its visible part contain, a subprogram (or access-to-subprogram) declaration whose profile has a parameter or result of a type that does not support external streaming (see <a href="../AA-13/AA-13.13#Subclause_13.13.2">13.13.2</a>);<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>14.a/3</MarginText>
+<MarginText>14.a/3_E.2.3</MarginText>
 <MarginInfo items={["AI05-0101-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>No anonymous access types support external streaming, so they are never allowed as parameters or results of RCI subprograms. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>15</MarginText>
+<MarginText>15_E.2.3</MarginText>
 <ul>
 <li>any public child of the library unit shall be a remote call interface library unit. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>15.a/5</MarginText>
+<MarginText>15.a/5_E.2.3</MarginText>
 <MarginInfo items={["AI12-0417-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>No restrictions apply to the private part of an RCI package, and since a public child can &ldquo;see&rdquo; the private part of its parent, such a child must itself have a Remote_Call_Interface aspect , and be assigned to the same partition (see below). <br /></Admonition>
+<strong></strong>No restrictions apply to the private part of an RCI package, and since a public child can &ldquo;see&rdquo; the private part of its parent, such a child must itself have a Remote_Call_Interface aspect, and be assigned to the same partition (see below). <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>15.b/5</MarginText>
+<MarginText>15.b/5_E.2.3</MarginText>
 <MarginInfo items={["AI12-0417-1"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>We considered making the public child of an RCI package implicitly RCI, but it seemed better to require an explicit aspect  to avoid any confusion.<br /></Admonition>
+<strong></strong>We considered making the public child of an RCI package implicitly RCI, but it seemed better to require an explicit aspect to avoid any confusion.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>15.c</MarginText>
+<MarginText>15.c_E.2.3</MarginText>
 <Admonition type="aarm" aarm="note">
 Note that there is no need for a private child to be an RCI package, since it can only be seen from the body of its parent or its siblings, all of which are required to be in the same active partition. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>15.1/5</MarginText>
+<MarginText>15.1/5_E.2.3</MarginText>
 <MarginInfo items={["AI12-0002-1"]} />
 <p>Specification of a stream-oriented attribute is illegal in the specification of a remote call interface library unit. In addition to the places where Legality Rules normally apply (see <a href="../AA-12/AA-12.3">12.3</a>), this rule applies also in the private part of an instance of a generic unit.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>15.d/5</MarginText>
+<MarginText>15.d/5_E.2.3</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>This applies whether the stream-oriented attribute is specified with an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> or with an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>15.e/5</MarginText>
+<MarginText>15.e/5_E.2.3</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>Stream-oriented attributes are intended to be used locally (to marshall values), while subprograms in a remote call interface are intended to be used remotely. We resolve the conflict by banning the local use routines. The type should be included in a remote types package and imported into the remote call interface package. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>16/5</MarginText>
+<MarginText>16/5_E.2.3</MarginText>
 <MarginInfo items={["AI05-0229-1", "AI12-0417-1"]} />
-<p>  All_Calls_Remote is a library unit  aspect   . If the All_Calls_Remote aspect of a library unit is True, the library unit shall be a remote call interface.<br /></p>
+<p>All_Calls_Remote is a library unit aspect. If the All_Calls_Remote aspect of a library unit is True, the library unit shall be a remote call interface.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>16.a/4</MarginText>
+<MarginText>16.a/4_E.2.3</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>All_Calls_Remote: </strong>All indirect or dispatching remote subprogram calls, and all direct remote subprogram calls, should use the Partition Communication Subsystem.<br /></Admonition>
 </AnnotatedOnly>
@@ -884,63 +832,63 @@ Note that there is no need for a private child to be an RCI package, since it ca
 
 #### Post-Compilation Rules
 
-<MarginText>17</MarginText>
+<MarginText>17_E.2.3</MarginText>
 <p>A remote call interface library unit shall be assigned to at most one partition of a given program. A remote call interface library unit whose parent is also an RCI library unit shall be assigned only to the same partition as its parent. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>17.a/1</MarginText>
+<MarginText>17.a/1_E.2.3</MarginText>
 <MarginInfo items={["AI95-00048-01"]} />
 <Admonition type="aarm" aarm="implementation-note">
 <strong></strong>{"{"}<em>8652/0078</em>{"}"} The declaration of an RCI unit, with a calling-stub body, is automatically included in all active partitions with compilation units that depend on it. However the whole RCI library unit, including its (non-stub) body, will only be in one of the active partitions. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>18</MarginText>
+<MarginText>18_E.2.3</MarginText>
 <p>Notwithstanding the rule given in <a href="../AA-10/AA-10.2">10.2</a>, a compilation unit in a given partition that semantically depends on the declaration of an RCI library unit, <em>needs</em> (in the sense of <a href="../AA-10/AA-10.2">10.2</a>) only the declaration of the RCI library unit, not the body, to be included in that same partition. [Therefore, the body of an RCI library unit is included only in the partition to which the RCI library unit is explicitly assigned.]<br /></p>
 
 
 #### Implementation Requirements
 
-<MarginText>19/4</MarginText>
+<MarginText>19/4_E.2.3</MarginText>
 <MarginInfo items={["AI95-00048-01", "AI05-0229-1", "AI12-0031-1"]} />
 <p>{"{"}<em>8652/0078</em>{"}"} If aspect All_Calls_Remote is True for a given RCI library unit, then the implementation shall route any of the following calls through the Partition Communication Subsystem (PCS); see <a href="../AA-E/AA-E.5">E.5</a>: <br /></p>
 
-<MarginText>19.1/4</MarginText>
+<MarginText>19.1/4_E.2.3</MarginText>
 <MarginInfo items={["AI12-0031-1"]} />
 <ul>
 <li>A direct call to a subprogram of the RCI unit from outside the declarative region of the unit;<br /></li>
-<MarginText>19.2/4</MarginText>
+<MarginText>19.2/4_E.2.3</MarginText>
 <MarginInfo items={["AI12-0031-1"]} />
 <li>An indirect call through a remote access-to-subprogram value that designates a subprogram of the RCI unit;<br /></li>
-<MarginText>19.3/4</MarginText>
+<MarginText>19.3/4_E.2.3</MarginText>
 <MarginInfo items={["AI12-0031-1"]} />
 <li>A dispatching call with a controlling operand designated by a remote access-to-class-wide value whose tag identifies a type declared in the RCI unit. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>19.a/5</MarginText>
+<MarginText>19.a/5_E.2.3</MarginText>
 <MarginInfo items={["AI95-00048-01", "AI05-0229-1", "AI12-0005-1", "AI12-0031-1"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>{"{"}<em>8652/0078</em>{"}"} When this aspect is False (or not used), it is presumed that most implementations will not make calls through the PCS if the call originates in the same partition as that of the RCI unit. When this aspect is True, all indirect or dispatching remote subprogram calls to the RCI unit, and all direct calls from outside the subsystem rooted at the RCI unit, are treated like calls from outside the partition, ensuring that the PCS is involved in all such calls (for debugging, redundancy, etc.). <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.b/5</MarginText>
+<MarginText>19.b/5_E.2.3</MarginText>
 <MarginInfo items={["AI12-0005-1", "AI12-0031-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>There is no point in forcing  local direct calls (including calls from children) to go through the PCS, since on the target system these calls are always local, and all the units are in the same active partition. <br /></Admonition>
+<strong></strong>There is no point in forcing local direct calls (including calls from children) to go through the PCS, since on the target system these calls are always local, and all the units are in the same active partition. <br /></Admonition>
 </AnnotatedOnly>
 
 
 #### Implementation Permissions
 
-<MarginText>20/5</MarginText>
+<MarginText>20/5_E.2.3</MarginText>
 <MarginInfo items={["AI05-0243-1", "AI12-0417-1", "AI12-0444-1"]} />
-<p>An implementation may omit  support for the Remote_Call_Interface   aspect or  the All_Calls_Remote aspect . [Explicit message-based communication between active partitions can be supported as an alternative to RPC.] <br /></p>
+<p>An implementation may omit support for the Remote_Call_Interface aspect or the All_Calls_Remote aspect. [Explicit message-based communication between active partitions can be supported as an alternative to RPC.] <br /></p>
 
 <AnnotatedOnly>
-<MarginText>20.a/5</MarginText>
+<MarginText>20.a/5_E.2.3</MarginText>
 <MarginInfo items={["AI12-0417-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Of course, it is pointless to support the All_Calls_Remote aspect  if the Remote_Call_Interface aspect  (or some approximate equivalent) is not supported. <br /></Admonition>
+<strong></strong>Of course, it is pointless to support the All_Calls_Remote aspect if the Remote_Call_Interface aspect (or some approximate equivalent) is not supported. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -949,7 +897,7 @@ Note that there is no need for a private child to be an RCI package, since it ca
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.b/3</MarginText>
+<MarginText>20.b/3_E.2.3</MarginText>
 <MarginInfo items={["AI95-00240-01", "AI05-0248-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong>Amendment </strong> The wording was changed from &ldquo;user-specified&rdquo; to &ldquo;available&rdquo; read and write attributes. (This was then further changed, see below.) This means that a type with the attributes specified in the private part would originally have been allowed as a formal parameter of an RCI subprogram, but that is no longer allowed. This change was made so that the rules were consistent with the rules introduced for the Corrigendum for stream attributes; moreover, legality should not depend on the contents of the private part. <br /></Admonition>
@@ -961,14 +909,14 @@ Note that there is no need for a private child to be an RCI package, since it ca
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.c/2</MarginText>
+<MarginText>20.c/2_E.2.3</MarginText>
 <MarginInfo items={["AI95-00048-01"]} />
 <Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0078</em>{"}"} <strong>Corrigendum:</strong> Changed the wording to allow a library subprogram to be a remote call interface unit.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.d/2</MarginText>
+<MarginText>20.d/2_E.2.3</MarginText>
 <MarginInfo items={["AI95-00366-01"]} />
 <Admonition type="aarm" aarm="note">
 Changed the wording to use the newly defined term <em>type that supports external streaming</em>, so that various issues with access types in pure units and implicitly declared attributes for type extensions are properly handled. <br /></Admonition>
@@ -980,7 +928,7 @@ Changed the wording to use the newly defined term <em>type that supports externa
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.e/3</MarginText>
+<MarginText>20.e/3_E.2.3</MarginText>
 <MarginInfo items={["AI05-0101-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Added a rule to ensure that function results are streamable; this was missing in previous versions of Ada. While programs that returned unstreamable types from RCI functions were legal, it is not clear what they could have done (as the results could not be marshalled). Thus, it seems unlikely that any real programs will be impacted by this change. <br /></Admonition>
@@ -992,24 +940,24 @@ Changed the wording to use the newly defined term <em>type that supports externa
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.f/3</MarginText>
+<MarginText>20.f/3_E.2.3</MarginText>
 <MarginInfo items={["AI05-0206-1"]} />
 <Admonition type="aarm" aarm="note">
 Added wording to allow private withs of preelaborated normal units in the specification of a remote call interface unit.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.g/5</MarginText>
+<MarginText>20.g/5_E.2.3</MarginText>
 <MarginInfo items={["AI05-0229-1", "AI12-0417-1"]} />
 <Admonition type="aarm" aarm="note">
-All_Calls_Remote is now a representation aspect, so it can be specified by an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> <br /></Admonition>
+All_Calls_Remote is now a representation aspect, so it can be specified by an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code><br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.h/5</MarginText>
+<MarginText>20.h/5_E.2.3</MarginText>
 <MarginInfo items={["AI05-0243-1", "AI12-0417-1"]} />
 <Admonition type="aarm" aarm="note">
-Remote_Call_Interface is now a categorization aspect, so it can be specified by an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>  <br /></Admonition>
+Remote_Call_Interface is now a categorization aspect, so it can be specified by an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1018,10 +966,10 @@ Remote_Call_Interface is now a categorization aspect, so it can be specified by 
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.i/4</MarginText>
+<MarginText>20.i/4_E.2.3</MarginText>
 <MarginInfo items={["AI12-0031-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>Corrigendum:</strong> Redefined when indirect and dispatching remote calls have to be remote for a unit for which the aspect All_Calls_Remote is True. With the new rules, a local target called indirectly or via dispatching will be routed through the PCS, while that was not necessarily true in earlier Ada. If a program depended on local targets not being routed through the PCS even when All_Calls_Remote is used, then it might behave differently or fail in  Ada 2012 as corrected with this refinement. This is highly unlikely as the PCS is going to be able to communicate with any partition of the program, including the local partition. <br /></Admonition>
+<strong>Corrigendum:</strong> Redefined when indirect and dispatching remote calls have to be remote for a unit for which the aspect All_Calls_Remote is True. With the new rules, a local target called indirectly or via dispatching will be routed through the PCS, while that was not necessarily true in earlier Ada. If a program depended on local targets not being routed through the PCS even when All_Calls_Remote is used, then it might behave differently or fail in Ada 2012 as corrected with this refinement. This is highly unlikely as the PCS is going to be able to communicate with any partition of the program, including the local partition. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1030,7 +978,7 @@ Remote_Call_Interface is now a categorization aspect, so it can be specified by 
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.j/5</MarginText>
+<MarginText>20.j/5_E.2.3</MarginText>
 <MarginInfo items={["AI12-0002-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Specifying user-defined stream-oriented attributes is now illegal in an RCI unit. If a program contains such attributes, they and their associated type will need to be moved to a remote types package (which is then imported into the RCI unit). <br /></Admonition>
@@ -1042,14 +990,14 @@ Remote_Call_Interface is now a categorization aspect, so it can be specified by 
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>20.k/5</MarginText>
+<MarginText>20.k/5_E.2.3</MarginText>
 <MarginInfo items={["AI12-0283-1"]} />
 <Admonition type="aarm" aarm="note">
 Added a rule to ensure that potentially blocking remote calls are not considered nonblocking.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>20.l/5</MarginText>
+<MarginText>20.l/5_E.2.3</MarginText>
 <MarginInfo items={["AI12-0417-1"]} />
 <Admonition type="aarm" aarm="note">
 The pragmas Remote_Call_Interface and All_Calls_Remote are now obsolescent. <br /></Admonition>

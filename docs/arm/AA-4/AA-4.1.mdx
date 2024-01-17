@@ -190,7 +190,7 @@ The syntax rule for <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> 
 <MarginText>17.e/3</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="note">
-The syntax rules for <code><a href="../AA-4/AA-4.1#S0094">explicit_dereference</a></code> and <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code> are new; this makes other rules simpler, since dereferencing an access value has substantially different semantics from <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>s. We also use <code><a href="../AA-4/AA-4.1#S0091">name</a></code> instead of <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> in the <code><a href="../AA-4/AA-4.1#S0094">explicit_dereference</a></code> rule since that seems clearer. Note that these rules rely on the fact that function calls are now names, so we don't need to use prefix to allow function  calls in front of .<strong>all</strong>. <br /></Admonition>
+The syntax rules for <code><a href="../AA-4/AA-4.1#S0094">explicit_dereference</a></code> and <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code> are new; this makes other rules simpler, since dereferencing an access value has substantially different semantics from <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>s. We also use <code><a href="../AA-4/AA-4.1#S0091">name</a></code> instead of <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> in the <code><a href="../AA-4/AA-4.1#S0094">explicit_dereference</a></code> rule since that seems clearer. Note that these rules rely on the fact that function calls are now names, so we don't need to use prefix to allow function calls in front of .<strong>all</strong>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -252,13 +252,13 @@ Added a <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> (see <a href
 
 ## 4.1.1  Indexed Components
 
-<MarginText>1</MarginText>
+<MarginText>1_4.1.1</MarginText>
 <p>[An <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> denotes either a component of an array or an entry in a family of entries. ]<br /></p>
 
 
 #### Syntax
 
-<MarginText>2</MarginText>
+<MarginText>2_4.1.1</MarginText>
 
 <CodeBlock>
 <code>indexed_component</code><a id="S0096"></a><code> ::= </code><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>(<code><a href="../AA-4/AA-4.4#S0132">expression</a></code> {"{"}, <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>{"}"})<br />
@@ -267,60 +267,53 @@ Added a <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> (see <a href
 
 #### Name Resolution Rules
 
-<MarginText>3</MarginText>
+<MarginText>3_4.1.1</MarginText>
 <p>The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> with a given number of <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s shall resolve to denote an array (after any implicit dereference) with the corresponding number of index positions, or shall resolve to denote an entry family of a task or protected object (in which case there shall be only one <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>).<br /></p>
 
-<MarginText>4</MarginText>
+<MarginText>4_4.1.1</MarginText>
 <p>The expected type for each <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is the corresponding index type.<br /></p>
 
 
 #### Static Semantics
 
-<MarginText>5</MarginText>
+<MarginText>5_4.1.1</MarginText>
 <p>When the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes an array, the <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> denotes the component of the array with the specified index value(s). The nominal subtype of the <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> is the component subtype of the array type. <br /></p>
 
-<MarginText>6</MarginText>
+<MarginText>6_4.1.1</MarginText>
 <p>When the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes an entry family, the <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code> denotes the individual entry of the entry family with the specified index value.<br /></p>
 
 
 #### Dynamic Semantics
 
-<MarginText>7</MarginText>
+<MarginText>7_4.1.1</MarginText>
 <p>For the evaluation of an <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>, the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> and the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>s are evaluated in an arbitrary order. The value of each <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is converted to the corresponding index type. A check is made that each index value belongs to the corresponding index range of the array or entry family denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. Constraint_Error is raised if this check fails.<br /></p>
 
 
 #### Examples
 
-<MarginText>8</MarginText>
+<MarginText>8_4.1.1</MarginText>
 <p><em>Examples of indexed components:</em> <br /></p>
 
-<MarginText>9</MarginText>
+<MarginText>9_4.1.1</MarginText>
 <CodeBlock language="ada">
  My_Schedule(Sat)  -- a component of a one-dimensional array	(see <a href="../AA-3/AA-3.6#Subclause_3.6.1">3.6.1</a>){"\n"} Page(10)          -- a component of a one-dimensional array	(see <a href="../AA-3/AA-3.6">3.6</a>){"\n"} Board(M, J + 1)   -- a component of a two-dimensional array	(see <a href="../AA-3/AA-3.6#Subclause_3.6.1">3.6.1</a>){"\n"} Page(10)(20)      -- a component of a component	(see <a href="../AA-3/AA-3.6">3.6</a>){"\n"} Request(Medium)   -- an entry in a family of entries	(see <a href="../AA-9/AA-9.1">9.1</a>){"\n"} Next_Frame(L)(M, N) -- a component of a function call	(see <a href="../AA-6/AA-6.1">6.1</a>){"\n"}
 
 </CodeBlock>
-<MarginText>10/5</MarginText>
+<MarginText>10/5_4.1.1</MarginText>
 <MarginInfo items={["AI12-0452-1"]} />
 <p>Distinct notations are used for components of multidimensional arrays (such as Board) and arrays of arrays (such as Page). The components of an array of arrays are arrays and can therefore be indexed. Thus Page(10)(20) denotes the 20th component of Page(10). In the last example Next_Frame(L) is a function call returning an access value that designates a two-dimensional array.<br /></p>
-
-<AnnotatedOnly>
-<MarginText>11/5</MarginText>
-<MarginInfo items={["AI12-0452-1"]} />
-<Admonition type="aarm" aarm="note">
- <br /></Admonition>
-</AnnotatedOnly>
 
 <a id="Subclause_4.1.2"></a>
 
 ## 4.1.2  Slices
 
-<MarginText>1</MarginText>
+<MarginText>1_4.1.2</MarginText>
 <p>[ A <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> denotes a one-dimensional array formed by a sequence of consecutive components of a one-dimensional array. A <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> of a variable is a variable; a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> of a constant is a constant;] a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> of a value is a value. <br /></p>
 
 
 #### Syntax
 
-<MarginText>2</MarginText>
+<MarginText>2_4.1.2</MarginText>
 
 <CodeBlock>
 <code>slice</code><a id="S0097"></a><code> ::= </code><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>(<code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code>)<br />
@@ -329,48 +322,48 @@ Added a <code><a href="../AA-5/AA-5.2#S0174">target_name</a></code> (see <a href
 
 #### Name Resolution Rules
 
-<MarginText>3</MarginText>
+<MarginText>3_4.1.2</MarginText>
 <p>The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> shall resolve to denote a one-dimensional array (after any implicit dereference).<br /></p>
 
-<MarginText>4</MarginText>
+<MarginText>4_4.1.2</MarginText>
 <p>The expected type for the <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code> of a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> is the index type of the array type. <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>5</MarginText>
+<MarginText>5_4.1.2</MarginText>
 <p>A <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> denotes a one-dimensional array formed by the sequence of consecutive components of the array denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>, corresponding to the range of values of the index given by the <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code>.<br /></p>
 
-<MarginText>6</MarginText>
+<MarginText>6_4.1.2</MarginText>
 <p>The type of the <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> is that of the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. Its bounds are those defined by the <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code>.<br /></p>
 
 
 #### Dynamic Semantics
 
-<MarginText>7</MarginText>
+<MarginText>7_4.1.2</MarginText>
 <p>For the evaluation of a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code>, the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> and the <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code> are evaluated in an arbitrary order. If the <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> is not a <em>null slice</em> (a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> where the <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code> is a null range), then a check is made that the bounds of the <code><a href="../AA-3/AA-3.6#S0058">discrete_range</a></code> belong to the index range of the array denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. Constraint_Error is raised if this check fails.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>8/5</MarginText>
+<MarginText>8/5_4.1.2</MarginText>
 <MarginInfo items={["AI12-0447-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   By the rules given in <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>, a  <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> is illegal  as the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an Access <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>, even if the components or the array as a whole are aliased.  <br /></Admonition>
+NOTE 1   By the rules given in <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>, a <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> is illegal as the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an Access <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>, even if the components or the array as a whole are aliased. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>8.a</MarginText>
+<MarginText>8.a_4.1.2</MarginText>
 <Admonition type="aarm" aarm="proof">
 <strong></strong>Slices are not aliased, by <a href="../AA-3/AA-3.10">3.10</a>, &ldquo;<a href="../AA-3/AA-3.10">Access Types</a>&rdquo;. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>8.b</MarginText>
+<MarginText>8.b_4.1.2</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This is to ease implementation of general-access-to-array. If slices were aliased, implementations would need to store array dope with the access values, which is not always desirable given access-to-incomplete types completed in a package body. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9</MarginText>
+<MarginText>9_4.1.2</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 2   For a one-dimensional array A, the <code><a href="../AA-4/AA-4.1#S0097">slice</a></code> A(N .. N) denotes an array that has only one component; its type is the type of A. On the other hand, A(N) denotes a component of the array A and has the corresponding component type. <br /></Admonition>
 </AnnotatedOnly>
@@ -378,10 +371,10 @@ NOTE 2   For a one-dimensional array A, the <code><a href="../AA-4/AA-4.1#S0097"
 
 #### Examples
 
-<MarginText>10</MarginText>
+<MarginText>10_4.1.2</MarginText>
 <p><em>Examples of slices:</em> <br /></p>
 
-<MarginText>11</MarginText>
+<MarginText>11_4.1.2</MarginText>
 <CodeBlock language="ada">
 Stars(1 .. 15)        -- a slice of 15 characters		(see <a href="../AA-3/AA-3.6#Subclause_3.6.3">3.6.3</a>){"\n"}Page(10 .. 10 + Size) -- a slice of 1 + Size components	(see <a href="../AA-3/AA-3.6">3.6</a>){"\n"}Page(L)(A .. B)       -- a slice of the array Page(L)	(see <a href="../AA-3/AA-3.6">3.6</a>){"\n"}Stars(1 .. 0)         -- a null slice	(see <a href="../AA-3/AA-3.6#Subclause_3.6.3">3.6.3</a>){"\n"}My_Schedule(Weekday)  -- bounds given by subtype	(see <a href="../AA-3/AA-3.6#Subclause_3.6.1">3.6.1</a> and <a href="../AA-3/AA-3.5#Subclause_3.5.1">3.5.1</a>){"\n"}Stars(5 .. 15)(K)     -- same as Stars(K)	(see <a href="../AA-3/AA-3.6#Subclause_3.6.3">3.6.3</a>){"\n"}                      -- provided that K is in 5 .. 15{"\n"}
 <a id="Subclause_4.1.3"></a>
@@ -390,19 +383,19 @@ Stars(1 .. 15)        -- a slice of 15 characters		(see <a href="../AA-3/AA-3.6#
 
 ## 4.1.3  Selected Components
 
-<MarginText>1</MarginText>
+<MarginText>1_4.1.3</MarginText>
 <p>[<code><a href="../AA-4/AA-4.1#S0098">Selected_component</a></code>s are used to denote components (including discriminants), entries, entry families, and protected subprograms; they are also used as expanded names as described below. ]<br /></p>
 
 
 #### Syntax
 
-<MarginText>2</MarginText>
+<MarginText>2_4.1.3</MarginText>
 
 <CodeBlock>
 <code>selected_component</code><a id="S0098"></a><code> ::= </code><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> . <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code><br />
 
 </CodeBlock>
-<MarginText>3</MarginText>
+<MarginText>3_4.1.3</MarginText>
 
 <CodeBlock>
 <code>selector_name</code><a id="S0099"></a><code> ::= </code><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> | <code><a href="../AA-2/AA-2.5#S0015">character_literal</a></code> | <code><a href="../AA-6/AA-6.1#S0202">operator_symbol</a></code><br />
@@ -411,109 +404,109 @@ Stars(1 .. 15)        -- a slice of 15 characters		(see <a href="../AA-3/AA-3.6#
 
 #### Name Resolution Rules
 
-<MarginText>4</MarginText>
+<MarginText>4_4.1.3</MarginText>
 <p>A <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> is called an <em>expanded name</em> if, according to the visibility rules, at least one possible interpretation of its <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes a package or an enclosing named construct (directly, not through a <code><a href="../AA-8/AA-8.5#S0242">subprogram_renaming_declaration</a></code> or <code><a href="../AA-8/AA-8.5#S0243">generic_renaming_declaration</a></code>). <br /></p>
 
 <AnnotatedOnly>
-<MarginText>4.a</MarginText>
+<MarginText>4.a_4.1.3</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>See AI83-00187. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>5</MarginText>
+<MarginText>5_4.1.3</MarginText>
 <p>A <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> that is not an expanded name shall resolve to denote one of the following: <br /></p>
 
 <AnnotatedOnly>
-<MarginText>5.a</MarginText>
+<MarginText>5.a_4.1.3</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>If the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> denotes an enclosing named construct, then the <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> is interpreted only as an expanded name, even if the named construct is a function that could be called without parameters. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>6</MarginText>
+<MarginText>6_4.1.3</MarginText>
 <ul>
 <li>A component [(including a discriminant)]:<br /></li>
-<MarginText>7</MarginText>
+<MarginText>7_4.1.3</MarginText>
 <li>The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> shall resolve to denote an object or value of some non-array composite type (after any implicit dereference). The <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> shall resolve to denote a <code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code> of the type, or, unless the type is a protected type, a <code><a href="../AA-3/AA-3.8#S0070">component_declaration</a></code> of the type. The <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> denotes the corresponding component of the object or value. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>7.a/3</MarginText>
+<MarginText>7.a/3_4.1.3</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The components of a protected object cannot be named except by an expanded name, even from within the corresponding protected body. The protected body cannot reference the private components of some arbitrary object of the protected type; the protected body may reference components of the current instance only (by an expanded name or a <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code>). <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>7.b</MarginText>
+<MarginText>7.b_4.1.3</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Only the discriminants and components visible at the place of the <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> can be selected, since a <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> can only denote declarations that are visible (see <a href="../AA-8/AA-8.3">8.3</a>). <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>8</MarginText>
+<MarginText>8_4.1.3</MarginText>
 <ul>
 <li>A single entry, an entry family, or a protected subprogram:<br /></li>
-<MarginText>9</MarginText>
+<MarginText>9_4.1.3</MarginText>
 <li>The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> shall resolve to denote an object or value of some task or protected type (after any implicit dereference). The <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> shall resolve to denote an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> or <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code> occurring (implicitly or explicitly) within the visible part of that type. The <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> denotes the corresponding entry, entry family, or protected subprogram. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>9.a</MarginText>
+<MarginText>9.a_4.1.3</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This explicitly says &ldquo;visible part&rdquo; because even though the body has visibility on the private part, it cannot call the private operations of some arbitrary object of the task or protected type, only those of the current instance (and expanded name notation has to be used for that). <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>9.1/2</MarginText>
+<MarginText>9.1/2_4.1.3</MarginText>
 <MarginInfo items={["AI95-00252-01", "AI95-00407-01"]} />
 <ul>
 <li>A view of a subprogram whose first formal parameter is of a tagged type or is an access parameter whose designated type is tagged:<br /></li>
-<MarginText>9.2/3</MarginText>
+<MarginText>9.2/3_4.1.3</MarginText>
 <MarginInfo items={["AI95-00252-01", "AI95-00407-01", "AI05-0090-1"]} />
 <li>The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> (after any implicit dereference) shall resolve to denote an object or value of a specific tagged type <em>T</em> or class-wide type <em>T</em>'Class. The <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> shall resolve to denote a view of a subprogram declared immediately within the declarative region in which an ancestor of the type <em>T</em> is declared. The first formal parameter of the subprogram shall be of type <em>T</em>, or a class-wide type that covers <em>T</em>, or an access parameter designating one of these types. The designator of the subprogram shall not be the same as that of a component of the tagged type visible at the point of the <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>. The subprogram shall not be an implicitly declared primitive operation of type <em>T</em> that overrides an inherited subprogram implemented by an entry or protected subprogram visible at the point of the <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>. The <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> denotes a view of this subprogram that omits the first formal parameter. This view is called a <em>prefixed view</em> of the subprogram, and the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> (after any implicit dereference) is called the <em>prefix</em> of the prefixed view. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>9.b/3</MarginText>
+<MarginText>9.b/3_4.1.3</MarginText>
 <MarginInfo items={["AI05-0090-1"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>The part of the rule that excludes a primitive overriding subprogram as a selector applies only to the wrapper subprogram that is implicitly declared to override a subprogram inherited from a synchronized interface that is implemented by an operation of a task or protected type (see <a href="../AA-9/AA-9.1">9.1</a> and <a href="../AA-9/AA-9.4">9.4</a>). We don't want calls that use a prefixed view to be ambiguous between the wrapper subprogram and the implementing entry or protected operation. Note that it is illegal to declare an explicit primitive that has a prefixed view that is homographic with one of the type's operations, so in normal cases it isn't possible to have an ambiguity in a prefix call. However, a class-wide operation of an ancestor type that is declared in the same declaration list with the ancestor type is also considered, and that can still make a call ambiguous. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>10</MarginText>
+<MarginText>10_4.1.3</MarginText>
 <p>An expanded name shall resolve to denote a declaration that occurs immediately within a named declarative region, as follows: <br /></p>
 
-<MarginText>11</MarginText>
+<MarginText>11_4.1.3</MarginText>
 <ul>
 <li>The <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> shall resolve to denote either a package [(including the current instance of a generic package, or a rename of a package)], or an enclosing named construct.<br /></li>
-<MarginText>12</MarginText>
+<MarginText>12_4.1.3</MarginText>
 <li>The <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> shall resolve to denote a declaration that occurs immediately within the declarative region of the package or enclosing construct [(the declaration shall be visible at the place of the expanded name &mdash; see <a href="../AA-8/AA-8.3">8.3</a>)]. The expanded name denotes that declaration. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>12.a</MarginText>
+<MarginText>12.a_4.1.3</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Hence, a library unit or subunit can use an expanded name to refer to the declarations within the private part of its parent unit, as well as to other children that have been mentioned in <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code>s. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>13</MarginText>
+<MarginText>13_4.1.3</MarginText>
 <ul>
 <li>If the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> does not denote a package, then it shall be a <code><a href="../AA-4/AA-4.1#S0092">direct_name</a></code> or an expanded name, and it shall resolve to denote a program unit (other than a package), the current instance of a type, a <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></code>, a <code><a href="../AA-5/AA-5.5#S0178">loop_statement</a></code>, or an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> (in the case of an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code> or <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, no family index is allowed); the expanded name shall occur within the declarative region of this construct. Further, if this construct is a callable construct and the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes more than one such enclosing callable construct, then the expanded name is ambiguous, independently of the <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code>.<br /></li>
 </ul>
 
 #### Legality Rules
 
-<MarginText>13.1/5</MarginText>
+<MarginText>13.1/5_4.1.3</MarginText>
 <MarginInfo items={["AI95-00252-01", "AI95-00407-01", "AI12-0204-1", "AI12-0427-1"]} />
-<p>For a prefixed view of a subprogram whose first formal parameter is an access parameter, the prefix  shall be legal as the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> with <code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code> Access appearing as the first actual parameter in a call on the unprefixed view of the subprogram .<br /></p>
+<p>For a prefixed view of a subprogram whose first formal parameter is an access parameter, the prefix shall be legal as the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> with <code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code> Access appearing as the first actual parameter in a call on the unprefixed view of the subprogram.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>13.a/5</MarginText>
+<MarginText>13.a/5_4.1.3</MarginText>
 <MarginInfo items={["AI12-0204-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>This rule prevents, for instance, using a nonaliased prefix in such a prefixed view. It also prevents using discriminant-dependent components as the prefix of such a prefixed view if those components would not be allowed to be renamed. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>13.2/2</MarginText>
+<MarginText>13.2/2_4.1.3</MarginText>
 <MarginInfo items={["AI95-00407-01"]} />
 <p>For a subprogram whose first parameter is of mode <strong>in out</strong> or <strong>out</strong>, or of an anonymous access-to-variable type, the prefix of any prefixed view shall denote a variable.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>13.b/2</MarginText>
+<MarginText>13.b/2_4.1.3</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>We want calls through a prefixed view and through a normal view to have the same legality. Thus, the implicit 'Access in this new notation needs the same legality check that an explicit 'Access would have. Similarly, we need to prohibit the object from being constant if the first parameter of the subprogram is <strong>in out</strong>, because that is (obviously) prohibited for passing a normal parameter. <br /></Admonition>
 </AnnotatedOnly>
@@ -521,28 +514,28 @@ Stars(1 .. 15)        -- a slice of 15 characters		(see <a href="../AA-3/AA-3.6#
 
 #### Dynamic Semantics
 
-<MarginText>14</MarginText>
+<MarginText>14_4.1.3</MarginText>
 <p>The evaluation of a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> includes the evaluation of the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>.<br /></p>
 
-<MarginText>15</MarginText>
+<MarginText>15_4.1.3</MarginText>
 <p>For a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code> that denotes a component of a <code><a href="../AA-3/AA-3.8#S0072">variant</a></code>, a check is made that the values of the discriminants are such that the value or object denoted by the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> has this component. The exception Constraint_Error is raised if this check fails.<br /></p>
 
 
 #### Examples
 
-<MarginText>16</MarginText>
+<MarginText>16_4.1.3</MarginText>
 <p><em>Examples of selected components:</em> <br /></p>
 
-<MarginText>17/5</MarginText>
+<MarginText>17/5_4.1.3</MarginText>
 <MarginInfo items={["AI95-00252-01", "AI95-00407-01", "AI12-0178"]} />
 <CodeBlock language="ada">
-Tomorrow.Month     -- a record component	(see <a href="../AA-3/AA-3.8">3.8</a>){"\n"}Next_Car.Owner     -- a record component	(see <a href="../AA-3/AA-3.10#Subclause_3.10.1">3.10.1</a>){"\n"}Next_Car.Owner.Age -- a record component	(see <a href="../AA-3/AA-3.10#Subclause_3.10.1">3.10.1</a>){"\n"}                   -- the previous two lines involve implicit dereferences{"\n"}Writer.Unit        -- a record component (a discriminant)	(see <a href="../AA-3/AA-3.8#Subclause_3.8.1">3.8.1</a>){"\n"}Min_Cell(H).Value  -- a record component of the result	(see <a href="../AA-6/AA-6.1">6.1</a>){"\n"}                   -- of the function call Min_Cell(H){"\n"}Cashier.Append     -- a prefixed view of a procedure	(see <a href="../AA-3/AA-3.9#Subclause_3.9.4">3.9.4</a>){"\n"}Control.Seize      -- an entry of a protected object	(see <a href="../AA-9/AA-9.4">9.4</a>){"\n"}Pool(K).Write      -- an entry of the task Pool(K)	(see <a href="../AA-9/AA-9.1">9.1</a> ){"\n"}
+Tomorrow.Month     -- a record component	(see <a href="../AA-3/AA-3.8">3.8</a>){"\n"}Next_Car.Owner     -- a record component	(see <a href="../AA-3/AA-3.10#Subclause_3.10.1">3.10.1</a>){"\n"}Next_Car.Owner.Age -- a record component	(see <a href="../AA-3/AA-3.10#Subclause_3.10.1">3.10.1</a>){"\n"}                   -- the previous two lines involve implicit dereferences{"\n"}Writer.Unit        -- a record component (a discriminant)	(see <a href="../AA-3/AA-3.8#Subclause_3.8.1">3.8.1</a>){"\n"}Min_Cell(H).Value  -- a record component of the result	(see <a href="../AA-6/AA-6.1">6.1</a>){"\n"}                   -- of the function call Min_Cell(H){"\n"}Cashier.Append     -- a prefixed view of a procedure	(see <a href="../AA-3/AA-3.9#Subclause_3.9.4">3.9.4</a>){"\n"}Control.Seize      -- an entry of a protected object	(see <a href="../AA-9/AA-9.4">9.4</a>){"\n"}Pool(K).Write      -- an entry of the task Pool(K)	(see <a href="../AA-9/AA-9.1">9.1</a>){"\n"}
 
 </CodeBlock>
-<MarginText>18</MarginText>
+<MarginText>18_4.1.3</MarginText>
 <p><em>Examples of expanded names:</em> <br /></p>
 
-<MarginText>19</MarginText>
+<MarginText>19_4.1.3</MarginText>
 <CodeBlock language="ada">
 Key_Manager."{"<"}"    -- an operator of the visible part of a package	(see <a href="../AA-7/AA-7.3#Subclause_7.3.1">7.3.1</a>){"\n"}Dot_Product.Sum    -- a variable declared in a function body	(see <a href="../AA-6/AA-6.1">6.1</a>){"\n"}Buffer.Pool        -- a variable declared in a protected unit	(see <a href="../AA-9/AA-9.11">9.11</a>){"\n"}Buffer.Read        -- an entry of a protected unit	(see <a href="../AA-9/AA-9.11">9.11</a>){"\n"}Swap.Temp          -- a variable declared in a block statement	(see <a href="../AA-5/AA-5.6">5.6</a>){"\n"}Standard.Boolean   -- the name of a predefined type	(see <a href="../AA-A/AA-A.1">A.1</a>){"\n"}
 
@@ -553,7 +546,7 @@ Key_Manager."{"<"}"    -- an operator of the visible part of a package	(see <a h
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.a</MarginText>
+<MarginText>19.a_4.1.3</MarginText>
 <Admonition type="aarm" aarm="note">
 We now allow an expanded name to use a prefix that denotes a rename of a package, even if the selector is for an entity local to the body or private part of the package, so long as the entity is visible at the place of the reference. This eliminates a preexisting anomaly where references in a package body may refer to declarations of its visible part but not those of its private part or body when the prefix is a rename of the package. <br /></Admonition>
 </AnnotatedOnly>
@@ -564,19 +557,19 @@ We now allow an expanded name to use a prefix that denotes a rename of a package
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.b</MarginText>
+<MarginText>19.b_4.1.3</MarginText>
 <Admonition type="aarm" aarm="note">
 The syntax rule for <code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> is new. It is used in places where visibility, but not necessarily direct visibility, is required. See <a href="../AA-4/AA-4.1">4.1</a>, &ldquo;<a href="../AA-4/AA-4.1">Names</a>&rdquo; for more information.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.c</MarginText>
+<MarginText>19.c_4.1.3</MarginText>
 <Admonition type="aarm" aarm="note">
 The description of dereferencing an access type has been moved to <a href="../AA-4/AA-4.1">4.1</a>, &ldquo;<a href="../AA-4/AA-4.1">Names</a>&rdquo;; <code><a href="../AA-4/AA-4.1#S0091">name</a></code>.<strong>all</strong> is no longer considered a <code><a href="../AA-4/AA-4.1#S0098">selected_component</a></code>.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.d</MarginText>
+<MarginText>19.d_4.1.3</MarginText>
 <Admonition type="aarm" aarm="note">
 The rules have been restated to be consistent with our new terminology, to accommodate class-wide types, etc. <br /></Admonition>
 </AnnotatedOnly>
@@ -587,46 +580,46 @@ The rules have been restated to be consistent with our new terminology, to accom
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.e/2</MarginText>
+<MarginText>19.e/2_4.1.3</MarginText>
 <MarginInfo items={["AI95-00252-01"]} />
 <Admonition type="aarm" aarm="note">
 The prefixed view notation for tagged objects is new. This provides a similar notation to that used in other popular languages, and also reduces the need for <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>s. This is sometimes known as &ldquo;distinguished receiver notation&rdquo;. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.f/2</MarginText>
+<MarginText>19.f/2_4.1.3</MarginText>
 <Admonition type="aarm" aarm="note">
 Given the following definitions for a tagged type T: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.g/2</MarginText>
+<MarginText>19.g/2_4.1.3</MarginText>
 <CodeBlock language="ada">
 procedure Do_Something (Obj : in out T; Count : in Natural);{"\n"}procedure Do_Something_Else (Obj : access T; Flag : in Boolean);{"\n"}My_Object : aliased T;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.h/2</MarginText>
+<MarginText>19.h/2_4.1.3</MarginText>
 <Admonition type="aarm" aarm="note">
 the following calls are equivalent: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.i/2</MarginText>
+<MarginText>19.i/2_4.1.3</MarginText>
 <CodeBlock language="ada">
 Do_Something (My_Object, Count ={">"} 10);{"\n"}My_Object.Do_Something (Count ={">"} 10);{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.j/2</MarginText>
+<MarginText>19.j/2_4.1.3</MarginText>
 <Admonition type="aarm" aarm="note">
 as are the following calls: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.k/2</MarginText>
+<MarginText>19.k/2_4.1.3</MarginText>
 <CodeBlock language="ada">
 Do_Something_Else (My_Object'Access, Flag ={">"} True);{"\n"}My_Object.Do_Something_Else (Flag ={">"} True);{"\n"}
 
@@ -638,7 +631,7 @@ Do_Something_Else (My_Object'Access, Flag ={">"} True);{"\n"}My_Object.Do_Someth
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.l/3</MarginText>
+<MarginText>19.l/3_4.1.3</MarginText>
 <MarginInfo items={["AI05-0090-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Corrected the definition of a prefixed view to ignore the implicit subprograms declared for &ldquo;implemented by&rdquo; entries and protected subprograms. <br /></Admonition>
@@ -650,7 +643,7 @@ Do_Something_Else (My_Object'Access, Flag ={">"} True);{"\n"}My_Object.Do_Someth
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.m/5</MarginText>
+<MarginText>19.m/5_4.1.3</MarginText>
 <MarginInfo items={["AI12-0204-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Added a rule to ensure that all reasons that the prefix of an Access attribute can be illegal are covered by the rule for the implicit Access attribute of a prefixed view. If the object is a subcomponent that depends on discriminants or fails a static accessibility check, Ada 2012 would have allowed the prefix while Ada 2022 would not. This violated the principle that a prefixed view and a normal call have the same semantics; practically, the code may not have worked anyway if a compiler implemented generalized indexing by code expansion into the canonical form. Thus, such code wasn't practically portable. <br /></Admonition>
@@ -660,11 +653,11 @@ Do_Something_Else (My_Object'Access, Flag ={">"} True);{"\n"}My_Object.Do_Someth
 
 ## 4.1.4  Attributes
 
-<MarginText>1</MarginText>
+<MarginText>1_4.1.4</MarginText>
 <p>[An <em>attribute</em> is a characteristic of an entity that can be queried via an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> or a <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>.] <br /></p>
 
 <AnnotatedOnly>
-<MarginText>1.a/5</MarginText>
+<MarginText>1.a/5_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Term entry: </strong><strong>attribute</strong> &mdash; characteristic or property of an entity that can be queried, and in some cases specified<br /></Admonition>
 </AnnotatedOnly>
@@ -672,27 +665,27 @@ Do_Something_Else (My_Object'Access, Flag ={">"} True);{"\n"}My_Object.Do_Someth
 
 #### Syntax
 
-<MarginText>2/5</MarginText>
+<MarginText>2/5_4.1.4</MarginText>
 <MarginInfo items={["AI12-0262-1"]} />
 
 <CodeBlock>
 <code>attribute_reference</code><a id="S0100"></a><code> ::= </code><br />    <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>'<code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code><br />  | <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code><br />
 
 </CodeBlock>
-<MarginText>3/2</MarginText>
+<MarginText>3/2_4.1.4</MarginText>
 <MarginInfo items={["AI05-0004-1"]} />
 
 <CodeBlock>
 <code>attribute_designator</code><a id="S0101"></a><code> ::= </code><br />    <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>[(<em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>)]<br />  | Access | Delta | Digits | Mod<br />
 
 </CodeBlock>
-<MarginText>4</MarginText>
+<MarginText>4_4.1.4</MarginText>
 
 <CodeBlock>
 <code>range_attribute_reference</code><a id="S0102"></a><code> ::= </code><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>'<code><a href="../AA-4/AA-4.1#S0103">range_attribute_designator</a></code><br />
 
 </CodeBlock>
-<MarginText>5</MarginText>
+<MarginText>5_4.1.4</MarginText>
 
 <CodeBlock>
 <code>range_attribute_designator</code><a id="S0103"></a><code> ::= </code>Range[(<em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>)]<br />
@@ -701,180 +694,180 @@ Do_Something_Else (My_Object'Access, Flag ={">"} True);{"\n"}My_Object.Do_Someth
 
 #### Name Resolution Rules
 
-<MarginText>6/5</MarginText>
+<MarginText>6/5_4.1.4</MarginText>
 <MarginInfo items={["AI12-0242-1", "AI12-0262-1"]} />
 <p>In an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> that is not a <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code>, if the <code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code> is for an attribute defined for (at least some) objects of an access type, then the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is never interpreted as an <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code>; otherwise (and for all <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>s and <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code>s), if there is a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> and the type of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> within the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is of an access type, the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is interpreted as an <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code>. Similarly, if the <code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code> is for an attribute defined for (at least some) functions, then the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is never interpreted as a parameterless <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>; otherwise (and for all <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>s and <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code>s), if there is a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> and the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> consists of a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a function, it is interpreted as a parameterless <code><a href="../AA-6/AA-6.4#S0218">function_call</a></code>.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>6.a</MarginText>
+<MarginText>6.a_4.1.4</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>The first part of this rule is essentially a "preference" against implicit dereference, so that it is possible to ask for, say, 'Size of an access object, without automatically getting the size of the object designated by the access object. This rule applies to 'Access, 'Unchecked_Access, 'Size, and 'Address, and any other attributes that are defined for at least some access objects.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.b</MarginText>
+<MarginText>6.b_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 The second part of this rule implies that, for a parameterless function F, F'Address is the address of F, whereas F'Size is the size of the anonymous constant returned by F.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.c/1</MarginText>
+<MarginText>6.c/1_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 We normally talk in terms of expected type or profile for name resolution rules, but we don't do this for attributes because certain attributes are legal independent of the type or the profile of the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.d/2</MarginText>
+<MarginText>6.d/2_4.1.4</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="note">
 Other than the rules given above, the Name Resolution Rules for the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of each attribute are defined as Name Resolution Rules for that attribute. If no such rules are defined, then no context at all should be used when resolving the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. In particular, any knowledge about the kind of entities required must not be used for resolution unless that is required by Name Resolution Rules. This matters in obscure cases; for instance, given the following declarations: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.e/2</MarginText>
+<MarginText>6.e/2_4.1.4</MarginText>
 <CodeBlock language="ada">
   function Get_It return Integer is ... -- (1){"\n"}  function Get_It return Some_Record_Type is ... -- (2){"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>6.f/2</MarginText>
+<MarginText>6.f/2_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 the following <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> cannot be resolved and is illegal: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.g/2</MarginText>
+<MarginText>6.g/2_4.1.4</MarginText>
 <CodeBlock language="ada">
   if Get_It'Valid then{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>6.h/3</MarginText>
+<MarginText>6.h/3_4.1.4</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
 <Admonition type="aarm" aarm="note">
 even though the Valid attribute is only defined for objects of scalar types, and thus cannot be applied to the result of function (2). That information cannot be used to resolve the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. The same would be true if (2) had been a procedure; even though the procedure does not denote an object, the <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> is still illegal. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>7</MarginText>
+<MarginText>7_4.1.4</MarginText>
 <p>The <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, if any, in an <code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code> or <code><a href="../AA-4/AA-4.1#S0103">range_attribute_designator</a></code> is expected to be of any integer type. <br /></p>
 
 
 #### Legality Rules
 
-<MarginText>8</MarginText>
+<MarginText>8_4.1.4</MarginText>
 <p>The <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, if any, in an <code><a href="../AA-4/AA-4.1#S0101">attribute_designator</a></code> or <code><a href="../AA-4/AA-4.1#S0103">range_attribute_designator</a></code> shall be static. <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>9/4</MarginText>
+<MarginText>9/4_4.1.4</MarginText>
 <MarginInfo items={["AI05-0006-1", "AI12-0032-1", "AI12-0159-1"]} />
 <p>An <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> denotes a value, an object, a subprogram, or some other kind of program entity. Unless explicitly specified otherwise, for an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> that denotes a value or an object, if its type is scalar, then its nominal subtype is the base subtype of the type; if its type is tagged, its nominal subtype is the first subtype of the type; otherwise, its nominal subtype is a subtype of the type without any constraint, <code><a href="../AA-3/AA-3.10#S0083">null_exclusion</a></code>, or predicate. Similarly, unless explicitly specified otherwise, for an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> that denotes a function, when its result type is scalar, its result subtype is the base subtype of the type, when its result type is tagged, the result subtype is the first subtype of the type, and when the result type is some other type, the result subtype is a subtype of the type without any constraint, <code><a href="../AA-3/AA-3.10#S0083">null_exclusion</a></code>, or predicate. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>9.a</MarginText>
+<MarginText>9.a_4.1.4</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The attributes defined by the language are summarized in <a href="../AA-K/AA-K.2">K.2</a>. Implementations can define additional attributes. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9.b/3</MarginText>
+<MarginText>9.b/3_4.1.4</MarginText>
 <MarginInfo items={["AI05-0006-1"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>The nominal subtype is primarily a concern when an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>, or a call on an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>, is used as the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a case statement, due to the full coverage requirement based on the nominal subtype. For nondiscrete cases, we define the nominal subtype mainly for completeness. Implementations may specify otherwise for implementation-defined attribute functions.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9.c/3</MarginText>
+<MarginText>9.c/3_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 The rule is written to match the meaning of the italicized <em>T</em> in the definition of attributes such as Input; see <a href="../AA-4/AA-4.5#Subclause_4.5.1">4.5.1</a>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9.d/3</MarginText>
+<MarginText>9.d/3_4.1.4</MarginText>
 <MarginInfo items={["AI05-0006-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>To be honest: </strong>We don't worry about the fact that &ldquo;base subtype&rdquo; is not explicitly defined for the universal types. Since it is not possible to constrain a universal numeric type, all subtypes are unconstrained, and hence can be considered base subtypes. The wording above could be altered to bypass this issue, but it doesn't seem necessary, since universal integer is handled specially in the rules for case expression full coverage, and we don't allow user-defined functions for attribute functions whose result type is universal. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>10</MarginText>
+<MarginText>10_4.1.4</MarginText>
 <p>[A <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code> X'Range(N) is equivalent to the <code><a href="../AA-3/AA-3.5#S0037">range</a></code> X'First(N) .. X'Last(N), except that the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is only evaluated once. Similarly, X'Range is equivalent to X'First .. X'Last, except that the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is only evaluated once.]<br /></p>
 
 
 #### Dynamic Semantics
 
-<MarginText>11/5</MarginText>
+<MarginText>11/5_4.1.4</MarginText>
 <MarginInfo items={["AI12-0262-1"]} />
-<p>The evaluation of a  <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code> or an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> that is not a <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code>  consists of the evaluation of the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>.[ The evaluation of a <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code> is defined in <a href="../AA-4/AA-4.5#Subclause_4.5.10">4.5.10</a>.] <br /></p>
+<p>The evaluation of a <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code> or an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> that is not a <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code> consists of the evaluation of the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>.[ The evaluation of a <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code> is defined in <a href="../AA-4/AA-4.5#Subclause_4.5.10">4.5.10</a>.] <br /></p>
 
 
 #### Implementation Permissions
 
-<MarginText>12/5</MarginText>
+<MarginText>12/5_4.1.4</MarginText>
 <MarginInfo items={["AI95-00093-01", "AI12-0362-2"]} />
-<p>{"{"}<em>8652/0015</em>{"}"} An implementation may provide implementation-defined attributes; the <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> for such an implementation-defined attribute shall differ from those of the language-defined attributes . <br /></p>
+<p>{"{"}<em>8652/0015</em>{"}"} An implementation may provide implementation-defined attributes; the <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> for such an implementation-defined attribute shall differ from those of the language-defined attributes. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>12.a</MarginText>
+<MarginText>12.a_4.1.4</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>Implementation-defined attributes.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>12.b</MarginText>
+<MarginText>12.b_4.1.4</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>They cannot be reserved words because reserved words are not legal identifiers.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>12.c</MarginText>
+<MarginText>12.c_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 The semantics of implementation-defined attributes, and any associated rules, are, of course, implementation defined. For example, the implementation defines whether a given implementation-defined attribute can be used in a static expression. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>13/5</MarginText>
+<MarginText>13/5_4.1.4</MarginText>
 <MarginInfo items={["AI12-0362-2"]} />
 <p>An implementation may extend the definition of a language-defined attribute by accepting uses of that attribute that would otherwise be illegal in the following cases: <br /></p>
 
-<MarginText>14/5</MarginText>
+<MarginText>14/5_4.1.4</MarginText>
 <ul>
 <li>in order to support compatibility with a previous edition of of this Reference Manual; or<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>14.a/1</MarginText>
+<MarginText>14.a/1_4.1.4</MarginText>
 <MarginInfo items={["AI95-00093-01"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>{"{"}<em>8652/0015</em>{"}"} Implementations are allowed to support the Small attribute for floating types, as this was defined in Ada 83, even though the name would conflict with a language-defined attribute. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>15/5</MarginText>
+<MarginText>15/5_4.1.4</MarginText>
 <ul>
 <li>in the case of a language-defined attribute whose <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is required by this document to be a floating point subtype, an implementation may accept an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> whose <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> is a fixed point subtype[; the semantics of such an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> are implementation defined.] <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>16</MarginText>
+<MarginText>16_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 1   Attributes are defined throughout this document, and are summarized in <a href="../AA-K/AA-K.2">K.2</a>.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>17/5</MarginText>
+<MarginText>17/5_4.1.4</MarginText>
 <MarginInfo items={["AI95-00235", "AI12-0447-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 2   By the  general rules given above, there is no expected type or profile for the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> in a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> (or a <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>), which means that no context can be used to resolve the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> . However, by the rules given in <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a> for  the case of the Access attribute, the expected type for the <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> will  be a single access type, and the resolution of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> can make use of the designated type or profile of this  access type. <br /></Admonition>
+NOTE 2   By the general rules given above, there is no expected type or profile for the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> in a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> (or a <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>), which means that no context can be used to resolve the <code><a href="../AA-4/AA-4.1#S0091">name</a></code>. However, by the rules given in <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a> for the case of the Access attribute, the expected type for the <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> will be a single access type, and the resolution of the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> can make use of the designated type or profile of this access type. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>17.a/2</MarginText>
+<MarginText>17.a/2_4.1.4</MarginText>
 <MarginInfo items={["AI95-00235"]} />
 <Admonition type="aarm" aarm="proof">
 <strong></strong>In the general case, there is no &ldquo;expected type&rdquo; for the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>. In the special case of 'Access, there is an &ldquo;expected type&rdquo; or &ldquo;expected profile&rdquo; for the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>17.b</MarginText>
+<MarginText>17.b_4.1.4</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>'Access is a special case, because without it, it would be very difficult to take 'Access of an overloaded subprogram. <br /></Admonition>
 </AnnotatedOnly>
@@ -882,10 +875,10 @@ NOTE 2   By the  general rules given above, there is no expected type or profile
 
 #### Examples
 
-<MarginText>18</MarginText>
+<MarginText>18_4.1.4</MarginText>
 <p><em>Examples of attributes:</em> <br /></p>
 
-<MarginText>19</MarginText>
+<MarginText>19_4.1.4</MarginText>
 <CodeBlock language="ada">
 Color'First        -- minimum value of the enumeration type Color	(see <a href="../AA-3/AA-3.5#Subclause_3.5.1">3.5.1</a>){"\n"}Rainbow'Base'First -- same as Color'First	(see <a href="../AA-3/AA-3.5#Subclause_3.5.1">3.5.1</a>){"\n"}Real'Digits        -- precision of the type Real	(see <a href="../AA-3/AA-3.5#Subclause_3.5.7">3.5.7</a>){"\n"}Board'Last(2)      -- upper bound of the second dimension of Board	(see <a href="../AA-3/AA-3.6#Subclause_3.6.1">3.6.1</a>){"\n"}Board'Range(1)     -- index range of the first dimension of Board	(see <a href="../AA-3/AA-3.6#Subclause_3.6.1">3.6.1</a>){"\n"}Pool(K)'Terminated -- True if task Pool(K) is terminated	(see <a href="../AA-9/AA-9.1">9.1</a>){"\n"}Date'Size          -- number of bits for records of type Date	(see <a href="../AA-3/AA-3.8">3.8</a>){"\n"}Message'Address    -- address of the record variable Message{"\n"}                   -- 	(see <a href="../AA-3/AA-3.7#Subclause_3.7.1">3.7.1</a>){"\n"}
 
@@ -896,13 +889,13 @@ Color'First        -- minimum value of the enumeration type Color	(see <a href="
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.a</MarginText>
+<MarginText>19.a_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 We now uniformly treat X'Range as X'First..X'Last, allowing its use with scalar subtypes.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.b</MarginText>
+<MarginText>19.b_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 We allow any integer type in the <em>static_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of an attribute designator, not just a value of <em>universal_integer</em>. The preference rules ensure upward compatibility. <br /></Admonition>
 </AnnotatedOnly>
@@ -913,31 +906,31 @@ We allow any integer type in the <em>static_</em><code><a href="../AA-4/AA-4.4#S
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.c</MarginText>
+<MarginText>19.c_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 We use the syntactic category <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> rather than simply "attribute" to avoid confusing the name of something with the thing itself.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.d</MarginText>
+<MarginText>19.d_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 The syntax rule for <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> now uses <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> instead of <code>simple_name</code>, because attribute <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s are not required to follow the normal visibility rules.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.e</MarginText>
+<MarginText>19.e_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 We now separate <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> from <code><a href="../AA-4/AA-4.1#S0102">range_attribute_reference</a></code>, and enumerate the reserved words that are legal attribute or range attribute designators. We do this because <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> no longer includes reserved words.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.f</MarginText>
+<MarginText>19.f_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 The Ada 95 name resolution rules are a bit more explicit than in Ada 83. The Ada 83 rule said that the "meaning of the prefix of an attribute must be determinable independently of the attribute designator and independently of the fact that it is the prefix of an attribute".  That isn't quite right since the meaning even in Ada 83 embodies whether or not the prefix is interpreted as a parameterless function call, and in Ada 95, it also embodies whether or not the prefix is interpreted as an implicit_dereference. So the attribute designator does make a difference &mdash; just not much.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.g</MarginText>
+<MarginText>19.g_4.1.4</MarginText>
 <Admonition type="aarm" aarm="note">
 Note however that if the attribute designator is Access, it makes a big difference in the interpretation of the prefix (see <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>). <br /></Admonition>
 </AnnotatedOnly>
@@ -948,14 +941,14 @@ Note however that if the attribute designator is Access, it makes a big differen
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.h/2</MarginText>
+<MarginText>19.h/2_4.1.4</MarginText>
 <MarginInfo items={["AI95-00093-01"]} />
 <Admonition type="aarm" aarm="note">
 {"{"}<em>8652/0015</em>{"}"} <strong>Corrigendum:</strong> The wording was changed to allow implementations to continue to implement the Ada 83 Small attribute. This was always intended to be allowed.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.i/2</MarginText>
+<MarginText>19.i/2_4.1.4</MarginText>
 <MarginInfo items={["AI95-00235-01"]} />
 <Admonition type="aarm" aarm="note">
 The note about resolving prefixes of attributes was updated to reflect that the prefix of an Access attribute now has an expected type (see <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>). <br /></Admonition>
@@ -967,7 +960,7 @@ The note about resolving prefixes of attributes was updated to reflect that the 
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.j/3</MarginText>
+<MarginText>19.j/3_4.1.4</MarginText>
 <MarginInfo items={["AI05-0006-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Defined the nominal subtype of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> to close a minor language hole. <br /></Admonition>
@@ -979,28 +972,28 @@ The note about resolving prefixes of attributes was updated to reflect that the 
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.k/4</MarginText>
+<MarginText>19.k/4_4.1.4</MarginText>
 <MarginInfo items={["AI12-0032-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Allowed overriding the nominal subtype of an <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> for an object; that is used elsewhere in this standard.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.l/4</MarginText>
+<MarginText>19.l/4_4.1.4</MarginText>
 <MarginInfo items={["AI12-0159-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added wording so it is clear that predicates don't apply to the result of an attribute.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.m/5</MarginText>
+<MarginText>19.m/5_4.1.4</MarginText>
 <MarginInfo items={["AI12-0242-1", "AI12-0262-1"]} />
 <Admonition type="aarm" aarm="note">
 Added <code><a href="../AA-4/AA-4.5#S0158">reduction_attribute_reference</a></code> and cleaned up the rules here to avoid trampling the definition of those in <a href="../AA-4/AA-4.5#Subclause_4.5.10">4.5.10</a>.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.n/5</MarginText>
+<MarginText>19.n/5_4.1.4</MarginText>
 <MarginInfo items={["AI12-0362-2"]} />
 <Admonition type="aarm" aarm="note">
 Added a permission to support fixed point versions of float attributes, such as the rounding attributes found in <a href="../AA-A/AA-A.5#Subclause_A.5.3">A.5.3</a>. <br /></Admonition>
@@ -1013,27 +1006,27 @@ Added a permission to support fixed point versions of float attributes, such as 
 
 #### Static Semantics
 
-<MarginText>1/3</MarginText>
+<MarginText>1/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2"]} />
 <p>Given a discriminated type <em>T</em>, the following type-related operational aspect may be specified:<br /></p>
 
-<MarginText>2/3</MarginText>
+<MarginText>2/3_4.1.5</MarginText>
 <dt><br/>Implicit_Dereference</dt>
 <dl>
 <dd>This aspect is specified by a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes an access discriminant declared for the type <em>T</em>.<br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>2.a/3</MarginText>
+<MarginText>2.a/3_4.1.5</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Implicit_Dereference: </strong>Mechanism for user-defined implicit .<strong>all</strong>.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>3/3</MarginText>
+<MarginText>3/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2"]} />
 <p>A (view of a) type with a specified Implicit_Dereference aspect is a <em>reference type</em>. A <em>reference object</em> is an object of a reference type. The discriminant named by the Implicit_Dereference aspect is the <em>reference discriminant</em> of the reference type or reference object. [A <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> is a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that identifies a reference object, and denotes the object or subprogram designated by the reference discriminant of the reference object.]<br /></p>
 
 <AnnotatedOnly>
-<MarginText>3.a/5</MarginText>
+<MarginText>3.a/5_4.1.5</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Term entry: </strong><strong>reference type</strong> &mdash; type that has user-defined behavior for &ldquo;.all&rdquo;, defined by the Implicit_Dereference aspect<br /></Admonition>
 </AnnotatedOnly>
@@ -1041,7 +1034,7 @@ Added a permission to support fixed point versions of float attributes, such as 
 
 #### Syntax
 
-<MarginText>4/3</MarginText>
+<MarginText>4/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2"]} />
 
 <CodeBlock>
@@ -1051,65 +1044,65 @@ Added a permission to support fixed point versions of float attributes, such as 
 
 #### Name Resolution Rules
 
-<MarginText>5/3</MarginText>
+<MarginText>5/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI05-0269-1"]} />
 <p>The expected type for the <em>reference_object_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> in a <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> is any reference type. <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>5.1/4</MarginText>
+<MarginText>5.1/4_4.1.5</MarginText>
 <MarginInfo items={["AI12-0138-1"]} />
 <p>The Implicit_Dereference aspect is nonoverridable (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>).<br /></p>
 
 <AnnotatedOnly>
-<MarginText>5.a/4</MarginText>
+<MarginText>5.a/4_4.1.5</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This ensures that all descendants of a reference type have the same reference discriminant. This prevents generic contract problems with formal derived types. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>6/3</MarginText>
+<MarginText>6/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2"]} />
 <p>A <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> denotes a view equivalent to that of a dereference of the reference discriminant of the reference object.<br /></p>
 
-<MarginText>7/5</MarginText>
+<MarginText>7/5_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI12-0203-1"]} />
 <p>Given a reference type <em>T</em>, the Implicit_Dereference aspect is inherited by descendants of type <em>T</em> if not overridden [(which is only permitted if confirming)]. If a descendant type constrains the value of the reference discriminant of <em>T</em> by a new discriminant, that new discriminant is the reference discriminant of the descendant. [If the descendant type constrains the value of the reference discriminant of <em>T</em> by an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> other than the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> of a new discriminant, a <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> that identifies an object of the descendant type denotes the object or subprogram designated by the value of this constraining expression.]<br /></p>
 
 
 #### Dynamic Semantics
 
-<MarginText>8/3</MarginText>
+<MarginText>8/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2"]} />
 <p>The evaluation of a <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> consists of the evaluation of the <em>reference_object_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> and a determination of the object or subprogram designated by the reference discriminant of the named reference object. A check is made that the value of the reference discriminant is not the null access value. Constraint_Error is raised if this check fails. The <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> denotes the object or subprogram designated by the value of the reference discriminant of the named reference object.<br /></p>
 
 
 #### Examples
 
-<MarginText>9/5</MarginText>
+<MarginText>9/5_4.1.5</MarginText>
 <MarginInfo items={["AI12-0429-1"]} />
 <p><em>Examples of the specification and use of generalized references:</em><br /></p>
 
-<MarginText>10/3</MarginText>
+<MarginText>10/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0268-1"]} />
 <CodeBlock language="ada">
 type Barrel is tagged ...  -- holds objects of type Element{"\n"}
-<MarginText>11/3</MarginText>
+<MarginText>11/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI05-0299-1"]} />
 type Ref_Element(Data : access Element) is limited private{"\n"}   with Implicit_Dereference ={">"} Data;{"\n"}      -- This Ref_Element type is a "reference" type.{"\n"}      -- "Data" is its reference discriminant.{"\n"}
-<MarginText>12/3</MarginText>
+<MarginText>12/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI05-0268-1"]} />
 function Find (B : aliased in out Barrel; Key : String){"\n"}   return Ref_Element;{"\n"}   -- Returns a reference to an element of a barrel.{"\n"}
-<MarginText>13/3</MarginText>
+<MarginText>13/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0268-1", "AI05-0299-1"]} />
 B: aliased Barrel;{"\n"}
-<MarginText>14/3</MarginText>
+<MarginText>14/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2"]} />
 ...{"\n"}
-<MarginText>15/3</MarginText>
+<MarginText>15/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI05-0268-1"]} />
 Find (B, "grape") := Element'(...);  -- Assign through a reference.{"\n"}
-<MarginText>16/3</MarginText>
+<MarginText>16/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI05-0268-1"]} />
 -- This is equivalent to:{"\n"}Find (B, "grape").Data.all := Element'(...);{"\n"}
 
@@ -1120,7 +1113,7 @@ Find (B, "grape") := Element'(...);  -- Assign through a reference.{"\n"}
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>16.a/3</MarginText>
+<MarginText>16.a/3_4.1.5</MarginText>
 <MarginInfo items={["AI05-0139-2"]} />
 <Admonition type="aarm" aarm="note">
 The aspect Implicit_Dereference and the <code><a href="../AA-4/AA-4.1#S0104">generalized_reference</a></code> are new. <br /></Admonition>
@@ -1132,7 +1125,7 @@ The aspect Implicit_Dereference and the <code><a href="../AA-4/AA-4.1#S0104">gen
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>16.b/4</MarginText>
+<MarginText>16.b/4_4.1.5</MarginText>
 <MarginInfo items={["AI12-0138-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Defined Implicit_Dereference to be nonoveridable, which makes redefinitions and hiding of the aspect illegal. It's possible that some program could violate one of these new restrictions, but this is not very likely as reference types are not likely to be used in a hierarchy. <br /></Admonition>
@@ -1145,101 +1138,99 @@ The aspect Implicit_Dereference and the <code><a href="../AA-4/AA-4.1#S0104">gen
 
 #### Static Semantics
 
-<MarginText>1/3</MarginText>
+<MarginText>1/3_4.1.6</MarginText>
 <MarginInfo items={["AI05-0139-2"]} />
 <p>Given a tagged type <em>T</em>, the following type-related, operational aspects may be specified:<br /></p>
 
-<MarginText>2/5</MarginText>
+<MarginText>2/5_4.1.6</MarginText>
 <MarginInfo items={["AI12-0428-1"]} />
 <dt><br/>Constant_Indexing</dt>
 <dl>
 <dd>This aspect shall be specified by a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes one or more functions declared immediately within the same declaration list in which <em>T</em>, or the declaration completed by <em>T</em>, is declared. All such functions shall have at least two parameters, the first of which is of type <em>T</em> or <em>T</em>'Class, or is an access-to-constant parameter with designated type <em>T</em> or <em>T</em>'Class.<br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>2.a/3</MarginText>
+<MarginText>2.a/3_4.1.6</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Constant_Indexing: </strong>Defines function(s) to implement user-defined <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>s.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>3/5</MarginText>
+<MarginText>3/5_4.1.6</MarginText>
 <MarginInfo items={["AI12-0428-1"]} />
 <dt><br/>Variable_Indexing</dt>
 <dl>
 <dd>This aspect shall be specified by a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes one or more functions declared immediately within the same declaration list in which <em>T</em>, or the declaration completed by <em>T</em>, is declared. All such functions shall have at least two parameters, the first of which is of type <em>T</em> or <em>T</em>'Class, or is an access parameter with designated type <em>T</em> or <em>T</em>'Class. All such functions shall have a return type that is a reference type (see <a href="../AA-4/AA-4.1#Subclause_4.1.5">4.1.5</a>), whose reference discriminant is of an access-to-variable type. <br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>3.a/3</MarginText>
+<MarginText>3.a/3_4.1.6</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>We require these functions to return a reference type so that the object returned from the function can act like a variable. We need no similar rule for Constant_Indexing, since all functions return constant objects. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>3.b/3</MarginText>
+<MarginText>3.b/3_4.1.6</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Variable_Indexing: </strong>Defines function(s) to implement user-defined <code><a href="../AA-4/AA-4.1#S0096">indexed_component</a></code>s.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>4/4</MarginText>
+<MarginText>4/4_4.1.6</MarginText>
 <MarginInfo items={["AI12-0104-1"]} />
 <p>These aspects are inherited by descendants of <em>T</em> (including the class-wide type <em>T</em>'Class).<br /></p>
 
 <AnnotatedOnly>
-<MarginText>4.a/3</MarginText>
+<MarginText>4.a/3_4.1.6</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Indexing can be provided for multiple index types by overloading routines with different parameter profiles. For instance, the map containers provide indexing on both cursors and keys by providing pairs of overloaded routines to the Constant_Indexing and Variable_Indexing aspects. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>5/3</MarginText>
+<MarginText>5/3_4.1.6</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI05-0292-1"]} />
 <p>An <em>indexable container type</em> is (a view of) a tagged type with at least one of the aspects Constant_Indexing or Variable_Indexing specified. An <em>indexable container object</em> is an object of an indexable container type. [A <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes the result of calling a function named by a Constant_Indexing or Variable_Indexing aspect.]<br /></p>
 
 <AnnotatedOnly>
-<MarginText>5.a/5</MarginText>
+<MarginText>5.a/5_4.1.6</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Term entry: </strong><strong>indexable container type</strong> &mdash; type that has user-defined behavior for indexing, via the Constant_Indexing or Variable_Indexing aspects<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>5.1/4</MarginText>
+<MarginText>5.1/4_4.1.6</MarginText>
 <MarginInfo items={["AI12-0138-1"]} />
 <p>The Constant_Indexing and Variable_Indexing aspects are nonoverridable (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>). <br /></p>
 
 <AnnotatedOnly>
-<MarginText>5.b/5</MarginText>
+<MarginText>5.b/5_4.1.6</MarginText>
 <MarginInfo items={["AI12-0160-1"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This (and the following Legality Rules) ensures that all descendants of an indexable container type have aspects with the same properties. This prevents generic contract problems with formal derived types.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>5.c/4</MarginText>
+<MarginText>5.c/4_4.1.6</MarginText>
 <MarginInfo items={["AI12-0104-1", "AI12-0138-1"]} />
 <Admonition type="aarm" aarm="note">
 A nonoverridable aspect allows the replacement of the implementation of an indexing function and the addition of a new indexing function for a derived type, but not the removal of an indexing function. This is necessary so that indexing can be used on objects of T'Class. So long as the tag of O is that of its nominal subtype, we do not want T'Class(O)(I) to mean something different than O(I). Thus we cannot allow a change in the function identified. As T'Class(O)(I) expands into a dispatching call, we need to ensure that there is a body for each such function -- but it is OK for that body to be changed from the original body (that's just normal dispatching). <br /></Admonition>
 </AnnotatedOnly>
 
-<p> <br /></p>
-
 
 #### Legality Rules
 
-<MarginText>6/5</MarginText>
+<MarginText>6/5_4.1.6</MarginText>
 <MarginInfo items={["AI12-0160-1"]} />
 <p>If an ancestor of a type <em>T</em> is an indexable container type, then any explicit specification of the Constant_Indexing or Variable_Indexing aspects shall be confirming; that is, the specified <code><a href="../AA-4/AA-4.1#S0091">name</a></code> shall match the inherited aspect (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>). <br /></p>
 
 <p><em>Paragraphs 7 through 8 were deleted.</em> <br /></p>
 
-<MarginText>9/5</MarginText>
+<MarginText>9/5_4.1.6</MarginText>
 <MarginInfo items={["AI12-0160-1"]} />
 <p>In addition to the places where Legality Rules normally apply (see <a href="../AA-12/AA-12.3">12.3</a>), this rule applies also in the private part of an instance of a generic unit.<br /></p>
 
-<MarginText>9.1/5</MarginText>
+<MarginText>9.1/5_4.1.6</MarginText>
 <MarginInfo items={["AI12-0204-1"]} />
 <p>A <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is illegal if the equivalent prefixed view (see below) is illegal. <br /></p>
 
 
 #### Syntax
 
-<MarginText>10/3</MarginText>
+<MarginText>10/3_4.1.6</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI05-0292-1"]} />
 
 <CodeBlock>
@@ -1249,62 +1240,62 @@ A nonoverridable aspect allows the replacement of the implementation of an index
 
 #### Name Resolution Rules
 
-<MarginText>11/3</MarginText>
+<MarginText>11/3_4.1.6</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI05-0292-1"]} />
 <p>The expected type for the <em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of a <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is any indexable container type.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>11.a/5</MarginText>
+<MarginText>11.a/5_4.1.6</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>A <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> can be an <code><a href="../AA-4/AA-4.1#S0095">implicit_dereference</a></code> (see <a href="../AA-4/AA-4.1">4.1</a>), so an access-to-<em>indexable_container_object</em> can be the prefix (English meaning!) of a <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code>. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>12/3</MarginText>
+<MarginText>12/3_4.1.6</MarginText>
 <MarginInfo items={["AI05-0139-2", "AI05-0292-1"]} />
 <p>If the Constant_Indexing aspect is specified for the type of the <em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of a <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code>, then the <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is interpreted as a <em>constant indexing</em> under the following circumstances:<br /></p>
 
-<MarginText>13/3</MarginText>
+<MarginText>13/3_4.1.6</MarginText>
 <ul>
 <li>when the Variable_Indexing aspect is not specified for the type of the <em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code>;<br /></li>
-<MarginText>14/3</MarginText>
+<MarginText>14/3_4.1.6</MarginText>
 <li>when the <em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> denotes a constant;<br /></li>
-<MarginText>15/3</MarginText>
+<MarginText>15/3_4.1.6</MarginText>
 <li>when the <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is used within a <code><a href="../AA-4/AA-4.4#S0141">primary</a></code> where a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denoting a constant is permitted.<br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>15.a/3</MarginText>
+<MarginText>15.a/3_4.1.6</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>This means it is not interpreted as a constant indexing for the <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> in the LHS of an assignment (not inside a <code><a href="../AA-4/AA-4.4#S0141">primary</a></code>), nor for the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> used for an <strong>out</strong> or <strong>in out</strong> parameter (not allowed to be a constant), nor for the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> in an object renaming (not inside a primary), unless there is no Variable_Indexing aspect defined. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>16/3</MarginText>
+<MarginText>16/3_4.1.6</MarginText>
 <p>Otherwise, the <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is interpreted as a <em>variable indexing</em>.<br /></p>
 
-<MarginText>17/3</MarginText>
+<MarginText>17/3_4.1.6</MarginText>
 <p>When a <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is interpreted as a constant (or variable) indexing, it is equivalent to a call on a prefixed view of one of the functions named by the Constant_Indexing (or Variable_Indexing) aspect of the type of the <em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> with the given <code><a href="../AA-6/AA-6.4#S0219">actual_parameter_part</a></code>, and with the <em>indexable_container_object_</em><code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> as the <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of the prefixed view.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>17.a/3</MarginText>
+<MarginText>17.a/3_4.1.6</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>In other words, the <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> is equivalent to:<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>17.b/3</MarginText>
+<MarginText>17.b/3_4.1.6</MarginText>
 <CodeBlock language="ada">
 indexable_container_object_<a href="../AA-4/AA-4.1#S0093">prefix</a>.Indexing <a href="../AA-6/AA-6.4#S0219">actual_parameter_part</a>{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>17.c/4</MarginText>
+<MarginText>17.c/4_4.1.6</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="note">
 where Indexing is the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> specified for the Constant_Indexing or Variable_Indexing aspect. This equivalence is then resolved in the normal way; the aspect specifies a <code><a href="../AA-4/AA-4.1#S0091">name</a></code>, it does not denote declarations. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>18/4</MarginText>
+<MarginText>18/4_4.1.6</MarginText>
 <MarginInfo items={["AI12-0104-1"]} />
 <Admonition type="aarm" aarm="note">
 NOTE   The Constant_Indexing and Variable_Indexing aspects cannot be redefined when inherited for a derived type, but the functions that they denote can be modified by overriding or overloading. <br /></Admonition>
@@ -1313,21 +1304,21 @@ NOTE   The Constant_Indexing and Variable_Indexing aspects cannot be redefined w
 
 #### Examples
 
-<MarginText>19/5</MarginText>
+<MarginText>19/5_4.1.6</MarginText>
 <MarginInfo items={["AI12-0429-1"]} />
 <p><em>Examples of the specification and use of generalized indexing:</em><br /></p>
 
-<MarginText>20/3</MarginText>
+<MarginText>20/3_4.1.6</MarginText>
 <MarginInfo items={["AI05-0268-1", "AI05-0292-1"]} />
 <CodeBlock language="ada">
 type Indexed_Barrel is tagged ...{"\n"}  with Variable_Indexing ={">"} Find;{"\n"}  -- Indexed_Barrel is an indexable container type,{"\n"}  -- Find is the generalized indexing operation.{"\n"}
-<MarginText>21/3</MarginText>
+<MarginText>21/3_4.1.6</MarginText>
 <MarginInfo items={["AI05-0268-1"]} />
 function Find (B : aliased in out Indexed_Barrel; Key : String){"\n"}   return Ref_Element;{"\n"}   -- Return a reference to an element of a barrel (see <a href="../AA-4/AA-4.1#Subclause_4.1.5">4.1.5</a>).{"\n"}
-<MarginText>22/3</MarginText>
+<MarginText>22/3_4.1.6</MarginText>
 <MarginInfo items={["AI05-0268-1"]} />
 IB: aliased Indexed_Barrel;{"\n"}
-<MarginText>23/3</MarginText>
+<MarginText>23/3_4.1.6</MarginText>
 <MarginInfo items={["AI05-0268-1"]} />
 -- All of the following calls are then equivalent:{"\n"}Find (IB,"pear").Data.all := Element'(...); -- Traditional call{"\n"}IB.Find ("pear").Data.all := Element'(...); -- Call of prefixed view{"\n"}IB.Find ("pear")          := Element'(...); -- Implicit dereference (see <a href="../AA-4/AA-4.1#Subclause_4.1.5">4.1.5</a>){"\n"}IB      ("pear")          := Element'(...); -- Implicit indexing and dereference{"\n"}IB      ("pear").Data.all := Element'(...); -- Implicit indexing only{"\n"}
 
@@ -1338,7 +1329,7 @@ IB: aliased Indexed_Barrel;{"\n"}
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>23.a/3</MarginText>
+<MarginText>23.a/3_4.1.6</MarginText>
 <MarginInfo items={["AI05-0139-2"]} />
 <Admonition type="aarm" aarm="note">
 Aspects Constant_Indexing and Variable_Indexing, and the <code><a href="../AA-4/AA-4.1#S0105">generalized_indexing</a></code> syntax are new. <br /></Admonition>
@@ -1350,14 +1341,14 @@ Aspects Constant_Indexing and Variable_Indexing, and the <code><a href="../AA-4/
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>23.b/5</MarginText>
+<MarginText>23.b/5_4.1.6</MarginText>
 <MarginInfo items={["AI12-0160-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Prevented a derived type from specifying Constant_Indexing if the ancestor specified Variable_Indexing (and vice versa). This is necessary to preserve the intent that for an object Obj whose tag is that of its nominal subtype, T'Class(Obj)(I) always has the same meaning as Obj(I). Situations like this should be rare in practice; most types will either define both aspects or neither.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>23.c/5</MarginText>
+<MarginText>23.c/5_4.1.6</MarginText>
 <MarginInfo items={["AI12-0204-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Added a rule that a generalized indexing is illegal if the equivalent prefixed view would be illegal. If the prefixed view would be illegal for any reason, Ada 2012 would have allowed the generalized indexing while Ada 2022 does not. This violated the principle that a generalized indexing and the equivalent prefixed view have the same semantics; practically, the code may not have worked anyway if a compiler implemented generalized indexing by code expansion into the canonical form. Thus, such code wasn't practically portable. <br /></Admonition>
@@ -1369,21 +1360,21 @@ Aspects Constant_Indexing and Variable_Indexing, and the <code><a href="../AA-4/
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>23.d/4</MarginText>
+<MarginText>23.d/4_4.1.6</MarginText>
 <MarginInfo items={["AI12-0104-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Converted confusing and unnecessary normative wording about "overriding an aspect" into a note.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>23.e/4</MarginText>
+<MarginText>23.e/4_4.1.6</MarginText>
 <MarginInfo items={["AI12-0138-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Defined Constant_Indexing and Variable_Indexing to be nonoveridable. This is merely a new description for Legality Rules which already applied to these aspects.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>23.f/5</MarginText>
+<MarginText>23.f/5_4.1.6</MarginText>
 <MarginInfo items={["AI12-0428-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Allowed the completion of a private type to use declarations from either the visible part or the private part. <br /></Admonition>

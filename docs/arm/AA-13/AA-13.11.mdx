@@ -32,7 +32,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <AnnotatedOnly>
 <MarginText>2.b/5</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Term entry: </strong><strong>storage pool object</strong> &mdash; object associated with one or more access types from which the storage for objects created by allocators of the access type(s) is obtained<br /><br /></Admonition>
+<strong>Term entry: </strong><strong>storage pool object</strong> &mdash; object associated with one or more access types from which the storage for objects created by allocators of the access type(s) is obtained<br />Note: Some storage pools can be partitioned into subpools in order to support finer-grained storage management.<br /></Admonition>
 </AnnotatedOnly>
 
 
@@ -56,10 +56,10 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>5/5</MarginText>
 <MarginInfo items={["AI12-0235-1"]} />
 <CodeBlock language="ada">
-with Ada.Finalization;{"\n"}with System.Storage_Elements;{"\n"}package System.Storage_Pools {"\n"}    with Pure, Nonblocking ={">"} False is {"\n"}
+with Ada.Finalization;{"\n"}with System.Storage_Elements;{"\n"}package System.Storage_Pools {"\n"}    with Pure, Nonblocking ={">"} False is{"\n"}
 <MarginText>6/5</MarginText>
 <MarginInfo items={["AI95-00161-01", "AI12-0399-1"]} />
-    type Root_Storage_Pool is{"\n"}        abstract new Ada.Finalization.Limited_Controlled with private {"\n"}        with  Preelaborable_Initialization ;{"\n"}
+    type Root_Storage_Pool is{"\n"}        abstract new Ada.Finalization.Limited_Controlled with private{"\n"}        with Preelaborable_Initialization;{"\n"}
 <MarginText>7</MarginText>
     procedure Allocate({"\n"}      Pool : in out Root_Storage_Pool;{"\n"}      Storage_Address : out Address;{"\n"}      Size_In_Storage_Elements : in Storage_Elements.Storage_Count;{"\n"}      Alignment : in Storage_Elements.Storage_Count) is abstract;{"\n"}
 <MarginText>8</MarginText>
@@ -129,7 +129,7 @@ Storage_Size is not a measure of how much un-allocated space is left in the pool
 <MarginText>15.c/5</MarginText>
 <MarginInfo items={["AI12-0319-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong> We need to be able to describe in contracts (especially for generic units) whether the operations of a storage pool allow blocking, and we do that with the nonblocking status of the type. We make the check when the pool is specified so we can avoid adding a special check to the declaration of a pool type &ndash; we want pool types to follow the same rules as any other type. <br /></Admonition>
+<strong></strong>We need to be able to describe in contracts (especially for generic units) whether the operations of a storage pool allow blocking, and we do that with the nonblocking status of the type. We make the check when the pool is specified so we can avoid adding a special check to the declaration of a pool type &ndash; we want pool types to follow the same rules as any other type. <br /></Admonition>
 </AnnotatedOnly>
 
 <MarginText>16/3</MarginText>
@@ -331,7 +331,7 @@ The reclamation happens after the master is finalized. <br /></Admonition>
 
 <MarginText>21.6/5</MarginText>
 <MarginInfo items={["AI05-0107-1", "AI12-0445-1"]} />
-<p>The number of calls to Allocate that will be used  to implement an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> for any particular type is unspecified. The number of calls to Deallocate that will be used  to implement an instance of Unchecked_Deallocation (see <a href="../AA-13/AA-13.11#Subclause_13.11.2">13.11.2</a>) for any particular object is the same as the number of Allocate calls for that object.<br /></p>
+<p>The number of calls to Allocate that will be used to implement an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> for any particular type is unspecified. The number of calls to Deallocate that will be used to implement an instance of Unchecked_Deallocation (see <a href="../AA-13/AA-13.11#Subclause_13.11.2">13.11.2</a>) for any particular object is the same as the number of Allocate calls for that object.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>21.g/3</MarginText>
@@ -367,7 +367,7 @@ The reclamation happens after the master is finalized. <br /></Admonition>
 
 <MarginText>22/5</MarginText>
 <MarginInfo items={["AI12-0445-1"]} />
-<p>An implementation shall document the set of values that a user-defined Allocate procedure has  to accept for the Alignment parameter. An implementation shall document how the standard storage pool is chosen, and how storage is allocated by standard storage pools. <br /></p>
+<p>An implementation shall document the set of values that a user-defined Allocate procedure has to accept for the Alignment parameter. An implementation shall document how the standard storage pool is chosen, and how storage is allocated by standard storage pools. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>22.a/2</MarginText>
@@ -442,12 +442,12 @@ The reclamation happens after the master is finalized. <br /></Admonition>
 <li>If the <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> defines the result of a function with an access result, the storage pool is determined as though the <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> were in place of the call of the function. If the call is the operand of a type conversion, the storage pool is that of the target access type of the conversion. If the call is itself defining the result of a function with an access result, this rule is applied recursively;<br /></li>
 <MarginText>25.4/5</MarginText>
 <MarginInfo items={["AI95-00230-01", "AI12-0444-1"]} />
-<li>Otherwise, a default storage pool should be created at the point where the anonymous access type is elaborated; such a storage pool may have no mechanism for the  deallocation of individual objects. <br /></li>
+<li>Otherwise, a default storage pool should be created at the point where the anonymous access type is elaborated; such a storage pool may have no mechanism for the deallocation of individual objects. <br /></li>
 </ul>
 <AnnotatedOnly>
 <MarginText>25.a.1/2</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>Usually, a storage pool for an access discriminant or access parameter should be created at the point of an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>, and be reclaimed when the designated object becomes inaccessible. For other anonymous access types, the pool should be created at the point where the type is elaborated and may have no mechanism for the  deallocation of individual objects.<br /></Admonition>
+<strong></strong>Usually, a storage pool for an access discriminant or access parameter should be created at the point of an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>, and be reclaimed when the designated object becomes inaccessible. For other anonymous access types, the pool should be created at the point where the type is elaborated and may have no mechanism for the deallocation of individual objects.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -468,7 +468,7 @@ For other sorts of anonymous access types, this implementation is not possible i
 <MarginText>26/5</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   A user-defined storage pool type can be obtained by extending the Root_Storage_Pool type, and overriding the primitive subprograms Allocate, Deallocate, and Storage_Size. A user-defined storage pool can then be obtained by declaring an object of the type extension. The user can override Initialize and Finalize if there is any desire  for nontrivial initialization and finalization for a user-defined pool type. For example, Finalize can  reclaim blocks of storage that are allocated separately from the pool object itself.<br /></Admonition>
+NOTE 1   A user-defined storage pool type can be obtained by extending the Root_Storage_Pool type, and overriding the primitive subprograms Allocate, Deallocate, and Storage_Size. A user-defined storage pool can then be obtained by declaring an object of the type extension. The user can override Initialize and Finalize if there is any desire for nontrivial initialization and finalization for a user-defined pool type. For example, Finalize can reclaim blocks of storage that are allocated separately from the pool object itself.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -532,7 +532,7 @@ type T is access Designated;{"\n"}for T'Storage_Pool use Pool_Object;{"\n"}
 </CodeBlock>
 <MarginText>35/5</MarginText>
 <MarginInfo items={["AI12-0440-1"]} />
-<p>Another access type can  be added to an existing storage pool, via: <br /></p>
+<p>Another access type can be added to an existing storage pool, via: <br /></p>
 
 <MarginText>36</MarginText>
 <CodeBlock language="ada">
@@ -550,7 +550,7 @@ for T2'Storage_Pool use T'Storage_Pool;{"\n"}
 
 <MarginText>38/5</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI12-0440-1"]} />
-<p>As usual, a derivative of Root_Storage_Pool can  define additional operations. For example, consider the Mark_Release_Pool_Type defined in <a href="../AA-13/AA-13.11#Subclause_13.11.6">13.11.6</a>, that has two additional operations, Mark and Release, the following is a possible use: <br /></p>
+<p>As usual, a derivative of Root_Storage_Pool can define additional operations. For example, consider the Mark_Release_Pool_Type defined in <a href="../AA-13/AA-13.11#Subclause_13.11.6">13.11.6</a>, that has two additional operations, Mark and Release, the following is a possible use: <br /></p>
 
 <MarginText>39/3</MarginText>
 <MarginInfo items={["AI95-00066-01", "AI05-0111-3"]} />
@@ -560,7 +560,7 @@ for T2'Storage_Pool use T'Storage_Pool;{"\n"}
 ...{"\n"}
 <MarginText>41/5</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI12-0178-1"]} />
-Our_Pool : Mark_Release_Pool_Type (Pool_Size ={">"} 2000);{"\n"}My_Mark : Subpool_Handle ; -- As declared in  <a href="../AA-13/AA-13.11#Subclause_13.11.6">13.11.6</a>{"\n"}
+Our_Pool : Mark_Release_Pool_Type (Pool_Size ={">"} 2000);{"\n"}My_Mark : Subpool_Handle; -- As declared in <a href="../AA-13/AA-13.11#Subclause_13.11.6">13.11.6</a>{"\n"}
 <MarginText>42/3</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 type Acc is access ...;{"\n"}for Acc'Storage_Pool use Our_Pool;{"\n"}...{"\n"}
@@ -716,48 +716,48 @@ Specified that the standard pool(s), and the pool(s) used to implement a specifi
 
 ## 13.11.1  Storage Allocation Attributes
 
-<MarginText>1/3</MarginText>
+<MarginText>1/3_13.11.1</MarginText>
 <MarginInfo items={["AI05-0193-1"]} />
 <p>[The Max_Size_In_Storage_Elements and Max_Alignment_For_Allocation attributes may be useful in writing user-defined pool types.] <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>2/3</MarginText>
+<MarginText>2/3_13.11.1</MarginText>
 <MarginInfo items={["AI05-0193-1"]} />
 <p>For every subtype S, the following attributes are defined: <br /></p>
 
-<MarginText>3/5</MarginText>
+<MarginText>3/5_13.11.1</MarginText>
 <dt><br/>S'Max_Size_In_Storage_Elements</dt>
 <MarginInfo items={["AI95-00256-01", "AI95-00416-01", "AI05-0193-1", "AI12-0439-1"]} />
 <dl>
-<dd>Denotes the maximum value for Size_In_Storage_Elements that can  be requested by the implementation via Allocate for an access type whose designated subtype is S. The value of this attribute is of type <em>universal_integer</em>. <br /></dd>
+<dd>Denotes the maximum value for Size_In_Storage_Elements that can be requested by the implementation via Allocate for an access type whose designated subtype is S. The value of this attribute is of type <em>universal_integer</em>. <br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>3.a</MarginText>
+<MarginText>3.a_13.11.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>If S is an unconstrained array subtype, or an unconstrained subtype with discriminants, S'Max_Size_In_Storage_Elements might be very large. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>4/5</MarginText>
+<MarginText>4/5_13.11.1</MarginText>
 <dt><br/>S'Max_Alignment_For_Allocation</dt>
 <MarginInfo items={["AI05-0193-1", "AI12-0439-1"]} />
 <dl>
-<dd>Denotes the maximum value for Alignment that can  be requested by the implementation via Allocate for an access type whose designated subtype is S. The value of this attribute is of type <em>universal_integer</em>. <br /></dd>
+<dd>Denotes the maximum value for Alignment that can be requested by the implementation via Allocate for an access type whose designated subtype is S. The value of this attribute is of type <em>universal_integer</em>. <br /></dd>
 </dl>
-<MarginText>5/5</MarginText>
+<MarginText>5/5_13.11.1</MarginText>
 <MarginInfo items={["AI05-0193-1", "AI12-0439-1"]} />
-<p>For a type with access discriminants, if the implementation allocates space for a coextension in the same pool as that of the object having the access discriminant, then these attributes account for any calls on Allocate that can  be performed to provide space for such coextensions. <br /></p>
+<p>For a type with access discriminants, if the implementation allocates space for a coextension in the same pool as that of the object having the access discriminant, then these attributes account for any calls on Allocate that can be performed to provide space for such coextensions. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>5.a/3</MarginText>
+<MarginText>5.a/3_13.11.1</MarginText>
 <MarginInfo items={["AI05-0193-1"]} />
 <Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>The values of these attributes should reflect only the calls that might be made to the pool specified for an access type with designated type S. Thus, if the coextensions would normally be allocated from a different pool than the one used for the main object (that is, the  of <a href="../AA-13/AA-13.11">13.11</a> for determining the pool of an anonymous access discriminant is not followed), then these attributes should not reflect any calls on Allocate used to allocate the coextensions. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>5.b/3</MarginText>
+<MarginText>5.b/3_13.11.1</MarginText>
 <MarginInfo items={["AI05-0193-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Coextensions of coextensions of this type (and so on) are included in the values of these attributes if they are allocated from the same pool. <br /></Admonition>
@@ -769,7 +769,7 @@ Specified that the standard pool(s), and the pool(s) used to implement a specifi
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>5.c/2</MarginText>
+<MarginText>5.c/2_13.11.1</MarginText>
 <MarginInfo items={["AI95-00256-01"]} />
 <Admonition type="aarm" aarm="note">
 Corrected the wording so that a fortune-telling compiler that can see the future execution of the program is not required. <br /></Admonition>
@@ -781,7 +781,7 @@ Corrected the wording so that a fortune-telling compiler that can see the future
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>5.d/3</MarginText>
+<MarginText>5.d/3_13.11.1</MarginText>
 <MarginInfo items={["AI05-0193-1"]} />
 <Admonition type="aarm" aarm="note">
 The Max_Alignment_For_Allocation attribute is new. <br /></Admonition>
@@ -791,23 +791,23 @@ The Max_Alignment_For_Allocation attribute is new. <br /></Admonition>
 
 ## 13.11.2  Unchecked Storage Deallocation
 
-<MarginText>1</MarginText>
+<MarginText>1_13.11.2</MarginText>
 <p>[ Unchecked storage deallocation of an object designated by a value of an access type is achieved by a call to an instance of the generic procedure Unchecked_Deallocation.] <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>2</MarginText>
+<MarginText>2_13.11.2</MarginText>
 <p>The following language-defined generic library procedure exists: <br /></p>
 
-<MarginText>3/5</MarginText>
+<MarginText>3/5_13.11.2</MarginText>
 <MarginInfo items={["AI05-0229-1", "AI12-0241-1", "AI12-0302-1", "AI12-0319-1"]} />
 <CodeBlock language="ada">
-generic{"\n"}   type Object({"<"}{">"}) is limited private;{"\n"}   type Name   is access  Object;{"\n"}procedure Ada.Unchecked_Deallocation(X : in out Name){"\n"}   with Preelaborate, Nonblocking,{"\n"}        Global ={">"} in out Name'Storage_Pool,{"\n"}        Convention ={">"} Intrinsic; {"\n"}
+generic{"\n"}   type Object({"<"}{">"}) is limited private;{"\n"}   type Name   is access  Object;{"\n"}procedure Ada.Unchecked_Deallocation(X : in out Name){"\n"}   with Preelaborate, Nonblocking,{"\n"}        Global ={">"} in out Name'Storage_Pool,{"\n"}        Convention ={">"} Intrinsic;{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
-<MarginText>3.a/3</MarginText>
+<MarginText>3.a/3_13.11.2</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The aspect Convention implies that the attribute Access is not allowed for instances of Unchecked_Deallocation. <br /></Admonition>
@@ -816,12 +816,12 @@ generic{"\n"}   type Object({"<"}{">"}) is limited private;{"\n"}   type Name   
 
 #### Legality Rules
 
-<MarginText>3.1/3</MarginText>
+<MarginText>3.1/3_13.11.2</MarginText>
 <MarginInfo items={["AI05-0157-1"]} />
 <p>A call on an instance of Unchecked_Deallocation is illegal if the actual access type of the instance is a type for which the Storage_Size has been specified by a static expression with value zero or is defined by the language to be zero. In addition to the places where Legality Rules normally apply (see <a href="../AA-12/AA-12.3">12.3</a>), this rule applies also in the private part of an instance of a generic unit.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>3.b/3</MarginText>
+<MarginText>3.b/3_13.11.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>This rule is the same as the rule for <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s. We could have left the last sentence out, as a call to Unchecked_Deallocation cannot occur in a specification as it is a procedure call, but we left it for consistency and to avoid future maintenance hazards. <br /></Admonition>
 </AnnotatedOnly>
@@ -829,109 +829,109 @@ generic{"\n"}   type Object({"<"}{">"}) is limited private;{"\n"}   type Name   
 
 #### Dynamic Semantics
 
-<MarginText>4</MarginText>
+<MarginText>4_13.11.2</MarginText>
 <p>Given an instance of Unchecked_Deallocation declared as follows: <br /></p>
 
-<MarginText>5</MarginText>
+<MarginText>5_13.11.2</MarginText>
 <CodeBlock language="ada">
 procedure Free is{"\n"}    new Ada.Unchecked_Deallocation({"\n"}        object_subtype_name, access_to_variable_subtype_name);{"\n"}
 
 </CodeBlock>
-<MarginText>6</MarginText>
+<MarginText>6_13.11.2</MarginText>
 <p>Procedure Free has the following effect: <br /></p>
 
-<MarginText>7</MarginText>
+<MarginText>7_13.11.2</MarginText>
 <dt><br/>1.</dt>
 <dl>
 <dd>After executing Free(X), the value of X is <strong>null</strong>.<br /></dd>
-<MarginText>8</MarginText>
+<MarginText>8_13.11.2</MarginText>
 <dt><br/>2.</dt>
 <dd>Free(X), when X is already equal to <strong>null</strong>, has no effect.<br /></dd>
-<MarginText>9/5</MarginText>
+<MarginText>9/5_13.11.2</MarginText>
 <dt><br/>3.</dt>
 <MarginInfo items={["AI95-00416-01", "AI05-0107-1", "AI12-0445-1"]} />
-<dd>Free(X), when X is not equal to <strong>null</strong> first performs finalization of the object designated by X (and any coextensions of the object &mdash; see <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>), as described in <a href="../AA-7/AA-7.6#Subclause_7.6.1">7.6.1</a>. It then deallocates the storage occupied by the object designated by X (and any coextensions). If the storage pool is a user-defined object, then the storage is deallocated by calling Deallocate as described in <a href="../AA-13/AA-13.11">13.11</a>. There is one exception: if the object being freed contains tasks, it is unspecified whether the object is  deallocated. <br /></dd>
+<dd>Free(X), when X is not equal to <strong>null</strong> first performs finalization of the object designated by X (and any coextensions of the object &mdash; see <a href="../AA-3/AA-3.10#Subclause_3.10.2">3.10.2</a>), as described in <a href="../AA-7/AA-7.6#Subclause_7.6.1">7.6.1</a>. It then deallocates the storage occupied by the object designated by X (and any coextensions). If the storage pool is a user-defined object, then the storage is deallocated by calling Deallocate as described in <a href="../AA-13/AA-13.11">13.11</a>. There is one exception: if the object being freed contains tasks, it is unspecified whether the object is deallocated. <br /></dd>
 </dl>
 <AnnotatedOnly>
-<MarginText>9.a/3</MarginText>
+<MarginText>9.a/3_13.11.2</MarginText>
 <MarginInfo items={["AI05-0107-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Free calls only the specified Deallocate procedure to do deallocation. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>10/4</MarginText>
+<MarginText>10/4_13.11.2</MarginText>
 <MarginInfo items={["AI95-00416-01", "AI12-0148-1"]} />
 <p>After the finalization step of Free(X), the object designated by X, and any subcomponents (and coextensions) thereof, no longer exist; their storage can be reused for other purposes. <br /></p>
 
 
 #### Bounded (Run-Time) Errors
 
-<MarginText>11</MarginText>
+<MarginText>11_13.11.2</MarginText>
 <p>It is a bounded error to free a discriminated, unterminated task object. The possible consequences are: <br /></p>
 
 <AnnotatedOnly>
-<MarginText>11.a</MarginText>
+<MarginText>11.a_13.11.2</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This is an error because the task might refer to its discriminants, and the discriminants might be deallocated by freeing the task object. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>12</MarginText>
+<MarginText>12_13.11.2</MarginText>
 <ul>
 <li>No exception is raised.<br /></li>
-<MarginText>13</MarginText>
+<MarginText>13_13.11.2</MarginText>
 <li>Program_Error or Tasking_Error is raised at the point of the deallocation. <br /></li>
-<MarginText>14</MarginText>
+<MarginText>14_13.11.2</MarginText>
 <li>Program_Error or Tasking_Error is raised in the task the next time it references any of the discriminants. <br /></li>
 </ul>
 <AnnotatedOnly>
-<MarginText>14.a</MarginText>
+<MarginText>14.a_13.11.2</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
 <strong></strong>This last case presumes an implementation where the task references its discriminants indirectly, and the pointer is nulled out when the task object is deallocated. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>15</MarginText>
+<MarginText>15_13.11.2</MarginText>
 <p>In the first two cases, the storage for the discriminants (and for any enclosing object if it is designated by an access discriminant of the task) is not reclaimed prior to task termination. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>15.a</MarginText>
+<MarginText>15.a_13.11.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>The storage might never be reclaimed. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>15.1/4</MarginText>
+<MarginText>15.1/4_13.11.2</MarginText>
 <MarginInfo items={["AI12-0148-1"]} />
 <p>An access value that designates a nonexistent object is called a <em>dangling reference</em>.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>15.b/4</MarginText>
+<MarginText>15.b/4_13.11.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>These can result from use of Unchecked_Deallocation, Unchecked_Deallocate_Subpool, and attribute Unchecked_Access. Bad results from Unchecked_Conversion and from stream-oriented attributes are abnormal by <a href="../AA-13/AA-13.9#Subclause_13.9.1">13.9.1</a>, which is stronger and thus takes precedence. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>15.2/4</MarginText>
+<MarginText>15.2/4_13.11.2</MarginText>
 <MarginInfo items={["AI12-0148-1"]} />
 <p>[If a dangling reference is dereferenced (implicitly or explicitly), execution is erroneous (see below).] If there is no explicit or implicit dereference, then it is a bounded error to evaluate an expression whose result is a dangling reference. If the error is detected, either Constraint_Error or Program_Error is raised. Otherwise, execution proceeds normally, but with the possibility that the access value designates some other existing object.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>15.c/4</MarginText>
+<MarginText>15.c/4_13.11.2</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>If a dangling reference is compared with another access value, a result of either True or False is allowed. We need to allow this so that simple implementations of access values (for instance, as a bare address) can work if the memory in question is reused. (The formal definition of access equality is that it returns True if both access values designate the same object; that can never be True if one of the values is a dangling reference, and the other is not, but both values could refer to the same memory.) Membership tests that do not involve an implicit dereference generally do not depend on the access value at all.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>15.d/4</MarginText>
+<MarginText>15.d/4_13.11.2</MarginText>
 <Admonition type="aarm" aarm="note">
 We allow Constraint_Error to be raised here so that dangling reference and null pointer checks can be combined into a single check. If different exceptions are required, then the checks have to be made separately - but there's little semantic difference (neither designate a usable object). <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>15.e/4</MarginText>
+<MarginText>15.e/4_13.11.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>If a dangling reference is assigned into an object, including being passed to a formal parameter, that object also contains a dangling reference afterwards. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>15.f/4</MarginText>
+<MarginText>15.f/4_13.11.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>For equality and membership operations on composite types, this applies to any parts that are access types, as these operations are created based on the operations of the components (which triggers the bounded error). For other operations on composite types, the bounded error is not triggered. For instance, an assignment of a composite object with a subcomponent that is a dangling reference has to work normally; no exception can be raised, but the target object will have a subcomponent that is a dangling references, and a (direct) use of that subcomponent is again a bounded error. This is similar to the way that assignments of invalid subcomponents are handled (see <a href="../AA-13/AA-13.9#Subclause_13.9.1">13.9.1</a>). <br /></Admonition>
 </AnnotatedOnly>
@@ -939,19 +939,19 @@ We allow Constraint_Error to be raised here so that dangling reference and null 
 
 #### Erroneous Execution
 
-<MarginText>16/3</MarginText>
+<MarginText>16/3_13.11.2</MarginText>
 <MarginInfo items={["AI05-0033-1", "AI05-0262-1"]} />
 <p>Evaluating a name that denotes a nonexistent object, or a protected subprogram or subprogram renaming whose associated object (if any) is nonexistent, is erroneous. The execution of a call to an instance of Unchecked_Deallocation is erroneous if the object was created other than by an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> for an access type whose pool is Name'Storage_Pool.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>16.a/3</MarginText>
+<MarginText>16.a/3_13.11.2</MarginText>
 <MarginInfo items={["AI05-0033-1", "AI05-0262-1"]} />
 <Admonition type="aarm" aarm="reason">
 <strong></strong>The part about a protected subprogram is intended to cover the case of an access-to-protected-subprogram where the associated object has been deallocated. The part about a subprogram renaming is intended to cover the case of a renaming of a prefixed view where the prefix object has been deallocated, or the case of a renaming of an entry or protected subprogram where the associated task or protected object has been deallocated. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>16.b/3</MarginText>
+<MarginText>16.b/3_13.11.2</MarginText>
 <MarginInfo items={["AI05-0157-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>This text does not cover the case of a name that contains a null access value, as <strong>null</strong> does not denote an object (rather than denoting a nonexistent object). <br /></Admonition>
@@ -960,46 +960,46 @@ We allow Constraint_Error to be raised here so that dangling reference and null 
 
 #### Implementation Advice
 
-<MarginText>17</MarginText>
+<MarginText>17_13.11.2</MarginText>
 <p>For a standard storage pool, Free should actually reclaim the storage. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>17.a.1/2</MarginText>
+<MarginText>17.a.1/2_13.11.2</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>For a standard storage pool, an instance of Unchecked_Deallocation should actually reclaim the storage.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>17.a/2</MarginText>
+<MarginText>17.a/2_13.11.2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>This is not a testable property, since we do not know how much storage is used by a given pool element, nor whether fragmentation can occur. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>17.1/3</MarginText>
+<MarginText>17.1/3_13.11.2</MarginText>
 <MarginInfo items={["AI05-0157-1"]} />
 <p>A call on an instance of Unchecked_Deallocation with a nonnull access value should raise Program_Error if the actual access type of the instance is a type for which the Storage_Size has been specified to be zero or is defined by the language to be zero. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>17.a.1/3</MarginText>
+<MarginText>17.a.1/3_13.11.2</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
 <strong></strong>A call on an instance of Unchecked_Deallocation with a nonnull access value should raise Program_Error if the actual access type of the instance is a type for which the Storage_Size has been specified to be zero or is defined by the language to be zero.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>17.b</MarginText>
+<MarginText>17.b_13.11.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>If the call is not illegal (as in a generic body), we recommend that it raise Program_Error. Since the execution of this call is erroneous (any allocator from the pool will have raised Storage_Error, so the nonnull access value must have been allocated from a different pool or be a stack-allocated object), we can't require any behavior &mdash; anything at all would be a legitimate implementation. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>18</MarginText>
+<MarginText>18_13.11.2</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 1   The rules here that refer to Free apply to any instance of Unchecked_Deallocation.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19</MarginText>
+<MarginText>19_13.11.2</MarginText>
 <Admonition type="aarm" aarm="note">
 NOTE 2   Unchecked_Deallocation cannot be instantiated for an access-to-constant type. This is implied by the rules of <a href="../AA-12/AA-12.5#Subclause_12.5.4">12.5.4</a>. <br /></Admonition>
 </AnnotatedOnly>
@@ -1010,7 +1010,7 @@ NOTE 2   Unchecked_Deallocation cannot be instantiated for an access-to-constant
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.a/2</MarginText>
+<MarginText>19.a/2_13.11.2</MarginText>
 <MarginInfo items={["AI95-00416-01"]} />
 <Admonition type="aarm" aarm="note">
 The rules for coextensions are clarified (mainly by adding that term). In theory, this reflects no change from Ada 95 (coextensions existed in Ada 95, they just didn't have a name). <br /></Admonition>
@@ -1022,21 +1022,21 @@ The rules for coextensions are clarified (mainly by adding that term). In theory
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.b/3</MarginText>
+<MarginText>19.b/3_13.11.2</MarginText>
 <MarginInfo items={["AI05-0033-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Added a rule that using an access-to-protected-subprogram is erroneous if the associated object no longer exists. It is hard to imagine an alternative meaning here, and this has no effect on correct programs.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.c/3</MarginText>
+<MarginText>19.c/3_13.11.2</MarginText>
 <MarginInfo items={["AI05-0107-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Moved the requirements on an implementation-generated call to Deallocate to <a href="../AA-13/AA-13.11">13.11</a>, in order to put all of the rules associated with implementation-generated calls to Allocate and Deallocate together.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.d/3</MarginText>
+<MarginText>19.d/3_13.11.2</MarginText>
 <MarginInfo items={["AI05-0157-1"]} />
 <Admonition type="aarm" aarm="correction">
 <strong></strong> Added wording so that calling an instance of Unchecked_Deallocation is treated similarly to <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s for access types where <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s would be banned. <br /></Admonition>
@@ -1048,14 +1048,14 @@ The rules for coextensions are clarified (mainly by adding that term). In theory
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.e/4</MarginText>
+<MarginText>19.e/4_13.11.2</MarginText>
 <MarginInfo items={["AI12-0148-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Defined a "dangling reference", and specified that a dangling reference might designate some other existing object. This allows simple implementations of access values and reuse of object memory after deallocation. In prior versions of Ada, "=" between a dangling reference and an access to an existing object has to return False, even if the existing object and the object designated by the dangling reference are allocated in the same memory. A program that depended upon that could break with this revised rule. However, as a practical matter, almost all Ada implementations use simple implementations of access types that do not meet that requirement. So such a program would not work (consistently) on most Ada implementations; thus the change shouldn't break any existing programs - it just aligns the Standard with actual practice.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>19.f/4</MarginText>
+<MarginText>19.f/4_13.11.2</MarginText>
 <MarginInfo items={["AI12-0148-1"]} />
 <Admonition type="aarm" aarm="note">
 A side effect of this change is to allow an Ada implementation to detect dangling references in more places. This does not require any Ada implementation to change, and if the implementation does change, it just means that errors will be detected earlier. <br /></Admonition>
@@ -1067,7 +1067,7 @@ A side effect of this change is to allow an Ada implementation to detect danglin
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>19.g/4</MarginText>
+<MarginText>19.g/4_13.11.2</MarginText>
 <MarginInfo items={["AI12-0148-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Clarified that deallocated objects cease to exist after finalization but before Deallocate is called. This is necessary to prevent erroneous execution from being triggered by the rules in <a href="../AA-13/AA-13.11">13.11</a> in the time between the end of finalization and the end of the call to the instance of Unchecked_Deallocation. <br /></Admonition>
@@ -1077,87 +1077,87 @@ A side effect of this change is to allow an Ada implementation to detect danglin
 
 ## 13.11.3  Default Storage Pools
 
-<MarginText>1/4</MarginText>
+<MarginText>1/4_13.11.3</MarginText>
 <MarginInfo items={["AI05-0229-1", "AI12-0003-1"]} />
 <p>[Pragma and aspect Default_Storage_Pool specify the storage pool that will be used in the absence of an explicit specification of a storage pool or storage size for an access type.] <br /></p>
 
 
 #### Syntax
 
-<MarginText>2/3</MarginText>
+<MarginText>2/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI05-0229-1"]} />
 <p class="Indented2">The form of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Default_Storage_Pool is as follows: <br /></p>
 
-<MarginText>3/3</MarginText>
+<MarginText>3/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI05-0229-1"]} />
 <p class="Indented2">  <strong>pragma</strong> Default_Storage_Pool (<code><a href="../AA-13/AA-13.11#S0358">storage_pool_indicator</a></code>); <br /></p>
 
-<MarginText>3.1/4</MarginText>
+<MarginText>3.1/4_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI12-0003-1"]} />
 
 <CodeBlock>
 <code>storage_pool_indicator</code><a id="S0358"></a><code> ::= </code><em>storage_pool_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> | <strong>null</strong> | Standard<br />
 
 </CodeBlock>
-<MarginText>3.2/3</MarginText>
+<MarginText>3.2/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <p class="Indented2">A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Default_Storage_Pool is allowed immediately within the visible part of a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, immediately within a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, or as a configuration pragma. <br /></p>
 
 
 #### Name Resolution Rules
 
-<MarginText>3.3/3</MarginText>
+<MarginText>3.3/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <p>The <em>storage_pool_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is expected to be of type Root_Storage_Pool'Class. <br /></p>
 
 
 #### Legality Rules
 
-<MarginText>4/3</MarginText>
+<MarginText>4/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI05-0229-1"]} />
 <p>The <em>storage_pool_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> shall denote a variable.<br /></p>
 
-<MarginText>4.1/4</MarginText>
+<MarginText>4.1/4_13.11.3</MarginText>
 <MarginInfo items={["AI12-0003-1"]} />
 <p>The Standard <code><a href="../AA-13/AA-13.11#S0358">storage_pool_indicator</a></code> is an identifier specific to a pragma (see <a href="../AA-2/AA-2.8">2.8</a>) and does not denote any declaration. If the <code><a href="../AA-13/AA-13.11#S0358">storage_pool_indicator</a></code> is Standard, then there shall not be a declaration with <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> Standard that is immediately visible at the point of the pragma, other than package Standard itself.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>4.a.1/4</MarginText>
+<MarginText>4.a.1/4_13.11.3</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>We considered having the Standard <code><a href="../AA-13/AA-13.11#S0358">storage_pool_indicator</a></code> resolve to package Standard rather than being an identifier specific to a pragma. That would eliminate the need for a special check. But it would be bizarre to have something that could resolve to either an object or a (single) package, and resolving to package Standard would imply that the standard pool is an object declared in that package. A storage pool object must be a variable (see <a href="../AA-13/AA-13.11">13.11</a>), yet preelaborable packages depend on package Standard, which would require implementers to implement the standard storage pool with Preelaborable_Initialization, which is an unnecessary restriction.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>4.a.2/4</MarginText>
+<MarginText>4.a.2/4_13.11.3</MarginText>
 <Admonition type="aarm" aarm="note">
 No declaration of Standard can ever be use-visible, as the language-defined nonoverloadable definition of Standard will hide any use-visible declarations. Thus we need only concern ourselves with eliminating any possible confusion with regard to immediately visible declarations with the <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> Standard. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>4.2/4</MarginText>
+<MarginText>4.2/4_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI12-0003-1"]} />
 <p>If the <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> is used as a configuration pragma, the <code><a href="../AA-13/AA-13.11#S0358">storage_pool_indicator</a></code> shall be either <strong>null</strong> or Standard, and it defines the <em>default pool</em> to be the given <code><a href="../AA-13/AA-13.11#S0358">storage_pool_indicator</a></code> within all applicable compilation units (see <a href="../AA-10/AA-10.1#Subclause_10.1.5">10.1.5</a>), except within the immediate scope of another <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Default_Storage_Pool. Otherwise, [the pragma occurs immediately within a sequence of declarations, and] it defines the default pool within the immediate scope of the pragma to be the given <code><a href="../AA-13/AA-13.11#S0358">storage_pool_indicator</a></code>, except within the immediate scope of a later pragma Default_Storage_Pool. [Thus, an inner pragma overrides an outer one.]<br /></p>
 
-<MarginText>4.3/4</MarginText>
+<MarginText>4.3/4_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI05-0262-1"]} />
 <p>A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Default_Storage_Pool shall not be used as a configuration pragma that applies to a compilation unit that is within the immediate scope of another <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Default_Storage_Pool.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>4.a/3</MarginText>
+<MarginText>4.a/3_13.11.3</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This is to prevent confusion in cases like this: <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>4.b/3</MarginText>
+<MarginText>4.b/3_13.11.3</MarginText>
 <CodeBlock language="ada">
 package Parent is{"\n"}   pragma Default_Storage_Pool(...);{"\n"}   ...{"\n"}end Parent;{"\n"}
-<MarginText>4.c/3</MarginText>
+<MarginText>4.c/3_13.11.3</MarginText>
 pragma Default_Storage_Pool(...); -- Illegal!{"\n"}package Parent.Child is{"\n"}   ...{"\n"}end Parent.Child;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>4.d/3</MarginText>
+<MarginText>4.d/3_13.11.3</MarginText>
 <Admonition type="aarm" aarm="note">
 where the Default_Storage_Pool on Parent.Child would not (if it were legal) override the one in Parent. <br /></Admonition>
 </AnnotatedOnly>
@@ -1165,108 +1165,108 @@ where the Default_Storage_Pool on Parent.Child would not (if it were legal) over
 
 #### Static Semantics
 
-<MarginText>5/4</MarginText>
+<MarginText>5/4_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI05-0229-1", "AI12-0003-1"]} />
 <p>The language-defined aspect Default_Storage_Pool may be specified for a generic instance; it defines the default pool for access types within an instance. .<br /></p>
 
-<MarginText>5.1/4</MarginText>
+<MarginText>5.1/4_13.11.3</MarginText>
 <MarginInfo items={["AI12-0003-1"]} />
 <p>The Default_Storage_Pool aspect may be specified as Standard, which is an identifier specific to an aspect (see <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>) and defines the default pool to be Standard. In this case, there shall not be a declaration with <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> Standard that is immediately visible at the point of the aspect specification, other than package Standard itself.<br /></p>
 
-<MarginText>5.2/5</MarginText>
+<MarginText>5.2/5_13.11.3</MarginText>
 <MarginInfo items={["AI12-0003-1", "AI12-0445-1"]} />
-<p>Otherwise, the expected type for the Default_Storage_Pool aspect is Root_Storage_Pool'Class and the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> shall be a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a variable. This aspect overrides any Default_Storage_Pool pragma that applies  to the generic unit; if the aspect is not specified, the default pool of the instance is that defined for the generic unit.<br /></p>
+<p>Otherwise, the expected type for the Default_Storage_Pool aspect is Root_Storage_Pool'Class and the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> shall be a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes a variable. This aspect overrides any Default_Storage_Pool pragma that applies to the generic unit; if the aspect is not specified, the default pool of the instance is that defined for the generic unit.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>5.a/3</MarginText>
+<MarginText>5.a/3_13.11.3</MarginText>
 <Admonition type="aarm" aarm="note">
 <strong>Aspect Description for </strong><strong>Default_Storage_Pool: </strong>Default storage pool for a generic instance.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>5.3/4</MarginText>
+<MarginText>5.3/4_13.11.3</MarginText>
 <MarginInfo items={["AI12-0136-1"]} />
 <p>The effect of specifying the aspect Default_Storage_Pool on an instance of a language-defined generic unit is implementation-defined.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>5.a.1/4</MarginText>
+<MarginText>5.a.1/4_13.11.3</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
 <strong></strong>The effect of specifying aspect Default_Storage_Pool on an instance of a language-defined generic unit.<br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>6/3</MarginText>
+<MarginText>6/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI05-0229-1"]} />
 <p>For nonderived access types declared in places where the default pool is defined by the pragma or aspect, their Storage_Pool or Storage_Size attribute is determined as follows, unless Storage_Pool or Storage_Size is specified for the type:<br /></p>
 
-<MarginText>6.1/3</MarginText>
+<MarginText>6.1/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <ul>
 <li>If the default pool is <strong>null</strong>, the Storage_Size attribute is defined by the language to be zero. [Therefore, an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> for such a type is illegal.]<br /></li>
-<MarginText>6.2/4</MarginText>
+<MarginText>6.2/4_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI12-0003-1"]} />
 <li>If the default pool is neither <strong>null</strong> nor Standard, the Storage_Pool attribute is that pool.<br /></li>
 </ul>
-<MarginText>6.3/4</MarginText>
+<MarginText>6.3/4_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI12-0003-1"]} />
 <p>Otherwise (including when the default pool is specified as Standard), the standard storage pool is used for the type as described in <a href="../AA-13/AA-13.11">13.11</a>.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>6.a/3</MarginText>
+<MarginText>6.a/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI05-0229-1"]} />
 <Admonition type="aarm" aarm="ramification">
 <strong></strong>Default_Storage_Pool is the only way to specify the storage pool for an anonymous access type.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.b/3</MarginText>
+<MarginText>6.b/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI05-0229-1"]} />
 <Admonition type="aarm" aarm="note">
 Note that coextensions should be allocated in the same pool (or on the stack) as the outer object (see <a href="../AA-13/AA-13.11">13.11</a>); the Storage_Pool of the access discriminant (and hence the Default_Storage_Pool) is supposed to be ignored for coextensions. This matches the required finalization point for coextensions.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.b.1/3</MarginText>
+<MarginText>6.b.1/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="note">
 The default storage pool for an allocator that occurs within an instance of a generic is defined by the Default_Storage_Pool aspect of the instantiation (if specified), or by the Default_Storage_Pool pragma that applied to the generic; the Default_Storage_Pool pragma that applies to the instantiation is irrelevant.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.b.2/3</MarginText>
+<MarginText>6.b.2/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="note">
 It is possible to specify the Default_Storage_Pool aspect for an instantiation such that allocations will fail. For example, the generic unit might be expecting a pool that supports certain sizes and alignments, and the one on the instance might be more restrictive. It is the programmer's responsibility to get this right.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>6.b.3/3</MarginText>
+<MarginText>6.b.3/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="note">
 The semantics of the Default_Storage_Pool aspect are similar to passing a pool object as a generic formal, and putting pragma Default_Storage_Pool at the top of the generic's visible part, specifying that formal. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>7/3</MarginText>
+<MarginText>7/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <p><em>This paragraph was deleted.</em><br /></p>
 
 
 #### Implementation Permissions
 
-<MarginText>8/3</MarginText>
+<MarginText>8/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI05-0229-1"]} />
 <p>An object created by an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> that is passed as the actual parameter to an access parameter may be allocated on the stack, and automatically reclaimed, regardless of the default pool. <br /></p>
 
 <AnnotatedOnly>
-<MarginText>8.a/3</MarginText>
+<MarginText>8.a/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>This matches the required finalization point for such an allocated object. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>9/5</MarginText>
+<MarginText>9/5_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI12-0440-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE   Default_Storage_Pool can  be used with restrictions No_Coextensions and No_Access_Parameter_Allocators (see <a href="../AA-H/AA-H.4">H.4</a>) to ensure that all <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s use the default pool. <br /></Admonition>
+NOTE   Default_Storage_Pool can be used with restrictions No_Coextensions and No_Access_Parameter_Allocators (see <a href="../AA-H/AA-H.4">H.4</a>) to ensure that all <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>s use the default pool. <br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1275,7 +1275,7 @@ NOTE   Default_Storage_Pool can  be used with restrictions No_Coextensions and N
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>9.a/3</MarginText>
+<MarginText>9.a/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <Admonition type="aarm" aarm="note">
 <em>This paragraph was deleted.</em><br /></Admonition>
@@ -1287,7 +1287,7 @@ NOTE   Default_Storage_Pool can  be used with restrictions No_Coextensions and N
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>9.b/3</MarginText>
+<MarginText>9.b/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <Admonition type="aarm" aarm="note">
 Pragma Controlled has been dropped from Ada, as it has no effect in any known Ada implementations and it seems to promise capabilities not expected in Ada implementations. This is usually not an incompatibility, as the pragma merely becomes unrecognized (with a warning) and can be implemented as an implementation-defined pragma if desired. However, it is incompatible if it is (now) implemented as an implementation-defined pragma, someone used this pragma in a unit, and they also used restriction No_Implementation_Pragmas on that unit. In that case, the pragma would now violate the restriction; but use of this pragma (which does nothing) should be very rare, so this is not a significant issue. <br /></Admonition>
@@ -1299,7 +1299,7 @@ Pragma Controlled has been dropped from Ada, as it has no effect in any known Ad
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>9.c/4</MarginText>
+<MarginText>9.c/4_13.11.3</MarginText>
 <MarginInfo items={["AI05-0190-1", "AI12-0005-1"]} />
 <Admonition type="aarm" aarm="note">
 The pragma Default_Storage_Pool and aspect Default_Storage_Pool are new. <br /></Admonition>
@@ -1311,7 +1311,7 @@ The pragma Default_Storage_Pool and aspect Default_Storage_Pool are new. <br /><
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>9.d/3</MarginText>
+<MarginText>9.d/3_13.11.3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <Admonition type="aarm" aarm="note">
 The entire discussion of garbage collection (and especially that of controlled objects) is deleted. Ada 2012 provides subpools (see <a href="../AA-13/AA-13.11#Subclause_13.11.4">13.11.4</a>) for storage management of objects, including controlled objects, a mechanism which is much more predictable than garbage collection. Note that no version of Ada allows early finalization of controlled objects (other than via the use of Unchecked_Deallocation or Unchecked_Deallocate_Subpool), so that garbage collection of such objects would be ineffective in the standard mode anyway. <br /></Admonition>
@@ -1323,7 +1323,7 @@ The entire discussion of garbage collection (and especially that of controlled o
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>9.e/4</MarginText>
+<MarginText>9.e/4_13.11.3</MarginText>
 <MarginInfo items={["AI05-0003-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> The <code><a href="../AA-13/AA-13.11#S0358">storage_pool_indicator</a></code> Standard is new. <br /></Admonition>
@@ -1335,7 +1335,7 @@ The entire discussion of garbage collection (and especially that of controlled o
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>9.f/4</MarginText>
+<MarginText>9.f/4_13.11.3</MarginText>
 <MarginInfo items={["AI12-0136-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> We now explicitly say that the behavior of language-defined generic units when given the Default_Storage_Pool aspect is implementation-defined. Portable code cannot rely on such a package using a particular pool implementation. <br /></Admonition>
@@ -1345,94 +1345,94 @@ The entire discussion of garbage collection (and especially that of controlled o
 
 ## 13.11.4  Storage Subpools
 
-<MarginText>1/3</MarginText>
+<MarginText>1/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>This subclause defines a package to support the partitioning of a storage pool into subpools. A subpool may be specified as the default to be used for allocation from the associated storage pool, or a particular subpool may be specified as part of an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> (see <a href="../AA-4/AA-4.8">4.8</a>). <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>2/3</MarginText>
+<MarginText>2/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>The following language-defined library package exists:<br /></p>
 
-<MarginText>3/5</MarginText>
+<MarginText>3/5_13.11.4</MarginText>
 <MarginInfo items={["AI12-0302-1"]} />
 <CodeBlock language="ada">
-package System.Storage_Pools.Subpools {"\n"}    with  Preelaborate, Global ={">"} in out synchronized is {"\n"}
-<MarginText>4/5</MarginText>
+package System.Storage_Pools.Subpools{"\n"}    with Preelaborate, Global ={">"} in out synchronized is{"\n"}
+<MarginText>4/5_13.11.4</MarginText>
 <MarginInfo items={["AI12-0356-1", "AI12-0399-1"]} />
    type Root_Storage_Pool_With_Subpools is{"\n"}      abstract new Root_Storage_Pool with private{"\n"}      with Preelaborable_Initialization;{"\n"}
-<MarginText>5/5</MarginText>
+<MarginText>5/5_13.11.4</MarginText>
 <MarginInfo items={["AI12-0356-1", "AI12-0399-1"]} />
    type Root_Subpool is abstract tagged limited private{"\n"}      with Preelaborable_Initialization;{"\n"}
-<MarginText>6/3</MarginText>
+<MarginText>6/3_13.11.4</MarginText>
    type Subpool_Handle is access all Root_Subpool'Class;{"\n"}   for Subpool_Handle'Storage_Size use 0;{"\n"}
-<MarginText>7/3</MarginText>
+<MarginText>7/3_13.11.4</MarginText>
    function Create_Subpool (Pool : in out Root_Storage_Pool_With_Subpools){"\n"}      return not null Subpool_Handle is abstract;{"\n"}
-<MarginText>8/3</MarginText>
+<MarginText>8/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0252-1"]} />
    -- The following operations are intended for pool implementers:{"\n"}
-<MarginText>9/3</MarginText>
+<MarginText>9/3_13.11.4</MarginText>
    function Pool_of_Subpool (Subpool : not null Subpool_Handle){"\n"}      return access Root_Storage_Pool_With_Subpools'Class;{"\n"}
-<MarginText>10/5</MarginText>
+<MarginText>10/5_13.11.4</MarginText>
 <MarginInfo items={["AI12-0302-1"]} />
    procedure Set_Pool_of_Subpool ({"\n"}      Subpool : in not null Subpool_Handle;{"\n"}      To : in out Root_Storage_Pool_With_Subpools'Class){"\n"}         with Global ={">"} overriding in out Subpool;{"\n"}
-<MarginText>11/5</MarginText>
+<MarginText>11/5_13.11.4</MarginText>
 <MarginInfo items={["AI12-0302-1"]} />
    procedure Allocate_From_Subpool ({"\n"}      Pool : in out Root_Storage_Pool_With_Subpools;{"\n"}      Storage_Address : out Address;{"\n"}      Size_In_Storage_Elements : in Storage_Elements.Storage_Count;{"\n"}      Alignment : in Storage_Elements.Storage_Count;{"\n"}      Subpool : in not null Subpool_Handle) is abstract{"\n"}         with Pre'Class ={">"} Pool_of_Subpool(Subpool) = Pool'Access,{"\n"}              Global ={">"} overriding in out Subpool;{"\n"}
-<MarginText>12/3</MarginText>
+<MarginText>12/3_13.11.4</MarginText>
    procedure Deallocate_Subpool ({"\n"}      Pool : in out Root_Storage_Pool_With_Subpools;{"\n"}      Subpool : in out Subpool_Handle) is abstract{"\n"}         with Pre'Class ={">"} Pool_of_Subpool(Subpool) = Pool'Access;{"\n"}
-<MarginText>13/3</MarginText>
+<MarginText>13/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0298-1"]} />
    function Default_Subpool_for_Pool ({"\n"}      Pool : in out Root_Storage_Pool_With_Subpools){"\n"}         return not null Subpool_Handle;{"\n"}
-<MarginText>14/3</MarginText>
+<MarginText>14/3_13.11.4</MarginText>
    overriding{"\n"}   procedure Allocate ({"\n"}      Pool : in out Root_Storage_Pool_With_Subpools;{"\n"}      Storage_Address : out Address;{"\n"}      Size_In_Storage_Elements : in Storage_Elements.Storage_Count;{"\n"}      Alignment : in Storage_Elements.Storage_Count);{"\n"}
-<MarginText>15/3</MarginText>
+<MarginText>15/3_13.11.4</MarginText>
    overriding{"\n"}   procedure Deallocate ({"\n"}      Pool : in out Root_Storage_Pool_With_Subpools;{"\n"}      Storage_Address : in Address;{"\n"}      Size_In_Storage_Elements : in Storage_Elements.Storage_Count;{"\n"}      Alignment : in Storage_Elements.Storage_Count) is null;{"\n"}
-<MarginText>16/3</MarginText>
+<MarginText>16/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0298-1"]} />
    overriding{"\n"}   function Storage_Size (Pool : Root_Storage_Pool_With_Subpools){"\n"}      return Storage_Elements.Storage_Count{"\n"}          is (Storage_Elements.Storage_Count'Last);{"\n"}
-<MarginText>17/3</MarginText>
+<MarginText>17/3_13.11.4</MarginText>
 private{"\n"}   ... -- not specified by the language{"\n"}end System.Storage_Pools.Subpools;{"\n"}
 
 </CodeBlock>
-<MarginText>18/3</MarginText>
+<MarginText>18/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>A <em>subpool</em> is a separately reclaimable portion of a storage pool, identified by an object of type Subpool_Handle (a <em>subpool handle</em>). A subpool handle also identifies the enclosing storage pool, a <em>storage pool that supports subpools</em>, which is a storage pool whose type is descended from Root_Storage_Pool_With_Subpools. A subpool is created by calling Create_Subpool or a similar constructor; the constructor returns the subpool handle.<br /></p>
 
-<MarginText>19/5</MarginText>
+<MarginText>19/5_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI05-0269-1", "AI12-0445-1"]} />
-<p>A <em>subpool object</em> is an object of a type descended from Root_Subpool. [Typically, subpool objects are managed by the containing storage pool; only the handles have to  be exposed to clients of the storage pool. Subpool objects are designated by subpool handles, and are the run-time representation of a subpool.]<br /></p>
+<p>A <em>subpool object</em> is an object of a type descended from Root_Subpool. [Typically, subpool objects are managed by the containing storage pool; only the handles have to be exposed to clients of the storage pool. Subpool objects are designated by subpool handles, and are the run-time representation of a subpool.]<br /></p>
 
 <AnnotatedOnly>
-<MarginText>19.a/3</MarginText>
+<MarginText>19.a/3_13.11.4</MarginText>
 <Admonition type="aarm" aarm="proof">
 <strong></strong>We know that subpool handles designate subpool objects because the declaration of Subpool_Handle says so. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>20/4</MarginText>
+<MarginText>20/4_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI12-0145-1"]} />
 <p>Each subpool <em>belongs</em> to a single storage pool [(which will always be a pool that supports subpools)]. An access to the pool that a subpool belongs to can be obtained by calling Pool_of_Subpool with the subpool handle. Set_Pool_of_Subpool causes the subpool of the subpool handle to belong to the given pool[; this is intended to be called from subpool constructors like Create_Subpool.] Set_Pool_of_Subpool propagates Program_Error if the subpool already belongs to a pool. If Set_Pool_of_Subpool has not yet been called for a subpool, Pool_of_Subpool returns <strong>null</strong>.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>20.a/3</MarginText>
+<MarginText>20.a/3_13.11.4</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>Pool_of_Subpool and Set_Pool_of_Subpool are provided by the Ada implementation and typically will not be overridden by the pool implementer. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>21/3</MarginText>
+<MarginText>21/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>When an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> for a type whose storage pool supports subpools is evaluated, a call is made on Allocate_From_Subpool passing in a Subpool_Handle, in addition to the parameters as defined for calls on Allocate (see <a href="../AA-13/AA-13.11">13.11</a>). The subpool designated by the <em>subpool_handle_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> is used, if specified in an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code>. Otherwise, Default_Subpool_for_Pool of the Pool is used to provide a subpool handle. All requirements on the Allocate procedure also apply to Allocate_from_Subpool.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>21.a/3</MarginText>
+<MarginText>21.a/3_13.11.4</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>Deallocate_Subpool is expected to do whatever is needed to deallocate all of the objects contained in the subpool; it is called from Unchecked_Deallocate_Subpool (see <a href="../AA-13/AA-13.11#Subclause_13.11.5">13.11.5</a>).<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>21.b/3</MarginText>
+<MarginText>21.b/3_13.11.4</MarginText>
 <Admonition type="aarm" aarm="note">
 Typically, the pool implementer will not override Allocate. In the canonical definition of the language, it will never be called for a pool that supports subpools (there is an Implementation Permission below that allows it to be called in certain rare cases). <br /></Admonition>
 </AnnotatedOnly>
@@ -1440,113 +1440,113 @@ Typically, the pool implementer will not override Allocate. In the canonical def
 
 #### Legality Rules
 
-<MarginText>22/3</MarginText>
+<MarginText>22/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>If a storage pool that supports subpools is specified as the Storage_Pool for an access type, the access type is called a <em>subpool access type</em>. A subpool access type shall be a pool-specific access type.<br /></p>
 
-<MarginText>23/3</MarginText>
+<MarginText>23/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI05-0252-1"]} />
 <p>The accessibility level of a subpool access type shall not be statically deeper than that of the storage pool object. If the specified storage pool object is a storage pool that supports subpools, then the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> that denotes the object shall not denote part of a formal parameter, nor shall it denote part of a dereference of a value of a non-library-level general access type. In addition to the places where Legality Rules normally apply (see <a href="../AA-12/AA-12.3">12.3</a>), these rules also apply in the private part of an instance of a generic unit. <br /></p>
 
 
 #### Dynamic Semantics
 
-<MarginText>24/3</MarginText>
+<MarginText>24/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI05-0252-1"]} />
 <p>When an access type with a specified storage pool is frozen (see <a href="../AA-13/AA-13.14">13.14</a>), if the tag of the storage pool object identifies a storage pool that supports subpools, the following checks are made:<br /></p>
 
-<MarginText>25/3</MarginText>
+<MarginText>25/3_13.11.4</MarginText>
 <ul>
 <li>the <code><a href="../AA-4/AA-4.1#S0091">name</a></code> used to specify the storage pool object does not denote part of a formal parameter nor part of a dereference of a value of a non-library-level general access type; and<br /></li>
-<MarginText>26/3</MarginText>
+<MarginText>26/3_13.11.4</MarginText>
 <li>the accessibility level of the access type is not deeper than that of the storage pool object. <br /></li>
 </ul>
-<MarginText>27/3</MarginText>
+<MarginText>27/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0252-1"]} />
 <p>Program_Error is raised if either of these checks fail.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>27.a/3</MarginText>
+<MarginText>27.a/3_13.11.4</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This check (and its static counterpart) ensures that the type of the allocated objects exists at least as long as the storage pool object, so that the subpools are finalized (which finalizes any remaining allocated objects) before the type of the objects ceases to exist. The access type itself (and the associated collection) will cease to exist before the storage pool ceases to exist.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>27.b/3</MarginText>
+<MarginText>27.b/3_13.11.4</MarginText>
 <Admonition type="aarm" aarm="note">
 We also disallow the use of formal parameters and dereferences of non-library-level general access types when specifying a storage pool object if it supports subpools, because the "apparent" accessibility level is potentially deeper than that of the underlying object. Neither of these cases is very likely to occur in practice. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>28/3</MarginText>
+<MarginText>28/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>A call to Subpools.Allocate(P, Addr, Size, Align) does the following:<br /></p>
 
-<MarginText>29/3</MarginText>
+<MarginText>29/3_13.11.4</MarginText>
 <CodeBlock language="ada">
 Allocate_From_Subpool{"\n"}  (Root_Storage_Pool_With_Subpools'Class(P),{"\n"}   Addr, Size, Align,{"\n"}   Subpool ={">"} Default_Subpool_for_Pool{"\n"}                (Root_Storage_Pool_With_Subpools'Class(P)));{"\n"}
 
 </CodeBlock>
-<MarginText>30/3</MarginText>
+<MarginText>30/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>An <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> that allocates in a subpool raises Program_Error if the allocated object has task parts.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>30.a/3</MarginText>
+<MarginText>30.a/3_13.11.4</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This is to ease implementation. We envision relaxing this restriction in a future version of Ada, once implementation experience has been gained. At this time, we are unable to come up with a set of rules for task termination that is both useful, and surely feasible to implement. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>31/3</MarginText>
+<MarginText>31/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>Unless overridden, Default_Subpool_for_Pool propagates Program_Error.<br /></p>
 
 
 #### Erroneous Execution
 
-<MarginText>31.1/4</MarginText>
+<MarginText>31.1/4_13.11.4</MarginText>
 <MarginInfo items={["AI12-0142-1"]} />
 <p>If Allocate_From_Subpool does not meet one or more of the requirements on the Allocate procedure as given in the Erroneous Execution rules of <a href="../AA-13/AA-13.11">13.11</a>, then the program execution is erroneous. <br /></p>
 
 
 #### Implementation Permissions
 
-<MarginText>32/3</MarginText>
+<MarginText>32/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>When an allocator for a type whose storage pool is of type Root_Storage_Pool'Class is evaluated, but supports subpools, the implementation may call Allocate rather than Allocate_From_Subpool. [This will have the same effect, so long as Allocate has not been overridden.]<br /></p>
 
 <AnnotatedOnly>
-<MarginText>32.a/3</MarginText>
+<MarginText>32.a/3_13.11.4</MarginText>
 <Admonition type="aarm" aarm="reason">
 <strong></strong>This ensures either of two implementation models are possible for an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> with no <code><a href="../AA-4/AA-4.8#S0165">subpool_specification</a></code>. Note that the "supports subpools" property is not known at compile time for a pool of the class-wide type.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>32.b/3</MarginText>
+<MarginText>32.b/3_13.11.4</MarginText>
 <ul>
 <li>The implementation can dispatch to Storage_Pools.Allocate. If the pool supports subpools, this will call Allocate_From_Subpool with the default subpool so long as Allocate has not been overridden.<br /></li>
-<MarginText>32.c/3</MarginText>
+<MarginText>32.c/3_13.11.4</MarginText>
 <li>The implementation can declare Allocate_From_Subpool as a primitive of Root_Storage_Pool in the private part of Storage_Pools. This means that the Allocate_From_Subpool for Root_Storage_Pool_With_Subpools overrides that private one. The implementation can thus call the private one, which will call Allocate for non-subpool-supporting pools. The effect of this implementation does not change if Allocate is overridden for a pool that supports subpools. <br /></li>
 </ul>
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>33/5</MarginText>
+<MarginText>33/5_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI12-0442-1", "AI12-0447-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   A user-defined storage pool type that supports subpools can be implemented by extending the Root_Storage_Pool_With_Subpools type, and overriding the primitive subprograms Create_Subpool, Allocate_From_Subpool, and Deallocate_Subpool. Create_Subpool is expected to  call Set_Pool_Of_Subpool before returning the subpool handle. To make use of such a pool, a user can  declare an object of the type extension, can use it to define the Storage_Pool attribute of one or more access types, and then can invoke  Create_Subpool to obtain subpool handles associated with the pool.<br /></Admonition>
+NOTE 1   A user-defined storage pool type that supports subpools can be implemented by extending the Root_Storage_Pool_With_Subpools type, and overriding the primitive subprograms Create_Subpool, Allocate_From_Subpool, and Deallocate_Subpool. Create_Subpool is expected to call Set_Pool_Of_Subpool before returning the subpool handle. To make use of such a pool, a user can declare an object of the type extension, can use it to define the Storage_Pool attribute of one or more access types, and then can invoke Create_Subpool to obtain subpool handles associated with the pool.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>34/5</MarginText>
+<MarginText>34/5_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI12-0440-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 2   A user-defined storage pool type that supports subpools can  define additional subpool constructors similar to Create_Subpool (these typically will have additional parameters).<br /></Admonition>
+NOTE 2   A user-defined storage pool type that supports subpools can define additional subpool constructors similar to Create_Subpool (these typically will have additional parameters).<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>35/5</MarginText>
+<MarginText>35/5_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI12-0442-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 3   The pool implementor can  override Default_Subpool_For_Pool if they want the pool  to support a default subpool for the pool. The implementor can override Deallocate if individual object reclamation is to be supported, and can override Storage_Size if there is some limit on the total size of the storage pool. The implementor can override Initialize and Finalize if there is any desire  for nontrivial initialization and finalization for the pool as a whole. For example, Finalize can  reclaim blocks of storage that are allocated over and above the space occupied by the pool object itself. The pool implementor can  extend the Root_Subpool type as necessary to carry additional information with each subpool provided by Create_Subpool.<br /></Admonition>
+NOTE 3   The pool implementor can override Default_Subpool_For_Pool if they want the pool to support a default subpool for the pool. The implementor can override Deallocate if individual object reclamation is to be supported, and can override Storage_Size if there is some limit on the total size of the storage pool. The implementor can override Initialize and Finalize if there is any desire for nontrivial initialization and finalization for the pool as a whole. For example, Finalize can reclaim blocks of storage that are allocated over and above the space occupied by the pool object itself. The pool implementor can extend the Root_Subpool type as necessary to carry additional information with each subpool provided by Create_Subpool.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1555,7 +1555,7 @@ NOTE 3   The pool implementor can  override Default_Subpool_For_Pool if they wan
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>35.a/3</MarginText>
+<MarginText>35.a/3_13.11.4</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI05-0252-1"]} />
 <Admonition type="aarm" aarm="note">
 Subpools and the package System.Storage_Pools.Subpools are new. <br /></Admonition>
@@ -1567,14 +1567,14 @@ Subpools and the package System.Storage_Pools.Subpools are new. <br /></Admoniti
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>35.b/4</MarginText>
+<MarginText>35.b/4_13.11.4</MarginText>
 <MarginInfo items={["AI12-0142-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum</strong>: Clarified that an incorrect implementation of Allocate_From_Subpool causes execution to become erroneous. The wording already said that the requirements of Allocate apply to Allocate_From_Subpool, so we're just confirming the consequences of violating those requirements also apply.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>35.c/4</MarginText>
+<MarginText>35.c/4_13.11.4</MarginText>
 <MarginInfo items={["AI12-0145-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum</strong>: Clarified that Pool_of_Subpool returns <strong>null</strong> if Set_Pool_of_Subpool has not been called. As that can be inferred from the definition, and all known existing implementations return <strong>null</strong> in this case, we document this as a wording change rather than a possible inconsistency. <br /></Admonition>
@@ -1584,95 +1584,95 @@ Subpools and the package System.Storage_Pools.Subpools are new. <br /></Admoniti
 
 ## 13.11.5  Subpool Reclamation
 
-<MarginText>1/3</MarginText>
+<MarginText>1/3_13.11.5</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>A subpool may be explicitly deallocated using Unchecked_Deallocate_Subpool. <br /></p>
 
 
 #### Static Semantics
 
-<MarginText>2/3</MarginText>
+<MarginText>2/3_13.11.5</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>The following language-defined library procedure exists:<br /></p>
 
-<MarginText>3/5</MarginText>
+<MarginText>3/5_13.11.5</MarginText>
 <MarginInfo items={["AI12-0302-1"]} />
 <CodeBlock language="ada">
 with System.Storage_Pools.Subpools;{"\n"}procedure Ada.Unchecked_Deallocate_Subpool{"\n"}   (Subpool : in out System.Storage_Pools.Subpools.Subpool_Handle){"\n"}   with Global ={">"} in out all;{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
-<MarginText>3.a/5</MarginText>
+<MarginText>3.a/5_13.11.5</MarginText>
 <MarginInfo items={["AI12-0005-1", "AI12-0302-1"]} />
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>The Global specification for this routine needs to account for the dispatching call to the user-defined Deallocate_Subpool routine. We can't use the Dispatching aspect (see <a href="../AA-H/AA-H.7#Subclause_H.7.1">H.7.1</a>) as that requires a statically named object (we have a function call here), so we have to use <strong>in out all</strong> in order to allow the user-defined subprogram to do anything it needs to do. <br /></Admonition>
 </AnnotatedOnly>
 
-<MarginText>4/3</MarginText>
+<MarginText>4/3_13.11.5</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>If Subpool is <strong>null</strong>, a call on Unchecked_Deallocate_Subpool has no effect. Otherwise, the subpool is finalized, and Subpool is set to <strong>null</strong>.<br /></p>
 
-<MarginText>5/5</MarginText>
+<MarginText>5/5_13.11.5</MarginText>
 <MarginInfo items={["AI05-0111-3", "AI12-0331-1"]} />
 <p>Finalization of a subpool has the following effects in the given order:<br /></p>
 
-<MarginText>6/5</MarginText>
-<dt><br/><em>This paragraph was deleted.</em>1.</dt>
+<MarginText>6/5_13.11.5</MarginText>
+<dt><br/></dt>
 <MarginInfo items={["AI12-0331-1"]} />
 <dl>
-<dd> <br /></dd>
-<MarginText>7/3</MarginText>
-<dt><br/>2.</dt>
+<dd><em>This paragraph was deleted.</em><br /></dd>
+<MarginText>7/3_13.11.5</MarginText>
+<dt><br/>1.</dt>
 <dd>Any of the objects allocated from the subpool that still exist are finalized in an arbitrary order;<br /></dd>
-<MarginText>7.1/4</MarginText>
-<dt><br/>3.</dt>
+<MarginText>7.1/4_13.11.5</MarginText>
+<dt><br/>2.</dt>
 <MarginInfo items={["AI12-0148-1"]} />
 <dd>All of the objects allocated from the subpool cease to exist;<br /></dd>
-<MarginText>8/3</MarginText>
-<dt><br/>4.</dt>
+<MarginText>8/3_13.11.5</MarginText>
+<dt><br/>3.</dt>
 <dd>The following [dispatching] call is then made: <br /></dd>
 </dl>
-<MarginText>9/3</MarginText>
+<MarginText>9/3_13.11.5</MarginText>
 <CodeBlock language="ada">
    Deallocate_Subpool(Pool_of_Subpool(Subpool).all, Subpool);{"\n"}
 
 </CodeBlock>
-<MarginText>9.1/5</MarginText>
-<dt><br/>5.</dt>
+<MarginText>9.1/5_13.11.5</MarginText>
+<dt><br/>4.</dt>
 <MarginInfo items={["AI12-0331-1"]} />
 <dl>
 <dd>The subpool ceases to belong to any pool.<br /></dd>
 </dl>
-<MarginText>10/3</MarginText>
+<MarginText>10/3_13.11.5</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>Finalization of a Root_Storage_Pool_With_Subpools object finalizes all subpools that belong to that pool that have not yet been finalized.<br /></p>
 
 <AnnotatedOnly>
-<MarginText>10.a/3</MarginText>
+<MarginText>10.a/3_13.11.5</MarginText>
 <Admonition type="aarm" aarm="discussion">
 <strong></strong>There is no need to call Unchecked_Deallocation on an object allocated in a subpool. Such objects are deallocated all at once, when Unchecked_Deallocate_Subpool is called.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.b/3</MarginText>
+<MarginText>10.b/3_13.11.5</MarginText>
 <Admonition type="aarm" aarm="note">
 If Unchecked_Deallocation is called, the object is finalized, and then Deallocate is called on the Pool, which typically will do nothing. If it wants to free memory, it will need some way to get from the address of the object to the subpool.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.c/3</MarginText>
+<MarginText>10.c/3_13.11.5</MarginText>
 <Admonition type="aarm" aarm="note">
 There is no Deallocate_From_Subpool. There is no efficient way for the implementation to determine the subpool for an arbitrary object, and if the pool implementer can determine that, they can use that as part of the implementation of Deallocate.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.d/3</MarginText>
+<MarginText>10.d/3_13.11.5</MarginText>
 <Admonition type="aarm" aarm="note">
 If Unchecked_Deallocation is not called (the usual case), the object will be finalized when Unchecked_Deallocate_Subpool is called.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.e/3</MarginText>
+<MarginText>10.e/3_13.11.5</MarginText>
 <Admonition type="aarm" aarm="note">
 If that's never called, then the object will be finalized when the Pool_With_Subpools is finalized (by permission &mdash; it might happen when the collection of the access type is finalized).<br /></Admonition>
 </AnnotatedOnly>
@@ -1683,7 +1683,7 @@ If that's never called, then the object will be finalized when the Pool_With_Sub
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>10.f/3</MarginText>
+<MarginText>10.f/3_13.11.5</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <Admonition type="aarm" aarm="note">
 Unchecked_Deallocate_Subpool is new. <br /></Admonition>
@@ -1695,14 +1695,14 @@ Unchecked_Deallocate_Subpool is new. <br /></Admonition>
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>10.g/4</MarginText>
+<MarginText>10.g/4_13.11.5</MarginText>
 <MarginInfo items={["AI12-0148-1"]} />
 <Admonition type="aarm" aarm="note">
 <strong>Corrigendum:</strong> Added missing wording to state that the objects cease to exist after the completion of finalization. This is formally an inconsistency (it would be possible to depend on the fact that objects finalized by Unchecked_Deallocate_Subpool still exist), but that violates every sane expectation for a procedure called "Deallocate" something.<br /></Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
-<MarginText>10.h/5</MarginText>
+<MarginText>10.h/5_13.11.5</MarginText>
 <MarginInfo items={["AI12-0331-1"]} />
 <Admonition type="aarm" aarm="note">
 Clarified that the steps of deallocating a subpool occur in a specific order. This shouldn't change any implementation; no implementation is going to finalize deallocated objects or implement Unchecked_Deallocate_Subpool so it is certain to raise Constraint_Error. <br /></Admonition>
@@ -1715,75 +1715,75 @@ Clarified that the steps of deallocating a subpool occur in a specific order. Th
 
 #### Examples
 
-<MarginText>1/3</MarginText>
+<MarginText>1/3_13.11.6</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <p>The following example is a simple but complete implementation of the classic Mark/Release pool using subpools:<br /></p>
 
-<MarginText>2/3</MarginText>
+<MarginText>2/3_13.11.6</MarginText>
 <CodeBlock language="ada">
 with System.Storage_Pools.Subpools;{"\n"}with System.Storage_Elements;{"\n"}with Ada.Unchecked_Deallocate_Subpool;{"\n"}package MR_Pool is{"\n"}
-<MarginText>3/3</MarginText>
+<MarginText>3/3_13.11.6</MarginText>
    use System.Storage_Pools;{"\n"}      -- For uses of Subpools.{"\n"}   use System.Storage_Elements;{"\n"}      -- For uses of Storage_Count and Storage_Array.{"\n"}
-<MarginText>4/3</MarginText>
+<MarginText>4/3_13.11.6</MarginText>
    -- Mark and Release work in a stack fashion, and allocations are not allowed{"\n"}   -- from a subpool other than the one at the top of the stack. This is also{"\n"}   -- the default pool.{"\n"}
-<MarginText>5/3</MarginText>
+<MarginText>5/3_13.11.6</MarginText>
    subtype Subpool_Handle is Subpools.Subpool_Handle;{"\n"}
-<MarginText>6/3</MarginText>
+<MarginText>6/3_13.11.6</MarginText>
    type Mark_Release_Pool_Type (Pool_Size : Storage_Count) is new{"\n"}      Subpools.Root_Storage_Pool_With_Subpools with private;{"\n"}
-<MarginText>7/3</MarginText>
+<MarginText>7/3_13.11.6</MarginText>
    function Mark (Pool : in out Mark_Release_Pool_Type){"\n"}      return not null Subpool_Handle;{"\n"}
-<MarginText>8/3</MarginText>
+<MarginText>8/3_13.11.6</MarginText>
    procedure Release (Subpool : in out Subpool_Handle) renames{"\n"}      Ada.Unchecked_Deallocate_Subpool;{"\n"}
-<MarginText>9/3</MarginText>
+<MarginText>9/3_13.11.6</MarginText>
 private{"\n"}
-<MarginText>10/3</MarginText>
+<MarginText>10/3_13.11.6</MarginText>
    type MR_Subpool is new Subpools.Root_Subpool with record{"\n"}      Start : Storage_Count;{"\n"}   end record;{"\n"}   subtype Subpool_Indexes is Positive range 1 .. 10;{"\n"}   type Subpool_Array is array (Subpool_Indexes) of aliased MR_Subpool;{"\n"}
-<MarginText>11/4</MarginText>
+<MarginText>11/4_13.11.6</MarginText>
 <MarginInfo items={["AI05-0298-1", "AI12-0134-1"]} />
    type Mark_Release_Pool_Type (Pool_Size : Storage_Count) is new{"\n"}      Subpools.Root_Storage_Pool_With_Subpools with record{"\n"}      Storage         : Storage_Array (0 .. Pool_Size);{"\n"}      Next_Allocation : Storage_Count := 0;{"\n"}      Markers         : Subpool_Array;{"\n"}      Current_Pool    : Subpool_Indexes := 1;{"\n"}   end record;{"\n"}
-<MarginText>12/3</MarginText>
+<MarginText>12/3_13.11.6</MarginText>
 <MarginInfo items={["AI05-0298-1"]} />
    overriding{"\n"}   function Create_Subpool (Pool : in out Mark_Release_Pool_Type){"\n"}      return not null Subpool_Handle;{"\n"}
-<MarginText>13/3</MarginText>
+<MarginText>13/3_13.11.6</MarginText>
    function Mark (Pool : in out Mark_Release_Pool_Type){"\n"}      return not null Subpool_Handle renames Create_Subpool;{"\n"}
-<MarginText>14/3</MarginText>
+<MarginText>14/3_13.11.6</MarginText>
    overriding{"\n"}   procedure Allocate_From_Subpool ({"\n"}      Pool : in out Mark_Release_Pool_Type;{"\n"}      Storage_Address : out System.Address;{"\n"}      Size_In_Storage_Elements : in Storage_Count;{"\n"}      Alignment : in Storage_Count;{"\n"}      Subpool : not null Subpool_Handle);{"\n"}
-<MarginText>15/3</MarginText>
+<MarginText>15/3_13.11.6</MarginText>
    overriding{"\n"}   procedure Deallocate_Subpool ({"\n"}      Pool : in out Mark_Release_Pool_Type;{"\n"}      Subpool : in out Subpool_Handle);{"\n"}
-<MarginText>16/3</MarginText>
+<MarginText>16/3_13.11.6</MarginText>
 <MarginInfo items={["AI05-0298-1"]} />
    overriding{"\n"}   function Default_Subpool_for_Pool (Pool : in out Mark_Release_Pool_Type){"\n"}      return not null Subpool_Handle;{"\n"}
-<MarginText>17/3</MarginText>
+<MarginText>17/3_13.11.6</MarginText>
    overriding{"\n"}   procedure Initialize (Pool : in out Mark_Release_Pool_Type);{"\n"}
-<MarginText>18/3</MarginText>
+<MarginText>18/3_13.11.6</MarginText>
    -- We don't need Finalize.{"\n"}
-<MarginText>19/3</MarginText>
+<MarginText>19/3_13.11.6</MarginText>
 end MR_Pool;{"\n"}
-<MarginText>20/3</MarginText>
+<MarginText>20/3_13.11.6</MarginText>
 package body MR_Pool is{"\n"}
-<MarginText>21/3</MarginText>
+<MarginText>21/3_13.11.6</MarginText>
 <MarginInfo items={["AI05-0298-1"]} />
    use type Subpool_Handle;{"\n"}
-<MarginText>22/3</MarginText>
+<MarginText>22/3_13.11.6</MarginText>
 <MarginInfo items={["AI05-0298-1"]} />
    procedure Initialize (Pool : in out Mark_Release_Pool_Type) is{"\n"}      -- Initialize the first default subpool.{"\n"}   begin{"\n"}      Pool.Markers(1).Start := 1;{"\n"}      Subpools.Set_Pool_of_Subpool{"\n"}         (Pool.Markers(1)'Unchecked_Access, Pool);{"\n"}   end Initialize;{"\n"}
-<MarginText>23/3</MarginText>
+<MarginText>23/3_13.11.6</MarginText>
    function Create_Subpool (Pool : in out Mark_Release_Pool_Type){"\n"}      return not null Subpool_Handle is{"\n"}      -- Mark the current allocation location.{"\n"}   begin{"\n"}      if Pool.Current_Pool = Subpool_Indexes'Last then{"\n"}         raise Storage_Error; -- No more subpools.{"\n"}      end if;{"\n"}      Pool.Current_Pool := Pool.Current_Pool + 1; -- Move to the next subpool{"\n"}
-<MarginText>24/3</MarginText>
+<MarginText>24/3_13.11.6</MarginText>
 <MarginInfo items={["AI05-0298-1"]} />
       return Result : constant not null Subpool_Handle :={"\n"}         Pool.Markers(Pool.Current_Pool)'Unchecked_Access{"\n"}      do{"\n"}         Pool.Markers(Pool.Current_Pool).Start := Pool.Next_Allocation;{"\n"}         Subpools.Set_Pool_of_Subpool (Result, Pool);{"\n"}      end return;{"\n"}   end Create_Subpool;{"\n"}
-<MarginText>25/3</MarginText>
+<MarginText>25/3_13.11.6</MarginText>
 <MarginInfo items={["AI05-0298-1"]} />
    procedure Deallocate_Subpool ({"\n"}      Pool : in out Mark_Release_Pool_Type;{"\n"}      Subpool : in out Subpool_Handle) is{"\n"}   begin{"\n"}      if Subpool /= Pool.Markers(Pool.Current_Pool)'Unchecked_Access then{"\n"}         raise Program_Error; -- Only the last marked subpool can be released.{"\n"}      end if;{"\n"}      if Pool.Current_Pool /= 1 then{"\n"}         Pool.Next_Allocation := Pool.Markers(Pool.Current_Pool).Start;{"\n"}         Pool.Current_Pool := Pool.Current_Pool - 1; -- Move to the previous subpool{"\n"}      else -- Reinitialize the default subpool:{"\n"}         Pool.Next_Allocation := 1;{"\n"}         Subpools.Set_Pool_of_Subpool{"\n"}            (Pool.Markers(1)'Unchecked_Access, Pool);{"\n"}      end if;{"\n"}   end Deallocate_Subpool;{"\n"}
-<MarginText>26/3</MarginText>
+<MarginText>26/3_13.11.6</MarginText>
 <MarginInfo items={["AI05-0298-1"]} />
    function Default_Subpool_for_Pool (Pool : in out Mark_Release_Pool_Type){"\n"}      return not null Subpool_Handle is{"\n"}   begin{"\n"}      return Pool.Markers(Pool.Current_Pool)'Unchecked_Access;{"\n"}   end Default_Subpool_for_Pool;{"\n"}
-<MarginText>27/3</MarginText>
+<MarginText>27/3_13.11.6</MarginText>
    procedure Allocate_From_Subpool ({"\n"}      Pool : in out Mark_Release_Pool_Type;{"\n"}      Storage_Address : out System.Address;{"\n"}      Size_In_Storage_Elements : in Storage_Count;{"\n"}      Alignment : in Storage_Count;{"\n"}      Subpool : not null Subpool_Handle) is{"\n"}   begin{"\n"}      if Subpool /= Pool.Markers(Pool.Current_Pool)'Unchecked_Access then{"\n"}         raise Program_Error; -- Only the last marked subpool can be used for allocations.{"\n"}      end if;{"\n"}
-<MarginText>28/4</MarginText>
+<MarginText>28/4_13.11.6</MarginText>
 <MarginInfo items={["AI12-0080-1"]} />
       -- Check for the maximum supported alignment, which is the alignment of the storage area:{"\n"}      if Alignment {">"} Pool.Storage'Alignment then{"\n"}         raise Program_Error;{"\n"}      end if;{"\n"}      -- Correct the alignment if necessary:{"\n"}      Pool.Next_Allocation := Pool.Next_Allocation +{"\n"}         ((-Pool.Next_Allocation) mod Alignment);{"\n"}      if Pool.Next_Allocation + Size_In_Storage_Elements {">"}{"\n"}         Pool.Pool_Size then{"\n"}         raise Storage_Error; -- Out of space.{"\n"}      end if;{"\n"}      Storage_Address := Pool.Storage (Pool.Next_Allocation)'Address;{"\n"}      Pool.Next_Allocation :={"\n"}         Pool.Next_Allocation + Size_In_Storage_Elements;{"\n"}   end Allocate_From_Subpool;{"\n"}
-<MarginText>29/3</MarginText>
+<MarginText>29/3_13.11.6</MarginText>
 end MR_Pool;{"\n"}
 
 </CodeBlock>
@@ -1793,7 +1793,7 @@ end MR_Pool;{"\n"}
 
 </AnnotatedOnly>
 <AnnotatedOnly>
-<MarginText>29.a/3</MarginText>
+<MarginText>29.a/3_13.11.6</MarginText>
 <MarginInfo items={["AI05-0111-3"]} />
 <Admonition type="aarm" aarm="note">
 This example of subpools is new. <br /></Admonition>
