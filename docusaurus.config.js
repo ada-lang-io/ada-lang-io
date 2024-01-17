@@ -96,7 +96,6 @@ const config = {
         respectPrefersColorScheme: true
       },
       navbar: {
-        title: "Ada",
         logo: {
           alt: "Ada",
           src: "img/ada_logo.svg",
