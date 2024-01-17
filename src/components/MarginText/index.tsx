@@ -11,10 +11,11 @@ export default function MarginText({ children }: MarginTextProps): JSX.Element |
     return null
   }
 
-  const id = `p${children.split("/", 1)[0]}`
+  // Format is a/b_subclause
+  const id = `p${children.replace("/", "_")}`
   return (
     <a id={id} href={`#${id}`} className={classes.text}>
-      {children}
+      {children.split("_", 1)[0]}
     </a>
   )
 }
