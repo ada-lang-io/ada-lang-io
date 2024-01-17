@@ -116,7 +116,7 @@ in `package/package body`, `task/task body`, subprograms, and executable blocks 
 
 ```ada
 package P is
-    -- Not declaring Foo here is like making the function `static` in C or C++ or
+    -- Not declaring Foo here is like making the subprogram `static` in C or C++ or
     -- putting it into an anonymous namespace.
     procedure Foo;
 end P;
@@ -127,10 +127,10 @@ package body P is
     procedure Foo is
         -- Declarations for Foo can go here.
 
-        -- Declare a function, only visible to Foo, to be used to implement Foo.
+        -- Declare a subprogram, only visible to Foo, to be used to implement Foo.
         procedure Bar is
         begin
-            null; -- "null statement" here since this function actually does nothing.
+            null; -- "null statement" here since this subprogram actually does nothing.
                 -- and one statement is required.
         end Bar;
     begin
@@ -138,7 +138,7 @@ package body P is
         Ada.Text_IO.Put_Line("Hello, World!");
 
         declare
-            -- Declare a package here, inside the function, to show that you can.
+            -- Declare a package here, inside the subprogram, to show that you can.
             package Wat is
                 -- Declare a new type, which has the same set of possible values
                 -- as a Float, but is different than a Float.
@@ -196,7 +196,7 @@ begin
 ```
 
 Ada does not provide separate syntactical units for classes, structs and
-namespaces. Instead, packages contain types, constants and related subprograms.  
+namespaces. Instead, packages contain types, constants and related subprograms.
 A lot of specialized syntax goes away due to
 this, for example there are no "member functions" and "class functions" and
 hence no specialized syntax for things like member function pointers or class

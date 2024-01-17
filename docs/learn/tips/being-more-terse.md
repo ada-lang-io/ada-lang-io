@@ -92,13 +92,13 @@ function Make (
 S : Spinner := Make;
 ```
 
-## Rename functions with default parameters
+## Rename subprograms with default parameters
 
 ```ada
 S : String := Ada.Strings.Fixed.Trim ("  this is a string   ", Ada.Strings.Both);
 ```
 
-You can `rename` a function with bound default parameters.
+You can `rename` a procedure with bound default parameters.
 
 ```ada
 function Strip(Input : String; Sides : Ada.Strings.Trim_End:= Ada.Strings.Both)
@@ -107,7 +107,7 @@ function Strip(Input : String; Sides : Ada.Strings.Trim_End:= Ada.Strings.Both)
 S : String := Strip ("  this is a string   ");
 ```
 
-## Locally define helper functions
+## Locally define helper subprograms
 
 ```ada
 procedure Test_Is_Quoted (Op : in out TT.Operation'Class) is
@@ -120,7 +120,7 @@ begin
 end Test_Is_Quoted;
 ```
 
-Using a locally defined helper function to simplify repeated local logic. Note
+Using a locally defined helper subprogram to simplify repeated local logic. Note
 that these local subprograms don't pollute the global namespace.
 
 ```ada
