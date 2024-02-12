@@ -8,6 +8,8 @@ An Ada development environment consists basically of a toolchain: an Ada compile
 
 By far the easiest way to get hold of an Ada toolchain is to use the Ada package manager [Alire](https://alire.ada.dev/docs/#introduction).
 
+## Alire
+
 The Alire website's [Releases page](https://github.com/alire-project/alire/releases) provides Intel builds:
 
 - the current stable build, [v1.2.2](https://github.com/alire-project/alire/releases/tag/v1.2.2),
