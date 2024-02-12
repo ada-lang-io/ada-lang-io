@@ -1,12 +1,13 @@
 ---
 sidebar_position: 3
 ---
+
+# Editors
+
 export const GPR_FILE = "{GPR_FILE}";
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# Editors
 
 ## Setting up your editor
 
@@ -60,18 +61,21 @@ trying to open.
 ```bash
 alr config --set editor.cmd "code workspace.code-workspace"
 ```
+
   </TabItem>
  <TabItem value="linux" label="Linux">
 
 ```bash
 alr config --set editor.cmd "code workspace.code-workspace"
 ```
+
   </TabItem>
   <TabItem value="mac" label="macOS">
 
 ```bash
 alr config --set editor.cmd "/Applications/VisualStudioCode.app/Contents/Resources/app/bin/code workspace.code-workspace"
 ```
+
   </TabItem>
 </Tabs>
 
@@ -88,9 +92,9 @@ alr edit
 
 ### Emacs
 
-Install `ada-mode` extension from [GNU ELPA](https://elpa.gnu.org/packages/ada-mode.html).
+Install the `ada-mode` extension from [GNU ELPA](https://elpa.gnu.org/packages/ada-mode.html).
 
-Set Alire to use Emacs when invoking `alr edit`.
+Set Alire to use Emacs when invoking `alr edit`:
 
 <Tabs groupId="operating-systems">
   <TabItem value="linux" label="Linux">
@@ -98,11 +102,14 @@ Set Alire to use Emacs when invoking `alr edit`.
 ```bash
 alr config --set --global editor.cmd 'emacs --eval=(ada-build-prompt-select-prj-file"${GPR_FILE}") ${GPR_FILE}'
 ```
+
   </TabItem>
   <TabItem value="mac" label="macOS">
 
 ```bash
 alr config --set editor.cmd 'open -n -a emacs ${GPR_FILE}'
 ```
-  </TabItem>
+
+Note, you still need to find one of the project's Ada source files and then select the relevant GPR file. Investigations continue.
+</TabItem>
 </Tabs>
