@@ -5,68 +5,40 @@ sidebar_position: 100
 # Issues
 
 - [Linking error](#linking-error)
+- [Unhandled exceptions](#unhandled-exceptions)
+- [Transparent solution](#transparent-solution)
+- [The future](#the-future)
 
 ## <a name="linking-error">Linking error</a>
 
-As of November 2023, people have been getting errors like
+If you're running macOS 13.5 (Ventura) or later, you'll probably have been offered updates to version 15 of Xcode/the Command Line Tools. With version 15.0, we encountered the, rather fundamental, problem that all links failed, with a slew of messages including
 
 ```
-❯ alr build
-ⓘ Building myproj/myproj.gpr...
-Link
-   [link]         myproj.adb
-0  0x10034af43  __assert_rtn + 64
-1  0x10024cf43  ld::AtomPlacement::findAtom(unsigned char, unsigned long long, ld::AtomPlacement::AtomLoc const*&, long long&) const + 1411
-2  0x100269431  ld::InputFiles::SliceParser::parseObjectFile(mach_o::Header const*) const + 19745
-3  0x100279e44  ld::InputFiles::parseAllFiles(void (ld::AtomFile const*) block_pointer)::$_7::operator()(unsigned long, ld::FileInfo const&) const + 1380
-4  0x7ff8051315cd  _dispatch_client_callout2 + 8
-5  0x7ff805141e3e  _dispatch_apply_invoke + 214
-6  0x7ff80513159a  _dispatch_client_callout + 8
-7  0x7ff80514099d  _dispatch_root_queue_drain + 879
-8  0x7ff805140f22  _dispatch_worker_thread2 + 152
-9  0x7ff8052d5c06  _pthread_wqthread + 262
 ld: Assertion failed: (resultIndex < sectData.atoms.size()), function findAtom, file Relocations.cpp, line 1336.
-collect2: error: ld returned 1 exit status
-gprbuild: link of myproj.adb failed
-gprbuild: failed command was: /users/sdey02/.config/alire/cache/dependencies/gnat_native_13.2.1_c21501ad/bin/gcc myproj.o b__myproj.o -L/Users/sdey02/myproj/obj/development/ -L/Users/sdey02/myproj/obj/development/ -L/users/sdey02/.config/alire/cache/dependencies/gnat_native_13.2.1_c21501ad/lib/gcc/x86_64-apple-darwin21.6.0/13.2.0/adalib/ /users/sdey02/.config/alire/cache/dependencies/gnat_native_13.2.1_c21501ad/lib/gcc/x86_64-apple-darwin21.6.0/13.2.0/adalib/libgnat.a -Wl,-rpath,@executable_path/..//obj/development -Wl,-rpath,@executable_path/../..//.config/alire/cache/dependencies/gnat_native_13.2.1_c21501ad/lib/gcc/x86_64-apple-darwin21.6.0/13.2.0/adalib -o /Users/sdey02/myproj/bin//myproj
-error: Command ["gprbuild", "-s", "-j0", "-p", "-P", "/Users/sdey02/myproj/myproj.gpr"] exited with code 4
-error: Compilation failed.
 ```
 
-This is a result of an update of the developer toolkit (Xcode, or the _much_ smaller Command Line Tools) to version 15.
-
-### Immediate workround
-
-An immediate workround is to use what's called the "classic linker" by using this Alire build command:
+This happened because Apple had introduced a new linker (`ld`). A workround for this issue turned out to be to use a version of the older linker included in the SDK, `ld-classic`. You can tell `gprbuild` or `gnatmake` to do this from the command line by adding
 
 ```
-alr build -- -largs -Wl,-ld_classic
+-largs -Wl,-ld_classic
 ```
 
-or with _gprbuild_
+(notice the change from dash to underscore!) This fix doesn't work with older SDKs that don't have `ld-classic` - they would interpret it as looking for a library `libd_classic`.
 
-```
-gprbuild -P my_proj -largs -Wl,-ld_classic
-```
+The updated SDKs (version 15.1) fixed this issue, so you no longer needed the workround.
 
-(similarly for _gnatmake_)
+## <a name="unhandled-exceptions">Unhandled exceptions</a>
 
-A slightly less intrusive alternative would be to alter your GNAT Project (`.gpr`) file by including a 'linker' package:
+It turns out that there's a more subtle problem than the blatant failure to link: exception handling can be unreliable. If you get unhandled exceptions from code with a clearly visible exception handler, this is what's going on.
 
-```
-package Linker is
-   for Default_Switches ("Ada") use ("-Wl,-ld_classic");
-end Linker;
-```
+This issue is also solved by using the classic linker.
 
-Of course, if you already have a `package Linker` it'll need adjusting.
+## <a name="transparent-solution">Transparent solution</a>
 
-### Unintrusive workround
+We have a solution which transparently invokes `ld-classic` if it's present in the SDK. The solution is to place a 'shim' named `ld` where GCC will look for it and invoke it instead of directly calling `/usr/bin/ld`.
 
-Until version 15.1 of the developer tools is released, you can install a beta version which doesn't have this problem.
+The latest release of the installer can be found [here](https://github.com/simonjwright/xcode_15_fix/releases).
 
-Find out which set of developer tools you have installed by `xcrun --show-sdk-path`: if the result starts `/Applications/Xcode.app/` it's Xcode, if it starts `/Library/Developer/CommandLineLTools/` it's the Command Line Tools.
+## <a name="the-future">The future</a>
 
-Go to the [Apple Developer "More Downloads"](https://developer.apple.com/download/all/) page (you'll need a free account, you may need a separate Apple ID) and select the beta package matching your current developer tools: download and install it. The _beta 2_ set is known to work, _beta 3_ is available (18 November 2003).
-
-> Note for the Xcode betas: they come as `.xip` files, which need to be extracted using Apple's proprietary _xip_ tool: `xip --expand package.xip`. You'll need to tell macOS to use the beta using `xcode-select --switch`.
+It turns out that the reason for the issue is that GCC mishandles the Darwin ABI by placing exception handling data in the wrong segment of the executable. This has been fixed in the GCC 14.0.1 pre-release, and it's hoped that it will be backported to GCC 13.3.
