@@ -37,18 +37,6 @@ const config = {
     description: "A programming language for readable, correct, and performant software."
   },
 
-  // https://github.com/facebook/docusaurus/issues/4765#issuecomment-841135926
-  webpack: {
-    jsLoader: (isServer) => ({
-      loader: require.resolve("esbuild-loader"),
-      options: {
-        loader: "tsx",
-        format: isServer ? "cjs" : undefined,
-        target: isServer ? "node12" : "es2017"
-      }
-    })
-  },
-
   plugins: [
     "docusaurus-plugin-sass",
     (context, options) => ({
