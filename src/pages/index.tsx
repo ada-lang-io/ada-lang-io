@@ -177,7 +177,7 @@ export function HomepageHeader({ title, description }: HomepageHeaderProps): JSX
                 className={styles.controlSecondary}
                 size="md"
                 component={Link}
-                to="/docs/learn/why-ada"
+                to="/docs/learn/getting-started/installation"
               >
                 Get Started
               </Button>
