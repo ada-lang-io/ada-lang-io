@@ -4,7 +4,7 @@ sidebar_position:  159
 
 # D.5 Dynamic Priorities
 
-:::warning
+:::danger
 This Reference Manual output has not been verified,
 and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
@@ -50,7 +50,7 @@ This subclause is turned into two subclauses. This subclause introduction is new
 <MarginText>3/5_D.5.1</MarginText>
 <MarginInfo items={["AI95-00362-01", "AI12-0241-1", "AI12-0302-1"]} />
 <CodeBlock language="ada">
-with System;{"\n"}with Ada.Task{"_"}Identification; -- See <a href="../AA-C/AA-C.7#Subclause_C.7.1">C.7.1</a>{"\n"}package Ada.Dynamic{"_"}Priorities{"\n"}    with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
+with System;{"\n"}with Ada.Task{"_"}Identification; -- See <a href="/docs/arm/AA-C/AA-C.7#Subclause_C.7.1">C.7.1</a>{"\n"}package Ada.Dynamic{"_"}Priorities{"\n"}    with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
 <MarginText>4_D.5.1</MarginText>
     procedure Set{"_"}Priority(Priority : in System.Any{"_"}Priority;{"\n"}                           T : in Ada.Task{"_"}Identification.Task{"_"}Id :={"\n"}                           Ada.Task{"_"}Identification.Current{"_"}Task);{"\n"}
 <MarginText>5_D.5.1</MarginText>
@@ -93,7 +93,7 @@ However, we wish to allow implementations to avoid storing &ldquo;extra&rdquo; i
 <MarginText>10.a/2_D.5.1</MarginText>
 <MarginInfo items={["AI95-00188-02"]} />
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>The priority change is immediate if the target task is on a delay queue or a ready queue outside of a protected action. However, consider when Set{"_"}Priority is called by a task T1 to set the priority of T2, if T2 is blocked, waiting on an entry call queued on a protected object, the entry queue needs to be reordered. Since T1 might have a priority that is higher than the ceiling of the protected object, T1 cannot, in general, do the reordering. One way to implement this is to wake T2 up and have T2 do the work. This is similar to the disentangling of queues that needs to happen when a high-priority task aborts a lower-priority task, which might have a call queued on a protected object with a low ceiling. We have an Implementation Permission in <a href="../AA-D/AA-D.4">D.4</a> to allow this implementation. We could have required an immediate priority change if on a ready queue during a protected action, but that would have required extra checks for ceiling violations to meet Bounded (Run-Time) Error requirements of <a href="../AA-D/AA-D.3">D.3</a> and potentially could cause a protected action to be abandoned in the middle (by raising Program{"_"}Error). That seems bad. <br />
+<strong></strong>The priority change is immediate if the target task is on a delay queue or a ready queue outside of a protected action. However, consider when Set{"_"}Priority is called by a task T1 to set the priority of T2, if T2 is blocked, waiting on an entry call queued on a protected object, the entry queue needs to be reordered. Since T1 might have a priority that is higher than the ceiling of the protected object, T1 cannot, in general, do the reordering. One way to implement this is to wake T2 up and have T2 do the work. This is similar to the disentangling of queues that needs to happen when a high-priority task aborts a lower-priority task, which might have a call queued on a protected object with a low ceiling. We have an Implementation Permission in <a href="/docs/arm/AA-D/AA-D.4">D.4</a> to allow this implementation. We could have required an immediate priority change if on a ready queue during a protected action, but that would have required extra checks for ceiling violations to meet Bounded (Run-Time) Error requirements of <a href="/docs/arm/AA-D/AA-D.3">D.3</a> and potentially could cause a protected action to be abandoned in the middle (by raising Program{"_"}Error). That seems bad. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -169,7 +169,7 @@ NOTE 1   Setting a task's base priority affects task dispatching. First, it can 
 <AnnotatedOnly>
 <MarginText>16_D.5.1</MarginText>
 <Admonition type="aarm" aarm="note">
-NOTE 2   Under the priority queuing policy, setting a task's base priority has an effect on a queued entry call if the task is blocked waiting for the call. That is, setting the base priority of a task causes the priority of a queued entry call from that task to be updated and the call to be removed and then reinserted in the entry queue at the new priority (see <a href="../AA-D/AA-D.4">D.4</a>), unless the call originated from the <code><a href="../AA-9/AA-9.7#S0282">triggering_statement</a></code> of an <code><a href="../AA-9/AA-9.7#S0280">asynchronous_select</a></code>.<br />
+NOTE 2   Under the priority queuing policy, setting a task's base priority has an effect on a queued entry call if the task is blocked waiting for the call. That is, setting the base priority of a task causes the priority of a queued entry call from that task to be updated and the call to be removed and then reinserted in the entry queue at the new priority (see <a href="/docs/arm/AA-D/AA-D.4">D.4</a>), unless the call originated from the <code><a href="/docs/arm/AA-9/AA-9.7#S0282">triggering_statement</a></code> of an <code><a href="/docs/arm/AA-9/AA-9.7#S0280">asynchronous_select</a></code>.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -183,7 +183,7 @@ NOTE 3   The effect of two or more Set{"_"}Priority calls executed in parallel o
 <AnnotatedOnly>
 <MarginText>17.a_D.5.1</MarginText>
 <Admonition type="aarm" aarm="proof">
-<strong></strong>This follows from the general reentrancy requirements stated near the beginning of <a href="../AA-A/">Annex A</a>, &ldquo;<a href="../AA-A/">Predefined Language Environment</a>&rdquo;. <br />
+<strong></strong>This follows from the general reentrancy requirements stated near the beginning of <a href="/docs/arm/AA-A/">Annex A</a>, &ldquo;<a href="/docs/arm/AA-A/">Predefined Language Environment</a>&rdquo;. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -191,7 +191,7 @@ NOTE 3   The effect of two or more Set{"_"}Priority calls executed in parallel o
 <MarginText>18/5_D.5.1</MarginText>
 <MarginInfo items={["AI05-0092-1", "AI12-0447-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 4   The rule for when Tasking{"_"}Error is raised for Set{"_"}Priority or Get{"_"}Priority is different from the rule for when Tasking{"_"}Error is raised on an entry call (see <a href="../AA-9/AA-9.5#Subclause_9.5.3">9.5.3</a>). In particular, the priority of a completed or an abnormal task can be queried so long as the task is not yet terminated, and the priority of a task can be set in any task state (including for terminated tasks).<br />
+NOTE 4   The rule for when Tasking{"_"}Error is raised for Set{"_"}Priority or Get{"_"}Priority is different from the rule for when Tasking{"_"}Error is raised on an entry call (see <a href="/docs/arm/AA-9/AA-9.5#Subclause_9.5.3">9.5.3</a>). In particular, the priority of a completed or an abnormal task can be queried so long as the task is not yet terminated, and the priority of a task can be set in any task state (including for terminated tasks).<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -233,7 +233,7 @@ Dynamic{"_"}Priorities is now Preelaborated, so it can be used in preelaborated 
 <MarginText>19.c/3_D.5.1</MarginText>
 <MarginInfo items={["AI95-00327-01", "AI05-0299-1"]} />
 <Admonition type="aarm" aarm="note">
-This Ada 95 subclause was moved down a level. The paragraph numbers are the same as those for <a href="../AA-D/AA-D.5">D.5</a> in Ada 95.<br />
+This Ada 95 subclause was moved down a level. The paragraph numbers are the same as those for <a href="/docs/arm/AA-D/AA-D.5">D.5</a> in Ada 95.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -249,7 +249,7 @@ There is no &ldquo;standard&rdquo; policy anymore, so that phrase was replaced b
 <MarginText>19.e/2_D.5.1</MarginText>
 <MarginInfo items={["AI95-00327-01"]} />
 <Admonition type="aarm" aarm="note">
-The bounded error for the priority of a task being higher than the ceiling of an object it is currently in was moved to <a href="../AA-D/AA-D.3">D.3</a>, so that it applies no matter how the situation arises. <br />
+The bounded error for the priority of a task being higher than the ceiling of an object it is currently in was moved to <a href="/docs/arm/AA-D/AA-D.3">D.3</a>, so that it applies no matter how the situation arises. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -266,7 +266,7 @@ The bounded error for the priority of a task being higher than the ceiling of an
 
 <MarginText>2/5_D.5.2</MarginText>
 <MarginInfo items={["AI95-00327-01", "AI12-0230-1"]} />
-<p>The following attributes are defined for a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> P that denotes a protected object:<br /></p>
+<p>The following attributes are defined for a <code><a href="/docs/arm/AA-4/AA-4.1#S0093">prefix</a></code> P that denotes a protected object:<br /></p>
 
 <MarginText>3/2_D.5.2</MarginText>
 <dt><br/>P'Priority</dt>
@@ -280,14 +280,14 @@ The bounded error for the priority of a task being higher than the ceiling of an
 </dl>
 <MarginText>4/5_D.5.2</MarginText>
 <MarginInfo items={["AI95-00327-01", "AI12-0230-1"]} />
-<p>The initial value of the attribute Priority is determined by the initial value of the priority of the protected object (see <a href="../AA-D/AA-D.3">D.3</a>)[, and can be changed by an assignment]. The initial value of the attribute Relative{"_"}Deadline is determined by the initial value of the relative deadline of the protected object (see <a href="../AA-D/AA-D.3">D.3</a>)[, and can be changed by an assignment]. <br /></p>
+<p>The initial value of the attribute Priority is determined by the initial value of the priority of the protected object (see <a href="/docs/arm/AA-D/AA-D.3">D.3</a>)[, and can be changed by an assignment]. The initial value of the attribute Relative{"_"}Deadline is determined by the initial value of the relative deadline of the protected object (see <a href="/docs/arm/AA-D/AA-D.3">D.3</a>)[, and can be changed by an assignment]. <br /></p>
 
 
 #### Dynamic Semantics
 
 <MarginText>5/3_D.5.2</MarginText>
 <MarginInfo items={["AI95-00327-01", "AI05-0264-1"]} />
-<p>If the locking policy Ceiling{"_"}Locking (see <a href="../AA-D/AA-D.3">D.3</a>) is in effect, then the ceiling priority of a protected object <em>P</em> is set to the value of <em>P</em>'Priority at the end of each protected action of <em>P</em>.<br /></p>
+<p>If the locking policy Ceiling{"_"}Locking (see <a href="/docs/arm/AA-D/AA-D.3">D.3</a>) is in effect, then the ceiling priority of a protected object <em>P</em> is set to the value of <em>P</em>'Priority at the end of each protected action of <em>P</em>.<br /></p>
 
 <MarginText>6/3_D.5.2</MarginText>
 <MarginInfo items={["AI95-00445-01", "AI05-0229-1"]} />

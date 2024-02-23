@@ -4,7 +4,7 @@ sidebar_position:  175
 
 # E.4 Remote Subprogram Calls
 
-:::warning
+:::danger
 This Reference Manual output has not been verified,
 and may contain omissions or errors.
 Report any problems on the [tracking issue](https://github.com/ada-lang-io/ada-lang-io/issues/20)
@@ -44,7 +44,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 
 <MarginText>7/3</MarginText>
 <MarginInfo items={["AI05-0101-1"]} />
-<p>Remote types library units (see <a href="../AA-E/AA-E.2#Subclause_E.2.2">E.2.2</a>) and remote call interface library units (see <a href="../AA-E/AA-E.2#Subclause_E.2.3">E.2.3</a>) define the remote subprograms or remote access types used for remote subprogram calls. <br /></p>
+<p>Remote types library units (see <a href="/docs/arm/AA-E/AA-E.2#Subclause_E.2.2">E.2.2</a>) and remote call interface library units (see <a href="/docs/arm/AA-E/AA-E.2#Subclause_E.2.3">E.2.3</a>) define the remote subprograms or remote access types used for remote subprogram calls. <br /></p>
 
 
 #### Language Design Principles
@@ -84,7 +84,7 @@ Remote subprogram calls are standardized since the RPC paradigm is widely-used, 
 #### Dynamic Semantics
 
 <MarginText>9</MarginText>
-<p>For the execution of a remote subprogram call, subprogram parameters (and later the results, if any) are passed using a stream-oriented representation (see <a href="../AA-13/AA-13.13#Subclause_13.13.1">13.13.1</a>) [which is suitable for transmission between partitions]. This action is called <em>marshalling</em>. <em>Unmarshalling</em> is the reverse action of reconstructing the parameters or results from the stream-oriented representation. [Marshalling is performed initially as part of the remote subprogram call in the calling partition; unmarshalling is done in the called partition. After the remote subprogram completes, marshalling is performed in the called partition, and finally unmarshalling is done in the calling partition.]<br /></p>
+<p>For the execution of a remote subprogram call, subprogram parameters (and later the results, if any) are passed using a stream-oriented representation (see <a href="/docs/arm/AA-13/AA-13.13#Subclause_13.13.1">13.13.1</a>) [which is suitable for transmission between partitions]. This action is called <em>marshalling</em>. <em>Unmarshalling</em> is the reverse action of reconstructing the parameters or results from the stream-oriented representation. [Marshalling is performed initially as part of the remote subprogram call in the calling partition; unmarshalling is done in the called partition. After the remote subprogram completes, marshalling is performed in the called partition, and finally unmarshalling is done in the calling partition.]<br /></p>
 
 <MarginText>10</MarginText>
 <p>A <em>calling stub</em> is the sequence of code that replaces the subprogram body of a remotely called subprogram in the calling partition. A <em>receiving stub</em> is the sequence of code (the &ldquo;wrapper&rdquo;) that receives a remote subprogram call on the called partition and invokes the appropriate subprogram body. <br /></p>
@@ -92,7 +92,7 @@ Remote subprogram calls are standardized since the RPC paradigm is widely-used, 
 <AnnotatedOnly>
 <MarginText>10.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The use of the term <em>stub</em> in this annex should not be confused with <code><a href="../AA-10/AA-10.1#S0297">body_stub</a></code> as defined in <a href="../AA-10/AA-10.1#Subclause_10.1.3">10.1.3</a>. The term <em>stub</em> is used here because it is a commonly understood term when talking about the RPC paradigm. <br />
+<strong></strong>The use of the term <em>stub</em> in this annex should not be confused with <code><a href="/docs/arm/AA-10/AA-10.1#S0297">body_stub</a></code> as defined in <a href="/docs/arm/AA-10/AA-10.1#Subclause_10.1.3">10.1.3</a>. The term <em>stub</em> is used here because it is a commonly understood term when talking about the RPC paradigm. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -119,11 +119,11 @@ Remote subprogram calls are standardized since the RPC paradigm is widely-used, 
 <p>If an exception is propagated by a remotely called subprogram, and the call is not an asynchronous call, the corresponding exception is reraised at the point of the remote subprogram call. For an asynchronous call, if the remote procedure call returns prior to the completion of the remotely called subprogram, any exception is lost.<br /></p>
 
 <MarginText>16</MarginText>
-<p>The exception Communication{"_"}Error (see <a href="../AA-E/AA-E.5">E.5</a>) is raised if a remote call cannot be completed due to difficulties in communicating with the called partition.<br /></p>
+<p>The exception Communication{"_"}Error (see <a href="/docs/arm/AA-E/AA-E.5">E.5</a>) is raised if a remote call cannot be completed due to difficulties in communicating with the called partition.<br /></p>
 
 <MarginText>17/5</MarginText>
 <MarginInfo items={["AI12-0183-1"]} />
-<p>All forms of remote subprogram calls are potentially blocking operations (see <a href="../AA-9/AA-9.5">9.5</a>). <br /></p>
+<p>All forms of remote subprogram calls are potentially blocking operations (see <a href="/docs/arm/AA-9/AA-9.5">9.5</a>). <br /></p>
 
 <AnnotatedOnly>
 <MarginText>17.a</MarginText>
@@ -154,17 +154,17 @@ This is considered an accessibility{"_"}check since only the types declared in "
 <AnnotatedOnly>
 <MarginText>18.c</MarginText>
 <Admonition type="aarm" aarm="note">
-This rule replaces a rule from an early version of Ada 9X which was given in the subclause on Remote Types Library Units (now <a href="../AA-E/AA-E.2#Subclause_E.2.2">E.2.2</a>, &ldquo;<a href="../AA-E/AA-E.2#Subclause_E.2.2">Remote Types Library Units</a>&rdquo;). That rule tried to prevent "bad" types from being sent by arranging for their tags to mismatch between partitions. However, that interfered with other uses of tags. The new rule allows tags to agree in all partitions, even for those types which are not "safe" to pass in an RPC. <br />
+This rule replaces a rule from an early version of Ada 9X which was given in the subclause on Remote Types Library Units (now <a href="/docs/arm/AA-E/AA-E.2#Subclause_E.2.2">E.2.2</a>, &ldquo;<a href="/docs/arm/AA-E/AA-E.2#Subclause_E.2.2">Remote Types Library Units</a>&rdquo;). That rule tried to prevent "bad" types from being sent by arranging for their tags to mismatch between partitions. However, that interfered with other uses of tags. The new rule allows tags to agree in all partitions, even for those types which are not "safe" to pass in an RPC. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>19</MarginText>
-<p>In a dispatching call with two or more controlling operands that are designated by values of a remote access-to-class-wide type, a check is made [(in addition to the normal Tag{"_"}Check &mdash; see <a href="../AA-11/AA-11.5">11.5</a>)] that all the remote access-to-class-wide values originated from Access <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>s that were evaluated by tasks of the same active partition. Constraint{"_"}Error is raised if this check fails. <br /></p>
+<p>In a dispatching call with two or more controlling operands that are designated by values of a remote access-to-class-wide type, a check is made [(in addition to the normal Tag{"_"}Check &mdash; see <a href="/docs/arm/AA-11/AA-11.5">11.5</a>)] that all the remote access-to-class-wide values originated from Access <code><a href="/docs/arm/AA-4/AA-4.1#S0100">attribute_reference</a></code>s that were evaluated by tasks of the same active partition. Constraint{"_"}Error is raised if this check fails. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>19.a</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>When a remote access-to-class-wide value is created by an Access <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>, the identity of the active partition that evaluated the <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code> should be recorded in the representation of the remote access value. <br />
+<strong></strong>When a remote access-to-class-wide value is created by an Access <code><a href="/docs/arm/AA-4/AA-4.1#S0100">attribute_reference</a></code>, the identity of the active partition that evaluated the <code><a href="/docs/arm/AA-4/AA-4.1#S0100">attribute_reference</a></code> should be recorded in the representation of the remote access value. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -172,7 +172,7 @@ This rule replaces a rule from an early version of Ada 9X which was given in the
 #### Implementation Requirements
 
 <MarginText>20</MarginText>
-<p>The implementation of remote subprogram calls shall conform to the PCS interface as defined by the specification of the language-defined package System.RPC (see <a href="../AA-E/AA-E.5">E.5</a>). The calling stub shall use the Do{"_"}RPC procedure unless the remote procedure call is asynchronous in which case Do{"_"}APC shall be used. On the receiving side, the corresponding receiving stub shall be invoked by the RPC-receiver. <br /></p>
+<p>The implementation of remote subprogram calls shall conform to the PCS interface as defined by the specification of the language-defined package System.RPC (see <a href="/docs/arm/AA-E/AA-E.5">E.5</a>). The calling stub shall use the Do{"_"}RPC procedure unless the remote procedure call is asynchronous in which case Do{"_"}APC shall be used. On the receiving side, the corresponding receiving stub shall be invoked by the RPC-receiver. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>20.a</MarginText>
@@ -267,7 +267,7 @@ For remote access-to-class-wide types:<br />
 <AnnotatedOnly>
 <MarginText>20.r</MarginText>
 <Admonition type="aarm" aarm="note">
-For each remote access-to-class-wide type, a calling stub is generated for each dispatching operation of the designated type. In addition, receiving stubs are generated to perform the remote dispatching operations in the called partition. The appropriate <code><a href="../AA-6/AA-6.3#S0216">subprogram_body</a></code> is determined as for a local dispatching call once the receiving stub has been reached.<br />
+For each remote access-to-class-wide type, a calling stub is generated for each dispatching operation of the designated type. In addition, receiving stubs are generated to perform the remote dispatching operations in the called partition. The appropriate <code><a href="/docs/arm/AA-6/AA-6.3#S0216">subprogram_body</a></code> is determined as for a local dispatching call once the receiving stub has been reached.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -301,7 +301,7 @@ On the called partition (after the RPC-receiver has transferred control to the a
 
 <MarginText>20.1/1</MarginText>
 <MarginInfo items={["AI95-00159-01"]} />
-<p>{"{"}<em>8652/0086</em>{"}"} With respect to shared variables in shared passive library units, the execution of the corresponding subprogram body of a synchronous remote procedure call is considered to be part of the execution of the calling task. The execution of the corresponding subprogram body of an asynchronous remote procedure call proceeds in parallel with the calling task and does not signal the next action of the calling task (see <a href="../AA-9/AA-9.10">9.10</a>). <br /></p>
+<p>{"{"}<em>8652/0086</em>{"}"} With respect to shared variables in shared passive library units, the execution of the corresponding subprogram body of a synchronous remote procedure call is considered to be part of the execution of the calling task. The execution of the corresponding subprogram body of an asynchronous remote procedure call proceeds in parallel with the calling task and does not signal the next action of the calling task (see <a href="/docs/arm/AA-9/AA-9.10">9.10</a>). <br /></p>
 
 <AnnotatedOnly>
 <MarginText>21</MarginText>
@@ -399,7 +399,7 @@ Clarified that remote subprogram calls are always to active partitions. <br />
 <MarginText>8.1/3_E.4.1</MarginText>
 <dt><br/>Asynchronous</dt>
 <dl>
-<dd>The type of aspect Asynchronous is Boolean. If directly specified, the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> shall be a static expression. If not specified, the aspect is False.<br /></dd>
+<dd>The type of aspect Asynchronous is Boolean. If directly specified, the <code><a href="/docs/arm/AA-13/AA-13.1#S0348">aspect_definition</a></code> shall be a static expression. If not specified, the aspect is False.<br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>8.a/3_E.4.1</MarginText>
@@ -415,7 +415,7 @@ Clarified that remote subprogram calls are always to active partitions. <br />
 <MarginText>8.3/3_E.4.1</MarginText>
 <dt><br/>Asynchronous</dt>
 <dl>
-<dd>The type of aspect Asynchronous is Boolean. If directly specified, the <code><a href="../AA-13/AA-13.1#S0348">aspect_definition</a></code> shall be a static expression. If not specified (including by inheritance), the aspect is False. <br /></dd>
+<dd>The type of aspect Asynchronous is Boolean. If directly specified, the <code><a href="/docs/arm/AA-13/AA-13.1#S0348">aspect_definition</a></code> shall be a static expression. If not specified (including by inheritance), the aspect is False. <br /></dd>
 </dl>
 
 #### Legality Rules
@@ -457,7 +457,7 @@ Clarified that remote subprogram calls are always to active partitions. <br />
 <MarginText>10.b/3_E.4.1</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <Admonition type="aarm" aarm="note">
-Aspect Asynchronous is new; <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Asynchronous is now obsolescent. <br />
+Aspect Asynchronous is new; <code><a href="/docs/arm/AA-2/AA-2.8#S0019">pragma</a></code> Asynchronous is now obsolescent. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -484,7 +484,7 @@ package Tape{"_"}Driver is{"\n"}  -- Declarations are not shown, they are irrele
 <MarginInfo items={["AI12-0347-1"]} />
 with Tapes, Name{"_"}Server;{"\n"}package body Tape{"_"}Driver is{"\n"}   type New{"_"}Tape is new Tapes.Tape with ...{"\n"}   overriding{"\n"}   procedure Rewind (T : access New{"_"}Tape);{"\n"}   overriding{"\n"}   procedure Copy{"\n"}    (From, To : access New{"_"}Tape; Num{"_"}Recs: in Natural) is{"\n"}   begin{"\n"}     . . .{"\n"}   end Copy;{"\n"}   procedure Rewind (T : access New{"_"}Tape) is{"\n"}   begin{"\n"}      . . .{"\n"}   end Rewind;{"\n"}   -- Objects remotely accessible through use{"\n"}   -- of Name{"_"}Server operations{"\n"}   Tape1, Tape2 : aliased New{"_"}Tape;{"\n"}begin{"\n"}   Name{"_"}Server.Register ("NINE-TRACK",  Tape1'Access);{"\n"}   Name{"_"}Server.Register ("SEVEN-TRACK", Tape2'Access);{"\n"}end Tape{"_"}Driver;{"\n"}
 <MarginText>6_E.4.2</MarginText>
-with Tapes, Name{"_"}Server;{"\n"}-- Tape{"_"}Driver is not needed and thus not mentioned in the <a href="../AA-10/AA-10.1#S0294">with_clause</a>{"\n"}procedure Tape{"_"}Client is{"\n"}   T1, T2 : Name{"_"}Server.Tape{"_"}Ptr;{"\n"}begin{"\n"}   T1 := Name{"_"}Server.Find ("NINE-TRACK");{"\n"}   T2 := Name{"_"}Server.Find ("SEVEN-TRACK");{"\n"}   Tapes.Rewind (T1);{"\n"}   Tapes.Rewind (T2);{"\n"}   Tapes.Copy (T1, T2, 3);{"\n"}end Tape{"_"}Client;{"\n"}
+with Tapes, Name{"_"}Server;{"\n"}-- Tape{"_"}Driver is not needed and thus not mentioned in the <a href="/docs/arm/AA-10/AA-10.1#S0294">with_clause</a>{"\n"}procedure Tape{"_"}Client is{"\n"}   T1, T2 : Name{"_"}Server.Tape{"_"}Ptr;{"\n"}begin{"\n"}   T1 := Name{"_"}Server.Find ("NINE-TRACK");{"\n"}   T2 := Name{"_"}Server.Find ("SEVEN-TRACK");{"\n"}   Tapes.Rewind (T1);{"\n"}   Tapes.Rewind (T2);{"\n"}   Tapes.Copy (T1, T2, 3);{"\n"}end Tape{"_"}Client;{"\n"}
 
 </CodeBlock>
 <MarginText>7/5_E.4.2</MarginText>
