@@ -28,16 +28,19 @@ provides can increase the maintainability of your code.
 An object of type `Name_Holder_1` could potentially hold a string whose
 length is `Natural'Last`:
 
+```ada
     type Number_List is array (Integer range <>) of Integer;
 
     type Number_Holder_1 (Current_Length : Natural := 0) is
        record
           Numbers : Number_List (1 .. Current_Length);
        end record;
+```
 
 An object of type `Name_Holder_2` imposes a more reasonable restriction
 on the length of its string component:
 
+```ada
     type    Number_List is array (Integer range <>) of Integer;
     subtype Max_Numbers is Natural range 0 .. 42;
 
@@ -45,6 +48,7 @@ on the length of its string component:
        record
           Numbers : Number_List (1 .. Current_Length);
        end record;
+```
 
 #### rationale
 
@@ -132,6 +136,7 @@ An array of type `Employee_List` can contain pointers to part-time and
 full-time employees (and possibly other kinds of employees in the
 future):
 
+```ada
     -----------------------------------------------------------------------------------
     package Personnel is
        type Employee  is tagged limited private;
@@ -171,6 +176,7 @@ future):
     Current_Employees(1) := new Full_Time_Staff.Full_Time_Employee;
     Current_Employees(2) := new Part_Time_Staff.Part_Time_Employee;
     ...
+```
 
 #### rationale
 
@@ -509,6 +515,7 @@ The following code fragment shows a use of aliased objects, using the
 attribute `'Access` to implement a generic component that manages hashed
 collections of objects:
 
+```ada
     generic
        type Hash_Index is mod <>;
        type Object is tagged private;
@@ -555,6 +562,7 @@ collections of objects:
        end Find;
        ...
     end Collection;
+```
 
 #### rationale
 
