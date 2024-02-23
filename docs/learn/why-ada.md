@@ -19,7 +19,7 @@ The Ada language is just an ISO-standard. Though AdaCore initially helped develo
 GNAT and continue to contribute back to FSF GNAT, they do not own the Ada
 language.
 
-While there are also commercial compilers, Ada has a front-end for GCC called [GNAT][gnat]
+While there are also commercial compilers, Ada has a front-end for GCC called [GNAT][gnat].
 The version from the Free Software Foundation (FSF) is often referred to as "FSF GNAT".
 
 ## Ada continues to be developed
