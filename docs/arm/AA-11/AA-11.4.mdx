@@ -22,13 +22,15 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <AnnotatedOnly>
 <MarginText>1.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>In other words, if the execution of a given construct raises an exception, but does not handle it, the exception is propagated to an enclosing execution (except in the case of a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>).<br /></Admonition>
+<strong></strong>In other words, if the execution of a given construct raises an exception, but does not handle it, the exception is propagated to an enclosing execution (except in the case of a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>).<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>1.b/1</MarginText>
 <Admonition type="aarm" aarm="note">
-Propagation involves re-raising the same exception occurrence. For example, calling an entry of an uncallable task raises Tasking_Error; this is not propagation. <br /></Admonition>
+Propagation involves re-raising the same exception occurrence. For example, calling an entry of an uncallable task raises Tasking{"_"}Error; this is not propagation. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -40,25 +42,29 @@ Propagation involves re-raising the same exception occurrence. For example, call
 <AnnotatedOnly>
 <MarginText>2.a</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>To be honest: </strong>If the execution of <em>a</em> dynamically encloses that of <em>b</em>, then we also say that the execution of <em>b</em> is <em>included in</em> the execution of <em>a</em>. <br /></Admonition>
+<strong>To be honest: </strong>If the execution of <em>a</em> dynamically encloses that of <em>b</em>, then we also say that the execution of <em>b</em> is <em>included in</em> the execution of <em>a</em>. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>2.b</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Examples: The execution of an <code><a href="../AA-5/AA-5.3#S0175">if_statement</a></code> dynamically encloses the evaluation of the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> after the <strong>if</strong> (during that evaluation). (Recall that &ldquo;execution&rdquo; includes both &ldquo;elaboration&rdquo; and &ldquo;evaluation&rdquo;, as well as other executions.) The evaluation of a function call dynamically encloses the execution of the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the function <code><a href="../AA-3/AA-3.11#S0089">body</a></code> (during that execution). Note that, due to recursion, several simultaneous executions of the same construct can be occurring at once during the execution of a particular task.<br /></Admonition>
+<strong></strong>Examples: The execution of an <code><a href="../AA-5/AA-5.3#S0175">if_statement</a></code> dynamically encloses the evaluation of the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> after the <strong>if</strong> (during that evaluation). (Recall that &ldquo;execution&rdquo; includes both &ldquo;elaboration&rdquo; and &ldquo;evaluation&rdquo;, as well as other executions.) The evaluation of a function call dynamically encloses the execution of the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> of the function <code><a href="../AA-3/AA-3.11#S0089">body</a></code> (during that execution). Note that, due to recursion, several simultaneous executions of the same construct can be occurring at once during the execution of a particular task.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>2.c</MarginText>
 <Admonition type="aarm" aarm="note">
-Dynamically enclosing is not defined across task boundaries; a task's execution does not include the execution of any other tasks.<br /></Admonition>
+Dynamically enclosing is not defined across task boundaries; a task's execution does not include the execution of any other tasks.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>2.d</MarginText>
 <Admonition type="aarm" aarm="note">
-Dynamically enclosing is only defined for executions that are occurring at a given moment in time; if an <code><a href="../AA-5/AA-5.3#S0175">if_statement</a></code> is currently executing the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> after <strong>then</strong>, then the evaluation of the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> is no longer dynamically enclosed by the execution of the <code><a href="../AA-5/AA-5.3#S0175">if_statement</a></code> (or anything else). <br /></Admonition>
+Dynamically enclosing is only defined for executions that are occurring at a given moment in time; if an <code><a href="../AA-5/AA-5.3#S0175">if_statement</a></code> is currently executing the <code><a href="../AA-5/AA-5.1#S0166">sequence_of_statements</a></code> after <strong>then</strong>, then the evaluation of the <code><a href="../AA-4/AA-4.5#S0150">condition</a></code> is no longer dynamically enclosed by the execution of the <code><a href="../AA-5/AA-5.3#S0175">if_statement</a></code> (or anything else). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>3</MarginText>
@@ -71,7 +77,8 @@ Dynamically enclosing is only defined for executions that are occurring at a giv
 <AnnotatedOnly>
 <MarginText>4.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>When an exception is raised by the execution of a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>, there is no dynamically enclosing execution, so the exception does not propagate any further. If the exception occurred during the activation of the task, then the activator raises Tasking_Error, as explained in <a href="../AA-9/AA-9.2">9.2</a>, &ldquo;<a href="../AA-9/AA-9.2">Task Execution - Task Activation</a>&rdquo;, but we don't define that as propagation; it's a special rule. Otherwise (the exception occurred during the execution of the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> of the task), the task silently disappears. Thus, abnormal termination of tasks is not always considered to be an error. <br /></Admonition>
+<strong></strong>When an exception is raised by the execution of a <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>, there is no dynamically enclosing execution, so the exception does not propagate any further. If the exception occurred during the activation of the task, then the activator raises Tasking{"_"}Error, as explained in <a href="../AA-9/AA-9.2">9.2</a>, &ldquo;<a href="../AA-9/AA-9.2">Task Execution - Task Activation</a>&rdquo;, but we don't define that as propagation; it's a special rule. Otherwise (the exception occurred during the execution of the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> of the task), the task silently disappears. Thus, abnormal termination of tasks is not always considered to be an error. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>5</MarginText>
@@ -83,7 +90,8 @@ Dynamically enclosing is only defined for executions that are occurring at a giv
 <AnnotatedOnly>
 <MarginText>6.a</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>To be honest: </strong>As shorthands, we refer to the <em>propagation of an exception</em>, and the <em>propagation by a construct</em>, if the execution of the construct propagates an exception occurrence. <br /></Admonition>
+<strong>To be honest: </strong>As shorthands, we refer to the <em>propagation of an exception</em>, and the <em>propagation by a construct</em>, if the execution of the construct propagates an exception occurrence. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>7</MarginText>
@@ -93,26 +101,30 @@ Dynamically enclosing is only defined for executions that are occurring at a giv
 <MarginText>7.a/2</MarginText>
 <MarginInfo items={["AI95-00318-02"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>This &ldquo;replacement&rdquo; semantics implies that the handler can do pretty much anything the abandoned sequence could do; for example, in a function, the handler can execute a return statement that applies to the function. <br /></Admonition>
+<strong></strong>This &ldquo;replacement&rdquo; semantics implies that the handler can do pretty much anything the abandoned sequence could do; for example, in a function, the handler can execute a return statement that applies to the function. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>7.b</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The rules for exceptions raised in library units, main subprograms and partitions follow from the normal rules, plus the semantics of the environment task described in Clause <a href="../AA-10/">10</a> (for example, the environment task of a partition elaborates library units and calls the main subprogram). If an exception is propagated by the main subprogram, it is propagated to the environment task, which then terminates abnormally, causing the partition to terminate abnormally. Although abnormal termination of tasks is not necessarily an error, abnormal termination of a partition due to an exception <em>is</em> an error. <br /></Admonition>
+<strong></strong>The rules for exceptions raised in library units, main subprograms and partitions follow from the normal rules, plus the semantics of the environment task described in Clause <a href="../AA-10/">10</a> (for example, the environment task of a partition elaborates library units and calls the main subprogram). If an exception is propagated by the main subprogram, it is propagated to the environment task, which then terminates abnormally, causing the partition to terminate abnormally. Although abnormal termination of tasks is not necessarily an error, abnormal termination of a partition due to an exception <em>is</em> an error. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>7.c/5</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Term entry: </strong><strong>handle an exception</strong> &mdash; perform some actions in response to the arising of an exception<br /></Admonition>
+<strong>Term entry: </strong><strong>handle an exception</strong> &mdash; perform some actions in response to the arising of an exception<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>8/5</MarginText>
 <MarginInfo items={["AI12-0451-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE   Exceptions raised in a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> of a body are not handled by the handlers of the <code><a href="../AA-11/AA-11.2#S0304">handled_sequence_of_statements</a></code> of that body. <br /></Admonition>
+NOTE   Exceptions raised in a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> of a body are not handled by the handlers of the <code><a href="../AA-11/AA-11.2#S0304">handled{"_"}sequence{"_"}of{"_"}statements</a></code> of that body. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_11.4.1"></a>
@@ -128,32 +140,32 @@ NOTE   Exceptions raised in a <code><a href="../AA-3/AA-3.11#S0086">declarative_
 <MarginText>2/5_11.4.1</MarginText>
 <MarginInfo items={["AI95-00362-01", "AI95-00400-01", "AI95-00438-01", "AI12-0241-1", "AI12-0302-1", "AI12-0399-1"]} />
 <CodeBlock language="ada">
-with Ada.Streams;{"\n"}package Ada.Exceptions {"\n"}    with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}    type Exception_Id is private{"\n"}        with Preelaborable_Initialization;{"\n"}    Null_Id : constant Exception_Id;{"\n"}    function Exception_Name(Id : Exception_Id) return String;{"\n"}    function Wide_Exception_Name(Id : Exception_Id) return Wide_String;{"\n"}    function Wide_Wide_Exception_Name(Id : Exception_Id){"\n"}        return Wide_Wide_String;{"\n"}
+with Ada.Streams;{"\n"}package Ada.Exceptions {"\n"}    with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}    type Exception{"_"}Id is private{"\n"}        with Preelaborable{"_"}Initialization;{"\n"}    Null{"_"}Id : constant Exception{"_"}Id;{"\n"}    function Exception{"_"}Name(Id : Exception{"_"}Id) return String;{"\n"}    function Wide{"_"}Exception{"_"}Name(Id : Exception{"_"}Id) return Wide{"_"}String;{"\n"}    function Wide{"_"}Wide{"_"}Exception{"_"}Name(Id : Exception{"_"}Id){"\n"}        return Wide{"_"}Wide{"_"}String;{"\n"}
 <MarginText>3/5_11.4.1</MarginText>
 <MarginInfo items={["AI95-00362-01", "AI12-0399-1"]} />
-    type Exception_Occurrence is limited private{"\n"}        with Preelaborable_Initialization;{"\n"}    type Exception_Occurrence_Access is access all Exception_Occurrence;{"\n"}    Null_Occurrence : constant Exception_Occurrence;{"\n"}
+    type Exception{"_"}Occurrence is limited private{"\n"}        with Preelaborable{"_"}Initialization;{"\n"}    type Exception{"_"}Occurrence{"_"}Access is access all Exception{"_"}Occurrence;{"\n"}    Null{"_"}Occurrence : constant Exception{"_"}Occurrence;{"\n"}
 <MarginText>4/3_11.4.1</MarginText>
 <MarginInfo items={["AI95-00329-01", "AI05-0229-1"]} />
-    procedure Raise_Exception(E : in Exception_Id;{"\n"}                              Message : in String := ""){"\n"}        with No_Return;{"\n"}    function Exception_Message(X : Exception_Occurrence) return String;{"\n"}    procedure Reraise_Occurrence(X : in Exception_Occurrence);{"\n"}
+    procedure Raise{"_"}Exception(E : in Exception{"_"}Id;{"\n"}                              Message : in String := ""){"\n"}        with No{"_"}Return;{"\n"}    function Exception{"_"}Message(X : Exception{"_"}Occurrence) return String;{"\n"}    procedure Reraise{"_"}Occurrence(X : in Exception{"_"}Occurrence);{"\n"}
 <MarginText>5/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00400-01"]} />
-    function Exception_Identity(X : Exception_Occurrence){"\n"}                                return Exception_Id;{"\n"}    function Exception_Name(X : Exception_Occurrence) return String;{"\n"}        -- Same as Exception_Name(Exception_Identity(X)).{"\n"}    function Wide_Exception_Name(X : Exception_Occurrence){"\n"}        return Wide_String;{"\n"}        -- Same as Wide_Exception_Name(Exception_Identity(X)).{"\n"}    function Wide_Wide_Exception_Name(X : Exception_Occurrence){"\n"}        return Wide_Wide_String;{"\n"}        -- Same as Wide_Wide_Exception_Name(Exception_Identity(X)).{"\n"}    function Exception_Information(X : Exception_Occurrence) return String;{"\n"}
+    function Exception{"_"}Identity(X : Exception{"_"}Occurrence){"\n"}                                return Exception{"_"}Id;{"\n"}    function Exception{"_"}Name(X : Exception{"_"}Occurrence) return String;{"\n"}        -- Same as Exception{"_"}Name(Exception{"_"}Identity(X)).{"\n"}    function Wide{"_"}Exception{"_"}Name(X : Exception{"_"}Occurrence){"\n"}        return Wide{"_"}String;{"\n"}        -- Same as Wide{"_"}Exception{"_"}Name(Exception{"_"}Identity(X)).{"\n"}    function Wide{"_"}Wide{"_"}Exception{"_"}Name(X : Exception{"_"}Occurrence){"\n"}        return Wide{"_"}Wide{"_"}String;{"\n"}        -- Same as Wide{"_"}Wide{"_"}Exception{"_"}Name(Exception{"_"}Identity(X)).{"\n"}    function Exception{"_"}Information(X : Exception{"_"}Occurrence) return String;{"\n"}
 <MarginText>6/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00438-01"]} />
-    procedure Save_Occurrence(Target : out Exception_Occurrence;{"\n"}                              Source : in Exception_Occurrence);{"\n"}    function Save_Occurrence(Source : Exception_Occurrence){"\n"}                             return Exception_Occurrence_Access;{"\n"}
+    procedure Save{"_"}Occurrence(Target : out Exception{"_"}Occurrence;{"\n"}                              Source : in Exception{"_"}Occurrence);{"\n"}    function Save{"_"}Occurrence(Source : Exception{"_"}Occurrence){"\n"}                             return Exception{"_"}Occurrence{"_"}Access;{"\n"}
 <MarginText>6.1/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00438-01"]} />
-    procedure Read_Exception_Occurrence{"\n"}       (Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}        Item   : out Exception_Occurrence);{"\n"}    procedure Write_Exception_Occurrence{"\n"}       (Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}        Item   : in Exception_Occurrence);{"\n"}
+    procedure Read{"_"}Exception{"_"}Occurrence{"\n"}       (Stream : not null access Ada.Streams.Root{"_"}Stream{"_"}Type'Class;{"\n"}        Item   : out Exception{"_"}Occurrence);{"\n"}    procedure Write{"_"}Exception{"_"}Occurrence{"\n"}       (Stream : not null access Ada.Streams.Root{"_"}Stream{"_"}Type'Class;{"\n"}        Item   : in Exception{"_"}Occurrence);{"\n"}
 <MarginText>6.2/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00438-01"]} />
-    for Exception_Occurrence'Read use Read_Exception_Occurrence;{"\n"}    for Exception_Occurrence'Write use Write_Exception_Occurrence;{"\n"}
+    for Exception{"_"}Occurrence'Read use Read{"_"}Exception{"_"}Occurrence;{"\n"}    for Exception{"_"}Occurrence'Write use Write{"_"}Exception{"_"}Occurrence;{"\n"}
 <MarginText>6.3/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00438-01"]} />
 private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Exceptions;{"\n"}
 
 </CodeBlock>
 <MarginText>7_11.4.1</MarginText>
-<p>Each distinct exception is represented by a distinct value of type Exception_Id. Null_Id does not represent any exception, and is the default initial value of type Exception_Id. Each occurrence of an exception is represented by a value of type Exception_Occurrence. Null_Occurrence does not represent any exception occurrence, and is the default initial value of type Exception_Occurrence.<br /></p>
+<p>Each distinct exception is represented by a distinct value of type Exception{"_"}Id. Null{"_"}Id does not represent any exception, and is the default initial value of type Exception{"_"}Id. Each occurrence of an exception is represented by a value of type Exception{"_"}Occurrence. Null{"_"}Occurrence does not represent any exception occurrence, and is the default initial value of type Exception{"_"}Occurrence.<br /></p>
 
 <MarginText>8/1_11.4.1</MarginText>
 <p>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> E that denotes an exception, the following attribute is defined: <br /></p>
@@ -161,39 +173,43 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Exceptions;{"\
 <MarginText>9_11.4.1</MarginText>
 <dt><br/>E'Identity</dt>
 <dl>
-<dd>E'Identity returns the unique identity of the exception. The type of this attribute is Exception_Id. <br /></dd>
+<dd>E'Identity returns the unique identity of the exception. The type of this attribute is Exception{"_"}Id. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>9.a_11.4.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>In a distributed program, the identity is unique across an entire program, not just across a single partition. Exception propagation works properly across RPC's. An exception can be propagated from one partition to another, and then back to the first, where its identity is known. <br /></Admonition>
+<strong></strong>In a distributed program, the identity is unique across an entire program, not just across a single partition. Exception propagation works properly across RPC's. An exception can be propagated from one partition to another, and then back to the first, where its identity is known. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>10/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00361-01"]} />
-<p>Raise_Exception raises a new occurrence of the identified exception.<br /></p>
+<p>Raise{"_"}Exception raises a new occurrence of the identified exception.<br /></p>
 
 <MarginText>10.1/4_11.4.1</MarginText>
 <MarginInfo items={["AI95-00361-01", "AI95-00378-01", "AI05-0043-1", "AI05-0248-1", "AI12-0022-1", "AI12-0152-1"]} />
-<p>Exception_Message returns the message associated with the given Exception_Occurrence. For an occurrence raised by a call to Raise_Exception, the message is the Message parameter passed to Raise_Exception. For the occurrence raised by a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> or <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> with an <em>exception_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> and a <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>, the message is the <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>. For the occurrence raised by a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> or <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> with an <em>exception_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> but without a <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string_</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>, the message is a string giving implementation-defined information about the exception occurrence. For an occurrence originally raised in some other manner (including by the failure of a language-defined check), the message is an unspecified string. In all cases, Exception_Message returns a string with lower bound 1. <br /></p>
+<p>Exception{"_"}Message returns the message associated with the given Exception{"_"}Occurrence. For an occurrence raised by a call to Raise{"_"}Exception, the message is the Message parameter passed to Raise{"_"}Exception. For the occurrence raised by a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> or <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> with an <em>exception{"_"}</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> and a <em>string{"_"}</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string{"_"}</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>, the message is the <em>string{"_"}</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string{"_"}</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>. For the occurrence raised by a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> or <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> with an <em>exception{"_"}</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> but without a <em>string{"_"}</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> or <em>string{"_"}</em><code><a href="../AA-4/AA-4.4#S0138">simple_expression</a></code>, the message is a string giving implementation-defined information about the exception occurrence. For an occurrence originally raised in some other manner (including by the failure of a language-defined check), the message is an unspecified string. In all cases, Exception{"_"}Message returns a string with lower bound 1. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>10.a_11.4.1</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The information returned by Exception_Message.<br /></Admonition>
+<strong></strong>The information returned by Exception{"_"}Message.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>10.a.1/3_11.4.1</MarginText>
 <MarginInfo items={["AI05-0043-1"]} />
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>There is  about the contents of this string for language-defined checks. <br /></Admonition>
+<strong></strong>There is  about the contents of this string for language-defined checks. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>10.b_11.4.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Given an exception E, the <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code>: <br /></Admonition>
+<strong></strong>Given an exception E, the <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code>: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -206,13 +222,14 @@ raise E;{"\n"}
 <AnnotatedOnly>
 <MarginText>10.d_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-is equivalent to this call to Raise_Exception: <br /></Admonition>
+is equivalent to this call to Raise{"_"}Exception: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>10.e_11.4.1</MarginText>
 <CodeBlock language="ada">
-Raise_Exception(E'Identity, Message ={">"} implementation-defined-string);{"\n"}
+Raise{"_"}Exception(E'Identity, Message ={">"} implementation-defined-string);{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
@@ -220,7 +237,8 @@ Raise_Exception(E'Identity, Message ={">"} implementation-defined-string);{"\n"}
 <MarginText>10.e.1/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00361-01"]} />
 <Admonition type="aarm" aarm="note">
-Similarly, the <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code>: <br /></Admonition>
+Similarly, the <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code>: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -233,24 +251,26 @@ raise E with "some information";{"\n"}
 <AnnotatedOnly>
 <MarginText>10.e.3/2_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-is equivalent to this call to Raise_Exception: <br /></Admonition>
+is equivalent to this call to Raise{"_"}Exception: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>10.e.4/2_11.4.1</MarginText>
 <CodeBlock language="ada">
-Raise_Exception(E'Identity, Message ={">"} "some information");{"\n"}
+Raise{"_"}Exception(E'Identity, Message ={">"} "some information");{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <MarginText>10.2/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00361-01"]} />
-<p>Reraise_Occurrence reraises the specified exception occurrence.<br /></p>
+<p>Reraise{"_"}Occurrence reraises the specified exception occurrence.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>10.f_11.4.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The following handler: <br /></Admonition>
+<strong></strong>The following handler: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -263,125 +283,139 @@ when others ={">"}{"\n"}    Cleanup;{"\n"}    raise;{"\n"}
 <AnnotatedOnly>
 <MarginText>10.h_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-is equivalent to this one: <br /></Admonition>
+is equivalent to this one: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>10.i_11.4.1</MarginText>
 <CodeBlock language="ada">
-when X : others ={">"}{"\n"}    Cleanup;{"\n"}    Reraise_Occurrence(X);{"\n"}
+when X : others ={">"}{"\n"}    Cleanup;{"\n"}    Reraise{"_"}Occurrence(X);{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <MarginText>11_11.4.1</MarginText>
-<p>Exception_Identity returns the identity of the exception of the occurrence.<br /></p>
+<p>Exception{"_"}Identity returns the identity of the exception of the occurrence.<br /></p>
 
 <MarginText>12/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00400-01"]} />
-<p>The Wide_Wide_Exception_Name functions return the full expanded name of the exception, in upper case, starting with a root library unit. For an exception declared immediately within package Standard, the <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> is returned. The result is implementation defined if the exception is declared within an unnamed <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></code>. <br /></p>
+<p>The Wide{"_"}Wide{"_"}Exception{"_"}Name functions return the full expanded name of the exception, in upper case, starting with a root library unit. For an exception declared immediately within package Standard, the <code><a href="../AA-3/AA-3.1#S0022">defining{"_"}identifier</a></code> is returned. The result is implementation defined if the exception is declared within an unnamed <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></code>. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>12.a_11.4.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>See the Implementation Permission below. <br /></Admonition>
+<strong></strong>See the Implementation Permission below. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>12.b_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>To be honest: </strong>This name, as well as each <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of it, does not denote a <code><a href="../AA-8/AA-8.5#S0238">renaming_declaration</a></code>. <br /></Admonition>
+<strong>To be honest: </strong>This name, as well as each <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> of it, does not denote a <code><a href="../AA-8/AA-8.5#S0238">renaming_declaration</a></code>. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>12.c/2_11.4.1</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The result of Exceptions.Wide_Wide_Exception_Name for exceptions declared within an unnamed <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></code>.<br /></Admonition>
+<strong></strong>The result of Exceptions.Wide{"_"}Wide{"_"}Exception{"_"}Name for exceptions declared within an unnamed <code><a href="../AA-5/AA-5.6#S0191">block_statement</a></code>.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>12.d_11.4.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Note that we're talking about the name of the exception, not the name of the occurrence. <br /></Admonition>
+<strong></strong>Note that we're talking about the name of the exception, not the name of the occurrence. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>12.1/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00400-01"]} />
-<p>The Exception_Name functions (respectively, Wide_Exception_Name) return the same sequence of graphic characters as that defined for Wide_Wide_Exception_Name, if all the graphic characters are defined in Character (respectively, Wide_Character); otherwise, the sequence of characters is implementation defined, but no shorter than that returned by Wide_Wide_Exception_Name for the same value of the argument. <br /></p>
+<p>The Exception{"_"}Name functions (respectively, Wide{"_"}Exception{"_"}Name) return the same sequence of graphic characters as that defined for Wide{"_"}Wide{"_"}Exception{"_"}Name, if all the graphic characters are defined in Character (respectively, Wide{"_"}Character); otherwise, the sequence of characters is implementation defined, but no shorter than that returned by Wide{"_"}Wide{"_"}Exception{"_"}Name for the same value of the argument. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>12.e/2_11.4.1</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The sequence of characters of the value returned by Exceptions.Exception_Name (respectively, Exceptions.Wide_Exception_Name) when some of the graphic characters of Exceptions.Wide_Wide_Exception_Name are not defined in Character (respectively, Wide_Character).<br /></Admonition>
+<strong></strong>The sequence of characters of the value returned by Exceptions.Exception{"_"}Name (respectively, Exceptions.Wide{"_"}Exception{"_"}Name) when some of the graphic characters of Exceptions.Wide{"_"}Wide{"_"}Exception{"_"}Name are not defined in Character (respectively, Wide{"_"}Character).<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>12.2/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00378-01", "AI95-00417-01"]} />
-<p>The string returned by the Exception_Name, Wide_Exception_Name, and Wide_Wide_Exception_Name functions has lower bound 1.<br /></p>
+<p>The string returned by the Exception{"_"}Name, Wide{"_"}Exception{"_"}Name, and Wide{"_"}Wide{"_"}Exception{"_"}Name functions has lower bound 1.<br /></p>
 
 <MarginText>13/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00378-01"]} />
-<p>Exception_Information returns implementation-defined information about the exception occurrence. The returned string has lower bound 1. <br /></p>
+<p>Exception{"_"}Information returns implementation-defined information about the exception occurrence. The returned string has lower bound 1. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>13.a_11.4.1</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The information returned by Exception_Information.<br /></Admonition>
+<strong></strong>The information returned by Exception{"_"}Information.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>14/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00241-01", "AI95-00446-01"]} />
-<p>Reraise_Occurrence has no effect in the case of Null_Occurrence. Raise_Exception and Exception_Name raise Constraint_Error for a Null_Id. Exception_Message, Exception_Name, and Exception_Information raise Constraint_Error for a Null_Occurrence. Exception_Identity applied to Null_Occurrence returns Null_Id.<br /></p>
+<p>Reraise{"_"}Occurrence has no effect in the case of Null{"_"}Occurrence. Raise{"_"}Exception and Exception{"_"}Name raise Constraint{"_"}Error for a Null{"_"}Id. Exception{"_"}Message, Exception{"_"}Name, and Exception{"_"}Information raise Constraint{"_"}Error for a Null{"_"}Occurrence. Exception{"_"}Identity applied to Null{"_"}Occurrence returns Null{"_"}Id.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>14.a.1/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00241-01"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Null_Occurrence can be tested for by comparing Exception_Identity(Occurrence) to Null_Id. <br /></Admonition>
+<strong></strong>Null{"_"}Occurrence can be tested for by comparing Exception{"_"}Identity(Occurrence) to Null{"_"}Id. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>14.a.2/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00446-01"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Raise_Exception was changed so that it always raises an exception and thus can be a No_Return procedure. A similar change was not made for Reraise_Occurrence, as doing so was determined to be a significant incompatibility. It is not unusual to pass an Exception_Occurrence to other code to delay raising it. If there was no exception, passing Null_Occurrence works fine (nothing is raised). Moreover, as there is no test for Null_Occurrence in Ada 95, this is the only way to write such code without using additional flags. Breaking this sort of code is unacceptable. <br /></Admonition>
+<strong></strong>Raise{"_"}Exception was changed so that it always raises an exception and thus can be a No{"_"}Return procedure. A similar change was not made for Reraise{"_"}Occurrence, as doing so was determined to be a significant incompatibility. It is not unusual to pass an Exception{"_"}Occurrence to other code to delay raising it. If there was no exception, passing Null{"_"}Occurrence works fine (nothing is raised). Moreover, as there is no test for Null{"_"}Occurrence in Ada 95, this is the only way to write such code without using additional flags. Breaking this sort of code is unacceptable. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>15_11.4.1</MarginText>
-<p>The Save_Occurrence procedure copies the Source to the Target. The Save_Occurrence function uses an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> of type Exception_Occurrence_Access to create a new object, copies the Source to this new object, and returns an access value designating this new object; [the result may be deallocated using an instance of Unchecked_Deallocation.] <br /></p>
+<p>The Save{"_"}Occurrence procedure copies the Source to the Target. The Save{"_"}Occurrence function uses an <code><a href="../AA-4/AA-4.8#S0164">allocator</a></code> of type Exception{"_"}Occurrence{"_"}Access to create a new object, copies the Source to this new object, and returns an access value designating this new object; [the result may be deallocated using an instance of Unchecked{"_"}Deallocation.] <br /></p>
 
 <AnnotatedOnly>
 <MarginText>15.a_11.4.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>It's OK to pass Null_Occurrence to the Save_Occurrence subprograms; they don't raise an exception, but simply save the Null_Occurrence. <br /></Admonition>
+<strong></strong>It's OK to pass Null{"_"}Occurrence to the Save{"_"}Occurrence subprograms; they don't raise an exception, but simply save the Null{"_"}Occurrence. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>15.1/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00438-01"]} />
-<p>Write_Exception_Occurrence writes a representation of an exception occurrence to a stream; Read_Exception_Occurrence reconstructs an exception occurrence from a stream (including one written in a different partition). <br /></p>
+<p>Write{"_"}Exception{"_"}Occurrence writes a representation of an exception occurrence to a stream; Read{"_"}Exception{"_"}Occurrence reconstructs an exception occurrence from a stream (including one written in a different partition). <br /></p>
 
 <AnnotatedOnly>
 <MarginText>15.b/5_11.4.1</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>These routines are used to define the stream attributes (see <a href="../AA-13/AA-13.13#Subclause_13.13.2">13.13.2</a>) for Exception_Occurrence.<br /></Admonition>
+<strong></strong>These routines are used to define the stream attributes (see <a href="../AA-13/AA-13.13#Subclause_13.13.2">13.13.2</a>) for Exception{"_"}Occurrence.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>15.c/2_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-The identity of the exception, as well as the Exception_Name and Exception_Message, have to be preserved across partitions.<br /></Admonition>
+The identity of the exception, as well as the Exception{"_"}Name and Exception{"_"}Message, have to be preserved across partitions.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>15.d/2_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-The string returned by Exception_Name or Exception_Message on the result of calling the Read attribute on a given stream has to be the same as the value returned by calling the corresponding function on the exception occurrence that was written into the stream with the Write attribute. The string returned by Exception_Information need not be the same, since it is implementation defined anyway. <br /></Admonition>
+The string returned by Exception{"_"}Name or Exception{"_"}Message on the result of calling the Read attribute on a given stream has to be the same as the value returned by calling the corresponding function on the exception occurrence that was written into the stream with the Write attribute. The string returned by Exception{"_"}Information need not be the same, since it is implementation defined anyway. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>15.e/2_11.4.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This is important for supporting writing exception occurrences to external files for post-mortem analysis, as well as propagating exceptions across remote subprogram calls in a distributed system (see <a href="../AA-E/AA-E.4">E.4</a>). <br /></Admonition>
+<strong></strong>This is important for supporting writing exception occurrences to external files for post-mortem analysis, as well as propagating exceptions across remote subprogram calls in a distributed system (see <a href="../AA-E/AA-E.4">E.4</a>). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <p><em>Paragraph 16 was deleted.</em> <br /></p>
@@ -390,179 +424,201 @@ The string returned by Exception_Name or Exception_Message on the result of call
 #### Implementation Permissions
 
 <MarginText>17_11.4.1</MarginText>
-<p>An implementation of Exception_Name in a space-constrained environment may return the <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> instead of the full expanded name.<br /></p>
+<p>An implementation of Exception{"_"}Name in a space-constrained environment may return the <code><a href="../AA-3/AA-3.1#S0022">defining{"_"}identifier</a></code> instead of the full expanded name.<br /></p>
 
 <MarginText>18_11.4.1</MarginText>
-<p>The string returned by Exception_Message may be truncated (to no less than 200 characters) by the Save_Occurrence procedure [(not the function)], the Reraise_Occurrence procedure, and the re-raise statement. <br /></p>
+<p>The string returned by Exception{"_"}Message may be truncated (to no less than 200 characters) by the Save{"_"}Occurrence procedure [(not the function)], the Reraise{"_"}Occurrence procedure, and the re-raise statement. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>18.a_11.4.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The reason for allowing truncation is to ease implementations. The reason for choosing the number 200 is that this is the minimum source line length that implementations have to support, and this feature seems vaguely related since it's usually a &ldquo;one-liner&rdquo;. Note that an implementation is allowed to do this truncation even if it supports arbitrarily long lines. <br /></Admonition>
+<strong></strong>The reason for allowing truncation is to ease implementations. The reason for choosing the number 200 is that this is the minimum source line length that implementations have to support, and this feature seems vaguely related since it's usually a &ldquo;one-liner&rdquo;. Note that an implementation is allowed to do this truncation even if it supports arbitrarily long lines. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
 #### Implementation Advice
 
 <MarginText>19_11.4.1</MarginText>
-<p>Exception_Message (by default) and Exception_Information should produce information useful for debugging. Exception_Message should be short (about one line), whereas Exception_Information can be long. Exception_Message should not include the Exception_Name. Exception_Information should include both the Exception_Name and the Exception_Message.<br /></p>
+<p>Exception{"_"}Message (by default) and Exception{"_"}Information should produce information useful for debugging. Exception{"_"}Message should be short (about one line), whereas Exception{"_"}Information can be long. Exception{"_"}Message should not include the Exception{"_"}Name. Exception{"_"}Information should include both the Exception{"_"}Name and the Exception{"_"}Message.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>19.a.1/2_11.4.1</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>Exception_Information should provide information useful for debugging, and should include the Exception_Name and Exception_Message.<br /></Admonition>
+<strong></strong>Exception{"_"}Information should provide information useful for debugging, and should include the Exception{"_"}Name and Exception{"_"}Message.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.a.2/2_11.4.1</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>Exception_Message by default should be short, provide information useful for debugging, and should not include the Exception_Name.<br /></Admonition>
+<strong></strong>Exception{"_"}Message by default should be short, provide information useful for debugging, and should not include the Exception{"_"}Name.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.a_11.4.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>It may seem strange to define two subprograms whose semantics is implementation defined. The idea is that a program can print out debugging/error-logging information in a portable way. The program is portable in the sense that it will work in any implementation; it might print out different information, but the presumption is that the information printed out is appropriate for debugging/error analysis on that system. <br /></Admonition>
+<strong></strong>It may seem strange to define two subprograms whose semantics is implementation defined. The idea is that a program can print out debugging/error-logging information in a portable way. The program is portable in the sense that it will work in any implementation; it might print out different information, but the presumption is that the information printed out is appropriate for debugging/error analysis on that system. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.b_11.4.1</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>As an example, Exception_Information might include information identifying the location where the exception occurred, and, for predefined exceptions, the specific kind of language-defined check that failed. There is an implementation trade-off here, between how much information is represented in an Exception_Occurrence, and how much can be passed through a re-raise.<br /></Admonition>
+<strong></strong>As an example, Exception{"_"}Information might include information identifying the location where the exception occurred, and, for predefined exceptions, the specific kind of language-defined check that failed. There is an implementation trade-off here, between how much information is represented in an Exception{"_"}Occurrence, and how much can be passed through a re-raise.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.c_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-The string returned should be in a form suitable for printing to an error log file. This means that it might need to contain line-termination control characters with implementation-defined I/O semantics. The string should neither start nor end with a newline.<br /></Admonition>
+The string returned should be in a form suitable for printing to an error log file. This means that it might need to contain line-termination control characters with implementation-defined I/O semantics. The string should neither start nor end with a newline.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.d_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-If an implementation chooses to provide additional functionality related to exceptions and their occurrences, it should do so by providing one or more children of Ada.Exceptions.<br /></Admonition>
+If an implementation chooses to provide additional functionality related to exceptions and their occurrences, it should do so by providing one or more children of Ada.Exceptions.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.e_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-Note that exceptions behave as if declared at library level; there is no &ldquo;natural scope&rdquo; for an exception; an exception always exists. Hence, there is no harm in saving an exception occurrence in a data structure, and reraising it later. The reraise has to occur as part of the same program execution, so saving an exception occurrence in a file, reading it back in from a different program execution, and then reraising it is not required to work. This is similar to I/O of access types. Note that it is possible to use RPC to propagate exceptions across partitions.<br /></Admonition>
+Note that exceptions behave as if declared at library level; there is no &ldquo;natural scope&rdquo; for an exception; an exception always exists. Hence, there is no harm in saving an exception occurrence in a data structure, and reraising it later. The reraise has to occur as part of the same program execution, so saving an exception occurrence in a file, reading it back in from a different program execution, and then reraising it is not required to work. This is similar to I/O of access types. Note that it is possible to use RPC to propagate exceptions across partitions.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.f_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-Here's one way to implement Exception_Occurrence in the private part of the package. Using this method, an implementation need store only the actual number of characters in exception messages. If the user always uses small messages, then exception occurrences can be small. If the user never uses messages, then exception occurrences can be smaller still: <br /></Admonition>
+Here's one way to implement Exception{"_"}Occurrence in the private part of the package. Using this method, an implementation need store only the actual number of characters in exception messages. If the user always uses small messages, then exception occurrences can be small. If the user never uses messages, then exception occurrences can be smaller still: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.g_11.4.1</MarginText>
 <CodeBlock language="ada">
-type Exception_Occurrence(Message_Length : Natural := 200) is{"\n"}    limited record{"\n"}        Id : Exception_Id;{"\n"}        Message : String(1..Message_Length);{"\n"}    end record;{"\n"}
+type Exception{"_"}Occurrence(Message{"_"}Length : Natural := 200) is{"\n"}    limited record{"\n"}        Id : Exception{"_"}Id;{"\n"}        Message : String(1..Message{"_"}Length);{"\n"}    end record;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>19.h_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-At the point where an exception is raised, an Exception_Occurrence can be allocated on the stack with exactly the right amount of space for the message &mdash; none for an empty message. This is just like declaring a constrained object of the type: <br /></Admonition>
+At the point where an exception is raised, an Exception{"_"}Occurrence can be allocated on the stack with exactly the right amount of space for the message &mdash; none for an empty message. This is just like declaring a constrained object of the type: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.i_11.4.1</MarginText>
 <CodeBlock language="ada">
-Temp : Exception_Occurrence(10); -- for a 10-character message{"\n"}
+Temp : Exception{"_"}Occurrence(10); -- for a 10-character message{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>19.j_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-After finding the appropriate handler, the stack can be cut back, and the Temp copied to the right place. This is similar to returning an unknown-sized object from a function. It is not necessary to allocate the maximum possible size for every Exception_Occurrence. If, however, the user declares an Exception_Occurrence object, the discriminant will be permanently set to 200. The Save_Occurrence procedure would then truncate the Exception_Message. Thus, nothing is lost until the user tries to save the occurrence. If the user is willing to pay the cost of heap allocation, the Save_Occurrence function can be used instead.<br /></Admonition>
+After finding the appropriate handler, the stack can be cut back, and the Temp copied to the right place. This is similar to returning an unknown-sized object from a function. It is not necessary to allocate the maximum possible size for every Exception{"_"}Occurrence. If, however, the user declares an Exception{"_"}Occurrence object, the discriminant will be permanently set to 200. The Save{"_"}Occurrence procedure would then truncate the Exception{"_"}Message. Thus, nothing is lost until the user tries to save the occurrence. If the user is willing to pay the cost of heap allocation, the Save{"_"}Occurrence function can be used instead.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.k_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-Note that any arbitrary-sized implementation-defined Exception_Information can be handled in a similar way. For example, if the Exception_Occurrence includes a stack traceback, a discriminant can control the number of stack frames stored. The traceback would be truncated or entirely deleted by the Save_Occurrence procedure &mdash; as the implementation sees fit.<br /></Admonition>
+Note that any arbitrary-sized implementation-defined Exception{"_"}Information can be handled in a similar way. For example, if the Exception{"_"}Occurrence includes a stack traceback, a discriminant can control the number of stack frames stored. The traceback would be truncated or entirely deleted by the Save{"_"}Occurrence procedure &mdash; as the implementation sees fit.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.l_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-If the internal representation involves pointers to data structures that might disappear, it would behoove the implementation to implement it as a controlled type, so that assignment can either copy the data structures or else null out the pointers. Alternatively, if the data structures being pointed at are in a task control block, the implementation could keep a unique sequence number for each task, so it could tell when a task's data structures no longer exist.<br /></Admonition>
+If the internal representation involves pointers to data structures that might disappear, it would behoove the implementation to implement it as a controlled type, so that assignment can either copy the data structures or else null out the pointers. Alternatively, if the data structures being pointed at are in a task control block, the implementation could keep a unique sequence number for each task, so it could tell when a task's data structures no longer exist.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.m_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-Using the above method, heap space is never allocated unless the user calls the Save_Occurrence function.<br /></Admonition>
+Using the above method, heap space is never allocated unless the user calls the Save{"_"}Occurrence function.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.n_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-An alternative implementation would be to store the message strings on the heap when the exception is raised. (It could be the global heap, or it could be a special heap just for this purpose &mdash; it doesn't matter.)  This representation would be used only for choice parameters. For normal user-defined exception occurrences, the Save_Occurrence procedure would copy the message string into the occurrence itself, truncating as necessary. Thus, in this implementation, Exception_Occurrence would be implemented as a variant record: <br /></Admonition>
+An alternative implementation would be to store the message strings on the heap when the exception is raised. (It could be the global heap, or it could be a special heap just for this purpose &mdash; it doesn't matter.)  This representation would be used only for choice parameters. For normal user-defined exception occurrences, the Save{"_"}Occurrence procedure would copy the message string into the occurrence itself, truncating as necessary. Thus, in this implementation, Exception{"_"}Occurrence would be implemented as a variant record: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.o_11.4.1</MarginText>
 <CodeBlock language="ada">
-type Exception_Occurrence_Kind is (Normal, As_Choice_Param);{"\n"}
+type Exception{"_"}Occurrence{"_"}Kind is (Normal, As{"_"}Choice{"_"}Param);{"\n"}
 <MarginText>19.p_11.4.1</MarginText>
-type Exception_Occurrence(Kind : Exception_Occurrence_Kind := Normal) is{"\n"}    limited record{"\n"}        case Kind is{"\n"}            when Normal ={">"}{"\n"}                ... -- space for 200 characters{"\n"}            when As_Choice_Param ={">"}{"\n"}                ... -- pointer to heap string{"\n"}        end case;{"\n"}    end record;{"\n"}
+type Exception{"_"}Occurrence(Kind : Exception{"_"}Occurrence{"_"}Kind := Normal) is{"\n"}    limited record{"\n"}        case Kind is{"\n"}            when Normal ={">"}{"\n"}                ... -- space for 200 characters{"\n"}            when As{"_"}Choice{"_"}Param ={">"}{"\n"}                ... -- pointer to heap string{"\n"}        end case;{"\n"}    end record;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>19.q_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-Exception_Occurrences created by the run-time system during exception raising would be As_Choice_Param. User-declared ones would be Normal &mdash; the user cannot see the discriminant, and so cannot set it to As_Choice_Param. The strings in the heap would be freed upon completion of the handler.<br /></Admonition>
+Exception{"_"}Occurrences created by the run-time system during exception raising would be As{"_"}Choice{"_"}Param. User-declared ones would be Normal &mdash; the user cannot see the discriminant, and so cannot set it to As{"_"}Choice{"_"}Param. The strings in the heap would be freed upon completion of the handler.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.r_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-This alternative implementation corresponds to a heap-based implementation of functions returning unknown-sized results.<br /></Admonition>
+This alternative implementation corresponds to a heap-based implementation of functions returning unknown-sized results.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.s_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-One possible implementation of Reraise_Occurrence is as follows: <br /></Admonition>
+One possible implementation of Reraise{"_"}Occurrence is as follows: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.t_11.4.1</MarginText>
 <CodeBlock language="ada">
-procedure Reraise_Occurrence(X : in Exception_Occurrence) is{"\n"}begin{"\n"}    Raise_Exception(Identity(X), Exception_Message(X));{"\n"}end Reraise_Occurrence;{"\n"}
+procedure Reraise{"_"}Occurrence(X : in Exception{"_"}Occurrence) is{"\n"}begin{"\n"}    Raise{"_"}Exception(Identity(X), Exception{"_"}Message(X));{"\n"}end Reraise{"_"}Occurrence;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>19.u_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-However, some implementations may wish to retain more information across a re-raise &mdash; a stack traceback, for example. <br /></Admonition>
+However, some implementations may wish to retain more information across a re-raise &mdash; a stack traceback, for example. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.v_11.4.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Note that Exception_Occurrence is a definite subtype. Hence, values of type Exception_Occurrence may be written to an error log for later analysis, or may be passed to subprograms for immediate error analysis. <br /></Admonition>
+<strong></strong>Note that Exception{"_"}Occurrence is a definite subtype. Hence, values of type Exception{"_"}Occurrence may be written to an error log for later analysis, or may be passed to subprograms for immediate error analysis. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.w/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00400-01"]} />
 <Admonition type="aarm" aarm="note">
-<em>This paragraph was deleted.</em><br /></Admonition>
+<em>This paragraph was deleted.</em><br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>20/5_11.4.1</MarginText>
 <MarginInfo items={["AI12-0021-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE   UTF-8 encoding (see <a href="../AA-A/AA-A.4#Subclause_A.4.11">A.4.11</a>) can be used to represent non-ASCII characters in exception messages. <br /></Admonition>
+NOTE   UTF-8 encoding (see <a href="../AA-A/AA-A.4#Subclause_A.4.11">A.4.11</a>) can be used to represent non-ASCII characters in exception messages. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -573,7 +629,8 @@ NOTE   UTF-8 encoding (see <a href="../AA-A/AA-A.4#Subclause_A.4.11">A.4.11</a>)
 <AnnotatedOnly>
 <MarginText>20.a_11.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-The Identity attribute of exceptions is new, as is the package Exceptions. <br /></Admonition>
+The Identity attribute of exceptions is new, as is the package Exceptions. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -585,21 +642,24 @@ The Identity attribute of exceptions is new, as is the package Exceptions. <br /
 <MarginText>20.b/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00241-01"]} />
 <Admonition type="aarm" aarm="correction">
-<strong>Amendment </strong> Exception_Identity of an Exception_Occurrence now is defined to return Null_Id for Null_Occurrence, rather than raising Constraint_Error. This provides a simple way to test for Null_Occurrence. We expect that programs that need Constraint_Error raised will be very rare; they can be easily fixed by explicitly testing for Null_Id or by using Exception_Name instead.<br /></Admonition>
+<strong>Amendment </strong> Exception{"_"}Identity of an Exception{"_"}Occurrence now is defined to return Null{"_"}Id for Null{"_"}Occurrence, rather than raising Constraint{"_"}Error. This provides a simple way to test for Null{"_"}Occurrence. We expect that programs that need Constraint{"_"}Error raised will be very rare; they can be easily fixed by explicitly testing for Null{"_"}Id or by using Exception{"_"}Name instead.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>20.c/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00378-01", "AI95-00417-01"]} />
 <Admonition type="aarm" aarm="correction">
-<strong>Amendment </strong> We now define the lower bound of the string returned from [[Wide_]Wide_]Exception_Name, Exception_Message, and Exception_Information. This makes working with the returned string easier, and is consistent with many other string-returning functions in Ada. This is technically an inconsistency; if a program depended on some other lower bound for the string returned from one of these functions, it could fail when compiled with Ada 2005. Such code is not portable even between Ada 95 implementations, so it should be very rare.<br /></Admonition>
+<strong>Amendment </strong> We now define the lower bound of the string returned from [[Wide{"_"}]Wide{"_"}]Exception{"_"}Name, Exception{"_"}Message, and Exception{"_"}Information. This makes working with the returned string easier, and is consistent with many other string-returning functions in Ada. This is technically an inconsistency; if a program depended on some other lower bound for the string returned from one of these functions, it could fail when compiled with Ada 2005. Such code is not portable even between Ada 95 implementations, so it should be very rare.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>20.d/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00446-01"]} />
 <Admonition type="aarm" aarm="correction">
-<strong>Amendment </strong> Raise_Exception now raises Constraint_Error if passed Null_Id. This means that it always raises an exception, and thus we can apply pragma No_Return to it. We expect that programs that call Raise_Exception with Null_Id will be rare, and programs that do that and expect no exception to be raised will be rarer; such programs can be easily fixed by explicitly testing for Null_Id before calling Raise_Exception. <br /></Admonition>
+<strong>Amendment </strong> Raise{"_"}Exception now raises Constraint{"_"}Error if passed Null{"_"}Id. This means that it always raises an exception, and thus we can apply pragma No{"_"}Return to it. We expect that programs that call Raise{"_"}Exception with Null{"_"}Id will be rare, and programs that do that and expect no exception to be raised will be rarer; such programs can be easily fixed by explicitly testing for Null{"_"}Id before calling Raise{"_"}Exception. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -611,7 +671,8 @@ The Identity attribute of exceptions is new, as is the package Exceptions. <br /
 <MarginText>20.e/3_11.4.1</MarginText>
 <MarginInfo items={["AI95-00400-01", "AI95-00438-01", "AI05-0005-1"]} />
 <Admonition type="aarm" aarm="note">
-Functions Wide_Exception_Name and Wide_Wide_Exception_Name, and procedures Read_Exception_Occurrence and Write_Exception_Occurrence are added to Exceptions. If Exceptions is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with the same <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> as a new entity in Exceptions is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. <br /></Admonition>
+Functions Wide{"_"}Exception{"_"}Name and Wide{"_"}Wide{"_"}Exception{"_"}Name, and procedures Read{"_"}Exception{"_"}Occurrence and Write{"_"}Exception{"_"}Occurrence are added to Exceptions. If Exceptions is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with the same <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> as a new entity in Exceptions is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -623,7 +684,8 @@ Functions Wide_Exception_Name and Wide_Wide_Exception_Name, and procedures Read_
 <MarginText>20.f/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00362-01"]} />
 <Admonition type="aarm" aarm="note">
-The package Exceptions is preelaborated, and types Exception_Id and Exception_Occurrence have preelaborable initialization, allowing this package to be used in preelaborated units. <br /></Admonition>
+The package Exceptions is preelaborated, and types Exception{"_"}Id and Exception{"_"}Occurrence have preelaborable initialization, allowing this package to be used in preelaborated units. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -635,14 +697,16 @@ The package Exceptions is preelaborated, and types Exception_Id and Exception_Oc
 <MarginText>20.g/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00361-01"]} />
 <Admonition type="aarm" aarm="note">
-The meaning of Exception_Message is reworded to reflect that the string can come from a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> as well as a call of Raise_Exception.<br /></Admonition>
+The meaning of Exception{"_"}Message is reworded to reflect that the string can come from a <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code> as well as a call of Raise{"_"}Exception.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>20.h/2_11.4.1</MarginText>
 <MarginInfo items={["AI95-00400-01"]} />
 <Admonition type="aarm" aarm="note">
-Added Wide_Exception_Name and Wide_Wide_Exception_Name because identifiers can now contain characters outside of Latin-1. <br /></Admonition>
+Added Wide{"_"}Exception{"_"}Name and Wide{"_"}Wide{"_"}Exception{"_"}Name because identifiers can now contain characters outside of Latin-1. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -654,7 +718,8 @@ Added Wide_Exception_Name and Wide_Wide_Exception_Name because identifiers can n
 <MarginText>20.i/3_11.4.1</MarginText>
 <MarginInfo items={["AI05-0043-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Added explicit wording that the exception message for language-defined checks is unspecified. The old wording appeared inclusive, but it was not. <br /></Admonition>
+<strong></strong> Added explicit wording that the exception message for language-defined checks is unspecified. The old wording appeared inclusive, but it was not. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_11.4.2"></a>
@@ -672,12 +737,13 @@ Added Wide_Exception_Name and Wide_Wide_Exception_Name because identifiers can n
 <AnnotatedOnly>
 <MarginText>1.a/5_11.4.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Term entry: </strong><strong>assertion</strong> &mdash; boolean expression that is expected to be True at run time at certain specified places<br />Note: Certain pragmas and aspects define various kinds of assertions.<br /></Admonition>
+<strong>Term entry: </strong><strong>assertion</strong> &mdash; boolean expression that is expected to be True at run time at certain specified places<br />Note: Certain pragmas and aspects define various kinds of assertions.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>1.2/3_11.4.2</MarginText>
 <MarginInfo items={["AI05-0274-1"]} />
-<p>Pragma Assertion_Policy is used to control whether assertions are to be ignored by the implementation, checked at run time, or handled in some implementation-defined manner. <br /></p>
+<p>Pragma Assertion{"_"}Policy is used to control whether assertions are to be ignored by the implementation, checked at run time, or handled in some implementation-defined manner. <br /></p>
 
 
 #### Syntax
@@ -687,37 +753,38 @@ Added Wide_Exception_Name and Wide_Wide_Exception_Name because identifiers can n
 <p class="Indented2">The form of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is as follows: <br /></p>
 
 <MarginText>3/2_11.4.2</MarginText>
-<p class="Indented2">  <strong>pragma</strong> Assert([Check ={">"}] <em>boolean_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>[, [Message ={">"}] <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>]);<br /></p>
+<p class="Indented2">  <strong>pragma</strong> Assert([Check ={">"}] <em>boolean{"_"}</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>[, [Message ={">"}] <em>string{"_"}</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code>]);<br /></p>
 
 <MarginText>4/2_11.4.2</MarginText>
 <p class="Indented2">A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is allowed at the place where a <code><a href="../AA-3/AA-3.11#S0087">declarative_item</a></code> or a <code><a href="../AA-5/AA-5.1#S0167">statement</a></code> is allowed.<br /></p>
 
 <MarginText>5/2_11.4.2</MarginText>
 <MarginInfo items={["AI95-00286-01"]} />
-<p class="Indented2">The form of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy is as follows: <br /></p>
+<p class="Indented2">The form of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion{"_"}Policy is as follows: <br /></p>
 
 <MarginText>6/2_11.4.2</MarginText>
-<p class="Indented2">  <strong>pragma</strong> Assertion_Policy(<em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>);<br /></p>
+<p class="Indented2">  <strong>pragma</strong> Assertion{"_"}Policy(<em>policy{"_"}</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>);<br /></p>
 
 <MarginText>6.1/3_11.4.2</MarginText>
 <MarginInfo items={["AI05-0290-1"]} />
-<p class="Indented2">  <strong>pragma</strong> Assertion_Policy(<br />         <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code> ={">"} <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code><br />     {"{"}, <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code> ={">"} <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>{"}"});<br /></p>
+<p class="Indented2">  <strong>pragma</strong> Assertion{"_"}Policy(<br />         <em>assertion{"_"}</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code> ={">"} <em>policy{"_"}</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code><br />     {"{"}, <em>assertion{"_"}</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code> ={">"} <em>policy{"_"}</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>{"}"});<br /></p>
 
 <MarginText>7/3_11.4.2</MarginText>
 <MarginInfo items={["AI05-0290-1"]} />
-<p class="Indented2">A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy is allowed only immediately within a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, immediately within a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, or as a configuration pragma.<br /></p>
+<p class="Indented2">A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion{"_"}Policy is allowed only immediately within a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code>, immediately within a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, or as a configuration pragma.<br /></p>
 
 
 #### Name Resolution Rules
 
 <MarginText>8/2_11.4.2</MarginText>
 <MarginInfo items={["AI95-00286-01"]} />
-<p>The expected type for the <em>boolean_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is any boolean type. The expected type for the <em>string_</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is type String. <br /></p>
+<p>The expected type for the <em>boolean{"_"}</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is any boolean type. The expected type for the <em>string{"_"}</em><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert is type String. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>8.a/2_11.4.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>We allow any boolean type to be like <code><a href="../AA-5/AA-5.3#S0175">if_statement</a></code>s and other conditionals; we only allow String for the message in order to match <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code>s. <br /></Admonition>
+<strong></strong>We allow any boolean type to be like <code><a href="../AA-5/AA-5.3#S0175">if_statement</a></code>s and other conditionals; we only allow String for the message in order to match <code><a href="../AA-11/AA-11.3#S0308">raise_statement</a></code>s. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -725,19 +792,21 @@ Added Wide_Exception_Name and Wide_Wide_Exception_Name because identifiers can n
 
 <MarginText>9/5_11.4.2</MarginText>
 <MarginInfo items={["AI95-00286-01", "AI05-0290-1", "AI12-0265-1", "AI12-0396-1"]} />
-<p>The <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code> of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy shall identify an <em>assertion aspect</em>, namely one of Assert, Static_Predicate, Dynamic_Predicate, Pre, Pre'Class, Post, Post'Class, Type_Invariant, Type_Invariant'Class, Default_Initial_Condition, or some implementation-defined (assertion) <code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code>. The <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> shall be either Check, Ignore, or some implementation-defined <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>. <br /></p>
+<p>The <em>assertion{"_"}</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code> of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion{"_"}Policy shall identify an <em>assertion aspect</em>, namely one of Assert, Static{"_"}Predicate, Dynamic{"_"}Predicate, Pre, Pre'Class, Post, Post'Class, Type{"_"}Invariant, Type{"_"}Invariant'Class, Default{"_"}Initial{"_"}Condition, or some implementation-defined (assertion) <code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code>. The <em>policy{"_"}</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> shall be either Check, Ignore, or some implementation-defined <code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>9.a/3_11.4.2</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>Implementation-defined <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s and <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code>s allowed in a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy.<br /></Admonition>
+<strong></strong>Implementation-defined <em>policy{"_"}</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code>s and <em>assertion{"_"}</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code>s allowed in a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion{"_"}Policy.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>9.b/5_11.4.2</MarginText>
 <MarginInfo items={["AI12-0396-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>To be honest: </strong>&ldquo;Assert&rdquo; is considered an &ldquo;assertion aspect&rdquo; for the purposes of this rule, even though there is no sort of entity that has an Assert aspect. It can only be specified using an Assert pragma, and applies to a particular point in the execution of a logical thread of control. <br /></Admonition>
+<strong>To be honest: </strong>&ldquo;Assert&rdquo; is considered an &ldquo;assertion aspect&rdquo; for the purposes of this rule, even though there is no sort of entity that has an Assert aspect. It can only be specified using an Assert pragma, and applies to a particular point in the execution of a logical thread of control. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -745,34 +814,36 @@ Added Wide_Exception_Name and Wide_Wide_Exception_Name because identifiers can n
 
 <MarginText>10/3_11.4.2</MarginText>
 <MarginInfo items={["AI95-00286-01", "AI05-0290-1"]} />
-<p>A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy determines for each assertion aspect named in the <code><a href="../AA-2/AA-2.8#S0020">pragma_argument_association</a></code>s whether assertions of the given aspect are to be enforced by a runtime check. The <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> Check requires that assertion expressions of the given aspect be checked that they evaluate to True at the points specified for the given aspect; the <em>policy_</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> Ignore requires that the assertion expression not be evaluated at these points, and the runtime checks not be performed. [Note that for subtype predicate aspects (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>), even when the applicable Assertion_Policy is Ignore, the predicate will still be evaluated as part of membership tests and Valid <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>s, and if static, will still have an effect on loop iteration over the subtype, and the selection of <code><a href="../AA-5/AA-5.4#S0177">case_statement_alternative</a></code>s and <code><a href="../AA-3/AA-3.8#S0072">variant</a></code>s.]<br /></p>
+<p>A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion{"_"}Policy determines for each assertion aspect named in the <code><a href="../AA-2/AA-2.8#S0020">pragma_argument_association</a></code>s whether assertions of the given aspect are to be enforced by a runtime check. The <em>policy{"_"}</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> Check requires that assertion expressions of the given aspect be checked that they evaluate to True at the points specified for the given aspect; the <em>policy{"_"}</em><code><a href="../AA-2/AA-2.3#S0002">identifier</a></code> Ignore requires that the assertion expression not be evaluated at these points, and the runtime checks not be performed. [Note that for subtype predicate aspects (see <a href="../AA-3/AA-3.2#Subclause_3.2.4">3.2.4</a>), even when the applicable Assertion{"_"}Policy is Ignore, the predicate will still be evaluated as part of membership tests and Valid <code><a href="../AA-4/AA-4.1#S0100">attribute_reference</a></code>s, and if static, will still have an effect on loop iteration over the subtype, and the selection of <code><a href="../AA-5/AA-5.4#S0177">case_statement_alternative</a></code>s and <code><a href="../AA-3/AA-3.8#S0072">variant</a></code>s.]<br /></p>
 
 <MarginText>10.1/3_11.4.2</MarginText>
 <MarginInfo items={["AI05-0290-1"]} />
-<p>If no <em>assertion_</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code>s are specified in the pragma, the specified policy applies to all assertion aspects.<br /></p>
+<p>If no <em>assertion{"_"}</em><code><a href="../AA-13/AA-13.1#S0347">aspect_mark</a></code>s are specified in the pragma, the specified policy applies to all assertion aspects.<br /></p>
 
 <MarginText>10.2/5_11.4.2</MarginText>
 <MarginInfo items={["AI05-0290-1", "AI12-0396-1"]} />
-<p>A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy applies to the named assertion aspects in a specific region, and applies to all assertion expressions associated with those aspects specified in that region. A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy given in a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> or immediately within a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> applies from the place of the pragma to the end of the innermost enclosing declarative region. The region for a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy given as a configuration pragma is the declarative region for the entire compilation unit (or units) to which it applies.<br /></p>
+<p>A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion{"_"}Policy applies to the named assertion aspects in a specific region, and applies to all assertion expressions associated with those aspects specified in that region. A <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion{"_"}Policy given in a <code><a href="../AA-3/AA-3.11#S0086">declarative_part</a></code> or immediately within a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code> applies from the place of the pragma to the end of the innermost enclosing declarative region. The region for a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion{"_"}Policy given as a configuration pragma is the declarative region for the entire compilation unit (or units) to which it applies.<br /></p>
 
 <MarginText>10.3/3_11.4.2</MarginText>
 <MarginInfo items={["AI05-0290-1"]} />
-<p>If a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy applies to a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>, then the <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy applies to the entire instance.<br /></p>
+<p>If a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion{"_"}Policy applies to a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>, then the <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion{"_"}Policy applies to the entire instance.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>10.a.1/3_11.4.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>This means that an Assertion_Policy pragma that occurs in a scope enclosing the declaration of a generic unit but not also enclosing the declaration of a given instance of that generic unit will not apply to assertion expressions occurring within the given instance. <br /></Admonition>
+<strong></strong>This means that an Assertion{"_"}Policy pragma that occurs in a scope enclosing the declaration of a generic unit but not also enclosing the declaration of a given instance of that generic unit will not apply to assertion expressions occurring within the given instance. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>10.4/3_11.4.2</MarginText>
 <MarginInfo items={["AI05-0290-1"]} />
-<p>If multiple Assertion_Policy pragmas apply to a given construct for a given assertion aspect, the assertion policy is determined by the one in the innermost enclosing region of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion_Policy specifying a policy for the assertion aspect. If no such Assertion_Policy pragma exists, the policy is implementation defined.<br /></p>
+<p>If multiple Assertion{"_"}Policy pragmas apply to a given construct for a given assertion aspect, the assertion policy is determined by the one in the innermost enclosing region of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assertion{"_"}Policy specifying a policy for the assertion aspect. If no such Assertion{"_"}Policy pragma exists, the policy is implementation defined.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>10.a/2_11.4.2</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The default assertion policy.<br /></Admonition>
+<strong></strong>The default assertion policy.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>11/2_11.4.2</MarginText>
@@ -784,7 +855,7 @@ Added Wide_Exception_Name and Wide_Wide_Exception_Name because identifiers can n
 <CodeBlock language="ada">
 package Ada.Assertions{"\n"}    with Pure is{"\n"}
 <MarginText>13/2_11.4.2</MarginText>
-   Assertion_Error : exception;{"\n"}
+   Assertion{"_"}Error : exception;{"\n"}
 <MarginText>14/2_11.4.2</MarginText>
    procedure Assert(Check : in Boolean);{"\n"}   procedure Assert(Check : in Boolean; Message : in String);{"\n"}
 <MarginText>15/2_11.4.2</MarginText>
@@ -804,7 +875,7 @@ end Ada.Assertions;{"\n"}
 
 <MarginText>18/3_11.4.2</MarginText>
 <MarginInfo items={["AI95-00286-01", "AI05-0290-1"]} />
-<p>If performing checks is required by the Assert assertion policy in effect at the place of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert, the elaboration of the pragma consists of evaluating the boolean expression, and if the result is False, evaluating the Message argument, if any, and raising the exception Assertions.Assertion_Error, with a message if the Message argument is provided.<br /></p>
+<p>If performing checks is required by the Assert assertion policy in effect at the place of a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert, the elaboration of the pragma consists of evaluating the boolean expression, and if the result is False, evaluating the Message argument, if any, and raising the exception Assertions.Assertion{"_"}Error, with a message if the Message argument is provided.<br /></p>
 
 <MarginText>19/2_11.4.2</MarginText>
 <MarginInfo items={["AI95-00286-01"]} />
@@ -812,7 +883,7 @@ end Ada.Assertions;{"\n"}
 
 <MarginText>20/2_11.4.2</MarginText>
 <CodeBlock language="ada">
-if Check = False then{"\n"}   raise Ada.Assertions.Assertion_Error;{"\n"}end if;{"\n"}
+if Check = False then{"\n"}   raise Ada.Assertions.Assertion{"_"}Error;{"\n"}end if;{"\n"}
 
 </CodeBlock>
 <MarginText>21/2_11.4.2</MarginText>
@@ -821,7 +892,7 @@ if Check = False then{"\n"}   raise Ada.Assertions.Assertion_Error;{"\n"}end if;
 
 <MarginText>22/2_11.4.2</MarginText>
 <CodeBlock language="ada">
-if Check = False then{"\n"}   raise Ada.Assertions.Assertion_Error with Message;{"\n"}end if;{"\n"}
+if Check = False then{"\n"}   raise Ada.Assertions.Assertion{"_"}Error with Message;{"\n"}end if;{"\n"}
 
 </CodeBlock>
 <MarginText>23/2_11.4.2</MarginText>
@@ -833,7 +904,7 @@ if Check = False then{"\n"}   raise Ada.Assertions.Assertion_Error with Message;
 
 <MarginText>23.1/5_11.4.2</MarginText>
 <MarginInfo items={["AI05-0274-1", "AI12-0439-1"]} />
-<p>It is a bounded error to invoke a potentially blocking operation (see <a href="../AA-9/AA-9.5#Subclause_9.5.1">9.5.1</a>) during the evaluation of an assertion expression associated with a call on, or return from, a protected operation. If the bounded error is detected, Program_Error is raised. If not detected, execution proceeds normally, but if it is invoked within a protected action, it can result in deadlock or a (nested) protected action. <br /></p>
+<p>It is a bounded error to invoke a potentially blocking operation (see <a href="../AA-9/AA-9.5#Subclause_9.5.1">9.5.1</a>) during the evaluation of an assertion expression associated with a call on, or return from, a protected operation. If the bounded error is detected, Program{"_"}Error is raised. If not detected, execution proceeds normally, but if it is invoked within a protected action, it can result in deadlock or a (nested) protected action. <br /></p>
 
 
 #### Implementation Requirements
@@ -845,7 +916,8 @@ if Check = False then{"\n"}   raise Ada.Assertions.Assertion_Error with Message;
 <AnnotatedOnly>
 <MarginText>23.a/5_11.4.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The Assertion_Policy does not have an effect on such postconditions, invariants, and default initial conditions. This has no execution impact since such assertions shouldn't fail anyway (see the next rule). <br /></Admonition>
+<strong></strong>The Assertion{"_"}Policy does not have an effect on such postconditions, invariants, and default initial conditions. This has no execution impact since such assertions shouldn't fail anyway (see the next rule). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>23.3/5_11.4.2</MarginText>
@@ -855,19 +927,22 @@ if Check = False then{"\n"}   raise Ada.Assertions.Assertion_Error with Message;
 <AnnotatedOnly>
 <MarginText>23.b/5_11.4.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>In other words, evaluating such an assertion expression will not return a result of False, nor will it propagate an exception other than by evaluating a <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> which is syntactically all or part of the assertion expression. <br /></Admonition>
+<strong></strong>In other words, evaluating such an assertion expression will not return a result of False, nor will it propagate an exception other than by evaluating a <code><a href="../AA-11/AA-11.3#S0309">raise_expression</a></code> which is syntactically all or part of the assertion expression. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>23.c/5_11.4.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>To be honest: </strong>Evaluation of any expression might raise Storage_Error. <br /></Admonition>
+<strong>To be honest: </strong>Evaluation of any expression might raise Storage{"_"}Error. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>23.d/5_11.4.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This allows the Reference Manual to express semantic requirements as postconditions, invariants, or default initial conditions (which are invariably clearer than English prose would be) while keeping it clear that failing the assertion check (or any other run time check) is not conforming behavior. <br /></Admonition>
+<strong></strong>This allows the Reference Manual to express semantic requirements as postconditions, invariants, or default initial conditions (which are invariably clearer than English prose would be) while keeping it clear that failing the assertion check (or any other run time check) is not conforming behavior. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>23.4/5_11.4.2</MarginText>
@@ -878,7 +953,8 @@ if Check = False then{"\n"}   raise Ada.Assertions.Assertion_Error with Message;
 <MarginText>23.e/5_11.4.2</MarginText>
 <MarginInfo items={["AI12-0005-1", "AI12-0112-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This allows the Reference Manual to express runtime requirements on the client of a language-defined unit as preconditions or predicates (which are clearer than English prose would be). Some such requirements can be suppressed with pragma Suppress. Ada 2012 and earlier versions did not provide a mechanism to suppress such code. <br /></Admonition>
+<strong></strong>This allows the Reference Manual to express runtime requirements on the client of a language-defined unit as preconditions or predicates (which are clearer than English prose would be). Some such requirements can be suppressed with pragma Suppress. Ada 2012 and earlier versions did not provide a mechanism to suppress such code. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -886,12 +962,13 @@ if Check = False then{"\n"}   raise Ada.Assertions.Assertion_Error with Message;
 
 <MarginText>24/2_11.4.2</MarginText>
 <MarginInfo items={["AI95-00286-01"]} />
-<p>Assertion_Error may be declared by renaming an implementation-defined exception from another package. <br /></p>
+<p>Assertion{"_"}Error may be declared by renaming an implementation-defined exception from another package. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>24.a/2_11.4.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This permission is intended to allow implementations which had an implementation-defined Assert pragma to continue to use their originally defined exception. Without this permission, such an implementation would be incorrect, as Exception_Name would return the wrong name. <br /></Admonition>
+<strong></strong>This permission is intended to allow implementations which had an implementation-defined Assert pragma to continue to use their originally defined exception. Without this permission, such an implementation would be incorrect, as Exception{"_"}Name would return the wrong name. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>25/2_11.4.2</MarginText>
@@ -909,19 +986,22 @@ if Check = False then{"\n"}   raise Ada.Assertions.Assertion_Error with Message;
 <AnnotatedOnly>
 <MarginText>27.a/3_11.4.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>This allows an implementation to reject such assertions. To maximize portability, assertions should not include expressions that contain these sorts of side effects. <br /></Admonition>
+<strong></strong>This allows an implementation to reject such assertions. To maximize portability, assertions should not include expressions that contain these sorts of side effects. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>27.b/3_11.4.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The intended effect of the second part of the rule (the part starting with &ldquo;Similarly&rdquo;) is that an evaluation of the involved assertion expressions (subtype predicates, type invariants, preconditions and postconditions) in any order yields identical results.<br /></Admonition>
+<strong></strong>The intended effect of the second part of the rule (the part starting with &ldquo;Similarly&rdquo;) is that an evaluation of the involved assertion expressions (subtype predicates, type invariants, preconditions and postconditions) in any order yields identical results.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>27.c/3_11.4.2</MarginText>
 <Admonition type="aarm" aarm="note">
-The rule is intended to apply to all of the assertion expressions that are evaluated at the start of call (and similarly for the assertion expressions that are evaluated during the return from a call), but not other assertions actually given in the body, nor between the assertions checked at the start and end of the call. Specifically, a side effect that alters a variable in a function called from a precondition expression that changes the result of a postcondition expression of the same subprogram does <em>not</em> trigger these rules unless it also changes the value of a reevaluation of the precondition expression. <br /></Admonition>
+The rule is intended to apply to all of the assertion expressions that are evaluated at the start of call (and similarly for the assertion expressions that are evaluated during the return from a call), but not other assertions actually given in the body, nor between the assertions checked at the start and end of the call. Specifically, a side effect that alters a variable in a function called from a precondition expression that changes the result of a postcondition expression of the same subprogram does <em>not</em> trigger these rules unless it also changes the value of a reevaluation of the precondition expression. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -931,14 +1011,16 @@ The rule is intended to apply to all of the assertion expressions that are evalu
 <MarginText>27.d/4_11.4.2</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="note">
-Our intent is that any assertion expression that violates this Implementation Permission is considered pathological. We definitely want compilers to be able to assume that if you evaluate an assertion expression once and it is True, you don't need to evaluate it again if all you are doing in the meantime is evaluating assertion expressions. We were unable to find wording that had this effect that didn't throw out important other cases (logging, memo functions), so we settled for a strong warning that compilers can reject such pathologies. Perhaps in a future version of Ada we'll be able to tighten this up. <br /></Admonition>
+Our intent is that any assertion expression that violates this Implementation Permission is considered pathological. We definitely want compilers to be able to assume that if you evaluate an assertion expression once and it is True, you don't need to evaluate it again if all you are doing in the meantime is evaluating assertion expressions. We were unable to find wording that had this effect that didn't throw out important other cases (logging, memo functions), so we settled for a strong warning that compilers can reject such pathologies. Perhaps in a future version of Ada we'll be able to tighten this up. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>28/5_11.4.2</MarginText>
 <MarginInfo items={["AI95-00286-01", "AI12-0442-1", "AI12-0447-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE   Normally, the boolean expression in a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert should not call functions that have significant side effects when the result of the expression is True, so that the particular assertion policy in effect will not affect normal operation of the program. <br /></Admonition>
+NOTE   Normally, the boolean expression in a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert should not call functions that have significant side effects when the result of the expression is True, so that the particular assertion policy in effect will not affect normal operation of the program. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -950,7 +1032,8 @@ NOTE   Normally, the boolean expression in a <code><a href="../AA-2/AA-2.8#S0019
 <MarginText>28.a/2_11.4.2</MarginText>
 <MarginInfo items={["AI95-00286-01"]} />
 <Admonition type="aarm" aarm="note">
-Pragmas Assert and Assertion_Policy, and package Assertions are new. <br /></Admonition>
+Pragmas Assert and Assertion{"_"}Policy, and package Assertions are new. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -962,7 +1045,8 @@ Pragmas Assert and Assertion_Policy, and package Assertions are new. <br /></Adm
 <MarginText>28.b/3_11.4.2</MarginText>
 <MarginInfo items={["AI05-0274-1"]} />
 <Admonition type="aarm" aarm="note">
-There now is an Implementation Permission to reject an assertion expression that calls a function that has a side effect such that an immediate reevalution of the expression could produce a different value. This means that a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert that works in Ada 2005 might be illegal in Ada 2012 in the unlikely event that the compiler detected such an error. This should be unlikely to occur in practice and it is considered a good thing, as the original expression was tricky and probably was not portable (as order of evaluation is unspecified within an expression). Moreover, no compiler is <em>required</em> to reject such expressions, so there is no need for any compiler to change behavior. <br /></Admonition>
+There now is an Implementation Permission to reject an assertion expression that calls a function that has a side effect such that an immediate reevalution of the expression could produce a different value. This means that a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Assert that works in Ada 2005 might be illegal in Ada 2012 in the unlikely event that the compiler detected such an error. This should be unlikely to occur in practice and it is considered a good thing, as the original expression was tricky and probably was not portable (as order of evaluation is unspecified within an expression). Moreover, no compiler is <em>required</em> to reject such expressions, so there is no need for any compiler to change behavior. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -974,7 +1058,8 @@ There now is an Implementation Permission to reject an assertion expression that
 <MarginText>28.c/3_11.4.2</MarginText>
 <MarginInfo items={["AI05-0290-1"]} />
 <Admonition type="aarm" aarm="note">
-Assertion_Policy pragmas are now allowed in more places and can specify behavior for individual kinds of assertions. <br /></Admonition>
+Assertion{"_"}Policy pragmas are now allowed in more places and can specify behavior for individual kinds of assertions. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -986,28 +1071,32 @@ Assertion_Policy pragmas are now allowed in more places and can specify behavior
 <MarginText>28.d/5_11.4.2</MarginText>
 <MarginInfo items={["AI12-0112-1"]} />
 <Admonition type="aarm" aarm="note">
-Added wording that preconditions and predicates given on language-defined units are always checked unless suppressed (that is, they act like language-defined checks). This is not considered an inconsistency, since there are no such preconditions or predicates in Ada 2012.<br /></Admonition>
+Added wording that preconditions and predicates given on language-defined units are always checked unless suppressed (that is, they act like language-defined checks). This is not considered an inconsistency, since there are no such preconditions or predicates in Ada 2012.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>28.e/5_11.4.2</MarginText>
 <MarginInfo items={["AI12-0179-1", "AI12-0265-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Added wording that postconditions, type invariants, and default initial conditions given on language-defined units cannot fail. This is not considered an inconsistency, since there are no such postconditions, invariants, or default initial conditions in Ada 2012.<br /></Admonition>
+<strong></strong> Added wording that postconditions, type invariants, and default initial conditions given on language-defined units cannot fail. This is not considered an inconsistency, since there are no such postconditions, invariants, or default initial conditions in Ada 2012.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>28.f/5_11.4.2</MarginText>
 <MarginInfo items={["AI12-0265-1"]} />
 <Admonition type="aarm" aarm="note">
-Added default initial conditions to the kinds of assertions (see <a href="../AA-7/AA-7.3#Subclause_7.3.3">7.3.3</a>).<br /></Admonition>
+Added default initial conditions to the kinds of assertions (see <a href="../AA-7/AA-7.3#Subclause_7.3.3">7.3.3</a>).<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>28.g/5_11.4.2</MarginText>
 <MarginInfo items={["AI12-0396-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Added a definition of assertion aspects, used in some freezing rules (see <a href="../AA-13/AA-13.14">13.14</a>). <br /></Admonition>
+<strong></strong> Added a definition of assertion aspects, used in some freezing rules (see <a href="../AA-13/AA-13.14">13.14</a>). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_11.4.3"></a>
@@ -1024,54 +1113,56 @@ Added default initial conditions to the kinds of assertions (see <a href="../AA-
 <MarginText>2/5_11.4.3</MarginText>
 <MarginInfo items={["AI95-00433-01", "AI12-0178-1"]} />
 <CodeBlock language="ada">
-package File_System is{"\n"}    type Data_Type is ...;{"\n"}    type File_Handle is limited private;{"\n"}
+package File{"_"}System is{"\n"}    type Data{"_"}Type is ...;{"\n"}    type File{"_"}Handle is limited private;{"\n"}
 <MarginText>3_11.4.3</MarginText>
-    File_Not_Found : exception;{"\n"}    procedure Open(F : in out File_Handle; Name : String);{"\n"}        -- raises File_Not_Found if named file does not exist{"\n"}
+    File{"_"}Not{"_"}Found : exception;{"\n"}    procedure Open(F : in out File{"_"}Handle; Name : String);{"\n"}        -- raises File{"_"}Not{"_"}Found if named file does not exist{"\n"}
 <MarginText>4_11.4.3</MarginText>
-    End_Of_File : exception;{"\n"}    procedure Read(F : in out File_Handle; Data : out Data_Type);{"\n"}        -- raises End_Of_File if the file is not open{"\n"}
+    End{"_"}Of{"_"}File : exception;{"\n"}    procedure Read(F : in out File{"_"}Handle; Data : out Data{"_"}Type);{"\n"}        -- raises End{"_"}Of{"_"}File if the file is not open{"\n"}
 <MarginText>5/5_11.4.3</MarginText>
 <MarginInfo items={["AI12-0178-1"]} />
-    ...{"\n"}private{"\n"}    ...{"\n"}end File_System;{"\n"}
+    ...{"\n"}private{"\n"}    ...{"\n"}end File{"_"}System;{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
 <MarginText>5.a/5_11.4.3</MarginText>
 <MarginInfo items={["AI12-0178-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The first ... provides a place for Close to be declared, and the second ... provides a place for File_Handle to be completed. <br /></Admonition>
+<strong></strong>The first ... provides a place for Close to be declared, and the second ... provides a place for File{"_"}Handle to be completed. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>5.1/5_11.4.3</MarginText>
 <MarginInfo items={["AI12-0178-1"]} />
 <CodeBlock language="ada">
-package body File_System is{"\n"}    ...{"\n"}
+package body File{"_"}System is{"\n"}    ...{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
 <MarginText>5.b/5_11.4.3</MarginText>
 <MarginInfo items={["AI12-0178-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This ... provides a place for File_Exists and the body of Close to be declared. <br /></Admonition>
+<strong></strong>This ... provides a place for File{"_"}Exists and the body of Close to be declared. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>6/5_11.4.3</MarginText>
 <MarginInfo items={["AI95-00433-01", "AI12-0178-1"]} />
 <CodeBlock language="ada">
-    procedure Open(F : in out File_Handle; Name : String) is{"\n"}    begin{"\n"}        if File_Exists(Name) then{"\n"}            ...{"\n"}        else{"\n"}            raise File_Not_Found with "File not found: " & Name & ".";{"\n"}        end if;{"\n"}    end Open;{"\n"}
+    procedure Open(F : in out File{"_"}Handle; Name : String) is{"\n"}    begin{"\n"}        if File{"_"}Exists(Name) then{"\n"}            ...{"\n"}        else{"\n"}            raise File{"_"}Not{"_"}Found with "File not found: " & Name & ".";{"\n"}        end if;{"\n"}    end Open;{"\n"}
 <MarginText>7_11.4.3</MarginText>
-    procedure Read(F : in out File_Handle; Data : out Data_Type) is{"\n"}    begin{"\n"}        if F.Current_Position {"<"}= F.Last_Position then{"\n"}            ...{"\n"}        else{"\n"}            raise End_Of_File;{"\n"}        end if;{"\n"}    end Read;{"\n"}
+    procedure Read(F : in out File{"_"}Handle; Data : out Data{"_"}Type) is{"\n"}    begin{"\n"}        if F.Current{"_"}Position {"<"}= F.Last{"_"}Position then{"\n"}            ...{"\n"}        else{"\n"}            raise End{"_"}Of{"_"}File;{"\n"}        end if;{"\n"}    end Read;{"\n"}
 <MarginText>8_11.4.3</MarginText>
     ...{"\n"}
 <MarginText>9_11.4.3</MarginText>
-end File_System;{"\n"}
+end File{"_"}System;{"\n"}
 <MarginText>10/5_11.4.3</MarginText>
 <MarginInfo items={["AI12-0178-1"]} />
-with Ada.Text_IO;{"\n"}with Ada.Exceptions;{"\n"}with File_System; use File_System;{"\n"}use Ada;{"\n"}procedure Main is{"\n"}    Verbosity_Desired : Boolean := ...;{"\n"}begin{"\n"}    ... -- call operations in File_System{"\n"}exception{"\n"}    when End_Of_File ={">"}{"\n"}        Close(Some_File);{"\n"}    when Not_Found_Error : File_Not_Found ={">"}{"\n"}        Text_IO.Put_Line(Exceptions.Exception_Message(Not_Found_Error));{"\n"}    when The_Error : others ={">"}{"\n"}        Text_IO.Put_Line("Unknown error:");{"\n"}        if Verbosity_Desired then{"\n"}            Text_IO.Put_Line(Exceptions.Exception_Information(The_Error));{"\n"}        else{"\n"}            Text_IO.Put_Line(Exceptions.Exception_Name(The_Error));{"\n"}            Text_IO.Put_Line(Exceptions.Exception_Message(The_Error));{"\n"}        end if;{"\n"}        raise;{"\n"}end Main;{"\n"}
+with Ada.Text{"_"}IO;{"\n"}with Ada.Exceptions;{"\n"}with File{"_"}System; use File{"_"}System;{"\n"}use Ada;{"\n"}procedure Main is{"\n"}    Verbosity{"_"}Desired : Boolean := ...;{"\n"}begin{"\n"}    ... -- call operations in File{"_"}System{"\n"}exception{"\n"}    when End{"_"}Of{"_"}File ={">"}{"\n"}        Close(Some{"_"}File);{"\n"}    when Not{"_"}Found{"_"}Error : File{"_"}Not{"_"}Found ={">"}{"\n"}        Text{"_"}IO.Put{"_"}Line(Exceptions.Exception{"_"}Message(Not{"_"}Found{"_"}Error));{"\n"}    when The{"_"}Error : others ={">"}{"\n"}        Text{"_"}IO.Put{"_"}Line("Unknown error:");{"\n"}        if Verbosity{"_"}Desired then{"\n"}            Text{"_"}IO.Put{"_"}Line(Exceptions.Exception{"_"}Information(The{"_"}Error));{"\n"}        else{"\n"}            Text{"_"}IO.Put{"_"}Line(Exceptions.Exception{"_"}Name(The{"_"}Error));{"\n"}            Text{"_"}IO.Put{"_"}Line(Exceptions.Exception{"_"}Message(The{"_"}Error));{"\n"}        end if;{"\n"}        raise;{"\n"}end Main;{"\n"}
 
 </CodeBlock>
 <MarginText>11/5_11.4.3</MarginText>
 <MarginInfo items={["AI12-0440-1"]} />
-<p>In the above example, the File_System package contains information about detecting certain exceptional situations, but it does not specify how to handle those situations. Procedure Main specifies how to handle them; other clients of File_System can have different handlers, even though the exceptional situations arise from the same basic causes. <br /></p>
+<p>In the above example, the File{"_"}System package contains information about detecting certain exceptional situations, but it does not specify how to handle those situations. Procedure Main specifies how to handle them; other clients of File{"_"}System can have different handlers, even though the exceptional situations arise from the same basic causes. <br /></p>
 
 <AnnotatedOnly>
 
@@ -1082,6 +1173,7 @@ with Ada.Text_IO;{"\n"}with Ada.Exceptions;{"\n"}with File_System; use File_Syst
 <MarginText>11.a/3_11.4.3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
 <Admonition type="aarm" aarm="note">
-The sections labeled &ldquo;Exceptions Raised During ...&rdquo; are subsumed by this subclause, and by parts of Clause <a href="../AA-9/">9</a>. <br /></Admonition>
+The sections labeled &ldquo;Exceptions Raised During ...&rdquo; are subsumed by this subclause, and by parts of Clause <a href="../AA-9/">9</a>. <br />
+</Admonition>
 </AnnotatedOnly>
 

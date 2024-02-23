@@ -17,18 +17,20 @@ import MarginText from "@site/src/components/MarginText";
 import MarginInfo from "@site/src/components/MarginInfo";
 
 <MarginText>1</MarginText>
-<p>A <em>stream</em> is a sequence of elements comprising values from possibly different types and allowing sequential access to these values. A <em>stream type</em> is a type in the class whose root type is Streams.Root_Stream_Type. A stream type may be implemented in various ways, such as an external sequential file, an internal buffer, or a network channel. <br /></p>
+<p>A <em>stream</em> is a sequence of elements comprising values from possibly different types and allowing sequential access to these values. A <em>stream type</em> is a type in the class whose root type is Streams.Root{"_"}Stream{"_"}Type. A stream type may be implemented in various ways, such as an external sequential file, an internal buffer, or a network channel. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>1.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>A stream element will often be the same size as a storage element, but that is not required. <br /></Admonition>
+<strong></strong>A stream element will often be the same size as a storage element, but that is not required. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>1.b/5</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Term entry: </strong><strong>stream</strong> &mdash; sequence of elements that can be used, along with the stream-oriented attributes, to support marshalling and unmarshalling of values of most types<br /></Admonition>
+<strong>Term entry: </strong><strong>stream</strong> &mdash; sequence of elements that can be used, along with the stream-oriented attributes, to support marshalling and unmarshalling of values of most types<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -39,7 +41,8 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <AnnotatedOnly>
 <MarginText>1.c</MarginText>
 <Admonition type="aarm" aarm="note">
-Streams are new in Ada 95. <br /></Admonition>
+Streams are new in Ada 95. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_13.13.1"></a>
@@ -50,7 +53,7 @@ Streams are new in Ada 95. <br /></Admonition>
 #### Static Semantics
 
 <MarginText>1_13.13.1</MarginText>
-<p>The abstract type Root_Stream_Type is the root type of the class of stream types. The types in this class represent different kinds of streams. A new stream type is defined by extending the root type (or some other stream type), overriding the Read and Write operations, and optionally defining additional primitive subprograms, according to the requirements of the particular kind of stream. The predefined stream-oriented attributes like T'Read and T'Write make dispatching calls on the Read and Write procedures of the Root_Stream_Type. (User-defined T'Read and T'Write attributes can also make such calls, or can call the Read and Write attributes of other types.)<br /></p>
+<p>The abstract type Root{"_"}Stream{"_"}Type is the root type of the class of stream types. The types in this class represent different kinds of streams. A new stream type is defined by extending the root type (or some other stream type), overriding the Read and Write operations, and optionally defining additional primitive subprograms, according to the requirements of the particular kind of stream. The predefined stream-oriented attributes like T'Read and T'Write make dispatching calls on the Read and Write procedures of the Root{"_"}Stream{"_"}Type. (User-defined T'Read and T'Write attributes can also make such calls, or can call the Read and Write attributes of other types.)<br /></p>
 
 <MarginText>1.1/5_13.13.1</MarginText>
 <MarginInfo items={["AI12-0293-1"]} />
@@ -62,14 +65,14 @@ Streams are new in Ada 95. <br /></Admonition>
 package Ada.Streams{"\n"}    with Pure, Nonblocking ={">"} False is{"\n"}
 <MarginText>3/2_13.13.1</MarginText>
 <MarginInfo items={["AI95-00161-01"]} />
-    type Root_Stream_Type is abstract tagged limited private{"\n"}        with Preelaborable_Initialization;{"\n"}
+    type Root{"_"}Stream{"_"}Type is abstract tagged limited private{"\n"}        with Preelaborable{"_"}Initialization;{"\n"}
 <MarginText>4/1_13.13.1</MarginText>
 <MarginInfo items={["AI95-00181-01"]} />
-{"{"}8652/0044{"}"}     type Stream_Element is mod implementation-defined;{"\n"}    type Stream_Element_Offset is range implementation-defined;{"\n"}    subtype Stream_Element_Count is{"\n"}        Stream_Element_Offset range 0..Stream_Element_Offset'Last;{"\n"}    type Stream_Element_Array is{"\n"}        array(Stream_Element_Offset range {"<"}{">"}) of aliased Stream_Element;{"\n"}
+{"{"}8652/0044{"}"}     type Stream{"_"}Element is mod implementation-defined;{"\n"}    type Stream{"_"}Element{"_"}Offset is range implementation-defined;{"\n"}    subtype Stream{"_"}Element{"_"}Count is{"\n"}        Stream{"_"}Element{"_"}Offset range 0..Stream{"_"}Element{"_"}Offset'Last;{"\n"}    type Stream{"_"}Element{"_"}Array is{"\n"}        array(Stream{"_"}Element{"_"}Offset range {"<"}{">"}) of aliased Stream{"_"}Element;{"\n"}
 <MarginText>5_13.13.1</MarginText>
-    procedure Read({"\n"}      Stream : in out Root_Stream_Type;{"\n"}      Item   : out Stream_Element_Array;{"\n"}      Last   : out Stream_Element_Offset) is abstract;{"\n"}
+    procedure Read({"\n"}      Stream : in out Root{"_"}Stream{"_"}Type;{"\n"}      Item   : out Stream{"_"}Element{"_"}Array;{"\n"}      Last   : out Stream{"_"}Element{"_"}Offset) is abstract;{"\n"}
 <MarginText>6_13.13.1</MarginText>
-    procedure Write({"\n"}      Stream : in out Root_Stream_Type;{"\n"}      Item   : in Stream_Element_Array) is abstract;{"\n"}
+    procedure Write({"\n"}      Stream : in out Root{"_"}Stream{"_"}Type;{"\n"}      Item   : in Stream{"_"}Element{"_"}Array) is abstract;{"\n"}
 <MarginText>7_13.13.1</MarginText>
 private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams;{"\n"}
 
@@ -78,7 +81,8 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams;{"\n"}
 <MarginText>7.a/5_13.13.1</MarginText>
 <MarginInfo items={["AI12-0241-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This package must allow blocking (Nonblocking ={">"} False) for compatibility. The purpose of this package is to provide a template for overriding user-defined routines; and such routines can only allow blocking if the root type does so. Users can still declare their overridding routines nonblocking if they wish. <br /></Admonition>
+<strong></strong>This package must allow blocking (Nonblocking ={">"} False) for compatibility. The purpose of this package is to provide a template for overriding user-defined routines; and such routines can only allow blocking if the root type does so. Users can still declare their overridding routines nonblocking if they wish. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>8/2_13.13.1</MarginText>
@@ -92,14 +96,16 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams;{"\n"}
 <MarginText>9.a/2_13.13.1</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The index subtype of Stream_Element_Array is Stream_Element_Offset because we wish to allow maximum flexibility. Most Stream_Element_Arrays will probably have a lower bound of 0 or 1, but other lower bounds, including negative ones, make sense in some situations.<br /></Admonition>
+<strong></strong>The index subtype of Stream{"_"}Element{"_"}Array is Stream{"_"}Element{"_"}Offset because we wish to allow maximum flexibility. Most Stream{"_"}Element{"_"}Arrays will probably have a lower bound of 0 or 1, but other lower bounds, including negative ones, make sense in some situations.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>9.b/3_13.13.1</MarginText>
 <MarginInfo items={["AI95-00114-01", "AI05-0005-1"]} />
 <Admonition type="aarm" aarm="note">
-Note that there are some language-defined subprograms that fill part of a Stream_Element_Array, and return the index of the last element filled as a Stream_Element_Offset. The Read procedures declared here, Streams.Stream_IO (see <a href="../AA-A/AA-A.12#Subclause_A.12.1">A.12.1</a>), and System.RPC (see <a href="../AA-E/AA-E.5">E.5</a>) behave in this manner. These will raise Constraint_Error if the resulting Last value is not in Stream_Element_Offset. This implies that the Stream_Element_Array passed to these subprograms should not have a lower bound of Stream_Element_Offset'First, because then a read of 0 elements would always raise Constraint_Error. A better choice of lower bound is 0 or 1. <br /></Admonition>
+Note that there are some language-defined subprograms that fill part of a Stream{"_"}Element{"_"}Array, and return the index of the last element filled as a Stream{"_"}Element{"_"}Offset. The Read procedures declared here, Streams.Stream{"_"}IO (see <a href="../AA-A/AA-A.12#Subclause_A.12.1">A.12.1</a>), and System.RPC (see <a href="../AA-E/AA-E.5">E.5</a>) behave in this manner. These will raise Constraint{"_"}Error if the resulting Last value is not in Stream{"_"}Element{"_"}Offset. This implies that the Stream{"_"}Element{"_"}Array passed to these subprograms should not have a lower bound of Stream{"_"}Element{"_"}Offset'First, because then a read of 0 elements would always raise Constraint{"_"}Error. A better choice of lower bound is 0 or 1. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>10/5_13.13.1</MarginText>
@@ -114,11 +120,11 @@ Note that there are some language-defined subprograms that fill part of a Stream
 <CodeBlock language="ada">
 package Ada.Streams.Storage{"\n"}   with Pure, Nonblocking is{"\n"}
 <MarginText>13/5_13.13.1</MarginText>
-   type Storage_Stream_Type is abstract new Root_Stream_Type with private;{"\n"}
+   type Storage{"_"}Stream{"_"}Type is abstract new Root{"_"}Stream{"_"}Type with private;{"\n"}
 <MarginText>14/5_13.13.1</MarginText>
-   function Element_Count (Stream : Storage_Stream_Type){"\n"}      return Stream_Element_Count is abstract;{"\n"}
+   function Element{"_"}Count (Stream : Storage{"_"}Stream{"_"}Type){"\n"}      return Stream{"_"}Element{"_"}Count is abstract;{"\n"}
 <MarginText>15/5_13.13.1</MarginText>
-   procedure Clear (Stream : in out Storage_Stream_Type) is abstract;{"\n"}
+   procedure Clear (Stream : in out Storage{"_"}Stream{"_"}Type) is abstract;{"\n"}
 <MarginText>16/5_13.13.1</MarginText>
 private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams.Storage;{"\n"}
 
@@ -131,24 +137,25 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams.Storag
 <CodeBlock language="ada">
 package Ada.Streams.Storage.Unbounded{"\n"}   with Prelaborated, Nonblocking, Global ={">"} in out synchronized is{"\n"}
 <MarginText>19/5_13.13.1</MarginText>
-   type Stream_Type is new Storage_Stream_Type with private{"\n"}      with Default_Initial_Condition ={">"}{"\n"}          Element_Count (Stream_Type) = 0;{"\n"}
+   type Stream{"_"}Type is new Storage{"_"}Stream{"_"}Type with private{"\n"}      with Default{"_"}Initial{"_"}Condition ={">"}{"\n"}          Element{"_"}Count (Stream{"_"}Type) = 0;{"\n"}
 <MarginText>20/5_13.13.1</MarginText>
-   overriding{"\n"}   procedure Read ({"\n"}      Stream : in out Stream_Type;{"\n"}      Item   : out Stream_Element_Array;{"\n"}      Last   : out Stream_Element_Offset){"\n"}      with Post ={">"}{"\n"}          (declare{"\n"}              Num_Read : constant Stream_Element_Count :={"\n"}                 Stream_Element_Count'Min{"\n"}                    (Element_Count(Stream)'Old, Item'Length);{"\n"}           begin{"\n"}              Last = Num_Read + Item'First - 1 and{"\n"}              Element_Count (Stream) ={"\n"}                 Element_Count (Stream)'Old - Num_Read);{"\n"}
+   overriding{"\n"}   procedure Read ({"\n"}      Stream : in out Stream{"_"}Type;{"\n"}      Item   : out Stream{"_"}Element{"_"}Array;{"\n"}      Last   : out Stream{"_"}Element{"_"}Offset){"\n"}      with Post ={">"}{"\n"}          (declare{"\n"}              Num{"_"}Read : constant Stream{"_"}Element{"_"}Count :={"\n"}                 Stream{"_"}Element{"_"}Count'Min{"\n"}                    (Element{"_"}Count(Stream)'Old, Item'Length);{"\n"}           begin{"\n"}              Last = Num{"_"}Read + Item'First - 1 and{"\n"}              Element{"_"}Count (Stream) ={"\n"}                 Element{"_"}Count (Stream)'Old - Num{"_"}Read);{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
 <MarginText>20.a/5_13.13.1</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Num_Read is the number of elements read; this is the minimum of Item'Length and the number of available elements. Last then is determined by that, and the Element_Count decreases by the number of elements read. <br /></Admonition>
+<strong></strong>Num{"_"}Read is the number of elements read; this is the minimum of Item'Length and the number of available elements. Last then is determined by that, and the Element{"_"}Count decreases by the number of elements read. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>21/5_13.13.1</MarginText>
 <CodeBlock language="ada">
-   overriding{"\n"}   procedure Write ({"\n"}      Stream : in out Stream_Type;{"\n"}      Item   : in Stream_Element_Array){"\n"}      with Post ={">"}{"\n"}         Element_Count (Stream) ={"\n"}         Element_Count (Stream)'Old + Item'Length;{"\n"}
+   overriding{"\n"}   procedure Write ({"\n"}      Stream : in out Stream{"_"}Type;{"\n"}      Item   : in Stream{"_"}Element{"_"}Array){"\n"}      with Post ={">"}{"\n"}         Element{"_"}Count (Stream) ={"\n"}         Element{"_"}Count (Stream)'Old + Item'Length;{"\n"}
 <MarginText>22/5_13.13.1</MarginText>
-   overriding{"\n"}   function Element_Count (Stream : Stream_Type){"\n"}      return Stream_Element_Count;{"\n"}
+   overriding{"\n"}   function Element{"_"}Count (Stream : Stream{"_"}Type){"\n"}      return Stream{"_"}Element{"_"}Count;{"\n"}
 <MarginText>23/5_13.13.1</MarginText>
-   overriding{"\n"}   procedure Clear (Stream : in out Stream_Type){"\n"}      with Post ={">"} Element_Count (Stream) = 0;{"\n"}
+   overriding{"\n"}   procedure Clear (Stream : in out Stream{"_"}Type){"\n"}      with Post ={">"} Element{"_"}Count (Stream) = 0;{"\n"}
 <MarginText>24/5_13.13.1</MarginText>
 private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams.Storage.Unbounded;{"\n"}
 
@@ -161,22 +168,22 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams.Storag
 <CodeBlock language="ada">
 package Ada.Streams.Storage.Bounded{"\n"}    with Pure, Nonblocking is{"\n"}
 <MarginText>27/5_13.13.1</MarginText>
-   type Stream_Type (Max_Elements : Stream_Element_Count){"\n"}      is new Storage_Stream_Type with private{"\n"}         with Default_Initial_Condition ={">"}{"\n"}            Element_Count (Stream_Type) = 0;{"\n"}
+   type Stream{"_"}Type (Max{"_"}Elements : Stream{"_"}Element{"_"}Count){"\n"}      is new Storage{"_"}Stream{"_"}Type with private{"\n"}         with Default{"_"}Initial{"_"}Condition ={">"}{"\n"}            Element{"_"}Count (Stream{"_"}Type) = 0;{"\n"}
 <MarginText>28/5_13.13.1</MarginText>
-   overriding{"\n"}   procedure Read ({"\n"}      Stream : in out Stream_Type;{"\n"}      Item   : out Stream_Element_Array;{"\n"}      Last   : out Stream_Element_Offset){"\n"}      with Post ={">"}{"\n"}          (declare{"\n"}              Num_Read : constant Stream_Element_Count :={"\n"}                 Stream_Element_Count'Min{"\n"}                    (Element_Count(Stream)'Old, Item'Length);{"\n"}           begin{"\n"}              Last = Num_Read + Item'First - 1 and{"\n"}              Element_Count (Stream) ={"\n"}                 Element_Count (Stream)'Old - Num_Read);{"\n"}
+   overriding{"\n"}   procedure Read ({"\n"}      Stream : in out Stream{"_"}Type;{"\n"}      Item   : out Stream{"_"}Element{"_"}Array;{"\n"}      Last   : out Stream{"_"}Element{"_"}Offset){"\n"}      with Post ={">"}{"\n"}          (declare{"\n"}              Num{"_"}Read : constant Stream{"_"}Element{"_"}Count :={"\n"}                 Stream{"_"}Element{"_"}Count'Min{"\n"}                    (Element{"_"}Count(Stream)'Old, Item'Length);{"\n"}           begin{"\n"}              Last = Num{"_"}Read + Item'First - 1 and{"\n"}              Element{"_"}Count (Stream) ={"\n"}                 Element{"_"}Count (Stream)'Old - Num{"_"}Read);{"\n"}
 <MarginText>29/5_13.13.1</MarginText>
-   overriding{"\n"}   procedure Write ({"\n"}      Stream : in out Stream_Type;{"\n"}      Item   : in Stream_Element_Array){"\n"}      with Pre ={">"}{"\n"}              Element_Count (Stream) + Item'Length {"<"}= Stream.Max_Elements{"\n"}              or else (raise Constraint_Error),{"\n"}           Post ={">"}{"\n"}              Element_Count (Stream) ={"\n"}              Element_Count (Stream)'Old + Item'Length;{"\n"}
+   overriding{"\n"}   procedure Write ({"\n"}      Stream : in out Stream{"_"}Type;{"\n"}      Item   : in Stream{"_"}Element{"_"}Array){"\n"}      with Pre ={">"}{"\n"}              Element{"_"}Count (Stream) + Item'Length {"<"}= Stream.Max{"_"}Elements{"\n"}              or else (raise Constraint{"_"}Error),{"\n"}           Post ={">"}{"\n"}              Element{"_"}Count (Stream) ={"\n"}              Element{"_"}Count (Stream)'Old + Item'Length;{"\n"}
 <MarginText>30/5_13.13.1</MarginText>
-   overriding{"\n"}   function Element_Count (Stream : Stream_Type){"\n"}      return Stream_Element_Count{"\n"}      with Post ={">"} Element_Count'Result {"<"}= Stream.Max_Elements;{"\n"}
+   overriding{"\n"}   function Element{"_"}Count (Stream : Stream{"_"}Type){"\n"}      return Stream{"_"}Element{"_"}Count{"\n"}      with Post ={">"} Element{"_"}Count'Result {"<"}= Stream.Max{"_"}Elements;{"\n"}
 <MarginText>31/5_13.13.1</MarginText>
-   overriding{"\n"}    procedure Clear (Stream : in out Stream_Type){"\n"}       with Post ={">"} Element_Count (Stream) = 0;{"\n"}
+   overriding{"\n"}    procedure Clear (Stream : in out Stream{"_"}Type){"\n"}       with Post ={">"} Element{"_"}Count (Stream) = 0;{"\n"}
 <MarginText>32/5_13.13.1</MarginText>
 private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams.Storage.Bounded;{"\n"}
 
 </CodeBlock>
 <MarginText>33/5_13.13.1</MarginText>
 <MarginInfo items={["AI12-0293-1"]} />
-<p>The Element_Count functions return the number of stream elements that are available for reading from the given stream.<br /></p>
+<p>The Element{"_"}Count functions return the number of stream elements that are available for reading from the given stream.<br /></p>
 
 <MarginText>34/5_13.13.1</MarginText>
 <MarginInfo items={["AI12-0293-1"]} />
@@ -191,13 +198,14 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams.Storag
 
 <MarginText>36/5_13.13.1</MarginText>
 <MarginInfo items={["AI95-00181-01", "AI12-0444-1"]} />
-<p>{"{"}<em>8652/0044</em>{"}"} If Stream_Element'Size is not a multiple of System.Storage_Unit, then the components of Stream_Element_Array will not be aliased. <br /></p>
+<p>{"{"}<em>8652/0044</em>{"}"} If Stream{"_"}Element'Size is not a multiple of System.Storage{"_"}Unit, then the components of Stream{"_"}Element{"_"}Array will not be aliased. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>36.a/2_13.13.1</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>If the Stream_Element'Size is less than the size of System.Storage_Unit, then components of Stream_Element_Array need not be aliased. This is necessary as the components of type Stream_Element size might not be addressable on the target architecture. <br /></Admonition>
+<strong></strong>If the Stream{"_"}Element'Size is less than the size of System.Storage{"_"}Unit, then components of Stream{"_"}Element{"_"}Array need not be aliased. This is necessary as the components of type Stream{"_"}Element size might not be addressable on the target architecture. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -205,37 +213,42 @@ private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Streams.Storag
 
 <MarginText>37/5_13.13.1</MarginText>
 <MarginInfo items={["AI12-0293-1"]} />
-<p>Streams.Storage.Bounded.Stream_Type objects should be implemented without implicit pointers or dynamic allocation.<br /></p>
+<p>Streams.Storage.Bounded.Stream{"_"}Type objects should be implemented without implicit pointers or dynamic allocation.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>37.a.1/5_13.13.1</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>Streams.Storage.Bounded.Stream_Type objects should be implemented without implicit pointers or dynamic allocation.<br /></Admonition>
+<strong></strong>Streams.Storage.Bounded.Stream{"_"}Type objects should be implemented without implicit pointers or dynamic allocation.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>37.a/5_13.13.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The Streams.Storage.Bounded package is provided in order to make available an alternative to the Streams.Storage.Unbounded package which gives more predictable memory usage. <br /></Admonition>
+<strong></strong>The Streams.Storage.Bounded package is provided in order to make available an alternative to the Streams.Storage.Unbounded package which gives more predictable memory usage. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38_13.13.1</MarginText>
 <Admonition type="aarm" aarm="note">
-NOTE 1   See <a href="../AA-A/AA-A.12#Subclause_A.12.1">A.12.1</a>, &ldquo;<a href="../AA-A/AA-A.12#Subclause_A.12.1">The Package Streams.Stream_IO</a>&rdquo; for an example of extending type Root_Stream_Type.<br /></Admonition>
+NOTE 1   See <a href="../AA-A/AA-A.12#Subclause_A.12.1">A.12.1</a>, &ldquo;<a href="../AA-A/AA-A.12#Subclause_A.12.1">The Package Streams.Stream_IO</a>&rdquo; for an example of extending type Root{"_"}Stream{"_"}Type.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>39/2_13.13.1</MarginText>
 <MarginInfo items={["AI95-00227-01"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 2   If the end of stream has been reached, and Item'First is Stream_Element_Offset'First, Read will raise Constraint_Error. <br /></Admonition>
+NOTE 2   If the end of stream has been reached, and Item'First is Stream{"_"}Element{"_"}Offset'First, Read will raise Constraint{"_"}Error. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>39.a/2_13.13.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Thus, Stream_Element_Arrays should start at 0 or 1, not Stream_Element_Offset'First. <br /></Admonition>
+<strong></strong>Thus, Stream{"_"}Element{"_"}Arrays should start at 0 or 1, not Stream{"_"}Element{"_"}Offset'First. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -247,7 +260,8 @@ NOTE 2   If the end of stream has been reached, and Item'First is Stream_Element
 <MarginText>39.b/2_13.13.1</MarginText>
 <MarginInfo items={["AI95-00161-01"]} />
 <Admonition type="aarm" aarm="correction">
-<strong>Amendment </strong> Added <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Preelaborable_Initialization to type Root_Stream_Type. <br /></Admonition>
+<strong>Amendment </strong> Added <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Preelaborable{"_"}Initialization to type Root{"_"}Stream{"_"}Type. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -259,14 +273,16 @@ NOTE 2   If the end of stream has been reached, and Item'First is Stream_Element
 <MarginText>39.c/2_13.13.1</MarginText>
 <MarginInfo items={["AI95-00181-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0044</em>{"}"} <strong>Corrigendum:</strong> Stream elements are aliased presuming that makes sense.<br /></Admonition>
+{"{"}<em>8652/0044</em>{"}"} <strong>Corrigendum:</strong> Stream elements are aliased presuming that makes sense.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>39.d/2_13.13.1</MarginText>
 <MarginInfo items={["AI95-00227-01"]} />
 <Admonition type="aarm" aarm="note">
-Fixed the wording for Read to properly define the result in Last when no stream elements are transfered. <br /></Admonition>
+Fixed the wording for Read to properly define the result in Last when no stream elements are transfered. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -278,7 +294,8 @@ Fixed the wording for Read to properly define the result in Last when no stream 
 <MarginText>39.e/5_13.13.1</MarginText>
 <MarginInfo items={["AI12-0293-1"]} />
 <Admonition type="aarm" aarm="note">
-Package Ada.Streams.Storage and its children are new. <br /></Admonition>
+Package Ada.Streams.Storage and its children are new. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_13.13.2"></a>
@@ -297,39 +314,42 @@ Package Ada.Streams.Storage and its children are new. <br /></Admonition>
 <p>For every subtype S of an elementary type <em>T</em>, the following representation attribute is defined: <br /></p>
 
 <MarginText>1.2/3_13.13.2</MarginText>
-<dt><br/>S'Stream_Size</dt>
+<dt><br/>S'Stream{"_"}Size</dt>
 <MarginInfo items={["AI95-00270-01", "AI05-0194-1"]} />
 <dl>
 <dd>Denotes the number of bits read from or written to a stream by the default implementations of S'Read and S'Write. Hence, the number of stream elements required per item of elementary type <em>T</em> is:<br /></dd>
 </dl>
 <MarginText>1.3/2_13.13.2</MarginText>
 <CodeBlock language="ada">
-T'Stream_Size / Ada.Streams.Stream_Element'Size{"\n"}
+T'Stream{"_"}Size / Ada.Streams.Stream{"_"}Element'Size{"\n"}
 
 </CodeBlock>
 <MarginText>1.4/2_13.13.2</MarginText>
 <dl>
-<dd>The value of this attribute is of type <em>universal_integer</em> and is a multiple of Stream_Element'Size.<br /></dd>
+<dd>The value of this attribute is of type <em>universal{"_"}integer</em> and is a multiple of Stream{"_"}Element'Size.<br /></dd>
 <MarginText>1.5/2_13.13.2</MarginText>
-<dd>Stream_Size may be specified for first subtypes via an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>; the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of such a clause shall be static, nonnegative, and a multiple of Stream_Element'Size.<br /></dd>
+<dd>Stream{"_"}Size may be specified for first subtypes via an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>; the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> of such a clause shall be static, nonnegative, and a multiple of Stream{"_"}Element'Size.<br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>1.a/3_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Stream_Size: </strong>Size in bits used to represent elementary objects in a stream.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>Stream{"_"}Size: </strong>Size in bits used to represent elementary objects in a stream.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>1.b/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Stream_Size is a type-related attribute (see <a href="../AA-13/AA-13.1">13.1</a>). <br /></Admonition>
+<strong></strong>Stream{"_"}Size is a type-related attribute (see <a href="../AA-13/AA-13.1">13.1</a>). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>1.c/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0194-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The value of S'Stream_Size is unaffected by the presence or absence of any <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>s or <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>s specifying the Read or Write attributes of any ancestor of S. S'Stream_Size is defined in terms of the behavior of the default implementations of S'Read and S'Write even if those default implementations are overridden. <br /></Admonition>
+<strong></strong>The value of S'Stream{"_"}Size is unaffected by the presence or absence of any <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>s or <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>s specifying the Read or Write attributes of any ancestor of S. S'Stream{"_"}Size is defined in terms of the behavior of the default implementations of S'Read and S'Write even if those default implementations are overridden. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -337,46 +357,51 @@ T'Stream_Size / Ada.Streams.Stream_Element'Size{"\n"}
 
 <MarginText>1.6/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00270-01"]} />
-<p>If not specified, the value of Stream_Size for an elementary type should be the number of bits that corresponds to the minimum number of stream elements required by the first subtype of the type, rounded up to the nearest factor or multiple of the word size that is also a multiple of the stream element size. <br /></p>
+<p>If not specified, the value of Stream{"_"}Size for an elementary type should be the number of bits that corresponds to the minimum number of stream elements required by the first subtype of the type, rounded up to the nearest factor or multiple of the word size that is also a multiple of the stream element size. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>1.d/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>If not specified, the value of Stream_Size for an elementary type should be the number of bits that corresponds to the minimum number of stream elements required by the first subtype of the type, rounded up to the nearest factor or multiple of the word size that is also a multiple of the stream element size.<br /></Admonition>
+<strong></strong>If not specified, the value of Stream{"_"}Size for an elementary type should be the number of bits that corresponds to the minimum number of stream elements required by the first subtype of the type, rounded up to the nearest factor or multiple of the word size that is also a multiple of the stream element size.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>1.e/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00270-01"]} />
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>This is  because we want to allow implementations to remain compatible with their Ada 95 implementations, which may have a different handling of the number of stream elements. Users can always specify Stream_Size if they need a specific number of stream elements. <br /></Admonition>
+<strong></strong>This is  because we want to allow implementations to remain compatible with their Ada 95 implementations, which may have a different handling of the number of stream elements. Users can always specify Stream{"_"}Size if they need a specific number of stream elements. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>1.7/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00270-01"]} />
-<p>The recommended level of support for the Stream_Size attribute is: <br /></p>
+<p>The recommended level of support for the Stream{"_"}Size attribute is: <br /></p>
 
 <MarginText>1.8/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00270-01"]} />
 <ul>
-<li>A Stream_Size clause should be supported for a discrete or fixed point type <em>T</em> if the specified Stream_Size is a multiple of Stream_Element'Size and is no less than the size of the first subtype of <em>T</em>, and no greater than the size of the largest type of the same elementary class (signed integer, modular integer, enumeration, ordinary fixed point, or decimal fixed point). <br /></li>
+<li>A Stream{"_"}Size clause should be supported for a discrete or fixed point type <em>T</em> if the specified Stream{"_"}Size is a multiple of Stream{"_"}Element'Size and is no less than the size of the first subtype of <em>T</em>, and no greater than the size of the largest type of the same elementary class (signed integer, modular integer, enumeration, ordinary fixed point, or decimal fixed point). <br /></li>
 </ul>
 <AnnotatedOnly>
 <MarginText>1.f/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>The recommended level of support for the Stream_Size attribute should be followed.<br /></Admonition>
+<strong></strong>The recommended level of support for the Stream{"_"}Size attribute should be followed.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>1.g/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>There are no requirements beyond supporting confirming Stream_Size clauses for floating point and access types. Floating point and access types usually only have a handful of defined formats, streaming anything else makes no sense for them.<br /></Admonition>
+<strong></strong>There are no requirements beyond supporting confirming Stream{"_"}Size clauses for floating point and access types. Floating point and access types usually only have a handful of defined formats, streaming anything else makes no sense for them.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>1.h/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-For discrete and fixed point types, this may require support for sizes other than the &ldquo;natural&rdquo; ones. For instance, on a typical machine with 32-bit integers and a Stream_Element'Size of 8, setting Stream_Size to 24 must be supported. This is required as such formats can be useful for interoperability with unusual machines, and there is no difficulty with the implementation (drop extra bits on output, sign extend on input). <br /></Admonition>
+For discrete and fixed point types, this may require support for sizes other than the &ldquo;natural&rdquo; ones. For instance, on a typical machine with 32-bit integers and a Stream{"_"}Element'Size of 8, setting Stream{"_"}Size to 24 must be supported. This is required as such formats can be useful for interoperability with unusual machines, and there is no difficulty with the implementation (drop extra bits on output, sign extend on input). <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -393,7 +418,7 @@ For discrete and fixed point types, this may require support for sizes other tha
 <MarginText>4/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00441-01"]} />
 <CodeBlock language="ada">
-procedure S'Write({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item : in T){"\n"}
+procedure S'Write({"\n"}   Stream : not null access Ada.Streams.Root{"_"}Stream{"_"}Type'Class;{"\n"}   Item : in T){"\n"}
 
 </CodeBlock>
 <MarginText>5_13.13.2</MarginText>
@@ -406,7 +431,7 @@ procedure S'Write({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type
 <MarginText>7/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00441-01"]} />
 <CodeBlock language="ada">
-procedure S'Read({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item : out T){"\n"}
+procedure S'Read({"\n"}   Stream : not null access Ada.Streams.Root{"_"}Stream{"_"}Type'Class;{"\n"}   Item : out T){"\n"}
 
 </CodeBlock>
 <MarginText>8_13.13.2</MarginText>
@@ -423,12 +448,13 @@ procedure S'Read({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'
 
 <MarginText>9/5_13.13.2</MarginText>
 <MarginInfo items={["AI95-00108-01", "AI95-00195-01", "AI95-00251-01", "AI95-00270-01", "AI05-0139-2", "AI12-0191-1", "AI12-0419-1"]} />
-<p>{"{"}<em>8652/0040</em>{"}"} For nonderived elementary types, Read reads (and Write writes) the number of stream elements implied by the Stream_Size for the type <em>T</em>; the representation of those stream elements is implementation defined. For nonderived composite types, the Write or Read attribute for each component (excluding those, if any, that are not components of the nominal type of the object) is called in canonical order, which is last dimension varying fastest for an array (unless the convention of the array is Fortran, in which case it is first dimension varying fastest), and positional aggregate order for a record. Bounds are not included in the stream if <em>T</em> is an array type. If <em>T</em> is a discriminated type, discriminants are included only if they have defaults. If <em>T</em> is a tagged type, the tag is not included. <br /></p>
+<p>{"{"}<em>8652/0040</em>{"}"} For nonderived elementary types, Read reads (and Write writes) the number of stream elements implied by the Stream{"_"}Size for the type <em>T</em>; the representation of those stream elements is implementation defined. For nonderived composite types, the Write or Read attribute for each component (excluding those, if any, that are not components of the nominal type of the object) is called in canonical order, which is last dimension varying fastest for an array (unless the convention of the array is Fortran, in which case it is first dimension varying fastest), and positional aggregate order for a record. Bounds are not included in the stream if <em>T</em> is an array type. If <em>T</em> is a discriminated type, discriminants are included only if they have defaults. If <em>T</em> is a tagged type, the tag is not included. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>9.a/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The contents of the stream elements read and written by the Read and Write attributes of elementary types.<br /></Admonition>
+<strong></strong>The contents of the stream elements read and written by the Read and Write attributes of elementary types.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>9.1/5_13.13.2</MarginText>
@@ -439,7 +465,8 @@ procedure S'Read({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'
 <MarginText>9.a.1/5_13.13.2</MarginText>
 <MarginInfo items={["AI12-0419-1"]} />
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>The default implementation of a stream-oriented attribute might not be well-defined in cases where the attribute is never available anywhere in the scope of the type. In such cases, the attribute cannot be called and is defined (far below) to raise Program_Error. <br /></Admonition>
+<strong></strong>The default implementation of a stream-oriented attribute might not be well-defined in cases where the attribute is never available anywhere in the scope of the type. In such cases, the attribute cannot be called and is defined (far below) to raise Program{"_"}Error. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>9.2/5_13.13.2</MarginText>
@@ -449,40 +476,45 @@ procedure S'Read({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'
 <AnnotatedOnly>
 <MarginText>9.b_13.13.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>A discriminant with a default value is treated simply as a component of the object. On the other hand, an array bound or a discriminant without a default value, is treated as &ldquo;descriptor&rdquo; or &ldquo;dope&rdquo; that must be provided in order to create the object and thus is logically separate from the regular components. Such &ldquo;descriptor&rdquo; data are written by 'Output and produced as part of the delivered result by the 'Input function, but they are not written by 'Write nor read by 'Read. A tag is like a discriminant without a default.<br /></Admonition>
+<strong></strong>A discriminant with a default value is treated simply as a component of the object. On the other hand, an array bound or a discriminant without a default value, is treated as &ldquo;descriptor&rdquo; or &ldquo;dope&rdquo; that must be provided in order to create the object and thus is logically separate from the regular components. Such &ldquo;descriptor&rdquo; data are written by 'Output and produced as part of the delivered result by the 'Input function, but they are not written by 'Write nor read by 'Read. A tag is like a discriminant without a default.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>9.b.1/1_13.13.2</MarginText>
 <MarginInfo items={["AI95-00108-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0040</em>{"}"} For limited type extensions, we must have a definition of 'Read and 'Write if the parent type has one, as it is possible to make a dispatching call through the attributes. The rule is designed to automatically do the right thing in as many cases as possible.<br /></Admonition>
+{"{"}<em>8652/0040</em>{"}"} For limited type extensions, we must have a definition of 'Read and 'Write if the parent type has one, as it is possible to make a dispatching call through the attributes. The rule is designed to automatically do the right thing in as many cases as possible.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>9.b.2/1_13.13.2</MarginText>
 <MarginInfo items={["AI95-00251-01"]} />
 <Admonition type="aarm" aarm="note">
-Similarly, a type that has a progenitor with an available attribute must also have that attribute, for the same reason.<br /></Admonition>
+Similarly, a type that has a progenitor with an available attribute must also have that attribute, for the same reason.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>9.b.3/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0023-1"]} />
 <Admonition type="aarm" aarm="note">
-The semantics of S'Read for a discriminated type with defaults involves an anonymous object so that the point of required initialization and finalization is well-defined, especially for objects that change shape and have controlled components. The creation of this anonymous object often can be omitted (see the Implementation Permissions below). <br /></Admonition>
+The semantics of S'Read for a discriminated type with defaults involves an anonymous object so that the point of required initialization and finalization is well-defined, especially for objects that change shape and have controlled components. The creation of this anonymous object often can be omitted (see the Implementation Permissions below). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>9.c/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00195-01"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>For a composite object, the subprogram denoted by the Write or Read attribute of each component is called, whether it is the default or is user-specified. Implementations are allowed to optimize these calls (see below), presuming the properties of the attributes are preserved. <br /></Admonition>
+<strong></strong>For a composite object, the subprogram denoted by the Write or Read attribute of each component is called, whether it is the default or is user-specified. Implementations are allowed to optimize these calls (see below), presuming the properties of the attributes are preserved. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>9.3/5_13.13.2</MarginText>
 <MarginInfo items={["AI95-00270-01", "AI05-0264-1", "AI12-0419-1"]} />
-<p>Constraint_Error is raised by the predefined Write attribute if the value of the elementary item is outside the range of values representable using Stream_Size bits. For a signed integer type, an enumeration type, or a fixed point type, the range is unsigned only if the integer code for the lower bound of the first subtype is nonnegative, and a (symmetric) signed range that covers all values of the first subtype would require more than Stream_Size bits; otherwise, the range is signed.<br /></p>
+<p>Constraint{"_"}Error is raised by the predefined Write attribute if the value of the elementary item is outside the range of values representable using Stream{"_"}Size bits. For a signed integer type, an enumeration type, or a fixed point type, the range is unsigned only if the integer code for the lower bound of the first subtype is nonnegative, and a (symmetric) signed range that covers all values of the first subtype would require more than Stream{"_"}Size bits; otherwise, the range is signed.<br /></p>
 
 <MarginText>10_13.13.2</MarginText>
 <p>For every subtype S'Class of a class-wide type <em>T</em>'Class: <br /></p>
@@ -495,7 +527,7 @@ The semantics of S'Read for a discriminated type with defaults involves an anony
 <MarginText>12/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00441-01"]} />
 <CodeBlock language="ada">
-procedure S'Class'Write({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item   : in T'Class){"\n"}
+procedure S'Class'Write({"\n"}   Stream : not null access Ada.Streams.Root{"_"}Stream{"_"}Type'Class;{"\n"}   Item   : in T'Class){"\n"}
 
 </CodeBlock>
 <MarginText>13_13.13.2</MarginText>
@@ -508,7 +540,7 @@ procedure S'Class'Write({"\n"}   Stream : not null access Ada.Streams.Root_Strea
 <MarginText>15/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00441-01"]} />
 <CodeBlock language="ada">
-procedure S'Class'Read({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item : out T'Class){"\n"}
+procedure S'Class'Read({"\n"}   Stream : not null access Ada.Streams.Root{"_"}Stream{"_"}Type'Class;{"\n"}   Item : out T'Class){"\n"}
 
 </CodeBlock>
 <MarginText>16_13.13.2</MarginText>
@@ -518,7 +550,8 @@ procedure S'Class'Read({"\n"}   Stream : not null access Ada.Streams.Root_Stream
 <AnnotatedOnly>
 <MarginText>16.a_13.13.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>It is necessary to have class-wide versions of Read and Write in order to avoid generic contract model violations; in a generic, we don't necessarily know at compile time whether a given type is specific or class-wide. <br /></Admonition>
+<strong></strong>It is necessary to have class-wide versions of Read and Write in order to avoid generic contract model violations; in a generic, we don't necessarily know at compile time whether a given type is specific or class-wide. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <p><em>Paragraph 17 was deleted.</em> <br /></p>
@@ -537,7 +570,7 @@ procedure S'Class'Read({"\n"}   Stream : not null access Ada.Streams.Root_Stream
 <MarginText>20/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00441-01"]} />
 <CodeBlock language="ada">
-procedure S'Output({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item : in T){"\n"}
+procedure S'Output({"\n"}   Stream : not null access Ada.Streams.Root{"_"}Stream{"_"}Type'Class;{"\n"}   Item : in T){"\n"}
 
 </CodeBlock>
 <MarginText>21_13.13.2</MarginText>
@@ -547,7 +580,8 @@ procedure S'Output({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Typ
 <AnnotatedOnly>
 <MarginText>21.a_13.13.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Note that the bounds are included even for an array type whose first subtype is constrained. <br /></Admonition>
+<strong></strong>Note that the bounds are included even for an array type whose first subtype is constrained. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>22_13.13.2</MarginText>
@@ -558,7 +592,7 @@ procedure S'Output({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Typ
 <MarginText>23/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00441-01"]} />
 <CodeBlock language="ada">
-function S'Input({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class){"\n"}   return T{"\n"}
+function S'Input({"\n"}   Stream : not null access Ada.Streams.Root{"_"}Stream{"_"}Type'Class){"\n"}   return T{"\n"}
 
 </CodeBlock>
 <MarginText>24_13.13.2</MarginText>
@@ -584,7 +618,8 @@ function S'Input({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'
 <AnnotatedOnly>
 <MarginText>27.a/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>For an abstract type <em>T</em>, S'Input can be called in a dispatching call, or passed to an abstract formal subprogram. But it cannot be used in nondispatching contexts, because we don't allow objects of abstract types to exist. The designation of this function as abstract has no impact on descendants of <em>T</em>, as <em>T</em>'Input is not inherited for tagged types, but rather recreated (and the default implementation of <em>T</em>'Input calls <em>T</em>'Read, not the parent type's <em>T</em>'Input). Note that <em>T</em>'Input cannot be specified in this case, as any function with the proper profile is necessarily abstract, and specifying abstract subprograms in an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> is illegal. <br /></Admonition>
+<strong></strong>For an abstract type <em>T</em>, S'Input can be called in a dispatching call, or passed to an abstract formal subprogram. But it cannot be used in nondispatching contexts, because we don't allow objects of abstract types to exist. The designation of this function as abstract has no impact on descendants of <em>T</em>, as <em>T</em>'Input is not inherited for tagged types, but rather recreated (and the default implementation of <em>T</em>'Input calls <em>T</em>'Read, not the parent type's <em>T</em>'Input). Note that <em>T</em>'Input cannot be specified in this case, as any function with the proper profile is necessarily abstract, and specifying abstract subprograms in an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> is illegal. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>28_13.13.2</MarginText>
@@ -598,19 +633,20 @@ function S'Input({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'
 <MarginText>30/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00441-01"]} />
 <CodeBlock language="ada">
-procedure S'Class'Output({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}   Item   : in T'Class){"\n"}
+procedure S'Class'Output({"\n"}   Stream : not null access Ada.Streams.Root{"_"}Stream{"_"}Type'Class;{"\n"}   Item   : in T'Class){"\n"}
 
 </CodeBlock>
 <MarginText>31/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00344-01"]} />
 <dl>
-<dd>First writes the external tag of <em>Item</em> to <em>Stream</em> (by calling String'Output(<em>Stream</em>, Tags.External_Tag(<em>Item</em>'Tag)) &mdash; see <a href="../AA-3/AA-3.9">3.9</a>) and then dispatches to the subprogram denoted by the Output attribute of the specific type identified by the tag. Tag_Error is raised if the tag of Item identifies a type declared at an accessibility level deeper than that of S. <br /></dd>
+<dd>First writes the external tag of <em>Item</em> to <em>Stream</em> (by calling String'Output(<em>Stream</em>, Tags.External{"_"}Tag(<em>Item</em>'Tag)) &mdash; see <a href="../AA-3/AA-3.9">3.9</a>) and then dispatches to the subprogram denoted by the Output attribute of the specific type identified by the tag. Tag{"_"}Error is raised if the tag of Item identifies a type declared at an accessibility level deeper than that of S. <br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>31.a/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00344-01"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>We raise Tag_Error here for nested types as such a type cannot be successfully read with S'Class'Input, and it doesn't make sense to allow writing a value that cannot be read. <br /></Admonition>
+<strong></strong>We raise Tag{"_"}Error here for nested types as such a type cannot be successfully read with S'Class'Input, and it doesn't make sense to allow writing a value that cannot be read. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>32_13.13.2</MarginText>
@@ -621,53 +657,57 @@ procedure S'Class'Output({"\n"}   Stream : not null access Ada.Streams.Root_Stre
 <MarginText>33/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00441-01"]} />
 <CodeBlock language="ada">
-function S'Class'Input({"\n"}   Stream : not null access Ada.Streams.Root_Stream_Type'Class){"\n"}   return T'Class{"\n"}
+function S'Class'Input({"\n"}   Stream : not null access Ada.Streams.Root{"_"}Stream{"_"}Type'Class){"\n"}   return T'Class{"\n"}
 
 </CodeBlock>
 <MarginText>34/5_13.13.2</MarginText>
 <MarginInfo items={["AI95-00279-01", "AI95-00344-01", "AI05-0109-1", "AI12-0439-1"]} />
 <dl>
-<dd>First reads the external tag from <em>Stream</em> and determines the corresponding internal tag (by calling Tags.Descendant_Tag(String'Input(<em>Stream</em>), S'Tag) which can raise Tag_Error &mdash; see <a href="../AA-3/AA-3.9">3.9</a>) and then dispatches to the subprogram denoted by the Input attribute of the specific type identified by the internal tag; returns that result. If the specific type identified by the internal tag is abstract, Constraint_Error is raised.<br /></dd>
+<dd>First reads the external tag from <em>Stream</em> and determines the corresponding internal tag (by calling Tags.Descendant{"_"}Tag(String'Input(<em>Stream</em>), S'Tag) which can raise Tag{"_"}Error &mdash; see <a href="../AA-3/AA-3.9">3.9</a>) and then dispatches to the subprogram denoted by the Input attribute of the specific type identified by the internal tag; returns that result. If the specific type identified by the internal tag is abstract, Constraint{"_"}Error is raised.<br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>34.a/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0109-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Descendant_Tag will ensure that the tag it returns is covered by T'Class; Tag_Error will be raised if it would not cover T'Class. <br /></Admonition>
+<strong></strong>Descendant{"_"}Tag will ensure that the tag it returns is covered by T'Class; Tag{"_"}Error will be raised if it would not cover T'Class. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>35/3_13.13.2</MarginText>
 <MarginInfo items={["AI95-00195-01", "AI05-0228-1"]} />
-<p>In the default implementation of Read and Input for a composite type, for each scalar component that is a discriminant or that has an implicit initial value, a check is made that the value returned by Read for the component belongs to its subtype. Constraint_Error is raised if this check fails. For other scalar components, no check is made. For each component that is of an access type, if the implementation can detect that the value returned by Read for the component is not a value of its subtype, Constraint_Error is raised. If the value is not a value of its subtype and this error is not detected, the component has an abnormal value, and erroneous execution can result (see <a href="../AA-13/AA-13.9#Subclause_13.9.1">13.9.1</a>). In the default implementation of Read for a composite type with defaulted discriminants, if the actual parameter of Read is constrained, a check is made that the discriminants read from the stream are equal to those of the actual parameter. Constraint_Error is raised if this check fails.<br /></p>
+<p>In the default implementation of Read and Input for a composite type, for each scalar component that is a discriminant or that has an implicit initial value, a check is made that the value returned by Read for the component belongs to its subtype. Constraint{"_"}Error is raised if this check fails. For other scalar components, no check is made. For each component that is of an access type, if the implementation can detect that the value returned by Read for the component is not a value of its subtype, Constraint{"_"}Error is raised. If the value is not a value of its subtype and this error is not detected, the component has an abnormal value, and erroneous execution can result (see <a href="../AA-13/AA-13.9#Subclause_13.9.1">13.9.1</a>). In the default implementation of Read for a composite type with defaulted discriminants, if the actual parameter of Read is constrained, a check is made that the discriminants read from the stream are equal to those of the actual parameter. Constraint{"_"}Error is raised if this check fails.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>35.a/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0228-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The check for scalar components that have an implicit initial value is to preserve our Language Design Principle that all objects that have an implicit initial value do not become "deinitialized". <br /></Admonition>
+<strong></strong>The check for scalar components that have an implicit initial value is to preserve our Language Design Principle that all objects that have an implicit initial value do not become "deinitialized". <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>35.b/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0228-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>A scalar component can have an implicit initial value if it has a default_expression, if the component's type has the Default_Value aspect specified, or if the component is that of an array type that has the Default_Component_Value aspect specified. <br /></Admonition>
+<strong></strong>A scalar component can have an implicit initial value if it has a default{"_"}expression, if the component's type has the Default{"_"}Value aspect specified, or if the component is that of an array type that has the Default{"_"}Component{"_"}Value aspect specified. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>35.c/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0228-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>To be honest: </strong>An implementation should always be able to detect the error for a null value read into a component of an access subtype with a null exclusion; the "if the implementation can detect" is intended to cover nonnull access values. <br /></Admonition>
+<strong>To be honest: </strong>An implementation should always be able to detect the error for a null value read into a component of an access subtype with a null exclusion; the "if the implementation can detect" is intended to cover nonnull access values. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>36/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00195-01"]} />
-<p>It is unspecified at which point and in which order these checks are performed. In particular, if Constraint_Error is raised due to the failure of one of these checks, it is unspecified how many stream elements have been read from the stream.<br /></p>
+<p>It is unspecified at which point and in which order these checks are performed. In particular, if Constraint{"_"}Error is raised due to the failure of one of these checks, it is unspecified how many stream elements have been read from the stream.<br /></p>
 
 <MarginText>37/1_13.13.2</MarginText>
 <MarginInfo items={["AI95-00132-01"]} />
-<p>{"{"}<em>8652/0045</em>{"}"} In the default implementation of Read and Input for a type, End_Error is raised if the end of the stream is reached before the reading of a value of the type is completed.<br /></p>
+<p>{"{"}<em>8652/0045</em>{"}"} In the default implementation of Read and Input for a type, End{"_"}Error is raised if the end of the stream is reached before the reading of a value of the type is completed.<br /></p>
 
 <MarginText>37.1/5_13.13.2</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0396-1"]} />
@@ -676,7 +716,8 @@ function S'Class'Input({"\n"}   Stream : not null access Ada.Streams.Root_Stream
 <AnnotatedOnly>
 <MarginText>37.a/5_13.13.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>If the default implementation of a stream-oriented attribute <em>A</em> for a composite type would call other stream-oriented attribute(s) whose Global aspect was not allowed by the Global aspect of<em>A</em>, then the Legality Rules of <a href="../AA-6/AA-6.1#Subclause_6.1.2">6.1.2</a> are violated and the type declaration is illegal. If the stream-oriented attribute <em>A</em> is overridden, then the default implementation is not created and this check is not made. A similar ramification applies to the Nonblocking aspect of default implementation of a stream-oriented attribute. <br /></Admonition>
+<strong></strong>If the default implementation of a stream-oriented attribute <em>A</em> for a composite type would call other stream-oriented attribute(s) whose Global aspect was not allowed by the Global aspect of<em>A</em>, then the Legality Rules of <a href="../AA-6/AA-6.1#Subclause_6.1.2">6.1.2</a> are violated and the type declaration is illegal. If the stream-oriented attribute <em>A</em> is overridden, then the default implementation is not created and this check is not made. A similar ramification applies to the Nonblocking aspect of default implementation of a stream-oriented attribute. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>38/5_13.13.2</MarginText>
@@ -687,56 +728,64 @@ function S'Class'Input({"\n"}   Stream : not null access Ada.Streams.Root_Stream
 <MarginText>38.a/4_13.13.2</MarginText>
 <MarginInfo items={["AI95-00195-01", "AI12-0106-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>We need the last sentence to override the blanket rule given in <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a> that aspect'Class applies to the type and all descendants. <br /></Admonition>
+<strong></strong>We need the last sentence to override the blanket rule given in <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a> that aspect'Class applies to the type and all descendants. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38.a.1/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00108-01", "AI95-00195-01"]} />
 <Admonition type="aarm" aarm="note">
-<em>This paragraph was deleted.</em>{"{"}<em>8652/0040</em>{"}"} <br /></Admonition>
+<em>This paragraph was deleted.</em>{"{"}<em>8652/0040</em>{"}"} <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38.a.2/4_13.13.2</MarginText>
 <MarginInfo items={["AI12-0121-1"]} />
 <Admonition type="aarm" aarm="proof">
-<strong></strong><a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a> says that all operational attributes can be specified with an aspect_specification. <br /></Admonition>
+<strong></strong><a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a> says that all operational attributes can be specified with an aspect{"_"}specification. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38.a.3/4_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Read'Class: </strong>Procedure to read a value from a stream for the class-wide type associated with a given type.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>Read'Class: </strong>Procedure to read a value from a stream for the class-wide type associated with a given type.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38.a.4/4_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Write'Class: </strong>Procedure to write a value to a stream for a the class-wide type associated with a given type.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>Write'Class: </strong>Procedure to write a value to a stream for a the class-wide type associated with a given type.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38.a.5/4_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Input'Class: </strong>Function to read a value from a stream for a the class-wide type associated with a given type, including any bounds and discriminants.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>Input'Class: </strong>Function to read a value from a stream for a the class-wide type associated with a given type, including any bounds and discriminants.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38.a.6/4_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Output'Class: </strong>Procedure to write a value to a stream for a the class-wide type associated with a given type, including any bounds and discriminants.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>Output'Class: </strong>Procedure to write a value to a stream for a the class-wide type associated with a given type, including any bounds and discriminants.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>38.1/4_13.13.2</MarginText>
 <MarginInfo items={["AI12-0121-1"]} />
-<p>The subprogram name given in such an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> or <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> shall statically denote a subprogram that is not an abstract subprogram. Furthermore, if a specific stream-oriented attribute is specified for an interface type, the subprogram name given in the <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> or <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> shall statically denote a null procedure.<br /></p>
+<p>The subprogram name given in such an <code><a href="../AA-13/AA-13.3#S0349">attribute{"_"}definition{"_"}clause</a></code> or <code><a href="../AA-13/AA-13.1#S0346">aspect{"_"}specification</a></code> shall statically denote a subprogram that is not an abstract subprogram. Furthermore, if a specific stream-oriented attribute is specified for an interface type, the subprogram name given in the <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> or <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> shall statically denote a null procedure.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>38.b/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00251-01"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Stream attributes (other than Input) are always null procedures for interface types (they have no components). We need to allow explicit setting of the Read and Write attributes in order that the class-wide attributes like LI'Class'Input can be made available. (In that case, any descendant of the interface type would require available attributes.) But we don't allow any concrete implementation because these don't participate in extensions (unless the interface is the parent type). If we didn't ban concrete implementations, the order of declaration of a pair of interfaces would become significant. For example, if Int1 and Int2 are interfaces with concrete implementations of 'Read, then the following declarations would have different implementations for 'Read: <br /></Admonition>
+<strong></strong>Stream attributes (other than Input) are always null procedures for interface types (they have no components). We need to allow explicit setting of the Read and Write attributes in order that the class-wide attributes like LI'Class'Input can be made available. (In that case, any descendant of the interface type would require available attributes.) But we don't allow any concrete implementation because these don't participate in extensions (unless the interface is the parent type). If we didn't ban concrete implementations, the order of declaration of a pair of interfaces would become significant. For example, if Int1 and Int2 are interfaces with concrete implementations of 'Read, then the following declarations would have different implementations for 'Read: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -749,44 +798,51 @@ type Con1 is new Int1 and Int2 with null record;{"\n"}type Con2 is new Int2 and 
 <AnnotatedOnly>
 <MarginText>38.d/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-This would violate our design principle that the order of the specification of the interfaces in a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> doesn't matter. <br /></Admonition>
+This would violate our design principle that the order of the specification of the interfaces in a <code><a href="../AA-3/AA-3.4#S0035">derived_type_definition</a></code> doesn't matter. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38.e/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The Input attribute cannot be specified for an interface. As it is a function, a null procedure is impossible; a concrete function is not possible anyway as any function returning an abstract type must be abstract. And we don't allow specifying stream attributes to be abstract subprograms. This has no impact, as the availability of Int'Class'Input (where Int is a limited interface) depends on whether Int'Read (not Int'Input) is specified. There is no reason to allow Int'Output to be specified, either, but there is equally no reason to disallow it, so we don't have a special rule for that. <br /></Admonition>
+<strong></strong>The Input attribute cannot be specified for an interface. As it is a function, a null procedure is impossible; a concrete function is not possible anyway as any function returning an abstract type must be abstract. And we don't allow specifying stream attributes to be abstract subprograms. This has no impact, as the availability of Int'Class'Input (where Int is a limited interface) depends on whether Int'Read (not Int'Input) is specified. There is no reason to allow Int'Output to be specified, either, but there is equally no reason to disallow it, so we don't have a special rule for that. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38.f/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00195-01"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Limited types generally do not have default implementations of the stream-oriented attributes. The rules defining when a stream-oriented attribute is available (see below) determine when an attribute of a limited type is in fact well defined and usable. The rules are designed to maximize the number of cases in which the attributes are usable. For instance, when the language provides a default implementation of an attribute for a limited type based on a specified attribute for the parent type, we want to be able to call that attribute. <br /></Admonition>
+<strong></strong>Limited types generally do not have default implementations of the stream-oriented attributes. The rules defining when a stream-oriented attribute is available (see below) determine when an attribute of a limited type is in fact well defined and usable. The rules are designed to maximize the number of cases in which the attributes are usable. For instance, when the language provides a default implementation of an attribute for a limited type based on a specified attribute for the parent type, we want to be able to call that attribute. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38.g/3_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Read: </strong>Procedure to read a value from a stream for a given type.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>Read: </strong>Procedure to read a value from a stream for a given type.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38.h/3_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Write: </strong>Procedure to write a value to a stream for a given type.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>Write: </strong>Procedure to write a value to a stream for a given type.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38.i/3_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Input: </strong>Function to read a value from a stream for a given type, including any bounds and discriminants.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>Input: </strong>Function to read a value from a stream for a given type, including any bounds and discriminants.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>38.j/3_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Output: </strong>Procedure to write a value to a stream for a given type, including any bounds and discriminants.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>Output: </strong>Procedure to write a value to a stream for a given type, including any bounds and discriminants.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>39/2_13.13.2</MarginText>
@@ -802,7 +858,8 @@ This would violate our design principle that the order of the specification of t
 <AnnotatedOnly>
 <MarginText>41.a/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>In this case, the language provides a well-defined default implementation, which we want to be able to call. <br /></Admonition>
+<strong></strong>In this case, the language provides a well-defined default implementation, which we want to be able to call. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>42/5_13.13.2</MarginText>
@@ -814,7 +871,8 @@ This would violate our design principle that the order of the specification of t
 <MarginText>42.a/5_13.13.2</MarginText>
 <MarginInfo items={["AI12-0419-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>Again, the language provides a default implementation, which we want to be able to call. <br /></Admonition>
+<strong></strong>Again, the language provides a default implementation, which we want to be able to call. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>43/2_13.13.2</MarginText>
@@ -824,7 +882,8 @@ This would violate our design principle that the order of the specification of t
 <AnnotatedOnly>
 <MarginText>43.a/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The default implementation of Input and Output are based on Read and Write; so if the implementation of Read or Write is good, so is the matching implementation of Input or Output. <br /></Admonition>
+<strong></strong>The default implementation of Input and Output are based on Read and Write; so if the implementation of Read or Write is good, so is the matching implementation of Input or Output. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>44/5_13.13.2</MarginText>
@@ -835,7 +894,8 @@ This would violate our design principle that the order of the specification of t
 <AnnotatedOnly>
 <MarginText>44.a/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>We always want to allow calling a specified attribute. But we don't want availability to break privacy. Therefore, only attributes whose specification can be seen count. Yes, we defined the visibility of an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> (see <a href="../AA-8/AA-8.3">8.3</a>). <br /></Admonition>
+<strong></strong>We always want to allow calling a specified attribute. But we don't want availability to break privacy. Therefore, only attributes whose specification can be seen count. Yes, we defined the visibility of an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> (see <a href="../AA-8/AA-8.3">8.3</a>). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>45/2_13.13.2</MarginText>
@@ -854,7 +914,8 @@ This would violate our design principle that the order of the specification of t
 <AnnotatedOnly>
 <MarginText>48.a/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The rules are stricter for class-wide attributes because (for the default implementation) we must ensure that any specific attribute that might ever be dispatched to is available. Because we require specification of attributes for extensions of limited parent types with available attributes, we can in fact know this. Otherwise, we would not be able to use default class-wide attributes with limited types, a significant limitation. <br /></Admonition>
+<strong></strong>The rules are stricter for class-wide attributes because (for the default implementation) we must ensure that any specific attribute that might ever be dispatched to is available. Because we require specification of attributes for extensions of limited parent types with available attributes, we can in fact know this. Otherwise, we would not be able to use default class-wide attributes with limited types, a significant limitation. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>49/4_13.13.2</MarginText>
@@ -864,31 +925,35 @@ This would violate our design principle that the order of the specification of t
 <AnnotatedOnly>
 <MarginText>49.a/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Stream attributes always exist. It is illegal to call them in some cases. Having the attributes not be defined for some limited types would seem to be a cleaner solution, but it would lead to contract model problems for limited private types.<br /></Admonition>
+<strong></strong>Stream attributes always exist. It is illegal to call them in some cases. Having the attributes not be defined for some limited types would seem to be a cleaner solution, but it would lead to contract model problems for limited private types.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>49.b/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<em>T</em>'Input is available for abstract types so that <em>T</em>'Class'Input is available. But we certainly don't want to allow calls that could create an object of an abstract type. Remember that <em>T</em>'Class is never abstract, so the above legality rule doesn't apply to it. We don't have to discuss whether the attribute is specified, as it cannot be: any function returning the type would have to be abstract, and we do not allow specifying an attribute with an abstract subprogram. <br /></Admonition>
+<em>T</em>'Input is available for abstract types so that <em>T</em>'Class'Input is available. But we certainly don't want to allow calls that could create an object of an abstract type. Remember that <em>T</em>'Class is never abstract, so the above legality rule doesn't apply to it. We don't have to discuss whether the attribute is specified, as it cannot be: any function returning the type would have to be abstract, and we do not allow specifying an attribute with an abstract subprogram. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>49.c/4_13.13.2</MarginText>
 <MarginInfo items={["AI12-0030-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>To be honest: </strong>&ldquo;These rules apply&rdquo; refers to just this paragraph and not to the rest of the rules in this section. This rule probably should have been a Legality Rule, but the word &ldquo;illegal&rdquo; should key the reader that this is a Legality Rule, no matter under what text heading it occurs. <br /></Admonition>
+<strong>To be honest: </strong>&ldquo;These rules apply&rdquo; refers to just this paragraph and not to the rest of the rules in this section. This rule probably should have been a Legality Rule, but the word &ldquo;illegal&rdquo; should key the reader that this is a Legality Rule, no matter under what text heading it occurs. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>49.1/5_13.13.2</MarginText>
 <MarginInfo items={["AI12-0030-1", "AI12-0419-1"]} />
-<p>Unless available for a parent type, if any, for an untagged type having a task, protected, or explicitly limited record part, the default implementation of each of the Read, Write, Input, and Output attributes raises Program_Error and performs no other action.<br /></p>
+<p>Unless available for a parent type, if any, for an untagged type having a task, protected, or explicitly limited record part, the default implementation of each of the Read, Write, Input, and Output attributes raises Program{"_"}Error and performs no other action.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>49.d/5_13.13.2</MarginText>
 <MarginInfo items={["AI12-0030-1", "AI12-0419-1"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>It might seem that there is no need to specify the behavior of the default implementation of a streaming attribute of, for example, a task type because there is no way that it can be invoked. It is possible, however, to construct an example where such a stream attribute can be invoked. This involves using a formal untagged limited derived type for which some streaming attribute is available (because it was explicitly specified for the ancestor type) and a corresponding actual type for which the attribute is unspecified (because the derivation occurred in a place where the attribute is never available for the parent type). <br /></Admonition>
+<strong></strong>It might seem that there is no need to specify the behavior of the default implementation of a streaming attribute of, for example, a task type because there is no way that it can be invoked. It is possible, however, to construct an example where such a stream attribute can be invoked. This involves using a formal untagged limited derived type for which some streaming attribute is available (because it was explicitly specified for the ancestor type) and a corresponding actual type for which the attribute is unspecified (because the derivation occurred in a place where the attribute is never available for the parent type). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>50/3_13.13.2</MarginText>
@@ -902,14 +967,16 @@ This would violate our design principle that the order of the specification of t
 <AnnotatedOnly>
 <MarginText>51.a/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This is to simplify implementation. <br /></Admonition>
+<strong></strong>This is to simplify implementation. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>51.b/5_13.13.2</MarginText>
 <MarginInfo items={["AI12-0427-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The view of the type at the point of the <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> determines whether the base subtype is allowed. Thus, for a scalar type with a partial view (which is never scalar), whether the  base subtype is allowed is determined by whether the <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> occurs before or after the full definition of the scalar type. For the same reason, the base subtype is never allowed for an attribute specified via an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> on the partial view. <br /></Admonition>
+<strong></strong>The view of the type at the point of the <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> determines whether the base subtype is allowed. Thus, for a scalar type with a partial view (which is never scalar), whether the  base subtype is allowed is determined by whether the <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code> occurs before or after the full definition of the scalar type. For the same reason, the base subtype is never allowed for an attribute specified via an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> on the partial view. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>52/3_13.13.2</MarginText>
@@ -919,7 +986,8 @@ This would violate our design principle that the order of the specification of t
 <AnnotatedOnly>
 <MarginText>52.a/3_13.13.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>A limited type with a part that is of a nonremote access type needs to satisfy both rules. <br /></Admonition>
+<strong></strong>A limited type with a part that is of a nonremote access type needs to satisfy both rules. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -927,12 +995,13 @@ This would violate our design principle that the order of the specification of t
 
 <MarginText>53/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00279-01", "AI95-00344-01"]} />
-<p>If the internal tag returned by Descendant_Tag to T'Class'Input identifies a type that is not library-level and whose tag has not been created, or does not exist in the partition at the time of the call, execution is erroneous. <br /></p>
+<p>If the internal tag returned by Descendant{"_"}Tag to T'Class'Input identifies a type that is not library-level and whose tag has not been created, or does not exist in the partition at the time of the call, execution is erroneous. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>53.a/2_13.13.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The definition of Descendant_Tag prevents such a tag from being provided to T'Class'Input if T is a library-level type. However, this rule is needed for nested tagged types. <br /></Admonition>
+<strong></strong>The definition of Descendant{"_"}Tag prevents such a tag from being provided to T'Class'Input if T is a library-level type. However, this rule is needed for nested tagged types. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -944,7 +1013,7 @@ This would violate our design principle that the order of the specification of t
 
 <MarginText>55/3_13.13.2</MarginText>
 <MarginInfo items={["AI95-00195-01", "AI05-0092-1"]} />
-<p>If Constraint_Error is raised during a call to Read because of failure of one the above checks, the implementation shall ensure that the discriminants of the actual parameter of Read are not modified. <br /></p>
+<p>If Constraint{"_"}Error is raised during a call to Read because of failure of one the above checks, the implementation shall ensure that the discriminants of the actual parameter of Read are not modified. <br /></p>
 
 
 #### Implementation Permissions
@@ -955,7 +1024,7 @@ This would violate our design principle that the order of the specification of t
 
 <MarginText>56.1/5_13.13.2</MarginText>
 <MarginInfo items={["AI05-0023-1", "AI05-0264-1", "AI12-0445-1"]} />
-<p>If <em>T</em> is a discriminated type and its discriminants have defaults, then in two cases an execution of the default implementation of S'Read is not required to create an anonymous object of type <em>T</em>: If the discriminant values that are read in are equal to the corresponding discriminant values of <em>Item</em>, then creation of a new object of type <em>T</em> may be bypassed and <em>Item</em> may be used instead. If they are not equal and <em>Item</em> is a constrained variable, then Constraint_Error may be raised at that point, before any further values are read from the stream and before the object of type <em>T</em> is created.<br /></p>
+<p>If <em>T</em> is a discriminated type and its discriminants have defaults, then in two cases an execution of the default implementation of S'Read is not required to create an anonymous object of type <em>T</em>: If the discriminant values that are read in are equal to the corresponding discriminant values of <em>Item</em>, then creation of a new object of type <em>T</em> may be bypassed and <em>Item</em> may be used instead. If they are not equal and <em>Item</em> is a constrained variable, then Constraint{"_"}Error may be raised at that point, before any further values are read from the stream and before the object of type <em>T</em> is created.<br /></p>
 
 <MarginText>56.2/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0023-1"]} />
@@ -964,7 +1033,8 @@ This would violate our design principle that the order of the specification of t
 <AnnotatedOnly>
 <MarginText>56.a/3_13.13.2</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>This allows the combined executions of S'Input and S'Read to create one object of type <em>T</em> instead of two. If this option is exercised, then: <br /></Admonition>
+<strong></strong>This allows the combined executions of S'Input and S'Read to create one object of type <em>T</em> instead of two. If this option is exercised, then: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -983,13 +1053,15 @@ This would violate our design principle that the order of the specification of t
 <MarginText>57/5_13.13.2</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   For a definite subtype S of a type <em>T</em>, only <em>T</em>'Write and <em>T</em>'Read are necessary to pass an arbitrary value of the subtype through a stream. For an indefinite subtype S of a type <em>T</em>, <em>T</em>'Output and <em>T</em>'Input will normally be necessary, since <em>T</em>'Write and <em>T</em>'Read do not pass bounds, discriminants, or tags.<br /></Admonition>
+NOTE 1   For a definite subtype S of a type <em>T</em>, only <em>T</em>'Write and <em>T</em>'Read are necessary to pass an arbitrary value of the subtype through a stream. For an indefinite subtype S of a type <em>T</em>, <em>T</em>'Output and <em>T</em>'Input will normally be necessary, since <em>T</em>'Write and <em>T</em>'Read do not pass bounds, discriminants, or tags.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>58_13.13.2</MarginText>
 <Admonition type="aarm" aarm="note">
-NOTE 2   User-specified attributes of S'Class are not inherited by other class-wide types descended from S. <br /></Admonition>
+NOTE 2   User-specified attributes of S'Class are not inherited by other class-wide types descended from S. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -1001,27 +1073,28 @@ NOTE 2   User-specified attributes of S'Class are not inherited by other class-w
 <MarginText>60/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00441-01"]} />
 <CodeBlock language="ada">
-procedure My_Write({"\n"}  Stream : not null access Ada.Streams.Root_Stream_Type'Class;{"\n"}  Item   : My_Integer'Base);{"\n"}for My_Integer'Write use My_Write;{"\n"}
+procedure My{"_"}Write({"\n"}  Stream : not null access Ada.Streams.Root{"_"}Stream{"_"}Type'Class;{"\n"}  Item   : My{"_"}Integer'Base);{"\n"}for My{"_"}Integer'Write use My{"_"}Write;{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
 <MarginText>60.a_13.13.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong><em>Example of network input/output using input output attributes:</em> <br /></Admonition>
+<strong></strong><em>Example of network input/output using input output attributes:</em> <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.b_13.13.2</MarginText>
 <CodeBlock language="ada">
-with Ada.Streams; use Ada.Streams;{"\n"}generic{"\n"}    type Msg_Type({"<"}{">"}) is private;{"\n"}package Network_IO is{"\n"}    -- Connect/Disconnect are used to establish the stream{"\n"}    procedure Connect(...);{"\n"}    procedure Disconnect(...);{"\n"}
+with Ada.Streams; use Ada.Streams;{"\n"}generic{"\n"}    type Msg{"_"}Type({"<"}{">"}) is private;{"\n"}package Network{"_"}IO is{"\n"}    -- Connect/Disconnect are used to establish the stream{"\n"}    procedure Connect(...);{"\n"}    procedure Disconnect(...);{"\n"}
 <MarginText>60.c_13.13.2</MarginText>
-    -- Send/Receive transfer messages across the network{"\n"}    procedure Send(X : in Msg_Type);{"\n"}    function Receive return Msg_Type;{"\n"}private{"\n"}    type Network_Stream is new Root_Stream_Type with ...{"\n"}    procedure Read(...);  -- define Read/Write for Network_Stream{"\n"}    procedure Write(...);{"\n"}end Network_IO;{"\n"}
+    -- Send/Receive transfer messages across the network{"\n"}    procedure Send(X : in Msg{"_"}Type);{"\n"}    function Receive return Msg{"_"}Type;{"\n"}private{"\n"}    type Network{"_"}Stream is new Root{"_"}Stream{"_"}Type with ...{"\n"}    procedure Read(...);  -- define Read/Write for Network{"_"}Stream{"\n"}    procedure Write(...);{"\n"}end Network{"_"}IO;{"\n"}
 <MarginText>60.d_13.13.2</MarginText>
-with Ada.Streams; use Ada.Streams;{"\n"}package body Network_IO is{"\n"}    Current_Stream : aliased Network_Stream;{"\n"}    . . .{"\n"}    procedure Connect(...) is ...;{"\n"}    procedure Disconnect(...) is ...;{"\n"}
+with Ada.Streams; use Ada.Streams;{"\n"}package body Network{"_"}IO is{"\n"}    Current{"_"}Stream : aliased Network{"_"}Stream;{"\n"}    . . .{"\n"}    procedure Connect(...) is ...;{"\n"}    procedure Disconnect(...) is ...;{"\n"}
 <MarginText>60.e_13.13.2</MarginText>
-    procedure Send(X : in Msg_Type) is{"\n"}    begin{"\n"}        Msg_Type'Output(Current_Stream'Access, X);{"\n"}    end Send;{"\n"}
+    procedure Send(X : in Msg{"_"}Type) is{"\n"}    begin{"\n"}        Msg{"_"}Type'Output(Current{"_"}Stream'Access, X);{"\n"}    end Send;{"\n"}
 <MarginText>60.f_13.13.2</MarginText>
-    function Receive return Msg_Type is{"\n"}    begin{"\n"}        return Msg_Type'Input(Current_Stream'Access);{"\n"}    end Receive;{"\n"}end Network_IO;{"\n"}
+    function Receive return Msg{"_"}Type is{"\n"}    begin{"\n"}        return Msg{"_"}Type'Input(Current{"_"}Stream'Access);{"\n"}    end Receive;{"\n"}end Network{"_"}IO;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
@@ -1034,14 +1107,16 @@ with Ada.Streams; use Ada.Streams;{"\n"}package body Network_IO is{"\n"}    Curr
 <MarginText>60.g/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00108-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0040</em>{"}"} <strong>Corrigendum:</strong> Clarified how the default implementation for stream attributes is determined (eliminating conflicting language). The new wording provides that attributes for type extensions are created by composing the parent's attribute with those for the extension components if any. If a program was written assuming that the extension components were not included in the stream (as in original Ada 95), it would fail to work in the language as corrected by the Corrigendum.<br /></Admonition>
+{"{"}<em>8652/0040</em>{"}"} <strong>Corrigendum:</strong> Clarified how the default implementation for stream attributes is determined (eliminating conflicting language). The new wording provides that attributes for type extensions are created by composing the parent's attribute with those for the extension components if any. If a program was written assuming that the extension components were not included in the stream (as in original Ada 95), it would fail to work in the language as corrected by the Corrigendum.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.h/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00195-01"]} />
 <Admonition type="aarm" aarm="correction">
-<strong>Amendment </strong> Explicitly provided a permission that the number of calls to the underlying stream Read and Write operations may differ from the number determined by the canonical operations. If Ada 95 code somehow depended on the number of calls to Read or Write, it could fail with an Ada 2005 implementation. Such code is likely to be very rare; moreover, such code is really wrong, as the permission applies to Ada 95 as well. <br /></Admonition>
+<strong>Amendment </strong> Explicitly provided a permission that the number of calls to the underlying stream Read and Write operations may differ from the number determined by the canonical operations. If Ada 95 code somehow depended on the number of calls to Read or Write, it could fail with an Ada 2005 implementation. Such code is likely to be very rare; moreover, such code is really wrong, as the permission applies to Ada 95 as well. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1053,14 +1128,16 @@ with Ada.Streams; use Ada.Streams;{"\n"}package body Network_IO is{"\n"}    Curr
 <MarginText>60.i/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00270-01"]} />
 <Admonition type="aarm" aarm="implementation-advice">
-The Stream_Size attribute is new. It allows specifying the number of bits that will be streamed for a type. The  involving this also was changed; this is not incompatible because  does not have to be followed.<br /></Admonition>
+The Stream{"_"}Size attribute is new. It allows specifying the number of bits that will be streamed for a type. The  involving this also was changed; this is not incompatible because  does not have to be followed.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.j/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00108-01", "AI95-00195-01", "AI95-00444-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0040</em>{"}"} <strong>Corrigendum:</strong> Limited types may have default constructed attributes if all of the parent and (for extensions) extension components have available attributes. Ada 2005 adds the notion of availability to patch up some holes in the Corrigendum model. <br /></Admonition>
+{"{"}<em>8652/0040</em>{"}"} <strong>Corrigendum:</strong> Limited types may have default constructed attributes if all of the parent and (for extensions) extension components have available attributes. Ada 2005 adds the notion of availability to patch up some holes in the Corrigendum model. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1072,70 +1149,80 @@ The Stream_Size attribute is new. It allows specifying the number of bits that w
 <MarginText>60.k/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00137-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0009</em>{"}"} <strong>Corrigendum:</strong> Added wording to specify that these are operational attributes.<br /></Admonition>
+{"{"}<em>8652/0009</em>{"}"} <strong>Corrigendum:</strong> Added wording to specify that these are operational attributes.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.l/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00132-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0045</em>{"}"} <strong>Corrigendum:</strong> Clarified that End_Error is raised by the default implementation of Read and Input if the end of the stream is reached. (The result could have been abnormal without this clarification, thus this is not an inconsistency, as the programmer could not have depended on the previous behavior.)<br /></Admonition>
+{"{"}<em>8652/0045</em>{"}"} <strong>Corrigendum:</strong> Clarified that End{"_"}Error is raised by the default implementation of Read and Input if the end of the stream is reached. (The result could have been abnormal without this clarification, thus this is not an inconsistency, as the programmer could not have depended on the previous behavior.)<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.m/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00195-01"]} />
 <Admonition type="aarm" aarm="note">
-Clarified that the default implementation of S'Input does normal initialization on the object that it passes to S'Read.<br /></Admonition>
+Clarified that the default implementation of S'Input does normal initialization on the object that it passes to S'Read.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.n/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00195-01"]} />
 <Admonition type="aarm" aarm="note">
-Explicitly stated that what is read from a stream when a required check fails is unspecified.<br /></Admonition>
+Explicitly stated that what is read from a stream when a required check fails is unspecified.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.o/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00251-01"]} />
 <Admonition type="aarm" aarm="note">
-Defined availability and default implementations for types with progenitors.<br /></Admonition>
+Defined availability and default implementations for types with progenitors.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.p/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00279-01"]} />
 <Admonition type="aarm" aarm="note">
-Specified that Constraint_Error is raised if the internal tag retrieved for S'Class'Input is for some type not covered by S'Class or is abstract. We also explicitly state that the program is erroneous if the tag has not been created or does not currently exist in the partition. (Ada 95 did not specify what happened in these cases; it's very unlikely to have provided some useful result, so this is not considered an inconsistency.)<br /></Admonition>
+Specified that Constraint{"_"}Error is raised if the internal tag retrieved for S'Class'Input is for some type not covered by S'Class or is abstract. We also explicitly state that the program is erroneous if the tag has not been created or does not currently exist in the partition. (Ada 95 did not specify what happened in these cases; it's very unlikely to have provided some useful result, so this is not considered an inconsistency.)<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.q/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00344-01"]} />
 <Admonition type="aarm" aarm="note">
-Added wording to support nested type extensions. S'Input and S'Output always raise Tag_Error for such extensions, and such extensions were not permitted in Ada 95, so this is neither an extension nor an incompatibility.<br /></Admonition>
+Added wording to support nested type extensions. S'Input and S'Output always raise Tag{"_"}Error for such extensions, and such extensions were not permitted in Ada 95, so this is neither an extension nor an incompatibility.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.r/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00366-01"]} />
 <Admonition type="aarm" aarm="note">
-Defined <em>supports external streaming</em> to put all of the rules about &ldquo;good&rdquo; stream attributes in one place. This is used for distribution and for defining pragma Pure.<br /></Admonition>
+Defined <em>supports external streaming</em> to put all of the rules about &ldquo;good&rdquo; stream attributes in one place. This is used for distribution and for defining pragma Pure.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.s/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00441-01"]} />
 <Admonition type="aarm" aarm="note">
-Added the <strong>not null</strong> qualifier to the first parameter of all of the stream attributes, so that the semantics doesn't change between Ada 95 and Ada 2005. This change is compatible, because mode conformance is required for subprograms specified as stream attributes, and <code><a href="../AA-3/AA-3.10#S0083">null_exclusion</a></code>s are not considered for mode conformance.<br /></Admonition>
+Added the <strong>not null</strong> qualifier to the first parameter of all of the stream attributes, so that the semantics doesn't change between Ada 95 and Ada 2005. This change is compatible, because mode conformance is required for subprograms specified as stream attributes, and <code><a href="../AA-3/AA-3.10#S0083">null_exclusion</a></code>s are not considered for mode conformance.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.t/2_13.13.2</MarginText>
 <MarginInfo items={["AI95-00444-01"]} />
 <Admonition type="aarm" aarm="note">
-Improved the wording to make it clear that we don't define the default implementations of attributes that cannot be called (that is, aren't &ldquo;available&rdquo;). Also clarified when inheritance takes place. <br /></Admonition>
+Improved the wording to make it clear that we don't define the default implementations of attributes that cannot be called (that is, aren't &ldquo;available&rdquo;). Also clarified when inheritance takes place. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1147,7 +1234,8 @@ Improved the wording to make it clear that we don't define the default implement
 <MarginText>60.u/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0039-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Added a requirement that stream attributes be specified by a static subprogram name rather than a dynamic expression. Expressions cannot provide any useful functionality because of the freezing rules, and the possibility of them complicates implementations. Only pathological programs should be affected. <br /></Admonition>
+<strong></strong> Added a requirement that stream attributes be specified by a static subprogram name rather than a dynamic expression. Expressions cannot provide any useful functionality because of the freezing rules, and the possibility of them complicates implementations. Only pathological programs should be affected. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1159,7 +1247,8 @@ Improved the wording to make it clear that we don't define the default implement
 <MarginText>60.v/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0007-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Stream attributes for scalar types can be specified with subprograms that take the first subtype as well as the base type. This eliminates confusion about which subtype is appropriate for attributes specified for partial views whose full type is a scalar type. It also eliminates a common user error (forgetting 'Base). <br /></Admonition>
+<strong></strong> Stream attributes for scalar types can be specified with subprograms that take the first subtype as well as the base type. This eliminates confusion about which subtype is appropriate for attributes specified for partial views whose full type is a scalar type. It also eliminates a common user error (forgetting 'Base). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1171,42 +1260,48 @@ Improved the wording to make it clear that we don't define the default implement
 <MarginText>60.w/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0023-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Corrected the definition of the default version S'Read and S'Input to be well-defined if S is a discriminated type with defaulted discriminants and some components require initialization and/or finalizations.<br /></Admonition>
+<strong></strong> Corrected the definition of the default version S'Read and S'Input to be well-defined if S is a discriminated type with defaulted discriminants and some components require initialization and/or finalizations.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.x/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0065-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Defined remote access types to support external streaming, since that is their purpose.<br /></Admonition>
+<strong></strong> Defined remote access types to support external streaming, since that is their purpose.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.y/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0109-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Removed a misleading phrase which implies that Constraint_Error is raised for internal tags of the wrong type, when Tag_Error should be raised for such tags.<br /></Admonition>
+<strong></strong> Removed a misleading phrase which implies that Constraint{"_"}Error is raised for internal tags of the wrong type, when Tag{"_"}Error should be raised for such tags.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.z/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0139-2"]} />
 <Admonition type="aarm" aarm="note">
-Clarified that arrays with convention Fortran are written in column-major order, rather then row-major order. This is necessary in order that streaming of Fortran arrays is efficient.<br /></Admonition>
+Clarified that arrays with convention Fortran are written in column-major order, rather then row-major order. This is necessary in order that streaming of Fortran arrays is efficient.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.aa/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0192-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Clarified that the profile of an inherited stream attribute is as defined for an inherited primitive subprogram, while the default implementation of the same attribute might have a different profile.<br /></Admonition>
+<strong></strong> Clarified that the profile of an inherited stream attribute is as defined for an inherited primitive subprogram, while the default implementation of the same attribute might have a different profile.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.bb/3_13.13.2</MarginText>
 <MarginInfo items={["AI05-0194-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Clarified that Stream_Size has no effect on and is not effected by user-defined stream attributes. <br /></Admonition>
+<strong></strong> Clarified that Stream{"_"}Size has no effect on and is not effected by user-defined stream attributes. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1218,7 +1313,8 @@ Clarified that arrays with convention Fortran are written in column-major order,
 <MarginText>60.cc/5_13.13.2</MarginText>
 <MarginInfo items={["AI12-0419-1"]} />
 <Admonition type="aarm" aarm="note">
-The switch from inheritance to &ldquo;implicitly composed&rdquo; aspects means that there exists an exceedingly unlikely case where Ada 2022 code will raise Constraint_Error where Ada 2012 code would not. That case requires deriving a constrained untagged composite type <em>C</em> from an unconstrained parent type <em>P</em>, using a type conversion to <em>P</em> of the Input attribute of <em>C</em>, <strong>and</strong> streaming in a value that violates the constraints of <em>C</em>. Simply using the Input attribute of <em>P</em> instead of that of <em>C</em> will restore the Ada 2012 behavior. <br /></Admonition>
+The switch from inheritance to &ldquo;implicitly composed&rdquo; aspects means that there exists an exceedingly unlikely case where Ada 2022 code will raise Constraint{"_"}Error where Ada 2012 code would not. That case requires deriving a constrained untagged composite type <em>C</em> from an unconstrained parent type <em>P</em>, using a type conversion to <em>P</em> of the Input attribute of <em>C</em>, <strong>and</strong> streaming in a value that violates the constraints of <em>C</em>. Simply using the Input attribute of <em>P</em> instead of that of <em>C</em> will restore the Ada 2012 behavior. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1230,7 +1326,8 @@ The switch from inheritance to &ldquo;implicitly composed&rdquo; aspects means t
 <MarginText>60.dd/4_13.13.2</MarginText>
 <MarginInfo items={["AI12-0106-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>Corrigendum:</strong> Defined how to specify a class-wide stream-oriented attribute using an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>. It was always intended that this was possible, but the method was not clear, as a class-wide type never has an explicit declaration. <br /></Admonition>
+<strong>Corrigendum:</strong> Defined how to specify a class-wide stream-oriented attribute using an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>. It was always intended that this was possible, but the method was not clear, as a class-wide type never has an explicit declaration. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -1242,27 +1339,31 @@ The switch from inheritance to &ldquo;implicitly composed&rdquo; aspects means t
 <MarginText>60.ee/4_13.13.2</MarginText>
 <MarginInfo items={["AI12-0030-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>Corrigendum:</strong> Defined the runtime effect of stream attributes for untagged limited types, as there is a weird corner case where they can be called. We don't specify this as an inconsistency, as it doesn't make semantic sense to stream a task, and nothing useful could have been done with that, so it should not exist in any programs.<br /></Admonition>
+<strong>Corrigendum:</strong> Defined the runtime effect of stream attributes for untagged limited types, as there is a weird corner case where they can be called. We don't specify this as an inconsistency, as it doesn't make semantic sense to stream a task, and nothing useful could have been done with that, so it should not exist in any programs.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.ff/4_13.13.2</MarginText>
 <MarginInfo items={["AI12-0106-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>Corrigendum:</strong> Clarified that the same Legality Rules apply when a stream-oriented attribute is specified via an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> as applied when it is specified via an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>.<br /></Admonition>
+<strong>Corrigendum:</strong> Clarified that the same Legality Rules apply when a stream-oriented attribute is specified via an <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> as applied when it is specified via an <code><a href="../AA-13/AA-13.3#S0349">attribute_definition_clause</a></code>.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.gg/5_13.13.2</MarginText>
 <MarginInfo items={["AI12-0064-2", "AI12-0396-1"]} />
 <Admonition type="aarm" aarm="note">
-Added the definition of Nonblocking (see <a href="../AA-9/AA-9.5">9.5</a>) and Global (see <a href="../AA-6/AA-6.1#Subclause_6.1.2">6.1.2</a>) for stream-oriented attributes.<br /></Admonition>
+Added the definition of Nonblocking (see <a href="../AA-9/AA-9.5">9.5</a>) and Global (see <a href="../AA-6/AA-6.1#Subclause_6.1.2">6.1.2</a>) for stream-oriented attributes.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>60.hh/5_13.13.2</MarginText>
 <MarginInfo items={["AI12-0419-1"]} />
 <Admonition type="aarm" aarm="note">
-Revised to define composition of stream-oriented attributes for untagged derived types in order to avoid using inheritance for these attributes/aspects. <br /></Admonition>
+Revised to define composition of stream-oriented attributes for untagged derived types in order to avoid using inheritance for these attributes/aspects. <br />
+</Admonition>
 </AnnotatedOnly>
 

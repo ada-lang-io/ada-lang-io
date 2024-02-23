@@ -29,20 +29,21 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>3/5</MarginText>
 <MarginInfo items={["AI95-00362-01", "AI12-0241-1", "AI12-0302-1"]} />
 <CodeBlock language="ada">
-package Ada.Synchronous_Task_Control{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
+package Ada.Synchronous{"_"}Task{"_"}Control{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
 <MarginText>4/5</MarginText>
 <MarginInfo items={["AI12-0241-1"]} />
-  type Suspension_Object is limited private;{"\n"}  procedure Set_True(S : in out Suspension_Object);{"\n"}  procedure Set_False(S : in out Suspension_Object);{"\n"}  function Current_State(S : Suspension_Object) return Boolean;{"\n"}  procedure Suspend_Until_True(S : in out Suspension_Object){"\n"}     with Nonblocking ={">"} False;{"\n"}private{"\n"}     ... -- not specified by the language{"\n"}end Ada.Synchronous_Task_Control;{"\n"}
+  type Suspension{"_"}Object is limited private;{"\n"}  procedure Set{"_"}True(S : in out Suspension{"_"}Object);{"\n"}  procedure Set{"_"}False(S : in out Suspension{"_"}Object);{"\n"}  function Current{"_"}State(S : Suspension{"_"}Object) return Boolean;{"\n"}  procedure Suspend{"_"}Until{"_"}True(S : in out Suspension{"_"}Object){"\n"}     with Nonblocking ={">"} False;{"\n"}private{"\n"}     ... -- not specified by the language{"\n"}end Ada.Synchronous{"_"}Task{"_"}Control;{"\n"}
 
 </CodeBlock>
 <MarginText>5</MarginText>
-<p>The type Suspension_Object is a by-reference type.<br /></p>
+<p>The type Suspension{"_"}Object is a by-reference type.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>5.a/2</MarginText>
 <MarginInfo items={["AI95-00318-02"]} />
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>The implementation can ensure this by, for example, making the full view an explicitly limited record type.<br /></Admonition>
+<strong></strong>The implementation can ensure this by, for example, making the full view an explicitly limited record type.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>5.1/3</MarginText>
@@ -52,7 +53,7 @@ package Ada.Synchronous_Task_Control{"\n"}  with Preelaborate, Nonblocking, Glob
 <MarginText>5.2/5</MarginText>
 <MarginInfo items={["AI05-0168-1", "AI12-0241-1", "AI12-0302-1"]} />
 <CodeBlock language="ada">
-with Ada.Real_Time;{"\n"}package Ada.Synchronous_Task_Control.EDF{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}   procedure Suspend_Until_True_And_Set_Deadline{"\n"}      (S  : in out Suspension_Object;{"\n"}       TS : in     Ada.Real_Time.Time_Span){"\n"}      with Nonblocking ={">"} False;{"\n"}end Ada.Synchronous_Task_Control.EDF;{"\n"}
+with Ada.Real{"_"}Time;{"\n"}package Ada.Synchronous{"_"}Task{"_"}Control.EDF{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}   procedure Suspend{"_"}Until{"_"}True{"_"}And{"_"}Set{"_"}Deadline{"\n"}      (S  : in out Suspension{"_"}Object;{"\n"}       TS : in     Ada.Real{"_"}Time.Time{"_"}Span){"\n"}      with Nonblocking ={">"} False;{"\n"}end Ada.Synchronous{"_"}Task{"_"}Control.EDF;{"\n"}
 
 </CodeBlock>
 
@@ -60,57 +61,60 @@ with Ada.Real_Time;{"\n"}package Ada.Synchronous_Task_Control.EDF{"\n"}   with N
 
 <MarginText>6/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<p>An object of the type Suspension_Object has two visible states: True and False. Upon initialization, its value is set to False. <br /></p>
+<p>An object of the type Suspension{"_"}Object has two visible states: True and False. Upon initialization, its value is set to False. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>6.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>This object is assumed to be private to the declaring task, i.e. only that task will call Suspend_Until_True on this object, and the count of callers is at most one. Other tasks can, of course, change and query the state of this object. <br /></Admonition>
+<strong></strong>This object is assumed to be private to the declaring task, i.e. only that task will call Suspend{"_"}Until{"_"}True on this object, and the count of callers is at most one. Other tasks can, of course, change and query the state of this object. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>7/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<p>The operations Set_True and Set_False are atomic with respect to each other and with respect to Suspend_Until_True; they set the state to True and False respectively.<br /></p>
+<p>The operations Set{"_"}True and Set{"_"}False are atomic with respect to each other and with respect to Suspend{"_"}Until{"_"}True; they set the state to True and False respectively.<br /></p>
 
 <MarginText>8</MarginText>
-<p>Current_State returns the current state of the object. <br /></p>
+<p>Current{"_"}State returns the current state of the object. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>8.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>This state can change immediately after the operation returns. <br /></Admonition>
+<strong></strong>This state can change immediately after the operation returns. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>9/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
-<p>The procedure Suspend_Until_True blocks the calling task until the state of the object S is True; at that point the task becomes ready and the state of the object becomes False.<br /></p>
+<p>The procedure Suspend{"_"}Until{"_"}True blocks the calling task until the state of the object S is True; at that point the task becomes ready and the state of the object becomes False.<br /></p>
 
 <MarginText>10/5</MarginText>
 <MarginInfo items={["AI12-0241-1"]} />
-<p>Program_Error is raised upon calling Suspend_Until_True if another task is already waiting on that suspension object.<br /></p>
+<p>Program{"_"}Error is raised upon calling Suspend{"_"}Until{"_"}True if another task is already waiting on that suspension object.<br /></p>
 
 <MarginText>10.1/5</MarginText>
 <MarginInfo items={["AI05-0168-1", "AI05-0269-1", "AI12-0241-1"]} />
-<p>The procedure Suspend_Until_True_And_Set_Deadline blocks the calling task until the state of the object S is True; at that point the task becomes ready with a deadline of Ada.Real_Time.Clock + TS, and the state of the object becomes False. Program_Error is raised upon calling Suspend_Until_True_And_Set_Deadline if another task is already waiting on that suspension object. <br /></p>
+<p>The procedure Suspend{"_"}Until{"_"}True{"_"}And{"_"}Set{"_"}Deadline blocks the calling task until the state of the object S is True; at that point the task becomes ready with a deadline of Ada.Real{"_"}Time.Clock + TS, and the state of the object becomes False. Program{"_"}Error is raised upon calling Suspend{"_"}Until{"_"}True{"_"}And{"_"}Set{"_"}Deadline if another task is already waiting on that suspension object. <br /></p>
 
 
 #### Bounded (Run-Time) Errors
 
 <MarginText>10.2/5</MarginText>
 <MarginInfo items={["AI12-0171-1", "AI12-0439-1"]} />
-<p>It is a bounded error for two or more tasks to call Suspend_Until_True on the same Suspension_Object concurrently. For each task, Program_Error can be raised, the task can proceed without suspending, or the task can suspend, potentially indefinitely. The state of the suspension object can end up either True or False. <br /></p>
+<p>It is a bounded error for two or more tasks to call Suspend{"_"}Until{"_"}True on the same Suspension{"_"}Object concurrently. For each task, Program{"_"}Error can be raised, the task can proceed without suspending, or the task can suspend, potentially indefinitely. The state of the suspension object can end up either True or False. <br /></p>
 
 
 #### Implementation Requirements
 
 <MarginText>11</MarginText>
-<p>The implementation is required to allow the calling of Set_False and Set_True during any protected action, even one that has its ceiling priority in the Interrupt_Priority range.<br /></p>
+<p>The implementation is required to allow the calling of Set{"_"}False and Set{"_"}True during any protected action, even one that has its ceiling priority in the Interrupt{"_"}Priority range.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>12/3</MarginText>
 <MarginInfo items={["AI05-0168-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE   More complex schemes, such as setting the deadline relative to when Set_True is called, can be programmed using a protected object. <br /></Admonition>
+NOTE   More complex schemes, such as setting the deadline relative to when Set{"_"}True is called, can be programmed using a protected object. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -122,7 +126,8 @@ NOTE   More complex schemes, such as setting the deadline relative to when Set_T
 <MarginText>12.a/2</MarginText>
 <MarginInfo items={["AI95-00362-01"]} />
 <Admonition type="aarm" aarm="note">
-Synchronous_Task_Control is now Preelaborated, so it can be used in preelaborated units. <br /></Admonition>
+Synchronous{"_"}Task{"_"}Control is now Preelaborated, so it can be used in preelaborated units. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -134,7 +139,8 @@ Synchronous_Task_Control is now Preelaborated, so it can be used in preelaborate
 <MarginText>12.b/3</MarginText>
 <MarginInfo items={["AI05-0168-1"]} />
 <Admonition type="aarm" aarm="note">
-Child package Ada.Synchronous_Task_Control.EDF is new. <br /></Admonition>
+Child package Ada.Synchronous{"_"}Task{"_"}Control.EDF is new. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -146,7 +152,8 @@ Child package Ada.Synchronous_Task_Control.EDF is new. <br /></Admonition>
 <MarginText>12.c/5</MarginText>
 <MarginInfo items={["AI12-0171-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Clarified that Suspend_Until_True should only be called from a single task, and what happens if that is violated. <br /></Admonition>
+<strong></strong> Clarified that Suspend{"_"}Until{"_"}True should only be called from a single task, and what happens if that is violated. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_D.10.1"></a>
@@ -167,37 +174,38 @@ Child package Ada.Synchronous_Task_Control.EDF is new. <br /></Admonition>
 <MarginText>3/5_D.10.1</MarginText>
 <MarginInfo items={["AI12-0241-1", "AI12-0302-1"]} />
 <CodeBlock language="ada">
-package Ada.Synchronous_Barriers{"\n"}   with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
+package Ada.Synchronous{"_"}Barriers{"\n"}   with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
 <MarginText>4/3_D.10.1</MarginText>
-   subtype Barrier_Limit is Positive range 1 .. implementation-defined;{"\n"}
+   subtype Barrier{"_"}Limit is Positive range 1 .. implementation-defined;{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
 <MarginText>4.a.1/3_D.10.1</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The value of Barrier_Limit'Last in Synchronous_Barriers.<br /></Admonition>
+<strong></strong>The value of Barrier{"_"}Limit'Last in Synchronous{"_"}Barriers.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>5/3_D.10.1</MarginText>
 <CodeBlock language="ada">
-   type Synchronous_Barrier (Release_Threshold : Barrier_Limit) is limited private;{"\n"}
+   type Synchronous{"_"}Barrier (Release{"_"}Threshold : Barrier{"_"}Limit) is limited private;{"\n"}
 <MarginText>6/5_D.10.1</MarginText>
 <MarginInfo items={["AI12-0241-1"]} />
-   procedure Wait_For_Release (The_Barrier : in out Synchronous_Barrier;{"\n"}                               Notified    :    out Boolean){"\n"}      with Nonblocking ={">"} False;{"\n"}
+   procedure Wait{"_"}For{"_"}Release (The{"_"}Barrier : in out Synchronous{"_"}Barrier;{"\n"}                               Notified    :    out Boolean){"\n"}      with Nonblocking ={">"} False;{"\n"}
 <MarginText>7/3_D.10.1</MarginText>
-private{"\n"}   -- not specified by the language{"\n"}end Ada.Synchronous_Barriers;{"\n"}
+private{"\n"}   -- not specified by the language{"\n"}end Ada.Synchronous{"_"}Barriers;{"\n"}
 
 </CodeBlock>
 <MarginText>8/3_D.10.1</MarginText>
 <MarginInfo items={["AI05-0174-1"]} />
-<p>Type Synchronous_Barrier needs finalization (see <a href="../AA-7/AA-7.6">7.6</a>). <br /></p>
+<p>Type Synchronous{"_"}Barrier needs finalization (see <a href="../AA-7/AA-7.6">7.6</a>). <br /></p>
 
 
 #### Dynamic Semantics
 
 <MarginText>9/3_D.10.1</MarginText>
 <MarginInfo items={["AI05-0174-1"]} />
-<p>Each call to Wait_For_Release blocks the calling task until the number of blocked tasks associated with the Synchronous_Barrier object is equal to Release_Threshold, at which time all blocked tasks are released. Notified is set to True for one of the released tasks, and set to False for all other released tasks.<br /></p>
+<p>Each call to Wait{"_"}For{"_"}Release blocks the calling task until the number of blocked tasks associated with the Synchronous{"_"}Barrier object is equal to Release{"_"}Threshold, at which time all blocked tasks are released. Notified is set to True for one of the released tasks, and set to False for all other released tasks.<br /></p>
 
 <MarginText>10/3_D.10.1</MarginText>
 <MarginInfo items={["AI05-0174-1"]} />
@@ -205,20 +213,21 @@ private{"\n"}   -- not specified by the language{"\n"}end Ada.Synchronous_Barrie
 
 <MarginText>11/3_D.10.1</MarginText>
 <MarginInfo items={["AI05-0174-1"]} />
-<p>Once all tasks have been released, a Synchronous_Barrier object may be reused to block another Release_Threshold number of tasks.<br /></p>
+<p>Once all tasks have been released, a Synchronous{"_"}Barrier object may be reused to block another Release{"_"}Threshold number of tasks.<br /></p>
 
 <MarginText>12/3_D.10.1</MarginText>
 <MarginInfo items={["AI05-0174-1"]} />
-<p>As the first step of the finalization of a Synchronous_Barrier, each blocked task is unblocked and Program_Error is raised at the place of the call to Wait_For_Release.<br /></p>
+<p>As the first step of the finalization of a Synchronous{"_"}Barrier, each blocked task is unblocked and Program{"_"}Error is raised at the place of the call to Wait{"_"}For{"_"}Release.<br /></p>
 
 <MarginText>13/3_D.10.1</MarginText>
 <MarginInfo items={["AI05-0174-1"]} />
-<p>It is implementation defined whether an abnormal task which is waiting on a Synchronous_Barrier object is aborted immediately or aborted when the tasks waiting on the object are released. <br /></p>
+<p>It is implementation defined whether an abnormal task which is waiting on a Synchronous{"_"}Barrier object is aborted immediately or aborted when the tasks waiting on the object are released. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>13.a.1/3_D.10.1</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>When an aborted task that is waiting on a Synchronous_Barrier is aborted.<br /></Admonition>
+<strong></strong>When an aborted task that is waiting on a Synchronous{"_"}Barrier is aborted.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>14/5_D.10.1</MarginText>
@@ -230,7 +239,7 @@ private{"\n"}   -- not specified by the language{"\n"}end Ada.Synchronous_Barrie
 
 <MarginText>15/3_D.10.1</MarginText>
 <MarginInfo items={["AI05-0174-1"]} />
-<p>It is a bounded error to call Wait_For_Release on a Synchronous_Barrier object after that object is finalized. If the error is detected, Program_Error is raised. Otherwise, the call proceeds normally, which may leave a task blocked forever. <br /></p>
+<p>It is a bounded error to call Wait{"_"}For{"_"}Release on a Synchronous{"_"}Barrier object after that object is finalized. If the error is detected, Program{"_"}Error is raised. Otherwise, the call proceeds normally, which may leave a task blocked forever. <br /></p>
 
 <AnnotatedOnly>
 
@@ -241,6 +250,7 @@ private{"\n"}   -- not specified by the language{"\n"}end Ada.Synchronous_Barrie
 <MarginText>15.a/3_D.10.1</MarginText>
 <MarginInfo items={["AI05-0174-1"]} />
 <Admonition type="aarm" aarm="note">
-The package Ada.Synchronous_Barriers is new. <br /></Admonition>
+The package Ada.Synchronous{"_"}Barriers is new. <br />
+</Admonition>
 </AnnotatedOnly>
 

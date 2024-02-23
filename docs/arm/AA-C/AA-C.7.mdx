@@ -29,7 +29,8 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>1.a/3</MarginText>
 <MarginInfo items={["AI95-00266-02", "AI05-0299-1"]} />
 <Admonition type="aarm" aarm="note">
-The title and text here were updated to reflect the addition of task termination procedures to this subclause. <br /></Admonition>
+The title and text here were updated to reflect the addition of task termination procedures to this subclause. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_C.7.1"></a>
@@ -45,64 +46,67 @@ The title and text here were updated to reflect the addition of task termination
 <MarginText>2/5_C.7.1</MarginText>
 <MarginInfo items={["AI95-00362-01", "AI12-0241-1", "AI12-0302-1", "AI12-0399-1"]} />
 <CodeBlock language="ada">
-package Ada.Task_Identification{"\n"}   with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}   type Task_Id is private{"\n"}      with Preelaborable_Initialization;{"\n"}   Null_Task_Id : constant Task_Id;{"\n"}   function  "=" (Left, Right : Task_Id) return Boolean;{"\n"}
+package Ada.Task{"_"}Identification{"\n"}   with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}   type Task{"_"}Id is private{"\n"}      with Preelaborable{"_"}Initialization;{"\n"}   Null{"_"}Task{"_"}Id : constant Task{"_"}Id;{"\n"}   function  "=" (Left, Right : Task{"_"}Id) return Boolean;{"\n"}
 <MarginText>3/5_C.7.1</MarginText>
 <MarginInfo items={["AI95-00101-01", "AI05-0189-1", "AI12-0241-1"]} />
-{"{"}8652/0070{"}"}    function  Image                  (T : Task_Id) return String;{"\n"}   function  Current_Task     return Task_Id;{"\n"}   function  Environment_Task return Task_Id;{"\n"}   procedure Abort_Task             (T : in Task_Id){"\n"}      with Nonblocking ={">"} False;{"\n"}
+{"{"}8652/0070{"}"}    function  Image                  (T : Task{"_"}Id) return String;{"\n"}   function  Current{"_"}Task     return Task{"_"}Id;{"\n"}   function  Environment{"_"}Task return Task{"_"}Id;{"\n"}   procedure Abort{"_"}Task             (T : in Task{"_"}Id){"\n"}      with Nonblocking ={">"} False;{"\n"}
 <MarginText>4/3_C.7.1</MarginText>
 <MarginInfo items={["AI05-0189-1"]} />
-   function  Is_Terminated          (T : Task_Id) return Boolean;{"\n"}   function  Is_Callable            (T : Task_Id) return Boolean;{"\n"}   function  Activation_Is_Complete (T : Task_Id) return Boolean;{"\n"}private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Task_Identification;{"\n"}
+   function  Is{"_"}Terminated          (T : Task{"_"}Id) return Boolean;{"\n"}   function  Is{"_"}Callable            (T : Task{"_"}Id) return Boolean;{"\n"}   function  Activation{"_"}Is{"_"}Complete (T : Task{"_"}Id) return Boolean;{"\n"}private{"\n"}   ... -- not specified by the language{"\n"}end Ada.Task{"_"}Identification;{"\n"}
 
 </CodeBlock>
 
 #### Dynamic Semantics
 
 <MarginText>5_C.7.1</MarginText>
-<p>A value of the type Task_Id identifies an existent task. The constant Null_Task_Id does not identify any task. Each object of the type Task_Id is default initialized to the value of Null_Task_Id.<br /></p>
+<p>A value of the type Task{"_"}Id identifies an existent task. The constant Null{"_"}Task{"_"}Id does not identify any task. Each object of the type Task{"_"}Id is default initialized to the value of Null{"_"}Task{"_"}Id.<br /></p>
 
 <MarginText>6_C.7.1</MarginText>
-<p>The function "=" returns True if and only if Left and Right identify the same task or both have the value Null_Task_Id.<br /></p>
+<p>The function "=" returns True if and only if Left and Right identify the same task or both have the value Null{"_"}Task{"_"}Id.<br /></p>
 
 <MarginText>7_C.7.1</MarginText>
-<p>The function Image returns an implementation-defined string that identifies T. If T equals Null_Task_Id, Image returns an empty string. <br /></p>
+<p>The function Image returns an implementation-defined string that identifies T. If T equals Null{"_"}Task{"_"}Id, Image returns an empty string. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>7.a_C.7.1</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The result of the Task_Identification.Image attribute.<br /></Admonition>
+<strong></strong>The result of the Task{"_"}Identification.Image attribute.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>8_C.7.1</MarginText>
-<p>The function Current_Task returns a value that identifies the calling task.<br /></p>
+<p>The function Current{"_"}Task returns a value that identifies the calling task.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>8.a.1/5_C.7.1</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The logical threads of control associated with the execution of a given parallel construct all execute as part of the execution of one task (see <a href="../AA-9/">9</a>, &ldquo;<a href="../AA-9/">Tasks and Synchronization</a>&rdquo;). Thus, the result returned by a call to Task_Identification.Current_Task is independent of whether the call takes place during the execution of a parallel construct. <br /></Admonition>
+<strong></strong>The logical threads of control associated with the execution of a given parallel construct all execute as part of the execution of one task (see <a href="../AA-9/">9</a>, &ldquo;<a href="../AA-9/">Tasks and Synchronization</a>&rdquo;). Thus, the result returned by a call to Task{"_"}Identification.Current{"_"}Task is independent of whether the call takes place during the execution of a parallel construct. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>8.1/3_C.7.1</MarginText>
 <MarginInfo items={["AI05-0189-1"]} />
-<p>The function Environment_Task returns a value that identifies the environment task.<br /></p>
+<p>The function Environment{"_"}Task returns a value that identifies the environment task.<br /></p>
 
 <MarginText>9/5_C.7.1</MarginText>
 <MarginInfo items={["AI12-0454-1"]} />
-<p>The effect of Abort_Task is the same as the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> for the task identified by T. [In addition, if T identifies the environment task, the entire partition is aborted, see <a href="../AA-E/AA-E.1">E.1</a>.]<br /></p>
+<p>The effect of Abort{"_"}Task is the same as the <code><a href="../AA-9/AA-9.8#S0284">abort_statement</a></code> for the task identified by T. [In addition, if T identifies the environment task, the entire partition is aborted, see <a href="../AA-E/AA-E.1">E.1</a>.]<br /></p>
 
 <MarginText>10_C.7.1</MarginText>
-<p>The functions Is_Terminated and Is_Callable return the value of the corresponding attribute of the task identified by T. <br /></p>
+<p>The functions Is{"_"}Terminated and Is{"_"}Callable return the value of the corresponding attribute of the task identified by T. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>10.a.1/1_C.7.1</MarginText>
 <MarginInfo items={["AI95-00206-01"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>{"{"}<em>8652/0115</em>{"}"} These routines can be called with an argument identifying the environment task. Is_Terminated will always be False for such a call, but Is_Callable (usually True) could be False if the environment task is waiting for the termination of dependent tasks. Thus, a dependent task can use Is_Callable to determine if the main subprogram has completed. <br /></Admonition>
+<strong></strong>{"{"}<em>8652/0115</em>{"}"} These routines can be called with an argument identifying the environment task. Is{"_"}Terminated will always be False for such a call, but Is{"_"}Callable (usually True) could be False if the environment task is waiting for the termination of dependent tasks. Thus, a dependent task can use Is{"_"}Callable to determine if the main subprogram has completed. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>10.1/3_C.7.1</MarginText>
 <MarginInfo items={["AI05-0189-1"]} />
-<p>The function Activation_Is_Complete returns True if the task identified by T has completed its activation (whether successfully or not). It returns False otherwise. If T identifies the environment task, Activation_Is_Complete returns True after the elaboration of the <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s of the partition has completed.<br /></p>
+<p>The function Activation{"_"}Is{"_"}Complete returns True if the task identified by T has completed its activation (whether successfully or not). It returns False otherwise. If T identifies the environment task, Activation{"_"}Is{"_"}Complete returns True after the elaboration of the <code><a href="../AA-10/AA-10.1#S0287">library_item</a></code>s of the partition has completed.<br /></p>
 
 <MarginText>11_C.7.1</MarginText>
 <p>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> T that is of a task type [(after any implicit dereference)], the following attribute is defined: <br /></p>
@@ -110,7 +114,7 @@ package Ada.Task_Identification{"\n"}   with Preelaborate, Nonblocking, Global =
 <MarginText>12_C.7.1</MarginText>
 <dt><br/>T'Identity</dt>
 <dl>
-<dd>Yields a value of the type Task_Id that identifies the task denoted by T.<br /></dd>
+<dd>Yields a value of the type Task{"_"}Id that identifies the task denoted by T.<br /></dd>
 </dl>
 <MarginText>13_C.7.1</MarginText>
 <p>For a <code><a href="../AA-4/AA-4.1#S0093">prefix</a></code> E that denotes an <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code>, the following attribute is defined: <br /></p>
@@ -119,11 +123,11 @@ package Ada.Task_Identification{"\n"}   with Preelaborate, Nonblocking, Global =
 <dt><br/>E'Caller</dt>
 <MarginInfo items={["AI05-0262-1"]} />
 <dl>
-<dd>Yields a value of the type Task_Id that identifies the task whose call is now being serviced. Use of this attribute is allowed only inside an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, or <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> after the <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code>, corresponding to the <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> denoted by E. <br /></dd>
+<dd>Yields a value of the type Task{"_"}Id that identifies the task whose call is now being serviced. Use of this attribute is allowed only inside an <code><a href="../AA-9/AA-9.5#S0258">accept_statement</a></code>, or <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code> after the <code><a href="../AA-9/AA-9.5#S0262">entry_barrier</a></code>, corresponding to the <code><a href="../AA-9/AA-9.5#S0257">entry_declaration</a></code> denoted by E. <br /></dd>
 </dl>
 <MarginText>15/5_C.7.1</MarginText>
 <MarginInfo items={["AI12-0231-1"]} />
-<p>Program_Error is raised if a value of Null_Task_Id is passed as a parameter to Abort_Task, Activation_Is_Complete, Is_Terminated, and Is_Callable.<br /></p>
+<p>Program{"_"}Error is raised if a value of Null{"_"}Task{"_"}Id is passed as a parameter to Abort{"_"}Task, Activation{"_"}Is{"_"}Complete, Is{"_"}Terminated, and Is{"_"}Callable.<br /></p>
 
 <MarginText>16/5_C.7.1</MarginText>
 <MarginInfo items={["AI12-0241-1"]} />
@@ -134,61 +138,68 @@ package Ada.Task_Identification{"\n"}   with Preelaborate, Nonblocking, Global =
 
 <MarginText>17/3_C.7.1</MarginText>
 <MarginInfo items={["AI95-00237-01", "AI05-0004-1"]} />
-<p>It is a bounded error to call the Current_Task function from an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, interrupt handler, or finalization of a task attribute. Program_Error is raised, or an implementation-defined value of the type Task_Id is returned. <br /></p>
+<p>It is a bounded error to call the Current{"_"}Task function from an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, interrupt handler, or finalization of a task attribute. Program{"_"}Error is raised, or an implementation-defined value of the type Task{"_"}Id is returned. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>17.a/2_C.7.1</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The value of Current_Task when in a protected entry, interrupt handler, or finalization of a task attribute.<br /></Admonition>
+<strong></strong>The value of Current{"_"}Task when in a protected entry, interrupt handler, or finalization of a task attribute.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>17.b_C.7.1</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>This value could be Null_Task_Id, or the ID of some user task, or that of an internal task created by the implementation. <br /></Admonition>
+<strong></strong>This value could be Null{"_"}Task{"_"}Id, or the ID of some user task, or that of an internal task created by the implementation. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>17.c/2_C.7.1</MarginText>
 <MarginInfo items={["AI95-00237-01"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>An entry barrier is syntactically part of an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, so a call to Current_Task from an entry barrier is also covered by this rule. <br /></Admonition>
+<strong></strong>An entry barrier is syntactically part of an <code><a href="../AA-9/AA-9.5#S0260">entry_body</a></code>, so a call to Current{"_"}Task from an entry barrier is also covered by this rule. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
 #### Erroneous Execution
 
 <MarginText>18_C.7.1</MarginText>
-<p>If a value of Task_Id is passed as a parameter to any of the operations declared in this package (or any language-defined child of this package), and the corresponding task object no longer exists, the execution of the program is erroneous. <br /></p>
+<p>If a value of Task{"_"}Id is passed as a parameter to any of the operations declared in this package (or any language-defined child of this package), and the corresponding task object no longer exists, the execution of the program is erroneous. <br /></p>
 
 
 #### Documentation Requirements
 
 <MarginText>19_C.7.1</MarginText>
-<p>The implementation shall document the effect of calling Current_Task from an entry body or interrupt handler. <br /></p>
+<p>The implementation shall document the effect of calling Current{"_"}Task from an entry body or interrupt handler. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>19.a/2_C.7.1</MarginText>
 <Admonition type="aarm" aarm="note">
-<em>This paragraph was deleted.</em><br /></Admonition>
+<em>This paragraph was deleted.</em><br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.b/2_C.7.1</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>The effect of calling Current_Task from an entry body or interrupt handler.<br /></Admonition>
+<strong>Documentation Requirement: </strong>The effect of calling Current{"_"}Task from an entry body or interrupt handler.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>20_C.7.1</MarginText>
 <Admonition type="aarm" aarm="note">
-NOTE 1   This package is intended for use in writing user-defined task scheduling packages and constructing server tasks. Current_Task can be used in conjunction with other operations requiring a task as an argument such as Set_Priority (see <a href="../AA-D/AA-D.5">D.5</a>).<br /></Admonition>
+NOTE 1   This package is intended for use in writing user-defined task scheduling packages and constructing server tasks. Current{"_"}Task can be used in conjunction with other operations requiring a task as an argument such as Set{"_"}Priority (see <a href="../AA-D/AA-D.5">D.5</a>).<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>21_C.7.1</MarginText>
 <Admonition type="aarm" aarm="note">
-NOTE 2   The function Current_Task and the attribute Caller can return a Task_Id value that identifies the environment task.<br /></Admonition>
+NOTE 2   The function Current{"_"}Task and the attribute Caller can return a Task{"_"}Id value that identifies the environment task.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -200,7 +211,8 @@ NOTE 2   The function Current_Task and the attribute Caller can return a Task_Id
 <MarginText>21.a/2_C.7.1</MarginText>
 <MarginInfo items={["AI95-00362-01"]} />
 <Admonition type="aarm" aarm="note">
-Task_Identification is now preelaborated, so it can be used in preelaborated units. <br /></Admonition>
+Task{"_"}Identification is now preelaborated, so it can be used in preelaborated units. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -212,14 +224,16 @@ Task_Identification is now preelaborated, so it can be used in preelaborated uni
 <MarginText>21.b/2_C.7.1</MarginText>
 <MarginInfo items={["AI95-00101-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0070</em>{"}"} <strong>Corrigendum:</strong> Corrected the mode of the parameter to Abort_Task to <strong>in</strong>.<br /></Admonition>
+{"{"}<em>8652/0070</em>{"}"} <strong>Corrigendum:</strong> Corrected the mode of the parameter to Abort{"_"}Task to <strong>in</strong>.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>21.c/2_C.7.1</MarginText>
 <MarginInfo items={["AI95-00237-01"]} />
 <Admonition type="aarm" aarm="note">
-Corrected the wording to include finalization of a task attribute in the bounded error case; we don't want to specify which task does these operations. <br /></Admonition>
+Corrected the wording to include finalization of a task attribute in the bounded error case; we don't want to specify which task does these operations. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -231,7 +245,8 @@ Corrected the wording to include finalization of a task attribute in the bounded
 <MarginText>21.d/3_C.7.1</MarginText>
 <MarginInfo items={["AI05-0189-1"]} />
 <Admonition type="aarm" aarm="note">
-Functions Environment_Task and Activation_Is_Complete are added to Task_Identification. If Task_Identification is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with a <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> of Environment_Task or Activation_Is_Complete is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. <br /></Admonition>
+Functions Environment{"_"}Task and Activation{"_"}Is{"_"}Complete are added to Task{"_"}Identification. If Task{"_"}Identification is referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with a <code><a href="../AA-3/AA-3.1#S0022">defining_identifier</a></code> of Environment{"_"}Task or Activation{"_"}Is{"_"}Complete is defined in a package that is also referenced in a <code><a href="../AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -243,7 +258,8 @@ Functions Environment_Task and Activation_Is_Complete are added to Task_Identifi
 <MarginText>21.e/5_C.7.1</MarginText>
 <MarginInfo items={["AI12-0231-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Defined what happens if Null_Task_Id is passed to Activation_Is_Complete. <br /></Admonition>
+<strong></strong> Defined what happens if Null{"_"}Task{"_"}Id is passed to Activation{"_"}Is{"_"}Complete. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_C.7.2"></a>
@@ -259,24 +275,24 @@ Functions Environment_Task and Activation_Is_Complete are added to Task_Identifi
 <MarginText>2/5_C.7.2</MarginText>
 <MarginInfo items={["AI12-0241-1", "AI12-0302-1"]} />
 <CodeBlock language="ada">
-with Ada.Task_Identification; use Ada.Task_Identification;{"\n"}generic{"\n"}   type Attribute is private;{"\n"}   Initial_Value : in Attribute;{"\n"}package Ada.Task_Attributes{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}
+with Ada.Task{"_"}Identification; use Ada.Task{"_"}Identification;{"\n"}generic{"\n"}   type Attribute is private;{"\n"}   Initial{"_"}Value : in Attribute;{"\n"}package Ada.Task{"_"}Attributes{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}
 <MarginText>3_C.7.2</MarginText>
-   type Attribute_Handle is access all Attribute;{"\n"}
+   type Attribute{"_"}Handle is access all Attribute;{"\n"}
 <MarginText>4_C.7.2</MarginText>
-   function Value(T : Task_Id := Current_Task){"\n"}     return Attribute;{"\n"}
+   function Value(T : Task{"_"}Id := Current{"_"}Task){"\n"}     return Attribute;{"\n"}
 <MarginText>5_C.7.2</MarginText>
-   function Reference(T : Task_Id := Current_Task){"\n"}     return Attribute_Handle;{"\n"}
+   function Reference(T : Task{"_"}Id := Current{"_"}Task){"\n"}     return Attribute{"_"}Handle;{"\n"}
 <MarginText>6_C.7.2</MarginText>
-   procedure Set_Value(Val : in Attribute;{"\n"}                       T : in Task_Id := Current_Task);{"\n"}   procedure Reinitialize(T : in Task_Id := Current_Task);{"\n"}
+   procedure Set{"_"}Value(Val : in Attribute;{"\n"}                       T : in Task{"_"}Id := Current{"_"}Task);{"\n"}   procedure Reinitialize(T : in Task{"_"}Id := Current{"_"}Task);{"\n"}
 <MarginText>7_C.7.2</MarginText>
-end Ada.Task_Attributes;{"\n"}
+end Ada.Task{"_"}Attributes;{"\n"}
 
 </CodeBlock>
 
 #### Dynamic Semantics
 
 <MarginText>8_C.7.2</MarginText>
-<p>When an instance of Task_Attributes is elaborated in a given active partition, an object of the actual type corresponding to the formal type Attribute is implicitly created for each task (of that partition) that exists and is not yet terminated. This object acts as a user-defined attribute of the task. A task created previously in the partition and not yet terminated has this attribute from that point on. Each task subsequently created in the partition will have this attribute when created. In all these cases, the initial value of the given attribute is Initial_Value.<br /></p>
+<p>When an instance of Task{"_"}Attributes is elaborated in a given active partition, an object of the actual type corresponding to the formal type Attribute is implicitly created for each task (of that partition) that exists and is not yet terminated. This object acts as a user-defined attribute of the task. A task created previously in the partition and not yet terminated has this attribute from that point on. Each task subsequently created in the partition will have this attribute when created. In all these cases, the initial value of the given attribute is Initial{"_"}Value.<br /></p>
 
 <MarginText>9_C.7.2</MarginText>
 <p>The Value operation returns the value of the corresponding attribute of T.<br /></p>
@@ -285,34 +301,37 @@ end Ada.Task_Attributes;{"\n"}
 <p>The Reference operation returns an access value that designates the corresponding attribute of T.<br /></p>
 
 <MarginText>11_C.7.2</MarginText>
-<p>The Set_Value operation performs any finalization on the old value of the attribute of T and assigns Val to that attribute (see <a href="../AA-5/AA-5.2">5.2</a> and <a href="../AA-7/AA-7.6">7.6</a>).<br /></p>
+<p>The Set{"_"}Value operation performs any finalization on the old value of the attribute of T and assigns Val to that attribute (see <a href="../AA-5/AA-5.2">5.2</a> and <a href="../AA-7/AA-7.6">7.6</a>).<br /></p>
 
 <MarginText>12_C.7.2</MarginText>
-<p>The effect of the Reinitialize operation is the same as Set_Value where the Val parameter is replaced with Initial_Value. <br /></p>
+<p>The effect of the Reinitialize operation is the same as Set{"_"}Value where the Val parameter is replaced with Initial{"_"}Value. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>12.a_C.7.2</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>In most cases, the attribute memory can be reclaimed at this point. <br /></Admonition>
+<strong></strong>In most cases, the attribute memory can be reclaimed at this point. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>13_C.7.2</MarginText>
-<p>For all the operations declared in this package, Tasking_Error is raised if the task identified by T is terminated. Program_Error is raised if the value of T is Null_Task_Id.<br /></p>
+<p>For all the operations declared in this package, Tasking{"_"}Error is raised if the task identified by T is terminated. Program{"_"}Error is raised if the value of T is Null{"_"}Task{"_"}Id.<br /></p>
 
 <MarginText>13.1/2_C.7.2</MarginText>
 <MarginInfo items={["AI95-00237-01"]} />
-<p>After a task has terminated, all of its attributes are finalized, unless they have been finalized earlier. When the master of an instantiation of Ada.Task_Attributes is finalized, the corresponding attribute of each task is finalized, unless it has been finalized earlier. <br /></p>
+<p>After a task has terminated, all of its attributes are finalized, unless they have been finalized earlier. When the master of an instantiation of Ada.Task{"_"}Attributes is finalized, the corresponding attribute of each task is finalized, unless it has been finalized earlier. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>13.a/2_C.7.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This is necessary so that a task attribute does not outlive its type. For instance, that's possible if the instantiation is nested, and the attribute is on a library-level task. <br /></Admonition>
+<strong></strong>This is necessary so that a task attribute does not outlive its type. For instance, that's possible if the instantiation is nested, and the attribute is on a library-level task. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>13.b/2_C.7.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The task owning an attribute cannot, in general, finalize that attribute. That's because the attributes are finalized <em>after</em> the task is terminated; moreover, a task may have attributes as soon as it is created; the task may never even have been activated. <br /></Admonition>
+<strong></strong>The task owning an attribute cannot, in general, finalize that attribute. That's because the attributes are finalized <em>after</em> the task is terminated; moreover, a task may have attributes as soon as it is created; the task may never even have been activated. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -320,7 +339,7 @@ end Ada.Task_Attributes;{"\n"}
 
 <MarginText>13.2/1_C.7.2</MarginText>
 <MarginInfo items={["AI95-00165-01"]} />
-<p>{"{"}<em>8652/0071</em>{"}"} If the package Ada.Task_Attributes is instantiated with a controlled type and the controlled type has user-defined Adjust or Finalize operations that in turn access task attributes by any of the above operations, then a call of Set_Value of the instantiated package constitutes a bounded error. The call may perform as expected or may result in forever blocking the calling task and subsequently some or all tasks of the partition. <br /></p>
+<p>{"{"}<em>8652/0071</em>{"}"} If the package Ada.Task{"_"}Attributes is instantiated with a controlled type and the controlled type has user-defined Adjust or Finalize operations that in turn access task attributes by any of the above operations, then a call of Set{"_"}Value of the instantiated package constitutes a bounded error. The call may perform as expected or may result in forever blocking the calling task and subsequently some or all tasks of the partition. <br /></p>
 
 
 #### Erroneous Execution
@@ -331,26 +350,29 @@ end Ada.Task_Attributes;{"\n"}
 <AnnotatedOnly>
 <MarginText>14.a_C.7.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This allows the storage to be reclaimed for the object associated with an attribute upon Reinitialize or task termination. <br /></Admonition>
+<strong></strong>This allows the storage to be reclaimed for the object associated with an attribute upon Reinitialize or task termination. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>15_C.7.2</MarginText>
-<p>If a value of Task_Id is passed as a parameter to any of the operations declared in this package and the corresponding task object no longer exists, the execution of the program is erroneous.<br /></p>
+<p>If a value of Task{"_"}Id is passed as a parameter to any of the operations declared in this package and the corresponding task object no longer exists, the execution of the program is erroneous.<br /></p>
 
 <MarginText>15.1/2_C.7.2</MarginText>
 <MarginInfo items={["AI95-00165-01", "AI95-00237-01"]} />
-<p>{"{"}<em>8652/0071</em>{"}"} An access to a task attribute via a value of type Attribute_Handle is erroneous if executed concurrently with another such access or a call of any of the operations declared in package Task_Attributes. An access to a task attribute is erroneous if executed concurrently with or after the finalization of the task attribute. <br /></p>
+<p>{"{"}<em>8652/0071</em>{"}"} An access to a task attribute via a value of type Attribute{"_"}Handle is erroneous if executed concurrently with another such access or a call of any of the operations declared in package Task{"_"}Attributes. An access to a task attribute is erroneous if executed concurrently with or after the finalization of the task attribute. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>15.a.1/1_C.7.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>There is no requirement of atomicity on accesses via a value of type Attribute_Handle. <br /></Admonition>
+<strong></strong>There is no requirement of atomicity on accesses via a value of type Attribute{"_"}Handle. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>15.a.2/2_C.7.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>A task attribute can only be accessed after finalization through a value of type Attribute_Handle. Operations in package Task_Attributes cannot be used to access a task attribute after finalization, because either the master of the instance has been or is in the process of being left (in which case the instance is out of scope and thus cannot be called), or the associated task is already terminated (in which case Tasking_Error is raised for any attempt to call a task attribute operation). <br /></Admonition>
+<strong></strong>A task attribute can only be accessed after finalization through a value of type Attribute{"_"}Handle. Operations in package Task{"_"}Attributes cannot be used to access a task attribute after finalization, because either the master of the instance has been or is in the process of being left (in which case the instance is out of scope and thus cannot be called), or the associated task is already terminated (in which case Tasking{"_"}Error is raised for any attempt to call a task attribute operation). <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -363,13 +385,15 @@ end Ada.Task_Attributes;{"\n"}
 <AnnotatedOnly>
 <MarginText>16.a.1/1_C.7.2</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>Granularity of locking for Task_Attributes.<br /></Admonition>
+<strong></strong>Granularity of locking for Task{"_"}Attributes.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>16.a_C.7.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Hence, other than by dereferencing an access value returned by Reference, an attribute of a given task can be safely read and updated concurrently by multiple tasks. <br /></Admonition>
+<strong></strong>Hence, other than by dereferencing an access value returned by Reference, an attribute of a given task can be safely read and updated concurrently by multiple tasks. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>17/2_C.7.2</MarginText>
@@ -388,13 +412,15 @@ end Ada.Task_Attributes;{"\n"}
 <AnnotatedOnly>
 <MarginText>19.a/2_C.7.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<em>This paragraph was deleted.</em><br /></Admonition>
+<em>This paragraph was deleted.</em><br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.b/2_C.7.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>For package Task_Attributes, limits on the number and size of task attributes, and how to configure any limits.<br /></Admonition>
+<strong>Documentation Requirement: </strong>For package Task{"_"}Attributes, limits on the number and size of task attributes, and how to configure any limits.<br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -405,27 +431,28 @@ end Ada.Task_Attributes;{"\n"}
 <p>The implementation shall document the following metrics: A task calling the following subprograms shall execute at a sufficiently high priority as to not be preempted during the measurement period. This period shall start just before issuing the call and end just after the call completes. If the attributes of task T are accessed by the measurement tests, no other task shall access attributes of that task during the measurement period. For all measurements described here, the Attribute type shall be a scalar type whose size is equal to the size of the predefined type Integer. For each measurement, two cases shall be documented: one where the accessed attributes are of the calling task [(that is, the default value for the T parameter is used)], and the other, where T identifies another, nonterminated, task.<br /></p>
 
 <MarginText>21_C.7.2</MarginText>
-<p>The following calls (to subprograms in the Task_Attributes package) shall be measured: <br /></p>
+<p>The following calls (to subprograms in the Task{"_"}Attributes package) shall be measured: <br /></p>
 
 <MarginText>22_C.7.2</MarginText>
 <ul>
-<li>a call to Value, where the return value is Initial_Value;<br /></li>
+<li>a call to Value, where the return value is Initial{"_"}Value;<br /></li>
 <MarginText>23_C.7.2</MarginText>
-<li>a call to Value, where the return value is not equal to Initial_Value;<br /></li>
+<li>a call to Value, where the return value is not equal to Initial{"_"}Value;<br /></li>
 <MarginText>24_C.7.2</MarginText>
-<li>a call to Reference, where the return value designates a value equal to Initial_Value;<br /></li>
+<li>a call to Reference, where the return value designates a value equal to Initial{"_"}Value;<br /></li>
 <MarginText>25_C.7.2</MarginText>
-<li>a call to Reference, where the return value designates a value not equal to Initial_Value;<br /></li>
+<li>a call to Reference, where the return value designates a value not equal to Initial{"_"}Value;<br /></li>
 <MarginText>26/2_C.7.2</MarginText>
 <MarginInfo items={["AI95-00434-01"]} />
-<li>a call to Set_Value where the Val parameter is not equal to Initial_Value and the old attribute value is equal to Initial_Value;<br /></li>
+<li>a call to Set{"_"}Value where the Val parameter is not equal to Initial{"_"}Value and the old attribute value is equal to Initial{"_"}Value;<br /></li>
 <MarginText>27_C.7.2</MarginText>
-<li>a call to Set_Value where the Val parameter is not equal to Initial_Value and the old attribute value is not equal to Initial_Value.<br /></li>
+<li>a call to Set{"_"}Value where the Val parameter is not equal to Initial{"_"}Value and the old attribute value is not equal to Initial{"_"}Value.<br /></li>
 </ul>
 <AnnotatedOnly>
 <MarginText>27.a/2_C.7.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>The metrics for the Task_Attributes package.<br /></Admonition>
+<strong>Documentation Requirement: </strong>The metrics for the Task{"_"}Attributes package.<br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -433,19 +460,21 @@ end Ada.Task_Attributes;{"\n"}
 
 <MarginText>28/5_C.7.2</MarginText>
 <MarginInfo items={["AI12-0444-1"]} />
-<p>An implementation can avoid actually creating the object corresponding to a task attribute until its value is set to something other than that of Initial_Value, or until Reference is called for the task attribute. Similarly, when the value of the attribute is to be reinitialized to that of Initial_Value, the object may instead be finalized and its storage reclaimed, to be recreated when needed later. While the object does not exist, the function Value may simply return Initial_Value, rather than implicitly creating the object. <br /></p>
+<p>An implementation can avoid actually creating the object corresponding to a task attribute until its value is set to something other than that of Initial{"_"}Value, or until Reference is called for the task attribute. Similarly, when the value of the attribute is to be reinitialized to that of Initial{"_"}Value, the object may instead be finalized and its storage reclaimed, to be recreated when needed later. While the object does not exist, the function Value may simply return Initial{"_"}Value, rather than implicitly creating the object. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>28.a_C.7.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The effect of this permission can only be observed if the assignment operation for the corresponding type has side effects. <br /></Admonition>
+<strong></strong>The effect of this permission can only be observed if the assignment operation for the corresponding type has side effects. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>28.b/2_C.7.2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>This permission means that even though every task has every attribute, storage need only be allocated for those attributes for which function Reference has been invoked or set to a value other than that of Initial_Value. <br /></Admonition>
+<strong></strong>This permission means that even though every task has every attribute, storage need only be allocated for those attributes for which function Reference has been invoked or set to a value other than that of Initial{"_"}Value. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>29_C.7.2</MarginText>
@@ -461,13 +490,15 @@ end Ada.Task_Attributes;{"\n"}
 <AnnotatedOnly>
 <MarginText>30.a/2_C.7.2</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>If the target domain requires deterministic memory use at run time, storage for task attributes should be pre-allocated statically and the number of attributes pre-allocated should be documented.<br /></Admonition>
+<strong></strong>If the target domain requires deterministic memory use at run time, storage for task attributes should be pre-allocated statically and the number of attributes pre-allocated should be documented.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>30.b/2_C.7.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>We don't mention &ldquo;restrictions on the size and number&rdquo; (that is, limits) in the text for the Annex, because it is covered by the Documentation Requirement above, and we try not to repeat requirements in the Annex (they're enough work to meet without having to do things twice). <br /></Admonition>
+<strong></strong>We don't mention &ldquo;restrictions on the size and number&rdquo; (that is, limits) in the text for the Annex, because it is covered by the Documentation Requirement above, and we try not to repeat requirements in the Annex (they're enough work to meet without having to do things twice). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>30.1/2_C.7.2</MarginText>
@@ -477,28 +508,32 @@ end Ada.Task_Attributes;{"\n"}
 <AnnotatedOnly>
 <MarginText>30.c/2_C.7.2</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>Finalization of task attributes and reclamation of associated storage should be performed as soon as possible after task termination.<br /></Admonition>
+<strong></strong>Finalization of task attributes and reclamation of associated storage should be performed as soon as possible after task termination.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>30.d/2_C.7.2</MarginText>
 <MarginInfo items={["AI95-00237-01"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This is necessary because the normative wording only says that attributes are finalized &ldquo;after&rdquo; task termination. Without this advice, waiting until the instance is finalized would meet the requirements (it is after termination, but may be a very long time after termination). We can't say anything more specific than this, as we do not want to require the overhead of an interaction with the tasking system to be done at a specific point. <br /></Admonition>
+<strong></strong>This is necessary because the normative wording only says that attributes are finalized &ldquo;after&rdquo; task termination. Without this advice, waiting until the instance is finalized would meet the requirements (it is after termination, but may be a very long time after termination). We can't say anything more specific than this, as we do not want to require the overhead of an interaction with the tasking system to be done at a specific point. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>31/5_C.7.2</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 1   An attribute always exists (after instantiation), and has the initial value. An implementation can avoid using memory to store the attribute value until the first operation that changes the attribute value. The same holds true after Reinitialize.<br /></Admonition>
+NOTE 1   An attribute always exists (after instantiation), and has the initial value. An implementation can avoid using memory to store the attribute value until the first operation that changes the attribute value. The same holds true after Reinitialize.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>32/5_C.7.2</MarginText>
 <MarginInfo items={["AI12-0442-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 2   The result of the Reference function is always safe to use in the task body whose attribute is being accessed. However, when the result is being used by another task, the programmer will want to make sure that the task whose attribute is being accessed is not yet terminated. Failing to do so can make the program execution erroneous.<br /></Admonition>
+NOTE 2   The result of the Reference function is always safe to use in the task body whose attribute is being accessed. However, when the result is being used by another task, the programmer will want to make sure that the task whose attribute is being accessed is not yet terminated. Failing to do so can make the program execution erroneous.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -510,14 +545,16 @@ NOTE 2   The result of the Reference function is always safe to use in the task 
 <MarginText>33.a/2_C.7.2</MarginText>
 <MarginInfo items={["AI95-00165-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0071</em>{"}"} <strong>Corrigendum:</strong> Clarified that use of task attribute operations from within a task attribute operation (by an Adjust or Finalize call) is a bounded error, and that concurrent use of attribute handles is erroneous.<br /></Admonition>
+{"{"}<em>8652/0071</em>{"}"} <strong>Corrigendum:</strong> Clarified that use of task attribute operations from within a task attribute operation (by an Adjust or Finalize call) is a bounded error, and that concurrent use of attribute handles is erroneous.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>33.b/2_C.7.2</MarginText>
 <MarginInfo items={["AI95-00237-01"]} />
 <Admonition type="aarm" aarm="note">
-Clarified the wording so that the finalization takes place after the termination of the task or when the instance is finalized (whichever is sooner). <br /></Admonition>
+Clarified the wording so that the finalization takes place after the termination of the task or when the instance is finalized (whichever is sooner). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_C.7.3"></a>
@@ -534,17 +571,17 @@ Clarified the wording so that the finalization takes place after the termination
 <MarginText>2/5_C.7.3</MarginText>
 <MarginInfo items={["AI12-0241-1", "AI12-0302-1"]} />
 <CodeBlock language="ada">
-with Ada.Task_Identification;{"\n"}with Ada.Exceptions;{"\n"}package Ada.Task_Termination{"\n"}   with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
+with Ada.Task{"_"}Identification;{"\n"}with Ada.Exceptions;{"\n"}package Ada.Task{"_"}Termination{"\n"}   with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
 <MarginText>3/2_C.7.3</MarginText>
-   type Cause_Of_Termination is (Normal, Abnormal, Unhandled_Exception);{"\n"}
+   type Cause{"_"}Of{"_"}Termination is (Normal, Abnormal, Unhandled{"_"}Exception);{"\n"}
 <MarginText>4/2_C.7.3</MarginText>
-   type Termination_Handler is access protected procedure{"\n"}     (Cause : in Cause_Of_Termination;{"\n"}      T     : in Ada.Task_Identification.Task_Id;{"\n"}      X     : in Ada.Exceptions.Exception_Occurrence);{"\n"}
+   type Termination{"_"}Handler is access protected procedure{"\n"}     (Cause : in Cause{"_"}Of{"_"}Termination;{"\n"}      T     : in Ada.Task{"_"}Identification.Task{"_"}Id;{"\n"}      X     : in Ada.Exceptions.Exception{"_"}Occurrence);{"\n"}
 <MarginText>5/2_C.7.3</MarginText>
-   procedure Set_Dependents_Fallback_Handler{"\n"}     (Handler: in Termination_Handler);{"\n"}   function Current_Task_Fallback_Handler return Termination_Handler;{"\n"}
+   procedure Set{"_"}Dependents{"_"}Fallback{"_"}Handler{"\n"}     (Handler: in Termination{"_"}Handler);{"\n"}   function Current{"_"}Task{"_"}Fallback{"_"}Handler return Termination{"_"}Handler;{"\n"}
 <MarginText>6/2_C.7.3</MarginText>
-   procedure Set_Specific_Handler{"\n"}     (T       : in Ada.Task_Identification.Task_Id;{"\n"}      Handler : in Termination_Handler);{"\n"}   function Specific_Handler (T : Ada.Task_Identification.Task_Id){"\n"}      return Termination_Handler;{"\n"}
+   procedure Set{"_"}Specific{"_"}Handler{"\n"}     (T       : in Ada.Task{"_"}Identification.Task{"_"}Id;{"\n"}      Handler : in Termination{"_"}Handler);{"\n"}   function Specific{"_"}Handler (T : Ada.Task{"_"}Identification.Task{"_"}Id){"\n"}      return Termination{"_"}Handler;{"\n"}
 <MarginText>7/2_C.7.3</MarginText>
-end Ada.Task_Termination;{"\n"}
+end Ada.Task{"_"}Termination;{"\n"}
 
 </CodeBlock>
 
@@ -552,34 +589,35 @@ end Ada.Task_Termination;{"\n"}
 
 <MarginText>8/3_C.7.3</MarginText>
 <MarginInfo items={["AI95-00266-02", "AI05-0202-1"]} />
-<p>The type Termination_Handler identifies a protected procedure to be executed by the implementation when a task terminates. Such a protected procedure is called a <em>handler</em>. In all cases T identifies the task that is terminating. If the task terminates due to completing the last statement of its body, or as a result of waiting on a terminate alternative, and the finalization of the task completes normally, then Cause is set to Normal and X is set to Null_Occurrence. If the task terminates because it is being aborted, then Cause is set to Abnormal; X is set to Null_Occurrence if the finalization of the task completes normally. If the task terminates because of an exception raised by the execution of its <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>, then Cause is set to Unhandled_Exception; X is set to the associated exception occurrence if the finalization of the task completes normally. Independent of how the task completes, if finalization of the task propagates an exception, then Cause is either Unhandled_Exception or Abnormal, and X is an exception occurrence that identifies the Program_Error exception.<br /></p>
+<p>The type Termination{"_"}Handler identifies a protected procedure to be executed by the implementation when a task terminates. Such a protected procedure is called a <em>handler</em>. In all cases T identifies the task that is terminating. If the task terminates due to completing the last statement of its body, or as a result of waiting on a terminate alternative, and the finalization of the task completes normally, then Cause is set to Normal and X is set to Null{"_"}Occurrence. If the task terminates because it is being aborted, then Cause is set to Abnormal; X is set to Null{"_"}Occurrence if the finalization of the task completes normally. If the task terminates because of an exception raised by the execution of its <code><a href="../AA-9/AA-9.1#S0248">task_body</a></code>, then Cause is set to Unhandled{"_"}Exception; X is set to the associated exception occurrence if the finalization of the task completes normally. Independent of how the task completes, if finalization of the task propagates an exception, then Cause is either Unhandled{"_"}Exception or Abnormal, and X is an exception occurrence that identifies the Program{"_"}Error exception.<br /></p>
 
 <MarginText>9/2_C.7.3</MarginText>
 <MarginInfo items={["AI95-00266-02"]} />
-<p>Each task has two termination handlers, a <em>fall-back handler</em> and a <em>specific handler</em>. The specific handler applies only to the task itself, while the fall-back handler applies only to the dependent tasks of the task. A handler is said to be <em>set</em> if it is associated with a nonnull value of type Termination_Handler, and <em>cleared</em> otherwise. When a task is created, its specific handler and fall-back handler are cleared.<br /></p>
+<p>Each task has two termination handlers, a <em>fall-back handler</em> and a <em>specific handler</em>. The specific handler applies only to the task itself, while the fall-back handler applies only to the dependent tasks of the task. A handler is said to be <em>set</em> if it is associated with a nonnull value of type Termination{"_"}Handler, and <em>cleared</em> otherwise. When a task is created, its specific handler and fall-back handler are cleared.<br /></p>
 
 <MarginText>10/3_C.7.3</MarginText>
 <MarginInfo items={["AI95-00266-02", "AI05-0264-1"]} />
-<p>The procedure Set_Dependents_Fallback_Handler changes the fall-back handler for the calling task: if Handler is <strong>null</strong>, that fall-back handler is cleared; otherwise, it is set to be Handler.<strong>all</strong>. If a fall-back handler had previously been set it is replaced.<br /></p>
+<p>The procedure Set{"_"}Dependents{"_"}Fallback{"_"}Handler changes the fall-back handler for the calling task: if Handler is <strong>null</strong>, that fall-back handler is cleared; otherwise, it is set to be Handler.<strong>all</strong>. If a fall-back handler had previously been set it is replaced.<br /></p>
 
 <MarginText>11/3_C.7.3</MarginText>
 <MarginInfo items={["AI95-00266-02", "AI05-0264-1"]} />
-<p>The function Current_Task_Fallback_Handler returns the fall-back handler that is currently set for the calling task, if one is set; otherwise, it returns <strong>null</strong>.<br /></p>
+<p>The function Current{"_"}Task{"_"}Fallback{"_"}Handler returns the fall-back handler that is currently set for the calling task, if one is set; otherwise, it returns <strong>null</strong>.<br /></p>
 
 <MarginText>12/3_C.7.3</MarginText>
 <MarginInfo items={["AI95-00266-02", "AI05-0264-1"]} />
-<p>The procedure Set_Specific_Handler changes the specific handler for the task identified by T: if Handler is <strong>null</strong>, that specific handler is cleared; otherwise, it is set to be Handler.<strong>all</strong>. If a specific handler had previously been set it is replaced.<br /></p>
+<p>The procedure Set{"_"}Specific{"_"}Handler changes the specific handler for the task identified by T: if Handler is <strong>null</strong>, that specific handler is cleared; otherwise, it is set to be Handler.<strong>all</strong>. If a specific handler had previously been set it is replaced.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>12.a/3_C.7.3</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>This package cannot portably be used to set a handler on the program as a whole. It is possible to call Set_Specific_Handler with the environment task's ID. But any call to the handler would necessarily be a Bounded (Run-Time) Error, as the handler is called after the task's finalization has completed. In the case of the environment task, that includes any possible protected objects, and calling a protected object after it is finalized is a Bounded (Run-Time) Error (see <a href="../AA-9/AA-9.4">9.4</a>). This might work in a particular implementation, but it cannot be depended upon. <br /></Admonition>
+<strong></strong>This package cannot portably be used to set a handler on the program as a whole. It is possible to call Set{"_"}Specific{"_"}Handler with the environment task's ID. But any call to the handler would necessarily be a Bounded (Run-Time) Error, as the handler is called after the task's finalization has completed. In the case of the environment task, that includes any possible protected objects, and calling a protected object after it is finalized is a Bounded (Run-Time) Error (see <a href="../AA-9/AA-9.4">9.4</a>). This might work in a particular implementation, but it cannot be depended upon. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>13/3_C.7.3</MarginText>
 <MarginInfo items={["AI95-00266-02", "AI05-0264-1"]} />
-<p>The function Specific_Handler returns the specific handler that is currently set for the task identified by T, if one is set; otherwise, it returns <strong>null</strong>.<br /></p>
+<p>The function Specific{"_"}Handler returns the specific handler that is currently set for the task identified by T, if one is set; otherwise, it returns <strong>null</strong>.<br /></p>
 
 <MarginText>14/2_C.7.3</MarginText>
 <MarginInfo items={["AI95-00266-02"]} />
@@ -587,7 +625,7 @@ end Ada.Task_Termination;{"\n"}
 
 <MarginText>15/2_C.7.3</MarginText>
 <MarginInfo items={["AI95-00266-02"]} />
-<p>For Set_Specific_Handler or Specific_Handler, Tasking_Error is raised if the task identified by T has already terminated. Program_Error is raised if the value of T is Ada.Task_Identification.Null_Task_Id.<br /></p>
+<p>For Set{"_"}Specific{"_"}Handler or Specific{"_"}Handler, Tasking{"_"}Error is raised if the task identified by T has already terminated. Program{"_"}Error is raised if the value of T is Ada.Task{"_"}Identification.Null{"_"}Task{"_"}Id.<br /></p>
 
 <MarginText>16/2_C.7.3</MarginText>
 <MarginInfo items={["AI95-00266-02"]} />
@@ -598,7 +636,7 @@ end Ada.Task_Termination;{"\n"}
 
 <MarginText>17/2_C.7.3</MarginText>
 <MarginInfo items={["AI95-00266-02"]} />
-<p>For a call of Set_Specific_Handler or Specific_Handler, if the task identified by T no longer exists, the execution of the program is erroneous. <br /></p>
+<p>For a call of Set{"_"}Specific{"_"}Handler or Specific{"_"}Handler, if the task identified by T no longer exists, the execution of the program is erroneous. <br /></p>
 
 <AnnotatedOnly>
 
@@ -609,7 +647,8 @@ end Ada.Task_Termination;{"\n"}
 <MarginText>17.a/2_C.7.3</MarginText>
 <MarginInfo items={["AI95-00266-02"]} />
 <Admonition type="aarm" aarm="note">
-Package Task_Termination is new. <br /></Admonition>
+Package Task{"_"}Termination is new. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -621,6 +660,7 @@ Package Task_Termination is new. <br /></Admonition>
 <MarginText>17.b/3_C.7.3</MarginText>
 <MarginInfo items={["AI05-0202-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Specified what is passed to the handler if the finalization of the task fails after it is completed. This was not specified at all in Ada 2005, so there is a possibility that some program depended on some other behavior of an implementation. But as this case is very unlikely (and only occurs when there is already a significant bug in the program - so should not occur in fielded systems), we're not listing this as an inconsistency. <br /></Admonition>
+<strong></strong> Specified what is passed to the handler if the finalization of the task fails after it is completed. This was not specified at all in Ada 2005, so there is a possibility that some program depended on some other behavior of an implementation. But as this case is very unlikely (and only occurs when there is already a significant bug in the program - so should not occur in fielded systems), we're not listing this as an inconsistency. <br />
+</Admonition>
 </AnnotatedOnly>
 

@@ -26,13 +26,15 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>1.a/5</MarginText>
 <MarginInfo items={["AI12-0300-1"]} />
 <Admonition type="aarm" aarm="note">
-The legality of an instance should be determinable without looking at the generic body. Likewise, the legality of a generic body should be determinable without looking at any instances. Thus, the <code><a href="../AA-12/AA-12.1#S0310">generic_declaration</a></code> forms a contract between the body and the instances; if each obeys the rules with respect to the <code><a href="../AA-12/AA-12.1#S0310">generic_declaration</a></code>, then no legality problems will arise. This is really a special case of the &ldquo;legality determinable via semantic dependences&rdquo; Language Design Principle (see Clause <a href="../AA-10/">10</a>), given that a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> does not depend semantically upon the generic body, nor vice versa.<br /></Admonition>
+The legality of an instance should be determinable without looking at the generic body. Likewise, the legality of a generic body should be determinable without looking at any instances. Thus, the <code><a href="../AA-12/AA-12.1#S0310">generic_declaration</a></code> forms a contract between the body and the instances; if each obeys the rules with respect to the <code><a href="../AA-12/AA-12.1#S0310">generic_declaration</a></code>, then no legality problems will arise. This is really a special case of the &ldquo;legality determinable via semantic dependences&rdquo; Language Design Principle (see Clause <a href="../AA-10/">10</a>), given that a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> does not depend semantically upon the generic body, nor vice versa.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>1.b</MarginText>
 <Admonition type="aarm" aarm="note">
-Run-time issues are another story. For example, whether parameter passing is by copy or by reference is determined in part by the properties of the generic actuals, and thus cannot be determined at compile time of the generic body. Similarly, the contract model does not apply to Post-Compilation Rules. <br /></Admonition>
+Run-time issues are another story. For example, whether parameter passing is by copy or by reference is determined in part by the properties of the generic actuals, and thus cannot be determined at compile time of the generic body. Similarly, the contract model does not apply to Post-Compilation Rules. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -42,39 +44,40 @@ Run-time issues are another story. For example, whether parameter passing is by 
 <MarginInfo items={["AI95-00218-03", "AI05-0183-1"]} />
 
 <CodeBlock>
-<code>generic_instantiation</code><a id="S0315"></a><code> ::= </code><br />     <strong>package</strong> <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code> <strong>is</strong><br />         <strong>new</strong> <em>generic_package_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> [<code><a href="../AA-12/AA-12.3#S0316">generic_actual_part</a></code>]<br />            [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br />   | [<code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code>]<br />     <strong>procedure</strong> <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code> <strong>is</strong><br />         <strong>new</strong> <em>generic_procedure_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> [<code><a href="../AA-12/AA-12.3#S0316">generic_actual_part</a></code>]<br />            [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br />   | [<code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code>]<br />     <strong>function</strong> <code><a href="../AA-6/AA-6.1#S0200">defining_designator</a></code> <strong>is</strong><br />         <strong>new</strong> <em>generic_function_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> [<code><a href="../AA-12/AA-12.3#S0316">generic_actual_part</a></code>]<br />            [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br />
+<code>generic{"_"}instantiation</code><a id="S0315"></a><code> ::= </code><br />     <strong>package</strong> <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code> <strong>is</strong><br />         <strong>new</strong> <em>generic{"_"}package{"_"}</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> [<code><a href="../AA-12/AA-12.3#S0316">generic_actual_part</a></code>]<br />            [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br />   | [<code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code>]<br />     <strong>procedure</strong> <code><a href="../AA-6/AA-6.1#S0201">defining_program_unit_name</a></code> <strong>is</strong><br />         <strong>new</strong> <em>generic{"_"}procedure{"_"}</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> [<code><a href="../AA-12/AA-12.3#S0316">generic_actual_part</a></code>]<br />            [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br />   | [<code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code>]<br />     <strong>function</strong> <code><a href="../AA-6/AA-6.1#S0200">defining_designator</a></code> <strong>is</strong><br />         <strong>new</strong> <em>generic{"_"}function{"_"}</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> [<code><a href="../AA-12/AA-12.3#S0316">generic_actual_part</a></code>]<br />            [<code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code>];<br />
 
 </CodeBlock>
 <MarginText>3</MarginText>
 
 <CodeBlock>
-<code>generic_actual_part</code><a id="S0316"></a><code> ::= </code><br />   (<code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code> {"{"}, <code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code>{"}"})<br />
+<code>generic{"_"}actual{"_"}part</code><a id="S0316"></a><code> ::= </code><br />   (<code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code> {"{"}, <code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code>{"}"})<br />
 
 </CodeBlock>
 <MarginText>4</MarginText>
 
 <CodeBlock>
-<code>generic_association</code><a id="S0317"></a><code> ::= </code><br />   [<em>generic_formal_parameter_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> ={">"}] <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code><br />
+<code>generic{"_"}association</code><a id="S0317"></a><code> ::= </code><br />   [<em>generic{"_"}formal{"_"}parameter{"_"}</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> ={">"}] <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code><br />
 
 </CodeBlock>
 <MarginText>5</MarginText>
 
 <CodeBlock>
-<code>explicit_generic_actual_parameter</code><a id="S0318"></a><code> ::= </code><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> | <em>variable_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code><br />   | <em>subprogram_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> | <em>entry_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> | <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code><br />   | <em>package_instance_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code><br />
+<code>explicit{"_"}generic{"_"}actual{"_"}parameter</code><a id="S0318"></a><code> ::= </code><code><a href="../AA-4/AA-4.4#S0132">expression</a></code> | <em>variable{"_"}</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code><br />   | <em>subprogram{"_"}</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> | <em>entry{"_"}</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code> | <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code><br />   | <em>package{"_"}instance{"_"}</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code><br />
 
 </CodeBlock>
 <MarginText>6</MarginText>
-<p class="Indented2">A <code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code> is <em>named</em> or <em>positional</em> according to whether or not the <em>generic_formal_parameter_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> is specified. Any positional associations shall precede any named associations. <br /></p>
+<p class="Indented2">A <code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code> is <em>named</em> or <em>positional</em> according to whether or not the <em>generic{"_"}formal{"_"}parameter{"_"}</em><code><a href="../AA-4/AA-4.1#S0099">selector{"_"}name</a></code> is specified. Any positional associations shall precede any named associations. <br /></p>
 
 <MarginText>7/5</MarginText>
 <MarginInfo items={["AI05-0004-1", "AI12-0205-1"]} />
-<p>The <em>generic actual parameter</em> is either the <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code> given in a <code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code> for each formal, or the corresponding <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>, <em>default_</em><code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>, or <code><a href="../AA-12/AA-12.6#S0339">default_name</a></code> if no <code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code> is given for the formal. When the meaning is clear from context, the term &ldquo;generic actual&rdquo;, or simply &ldquo;actual&rdquo;, is used as a synonym for &ldquo;generic actual parameter&rdquo; and also for the view denoted by one, or the value of one.<br /></p>
+<p>The <em>generic actual parameter</em> is either the <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code> given in a <code><a href="../AA-12/AA-12.3#S0317">generic{"_"}association</a></code> for each formal, or the corresponding <code><a href="../AA-3/AA-3.7#S0063">default{"_"}expression</a></code>, <em>default{"_"}</em><code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>, or <code><a href="../AA-12/AA-12.6#S0339">default{"_"}name</a></code> if no <code><a href="../AA-12/AA-12.3#S0317">generic{"_"}association</a></code> is given for the formal. When the meaning is clear from context, the term &ldquo;generic actual&rdquo;, or simply &ldquo;actual&rdquo;, is used as a synonym for &ldquo;generic actual parameter&rdquo; and also for the view denoted by one, or the value of one.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>7.a/5</MarginText>
 <MarginInfo items={["AI12-0205-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Any matching or other Legality Rules that apply to a generic actual are applied to any <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>, <em>default_</em><code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>, or <code><a href="../AA-12/AA-12.6#S0339">default_name</a></code> that are used as an actual. <br /></Admonition>
+<strong></strong>Any matching or other Legality Rules that apply to a generic actual are applied to any <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>, <em>default{"_"}</em><code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>, or <code><a href="../AA-12/AA-12.6#S0339">default_name</a></code> that are used as an actual. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -85,7 +88,7 @@ Run-time issues are another story. For example, whether parameter passing is by 
 
 <MarginText>9/3</MarginText>
 <MarginInfo items={["AI05-0118-1"]} />
-<p>The <em>generic_formal_parameter_</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> of a named <code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code> shall denote a <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code> of the generic unit being instantiated. If two or more formal subprograms have the same defining name, then named associations are not allowed for the corresponding actuals.<br /></p>
+<p>The <em>generic{"_"}formal{"_"}parameter{"_"}</em><code><a href="../AA-4/AA-4.1#S0099">selector_name</a></code> of a named <code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code> shall denote a <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code> of the generic unit being instantiated. If two or more formal subprograms have the same defining name, then named associations are not allowed for the corresponding actuals.<br /></p>
 
 <MarginText>9.1/3</MarginText>
 <MarginInfo items={["AI05-0118-1"]} />
@@ -93,7 +96,7 @@ Run-time issues are another story. For example, whether parameter passing is by 
 
 <MarginText>10/5</MarginText>
 <MarginInfo items={["AI12-0205-1"]} />
-<p>A <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> shall contain at most one <code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code> for each formal. Each formal without an association shall have a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>, <em>default_</em><code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>, or <code><a href="../AA-12/AA-12.6#S0338">subprogram_default</a></code>.<br /></p>
+<p>A <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> shall contain at most one <code><a href="../AA-12/AA-12.3#S0317">generic_association</a></code> for each formal. Each formal without an association shall have a <code><a href="../AA-3/AA-3.7#S0063">default_expression</a></code>, <em>default{"_"}</em><code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>, or <code><a href="../AA-12/AA-12.6#S0338">subprogram_default</a></code>.<br /></p>
 
 <MarginText>11/5</MarginText>
 <MarginInfo items={["AI12-0418-1"]} />
@@ -103,20 +106,23 @@ Run-time issues are another story. For example, whether parameter passing is by 
 <MarginText>11.a/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>Since rules are checked using the properties of the formals, and since these properties do not always carry over to the actuals, we need to check the rules again in the visible part of the instance. For example, only if a tagged type is limited may an extension of it have limited components in the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code>. A formal tagged limited type is limited, but the actual might be nonlimited. Hence any rule that requires a tagged type to be limited runs into this problem. Such rules are rare; in most cases, the rules for matching of formals and actuals guarantee that if the rule is obeyed in the generic unit, then it has to be obeyed in the instance.<br /></Admonition>
+<strong></strong>Since rules are checked using the properties of the formals, and since these properties do not always carry over to the actuals, we need to check the rules again in the visible part of the instance. For example, only if a tagged type is limited may an extension of it have limited components in the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code>. A formal tagged limited type is limited, but the actual might be nonlimited. Hence any rule that requires a tagged type to be limited runs into this problem. Such rules are rare; in most cases, the rules for matching of formals and actuals guarantee that if the rule is obeyed in the generic unit, then it has to be obeyed in the instance.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>11.a.1/3</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
 <Admonition type="aarm" aarm="note">
-Ada 2012 addendum: Such Legality Rules are not as rare as the authors of Ada 95 hoped; there are more than 30 of them known at this point. They are indexed under &ldquo;generic contract issue&rdquo; and are associated with the boilerplate &ldquo;In addition to the places where Legality Rules normally apply...&rdquo;. Indeed, there is only one known rule where rechecking in the specification is needed and where rechecking in the private part is <em>not</em> wanted (it is in <a href="../AA-3/AA-3.4">3.4</a>, but even it needs rechecking when tagged types are involved). <br /></Admonition>
+Ada 2012 addendum: Such Legality Rules are not as rare as the authors of Ada 95 hoped; there are more than 30 of them known at this point. They are indexed under &ldquo;generic contract issue&rdquo; and are associated with the boilerplate &ldquo;In addition to the places where Legality Rules normally apply...&rdquo;. Indeed, there is only one known rule where rechecking in the specification is needed and where rechecking in the private part is <em>not</em> wanted (it is in <a href="../AA-3/AA-3.4">3.4</a>, but even it needs rechecking when tagged types are involved). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>11.b</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The &ldquo;properties&rdquo; of the formals are determined without knowing anything about the actuals: <br /></Admonition>
+<strong></strong>The &ldquo;properties&rdquo; of the formals are determined without knowing anything about the actuals: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -146,7 +152,8 @@ Ada 2012 addendum: Such Legality Rules are not as rare as the authors of Ada 95 
 <AnnotatedOnly>
 <MarginText>11.l</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The exceptions to the above rule about when legality rules are enforced fall into these categories: <br /></Admonition>
+<strong></strong>The exceptions to the above rule about when legality rules are enforced fall into these categories: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -196,26 +203,30 @@ Ada 2012 addendum: Such Legality Rules are not as rare as the authors of Ada 95 
 <AnnotatedOnly>
 <MarginText>11.y</MarginText>
 <Admonition type="aarm" aarm="note">
-Each rule that is an exception is marked with &ldquo;generic contract issue;&rdquo; look that up in the index to find them all. <br /></Admonition>
+Each rule that is an exception is marked with &ldquo;generic contract issue;&rdquo; look that up in the index to find them all. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>11.z</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The Legality Rules are the ones labeled Legality Rules. We are talking about all Legality Rules in the entire language here. Note that, with some exceptions, the legality of a generic unit is checked even if there are no instantiations of the generic unit. <br /></Admonition>
+<strong></strong>The Legality Rules are the ones labeled Legality Rules. We are talking about all Legality Rules in the entire language here. Note that, with some exceptions, the legality of a generic unit is checked even if there are no instantiations of the generic unit. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>11.aa/5</MarginText>
 <MarginInfo items={["AI05-0299-1", "AI12-0005-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The Legality Rules are described here, and the overloading rules were described earlier in this subclause. Presumably, every Static Semantic Item is included indirectly by one of those. Thus, we have covered all the compile-time rules of the language. There is no need to say anything special about the Post-Compilation Rules or the Dynamic Semantic Items. <br /></Admonition>
+<strong></strong>The Legality Rules are described here, and the overloading rules were described earlier in this subclause. Presumably, every Static Semantic Item is included indirectly by one of those. Thus, we have covered all the compile-time rules of the language. There is no need to say anything special about the Post-Compilation Rules or the Dynamic Semantic Items. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>11.bb</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Here is an example illustrating how this rule is checked: &ldquo;In the declaration of a record extension, if the parent type is nonlimited, then each of the components of the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code> shall be nonlimited.&rdquo; <br /></Admonition>
+<strong></strong>Here is an example illustrating how this rule is checked: &ldquo;In the declaration of a record extension, if the parent type is nonlimited, then each of the components of the <code><a href="../AA-3/AA-3.9#S0075">record_extension_part</a></code> shall be nonlimited.&rdquo; <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -228,13 +239,15 @@ generic{"\n"}    type Parent is tagged private;{"\n"}    type Comp is limited pr
 <AnnotatedOnly>
 <MarginText>11.dd/1</MarginText>
 <Admonition type="aarm" aarm="note">
-The parent type is nonlimited, and the component type is limited, which is illegal. It doesn't matter that one could imagine writing an instantiation with the actual for Comp being nonlimited &mdash; we never get to the instance, because the generic itself is illegal.<br /></Admonition>
+The parent type is nonlimited, and the component type is limited, which is illegal. It doesn't matter that one could imagine writing an instantiation with the actual for Comp being nonlimited &mdash; we never get to the instance, because the generic itself is illegal.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>11.ee</MarginText>
 <Admonition type="aarm" aarm="note">
-On the other hand: <br /></Admonition>
+On the other hand: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -242,36 +255,39 @@ On the other hand: <br /></Admonition>
 <CodeBlock language="ada">
 generic{"\n"}    type Parent is tagged limited private; -- Parent is limited.{"\n"}    type Comp is limited private;{"\n"}package G2 is{"\n"}    type Extension is new Parent with{"\n"}        record{"\n"}            C : Comp; -- OK.{"\n"}        end record;{"\n"}end G2;{"\n"}
 <MarginText>11.gg</MarginText>
-type Limited_Tagged is tagged limited null record;{"\n"}type Non_Limited_Tagged is tagged null record;{"\n"}
+type Limited{"_"}Tagged is tagged limited null record;{"\n"}type Non{"_"}Limited{"_"}Tagged is tagged null record;{"\n"}
 <MarginText>11.hh</MarginText>
-type Limited_Untagged is limited null record;{"\n"}type Non_Limited_Untagged is null record;{"\n"}
+type Limited{"_"}Untagged is limited null record;{"\n"}type Non{"_"}Limited{"_"}Untagged is null record;{"\n"}
 <MarginText>11.ii</MarginText>
-package Good_1 is new G2(Parent ={">"} Limited_Tagged,{"\n"}                         Comp ={">"} Limited_Untagged);{"\n"}package Good_2 is new G2(Parent ={">"} Non_Limited_Tagged,{"\n"}                         Comp ={">"} Non_Limited_Untagged);{"\n"}package Bad  is new G2(Parent ={">"} Non_Limited_Tagged,{"\n"}                         Comp ={">"} Limited_Untagged); -- Illegal!{"\n"}
+package Good{"_"}1 is new G2(Parent ={">"} Limited{"_"}Tagged,{"\n"}                         Comp ={">"} Limited{"_"}Untagged);{"\n"}package Good{"_"}2 is new G2(Parent ={">"} Non{"_"}Limited{"_"}Tagged,{"\n"}                         Comp ={">"} Non{"_"}Limited{"_"}Untagged);{"\n"}package Bad  is new G2(Parent ={">"} Non{"_"}Limited{"_"}Tagged,{"\n"}                         Comp ={">"} Limited{"_"}Untagged); -- Illegal!{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>11.jj</MarginText>
 <Admonition type="aarm" aarm="note">
-The first instantiation is legal, because in the instance the parent is limited, so the rule is not violated. Likewise, in the second instantiation, the rule is not violated in the instance. However, in the Bad instance, the parent type is nonlimited, and the component type is limited, so this instantiation is illegal. <br /></Admonition>
+The first instantiation is legal, because in the instance the parent is limited, so the rule is not violated. Likewise, in the second instantiation, the rule is not violated in the instance. However, in the Bad instance, the parent type is nonlimited, and the component type is limited, so this instantiation is illegal. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
 #### Static Semantics
 
 <MarginText>12</MarginText>
-<p>A <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> declares an instance; it is equivalent to the instance declaration (a <code><a href="../AA-7/AA-7.1#S0229">package_declaration</a></code> or <code><a href="../AA-6/AA-6.1#S0195">subprogram_declaration</a></code>) immediately followed by the instance body, both at the place of the instantiation. <br /></p>
+<p>A <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> declares an instance; it is equivalent to the instance declaration (a <code><a href="../AA-7/AA-7.1#S0229">package{"_"}declaration</a></code> or <code><a href="../AA-6/AA-6.1#S0195">subprogram{"_"}declaration</a></code>) immediately followed by the instance body, both at the place of the instantiation. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>12.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The declaration and the body of the instance are not &ldquo;implicit&rdquo; in the technical sense, even though you can't see them in the program text. Nor are declarations within an instance &ldquo;implicit&rdquo; (unless they are implicit by other rules). This is necessary because implicit declarations have special semantics that should not be attached to instances. For a generic subprogram, the profile of a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> is that of the instance declaration, by the stated equivalence. <br /></Admonition>
+<strong></strong>The declaration and the body of the instance are not &ldquo;implicit&rdquo; in the technical sense, even though you can't see them in the program text. Nor are declarations within an instance &ldquo;implicit&rdquo; (unless they are implicit by other rules). This is necessary because implicit declarations have special semantics that should not be attached to instances. For a generic subprogram, the profile of a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> is that of the instance declaration, by the stated equivalence. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>12.b</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The visible and private parts of a package instance are defined in <a href="../AA-7/AA-7.1">7.1</a>, &ldquo;<a href="../AA-7/AA-7.1">Package Specifications and Declarations</a>&rdquo; and <a href="../AA-12/AA-12.7">12.7</a>, &ldquo;<a href="../AA-12/AA-12.7">Formal Packages</a>&rdquo;. The visible and private parts of a subprogram instance are defined in <a href="../AA-8/AA-8.2">8.2</a>, &ldquo;<a href="../AA-8/AA-8.2">Scope of Declarations</a>&rdquo;. <br /></Admonition>
+<strong></strong>The visible and private parts of a package instance are defined in <a href="../AA-7/AA-7.1">7.1</a>, &ldquo;<a href="../AA-7/AA-7.1">Package Specifications and Declarations</a>&rdquo; and <a href="../AA-12/AA-12.7">12.7</a>, &ldquo;<a href="../AA-12/AA-12.7">Formal Packages</a>&rdquo;. The visible and private parts of a subprogram instance are defined in <a href="../AA-8/AA-8.2">8.2</a>, &ldquo;<a href="../AA-8/AA-8.2">Scope of Declarations</a>&rdquo;. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>13</MarginText>
@@ -280,33 +296,38 @@ The first instantiation is legal, because in the instance the parent is limited,
 <AnnotatedOnly>
 <MarginText>13.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>An instance is a package or subprogram (because we say so), even though it contains a copy of the <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code>, and therefore doesn't look like one. This is strange, but it's OK, since the syntax rules are overloading rules, and therefore do not apply in an instance. <br /></Admonition>
+<strong></strong>An instance is a package or subprogram (because we say so), even though it contains a copy of the <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code>, and therefore doesn't look like one. This is strange, but it's OK, since the syntax rules are overloading rules, and therefore do not apply in an instance. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>13.b</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>We use a macro-expansion model, with some explicitly-stated exceptions (see below). The main exception is that the interpretation of each construct in a generic unit (especially including the denotation of each name) is determined when the declaration and body of the generic unit (as opposed to the instance) are compiled, and in each instance this interpretation is (a copy of) the template interpretation. In other words, if a construct is interpreted as a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denoting a declaration D, then in an instance, the copy of the construct will still be a name, and will still denote D (or a copy of D). From an implementation point of view, overload resolution is performed on the template, and not on each copy.<br /></Admonition>
+<strong></strong>We use a macro-expansion model, with some explicitly-stated exceptions (see below). The main exception is that the interpretation of each construct in a generic unit (especially including the denotation of each name) is determined when the declaration and body of the generic unit (as opposed to the instance) are compiled, and in each instance this interpretation is (a copy of) the template interpretation. In other words, if a construct is interpreted as a <code><a href="../AA-4/AA-4.1#S0091">name</a></code> denoting a declaration D, then in an instance, the copy of the construct will still be a name, and will still denote D (or a copy of D). From an implementation point of view, overload resolution is performed on the template, and not on each copy.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>13.c</MarginText>
 <Admonition type="aarm" aarm="note">
-We describe the substitution of generic actual parameters by saying (in most cases) that the copy of each generic formal parameter declares a view of the actual. Suppose a name in a generic unit denotes a <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code>. The copy of that name in an instance will denote the copy of that <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code> in the instance. Since the <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code> in the instance declares a view of the actual, the name will denote a view of the actual.<br /></Admonition>
+We describe the substitution of generic actual parameters by saying (in most cases) that the copy of each generic formal parameter declares a view of the actual. Suppose a name in a generic unit denotes a <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code>. The copy of that name in an instance will denote the copy of that <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code> in the instance. Since the <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code> in the instance declares a view of the actual, the name will denote a view of the actual.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>13.d/2</MarginText>
 <MarginInfo items={["AI95-00442-01"]} />
 <Admonition type="aarm" aarm="note">
-Other properties of the copy (for example, staticness, categories to which types belong) are recalculated for each instance; this is implied by the fact that it's a copy.<br /></Admonition>
+Other properties of the copy (for example, staticness, categories to which types belong) are recalculated for each instance; this is implied by the fact that it's a copy.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>13.e/2</MarginText>
 <MarginInfo items={["AI95-00317-01"]} />
 <Admonition type="aarm" aarm="note">
-Although the <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code> is included in an instance, the declarations in the <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code> are only visible outside the instance in the case of a generic formal package whose <code><a href="../AA-12/AA-12.7#S0341">formal_package_actual_part</a></code> includes one or more {"<"}{">"} indicators &mdash; see <a href="../AA-12/AA-12.7">12.7</a>. <br /></Admonition>
+Although the <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code> is included in an instance, the declarations in the <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code> are only visible outside the instance in the case of a generic formal package whose <code><a href="../AA-12/AA-12.7#S0341">formal_package_actual_part</a></code> includes one or more {"<"}{">"} indicators &mdash; see <a href="../AA-12/AA-12.7">12.7</a>. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>14</MarginText>
@@ -315,44 +336,51 @@ Although the <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></cod
 <AnnotatedOnly>
 <MarginText>14.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>See <a href="../AA-8/AA-8.6">8.6</a>, &ldquo;<a href="../AA-8/AA-8.6">The Context of Overload Resolution</a>&rdquo; for definitions of &ldquo;interpretation&rdquo; and &ldquo;overloading rule&rdquo;.<br /></Admonition>
+<strong></strong>See <a href="../AA-8/AA-8.6">8.6</a>, &ldquo;<a href="../AA-8/AA-8.6">The Context of Overload Resolution</a>&rdquo; for definitions of &ldquo;interpretation&rdquo; and &ldquo;overloading rule&rdquo;.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>14.b</MarginText>
 <Admonition type="aarm" aarm="note">
-Even the <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code>s have corresponding declarations in the instance, which declare views of the actuals.<br /></Admonition>
+Even the <code><a href="../AA-12/AA-12.1#S0314">generic_formal_parameter_declaration</a></code>s have corresponding declarations in the instance, which declare views of the actuals.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>14.c</MarginText>
 <Admonition type="aarm" aarm="note">
-Although the declarations in the instance are copies of those in the generic unit, they often have quite different properties, as explained below. For example a constant declaration in the generic unit might declare a nonstatic constant, whereas the copy of that declaration might declare a static constant. This can happen when the staticness depends on some generic formal.<br /></Admonition>
+Although the declarations in the instance are copies of those in the generic unit, they often have quite different properties, as explained below. For example a constant declaration in the generic unit might declare a nonstatic constant, whereas the copy of that declaration might declare a static constant. This can happen when the staticness depends on some generic formal.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>14.d</MarginText>
 <Admonition type="aarm" aarm="note">
-This rule is partly a ramification of the &ldquo;current instance&rdquo; rule in <a href="../AA-8/AA-8.6">8.6</a>, &ldquo;<a href="../AA-8/AA-8.6">The Context of Overload Resolution</a>&rdquo;. Note that that rule doesn't cover the <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code>.<br /></Admonition>
+This rule is partly a ramification of the &ldquo;current instance&rdquo; rule in <a href="../AA-8/AA-8.6">8.6</a>, &ldquo;<a href="../AA-8/AA-8.6">The Context of Overload Resolution</a>&rdquo;. Note that that rule doesn't cover the <code><a href="../AA-12/AA-12.1#S0313">generic_formal_part</a></code>.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>14.e/5</MarginText>
 <MarginInfo items={["AI12-0347-1"]} />
 <Admonition type="aarm" aarm="note">
-Although the overloading rules are not observed in the instance, they are, of course, observed in the <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> in order to determine the interpretation of the constituents of the <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>.<br /></Admonition>
+Although the overloading rules are not observed in the instance, they are, of course, observed in the <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> in order to determine the interpretation of the constituents of the <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>14.f</MarginText>
 <Admonition type="aarm" aarm="note">
-Since children are considered to occur within their parent's declarative region, the above rule applies to a name that denotes a child of a generic unit, or a declaration inside such a child.<br /></Admonition>
+Since children are considered to occur within their parent's declarative region, the above rule applies to a name that denotes a child of a generic unit, or a declaration inside such a child.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>14.g</MarginText>
 <Admonition type="aarm" aarm="note">
-Since the Syntax Rules are overloading rules, it is possible (legal) to violate them in an instance. For example, it is possible for an instance body to occur in a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, even though the Syntax Rules forbid bodies in <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>s. <br /></Admonition>
+Since the Syntax Rules are overloading rules, it is possible (legal) to violate them in an instance. For example, it is possible for an instance body to occur in a <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>, even though the Syntax Rules forbid bodies in <code><a href="../AA-7/AA-7.1#S0230">package_specification</a></code>s. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>15/5</MarginText>
@@ -362,44 +390,51 @@ Since the Syntax Rules are overloading rules, it is possible (legal) to violate 
 <AnnotatedOnly>
 <MarginText>15.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>In an instance, there are no &ldquo;properties&rdquo; of types and subtypes that come from the formal. The primitive operations of the type come from the formal, but these are declarations in their own right, and are therefore handled separately.<br /></Admonition>
+<strong></strong>In an instance, there are no &ldquo;properties&rdquo; of types and subtypes that come from the formal. The primitive operations of the type come from the formal, but these are declarations in their own right, and are therefore handled separately.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>15.b</MarginText>
 <Admonition type="aarm" aarm="note">
-Note that certain properties that come from the actuals are irrelevant in the instance. For example, if an actual type is of a class deeper in the derived-type hierarchy than the formal, it is impossible to call the additional operations of the deeper class in the instance, because any such call would have to be a copy of some corresponding call in the generic unit, which would have been illegal. However, it is sometimes possible to reach into the specification of the instance from outside, and notice such properties. For example, one could pass an object declared in the instance specification to one of the additional operations of the deeper type.<br /></Admonition>
+Note that certain properties that come from the actuals are irrelevant in the instance. For example, if an actual type is of a class deeper in the derived-type hierarchy than the formal, it is impossible to call the additional operations of the deeper class in the instance, because any such call would have to be a copy of some corresponding call in the generic unit, which would have been illegal. However, it is sometimes possible to reach into the specification of the instance from outside, and notice such properties. For example, one could pass an object declared in the instance specification to one of the additional operations of the deeper type.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>15.c/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="note">
-A <code><a href="../AA-12/AA-12.5#S0320">formal_type_declaration</a></code> can contain <code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code>s, a <code><a href="../AA-12/AA-12.6#S0335">formal_subprogram_declaration</a></code> can contain <code><a href="../AA-6/AA-6.1#S0207">parameter_specification</a></code>s, and a <code><a href="../AA-12/AA-12.7#S0340">formal_package_declaration</a></code> can contain many kinds of declarations. These are all inside the generic unit, and have corresponding declarations in the instance.<br /></Admonition>
+A <code><a href="../AA-12/AA-12.5#S0320">formal_type_declaration</a></code> can contain <code><a href="../AA-3/AA-3.7#S0062">discriminant_specification</a></code>s, a <code><a href="../AA-12/AA-12.6#S0335">formal_subprogram_declaration</a></code> can contain <code><a href="../AA-6/AA-6.1#S0207">parameter_specification</a></code>s, and a <code><a href="../AA-12/AA-12.7#S0340">formal_package_declaration</a></code> can contain many kinds of declarations. These are all inside the generic unit, and have corresponding declarations in the instance.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>15.d</MarginText>
 <Admonition type="aarm" aarm="note">
-This rule implies, for example, that if a subtype in a generic unit is a subtype of a generic formal subtype, then the corresponding subtype in the instance is a subtype of the corresponding actual subtype.<br /></Admonition>
+This rule implies, for example, that if a subtype in a generic unit is a subtype of a generic formal subtype, then the corresponding subtype in the instance is a subtype of the corresponding actual subtype.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>15.e</MarginText>
 <Admonition type="aarm" aarm="note">
-For a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>, if a generic actual is a static [(scalar or string)] subtype, then each use of the corresponding formal parameter within the specification of the instance is considered to be static. (See AI83-00409.)<br /></Admonition>
+For a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>, if a generic actual is a static [(scalar or string)] subtype, then each use of the corresponding formal parameter within the specification of the instance is considered to be static. (See AI83-00409.)<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>15.f</MarginText>
 <Admonition type="aarm" aarm="note">
-Similarly, if a generic actual is a static expression and the corresponding formal parameter has a static [(scalar or string)] subtype, then each use of the formal parameter in the specification of the instance is considered to be static. (See AI83-00505.)<br /></Admonition>
+Similarly, if a generic actual is a static expression and the corresponding formal parameter has a static [(scalar or string)] subtype, then each use of the formal parameter in the specification of the instance is considered to be static. (See AI83-00505.)<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>15.g</MarginText>
 <Admonition type="aarm" aarm="note">
-If a primitive subprogram of a type derived from a generic formal derived tagged type is not overriding (that is, it is a new subprogram), it is possible for the copy of that subprogram in an instance to override a subprogram inherited from the actual. For example: <br /></Admonition>
+If a primitive subprogram of a type derived from a generic formal derived tagged type is not overriding (that is, it is a new subprogram), it is possible for the copy of that subprogram in an instance to override a subprogram inherited from the actual. For example: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -408,7 +443,7 @@ If a primitive subprogram of a type derived from a generic formal derived tagged
 type T1 is tagged record ... end record;{"\n"}
 <MarginText>15.i/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
-generic{"\n"}    type Formal is new T1 with private;{"\n"}package G is{"\n"}    type Derived_From_Formal is new Formal with record ... end record;{"\n"}    procedure Foo(X : in Derived_From_Formal); -- Does not override anything.{"\n"}end G;{"\n"}
+generic{"\n"}    type Formal is new T1 with private;{"\n"}package G is{"\n"}    type Derived{"_"}From{"_"}Formal is new Formal with record ... end record;{"\n"}    procedure Foo(X : in Derived{"_"}From{"_"}Formal); -- Does not override anything.{"\n"}end G;{"\n"}
 <MarginText>15.j</MarginText>
 type T2 is new T1 with record ... end record;{"\n"}procedure Foo(X : in T2);{"\n"}
 <MarginText>15.k</MarginText>
@@ -419,21 +454,24 @@ package Inst is new G(Formal ={">"} T2);{"\n"}
 <AnnotatedOnly>
 <MarginText>15.l</MarginText>
 <Admonition type="aarm" aarm="note">
-In the instance Inst, the declaration of Foo for Derived_From_Formal overrides the Foo inherited from T2. <br /></Admonition>
+In the instance Inst, the declaration of Foo for Derived{"_"}From{"_"}Formal overrides the Foo inherited from T2. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>15.m/1</MarginText>
 <MarginInfo items={["AI95-00137-01"]} />
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>{"{"}<em>8652/0009</em>{"}"} For formal types, an implementation that shares the code among multiple instances of the same generic unit needs to beware that things like parameter passing mechanisms (by-copy vs. by-reference) and <code><a href="../AA-13/AA-13.1#S0343">aspect_clause</a></code>s are determined by the actual. <br /></Admonition>
+<strong></strong>{"{"}<em>8652/0009</em>{"}"} For formal types, an implementation that shares the code among multiple instances of the same generic unit needs to beware that things like parameter passing mechanisms (by-copy vs. by-reference) and <code><a href="../AA-13/AA-13.1#S0343">aspect_clause</a></code>s are determined by the actual. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>15.n/5</MarginText>
 <MarginInfo items={["AI12-0407-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>In particular, we allow differences for aspects that can be specified on generic formal parameters. For instance, Pre (see <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>) can be specified on generic formal subprograms to be added to the Pre of the actual. <br /></Admonition>
+<strong></strong>In particular, we allow differences for aspects that can be specified on generic formal parameters. For instance, Pre (see <a href="../AA-6/AA-6.1#Subclause_6.1.1">6.1.1</a>) can be specified on generic formal subprograms to be added to the Pre of the actual. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>16</MarginText>
@@ -445,32 +483,37 @@ In the instance Inst, the declaration of Foo for Derived_From_Formal overrides t
 <AnnotatedOnly>
 <MarginText>17.a</MarginText>
 <Admonition type="aarm" aarm="proof">
-<strong></strong>This rule is stated officially in <a href="../AA-8/AA-8.3">8.3</a>, &ldquo;<a href="../AA-8/AA-8.3">Visibility</a>&rdquo;. <br /></Admonition>
+<strong></strong>This rule is stated officially in <a href="../AA-8/AA-8.3">8.3</a>, &ldquo;<a href="../AA-8/AA-8.3">Visibility</a>&rdquo;. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>17.b</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The new ones follow from the class(es) of the formal types. For example, for a type T derived from a generic formal private type, if the actual is Integer, then the copy of T in the instance has a "+" primitive operator, which can be called from outside the instance (assuming T is declared in the visible part of the instance).<br /></Admonition>
+<strong></strong>The new ones follow from the class(es) of the formal types. For example, for a type T derived from a generic formal private type, if the actual is Integer, then the copy of T in the instance has a "+" primitive operator, which can be called from outside the instance (assuming T is declared in the visible part of the instance).<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>17.c</MarginText>
 <Admonition type="aarm" aarm="note">
-AI83-00398.<br /></Admonition>
+AI83-00398.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>17.d/2</MarginText>
 <MarginInfo items={["AI95-00442-01"]} />
 <Admonition type="aarm" aarm="note">
-Since an actual type is always in the category determined for the formal, the new subprograms hide all of the copied ones, except for a declaration of "/=" that corresponds to an explicit declaration of "=". Such "/=" operators are special, because unlike other implicit declarations of primitive subprograms, they do not appear by virtue of the class, but because of an explicit declaration of "=". If the declaration of "=" is implicit (and therefore overridden in the instance), then a corresponding implicitly declared "/=" is also overridden. But if the declaration of "=" is explicit (and therefore not overridden in the instance), then a corresponding implicitly declared "/=" is not overridden either, even though it's implicit.<br /></Admonition>
+Since an actual type is always in the category determined for the formal, the new subprograms hide all of the copied ones, except for a declaration of "/=" that corresponds to an explicit declaration of "=". Such "/=" operators are special, because unlike other implicit declarations of primitive subprograms, they do not appear by virtue of the class, but because of an explicit declaration of "=". If the declaration of "=" is implicit (and therefore overridden in the instance), then a corresponding implicitly declared "/=" is also overridden. But if the declaration of "=" is explicit (and therefore not overridden in the instance), then a corresponding implicitly declared "/=" is not overridden either, even though it's implicit.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>17.e</MarginText>
 <Admonition type="aarm" aarm="note">
-Note that the copied ones can be called from inside the instance, even though they are hidden from all visibility, because the names are resolved in the generic unit &mdash; visibility is irrelevant for calls in the instance. <br /></Admonition>
+Note that the copied ones can be called from inside the instance, even though they are hidden from all visibility, because the names are resolved in the generic unit &mdash; visibility is irrelevant for calls in the instance. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>18</MarginText>
@@ -479,7 +522,8 @@ Note that the copied ones can be called from inside the instance, even though th
 <AnnotatedOnly>
 <MarginText>18.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>For example: <br /></Admonition>
+<strong></strong>For example: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -498,14 +542,16 @@ package Instance is new G(Formal ={">"} Actual);{"\n"}
 <AnnotatedOnly>
 <MarginText>18.f</MarginText>
 <Admonition type="aarm" aarm="note">
-In the instance, the copy of P at (1) overrides Actual's P, whereas the copy of Q at (2) does not override anything; in implementation terms, it occupies a separate slot in the type descriptor. <br /></Admonition>
+In the instance, the copy of P at (1) overrides Actual's P, whereas the copy of Q at (2) does not override anything; in implementation terms, it occupies a separate slot in the type descriptor. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>18.g/5</MarginText>
 <MarginInfo items={["AI12-0347-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The reason for this rule is so a programmer writing a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> need not look at the private part of the generic in order to determine which subprograms will be overridden. <br /></Admonition>
+<strong></strong>The reason for this rule is so a programmer writing a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> need not look at the private part of the generic in order to determine which subprograms will be overridden. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -517,7 +563,8 @@ In the instance, the copy of P at (1) overrides Actual's P, whereas the copy of 
 <AnnotatedOnly>
 <MarginText>19.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Note that this rule is not a violation of the generic contract model, because it is not a Legality Rule. Some implementations may be able to check this rule at compile time, but that requires access to all the bodies, so we allow implementations to check the rule at link time. <br /></Admonition>
+<strong></strong>Note that this rule is not a violation of the generic contract model, because it is not a Legality Rule. Some implementations may be able to check this rule at compile time, but that requires access to all the bodies, so we allow implementations to check the rule at link time. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -529,7 +576,8 @@ In the instance, the copy of P at (1) overrides Actual's P, whereas the copy of 
 <AnnotatedOnly>
 <MarginText>20.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Note that if the evaluation of a default depends on some side effect of some other evaluation, the order is still arbitrary. <br /></Admonition>
+<strong></strong>Note that if the evaluation of a default depends on some side effect of some other evaluation, the order is still arbitrary. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>21</MarginText>
@@ -538,19 +586,22 @@ In the instance, the copy of P at (1) overrides Actual's P, whereas the copy of 
 <AnnotatedOnly>
 <MarginText>21.a</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>To be honest: </strong>Actually, the actual is evaluated only if evaluation is defined for that kind of construct &mdash; we don't actually &ldquo;evaluate&rdquo; <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>s. <br /></Admonition>
+<strong>To be honest: </strong>Actually, the actual is evaluated only if evaluation is defined for that kind of construct &mdash; we don't actually &ldquo;evaluate&rdquo; <code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>s. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>22</MarginText>
 <Admonition type="aarm" aarm="note">
-NOTE   If a formal type is not tagged, then the type is treated as an untagged type within the generic body. Deriving from such a type in a generic body is permitted; the new type does not get a new tag value, even if the actual is tagged. Overriding operations for such a derived type cannot be dispatched to from outside the instance. <br /></Admonition>
+NOTE   If a formal type is not tagged, then the type is treated as an untagged type within the generic body. Deriving from such a type in a generic body is permitted; the new type does not get a new tag value, even if the actual is tagged. Overriding operations for such a derived type cannot be dispatched to from outside the instance. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>22.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>If two overloaded subprograms declared in a generic package specification differ only by the (formal) type of their parameters and results, then there exist legal instantiations for which all calls of these subprograms from outside the instance are ambiguous. For example: <br /></Admonition>
+<strong></strong>If two overloaded subprograms declared in a generic package specification differ only by the (formal) type of their parameters and results, then there exist legal instantiations for which all calls of these subprograms from outside the instance are ambiguous. For example: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -565,7 +616,8 @@ package P is new G(A ={">"} Boolean, B ={">"} Boolean);{"\n"}-- All calls of P.N
 <AnnotatedOnly>
 <MarginText>22.d</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The following example illustrates some of the subtleties of the substitution of formals and actuals: <br /></Admonition>
+<strong></strong>The following example illustrates some of the subtleties of the substitution of formals and actuals: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -574,43 +626,47 @@ package P is new G(A ={">"} Boolean, B ={">"} Boolean);{"\n"}-- All calls of P.N
 <CodeBlock language="ada">
 generic{"\n"}    type T1 is private;{"\n"}    -- A predefined "=" operator is implicitly declared here:{"\n"}    -- function "="(Left, Right : T1) return Boolean;{"\n"}    -- Call this "="1.{"\n"}    ...{"\n"}package G is{"\n"}    subtype S1 is T1; -- So we can get our hands on the type from{"\n"}                      -- outside an instance.{"\n"}    type T2 is new T1;{"\n"}    -- An inherited "=" operator is implicitly declared here:{"\n"}    -- function "="(Left, Right : T2) return Boolean;{"\n"}    -- Call this "="2.{"\n"}
 <MarginText>22.f</MarginText>
-    T1_Obj : T1 := ...;{"\n"}    Bool_1 : Boolean := T1_Obj = T1_Obj;{"\n"}
+    T1{"_"}Obj : T1 := ...;{"\n"}    Bool{"_"}1 : Boolean := T1{"_"}Obj = T1{"_"}Obj;{"\n"}
 <MarginText>22.g</MarginText>
-    T2_Obj : T2 := ...;{"\n"}    Bool_2 : Boolean := T2_Obj = T2_Obj;{"\n"}end G;{"\n"}...{"\n"}
+    T2{"_"}Obj : T2 := ...;{"\n"}    Bool{"_"}2 : Boolean := T2{"_"}Obj = T2{"_"}Obj;{"\n"}end G;{"\n"}...{"\n"}
 <MarginText>22.h/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
-package P is{"\n"}    type My_Int is new Integer;{"\n"}    -- A predefined "=" operator is implicitly declared here:{"\n"}    -- function "="(Left, Right : My_Int) return Boolean;{"\n"}    -- Call this "="3.{"\n"}    function "="(X, Y : My_Int) return Boolean;{"\n"}    -- Call this "="4.{"\n"}    -- "="3 is hidden from all visibility by "="4.{"\n"}    -- Nonetheless, "="3 can &ldquo;reemerge&rdquo; in certain circumstances.{"\n"}end P;{"\n"}use P;{"\n"}...{"\n"}package I is new G(T1 ={">"} My_Int, ...); -- "="5 is declared in I (see below).{"\n"}use I;{"\n"}
+package P is{"\n"}    type My{"_"}Int is new Integer;{"\n"}    -- A predefined "=" operator is implicitly declared here:{"\n"}    -- function "="(Left, Right : My{"_"}Int) return Boolean;{"\n"}    -- Call this "="3.{"\n"}    function "="(X, Y : My{"_"}Int) return Boolean;{"\n"}    -- Call this "="4.{"\n"}    -- "="3 is hidden from all visibility by "="4.{"\n"}    -- Nonetheless, "="3 can &ldquo;reemerge&rdquo; in certain circumstances.{"\n"}end P;{"\n"}use P;{"\n"}...{"\n"}package I is new G(T1 ={">"} My{"_"}Int, ...); -- "="5 is declared in I (see below).{"\n"}use I;{"\n"}
 <MarginText>22.i</MarginText>
-Another_T1_Obj : S1 := 13; -- Can't denote T1, but S1 will do.{"\n"}Bool_3 : Boolean := Another_T1_Obj = Another_T1_Obj;{"\n"}
+Another{"_"}T1{"_"}Obj : S1 := 13; -- Can't denote T1, but S1 will do.{"\n"}Bool{"_"}3 : Boolean := Another{"_"}T1{"_"}Obj = Another{"_"}T1{"_"}Obj;{"\n"}
 <MarginText>22.j</MarginText>
-Another_T2_Obj : T2 := 45;{"\n"}Bool_4 : Boolean := Another_T2_Obj = Another_T2_Obj;{"\n"}
+Another{"_"}T2{"_"}Obj : T2 := 45;{"\n"}Bool{"_"}4 : Boolean := Another{"_"}T2{"_"}Obj = Another{"_"}T2{"_"}Obj;{"\n"}
 <MarginText>22.k</MarginText>
-Double : T2 := T2_Obj + Another_T2_Obj;{"\n"}
+Double : T2 := T2{"_"}Obj + Another{"_"}T2{"_"}Obj;{"\n"}
 
 </CodeBlock>
 </AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>22.l</MarginText>
 <Admonition type="aarm" aarm="note">
-In the instance I, there is a copy of "="1 (call it "="1i) and "="2 (call it "="2i). The "="1i and "="2i declare views of the predefined "=" of My_Int (that is, "="3). In the initialization of Bool_1 and Bool_2 in the generic unit G, the names "=" denote "="1 and "="2, respectively. Therefore, the copies of these names in the instances denote "="1i and "="2i, respectively. Thus, the initialization of I.Bool_1 and I.Bool_2 call the predefined equality operator of My_Int; they will not call "="4.<br /></Admonition>
+In the instance I, there is a copy of "="1 (call it "="1i) and "="2 (call it "="2i). The "="1i and "="2i declare views of the predefined "=" of My{"_"}Int (that is, "="3). In the initialization of Bool{"_"}1 and Bool{"_"}2 in the generic unit G, the names "=" denote "="1 and "="2, respectively. Therefore, the copies of these names in the instances denote "="1i and "="2i, respectively. Thus, the initialization of I.Bool{"_"}1 and I.Bool{"_"}2 call the predefined equality operator of My{"_"}Int; they will not call "="4.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>22.m</MarginText>
 <Admonition type="aarm" aarm="note">
-The declarations "="1i and "="2i are hidden from all visibility. This prevents them from being called from outside the instance.<br /></Admonition>
+The declarations "="1i and "="2i are hidden from all visibility. This prevents them from being called from outside the instance.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>22.n</MarginText>
 <Admonition type="aarm" aarm="note">
-The declaration of Bool_3 calls "="4.<br /></Admonition>
+The declaration of Bool{"_"}3 calls "="4.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>22.o</MarginText>
 <Admonition type="aarm" aarm="note">
-The instance I also contains implicit declarations of the primitive operators of T2, such as "=" (call it "="5) and "+". These operations cannot be called from within the instance, but the declaration of Bool_4 calls "="5. <br /></Admonition>
+The instance I also contains implicit declarations of the primitive operators of T2, such as "=" (call it "="5) and "+". These operations cannot be called from within the instance, but the declaration of Bool{"_"}4 calls "="5. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -622,9 +678,9 @@ The instance I also contains implicit declarations of the primitive operators of
 <MarginText>24/5</MarginText>
 <MarginInfo items={["AI12-0178-1"]} />
 <CodeBlock language="ada">
-procedure Swap is new Exchange(Elem ={">"} Integer);{"\n"}procedure Swap is new Exchange(Character);  	--  Swap is overloaded {"\n"}function Square is new Squaring(Integer); 	--  "*" of Integer used by default{"\n"}function Square1 is new Squaring(Item ={">"} Matrix, "*" ={">"} Matrix_Product);{"\n"}function Square2 is new Squaring(Matrix, Matrix_Product); -- same as previous{"\n"}
+procedure Swap is new Exchange(Elem ={">"} Integer);{"\n"}procedure Swap is new Exchange(Character);  	--  Swap is overloaded {"\n"}function Square is new Squaring(Integer); 	--  "{"*"}" of Integer used by default{"\n"}function Square1 is new Squaring(Item ={">"} Matrix, "{"*"}" ={">"} Matrix{"_"}Product);{"\n"}function Square2 is new Squaring(Matrix, Matrix{"_"}Product); -- same as previous{"\n"}
 <MarginText>25</MarginText>
-package Int_Vectors is new On_Vectors(Integer, Table, "+");{"\n"}
+package Int{"_"}Vectors is new On{"_"}Vectors(Integer, Table, "+");{"\n"}
 
 </CodeBlock>
 <MarginText>26</MarginText>
@@ -634,9 +690,9 @@ package Int_Vectors is new On_Vectors(Integer, Table, "+");{"\n"}
 <CodeBlock language="ada">
 Swap(A, B);{"\n"}A := Square(A);{"\n"}
 <MarginText>28</MarginText>
-T : Table(1 .. 5) := (10, 20, 30, 40, 50);{"\n"}N : Integer := Int_Vectors.Sigma(T);  --  150{"\n"}                                      -- (see <a href="../AA-12/AA-12.2">12.2</a> for the body of Sigma){"\n"}
+T : Table(1 .. 5) := (10, 20, 30, 40, 50);{"\n"}N : Integer := Int{"_"}Vectors.Sigma(T);  --  150{"\n"}                                      -- (see <a href="../AA-12/AA-12.2">12.2</a> for the body of Sigma){"\n"}
 <MarginText>29</MarginText>
-use Int_Vectors;{"\n"}M : Integer := Sigma(T);  --  150{"\n"}
+use Int{"_"}Vectors;{"\n"}M : Integer := Sigma(T);  --  150{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
@@ -647,7 +703,8 @@ use Int_Vectors;{"\n"}M : Integer := Sigma(T);  --  150{"\n"}
 <AnnotatedOnly>
 <MarginText>29.a</MarginText>
 <Admonition type="aarm" aarm="note">
-In Ada 83, all explicit actuals are evaluated before all defaults, and the defaults are evaluated in the order of the formal declarations. This ordering requirement is relaxed in Ada 95. <br /></Admonition>
+In Ada 83, all explicit actuals are evaluated before all defaults, and the defaults are evaluated in the order of the formal declarations. This ordering requirement is relaxed in Ada 95. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -658,7 +715,8 @@ In Ada 83, all explicit actuals are evaluated before all defaults, and the defau
 <AnnotatedOnly>
 <MarginText>29.b</MarginText>
 <Admonition type="aarm" aarm="note">
-We have attempted to remove every violation of the contract model. Any remaining contract model violations should be considered bugs in the RM95. The unfortunate property of reverting to the predefined operators of the actual types is retained for upward compatibility. (Note that fixing this would require subtype conformance rules.) However, tagged types do not revert in this sense. <br /></Admonition>
+We have attempted to remove every violation of the contract model. Any remaining contract model violations should be considered bugs in the RM95. The unfortunate property of reverting to the predefined operators of the actual types is retained for upward compatibility. (Note that fixing this would require subtype conformance rules.) However, tagged types do not revert in this sense. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -669,7 +727,8 @@ We have attempted to remove every violation of the contract model. Any remaining
 <AnnotatedOnly>
 <MarginText>29.c</MarginText>
 <Admonition type="aarm" aarm="note">
-The syntax rule for <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code> is modified to allow a <em>package_instance_</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>. <br /></Admonition>
+The syntax rule for <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code> is modified to allow a <em>package{"_"}instance{"_"}</em><code><a href="../AA-4/AA-4.1#S0091">name</a></code>. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -680,32 +739,37 @@ The syntax rule for <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actu
 <AnnotatedOnly>
 <MarginText>29.d</MarginText>
 <Admonition type="aarm" aarm="note">
-The fact that named associations cannot be used for two formal subprograms with the same defining name is moved to AARM-only material, because it is a ramification of other rules, and because it is not of interest to the average user.<br /></Admonition>
+The fact that named associations cannot be used for two formal subprograms with the same defining name is moved to AARM-only material, because it is a ramification of other rules, and because it is not of interest to the average user.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>29.e/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="note">
-The rule that &ldquo;An explicit <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code> shall not be supplied more than once for a given generic formal parameter&rdquo; seems to be missing from RM83, although it was clearly the intent.<br /></Admonition>
+The rule that &ldquo;An explicit <code><a href="../AA-12/AA-12.3#S0318">explicit_generic_actual_parameter</a></code> shall not be supplied more than once for a given generic formal parameter&rdquo; seems to be missing from RM83, although it was clearly the intent.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>29.f</MarginText>
 <Admonition type="aarm" aarm="note">
-In the explanation that the instance is a copy of the template, we have left out RM83-12.3(5)'s &ldquo;apart from the generic formal part&rdquo;, because it seems that things in the formal part still need to exist in instances. This is particularly true for generic formal packages, where you're sometimes allowed to reach in and denote the formals of the formal package from outside it. This simplifies the explanation of what each name in an instance denotes: there are just two cases: the declaration can be inside or outside (where inside needs to include the generic unit itself). Note that the RM83 approach of listing many cases (see RM83-12.5(5-14)) would have become even more unwieldy with the addition of generic formal packages, and the declarations that occur therein.<br /></Admonition>
+In the explanation that the instance is a copy of the template, we have left out RM83-12.3(5)'s &ldquo;apart from the generic formal part&rdquo;, because it seems that things in the formal part still need to exist in instances. This is particularly true for generic formal packages, where you're sometimes allowed to reach in and denote the formals of the formal package from outside it. This simplifies the explanation of what each name in an instance denotes: there are just two cases: the declaration can be inside or outside (where inside needs to include the generic unit itself). Note that the RM83 approach of listing many cases (see RM83-12.5(5-14)) would have become even more unwieldy with the addition of generic formal packages, and the declarations that occur therein.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>29.g</MarginText>
 <Admonition type="aarm" aarm="note">
-We have corrected the definition of the elaboration of a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> (RM83-12.3(17)); we don't elaborate entities, and the instance is not &ldquo;implicit&rdquo;.<br /></Admonition>
+We have corrected the definition of the elaboration of a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code> (RM83-12.3(17)); we don't elaborate entities, and the instance is not &ldquo;implicit&rdquo;.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>29.h</MarginText>
 <Admonition type="aarm" aarm="note">
-In RM83, there is a rule saying the formal and actual shall match, and then there is much text defining what it means to match. Here, we simply state all the latter text as rules. For example, &ldquo;A formal foo is matched by an actual greenish bar&rdquo; becomes &ldquo;For a formal foo, the actual shall be a greenish bar&rdquo;. This is necessary to split the Name Resolution Rules from the Legality Rules. Besides, there's really no need to define the concept of matching for generic parameters. <br /></Admonition>
+In RM83, there is a rule saying the formal and actual shall match, and then there is much text defining what it means to match. Here, we simply state all the latter text as rules. For example, &ldquo;A formal foo is matched by an actual greenish bar&rdquo; becomes &ldquo;For a formal foo, the actual shall be a greenish bar&rdquo;. This is necessary to split the Name Resolution Rules from the Legality Rules. Besides, there's really no need to define the concept of matching for generic parameters. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -717,7 +781,8 @@ In RM83, there is a rule saying the formal and actual shall match, and then ther
 <MarginText>29.i/2</MarginText>
 <MarginInfo items={["AI95-00218-03"]} />
 <Admonition type="aarm" aarm="note">
-An <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code> (see <a href="../AA-8/AA-8.3#Subclause_8.3.1">8.3.1</a>) is allowed on a subprogram instantiation. <br /></Admonition>
+An <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code> (see <a href="../AA-8/AA-8.3#Subclause_8.3.1">8.3.1</a>) is allowed on a subprogram instantiation. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -729,7 +794,8 @@ An <code><a href="../AA-8/AA-8.3#S0234">overriding_indicator</a></code> (see <a 
 <MarginText>29.j/3</MarginText>
 <MarginInfo items={["AI05-0183-1"]} />
 <Admonition type="aarm" aarm="note">
-An optional <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> can be used in a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>. This is described in <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>. <br /></Admonition>
+An optional <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></code> can be used in a <code><a href="../AA-12/AA-12.3#S0315">generic_instantiation</a></code>. This is described in <a href="../AA-13/AA-13.1#Subclause_13.1.1">13.1.1</a>. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -741,7 +807,8 @@ An optional <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></cod
 <MarginText>29.k/3</MarginText>
 <MarginInfo items={["AI05-0118-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Added a definition for positional parameters, as this is missing from Ada 95 and Ada 2005. <br /></Admonition>
+<strong></strong> Added a definition for positional parameters, as this is missing from Ada 95 and Ada 2005. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -753,6 +820,7 @@ An optional <code><a href="../AA-13/AA-13.1#S0346">aspect_specification</a></cod
 <MarginText>29.l/5</MarginText>
 <MarginInfo items={["AI12-0205-1"]} />
 <Admonition type="aarm" aarm="note">
-Added uses of <em>default_</em><code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>s so formal types can have defaults (see <a href="../AA-12/AA-12.5">12.5</a>). <br /></Admonition>
+Added uses of <em>default{"_"}</em><code><a href="../AA-3/AA-3.2#S0028">subtype_mark</a></code>s so formal types can have defaults (see <a href="../AA-12/AA-12.5">12.5</a>). <br />
+</Admonition>
 </AnnotatedOnly>
 

@@ -37,18 +37,20 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <AnnotatedOnly>
 <MarginText>6.a/3</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Priority: </strong>Priority of a task object or type, or priority of a protected object or type; the priority is not in the interrupt range.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>Priority: </strong>Priority of a task object or type, or priority of a protected object or type; the priority is not in the interrupt range.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>6.3/3</MarginText>
-<dt><br/>Interrupt_Priority</dt>
+<dt><br/>Interrupt{"_"}Priority</dt>
 <dl>
-<dd>The aspect Interrupt_Priority is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, which shall be of type Integer.<br /></dd>
+<dd>The aspect Interrupt{"_"}Priority is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, which shall be of type Integer.<br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>6.b/3</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Interrupt_Priority: </strong>Priority of a task object or type, or priority of a protected object or type; the priority is in the interrupt range.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>Interrupt{"_"}Priority: </strong>Priority of a task object or type, or priority of a protected object or type; the priority is in the interrupt range.<br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -65,22 +67,24 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <AnnotatedOnly>
 <MarginText>8.a</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This value is needed before it gets elaborated, when the environment task starts executing. <br /></Admonition>
+<strong></strong>This value is needed before it gets elaborated, when the environment task starts executing. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>8.1/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<p>At most one of the Priority and Interrupt_Priority aspects may be specified for a given entity.<br /></p>
+<p>At most one of the Priority and Interrupt{"_"}Priority aspects may be specified for a given entity.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>8.b/3</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>This includes specifying via pragmas (see <a href="../AA-J/AA-J.15#Subclause_J.15.11">J.15.11</a>). Note that <a href="../AA-13/AA-13.1">13.1</a> prevents multiple specifications of a single representation aspect by any means. <br /></Admonition>
+<strong></strong>This includes specifying via pragmas (see <a href="../AA-J/AA-J.15#Subclause_J.15.11">J.15.11</a>). Note that <a href="../AA-13/AA-13.1">13.1</a> prevents multiple specifications of a single representation aspect by any means. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>8.2/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<p>Neither of the Priority or Interrupt_Priority aspects shall be specified for a synchronized interface type.<br /></p>
+<p>Neither of the Priority or Interrupt{"_"}Priority aspects shall be specified for a synchronized interface type.<br /></p>
 
 
 #### Static Semantics
@@ -90,19 +94,20 @@ import MarginInfo from "@site/src/components/MarginInfo";
 
 <MarginText>10</MarginText>
 <CodeBlock language="ada">
-subtype Any_Priority is Integer range implementation-defined;{"\n"}subtype Priority is Any_Priority{"\n"}   range Any_Priority'First .. implementation-defined;{"\n"}subtype Interrupt_Priority is Any_Priority{"\n"}   range Priority'Last+1 .. Any_Priority'Last;{"\n"}
+subtype Any{"_"}Priority is Integer range implementation-defined;{"\n"}subtype Priority is Any{"_"}Priority{"\n"}   range Any{"_"}Priority'First .. implementation-defined;{"\n"}subtype Interrupt{"_"}Priority is Any{"_"}Priority{"\n"}   range Priority'Last+1 .. Any{"_"}Priority'Last;{"\n"}
 <MarginText>11</MarginText>
-Default_Priority : constant Priority := (Priority'First + Priority'Last)/2;{"\n"}
+Default{"_"}Priority : constant Priority := (Priority'First + Priority'Last)/2;{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
 <MarginText>11.a</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The declarations of Any_Priority and Priority.<br /></Admonition>
+<strong></strong>The declarations of Any{"_"}Priority and Priority.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>12</MarginText>
-<p>The full range of priority values supported by an implementation is specified by the subtype Any_Priority. The subrange of priority values that are high enough to require the blocking of one or more interrupts is specified by the subtype Interrupt_Priority. [The subrange of priority values below System.Interrupt_Priority'First is specified by the subtype System.Priority.]<br /></p>
+<p>The full range of priority values supported by an implementation is specified by the subtype Any{"_"}Priority. The subrange of priority values that are high enough to require the blocking of one or more interrupts is specified by the subtype Interrupt{"_"}Priority. [The subrange of priority values below System.Interrupt{"_"}Priority'First is specified by the subtype System.Priority.]<br /></p>
 
 <MarginText>13/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
@@ -117,21 +122,22 @@ Default_Priority : constant Priority := (Priority'First + Priority'Last)/2;{"\n"
 
 <MarginText>15/5</MarginText>
 <MarginInfo items={["AI12-0404-1"]} />
-<p>A <em>task priority</em> is an integer value that indicates a degree of urgency and is the basis for resolving competing demands of tasks for resources. Unless otherwise specified, whenever tasks compete for processors or other implementation-defined resources, the resources are allocated to the task with the highest priority value. The <em>base priority</em> of a task is the priority with which it was created, or to which it was later set by Dynamic_Priorities.Set_Priority (see <a href="../AA-D/AA-D.5">D.5</a>). At all times, a task also has an <em>active priority</em>, which generally is its base priority unless it inherits a priority from other sources. <em>Priority inheritance</em> is the process by which the priority of a task or other entity (for example, a protected object; see <a href="../AA-D/AA-D.3">D.3</a>) is used in the evaluation of another task's active priority. <br /></p>
+<p>A <em>task priority</em> is an integer value that indicates a degree of urgency and is the basis for resolving competing demands of tasks for resources. Unless otherwise specified, whenever tasks compete for processors or other implementation-defined resources, the resources are allocated to the task with the highest priority value. The <em>base priority</em> of a task is the priority with which it was created, or to which it was later set by Dynamic{"_"}Priorities.Set{"_"}Priority (see <a href="../AA-D/AA-D.5">D.5</a>). At all times, a task also has an <em>active priority</em>, which generally is its base priority unless it inherits a priority from other sources. <em>Priority inheritance</em> is the process by which the priority of a task or other entity (for example, a protected object; see <a href="../AA-D/AA-D.3">D.3</a>) is used in the evaluation of another task's active priority. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>15.a</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>Implementation-defined execution resources.<br /></Admonition>
+<strong></strong>Implementation-defined execution resources.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>16/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<p>The effect of specifying a Priority or Interrupt_Priority aspect for a protected type or <code><a href="../AA-9/AA-9.4#S0250">single_protected_declaration</a></code> is discussed in <a href="../AA-D/AA-D.3">D.3</a>.<br /></p>
+<p>The effect of specifying a Priority or Interrupt{"_"}Priority aspect for a protected type or <code><a href="../AA-9/AA-9.4#S0250">single_protected_declaration</a></code> is discussed in <a href="../AA-D/AA-D.3">D.3</a>.<br /></p>
 
 <MarginText>17/4</MarginText>
 <MarginInfo items={["AI05-0229-1", "AI12-0081-1"]} />
-<p>The <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> specified for the Priority or Interrupt_Priority aspect of a task type is evaluated each time an object of the task type is created (see <a href="../AA-9/AA-9.1">9.1</a>). For the Priority aspect, the value of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is converted to the subtype Priority; for the Interrupt_Priority aspect, this value is converted to the subtype Any_Priority. The priority value is then associated with the task object. <br /></p>
+<p>The <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> specified for the Priority or Interrupt{"_"}Priority aspect of a task type is evaluated each time an object of the task type is created (see <a href="../AA-9/AA-9.1">9.1</a>). For the Priority aspect, the value of the <code><a href="../AA-4/AA-4.4#S0132">expression</a></code> is converted to the subtype Priority; for the Interrupt{"_"}Priority aspect, this value is converted to the subtype Any{"_"}Priority. The priority value is then associated with the task object. <br /></p>
 
 <MarginText>18/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
@@ -139,7 +145,7 @@ Default_Priority : constant Priority := (Priority'First + Priority'Last)/2;{"\n"
 
 <MarginText>19/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<p>The initial value of a task's base priority is specified by default or by means of a Priority or Interrupt_Priority aspect. [After a task is created, its base priority can be changed only by a call to Dynamic_Priorities.Set_Priority (see <a href="../AA-D/AA-D.5">D.5</a>).] The initial base priority of a task in the absence of an aspect is the base priority of the task that creates it at the time of creation (see <a href="../AA-9/AA-9.1">9.1</a>). If the aspect Priority is not specified for the main subprogram, the initial base priority of the environment task is System.Default_Priority. [The task's active priority is used when the task competes for processors. Similarly, the task's active priority is used to determine the task's position in any queue when Priority_Queuing is specified (see <a href="../AA-D/AA-D.4">D.4</a>).]<br /></p>
+<p>The initial value of a task's base priority is specified by default or by means of a Priority or Interrupt{"_"}Priority aspect. [After a task is created, its base priority can be changed only by a call to Dynamic{"_"}Priorities.Set{"_"}Priority (see <a href="../AA-D/AA-D.5">D.5</a>).] The initial base priority of a task in the absence of an aspect is the base priority of the task that creates it at the time of creation (see <a href="../AA-9/AA-9.1">9.1</a>). If the aspect Priority is not specified for the main subprogram, the initial base priority of the environment task is System.Default{"_"}Priority. [The task's active priority is used when the task competes for processors. Similarly, the task's active priority is used to determine the task's position in any queue when Priority{"_"}Queuing is specified (see <a href="../AA-D/AA-D.4">D.4</a>).]<br /></p>
 
 <MarginText>20/2</MarginText>
 <MarginInfo items={["AI95-00357-01"]} />
@@ -148,7 +154,8 @@ Default_Priority : constant Priority := (Priority'First + Priority'Last)/2;{"\n"
 <AnnotatedOnly>
 <MarginText>20.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Other parts of the annex, e.g. <a href="../AA-D/AA-D.11">D.11</a>, define other sources of priority inheritance. <br /></Admonition>
+<strong></strong>Other parts of the annex, e.g. <a href="../AA-D/AA-D.11">D.11</a>, define other sources of priority inheritance. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>21/1</MarginText>
@@ -160,13 +167,14 @@ Default_Priority : constant Priority := (Priority'First + Priority'Last)/2;{"\n"
 <li>{"{"}<em>8652/0072</em>{"}"} During rendezvous, the task accepting the entry call inherits the priority of the entry call (see <a href="../AA-9/AA-9.5#Subclause_9.5.3">9.5.3</a> and <a href="../AA-D/AA-D.4">D.4</a>).<br /></li>
 <MarginText>22.1/5</MarginText>
 <MarginInfo items={["AI12-0276-1"]} />
-<li>While starting a protected action on a protected object when the FIFO_Spinning admission policy is in effect, a task inherits the ceiling priority of the protected object (see <a href="../AA-9/AA-9.5">9.5</a>, <a href="../AA-D/AA-D.3">D.3</a>, and <a href="../AA-D/AA-D.4#Subclause_D.4.1">D.4.1</a>).<br /></li>
+<li>While starting a protected action on a protected object when the FIFO{"_"}Spinning admission policy is in effect, a task inherits the ceiling priority of the protected object (see <a href="../AA-9/AA-9.5">9.5</a>, <a href="../AA-D/AA-D.3">D.3</a>, and <a href="../AA-D/AA-D.4#Subclause_D.4.1">D.4.1</a>).<br /></li>
 </ul>
 <AnnotatedOnly>
 <MarginText>22.a/5</MarginText>
 <MarginInfo items={["AI12-0005-1", "AI12-0276-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>Priority inheritance is needed for FIFO_Spinning to ensure that lower priority tasks that initiate spin waiting earlier than other higher priority tasks continue to spin to ensure that they can be granted the resource when it becomes available in order to support FIFO ordering. Note that this rule only matters when tasks that can initiate a protected action on an object P can be on a different processor than P. In particular, this rule does not matter on a monoprocessor. <br /></Admonition>
+<strong></strong>Priority inheritance is needed for FIFO{"_"}Spinning to ensure that lower priority tasks that initiate spin waiting earlier than other higher priority tasks continue to spin to ensure that they can be granted the resource when it becomes available in order to support FIFO ordering. Note that this rule only matters when tasks that can initiate a protected action on an object P can be on a different processor than P. In particular, this rule does not matter on a monoprocessor. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>23/5</MarginText>
@@ -181,7 +189,7 @@ Default_Priority : constant Priority := (Priority'First + Priority'Last)/2;{"\n"
 #### Implementation Requirements
 
 <MarginText>25</MarginText>
-<p>The range of System.Interrupt_Priority shall include at least one value.<br /></p>
+<p>The range of System.Interrupt{"_"}Priority shall include at least one value.<br /></p>
 
 <MarginText>26</MarginText>
 <p>The range of System.Priority shall include at least 30 values.<br /></p>
@@ -189,27 +197,31 @@ Default_Priority : constant Priority := (Priority'First + Priority'Last)/2;{"\n"
 <AnnotatedOnly>
 <MarginText>27</MarginText>
 <Admonition type="aarm" aarm="note">
-NOTE 1   The priority expression can include references to discriminants of the enclosing type.<br /></Admonition>
+NOTE 1   The priority expression can include references to discriminants of the enclosing type.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>28</MarginText>
 <Admonition type="aarm" aarm="note">
-NOTE 2   It is a consequence of the active priority rules that at the point when a task stops inheriting a priority from another source, its active priority is re-evaluated. This is in addition to other instances described in this Annex for such re-evaluation.<br /></Admonition>
+NOTE 2   It is a consequence of the active priority rules that at the point when a task stops inheriting a priority from another source, its active priority is re-evaluated. This is in addition to other instances described in this Annex for such re-evaluation.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>29/5</MarginText>
 <MarginInfo items={["AI05-0248-1", "AI12-0440-1"]} />
 <Admonition type="aarm" aarm="note">
-NOTE 3   An implementation can provide a nonstandard mode in which tasks inherit priorities under conditions other than those specified above. <br /></Admonition>
+NOTE 3   An implementation can provide a nonstandard mode in which tasks inherit priorities under conditions other than those specified above. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>29.a/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The use of a Priority or Interrupt_Priority aspect does not require the package System to be named in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> for the enclosing <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code>. <br /></Admonition>
+<strong></strong>The use of a Priority or Interrupt{"_"}Priority aspect does not require the package System to be named in a <code><a href="../AA-10/AA-10.1#S0294">with_clause</a></code> for the enclosing <code><a href="../AA-10/AA-10.1#S0286">compilation_unit</a></code>. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -220,13 +232,15 @@ NOTE 3   An implementation can provide a nonstandard mode in which tasks inherit
 <AnnotatedOnly>
 <MarginText>29.b</MarginText>
 <Admonition type="aarm" aarm="note">
-The priority of a task is per-object and not per-type.<br /></Admonition>
+The priority of a task is per-object and not per-type.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>29.c</MarginText>
 <Admonition type="aarm" aarm="note">
-Priorities need not be static anymore (except for the main subprogram).<br /></Admonition>
+Priorities need not be static anymore (except for the main subprogram).<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -237,7 +251,8 @@ Priorities need not be static anymore (except for the main subprogram).<br /></A
 <AnnotatedOnly>
 <MarginText>29.d</MarginText>
 <Admonition type="aarm" aarm="note">
-The description of the Priority pragma has been moved to this annex.<br /></Admonition>
+The description of the Priority pragma has been moved to this annex.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -249,14 +264,16 @@ The description of the Priority pragma has been moved to this annex.<br /></Admo
 <MarginText>29.e/2</MarginText>
 <MarginInfo items={["AI95-00092-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0072</em>{"}"} <strong>Corrigendum:</strong> Clarified that dynamic priority changes are not transitive - that is, they don't apply to tasks that are being activated by or in rendezvous with the task that had its priority changed.<br /></Admonition>
+{"{"}<em>8652/0072</em>{"}"} <strong>Corrigendum:</strong> Clarified that dynamic priority changes are not transitive - that is, they don't apply to tasks that are being activated by or in rendezvous with the task that had its priority changed.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>29.f/2</MarginText>
 <MarginInfo items={["AI95-00357-01"]} />
 <Admonition type="aarm" aarm="note">
-Generalized the definition of priority inheritance to take into account the differences between the existing and new dispatching policies. <br /></Admonition>
+Generalized the definition of priority inheritance to take into account the differences between the existing and new dispatching policies. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -268,7 +285,8 @@ Generalized the definition of priority inheritance to take into account the diff
 <MarginText>29.g/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <Admonition type="aarm" aarm="note">
-Aspects Priority and Interrupt_Priority are new; <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s Priority and Interrupt_Priority are now obsolescent. <br /></Admonition>
+Aspects Priority and Interrupt{"_"}Priority are new; <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code>s Priority and Interrupt{"_"}Priority are now obsolescent. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -280,13 +298,15 @@ Aspects Priority and Interrupt_Priority are new; <code><a href="../AA-2/AA-2.8#S
 <MarginText>29.h/4</MarginText>
 <MarginInfo items={["AI12-0081-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>Corrigendum:</strong> Clarified when the Priority and Interrupt_Priority aspect expressions are evaluated.<br /></Admonition>
+<strong>Corrigendum:</strong> Clarified when the Priority and Interrupt{"_"}Priority aspect expressions are evaluated.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>29.i/5</MarginText>
 <MarginInfo items={["AI12-0276-1"]} />
 <Admonition type="aarm" aarm="note">
-Added an additional case of priority inheritance when the new admission policy FIFO_Spinning is in effect. <br /></Admonition>
+Added an additional case of priority inheritance when the new admission policy FIFO{"_"}Spinning is in effect. <br />
+</Admonition>
 </AnnotatedOnly>
 

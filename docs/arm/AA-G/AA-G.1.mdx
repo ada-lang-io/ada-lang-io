@@ -17,18 +17,20 @@ import MarginText from "@site/src/components/MarginText";
 import MarginInfo from "@site/src/components/MarginInfo";
 
 <MarginText>1</MarginText>
-<p>Types and arithmetic operations for complex arithmetic are provided in Generic_Complex_Types, which is defined in <a href="../AA-G/AA-G.1#Subclause_G.1.1">G.1.1</a>. Implementation-defined approximations to the complex analogs of the mathematical functions known as the &ldquo;elementary functions&rdquo; are provided by the subprograms in Generic_Complex_Elementary_Functions, which is defined in <a href="../AA-G/AA-G.1#Subclause_G.1.2">G.1.2</a>. Both of these library units are generic children of the predefined package Numerics (see <a href="../AA-A/AA-A.5">A.5</a>). Nongeneric equivalents of these generic packages for each of the predefined floating point types are also provided as children of Numerics. <br /></p>
+<p>Types and arithmetic operations for complex arithmetic are provided in Generic{"_"}Complex{"_"}Types, which is defined in <a href="../AA-G/AA-G.1#Subclause_G.1.1">G.1.1</a>. Implementation-defined approximations to the complex analogs of the mathematical functions known as the &ldquo;elementary functions&rdquo; are provided by the subprograms in Generic{"_"}Complex{"_"}Elementary{"_"}Functions, which is defined in <a href="../AA-G/AA-G.1#Subclause_G.1.2">G.1.2</a>. Both of these library units are generic children of the predefined package Numerics (see <a href="../AA-A/AA-A.5">A.5</a>). Nongeneric equivalents of these generic packages for each of the predefined floating point types are also provided as children of Numerics. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>1.a</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The accuracy actually achieved by the complex elementary functions and by other complex arithmetic operations.<br /></Admonition>
+<strong></strong>The accuracy actually achieved by the complex elementary functions and by other complex arithmetic operations.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>1.b</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Complex arithmetic is defined in the Numerics Annex, rather than in the core, because it is considered to be a specialized need of (some) numeric applications. <br /></Admonition>
+<strong></strong>Complex arithmetic is defined in the Numerics Annex, rather than in the core, because it is considered to be a specialized need of (some) numeric applications. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_G.1.1"></a>
@@ -39,80 +41,83 @@ import MarginInfo from "@site/src/components/MarginInfo";
 #### Static Semantics
 
 <MarginText>1_G.1.1</MarginText>
-<p>The generic library package Numerics.Generic_Complex_Types has the following declaration: <br /></p>
+<p>The generic library package Numerics.Generic{"_"}Complex{"_"}Types has the following declaration: <br /></p>
 
 <MarginText>2/5_G.1.1</MarginText>
 <MarginInfo items={["AI95-00126-01", "AI12-0241-1"]} />
 <CodeBlock language="ada">
-{"{"}8652/0020{"}"} generic{"\n"}   type Real is digits {"<"}{">"};{"\n"}package Ada.Numerics.Generic_Complex_Types{"\n"}   with Pure, Nonblocking is{"\n"}
+{"{"}8652/0020{"}"} generic{"\n"}   type Real is digits {"<"}{">"};{"\n"}package Ada.Numerics.Generic{"_"}Complex{"_"}Types{"\n"}   with Pure, Nonblocking is{"\n"}
 <MarginText>3_G.1.1</MarginText>
    type Complex is{"\n"}      record{"\n"}         Re, Im : Real'Base;{"\n"}      end record;{"\n"}
 <MarginText>4/5_G.1.1</MarginText>
 <MarginInfo items={["AI95-00161-01", "AI95-0399-1"]} />
-   type Imaginary is private{"\n"}      with Preelaborable_Initialization;{"\n"}
+   type Imaginary is private{"\n"}      with Preelaborable{"_"}Initialization;{"\n"}
 <MarginText>5_G.1.1</MarginText>
    i : constant Imaginary;{"\n"}   j : constant Imaginary;{"\n"}
 <MarginText>6_G.1.1</MarginText>
    function Re (X : Complex)   return Real'Base;{"\n"}   function Im (X : Complex)   return Real'Base;{"\n"}   function Im (X : Imaginary) return Real'Base;{"\n"}
 <MarginText>7_G.1.1</MarginText>
-   procedure Set_Re (X  : in out Complex;{"\n"}                     Re : in     Real'Base);{"\n"}   procedure Set_Im (X  : in out Complex;{"\n"}                     Im : in     Real'Base);{"\n"}   procedure Set_Im (X  :    out Imaginary;{"\n"}                     Im : in     Real'Base);{"\n"}
+   procedure Set{"_"}Re (X  : in out Complex;{"\n"}                     Re : in     Real'Base);{"\n"}   procedure Set{"_"}Im (X  : in out Complex;{"\n"}                     Im : in     Real'Base);{"\n"}   procedure Set{"_"}Im (X  :    out Imaginary;{"\n"}                     Im : in     Real'Base);{"\n"}
 <MarginText>8_G.1.1</MarginText>
-   function Compose_From_Cartesian (Re, Im : Real'Base) return Complex;{"\n"}   function Compose_From_Cartesian (Re     : Real'Base) return Complex;{"\n"}   function Compose_From_Cartesian (Im     : Imaginary) return Complex;{"\n"}
+   function Compose{"_"}From{"_"}Cartesian (Re, Im : Real'Base) return Complex;{"\n"}   function Compose{"_"}From{"_"}Cartesian (Re     : Real'Base) return Complex;{"\n"}   function Compose{"_"}From{"_"}Cartesian (Im     : Imaginary) return Complex;{"\n"}
 <MarginText>9_G.1.1</MarginText>
    function Modulus (X     : Complex) return Real'Base;{"\n"}   function "abs"   (Right : Complex) return Real'Base renames Modulus;{"\n"}
 <MarginText>10_G.1.1</MarginText>
    function Argument (X     : Complex)   return Real'Base;{"\n"}   function Argument (X     : Complex;{"\n"}                      Cycle : Real'Base) return Real'Base;{"\n"}
 <MarginText>11_G.1.1</MarginText>
-   function Compose_From_Polar (Modulus, Argument        : Real'Base){"\n"}      return Complex;{"\n"}   function Compose_From_Polar (Modulus, Argument, Cycle : Real'Base){"\n"}      return Complex;{"\n"}
+   function Compose{"_"}From{"_"}Polar (Modulus, Argument        : Real'Base){"\n"}      return Complex;{"\n"}   function Compose{"_"}From{"_"}Polar (Modulus, Argument, Cycle : Real'Base){"\n"}      return Complex;{"\n"}
 <MarginText>12_G.1.1</MarginText>
    function "+"       (Right : Complex) return Complex;{"\n"}   function "-"       (Right : Complex) return Complex;{"\n"}   function Conjugate (X     : Complex) return Complex;{"\n"}
 <MarginText>13_G.1.1</MarginText>
-   function "+" (Left, Right : Complex) return Complex;{"\n"}   function "-" (Left, Right : Complex) return Complex;{"\n"}   function "*" (Left, Right : Complex) return Complex;{"\n"}   function "/" (Left, Right : Complex) return Complex;{"\n"}
+   function "+" (Left, Right : Complex) return Complex;{"\n"}   function "-" (Left, Right : Complex) return Complex;{"\n"}   function "{"*"}" (Left, Right : Complex) return Complex;{"\n"}   function "/" (Left, Right : Complex) return Complex;{"\n"}
 <MarginText>14_G.1.1</MarginText>
-   function "**" (Left : Complex; Right : Integer) return Complex;{"\n"}
+   function "{"*"}{"*"}" (Left : Complex; Right : Integer) return Complex;{"\n"}
 <MarginText>15_G.1.1</MarginText>
    function "+"       (Right : Imaginary) return Imaginary;{"\n"}   function "-"       (Right : Imaginary) return Imaginary;{"\n"}   function Conjugate (X     : Imaginary) return Imaginary renames "-";{"\n"}   function "abs"     (Right : Imaginary) return Real'Base;{"\n"}
 <MarginText>16_G.1.1</MarginText>
-   function "+" (Left, Right : Imaginary) return Imaginary;{"\n"}   function "-" (Left, Right : Imaginary) return Imaginary;{"\n"}   function "*" (Left, Right : Imaginary) return Real'Base;{"\n"}   function "/" (Left, Right : Imaginary) return Real'Base;{"\n"}
+   function "+" (Left, Right : Imaginary) return Imaginary;{"\n"}   function "-" (Left, Right : Imaginary) return Imaginary;{"\n"}   function "{"*"}" (Left, Right : Imaginary) return Real'Base;{"\n"}   function "/" (Left, Right : Imaginary) return Real'Base;{"\n"}
 <MarginText>17_G.1.1</MarginText>
-   function "**" (Left : Imaginary; Right : Integer) return Complex;{"\n"}
+   function "{"*"}{"*"}" (Left : Imaginary; Right : Integer) return Complex;{"\n"}
 <MarginText>18_G.1.1</MarginText>
    function "{"<"}"  (Left, Right : Imaginary) return Boolean;{"\n"}   function "{"<"}=" (Left, Right : Imaginary) return Boolean;{"\n"}   function "{">"}"  (Left, Right : Imaginary) return Boolean;{"\n"}   function "{">"}=" (Left, Right : Imaginary) return Boolean;{"\n"}
 <MarginText>19_G.1.1</MarginText>
-   function "+" (Left : Complex;   Right : Real'Base) return Complex;{"\n"}   function "+" (Left : Real'Base; Right : Complex)   return Complex;{"\n"}   function "-" (Left : Complex;   Right : Real'Base) return Complex;{"\n"}   function "-" (Left : Real'Base; Right : Complex)   return Complex;{"\n"}   function "*" (Left : Complex;   Right : Real'Base) return Complex;{"\n"}   function "*" (Left : Real'Base; Right : Complex)   return Complex;{"\n"}   function "/" (Left : Complex;   Right : Real'Base) return Complex;{"\n"}   function "/" (Left : Real'Base; Right : Complex)   return Complex;{"\n"}
+   function "+" (Left : Complex;   Right : Real'Base) return Complex;{"\n"}   function "+" (Left : Real'Base; Right : Complex)   return Complex;{"\n"}   function "-" (Left : Complex;   Right : Real'Base) return Complex;{"\n"}   function "-" (Left : Real'Base; Right : Complex)   return Complex;{"\n"}   function "{"*"}" (Left : Complex;   Right : Real'Base) return Complex;{"\n"}   function "{"*"}" (Left : Real'Base; Right : Complex)   return Complex;{"\n"}   function "/" (Left : Complex;   Right : Real'Base) return Complex;{"\n"}   function "/" (Left : Real'Base; Right : Complex)   return Complex;{"\n"}
 <MarginText>20_G.1.1</MarginText>
-   function "+" (Left : Complex;   Right : Imaginary) return Complex;{"\n"}   function "+" (Left : Imaginary; Right : Complex)   return Complex;{"\n"}   function "-" (Left : Complex;   Right : Imaginary) return Complex;{"\n"}   function "-" (Left : Imaginary; Right : Complex)   return Complex;{"\n"}   function "*" (Left : Complex;   Right : Imaginary) return Complex;{"\n"}   function "*" (Left : Imaginary; Right : Complex)   return Complex;{"\n"}   function "/" (Left : Complex;   Right : Imaginary) return Complex;{"\n"}   function "/" (Left : Imaginary; Right : Complex)   return Complex;{"\n"}
+   function "+" (Left : Complex;   Right : Imaginary) return Complex;{"\n"}   function "+" (Left : Imaginary; Right : Complex)   return Complex;{"\n"}   function "-" (Left : Complex;   Right : Imaginary) return Complex;{"\n"}   function "-" (Left : Imaginary; Right : Complex)   return Complex;{"\n"}   function "{"*"}" (Left : Complex;   Right : Imaginary) return Complex;{"\n"}   function "{"*"}" (Left : Imaginary; Right : Complex)   return Complex;{"\n"}   function "/" (Left : Complex;   Right : Imaginary) return Complex;{"\n"}   function "/" (Left : Imaginary; Right : Complex)   return Complex;{"\n"}
 <MarginText>21_G.1.1</MarginText>
-   function "+" (Left : Imaginary; Right : Real'Base) return Complex;{"\n"}   function "+" (Left : Real'Base; Right : Imaginary) return Complex;{"\n"}   function "-" (Left : Imaginary; Right : Real'Base) return Complex;{"\n"}   function "-" (Left : Real'Base; Right : Imaginary) return Complex;{"\n"}   function "*" (Left : Imaginary; Right : Real'Base) return Imaginary;{"\n"}   function "*" (Left : Real'Base; Right : Imaginary) return Imaginary;{"\n"}   function "/" (Left : Imaginary; Right : Real'Base) return Imaginary;{"\n"}   function "/" (Left : Real'Base; Right : Imaginary) return Imaginary;{"\n"}
+   function "+" (Left : Imaginary; Right : Real'Base) return Complex;{"\n"}   function "+" (Left : Real'Base; Right : Imaginary) return Complex;{"\n"}   function "-" (Left : Imaginary; Right : Real'Base) return Complex;{"\n"}   function "-" (Left : Real'Base; Right : Imaginary) return Complex;{"\n"}   function "{"*"}" (Left : Imaginary; Right : Real'Base) return Imaginary;{"\n"}   function "{"*"}" (Left : Real'Base; Right : Imaginary) return Imaginary;{"\n"}   function "/" (Left : Imaginary; Right : Real'Base) return Imaginary;{"\n"}   function "/" (Left : Real'Base; Right : Imaginary) return Imaginary;{"\n"}
 <MarginText>22_G.1.1</MarginText>
 private{"\n"}
 <MarginText>23_G.1.1</MarginText>
    type Imaginary is new Real'Base;{"\n"}   i : constant Imaginary := 1.0;{"\n"}   j : constant Imaginary := 1.0;{"\n"}
 <MarginText>24_G.1.1</MarginText>
-end Ada.Numerics.Generic_Complex_Types;{"\n"}
+end Ada.Numerics.Generic{"_"}Complex{"_"}Types;{"\n"}
 
 </CodeBlock>
 <MarginText>25/1_G.1.1</MarginText>
 <MarginInfo items={["AI95-00126-01"]} />
-<p>{"{"}<em>8652/0020</em>{"}"} The library package Numerics.Complex_Types is declared pure and defines the same types, constants, and subprograms as Numerics.Generic_Complex_Types, except that the predefined type Float is systematically substituted for Real'Base throughout. Nongeneric equivalents of Numerics.Generic_Complex_Types for each of the other predefined floating point types are defined similarly, with the names Numerics.Short_Complex_Types, Numerics.Long_Complex_Types, etc. <br /></p>
+<p>{"{"}<em>8652/0020</em>{"}"} The library package Numerics.Complex{"_"}Types is declared pure and defines the same types, constants, and subprograms as Numerics.Generic{"_"}Complex{"_"}Types, except that the predefined type Float is systematically substituted for Real'Base throughout. Nongeneric equivalents of Numerics.Generic{"_"}Complex{"_"}Types for each of the other predefined floating point types are defined similarly, with the names Numerics.Short{"_"}Complex{"_"}Types, Numerics.Long{"_"}Complex{"_"}Types, etc. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>25.a_G.1.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The nongeneric equivalents are provided to allow the programmer to construct simple mathematical applications without being required to understand and use generics. <br /></Admonition>
+<strong></strong>The nongeneric equivalents are provided to allow the programmer to construct simple mathematical applications without being required to understand and use generics. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>25.b_G.1.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The nongeneric equivalents all export the types Complex and Imaginary and the constants i and j (rather than uniquely named types and constants, such as Short_Complex, Long_Complex, etc.) to preserve their equivalence to actual instantiations of the generic package and to allow the programmer to change the precision of an application globally by changing a single context clause. <br /></Admonition>
+<strong></strong>The nongeneric equivalents all export the types Complex and Imaginary and the constants i and j (rather than uniquely named types and constants, such as Short{"_"}Complex, Long{"_"}Complex, etc.) to preserve their equivalence to actual instantiations of the generic package and to allow the programmer to change the precision of an application globally by changing a single context clause. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>25.c/5_G.1.1</MarginText>
 <MarginInfo items={["AI12-0241-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>A pure unit is always nonblocking, so we don't need to talk about the Nonblocking aspect of these packages. Similarly, a pure unit always has the Global aspect set to <strong>null</strong>, so we don't need to talk about that, either. <br /></Admonition>
+<strong></strong>A pure unit is always nonblocking, so we don't need to talk about the Nonblocking aspect of these packages. Similarly, a pure unit always has the Global aspect set to <strong>null</strong>, so we don't need to talk about that, either. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>26/2_G.1.1</MarginText>
@@ -122,7 +127,8 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <AnnotatedOnly>
 <MarginText>26.a_G.1.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The Cartesian representation is far more common than the polar representation, in practice. The accuracy of the results of the complex arithmetic operations and of the complex elementary functions is dependent on the representation; thus, implementers need to know that representation. The type is visible so that complex &ldquo;literals&rdquo; can be written in aggregate notation, if desired. <br /></Admonition>
+<strong></strong>The Cartesian representation is far more common than the polar representation, in practice. The accuracy of the results of the complex arithmetic operations and of the complex elementary functions is dependent on the representation; thus, implementers need to know that representation. The type is visible so that complex &ldquo;literals&rdquo; can be written in aggregate notation, if desired. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>27_G.1.1</MarginText>
@@ -131,22 +137,24 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <AnnotatedOnly>
 <MarginText>27.a_G.1.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The Imaginary type and the constants i and j are provided for two reasons: <br /></Admonition>
+<strong></strong>The Imaginary type and the constants i and j are provided for two reasons: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>27.b_G.1.1</MarginText>
 <ul>
-<li>They allow complex &ldquo;literals&rdquo; to be written in the alternate form of <em>a</em> + <em>b</em>*i (or <em>a</em> + <em>b</em>*j), if desired. Of course, in some contexts the sum will need to be parenthesized.<br /></li>
+<li>They allow complex &ldquo;literals&rdquo; to be written in the alternate form of <em>a</em> + <em>b</em>{"*"}i (or <em>a</em> + <em>b</em>{"*"}j), if desired. Of course, in some contexts the sum will need to be parenthesized.<br /></li>
 <MarginText>27.c/5_G.1.1</MarginText>
 <MarginInfo items={["AI12-0437-1", "AI12-0453-1"]} />
-<li>When an Ada binding to ISO/IEC 60559:2020 that provides (signed) infinities as the result of operations that overflow becomes available, it will be important to allow arithmetic between pure-imaginary and complex operands without requiring the former to be represented as (or promoted to) complex values with a real component of zero. For example, the multiplication of <em>a</em> + <em>b</em>*i by <em>d</em>*i should yield &ndash;<em>b</em>· <em>d</em> + <em>a</em>· <em>d</em>*i, but if one cannot avoid representing the pure-imaginary value <em>d</em>*i as the complex value 0.0 + <em>d</em>*i, then a NaN ("Not-a-Number") could be produced as the result of multiplying <em>a</em> by 0.0 (for example, when <em>a</em> is infinite); the NaN could later trigger an exception. Providing the Imaginary type and overloadings of the arithmetic operators for mixtures of Imaginary and Complex operands gives the programmer the same control over avoiding premature coercion of pure-imaginary values to complex as is already provided for pure-real values. <br /></li>
+<li>When an Ada binding to ISO/IEC 60559:2020 that provides (signed) infinities as the result of operations that overflow becomes available, it will be important to allow arithmetic between pure-imaginary and complex operands without requiring the former to be represented as (or promoted to) complex values with a real component of zero. For example, the multiplication of <em>a</em> + <em>b</em>{"*"}i by <em>d</em>{"*"}i should yield &ndash;<em>b</em>· <em>d</em> + <em>a</em>· <em>d</em>{"*"}i, but if one cannot avoid representing the pure-imaginary value <em>d</em>{"*"}i as the complex value 0.0 + <em>d</em>{"*"}i, then a NaN ("Not-a-Number") could be produced as the result of multiplying <em>a</em> by 0.0 (for example, when <em>a</em> is infinite); the NaN could later trigger an exception. Providing the Imaginary type and overloadings of the arithmetic operators for mixtures of Imaginary and Complex operands gives the programmer the same control over avoiding premature coercion of pure-imaginary values to complex as is already provided for pure-real values. <br /></li>
 </ul>
 </AnnotatedOnly>
 <AnnotatedOnly>
 <MarginText>27.d_G.1.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The Imaginary type is private, rather than being visibly derived from Real'Base, for two reasons: <br /></Admonition>
+<strong></strong>The Imaginary type is private, rather than being visibly derived from Real'Base, for two reasons: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -161,7 +169,8 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <MarginText>27.g/5_G.1.1</MarginText>
 <MarginInfo items={["AI12-0453-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The base subtype Real'Base is used for the component type of Complex, the parent type of Imaginary, and the parameter and result types of some of the subprograms to maximize the chances of being able to pass meaningful values into the subprograms and receive meaningful results back. The generic formal parameter Real therefore plays only one role, that of providing the precision to be maintained in complex arithmetic calculations. Thus, the subprograms in Numerics.Generic_Complex_Types share with those in Numerics.Generic_Elementary_Functions, and indeed even with the predefined arithmetic operations (see <a href="../AA-4/AA-4.5">4.5</a>), the property of being free of range checks on input and output, that is, of being able to exploit the base range of the relevant floating point type fully. As a result, the user loses the ability to impose application-oriented bounds on the range of values that the components of a complex variable can acquire; however, it can be argued that few, if any, applications have a naturally square domain (as opposed to a circular domain) anyway. <br /></Admonition>
+<strong></strong>The base subtype Real'Base is used for the component type of Complex, the parent type of Imaginary, and the parameter and result types of some of the subprograms to maximize the chances of being able to pass meaningful values into the subprograms and receive meaningful results back. The generic formal parameter Real therefore plays only one role, that of providing the precision to be maintained in complex arithmetic calculations. Thus, the subprograms in Numerics.Generic{"_"}Complex{"_"}Types share with those in Numerics.Generic{"_"}Elementary{"_"}Functions, and indeed even with the predefined arithmetic operations (see <a href="../AA-4/AA-4.5">4.5</a>), the property of being free of range checks on input and output, that is, of being able to exploit the base range of the relevant floating point type fully. As a result, the user loses the ability to impose application-oriented bounds on the range of values that the components of a complex variable can acquire; however, it can be argued that few, if any, applications have a naturally square domain (as opposed to a circular domain) anyway. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>28_G.1.1</MarginText>
@@ -170,19 +179,20 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <AnnotatedOnly>
 <MarginText>28.a_G.1.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The middle case can be understood by considering the parameter of pure-imaginary type to represent a complex value with a zero real part. <br /></Admonition>
+<strong></strong>The middle case can be understood by considering the parameter of pure-imaginary type to represent a complex value with a zero real part. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>29_G.1.1</MarginText>
 <ul>
-<li>The Set_Re and Set_Im procedures replace the designated component of a complex parameter with the given real value; applied to a parameter of pure-imaginary type, the Set_Im procedure replaces the value of that parameter with the imaginary value corresponding to the given real value.<br /></li>
+<li>The Set{"_"}Re and Set{"_"}Im procedures replace the designated component of a complex parameter with the given real value; applied to a parameter of pure-imaginary type, the Set{"_"}Im procedure replaces the value of that parameter with the imaginary value corresponding to the given real value.<br /></li>
 <MarginText>30_G.1.1</MarginText>
-<li>The Compose_From_Cartesian function constructs a complex value from the given real and imaginary components. If only one component is given, the other component is implicitly zero.<br /></li>
+<li>The Compose{"_"}From{"_"}Cartesian function constructs a complex value from the given real and imaginary components. If only one component is given, the other component is implicitly zero.<br /></li>
 <MarginText>31_G.1.1</MarginText>
-<li>The Compose_From_Polar function constructs a complex value from the given modulus (radius) and argument (angle). When the value of the parameter Modulus is positive (resp., negative), the result is the complex value represented by the point in the complex plane lying at a distance from the origin given by the absolute value of Modulus and forming an angle measured counterclockwise from the positive (resp., negative) real axis given by the value of the parameter Argument. <br /></li>
+<li>The Compose{"_"}From{"_"}Polar function constructs a complex value from the given modulus (radius) and argument (angle). When the value of the parameter Modulus is positive (resp., negative), the result is the complex value represented by the point in the complex plane lying at a distance from the origin given by the absolute value of Modulus and forming an angle measured counterclockwise from the positive (resp., negative) real axis given by the value of the parameter Argument. <br /></li>
 </ul>
 <MarginText>32_G.1.1</MarginText>
-<p>When the Cycle parameter is specified, the result of the Argument function and the parameter Argument of the Compose_From_Polar function are measured in units such that a full cycle of revolution has the given value; otherwise, they are measured in radians.<br /></p>
+<p>When the Cycle parameter is specified, the result of the Argument function and the parameter Argument of the Compose{"_"}From{"_"}Polar function are measured in units such that a full cycle of revolution has the given value; otherwise, they are measured in radians.<br /></p>
 
 <MarginText>33_G.1.1</MarginText>
 <p>The computed results of the mathematically multivalued functions are rendered single-valued by the following conventions, which are meant to imply the principal branch: <br /></p>
@@ -195,9 +205,9 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 </ul>
 <MarginText>36_G.1.1</MarginText>
 <ul>
-<li>&pi; (resp., &ndash;&pi;) when the sign of the imaginary component of X is positive (resp., negative), if Real'Signed_Zeros is True;<br /></li>
+<li>&pi; (resp., &ndash;&pi;) when the sign of the imaginary component of X is positive (resp., negative), if Real'Signed{"_"}Zeros is True;<br /></li>
 <MarginText>37_G.1.1</MarginText>
-<li>&pi;, if Real'Signed_Zeros is False. <br /></li>
+<li>&pi;, if Real'Signed{"_"}Zeros is False. <br /></li>
 </ul>
 <MarginText>38_G.1.1</MarginText>
 <ul>
@@ -207,28 +217,30 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 #### Dynamic Semantics
 
 <MarginText>39_G.1.1</MarginText>
-<p>The exception Numerics.Argument_Error is raised by the Argument and Compose_From_Polar functions with specified cycle, signaling a parameter value outside the domain of the corresponding mathematical function, when the value of the parameter Cycle is zero or negative.<br /></p>
+<p>The exception Numerics.Argument{"_"}Error is raised by the Argument and Compose{"_"}From{"_"}Polar functions with specified cycle, signaling a parameter value outside the domain of the corresponding mathematical function, when the value of the parameter Cycle is zero or negative.<br /></p>
 
 <MarginText>40_G.1.1</MarginText>
-<p>The exception Constraint_Error is raised by the division operator when the value of the right operand is zero, and by the exponentiation operator when the value of the left operand is zero and the value of the exponent is negative, provided that Real'Machine_Overflows is True; when Real'Machine_Overflows is False, the result is unspecified. [Constraint_Error can also be raised when a finite result overflows (see <a href="../AA-G/AA-G.2#Subclause_G.2.6">G.2.6</a>).] <br /></p>
+<p>The exception Constraint{"_"}Error is raised by the division operator when the value of the right operand is zero, and by the exponentiation operator when the value of the left operand is zero and the value of the exponent is negative, provided that Real'Machine{"_"}Overflows is True; when Real'Machine{"_"}Overflows is False, the result is unspecified. [Constraint{"_"}Error can also be raised when a finite result overflows (see <a href="../AA-G/AA-G.2#Subclause_G.2.6">G.2.6</a>).] <br /></p>
 
 <AnnotatedOnly>
 <MarginText>40.a/5_G.1.1</MarginText>
 <MarginInfo items={["AI12-0437-1"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>It is anticipated that an Ada binding to ISO/IEC 60559:2020 will be developed in the future. As part of such a binding, the Machine_Overflows attribute of a conformant floating point type will be specified to yield False, which will permit implementations of the complex arithmetic operations to deliver results with an infinite component (and set the overflow flag defined by the binding) instead of raising Constraint_Error in overflow situations, when traps are disabled. Similarly, it is appropriate for the complex arithmetic operations to deliver results with infinite components (and set the zero-divide flag defined by the binding) instead of raising Constraint_Error in the situations defined above, when traps are disabled. Finally, such a binding should also specify the behavior of the complex arithmetic operations, when sensible, given operands with infinite components. <br /></Admonition>
+<strong></strong>It is anticipated that an Ada binding to ISO/IEC 60559:2020 will be developed in the future. As part of such a binding, the Machine{"_"}Overflows attribute of a conformant floating point type will be specified to yield False, which will permit implementations of the complex arithmetic operations to deliver results with an infinite component (and set the overflow flag defined by the binding) instead of raising Constraint{"_"}Error in overflow situations, when traps are disabled. Similarly, it is appropriate for the complex arithmetic operations to deliver results with infinite components (and set the zero-divide flag defined by the binding) instead of raising Constraint{"_"}Error in the situations defined above, when traps are disabled. Finally, such a binding should also specify the behavior of the complex arithmetic operations, when sensible, given operands with infinite components. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
 #### Implementation Requirements
 
 <MarginText>41_G.1.1</MarginText>
-<p>In the implementation of Numerics.Generic_Complex_Types, the range of intermediate values allowed during the calculation of a final result shall not be affected by any range constraint of the subtype Real. <br /></p>
+<p>In the implementation of Numerics.Generic{"_"}Complex{"_"}Types, the range of intermediate values allowed during the calculation of a final result shall not be affected by any range constraint of the subtype Real. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>41.a_G.1.1</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>Implementations of Numerics.Generic_Complex_Types written in Ada should therefore avoid declaring local variables of subtype Real; the subtype Real'Base should be used instead. <br /></Admonition>
+<strong></strong>Implementations of Numerics.Generic{"_"}Complex{"_"}Types written in Ada should therefore avoid declaring local variables of subtype Real; the subtype Real'Base should be used instead. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>42_G.1.1</MarginText>
@@ -236,14 +248,15 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 
 <MarginText>43_G.1.1</MarginText>
 <ul>
-<li>The results of the Re, Im, and Compose_From_Cartesian functions are exact.<br /></li>
+<li>The results of the Re, Im, and Compose{"_"}From{"_"}Cartesian functions are exact.<br /></li>
 <MarginText>44_G.1.1</MarginText>
 <li>The real (resp., imaginary) component of the result of a binary addition operator that yields a result of complex type is exact when either of its operands is of pure-imaginary (resp., real) type. <br /></li>
 </ul>
 <AnnotatedOnly>
 <MarginText>44.a_G.1.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The result of the addition operator is exact when one of its operands is of real type and the other is of pure-imaginary type. In this particular case, the operator is analogous to the Compose_From_Cartesian function; it performs no arithmetic. <br /></Admonition>
+<strong></strong>The result of the addition operator is exact when one of its operands is of real type and the other is of pure-imaginary type. In this particular case, the operator is analogous to the Compose{"_"}From{"_"}Cartesian function; it performs no arithmetic. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>45_G.1.1</MarginText>
@@ -257,30 +270,32 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <AnnotatedOnly>
 <MarginText>47.a_G.1.1</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Argument(X + i*Y) is analogous to <em>EF</em>.Arctan(Y, X), where <em>EF</em> is an appropriate instance of Numerics.Generic_Elementary_Functions, except when X and Y are both zero, in which case the former yields the value zero while the latter raises Numerics.Argument_Error. <br /></Admonition>
+<strong></strong>Argument(X + i{"*"}Y) is analogous to <em>EF</em>.Arctan(Y, X), where <em>EF</em> is an appropriate instance of Numerics.Generic{"_"}Elementary{"_"}Functions, except when X and Y are both zero, in which case the former yields the value zero while the latter raises Numerics.Argument{"_"}Error. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>48_G.1.1</MarginText>
 <ul>
-<li>When the value of the parameter Modulus is zero, the Compose_From_Polar function yields a result of zero.<br /></li>
+<li>When the value of the parameter Modulus is zero, the Compose{"_"}From{"_"}Polar function yields a result of zero.<br /></li>
 <MarginText>49_G.1.1</MarginText>
-<li>When the value of the parameter Argument is equal to a multiple of the quarter cycle, the result of the Compose_From_Polar function with specified cycle lies on one of the axes. In this case, one of its components is zero, and the other has the magnitude of the parameter Modulus.<br /></li>
+<li>When the value of the parameter Argument is equal to a multiple of the quarter cycle, the result of the Compose{"_"}From{"_"}Polar function with specified cycle lies on one of the axes. In this case, one of its components is zero, and the other has the magnitude of the parameter Modulus.<br /></li>
 <MarginText>50_G.1.1</MarginText>
 <li>Exponentiation by a zero exponent yields the value one. Exponentiation by a unit exponent yields the value of the left operand. Exponentiation of the value one yields the value one. Exponentiation of the value zero yields the value zero, provided that the exponent is nonzero. When the left operand is of pure-imaginary type, one component of the result of the exponentiation operator is zero. <br /></li>
 </ul>
 <MarginText>51_G.1.1</MarginText>
-<p>When the result, or a result component, of any operator of Numerics.Generic_Complex_Types has a mathematical definition in terms of a single arithmetic or relational operation, that result or result component exhibits the accuracy of the corresponding operation of the type Real.<br /></p>
+<p>When the result, or a result component, of any operator of Numerics.Generic{"_"}Complex{"_"}Types has a mathematical definition in terms of a single arithmetic or relational operation, that result or result component exhibits the accuracy of the corresponding operation of the type Real.<br /></p>
 
 <MarginText>52_G.1.1</MarginText>
-<p>Other accuracy requirements for the Modulus, Argument, and Compose_From_Polar functions, and accuracy requirements for the multiplication of a pair of complex operands or for division by a complex operand, all of which apply only in the strict mode, are given in <a href="../AA-G/AA-G.2#Subclause_G.2.6">G.2.6</a>.<br /></p>
+<p>Other accuracy requirements for the Modulus, Argument, and Compose{"_"}From{"_"}Polar functions, and accuracy requirements for the multiplication of a pair of complex operands or for division by a complex operand, all of which apply only in the strict mode, are given in <a href="../AA-G/AA-G.2#Subclause_G.2.6">G.2.6</a>.<br /></p>
 
 <MarginText>53_G.1.1</MarginText>
-<p>The sign of a zero result or zero result component yielded by a complex arithmetic operation or function is implementation defined when Real'Signed_Zeros is True. <br /></p>
+<p>The sign of a zero result or zero result component yielded by a complex arithmetic operation or function is implementation defined when Real'Signed{"_"}Zeros is True. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>53.a_G.1.1</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The sign of a zero result (or a component thereof) from any operator or function in Numerics.Generic_Complex_Types, when Real'Signed_Zeros is True.<br /></Admonition>
+<strong></strong>The sign of a zero result (or a component thereof) from any operator or function in Numerics.Generic{"_"}Complex{"_"}Types, when Real'Signed{"_"}Zeros is True.<br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -304,20 +319,22 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <AnnotatedOnly>
 <MarginText>56.a/2_G.1.1</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>Mixed real and complex operations (as well as pure-imaginary and complex operations) should not be performed by converting the real (resp. pure-imaginary) operand to complex.<br /></Admonition>
+<strong></strong>Mixed real and complex operations (as well as pure-imaginary and complex operations) should not be performed by converting the real (resp. pure-imaginary) operand to complex.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>57/5_G.1.1</MarginText>
 <MarginInfo items={["AI12-0437-1"]} />
-<p>Likewise, because the usual mathematical meaning of addition of a complex operand and a real operand is that the imaginary operand remains unchanged, an implementation should not perform this operation by first promoting the real operand to complex type and then performing a full complex addition. In implementations in which the Signed_Zeros attribute of the component type is True (and which therefore conform to ISO/IEC 60559:2020 in regard to the handling of the sign of zero in predefined arithmetic operations), the latter technique will not generate the required result when the imaginary component of the complex operand is a negatively signed zero. (Explicit addition of the negative zero to the zero obtained during promotion yields a positive zero.) Analogous advice applies in the case of addition of a complex operand and a pure-imaginary operand, and in the case of subtraction of a complex operand and a real or pure-imaginary operand.<br /></p>
+<p>Likewise, because the usual mathematical meaning of addition of a complex operand and a real operand is that the imaginary operand remains unchanged, an implementation should not perform this operation by first promoting the real operand to complex type and then performing a full complex addition. In implementations in which the Signed{"_"}Zeros attribute of the component type is True (and which therefore conform to ISO/IEC 60559:2020 in regard to the handling of the sign of zero in predefined arithmetic operations), the latter technique will not generate the required result when the imaginary component of the complex operand is a negatively signed zero. (Explicit addition of the negative zero to the zero obtained during promotion yields a positive zero.) Analogous advice applies in the case of addition of a complex operand and a pure-imaginary operand, and in the case of subtraction of a complex operand and a real or pure-imaginary operand.<br /></p>
 
 <MarginText>58_G.1.1</MarginText>
-<p>Implementations in which Real'Signed_Zeros is True should attempt to provide a rational treatment of the signs of zero results and result components. As one example, the result of the Argument function should have the sign of the imaginary component of the parameter X when the point represented by that parameter lies on the positive real axis; as another, the sign of the imaginary component of the Compose_From_Polar function should be the same as (resp., the opposite of) that of the Argument parameter when that parameter has a value of zero and the Modulus parameter has a nonnegative (resp., negative) value. <br /></p>
+<p>Implementations in which Real'Signed{"_"}Zeros is True should attempt to provide a rational treatment of the signs of zero results and result components. As one example, the result of the Argument function should have the sign of the imaginary component of the parameter X when the point represented by that parameter lies on the positive real axis; as another, the sign of the imaginary component of the Compose{"_"}From{"_"}Polar function should be the same as (resp., the opposite of) that of the Argument parameter when that parameter has a value of zero and the Modulus parameter has a nonnegative (resp., negative) value. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>58.a.1/3_G.1.1</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>If Real'Signed_Zeros is True for Numerics.Generic_Complex_Types, a rational treatment of the signs of zero results and result components should be provided.<br /></Admonition>
+<strong></strong>If Real'Signed{"_"}Zeros is True for Numerics.Generic{"_"}Complex{"_"}Types, a rational treatment of the signs of zero results and result components should be provided.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -328,19 +345,20 @@ end Ada.Numerics.Generic_Complex_Types;{"\n"}
 <AnnotatedOnly>
 <MarginText>58.a_G.1.1</MarginText>
 <Admonition type="aarm" aarm="note">
-The semantics of Numerics.Generic_Complex_Types differs from Generic_Complex_Types as defined in ISO/IEC CD 13813 (for Ada 83) in the following ways: <br /></Admonition>
+The semantics of Numerics.Generic{"_"}Complex{"_"}Types differs from Generic{"_"}Complex{"_"}Types as defined in ISO/IEC CD 13813 (for Ada 83) in the following ways: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>58.b_G.1.1</MarginText>
 <ul>
-<li>The generic package is a child of the package defining the Argument_Error exception.<br /></li>
+<li>The generic package is a child of the package defining the Argument{"_"}Error exception.<br /></li>
 <MarginText>58.c_G.1.1</MarginText>
 <li>The nongeneric equivalents export types and constants with the same names as those exported by the generic package, rather than with names unique to the package.<br /></li>
 <MarginText>58.d_G.1.1</MarginText>
-<li>Implementations are not allowed to impose an optional restriction that the generic actual parameter associated with Real be unconstrained. (In view of the ability to declare variables of subtype Real'Base in implementations of Numerics.Generic_Complex_Types, this flexibility is no longer needed.)<br /></li>
+<li>Implementations are not allowed to impose an optional restriction that the generic actual parameter associated with Real be unconstrained. (In view of the ability to declare variables of subtype Real'Base in implementations of Numerics.Generic{"_"}Complex{"_"}Types, this flexibility is no longer needed.)<br /></li>
 <MarginText>58.e_G.1.1</MarginText>
-<li>The dependence of the Argument function on the sign of a zero parameter component is tied to the value of Real'Signed_Zeros.<br /></li>
+<li>The dependence of the Argument function on the sign of a zero parameter component is tied to the value of Real'Signed{"_"}Zeros.<br /></li>
 <MarginText>58.f_G.1.1</MarginText>
 <li>Conformance to accuracy requirements is conditional. <br /></li>
 </ul>
@@ -354,7 +372,8 @@ The semantics of Numerics.Generic_Complex_Types differs from Generic_Complex_Typ
 <MarginText>58.g/2_G.1.1</MarginText>
 <MarginInfo items={["AI95-00161-01"]} />
 <Admonition type="aarm" aarm="correction">
-<strong>Amendment </strong> Added a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Preelaborable_Initialization to type Imaginary, so that it can be used in preelaborated units. <br /></Admonition>
+<strong>Amendment </strong> Added a <code><a href="../AA-2/AA-2.8#S0019">pragma</a></code> Preelaborable{"_"}Initialization to type Imaginary, so that it can be used in preelaborated units. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -366,7 +385,8 @@ The semantics of Numerics.Generic_Complex_Types differs from Generic_Complex_Typ
 <MarginText>58.h/2_G.1.1</MarginText>
 <MarginInfo items={["AI95-00126-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0020</em>{"}"} <strong>Corrigendum:</strong> Explicitly stated that the nongeneric equivalents of Generic_Complex_Types are pure. <br /></Admonition>
+{"{"}<em>8652/0020</em>{"}"} <strong>Corrigendum:</strong> Explicitly stated that the nongeneric equivalents of Generic{"_"}Complex{"_"}Types are pure. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_G.1.2"></a>
@@ -377,14 +397,14 @@ The semantics of Numerics.Generic_Complex_Types differs from Generic_Complex_Typ
 #### Static Semantics
 
 <MarginText>1_G.1.2</MarginText>
-<p>The generic library package Numerics.Generic_Complex_Elementary_Functions has the following declaration: <br /></p>
+<p>The generic library package Numerics.Generic{"_"}Complex{"_"}Elementary{"_"}Functions has the following declaration: <br /></p>
 
 <MarginText>2/5_G.1.2</MarginText>
 <MarginInfo items={["AI95-00434-01", "AI12-0241-1"]} />
 <CodeBlock language="ada">
-with Ada.Numerics.Generic_Complex_Types;{"\n"}generic{"\n"}   with package Complex_Types is{"\n"}         new Ada.Numerics.Generic_Complex_Types ({"<"}{">"});{"\n"}   use Complex_Types;{"\n"}package Ada.Numerics.Generic_Complex_Elementary_Functions{"\n"}   with Pure, Nonblocking is{"\n"}
+with Ada.Numerics.Generic{"_"}Complex{"_"}Types;{"\n"}generic{"\n"}   with package Complex{"_"}Types is{"\n"}         new Ada.Numerics.Generic{"_"}Complex{"_"}Types ({"<"}{">"});{"\n"}   use Complex{"_"}Types;{"\n"}package Ada.Numerics.Generic{"_"}Complex{"_"}Elementary{"_"}Functions{"\n"}   with Pure, Nonblocking is{"\n"}
 <MarginText>3_G.1.2</MarginText>
-   function Sqrt (X : Complex)   return Complex;{"\n"}   function Log  (X : Complex)   return Complex;{"\n"}   function Exp  (X : Complex)   return Complex;{"\n"}   function Exp  (X : Imaginary) return Complex;{"\n"}   function "**" (Left : Complex;   Right : Complex)   return Complex;{"\n"}   function "**" (Left : Complex;   Right : Real'Base) return Complex;{"\n"}   function "**" (Left : Real'Base; Right : Complex)   return Complex;{"\n"}
+   function Sqrt (X : Complex)   return Complex;{"\n"}   function Log  (X : Complex)   return Complex;{"\n"}   function Exp  (X : Complex)   return Complex;{"\n"}   function Exp  (X : Imaginary) return Complex;{"\n"}   function "{"*"}{"*"}" (Left : Complex;   Right : Complex)   return Complex;{"\n"}   function "{"*"}{"*"}" (Left : Complex;   Right : Real'Base) return Complex;{"\n"}   function "{"*"}{"*"}" (Left : Real'Base; Right : Complex)   return Complex;{"\n"}
 <MarginText>4_G.1.2</MarginText>
    function Sin (X : Complex) return Complex;{"\n"}   function Cos (X : Complex) return Complex;{"\n"}   function Tan (X : Complex) return Complex;{"\n"}   function Cot (X : Complex) return Complex;{"\n"}
 <MarginText>5_G.1.2</MarginText>
@@ -394,21 +414,22 @@ with Ada.Numerics.Generic_Complex_Types;{"\n"}generic{"\n"}   with package Compl
 <MarginText>7_G.1.2</MarginText>
    function Arcsinh (X : Complex) return Complex;{"\n"}   function Arccosh (X : Complex) return Complex;{"\n"}   function Arctanh (X : Complex) return Complex;{"\n"}   function Arccoth (X : Complex) return Complex;{"\n"}
 <MarginText>8_G.1.2</MarginText>
-end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
+end Ada.Numerics.Generic{"_"}Complex{"_"}Elementary{"_"}Functions;{"\n"}
 
 </CodeBlock>
 <MarginText>9/1_G.1.2</MarginText>
 <MarginInfo items={["AI95-00126-01"]} />
-<p>{"{"}<em>8652/0020</em>{"}"} The library package Numerics.Complex_Elementary_Functions is declared pure and defines the same subprograms as Numerics.Generic_Complex_Elementary_Functions, except that the predefined type Float is systematically substituted for Real'Base, and the Complex and Imaginary types exported by Numerics.Complex_Types are systematically substituted for Complex and Imaginary, throughout. Nongeneric equivalents of Numerics.Generic_Complex_Elementary_Functions corresponding to each of the other predefined floating point types are defined similarly, with the names Numerics.Short_Complex_Elementary_Functions, Numerics.Long_Complex_Elementary_Functions, etc. <br /></p>
+<p>{"{"}<em>8652/0020</em>{"}"} The library package Numerics.Complex{"_"}Elementary{"_"}Functions is declared pure and defines the same subprograms as Numerics.Generic{"_"}Complex{"_"}Elementary{"_"}Functions, except that the predefined type Float is systematically substituted for Real'Base, and the Complex and Imaginary types exported by Numerics.Complex{"_"}Types are systematically substituted for Complex and Imaginary, throughout. Nongeneric equivalents of Numerics.Generic{"_"}Complex{"_"}Elementary{"_"}Functions corresponding to each of the other predefined floating point types are defined similarly, with the names Numerics.Short{"_"}Complex{"_"}Elementary{"_"}Functions, Numerics.Long{"_"}Complex{"_"}Elementary{"_"}Functions, etc. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>9.a_G.1.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The nongeneric equivalents are provided to allow the programmer to construct simple mathematical applications without being required to understand and use generics. <br /></Admonition>
+<strong></strong>The nongeneric equivalents are provided to allow the programmer to construct simple mathematical applications without being required to understand and use generics. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>10_G.1.2</MarginText>
-<p>The overloading of the Exp function for the pure-imaginary type is provided to give the user an alternate way to compose a complex value from a given modulus and argument. In addition to Compose_From_Polar(Rho, Theta) (see <a href="../AA-G/AA-G.1#Subclause_G.1.1">G.1.1</a>), the programmer may write Rho * Exp(i * Theta).<br /></p>
+<p>The overloading of the Exp function for the pure-imaginary type is provided to give the user an alternate way to compose a complex value from a given modulus and argument. In addition to Compose{"_"}From{"_"}Polar(Rho, Theta) (see <a href="../AA-G/AA-G.1#Subclause_G.1.1">G.1.1</a>), the programmer may write Rho {"*"} Exp(i {"*"} Theta).<br /></p>
 
 <MarginText>11_G.1.2</MarginText>
 <p>The imaginary (resp., real) component of the parameter X of the forward hyperbolic (resp., trigonometric) functions and of the Exp function (and the parameter X, itself, in the case of the overloading of the Exp function for the pure-imaginary type) represents an angle measured in radians, as does the imaginary (resp., real) component of the result of the Log and inverse hyperbolic (resp., trigonometric) functions.<br /></p>
@@ -439,7 +460,8 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 <MarginText>19.a/2_G.1.2</MarginText>
 <MarginInfo items={["AI95-00185-01"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The branch cuts come from the fact that the functions in question are really multi-valued in the complex domain, and that we have to pick one <em>principal value</em> to be the result of the function. Evidently we have much freedom in choosing where the branch cuts lie. However, we are adhering to the following principles which seem to lead to the more <em>natural</em> definitions: <br /></Admonition>
+<strong></strong>The branch cuts come from the fact that the functions in question are really multi-valued in the complex domain, and that we have to pick one <em>principal value</em> to be the result of the function. Evidently we have much freedom in choosing where the branch cuts lie. However, we are adhering to the following principles which seem to lead to the more <em>natural</em> definitions: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -454,13 +476,13 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 </AnnotatedOnly>
 <MarginText>20/2_G.1.2</MarginText>
 <MarginInfo items={["AI95-00185-01"]} />
-<p>The computed results of the mathematically multivalued functions are rendered single-valued by the following conventions, which are meant to imply that the principal branch is an analytic continuation of the corresponding real-valued function in Numerics.Generic_Elementary_Functions. (For Arctan and Arccot, the single-argument function in question is that obtained from the two-argument version by fixing the second argument to be its default value.) <br /></p>
+<p>The computed results of the mathematically multivalued functions are rendered single-valued by the following conventions, which are meant to imply that the principal branch is an analytic continuation of the corresponding real-valued function in Numerics.Generic{"_"}Elementary{"_"}Functions. (For Arctan and Arccot, the single-argument function in question is that obtained from the two-argument version by fixing the second argument to be its default value.) <br /></p>
 
 <MarginText>21_G.1.2</MarginText>
 <ul>
 <li>The real component of the result of the Sqrt and Arccosh functions is nonnegative.<br /></li>
 <MarginText>22_G.1.2</MarginText>
-<li>The same convention applies to the imaginary component of the result of the Log function as applies to the result of the natural-cycle version of the Argument function of Numerics.Generic_Complex_Types (see <a href="../AA-G/AA-G.1#Subclause_G.1.1">G.1.1</a>).<br /></li>
+<li>The same convention applies to the imaginary component of the result of the Log function as applies to the result of the natural-cycle version of the Argument function of Numerics.Generic{"_"}Complex{"_"}Types (see <a href="../AA-G/AA-G.1#Subclause_G.1.1">G.1.1</a>).<br /></li>
 <MarginText>23_G.1.2</MarginText>
 <li>The range of the real (resp., imaginary) component of the result of the Arcsin and Arctan (resp., Arcsinh and Arctanh) functions is approximately &ndash;&pi;/2.0 to &pi;/2.0.<br /></li>
 <MarginText>24_G.1.2</MarginText>
@@ -475,10 +497,10 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 #### Dynamic Semantics
 
 <MarginText>27_G.1.2</MarginText>
-<p>The exception Numerics.Argument_Error is raised by the exponentiation operator, signaling a parameter value outside the domain of the corresponding mathematical function, when the value of the left operand is zero and the real component of the exponent (or the exponent itself, when it is of real type) is zero.<br /></p>
+<p>The exception Numerics.Argument{"_"}Error is raised by the exponentiation operator, signaling a parameter value outside the domain of the corresponding mathematical function, when the value of the left operand is zero and the real component of the exponent (or the exponent itself, when it is of real type) is zero.<br /></p>
 
 <MarginText>28_G.1.2</MarginText>
-<p>The exception Constraint_Error is raised, signaling a pole of the mathematical function (analogous to dividing by zero), in the following cases, provided that Complex_Types.Real'Machine_Overflows is True: <br /></p>
+<p>The exception Constraint{"_"}Error is raised, signaling a pole of the mathematical function (analogous to dividing by zero), in the following cases, provided that Complex{"_"}Types.Real'Machine{"_"}Overflows is True: <br /></p>
 
 <MarginText>29_G.1.2</MarginText>
 <ul>
@@ -491,31 +513,34 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 <li>by the Arctanh and Arccoth functions, when the value of the parameter X is ± 1.0. <br /></li>
 </ul>
 <MarginText>33_G.1.2</MarginText>
-<p>[Constraint_Error can also be raised when a finite result overflows (see <a href="../AA-G/AA-G.2#Subclause_G.2.6">G.2.6</a>); this may occur for parameter values sufficiently <em>near</em> poles, and, in the case of some of the functions, for parameter values having components of sufficiently large magnitude.] When Complex_Types.Real'Machine_Overflows is False, the result at poles is unspecified. <br /></p>
+<p>[Constraint{"_"}Error can also be raised when a finite result overflows (see <a href="../AA-G/AA-G.2#Subclause_G.2.6">G.2.6</a>); this may occur for parameter values sufficiently <em>near</em> poles, and, in the case of some of the functions, for parameter values having components of sufficiently large magnitude.] When Complex{"_"}Types.Real'Machine{"_"}Overflows is False, the result at poles is unspecified. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>33.a_G.1.2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The purpose of raising Constraint_Error (rather than Numerics.Argument_Error) at the poles of a function, when Float_Type'Machine_Overflows is True, is to provide continuous behavior as the actual parameters of the function approach the pole and finally reach it. <br /></Admonition>
+<strong></strong>The purpose of raising Constraint{"_"}Error (rather than Numerics.Argument{"_"}Error) at the poles of a function, when Float{"_"}Type'Machine{"_"}Overflows is True, is to provide continuous behavior as the actual parameters of the function approach the pole and finally reach it. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>33.b/5_G.1.2</MarginText>
 <MarginInfo items={["AI12-0437-1"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>It is anticipated that an Ada binding to ISO/IEC 60559:2020 will be developed in the future. As part of such a binding, the Machine_Overflows attribute of a conformant floating point type will be specified to yield False, which will permit implementations of the complex elementary functions to deliver results with an infinite component (and set the overflow flag defined by the binding) instead of raising Constraint_Error in overflow situations, when traps are disabled. Similarly, it is appropriate for the complex elementary functions to deliver results with an infinite component (and set the zero-divide flag defined by the binding) instead of raising Constraint_Error at poles, when traps are disabled. Finally, such a binding should also specify the behavior of the complex elementary functions, when sensible, given parameters with infinite components. <br /></Admonition>
+<strong></strong>It is anticipated that an Ada binding to ISO/IEC 60559:2020 will be developed in the future. As part of such a binding, the Machine{"_"}Overflows attribute of a conformant floating point type will be specified to yield False, which will permit implementations of the complex elementary functions to deliver results with an infinite component (and set the overflow flag defined by the binding) instead of raising Constraint{"_"}Error in overflow situations, when traps are disabled. Similarly, it is appropriate for the complex elementary functions to deliver results with an infinite component (and set the zero-divide flag defined by the binding) instead of raising Constraint{"_"}Error at poles, when traps are disabled. Finally, such a binding should also specify the behavior of the complex elementary functions, when sensible, given parameters with infinite components. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
 #### Implementation Requirements
 
 <MarginText>34_G.1.2</MarginText>
-<p>In the implementation of Numerics.Generic_Complex_Elementary_Functions, the range of intermediate values allowed during the calculation of a final result shall not be affected by any range constraint of the subtype Complex_Types.Real. <br /></p>
+<p>In the implementation of Numerics.Generic{"_"}Complex{"_"}Elementary{"_"}Functions, the range of intermediate values allowed during the calculation of a final result shall not be affected by any range constraint of the subtype Complex{"_"}Types.Real. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>34.a_G.1.2</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>Implementations of Numerics.Generic_Complex_Elementary_Functions written in Ada should therefore avoid declaring local variables of subtype Complex_Types.Real; the subtype Complex_Types.Real'Base should be used instead. <br /></Admonition>
+<strong></strong>Implementations of Numerics.Generic{"_"}Complex{"_"}Elementary{"_"}Functions written in Ada should therefore avoid declaring local variables of subtype Complex{"_"}Types.Real; the subtype Complex{"_"}Types.Real'Base should be used instead. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>35_G.1.2</MarginText>
@@ -531,9 +556,9 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 </ul>
 <MarginText>39_G.1.2</MarginText>
 <ul>
-<li><em>i</em> (resp., &ndash;<em>i</em>), when the sign of the imaginary component of X is positive (resp., negative), if Complex_Types.Real'Signed_Zeros is True;<br /></li>
+<li><em>i</em> (resp., &ndash;<em>i</em>), when the sign of the imaginary component of X is positive (resp., negative), if Complex{"_"}Types.Real'Signed{"_"}Zeros is True;<br /></li>
 <MarginText>40_G.1.2</MarginText>
-<li><em>i</em>, if Complex_Types.Real'Signed_Zeros is False; <br /></li>
+<li><em>i</em>, if Complex{"_"}Types.Real'Signed{"_"}Zeros is False; <br /></li>
 </ul>
 <MarginText>41/2_G.1.2</MarginText>
 <MarginInfo items={["AI95-00434-01"]} />
@@ -547,19 +572,21 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 <AnnotatedOnly>
 <MarginText>43.a_G.1.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>It is possible to give many other prescribed results restricting the result to the real or imaginary axis when the parameter X is appropriately restricted to easily testable portions of the domain. We follow the proposed ISO/IEC standard for Generic_Complex_Elementary_Functions (for Ada 83), CD 13813, in not doing so, however. <br /></Admonition>
+<strong></strong>It is possible to give many other prescribed results restricting the result to the real or imaginary axis when the parameter X is appropriately restricted to easily testable portions of the domain. We follow the proposed ISO/IEC standard for Generic{"_"}Complex{"_"}Elementary{"_"}Functions (for Ada 83), CD 13813, in not doing so, however. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>44_G.1.2</MarginText>
 <p>Other accuracy requirements for the complex elementary functions, which apply only in the strict mode, are given in <a href="../AA-G/AA-G.2#Subclause_G.2.6">G.2.6</a>.<br /></p>
 
 <MarginText>45_G.1.2</MarginText>
-<p>The sign of a zero result or zero result component yielded by a complex elementary function is implementation defined when Complex_Types.Real'Signed_Zeros is True. <br /></p>
+<p>The sign of a zero result or zero result component yielded by a complex elementary function is implementation defined when Complex{"_"}Types.Real'Signed{"_"}Zeros is True. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>45.a_G.1.2</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The sign of a zero result (or a component thereof) from any operator or function in Numerics.Generic_Complex_Elementary_Functions, when Complex_Types.Real'Signed_Zeros is True.<br /></Admonition>
+<strong></strong>The sign of a zero result (or a component thereof) from any operator or function in Numerics.Generic{"_"}Complex{"_"}Elementary{"_"}Functions, when Complex{"_"}Types.Real'Signed{"_"}Zeros is True.<br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -567,24 +594,25 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 
 <MarginText>46/5_G.1.2</MarginText>
 <MarginInfo items={["AI12-0444-1"]} />
-<p>The nongeneric equivalent packages can be actual instantiations of the generic package with the appropriate predefined nongeneric equivalent of Numerics.Generic_Complex_Types, though that is not required; if they are, then the latter shall have been obtained by actual instantiation of Numerics.Generic_Complex_Types.<br /></p>
+<p>The nongeneric equivalent packages can be actual instantiations of the generic package with the appropriate predefined nongeneric equivalent of Numerics.Generic{"_"}Complex{"_"}Types, though that is not required; if they are, then the latter shall have been obtained by actual instantiation of Numerics.Generic{"_"}Complex{"_"}Types.<br /></p>
 
 <MarginText>47_G.1.2</MarginText>
 <p>The exponentiation operator may be implemented in terms of the Exp and Log functions. Because this implementation yields poor accuracy in some parts of the domain, no accuracy requirement is imposed on complex exponentiation.<br /></p>
 
 <MarginText>48_G.1.2</MarginText>
-<p>The implementation of the Exp function of a complex parameter X is allowed to raise the exception Constraint_Error, signaling overflow, when the real component of X exceeds an unspecified threshold that is approximately log(Complex_Types.Real'Safe_Last). This permission recognizes the impracticality of avoiding overflow in the marginal case that the exponential of the real component of X exceeds the safe range of Complex_Types.Real but both components of the final result do not. Similarly, the Sin and Cos (resp., Sinh and Cosh) functions are allowed to raise the exception Constraint_Error, signaling overflow, when the absolute value of the imaginary (resp., real) component of the parameter X exceeds an unspecified threshold that is approximately log(Complex_Types.Real'Safe_Last) + log(2.0). This permission recognizes the impracticality of avoiding overflow in the marginal case that the hyperbolic sine or cosine of the imaginary (resp., real) component of X exceeds the safe range of Complex_Types.Real but both components of the final result do not. <br /></p>
+<p>The implementation of the Exp function of a complex parameter X is allowed to raise the exception Constraint{"_"}Error, signaling overflow, when the real component of X exceeds an unspecified threshold that is approximately log(Complex{"_"}Types.Real'Safe{"_"}Last). This permission recognizes the impracticality of avoiding overflow in the marginal case that the exponential of the real component of X exceeds the safe range of Complex{"_"}Types.Real but both components of the final result do not. Similarly, the Sin and Cos (resp., Sinh and Cosh) functions are allowed to raise the exception Constraint{"_"}Error, signaling overflow, when the absolute value of the imaginary (resp., real) component of the parameter X exceeds an unspecified threshold that is approximately log(Complex{"_"}Types.Real'Safe{"_"}Last) + log(2.0). This permission recognizes the impracticality of avoiding overflow in the marginal case that the hyperbolic sine or cosine of the imaginary (resp., real) component of X exceeds the safe range of Complex{"_"}Types.Real but both components of the final result do not. <br /></p>
 
 
 #### Implementation Advice
 
 <MarginText>49_G.1.2</MarginText>
-<p>Implementations in which Complex_Types.Real'Signed_Zeros is True should attempt to provide a rational treatment of the signs of zero results and result components. For example, many of the complex elementary functions have components that are odd functions of one of the parameter components; in these cases, the result component should have the sign of the parameter component at the origin. Other complex elementary functions have zero components whose sign is opposite that of a parameter component at the origin, or is always positive or always negative. <br /></p>
+<p>Implementations in which Complex{"_"}Types.Real'Signed{"_"}Zeros is True should attempt to provide a rational treatment of the signs of zero results and result components. For example, many of the complex elementary functions have components that are odd functions of one of the parameter components; in these cases, the result component should have the sign of the parameter component at the origin. Other complex elementary functions have zero components whose sign is opposite that of a parameter component at the origin, or is always positive or always negative. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>49.a.1/3_G.1.2</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>If Complex_Types.Real'Signed_Zeros is True for Numerics.Generic_Complex_Elementary_Functions, a rational treatment of the signs of zero results and result components should be provided.<br /></Admonition>
+<strong></strong>If Complex{"_"}Types.Real'Signed{"_"}Zeros is True for Numerics.Generic{"_"}Complex{"_"}Elementary{"_"}Functions, a rational treatment of the signs of zero results and result components should be provided.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -595,19 +623,20 @@ end Ada.Numerics.Generic_Complex_Elementary_Functions;{"\n"}
 <AnnotatedOnly>
 <MarginText>49.a_G.1.2</MarginText>
 <Admonition type="aarm" aarm="note">
-The semantics of Numerics.Generic_Complex_Elementary_Functions differs from Generic_Complex_Elementary_Functions as defined in ISO/IEC CD 13814 (for Ada 83) in the following ways: <br /></Admonition>
+The semantics of Numerics.Generic{"_"}Complex{"_"}Elementary{"_"}Functions differs from Generic{"_"}Complex{"_"}Elementary{"_"}Functions as defined in ISO/IEC CD 13814 (for Ada 83) in the following ways: <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>49.b_G.1.2</MarginText>
 <ul>
-<li>The generic package is a child unit of the package defining the Argument_Error exception.<br /></li>
+<li>The generic package is a child unit of the package defining the Argument{"_"}Error exception.<br /></li>
 <MarginText>49.c_G.1.2</MarginText>
-<li>The proposed Generic_Complex_Elementary_Functions standard (for Ada 83) specified names for the nongeneric equivalents, if provided. Here, those nongeneric equivalents are required.<br /></li>
+<li>The proposed Generic{"_"}Complex{"_"}Elementary{"_"}Functions standard (for Ada 83) specified names for the nongeneric equivalents, if provided. Here, those nongeneric equivalents are required.<br /></li>
 <MarginText>49.d_G.1.2</MarginText>
-<li>The generic package imports an instance of Numerics.Generic_Complex_Types rather than a long list of individual types and operations exported by such an instance.<br /></li>
+<li>The generic package imports an instance of Numerics.Generic{"_"}Complex{"_"}Types rather than a long list of individual types and operations exported by such an instance.<br /></li>
 <MarginText>49.e_G.1.2</MarginText>
-<li>The dependence of the imaginary component of the Sqrt and Log functions on the sign of a zero parameter component is tied to the value of Complex_Types.Real'Signed_Zeros.<br /></li>
+<li>The dependence of the imaginary component of the Sqrt and Log functions on the sign of a zero parameter component is tied to the value of Complex{"_"}Types.Real'Signed{"_"}Zeros.<br /></li>
 <MarginText>49.f_G.1.2</MarginText>
 <li>Conformance to accuracy requirements is conditional. <br /></li>
 </ul>
@@ -621,14 +650,16 @@ The semantics of Numerics.Generic_Complex_Elementary_Functions differs from Gene
 <MarginText>49.g/2_G.1.2</MarginText>
 <MarginInfo items={["AI95-00126-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0020</em>{"}"} <strong>Corrigendum:</strong> Explicitly stated that the nongeneric equivalents of Generic_Complex_Elementary_Functions are pure.<br /></Admonition>
+{"{"}<em>8652/0020</em>{"}"} <strong>Corrigendum:</strong> Explicitly stated that the nongeneric equivalents of Generic{"_"}Complex{"_"}Elementary{"_"}Functions are pure.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>49.h/2_G.1.2</MarginText>
 <MarginInfo items={["AI95-00185-01"]} />
 <Admonition type="aarm" aarm="note">
-Corrected various inconsistencies in the definition of the branch cuts. <br /></Admonition>
+Corrected various inconsistencies in the definition of the branch cuts. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_G.1.3"></a>
@@ -636,53 +667,56 @@ Corrected various inconsistencies in the definition of the branch cuts. <br /></
 ## G.1.3  Complex Input-Output
 
 <MarginText>1_G.1.3</MarginText>
-<p>The generic package Text_IO.Complex_IO defines procedures for the formatted input and output of complex values. The generic actual parameter in an instantiation of Text_IO.Complex_IO is an instance of Numerics.Generic_Complex_Types for some floating point subtype. Exceptional conditions are reported by raising the appropriate exception defined in Text_IO. <br /></p>
+<p>The generic package Text{"_"}IO.Complex{"_"}IO defines procedures for the formatted input and output of complex values. The generic actual parameter in an instantiation of Text{"_"}IO.Complex{"_"}IO is an instance of Numerics.Generic{"_"}Complex{"_"}Types for some floating point subtype. Exceptional conditions are reported by raising the appropriate exception defined in Text{"_"}IO. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>1.a_G.1.3</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>An implementation of Text_IO.Complex_IO can be built around an instance of Text_IO.Float_IO for the base subtype of Complex_Types.Real, where Complex_Types is the generic formal package parameter of Text_IO.Complex_IO. There is no need for an implementation of Text_IO.Complex_IO to parse real values. <br /></Admonition>
+<strong></strong>An implementation of Text{"_"}IO.Complex{"_"}IO can be built around an instance of Text{"_"}IO.Float{"_"}IO for the base subtype of Complex{"_"}Types.Real, where Complex{"_"}Types is the generic formal package parameter of Text{"_"}IO.Complex{"_"}IO. There is no need for an implementation of Text{"_"}IO.Complex{"_"}IO to parse real values. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
 #### Static Semantics
 
 <MarginText>2_G.1.3</MarginText>
-<p>The generic library package Text_IO.Complex_IO has the following declaration: <br /></p>
+<p>The generic library package Text{"_"}IO.Complex{"_"}IO has the following declaration: <br /></p>
 
 <AnnotatedOnly>
 <MarginText>2.a_G.1.3</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Because this is a child of Text_IO, the declarations of the visible part of Text_IO are directly visible within it. <br /></Admonition>
+<strong></strong>Because this is a child of Text{"_"}IO, the declarations of the visible part of Text{"_"}IO are directly visible within it. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>3/5_G.1.3</MarginText>
 <MarginInfo items={["AI12-0302-1"]} />
 <CodeBlock language="ada">
-with Ada.Numerics.Generic_Complex_Types;{"\n"}generic{"\n"}   with package Complex_Types is{"\n"}         new Ada.Numerics.Generic_Complex_Types ({"<"}{">"});{"\n"}package Ada.Text_IO.Complex_IO{"\n"}   with Global ={">"} in out synchronized is{"\n"}
+with Ada.Numerics.Generic{"_"}Complex{"_"}Types;{"\n"}generic{"\n"}   with package Complex{"_"}Types is{"\n"}         new Ada.Numerics.Generic{"_"}Complex{"_"}Types ({"<"}{">"});{"\n"}package Ada.Text{"_"}IO.Complex{"_"}IO{"\n"}   with Global ={">"} in out synchronized is{"\n"}
 <MarginText>4_G.1.3</MarginText>
-   use Complex_Types;{"\n"}
+   use Complex{"_"}Types;{"\n"}
 <MarginText>5_G.1.3</MarginText>
-   Default_Fore : Field := 2;{"\n"}   Default_Aft  : Field := Real'Digits - 1;{"\n"}   Default_Exp  : Field := 3;{"\n"}
+   Default{"_"}Fore : Field := 2;{"\n"}   Default{"_"}Aft  : Field := Real'Digits - 1;{"\n"}   Default{"_"}Exp  : Field := 3;{"\n"}
 <MarginText>6_G.1.3</MarginText>
-   procedure Get (File  : in  File_Type;{"\n"}                  Item  : out Complex;{"\n"}                  Width : in  Field := 0);{"\n"}   procedure Get (Item  : out Complex;{"\n"}                  Width : in  Field := 0);{"\n"}
+   procedure Get (File  : in  File{"_"}Type;{"\n"}                  Item  : out Complex;{"\n"}                  Width : in  Field := 0);{"\n"}   procedure Get (Item  : out Complex;{"\n"}                  Width : in  Field := 0);{"\n"}
 <MarginText>7_G.1.3</MarginText>
-   procedure Put (File : in File_Type;{"\n"}                  Item : in Complex;{"\n"}                  Fore : in Field := Default_Fore;{"\n"}                  Aft  : in Field := Default_Aft;{"\n"}                  Exp  : in Field := Default_Exp);{"\n"}   procedure Put (Item : in Complex;{"\n"}                  Fore : in Field := Default_Fore;{"\n"}                  Aft  : in Field := Default_Aft;{"\n"}                  Exp  : in Field := Default_Exp);{"\n"}
+   procedure Put (File : in File{"_"}Type;{"\n"}                  Item : in Complex;{"\n"}                  Fore : in Field := Default{"_"}Fore;{"\n"}                  Aft  : in Field := Default{"_"}Aft;{"\n"}                  Exp  : in Field := Default{"_"}Exp);{"\n"}   procedure Put (Item : in Complex;{"\n"}                  Fore : in Field := Default{"_"}Fore;{"\n"}                  Aft  : in Field := Default{"_"}Aft;{"\n"}                  Exp  : in Field := Default{"_"}Exp);{"\n"}
 <MarginText>8/5_G.1.3</MarginText>
 <MarginInfo items={["AI12-0241-1"]} />
-   procedure Get (From : in  String;{"\n"}                  Item : out Complex;{"\n"}                  Last : out Positive){"\n"}      with Nonblocking;{"\n"}   procedure Put (To   : out String;{"\n"}                  Item : in  Complex;{"\n"}                  Aft  : in  Field := Default_Aft;{"\n"}                  Exp  : in  Field := Default_Exp){"\n"}      with Nonblocking;{"\n"}
+   procedure Get (From : in  String;{"\n"}                  Item : out Complex;{"\n"}                  Last : out Positive){"\n"}      with Nonblocking;{"\n"}   procedure Put (To   : out String;{"\n"}                  Item : in  Complex;{"\n"}                  Aft  : in  Field := Default{"_"}Aft;{"\n"}                  Exp  : in  Field := Default{"_"}Exp){"\n"}      with Nonblocking;{"\n"}
 <MarginText>9_G.1.3</MarginText>
-end Ada.Text_IO.Complex_IO;{"\n"}
+end Ada.Text{"_"}IO.Complex{"_"}IO;{"\n"}
 
 </CodeBlock>
 <MarginText>9.1/2_G.1.3</MarginText>
 <MarginInfo items={["AI95-00328-01"]} />
-<p>The library package Complex_Text_IO defines the same subprograms as Text_IO.Complex_IO, except that the predefined type Float is systematically substituted for Real, and the type Numerics.Complex_Types.Complex is systematically substituted for Complex throughout. Nongeneric equivalents of Text_IO.Complex_IO corresponding to each of the other predefined floating point types are defined similarly, with the names Short_Complex_Text_IO, Long_Complex_Text_IO, etc. <br /></p>
+<p>The library package Complex{"_"}Text{"_"}IO defines the same subprograms as Text{"_"}IO.Complex{"_"}IO, except that the predefined type Float is systematically substituted for Real, and the type Numerics.Complex{"_"}Types.Complex is systematically substituted for Complex throughout. Nongeneric equivalents of Text{"_"}IO.Complex{"_"}IO corresponding to each of the other predefined floating point types are defined similarly, with the names Short{"_"}Complex{"_"}Text{"_"}IO, Long{"_"}Complex{"_"}Text{"_"}IO, etc. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>9.a/2_G.1.3</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The nongeneric equivalents are provided to allow the programmer to construct simple mathematical applications without being required to understand and use generics. <br /></Admonition>
+<strong></strong>The nongeneric equivalents are provided to allow the programmer to construct simple mathematical applications without being required to understand and use generics. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>10_G.1.3</MarginText>
@@ -690,12 +724,12 @@ end Ada.Text_IO.Complex_IO;{"\n"}
 
 <MarginText>11_G.1.3</MarginText>
 <CodeBlock language="ada">
-procedure Get (File  : in  File_Type;{"\n"}               Item  : out Complex;{"\n"}               Width : in  Field := 0);{"\n"}procedure Get (Item  : out Complex;{"\n"}               Width : in  Field := 0);{"\n"}
+procedure Get (File  : in  File{"_"}Type;{"\n"}               Item  : out Complex;{"\n"}               Width : in  Field := 0);{"\n"}procedure Get (Item  : out Complex;{"\n"}               Width : in  Field := 0);{"\n"}
 
 </CodeBlock>
 <MarginText>12/1_G.1.3</MarginText>
 <MarginInfo items={["AI95-00029-01"]} />
-<p class="Indented4">{"{"}<em>8652/0092</em>{"}"} The input sequence is a pair of optionally signed real literals representing the real and imaginary components of a complex value. These components have the format defined for the corresponding Get procedure of an instance of Text_IO.Float_IO (see <a href="../AA-A/AA-A.10#Subclause_A.10.9">A.10.9</a>) for the base subtype of Complex_Types.Real. The pair of components may be separated by a comma or surrounded by a pair of parentheses or both. Blanks are freely allowed before each of the components and before the parentheses and comma, if either is used. If the value of the parameter Width is zero, then <br /></p>
+<p class="Indented4">{"{"}<em>8652/0092</em>{"}"} The input sequence is a pair of optionally signed real literals representing the real and imaginary components of a complex value. These components have the format defined for the corresponding Get procedure of an instance of Text{"_"}IO.Float{"_"}IO (see <a href="../AA-A/AA-A.10#Subclause_A.10.9">A.10.9</a>) for the base subtype of Complex{"_"}Types.Real. The pair of components may be separated by a comma or surrounded by a pair of parentheses or both. Blanks are freely allowed before each of the components and before the parentheses and comma, if either is used. If the value of the parameter Width is zero, then <br /></p>
 
 <MarginText>13_G.1.3</MarginText>
 <ul>
@@ -717,18 +751,19 @@ procedure Get (File  : in  File_Type;{"\n"}               Item  : out Complex;{"
 <AnnotatedOnly>
 <MarginText>17.a_G.1.3</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The parenthesized and comma-separated form is the form produced by Put on output (see below), and also by list-directed output in Fortran. The other allowed forms match several common styles of edit-directed output in Fortran, allowing most preexisting Fortran data files containing complex data to be read easily. When such files contain complex values with no separation between the real and imaginary components, the user will have to read those components separately, using an instance of Text_IO.Float_IO. <br /></Admonition>
+<strong></strong>The parenthesized and comma-separated form is the form produced by Put on output (see below), and also by list-directed output in Fortran. The other allowed forms match several common styles of edit-directed output in Fortran, allowing most preexisting Fortran data files containing complex data to be read easily. When such files contain complex values with no separation between the real and imaginary components, the user will have to read those components separately, using an instance of Text{"_"}IO.Float{"_"}IO. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>18_G.1.3</MarginText>
 <p class="Indented4">Returns, in the parameter Item, the value of type Complex that corresponds to the input sequence.<br /></p>
 
 <MarginText>19_G.1.3</MarginText>
-<p class="Indented4">The exception Text_IO.Data_Error is raised if the input sequence does not have the required syntax or if the components of the complex value obtained are not of the base subtype of Complex_Types.Real.<br /></p>
+<p class="Indented4">The exception Text{"_"}IO.Data{"_"}Error is raised if the input sequence does not have the required syntax or if the components of the complex value obtained are not of the base subtype of Complex{"_"}Types.Real.<br /></p>
 
 <MarginText>20_G.1.3</MarginText>
 <CodeBlock language="ada">
-procedure Put (File : in File_Type;{"\n"}               Item : in Complex;{"\n"}               Fore : in Field := Default_Fore;{"\n"}               Aft  : in Field := Default_Aft;{"\n"}               Exp  : in Field := Default_Exp);{"\n"}procedure Put (Item : in Complex;{"\n"}               Fore : in Field := Default_Fore;{"\n"}               Aft  : in Field := Default_Aft;{"\n"}               Exp  : in Field := Default_Exp);{"\n"}
+procedure Put (File : in File{"_"}Type;{"\n"}               Item : in Complex;{"\n"}               Fore : in Field := Default{"_"}Fore;{"\n"}               Aft  : in Field := Default{"_"}Aft;{"\n"}               Exp  : in Field := Default{"_"}Exp);{"\n"}procedure Put (Item : in Complex;{"\n"}               Fore : in Field := Default{"_"}Fore;{"\n"}               Aft  : in Field := Default{"_"}Aft;{"\n"}               Exp  : in Field := Default{"_"}Exp);{"\n"}
 
 </CodeBlock>
 <MarginText>21_G.1.3</MarginText>
@@ -738,24 +773,26 @@ procedure Put (File : in File_Type;{"\n"}               Item : in Complex;{"\n"}
 <ul>
 <li>outputs a left parenthesis;<br /></li>
 <MarginText>23_G.1.3</MarginText>
-<li>outputs the value of the real component of the parameter Item with the format defined by the corresponding Put procedure of an instance of Text_IO.Float_IO for the base subtype of Complex_Types.Real, using the given values of Fore, Aft, and Exp;<br /></li>
+<li>outputs the value of the real component of the parameter Item with the format defined by the corresponding Put procedure of an instance of Text{"_"}IO.Float{"_"}IO for the base subtype of Complex{"_"}Types.Real, using the given values of Fore, Aft, and Exp;<br /></li>
 <MarginText>24_G.1.3</MarginText>
 <li>outputs a comma;<br /></li>
 <MarginText>25_G.1.3</MarginText>
-<li>outputs the value of the imaginary component of the parameter Item with the format defined by the corresponding Put procedure of an instance of Text_IO.Float_IO for the base subtype of Complex_Types.Real, using the given values of Fore, Aft, and Exp;<br /></li>
+<li>outputs the value of the imaginary component of the parameter Item with the format defined by the corresponding Put procedure of an instance of Text{"_"}IO.Float{"_"}IO for the base subtype of Complex{"_"}Types.Real, using the given values of Fore, Aft, and Exp;<br /></li>
 <MarginText>26_G.1.3</MarginText>
 <li>outputs a right parenthesis. <br /></li>
 </ul>
 <AnnotatedOnly>
 <MarginText>26.a_G.1.3</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>If the file has a bounded line length, a line terminator may be output implicitly before any element of the sequence itemized above. <br /></Admonition>
+<strong></strong>If the file has a bounded line length, a line terminator may be output implicitly before any element of the sequence itemized above. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>26.b_G.1.3</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The option of outputting the complex value as a pair of reals without additional punctuation is not provided, since it can be accomplished by outputting the real and imaginary components of the complex value separately. <br /></Admonition>
+<strong></strong>The option of outputting the complex value as a pair of reals without additional punctuation is not provided, since it can be accomplished by outputting the real and imaginary components of the complex value separately. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>27_G.1.3</MarginText>
@@ -768,11 +805,11 @@ procedure Get (From : in  String;{"\n"}               Item : out Complex;{"\n"} 
 <p class="Indented4">Reads a complex value from the beginning of the given string, following the same rule as the Get procedure that reads a complex value from a file, but treating the end of the string as a file terminator. Returns, in the parameter Item, the value of type Complex that corresponds to the input sequence. Returns in Last the index value such that From(Last) is the last character read.<br /></p>
 
 <MarginText>29_G.1.3</MarginText>
-<p class="Indented4">The exception Text_IO.Data_Error is raised if the input sequence does not have the required syntax or if the components of the complex value obtained are not of the base subtype of Complex_Types.Real.<br /></p>
+<p class="Indented4">The exception Text{"_"}IO.Data{"_"}Error is raised if the input sequence does not have the required syntax or if the components of the complex value obtained are not of the base subtype of Complex{"_"}Types.Real.<br /></p>
 
 <MarginText>30_G.1.3</MarginText>
 <CodeBlock language="ada">
-procedure Put (To   : out String;{"\n"}               Item : in  Complex;{"\n"}               Aft  : in  Field := Default_Aft;{"\n"}               Exp  : in  Field := Default_Exp);{"\n"}
+procedure Put (To   : out String;{"\n"}               Item : in  Complex;{"\n"}               Aft  : in  Field := Default{"_"}Aft;{"\n"}               Exp  : in  Field := Default{"_"}Exp);{"\n"}
 
 </CodeBlock>
 <MarginText>31_G.1.3</MarginText>
@@ -780,24 +817,25 @@ procedure Put (To   : out String;{"\n"}               Item : in  Complex;{"\n"} 
 
 <MarginText>32_G.1.3</MarginText>
 <ul>
-<li>a left parenthesis, the real component, and a comma are left justified in the given string, with the real component having the format defined by the Put procedure (for output to a file) of an instance of Text_IO.Float_IO for the base subtype of Complex_Types.Real, using a value of zero for Fore and the given values of Aft and Exp;<br /></li>
+<li>a left parenthesis, the real component, and a comma are left justified in the given string, with the real component having the format defined by the Put procedure (for output to a file) of an instance of Text{"_"}IO.Float{"_"}IO for the base subtype of Complex{"_"}Types.Real, using a value of zero for Fore and the given values of Aft and Exp;<br /></li>
 <MarginText>33_G.1.3</MarginText>
-<li>the imaginary component and a right parenthesis are right justified in the given string, with the imaginary component having the format defined by the Put procedure (for output to a file) of an instance of Text_IO.Float_IO for the base subtype of Complex_Types.Real, using a value for Fore that completely fills the remainder of the string, together with the given values of Aft and Exp. <br /></li>
+<li>the imaginary component and a right parenthesis are right justified in the given string, with the imaginary component having the format defined by the Put procedure (for output to a file) of an instance of Text{"_"}IO.Float{"_"}IO for the base subtype of Complex{"_"}Types.Real, using a value for Fore that completely fills the remainder of the string, together with the given values of Aft and Exp. <br /></li>
 </ul>
 <AnnotatedOnly>
 <MarginText>33.a_G.1.3</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This rule is the one proposed in LSN-1051. Other rules were considered, including one that would have read &ldquo;Outputs the value of the parameter Item to the given string, following the same rule as for output to a file, using a value for Fore such that the sequence of characters output exactly fills, or comes closest to filling, the string; in the latter case, the string is filled by inserting one extra blank immediately after the comma.&rdquo; While this latter rule might be considered the closest analogue to the rule for output to a string in Text_IO.Float_IO, it requires a more difficult and inefficient implementation involving special cases when the integer part of one component is substantially longer than that of the other and the string is too short to allow both to be preceded by blanks. Unless such a special case applies, the latter rule might produce better columnar output if several such strings are ultimately output to a file, but very nearly the same output can be produced by outputting to the file directly, with the appropriate value of Fore; in any case, it might validly be assumed that output to a string is intended for further computation rather than for display, so that the precise formatting of the string to achieve a particular appearance is not the major concern. <br /></Admonition>
+<strong></strong>This rule is the one proposed in LSN-1051. Other rules were considered, including one that would have read &ldquo;Outputs the value of the parameter Item to the given string, following the same rule as for output to a file, using a value for Fore such that the sequence of characters output exactly fills, or comes closest to filling, the string; in the latter case, the string is filled by inserting one extra blank immediately after the comma.&rdquo; While this latter rule might be considered the closest analogue to the rule for output to a string in Text{"_"}IO.Float{"_"}IO, it requires a more difficult and inefficient implementation involving special cases when the integer part of one component is substantially longer than that of the other and the string is too short to allow both to be preceded by blanks. Unless such a special case applies, the latter rule might produce better columnar output if several such strings are ultimately output to a file, but very nearly the same output can be produced by outputting to the file directly, with the appropriate value of Fore; in any case, it might validly be assumed that output to a string is intended for further computation rather than for display, so that the precise formatting of the string to achieve a particular appearance is not the major concern. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>34_G.1.3</MarginText>
-<p class="Indented4">The exception Text_IO.Layout_Error is raised if the given string is too short to hold the formatted output. <br /></p>
+<p class="Indented4">The exception Text{"_"}IO.Layout{"_"}Error is raised if the given string is too short to hold the formatted output. <br /></p>
 
 
 #### Implementation Permissions
 
 <MarginText>35_G.1.3</MarginText>
-<p>Other exceptions declared (by renaming) in Text_IO may be raised by the preceding procedures in the appropriate circumstances, as for the corresponding procedures of Text_IO.Float_IO. <br /></p>
+<p>Other exceptions declared (by renaming) in Text{"_"}IO may be raised by the preceding procedures in the appropriate circumstances, as for the corresponding procedures of Text{"_"}IO.Float{"_"}IO. <br /></p>
 
 <AnnotatedOnly>
 
@@ -808,7 +846,8 @@ procedure Put (To   : out String;{"\n"}               Item : in  Complex;{"\n"} 
 <MarginText>35.a/2_G.1.3</MarginText>
 <MarginInfo items={["AI95-00328-01"]} />
 <Admonition type="aarm" aarm="note">
-Nongeneric equivalents for Text_IO.Complex_IO are added, to be consistent with all other language-defined Numerics generic packages. <br /></Admonition>
+Nongeneric equivalents for Text{"_"}IO.Complex{"_"}IO are added, to be consistent with all other language-defined Numerics generic packages. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -820,7 +859,8 @@ Nongeneric equivalents for Text_IO.Complex_IO are added, to be consistent with a
 <MarginText>35.b/2_G.1.3</MarginText>
 <MarginInfo items={["AI95-00029-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0092</em>{"}"} <strong>Corrigendum:</strong> Clarified that the syntax of values read by Complex_IO is the same as that read by Text_IO.Float_IO. <br /></Admonition>
+{"{"}<em>8652/0092</em>{"}"} <strong>Corrigendum:</strong> Clarified that the syntax of values read by Complex{"_"}IO is the same as that read by Text{"_"}IO.Float{"_"}IO. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_G.1.4"></a>
@@ -831,7 +871,7 @@ Nongeneric equivalents for Text_IO.Complex_IO are added, to be consistent with a
 #### Static Semantics
 
 <MarginText>1_G.1.4</MarginText>
-<p>Implementations shall also provide the generic library package Wide_Text_IO.Complex_IO. Its declaration is obtained from that of Text_IO.Complex_IO by systematically replacing Text_IO by Wide_Text_IO and String by Wide_String; the description of its behavior is obtained by additionally replacing references to particular characters (commas, parentheses, etc.) by those for the corresponding wide characters. <br /></p>
+<p>Implementations shall also provide the generic library package Wide{"_"}Text{"_"}IO.Complex{"_"}IO. Its declaration is obtained from that of Text{"_"}IO.Complex{"_"}IO by systematically replacing Text{"_"}IO by Wide{"_"}Text{"_"}IO and String by Wide{"_"}String; the description of its behavior is obtained by additionally replacing references to particular characters (commas, parentheses, etc.) by those for the corresponding wide characters. <br /></p>
 
 <a id="Subclause_G.1.5"></a>
 
@@ -842,7 +882,7 @@ Nongeneric equivalents for Text_IO.Complex_IO are added, to be consistent with a
 
 <MarginText>1/2_G.1.5</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
-<p>Implementations shall also provide the generic library package Wide_Wide_Text_IO.Complex_IO. Its declaration is obtained from that of Text_IO.Complex_IO by systematically replacing Text_IO by Wide_Wide_Text_IO and String by Wide_Wide_String; the description of its behavior is obtained by additionally replacing references to particular characters (commas, parentheses, etc.) by those for the corresponding wide wide characters. <br /></p>
+<p>Implementations shall also provide the generic library package Wide{"_"}Wide{"_"}Text{"_"}IO.Complex{"_"}IO. Its declaration is obtained from that of Text{"_"}IO.Complex{"_"}IO by systematically replacing Text{"_"}IO by Wide{"_"}Wide{"_"}Text{"_"}IO and String by Wide{"_"}Wide{"_"}String; the description of its behavior is obtained by additionally replacing references to particular characters (commas, parentheses, etc.) by those for the corresponding wide wide characters. <br /></p>
 
 <AnnotatedOnly>
 
@@ -853,6 +893,7 @@ Nongeneric equivalents for Text_IO.Complex_IO are added, to be consistent with a
 <MarginText>1.a/2_G.1.5</MarginText>
 <MarginInfo items={["AI95-00285-01"]} />
 <Admonition type="aarm" aarm="note">
-Package Wide_Wide_Text_IO.Complex_IO is new. (At least it wasn't called Incredibly_Wide_Text_IO.Complex_IO; maybe next time.) <br /></Admonition>
+Package Wide{"_"}Wide{"_"}Text{"_"}IO.Complex{"_"}IO is new. (At least it wasn't called Incredibly{"_"}Wide{"_"}Text{"_"}IO.Complex{"_"}IO; maybe next time.) <br />
+</Admonition>
 </AnnotatedOnly>
 

@@ -32,23 +32,24 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <CodeBlock language="ada">
 package System.Multiprocessors{"\n"}   with Preelaborate, Nonblocking, Global ={">"} in out synchronized is{"\n"}
 <MarginText>4/3</MarginText>
-   type CPU_Range is range 0 .. implementation-defined;{"\n"}   Not_A_Specific_CPU : constant CPU_Range := 0;{"\n"}   subtype CPU is CPU_Range range 1 .. CPU_Range'Last;{"\n"}
+   type CPU{"_"}Range is range 0 .. implementation-defined;{"\n"}   Not{"_"}A{"_"}Specific{"_"}CPU : constant CPU{"_"}Range := 0;{"\n"}   subtype CPU is CPU{"_"}Range range 1 .. CPU{"_"}Range'Last;{"\n"}
 
 </CodeBlock>
 <AnnotatedOnly>
 <MarginText>4.a.1/3</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The value of CPU_Range'Last in System.Multiprocessors.<br /></Admonition>
+<strong></strong>The value of CPU{"_"}Range'Last in System.Multiprocessors.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>5/3</MarginText>
 <CodeBlock language="ada">
-   function Number_Of_CPUs return CPU;{"\n"}end System.Multiprocessors;{"\n"}
+   function Number{"_"}Of{"_"}CPUs return CPU;{"\n"}end System.Multiprocessors;{"\n"}
 
 </CodeBlock>
 <MarginText>6/3</MarginText>
 <MarginInfo items={["AI05-0171-1"]} />
-<p>A call of Number_Of_CPUs returns the number of processors available to the program. Within a given partition, each call on Number_Of_CPUs will return the same value.<br /></p>
+<p>A call of Number{"_"}Of{"_"}CPUs returns the number of processors available to the program. Within a given partition, each call on Number{"_"}Of{"_"}CPUs will return the same value.<br /></p>
 
 <MarginText>7/5</MarginText>
 <MarginInfo items={["AI05-0229-1", "AI12-0281-1"]} />
@@ -57,12 +58,13 @@ package System.Multiprocessors{"\n"}   with Preelaborate, Nonblocking, Global ={
 <MarginText>8/3</MarginText>
 <dt><br/>CPU</dt>
 <dl>
-<dd>The aspect CPU is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, which shall be of type System.Multiprocessors.CPU_Range.<br /></dd>
+<dd>The aspect CPU is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, which shall be of type System.Multiprocessors.CPU{"_"}Range.<br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>8.a/5</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>CPU: </strong>Processor on which a given task, or calling task for a protected operation, should run.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>CPU: </strong>Processor on which a given task, or calling task for a protected operation, should run.<br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -94,22 +96,24 @@ package System.Multiprocessors{"\n"}   with Preelaborate, Nonblocking, Global ={
 <AnnotatedOnly>
 <MarginText>13.a.1/3</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The processor on which the environment task executes in the absence of a value for the aspect CPU.<br /></Admonition>
+<strong></strong>The processor on which the environment task executes in the absence of a value for the aspect CPU.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <MarginText>14/5</MarginText>
 <MarginInfo items={["AI05-0171-1", "AI05-0264-1", "AI12-0281-1"]} />
-<p>For a task, the CPU value determines the processor on which the task will activate and execute; the task is said to be assigned to that processor. If the CPU value is Not_A_Specific_CPU, then the task is not assigned to a processor. A task without a CPU aspect specified will activate and execute on the same processor as its activating task if the activating task is assigned a processor. If the CPU value is not in the range of System.Multiprocessors.CPU_Range or is greater than Number_Of_CPUs the task is defined to have failed, and it becomes a completed task (see <a href="../AA-9/AA-9.2">9.2</a>).<br /></p>
+<p>For a task, the CPU value determines the processor on which the task will activate and execute; the task is said to be assigned to that processor. If the CPU value is Not{"_"}A{"_"}Specific{"_"}CPU, then the task is not assigned to a processor. A task without a CPU aspect specified will activate and execute on the same processor as its activating task if the activating task is assigned a processor. If the CPU value is not in the range of System.Multiprocessors.CPU{"_"}Range or is greater than Number{"_"}Of{"_"}CPUs the task is defined to have failed, and it becomes a completed task (see <a href="../AA-9/AA-9.2">9.2</a>).<br /></p>
 
 <MarginText>15/5</MarginText>
 <MarginInfo items={["AI12-0281-1"]} />
-<p>For a protected type, the CPU value determines the processor on which calling tasks will execute; the protected object is said to be assigned to that processor. If the CPU value is Not_A_Specific_CPU, then the protected object is not assigned to a processor. A call to a protected object that is assigned to a processor from a task that is not assigned a processor or is assigned a different processor raises Program_Error.<br /></p>
+<p>For a protected type, the CPU value determines the processor on which calling tasks will execute; the protected object is said to be assigned to that processor. If the CPU value is Not{"_"}A{"_"}Specific{"_"}CPU, then the protected object is not assigned to a processor. A call to a protected object that is assigned to a processor from a task that is not assigned a processor or is assigned a different processor raises Program{"_"}Error.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>15.a/5</MarginText>
 <MarginInfo items={["AI12-0005-1"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>When a protected object is assigned to a CPU, only tasks also assigned to that CPU can call it. In contrast, a protected object that is not assigned to a specific CPU can be called by any task on any processor (subject, of course, to visibility and ceiling priority restrictions). As noted below, when the tasks and protected object are necessarily on the same CPU, a simpler implementation can be used. <br /></Admonition>
+<strong></strong>When a protected object is assigned to a CPU, only tasks also assigned to that CPU can call it. In contrast, a protected object that is not assigned to a specific CPU can be called by any task on any processor (subject, of course, to visibility and ceiling priority restrictions). As noted below, when the tasks and protected object are necessarily on the same CPU, a simpler implementation can be used. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -122,13 +126,15 @@ package System.Multiprocessors{"\n"}   with Preelaborate, Nonblocking, Global ={
 <AnnotatedOnly>
 <MarginText>16.a/5</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>Busy-waiting is a form of lock and can be a source of deadlock. Busy-waiting is typically needed for starting protected actions on multiprocessors, but if all tasks calling a protected object execute on the same CPU, this locking isn't needed and the source of deadlock and associated overhead can be eliminated. <br /></Admonition>
+<strong></strong>Busy-waiting is a form of lock and can be a source of deadlock. Busy-waiting is typically needed for starting protected actions on multiprocessors, but if all tasks calling a protected object execute on the same CPU, this locking isn't needed and the source of deadlock and associated overhead can be eliminated. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>16.b/5</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>Starting a protected action on a protected object statically assigned to a processor should not use busy-waiting.<br /></Admonition>
+<strong></strong>Starting a protected action on a protected object statically assigned to a processor should not use busy-waiting.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -140,7 +146,8 @@ package System.Multiprocessors{"\n"}   with Preelaborate, Nonblocking, Global ={
 <MarginText>16.c/3</MarginText>
 <MarginInfo items={["AI05-0171-1", "AI05-0229-1"]} />
 <Admonition type="aarm" aarm="note">
-The package System.Multiprocessors and the CPU aspect are new. <br /></Admonition>
+The package System.Multiprocessors and the CPU aspect are new. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -152,7 +159,8 @@ The package System.Multiprocessors and the CPU aspect are new. <br /></Admonitio
 <MarginText>16.d/5</MarginText>
 <MarginInfo items={["AI12-0281-1"]} />
 <Admonition type="aarm" aarm="note">
-Aspect CPU can now be applied to protected types, in order to avoid the overhead and deadlock potential of multiprocessor execution. <br /></Admonition>
+Aspect CPU can now be applied to protected types, in order to avoid the overhead and deadlock potential of multiprocessor execution. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -164,7 +172,8 @@ Aspect CPU can now be applied to protected types, in order to avoid the overhead
 <MarginText>16.e/4</MarginText>
 <MarginInfo items={["AI12-0081-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>Corrigendum:</strong> Clarified when the CPU aspect expression is evaluated. <br /></Admonition>
+<strong>Corrigendum:</strong> Clarified when the CPU aspect expression is evaluated. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <a id="Subclause_D.16.1"></a>
@@ -185,61 +194,62 @@ Aspect CPU can now be applied to protected types, in order to avoid the overhead
 <MarginText>3/5_D.16.1</MarginText>
 <MarginInfo items={["AI12-0241-1", "AI12-0302-1"]} />
 <CodeBlock language="ada">
-with Ada.Real_Time;{"\n"}with Ada.Task_Identification;{"\n"}package System.Multiprocessors.Dispatching_Domains{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}
+with Ada.Real{"_"}Time;{"\n"}with Ada.Task{"_"}Identification;{"\n"}package System.Multiprocessors.Dispatching{"_"}Domains{"\n"}   with Nonblocking, Global ={">"} in out synchronized is{"\n"}
 <MarginText>4/3_D.16.1</MarginText>
-   Dispatching_Domain_Error : exception;{"\n"}
+   Dispatching{"_"}Domain{"_"}Error : exception;{"\n"}
 <MarginText>5/3_D.16.1</MarginText>
-   type Dispatching_Domain ({"<"}{">"}) is limited private;{"\n"}
+   type Dispatching{"_"}Domain ({"<"}{">"}) is limited private;{"\n"}
 <MarginText>6/3_D.16.1</MarginText>
-   System_Dispatching_Domain : constant Dispatching_Domain;{"\n"}
+   System{"_"}Dispatching{"_"}Domain : constant Dispatching{"_"}Domain;{"\n"}
 <MarginText>7/4_D.16.1</MarginText>
 <MarginInfo items={["AI12-0033-1"]} />
-   function Create (First : CPU; Last : CPU_Range) return Dispatching_Domain;{"\n"}
+   function Create (First : CPU; Last : CPU{"_"}Range) return Dispatching{"_"}Domain;{"\n"}
 <MarginText>8/3_D.16.1</MarginText>
-   function Get_First_CPU (Domain : Dispatching_Domain) return CPU;{"\n"}
+   function Get{"_"}First{"_"}CPU (Domain : Dispatching{"_"}Domain) return CPU;{"\n"}
 <MarginText>9/4_D.16.1</MarginText>
 <MarginInfo items={["AI12-0033-1"]} />
-   function Get_Last_CPU  (Domain : Dispatching_Domain) return CPU_Range;{"\n"}
+   function Get{"_"}Last{"_"}CPU  (Domain : Dispatching{"_"}Domain) return CPU{"_"}Range;{"\n"}
 <MarginText>9.1/4_D.16.1</MarginText>
 <MarginInfo items={["AI12-0033-1"]} />
-   type CPU_Set is array(CPU range {"<"}{">"}) of Boolean;{"\n"}
+   type CPU{"_"}Set is array(CPU range {"<"}{">"}) of Boolean;{"\n"}
 <MarginText>9.2/4_D.16.1</MarginText>
 <MarginInfo items={["AI12-0033-1"]} />
-   function Create (Set : CPU_Set) return Dispatching_Domain;{"\n"}
+   function Create (Set : CPU{"_"}Set) return Dispatching{"_"}Domain;{"\n"}
 <MarginText>9.3/4_D.16.1</MarginText>
 <MarginInfo items={["AI12-0033-1"]} />
-   function Get_CPU_Set (Domain : Dispatching_Domain) return CPU_Set;{"\n"}
+   function Get{"_"}CPU{"_"}Set (Domain : Dispatching{"_"}Domain) return CPU{"_"}Set;{"\n"}
 <MarginText>10/3_D.16.1</MarginText>
-   function Get_Dispatching_Domain{"\n"}      (T   : Ada.Task_Identification.Task_Id :={"\n"}                 Ada.Task_Identification.Current_Task){"\n"}           return Dispatching_Domain;{"\n"}
+   function Get{"_"}Dispatching{"_"}Domain{"\n"}      (T   : Ada.Task{"_"}Identification.Task{"_"}Id :={"\n"}                 Ada.Task{"_"}Identification.Current{"_"}Task){"\n"}           return Dispatching{"_"}Domain;{"\n"}
 <MarginText>11/3_D.16.1</MarginText>
-   procedure Assign_Task{"\n"}      (Domain : in out Dispatching_Domain;{"\n"}       CPU    : in     CPU_Range := Not_A_Specific_CPU;{"\n"}       T      : in     Ada.Task_Identification.Task_Id :={"\n"}                 Ada.Task_Identification.Current_Task);{"\n"}
+   procedure Assign{"_"}Task{"\n"}      (Domain : in out Dispatching{"_"}Domain;{"\n"}       CPU    : in     CPU{"_"}Range := Not{"_"}A{"_"}Specific{"_"}CPU;{"\n"}       T      : in     Ada.Task{"_"}Identification.Task{"_"}Id :={"\n"}                 Ada.Task{"_"}Identification.Current{"_"}Task);{"\n"}
 <MarginText>12/3_D.16.1</MarginText>
-   procedure Set_CPU{"\n"}      (CPU : in CPU_Range;{"\n"}       T   : in Ada.Task_Identification.Task_Id :={"\n"}                 Ada.Task_Identification.Current_Task);{"\n"}
+   procedure Set{"_"}CPU{"\n"}      (CPU : in CPU{"_"}Range;{"\n"}       T   : in Ada.Task{"_"}Identification.Task{"_"}Id :={"\n"}                 Ada.Task{"_"}Identification.Current{"_"}Task);{"\n"}
 <MarginText>13/3_D.16.1</MarginText>
-   function Get_CPU{"\n"}      (T   : Ada.Task_Identification.Task_Id :={"\n"}                 Ada.Task_Identification.Current_Task){"\n"}           return CPU_Range;{"\n"}
+   function Get{"_"}CPU{"\n"}      (T   : Ada.Task{"_"}Identification.Task{"_"}Id :={"\n"}                 Ada.Task{"_"}Identification.Current{"_"}Task){"\n"}           return CPU{"_"}Range;{"\n"}
 <MarginText>14/3_D.16.1</MarginText>
-   procedure Delay_Until_And_Set_CPU{"\n"}      (Delay_Until_Time : in Ada.Real_Time.Time; CPU : in CPU_Range);{"\n"}
+   procedure Delay{"_"}Until{"_"}And{"_"}Set{"_"}CPU{"\n"}      (Delay{"_"}Until{"_"}Time : in Ada.Real{"_"}Time.Time; CPU : in CPU{"_"}Range);{"\n"}
 <MarginText>15/3_D.16.1</MarginText>
-private{"\n"}   ... -- not specified by the language{"\n"}end System.Multiprocessors.Dispatching_Domains;{"\n"}
+private{"\n"}   ... -- not specified by the language{"\n"}end System.Multiprocessors.Dispatching{"_"}Domains;{"\n"}
 
 </CodeBlock>
 <MarginText>16/4_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1", "AI12-0082-1"]} />
-<p>A <em>dispatching domain</em> represents a set of processors on which a task may execute. Each processor is contained within exactly one dispatching domain. An object of type Dispatching_Domain identifies a dispatching domain. System_Dispatching_Domain identifies a domain that contains the processor or processors on which the environment task executes. At program start-up all processors are contained within this domain.<br /></p>
+<p>A <em>dispatching domain</em> represents a set of processors on which a task may execute. Each processor is contained within exactly one dispatching domain. An object of type Dispatching{"_"}Domain identifies a dispatching domain. System{"_"}Dispatching{"_"}Domain identifies a domain that contains the processor or processors on which the environment task executes. At program start-up all processors are contained within this domain.<br /></p>
 
 <MarginText>17/3_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1"]} />
 <p>For a task type (including the anonymous type of a <code><a href="../AA-9/AA-9.1#S0245">single_task_declaration</a></code>), the following language-defined representation aspect may be specified:<br /></p>
 
 <MarginText>18/3_D.16.1</MarginText>
-<dt><br/>Dispatching_Domain</dt>
+<dt><br/>Dispatching{"_"}Domain</dt>
 <dl>
-<dd>The value of aspect Dispatching_Domain is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, which shall be of type Dispatching_Domains.Dispatching_Domain. This aspect is the domain to which the task (or all objects of the task type) are assigned.<br /></dd>
+<dd>The value of aspect Dispatching{"_"}Domain is an <code><a href="../AA-4/AA-4.4#S0132">expression</a></code>, which shall be of type Dispatching{"_"}Domains.Dispatching{"_"}Domain. This aspect is the domain to which the task (or all objects of the task type) are assigned.<br /></dd>
 </dl>
 <AnnotatedOnly>
 <MarginText>18.a/3_D.16.1</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Dispatching_Domain: </strong>Domain (group of processors) on which a given task should run.<br /></Admonition>
+<strong>Aspect Description for </strong><strong>Dispatching{"_"}Domain: </strong>Domain (group of processors) on which a given task should run.<br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -247,14 +257,14 @@ private{"\n"}   ... -- not specified by the language{"\n"}end System.Multiproces
 
 <MarginText>19/3_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1"]} />
-<p>The Dispatching_Domain aspect shall not be specified for a task interface.<br /></p>
+<p>The Dispatching{"_"}Domain aspect shall not be specified for a task interface.<br /></p>
 
 
 #### Dynamic Semantics
 
 <MarginText>20/4_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1", "AI12-0033-1"]} />
-<p>The expression specified for the Dispatching_Domain aspect of a task type is evaluated each time an object of the task type is created (see <a href="../AA-9/AA-9.1">9.1</a>). If the identified dispatching domain is empty, then Dispatching_Domain_Error is raised; otherwise the newly created task is assigned to the domain identified by the value of the expression.<br /></p>
+<p>The expression specified for the Dispatching{"_"}Domain aspect of a task type is evaluated each time an object of the task type is created (see <a href="../AA-9/AA-9.1">9.1</a>). If the identified dispatching domain is empty, then Dispatching{"_"}Domain{"_"}Error is raised; otherwise the newly created task is assigned to the domain identified by the value of the expression.<br /></p>
 
 <MarginText>21/3_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1"]} />
@@ -262,42 +272,42 @@ private{"\n"}   ... -- not specified by the language{"\n"}end System.Multiproces
 
 <MarginText>22/4_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1", "AI12-0082-1"]} />
-<p>If both the dispatching domain and CPU are specified for a task, and the CPU value is not contained within the set of processors for the domain (and is not Not_A_Specific_CPU), the activation of the task is defined to have failed, and it becomes a completed task (see <a href="../AA-9/AA-9.2">9.2</a>).<br /></p>
+<p>If both the dispatching domain and CPU are specified for a task, and the CPU value is not contained within the set of processors for the domain (and is not Not{"_"}A{"_"}Specific{"_"}CPU), the activation of the task is defined to have failed, and it becomes a completed task (see <a href="../AA-9/AA-9.2">9.2</a>).<br /></p>
 
 <MarginText>23/4_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1", "AI12-0033-1"]} />
-<p>The function Create with First and Last parameters creates and returns a dispatching domain containing all the processors in the range First .. Last. The function Create with a Set parameter creates and returns a dispatching domain containing the processors for which Set(I) is True. These processors are removed from System_Dispatching_Domain. A call of Create will raise Dispatching_Domain_Error if any designated processor is not currently in System_Dispatching_Domain, or if the system cannot support a distinct domain over the processors identified, or if a processor has a task assigned to it, or if the allocation would leave System_Dispatching_Domain empty. A call of Create will raise Dispatching_Domain_Error if the calling task is not the environment task, or if Create is called after the call to the main subprogram.<br /></p>
+<p>The function Create with First and Last parameters creates and returns a dispatching domain containing all the processors in the range First .. Last. The function Create with a Set parameter creates and returns a dispatching domain containing the processors for which Set(I) is True. These processors are removed from System{"_"}Dispatching{"_"}Domain. A call of Create will raise Dispatching{"_"}Domain{"_"}Error if any designated processor is not currently in System{"_"}Dispatching{"_"}Domain, or if the system cannot support a distinct domain over the processors identified, or if a processor has a task assigned to it, or if the allocation would leave System{"_"}Dispatching{"_"}Domain empty. A call of Create will raise Dispatching{"_"}Domain{"_"}Error if the calling task is not the environment task, or if Create is called after the call to the main subprogram.<br /></p>
 
 <MarginText>24/4_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1", "AI12-0033-1"]} />
-<p>The function Get_First_CPU returns the first CPU in Domain, or CPU'First if Domain is empty; Get_Last_CPU returns the last CPU in Domain, or CPU_Range'First if Domain is empty. The function Get_CPU_Set(D) returns an array whose low bound is Get_First_CPU(D), whose high bound is Get_Last_CPU(D), with True values in the Set corresponding to the CPUs that are in the given Domain.<br /></p>
+<p>The function Get{"_"}First{"_"}CPU returns the first CPU in Domain, or CPU'First if Domain is empty; Get{"_"}Last{"_"}CPU returns the last CPU in Domain, or CPU{"_"}Range'First if Domain is empty. The function Get{"_"}CPU{"_"}Set(D) returns an array whose low bound is Get{"_"}First{"_"}CPU(D), whose high bound is Get{"_"}Last{"_"}CPU(D), with True values in the Set corresponding to the CPUs that are in the given Domain.<br /></p>
 
 <MarginText>25/4_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1", "AI12-0082-1"]} />
-<p>The function Get_Dispatching_Domain returns the dispatching domain on which the task is assigned.<br /></p>
+<p>The function Get{"_"}Dispatching{"_"}Domain returns the dispatching domain on which the task is assigned.<br /></p>
 
 <MarginText>26/4_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1", "AI05-0278-1", "AI12-0033-1"]} />
-<p>A call of the procedure Assign_Task assigns task T to the CPU within the dispatching domain Domain. Task T can now execute only on CPU, unless CPU designates Not_A_Specific_CPU in which case it can execute on any processor within Domain. The exception Dispatching_Domain_Error is propagated if Domain is empty, T is already assigned to a dispatching domain other than System_Dispatching_Domain, or if CPU is not one of the processors of Domain (and is not Not_A_Specific_CPU). A call of Assign_Task is a task dispatching point for task T unless T is inside of a protected action, in which case the effect on task T is delayed until its next task dispatching point. If T is the Current_Task the effect is immediate if T is not inside a protected action, otherwise the effect is as soon as practical. Assigning a task already assigned to System_Dispatching_Domain to that domain has no effect.<br /></p>
+<p>A call of the procedure Assign{"_"}Task assigns task T to the CPU within the dispatching domain Domain. Task T can now execute only on CPU, unless CPU designates Not{"_"}A{"_"}Specific{"_"}CPU in which case it can execute on any processor within Domain. The exception Dispatching{"_"}Domain{"_"}Error is propagated if Domain is empty, T is already assigned to a dispatching domain other than System{"_"}Dispatching{"_"}Domain, or if CPU is not one of the processors of Domain (and is not Not{"_"}A{"_"}Specific{"_"}CPU). A call of Assign{"_"}Task is a task dispatching point for task T unless T is inside of a protected action, in which case the effect on task T is delayed until its next task dispatching point. If T is the Current{"_"}Task the effect is immediate if T is not inside a protected action, otherwise the effect is as soon as practical. Assigning a task already assigned to System{"_"}Dispatching{"_"}Domain to that domain has no effect.<br /></p>
 
 <MarginText>27/4_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1", "AI05-0278-1", "AI12-0082-1"]} />
-<p>A call of procedure Set_CPU assigns task T to the CPU. Task T can now execute only on CPU, unless CPU designates Not_A_Specific_CPU, in which case it can execute on any processor within its dispatching domain. The exception Dispatching_Domain_Error is propagated if CPU is not one of the processors of the dispatching domain on which T is assigned (and is not Not_A_Specific_CPU). A call of Set_CPU is a task dispatching point for task T unless T is inside of a protected action, in which case the effect on task T is delayed until its next task dispatching point. If T is the Current_Task the effect is immediate if T is not inside a protected action, otherwise the effect is as soon as practical.<br /></p>
+<p>A call of procedure Set{"_"}CPU assigns task T to the CPU. Task T can now execute only on CPU, unless CPU designates Not{"_"}A{"_"}Specific{"_"}CPU, in which case it can execute on any processor within its dispatching domain. The exception Dispatching{"_"}Domain{"_"}Error is propagated if CPU is not one of the processors of the dispatching domain on which T is assigned (and is not Not{"_"}A{"_"}Specific{"_"}CPU). A call of Set{"_"}CPU is a task dispatching point for task T unless T is inside of a protected action, in which case the effect on task T is delayed until its next task dispatching point. If T is the Current{"_"}Task the effect is immediate if T is not inside a protected action, otherwise the effect is as soon as practical.<br /></p>
 
 <MarginText>28/3_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1"]} />
-<p>The function Get_CPU returns the processor assigned to task T, or Not_A_Specific_CPU if the task is not assigned to a processor.<br /></p>
+<p>The function Get{"_"}CPU returns the processor assigned to task T, or Not{"_"}A{"_"}Specific{"_"}CPU if the task is not assigned to a processor.<br /></p>
 
 <MarginText>29/4_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1", "AI12-0082-1"]} />
-<p>A call of Delay_Until_And_Set_CPU delays the calling task for the designated time and then assigns the task to the specified processor when the delay expires. The exception Dispatching_Domain_Error is propagated if P is not one of the processors of the calling task's dispatching domain (and is not Not_A_Specific_CPU).<br /></p>
+<p>A call of Delay{"_"}Until{"_"}And{"_"}Set{"_"}CPU delays the calling task for the designated time and then assigns the task to the specified processor when the delay expires. The exception Dispatching{"_"}Domain{"_"}Error is propagated if P is not one of the processors of the calling task's dispatching domain (and is not Not{"_"}A{"_"}Specific{"_"}CPU).<br /></p>
 
 
 #### Implementation Requirements
 
 <MarginText>30/3_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1"]} />
-<p>The implementation shall perform the operations Assign_Task, Set_CPU, Get_CPU and Delay_Until_And_Set_CPU atomically with respect to any of these operations on the same dispatching_domain, processor or task.<br /></p>
+<p>The implementation shall perform the operations Assign{"_"}Task, Set{"_"}CPU, Get{"_"}CPU and Delay{"_"}Until{"_"}And{"_"}Set{"_"}CPU atomically with respect to any of these operations on the same dispatching{"_"}domain, processor or task.<br /></p>
 
 <MarginText>30.1/4_D.16.1</MarginText>
 <MarginInfo items={["AI12-0048-1"]} />
@@ -306,25 +316,29 @@ private{"\n"}   ... -- not specified by the language{"\n"}end System.Multiproces
 <AnnotatedOnly>
 <MarginText>30.a/4_D.16.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This ensures that priorities and deadlines are respected within the system dispatching domain. There is no such guarantee between different domains.<br /></Admonition>
+<strong></strong>This ensures that priorities and deadlines are respected within the system dispatching domain. There is no such guarantee between different domains.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>30.b/4_D.16.1</MarginText>
 <Admonition type="aarm" aarm="note">
-We only need to talk about the system dispatching domain here, because Assign_Task and Set_CPU already have such wording for tasks that are assigned explicitly to a dispatching domain and specify Not_a_Specific_CPU. <br /></Admonition>
+We only need to talk about the system dispatching domain here, because Assign{"_"}Task and Set{"_"}CPU already have such wording for tasks that are assigned explicitly to a dispatching domain and specify Not{"_"}a{"_"}Specific{"_"}CPU. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>30.c/4_D.16.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>If no dispatching domains are created, all tasks can execute on all processors. (As always, implementation-defined dispatching policies may have other rules, so a partition that does not specify any language-defined dispatching policy may do anything at all and in particular does not need to follow this rule. <br /></Admonition>
+<strong></strong>If no dispatching domains are created, all tasks can execute on all processors. (As always, implementation-defined dispatching policies may have other rules, so a partition that does not specify any language-defined dispatching policy may do anything at all and in particular does not need to follow this rule. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>30.d/4_D.16.1</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>A task can be assigned to a specific CPU by specifying the aspect CPU for a task, or by calling a dynamic operation like Set_CPU or Assign_Task. <br /></Admonition>
+<strong></strong>A task can be assigned to a specific CPU by specifying the aspect CPU for a task, or by calling a dynamic operation like Set{"_"}CPU or Assign{"_"}Task. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -337,14 +351,16 @@ We only need to talk about the system dispatching domain here, because Assign_Ta
 <AnnotatedOnly>
 <MarginText>31.a/3_D.16.1</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>Each dispatching domain should have separate and disjoint ready queues.<br /></Admonition>
+<strong></strong>Each dispatching domain should have separate and disjoint ready queues.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>31.b/4_D.16.1</MarginText>
 <MarginInfo items={["AI12-0048-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>To be honest: </strong>&ldquo;Ready queue&rdquo; here doesn't mean the conceptual "ready queue" as defined in <a href="../AA-D/AA-D.2#Subclause_D.2.1">D.2.1</a> (one per processor); this rule is talking about the ready queues used by the implementation. <br /></Admonition>
+<strong>To be honest: </strong>&ldquo;Ready queue&rdquo; here doesn't mean the conceptual "ready queue" as defined in <a href="../AA-D/AA-D.2#Subclause_D.2.1">D.2.1</a> (one per processor); this rule is talking about the ready queues used by the implementation. <br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -352,12 +368,13 @@ We only need to talk about the system dispatching domain here, because Assign_Ta
 
 <MarginText>32/3_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1"]} />
-<p>The implementation shall document the processor(s) on which the clock interrupt is handled and hence where delay queue and ready queue manipulations occur. For any Interrupt_Id whose handler can execute on more than one processor the implementation shall also document this set of processors.<br /></p>
+<p>The implementation shall document the processor(s) on which the clock interrupt is handled and hence where delay queue and ready queue manipulations occur. For any Interrupt{"_"}Id whose handler can execute on more than one processor the implementation shall also document this set of processors.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>32.a/3_D.16.1</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>The processor(s) on which the clock interrupt is handled; the processors on which each Interrupt_Id can be handled.<br /></Admonition>
+<strong>Documentation Requirement: </strong>The processor(s) on which the clock interrupt is handled; the processors on which each Interrupt{"_"}Id can be handled.<br />
+</Admonition>
 </AnnotatedOnly>
 
 
@@ -365,17 +382,18 @@ We only need to talk about the system dispatching domain here, because Assign_Ta
 
 <MarginText>33/3_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1"]} />
-<p>An implementation may limit the number of dispatching domains that can be created and raise Dispatching_Domain_Error if an attempt is made to exceed this number.<br /></p>
+<p>An implementation may limit the number of dispatching domains that can be created and raise Dispatching{"_"}Domain{"_"}Error if an attempt is made to exceed this number.<br /></p>
 
 <MarginText>34/5_D.16.1</MarginText>
 <MarginInfo items={["AI12-0119-1"]} />
-<p>The implementation may defer the effect of a Set_CPU or an Assign_Task operation until the specified task leaves an ongoing parallel construct.<br /></p>
+<p>The implementation may defer the effect of a Set{"_"}CPU or an Assign{"_"}Task operation until the specified task leaves an ongoing parallel construct.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>34.a/5_D.16.1</MarginText>
 <MarginInfo items={["AI12-0119-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>These operations can change the set of CPUs that a parallel operation is allowed to use. This could require the ability to move or suspend one or more threads to execute them on a different CPU. However, parallel constructs are primarily intended to improve performance of code, and the overhead needed to support such a rarely used operation could be substantial. Therefore, rather than requiring support we allow the implementation to wait to implement these operations until the parallel construct (and thus the extra threads) have completed. <br /></Admonition>
+<strong></strong>These operations can change the set of CPUs that a parallel operation is allowed to use. This could require the ability to move or suspend one or more threads to execute them on a different CPU. However, parallel constructs are primarily intended to improve performance of code, and the overhead needed to support such a rarely used operation could be substantial. Therefore, rather than requiring support we allow the implementation to wait to implement these operations until the parallel construct (and thus the extra threads) have completed. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -387,7 +405,8 @@ We only need to talk about the system dispatching domain here, because Assign_Ta
 <MarginText>34.b/3_D.16.1</MarginText>
 <MarginInfo items={["AI05-0167-1", "AI05-0278-1"]} />
 <Admonition type="aarm" aarm="note">
-The package System.Multiprocessors.Dispatching_Domains and the aspect Dispatching_Domains are new. <br /></Admonition>
+The package System.Multiprocessors.Dispatching{"_"}Domains and the aspect Dispatching{"_"}Domains are new. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -399,7 +418,8 @@ The package System.Multiprocessors.Dispatching_Domains and the aspect Dispatchin
 <MarginText>34.c/4_D.16.1</MarginText>
 <MarginInfo items={["AI12-0033-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>Corrigendum:</strong> We now explicitly allow empty dispatching domains, as it would be difficult to avoid declaring them when a system is configured at runtime. Therefore, assigning a task to an empty domain now raises Dispatching_Domain_Error; creating such a domain should not raise Dispatching_Domain_Error. If an implementation does something different in these cases, and a program depends on that difference, the program could malfunction. This seems very unlikely (if no exception is ever raised, the task assigned to the empty domain could never run; if the exception is raised earlier, the program can't do anything useful). <br /></Admonition>
+<strong>Corrigendum:</strong> We now explicitly allow empty dispatching domains, as it would be difficult to avoid declaring them when a system is configured at runtime. Therefore, assigning a task to an empty domain now raises Dispatching{"_"}Domain{"_"}Error; creating such a domain should not raise Dispatching{"_"}Domain{"_"}Error. If an implementation does something different in these cases, and a program depends on that difference, the program could malfunction. This seems very unlikely (if no exception is ever raised, the task assigned to the empty domain could never run; if the exception is raised earlier, the program can't do anything useful). <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -411,7 +431,8 @@ The package System.Multiprocessors.Dispatching_Domains and the aspect Dispatchin
 <MarginText>34.d/5_D.16.1</MarginText>
 <MarginInfo items={["AI05-0005-1", "AI05-0033-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>Corrigendum:</strong> The subtypes of the parameter or result of several routines were changed to support empty domains. These changes will cause rules requiring subtype conformance to fail on these routines (such as 'Access). We believe such uses are unlikely. In addition, type CPU_Set and function Get_CPU_Set, along with an overloaded Create are newly added to this package. As such, a use clause conflict is possible; see the introduction of <a href="../AA-A/">Annex A</a> for more on this topic. <br /></Admonition>
+<strong>Corrigendum:</strong> The subtypes of the parameter or result of several routines were changed to support empty domains. These changes will cause rules requiring subtype conformance to fail on these routines (such as 'Access). We believe such uses are unlikely. In addition, type CPU{"_"}Set and function Get{"_"}CPU{"_"}Set, along with an overloaded Create are newly added to this package. As such, a use clause conflict is possible; see the introduction of <a href="../AA-A/">Annex A</a> for more on this topic. <br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
@@ -423,13 +444,15 @@ The package System.Multiprocessors.Dispatching_Domains and the aspect Dispatchin
 <MarginText>34.e/4_D.16.1</MarginText>
 <MarginInfo items={["AI12-0048-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>Corrigendum:</strong> Added wording to clarify that all tasks can execute on all CPUs of the system dispatching domain by default.<br /></Admonition>
+<strong>Corrigendum:</strong> Added wording to clarify that all tasks can execute on all CPUs of the system dispatching domain by default.<br />
+</Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>34.f/4_D.16.1</MarginText>
 <MarginInfo items={["AI12-0082-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>Corrigendum:</strong> Added a definition to clarify that a "dispatching domain" is a concept which is identified by an object of type Dispatching_Domain; more than one object might identify the same dispatching domain (for instance, the result of function Get_Dispatching_Domain is a different object but identifies the same dispatching domain). <br /></Admonition>
+<strong>Corrigendum:</strong> Added a definition to clarify that a "dispatching domain" is a concept which is identified by an object of type Dispatching{"_"}Domain; more than one object might identify the same dispatching domain (for instance, the result of function Get{"_"}Dispatching{"_"}Domain is a different object but identifies the same dispatching domain). <br />
+</Admonition>
 </AnnotatedOnly>
 
