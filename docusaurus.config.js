@@ -1,8 +1,7 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require("prism-react-renderer/themes/github")
-const darkCodeTheme = require("prism-react-renderer/themes/okaidia")
+const {themes} = require('prism-react-renderer')
 
 const gitHubUserName = "ada-lang-io"
 const gitHubProjectName = "ada-lang-io"
@@ -245,8 +244,8 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} and licensed under Apache 2.0 unless otherwise noted, by the ${gitHubProjectName} developers. Built with <a href="https://docusaurus.io/">Docusaurus</a>.`
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: themes.github,
+        darkTheme: themes.okaidia,
         defaultLanguage: "ada",
         additionalLanguages: ["ada"]
       },
