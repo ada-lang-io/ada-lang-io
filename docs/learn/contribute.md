@@ -46,7 +46,13 @@ npm run start
  npm run build
 ```
 
-4. When you're satisfied with your work, send a [pull request][url-ghpr] to ask to
+4. Verify your document changes are MDX 3 compliant with:
+
+```bash
+npx docusaurus-mdx-checker
+```
+
+5. When you're satisfied with your work, send a [pull request][url-ghpr] to ask to
    have your work added.
 
 # Generated docs
