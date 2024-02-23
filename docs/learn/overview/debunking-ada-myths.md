@@ -23,28 +23,9 @@ also supports installing of toolchains.
 ## Ada can be used for free
 
 Ada has a free front-end for GCC called [GNAT](https://gcc.gnu.org/wiki/GNAT).
-Just like using GCC to compile C or C++ code, it's free as in freedom (open-source)
-and as in beer (free to use). This version comes from the Free Software Foundation (FSF)
-and often referred to as "FSF GNAT".
+The version from the Free Software Foundation (FSF) is often referred to as "FSF GNAT".
 
 Yes, there are also commercial compilers which are not free to use.
-
-## Ada code does not have to be GPL
-
-FSF GNAT is licensed with the GCC Runtime exception:
-
-- [Runtime Library Exception](http://www.gnu.org/licenses/gpl-faq.html#LibGCCException)
-- [FAQ About GCC Runtime Exception](http://www.gnu.org/licenses/gcc-exception-3.1-faq.html)
-
-Alire 1.1 supports downloading and installing
-the FSF GNAT toolchain for you.
-
-:::caution
-
-However, there's a version of GNAT released by AdaCore called "GNAT Community
-Edition" which is similar to FSF GNAT but **does not provide the runtime exception.**
-
-:::
 
 ## No company "owns" Ada
 
