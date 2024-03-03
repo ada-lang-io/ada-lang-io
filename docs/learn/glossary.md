@@ -45,7 +45,7 @@ Objects (both variables and components) can be declared explicitly as aliased, s
 
 ### aspect
 
-Additional specification attached to a declaration, either related to its behavior (like preconditions and postcondition for subprograms) or its representation (like size or alignment for objects).
+Additional specifications attached to a declaration, either related to its behavior (like preconditions and postconditions for subprograms) or its representation (like size or alignment for objects).
 
 ### attribute
 
@@ -77,7 +77,7 @@ Type that supports RAII (Resource Acquisition Is Initialization) through the ins
 
 ### definite type
 
-A type for which which requires no explicit constraint or initial value when declared.
+A type for which it requires no explicit constraint or initial value when declared.
 
 ### discriminant
 
@@ -95,7 +95,7 @@ The result of a violation of Ada program semantics, when the consequences of the
 
 A type for which you cannot declare an object without supply bounds a constraint or an initial value.
 
-### imited type
+### limited type
 
 An uncopyable type.
 
@@ -113,7 +113,7 @@ Additional interfaces inherited.
 
 ### qualification
 
-Expression used to verify that an object respects the constraint of a subtype, using the syntax Subtype'Object. This is different from type conversion, as the object and its qualification share the same type.
+Expression is used to verify that an object respects the constraint of a subtype, using the syntax Subtype'Object. This is different from type conversion, as the object and its qualification share the same type.
 
 ### subprogram
 
