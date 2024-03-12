@@ -111,7 +111,7 @@ const config = {
           },
           {
             to: "https://forum.ada-lang.io",
-            position: "left",
+            position: "right",
             label: "Forum"
           },
           {
@@ -119,6 +119,16 @@ const config = {
             docId: "projects-to-work-on",
             position: "left",
             label: "Projects to Work on"
+          },
+          {
+            to: "https://usenet.ada-lang.io/comp.lang.ada/",
+            position: "right",
+            label: "comp.lang.ada"
+          },
+          {
+            to: "https://search.ada-lang.io",
+            position: "right",
+            label: "Code Search"
           },
           {
             // See https://github.com/facebook/docusaurus/issues/7227 for custom components
@@ -167,6 +177,10 @@ const config = {
               {
                 label: "Style Guide",
                 href: "/docs/style-guide/Ada_Style_Guide"
+              },
+              {
+                label: "Code Search",
+                href: "https://search.ada-lang.io"
               }
             ]
           },
