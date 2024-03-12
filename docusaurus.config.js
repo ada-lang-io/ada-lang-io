@@ -231,7 +231,7 @@ const config = {
               },
               {
                 label: "News, by Ada Planet",
-                href: "https://www.laeran.pl/adaplanet/i/"
+                href: "https://ada-planet.blogspot.com/"
               },
               {
                 label: "Ada Rapporteur Group",
