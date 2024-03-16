@@ -4,24 +4,16 @@ sidebar_position: 2
 
 # Building Blocks
 
-Ada often uses different terminology than any of the languages I've used. The
-goal is an overview without jargon, the only Ada-specific terms necessary
-for this overview are "subprogram", which refers to functions and procedures, and
+Ada often uses different terminology than other languages. This overview avoids
+Ada jargon, only using "subprogram", which refers to functions and procedures, and
 "procedures" which in most C-like language would be a "function" which returns
 nothing (i.e. void).
 
 # Packages, the Building Blocks of Ada
 
 Ada descends from Pascal, and yet uses many concepts already familiar to C or
-C++ programmers. As a long time C++ programmer, I find Ada leverages the concepts
-I'm used to in more formal, and often compiler-checked ways.
-
-## Types and Ada, The Elephant in the Room
-
-Ada emphasizes types, but their consistent use despite their complexity
-means I can ignore them for now. Nearly every other Ada overview and tutorial
-focuses on them, but they're an incredibly deep topic in Ada. Rather than get
-bogged down there, let's look at what Ada looks like and how programs are structured.
+C++ programmers. If you're a C/C++ programmer, you'll find Ada leverages the
+concepts you're used to in a more formal and often compiler-checked way.
 
 ## Subprograms (functions and procedures)
 
@@ -48,8 +40,7 @@ Short functions may be written as expressions bounded by parentheses. `in` is
 also optional for functions, and parameters with the same type can be grouped.
 
 ```ada
--- Add two-dimensional vectors.
-function Add (L, R : Float2) return Float2 is (L.X + R.X, L.Y + R.Y);
+function Add (L, R : Integer) return Float2 is (L + R);
 ```
 
 Multiple subprograms can exist with the same name, so the one used is determined
@@ -65,6 +56,11 @@ The basic operators can be overloaded as well. Assignment (`:=`) is
 not considered an operator, and therefore cannot be overloaded.
 
 ```ada
+type Float2 is record
+    X: Float
+    Y: Float
+end record;
+
 function "+"(L, R : Float2) return Float2 is (L.X + R.X, L.Y + R.Y);
 ```
 
@@ -86,7 +82,7 @@ Top-level package specifications, appear in `*.ads` (Ada specification) files,
 with their implementations ("bodies") in `*.adb` (Ada body) files, and only
 one top-level package specification or package body per file.
 
-Ada packages can also be nested and support visiblity rules for sharing details
+Ada packages can also be nested and support visibility rules for sharing details
 with child packages. Child packages are given by dotted names; `A.B`
 is a child of package `A`.
 
@@ -102,7 +98,7 @@ dependencies, as well as providing high level checks, such as `pragma Preelabora
 to ensure a package has no initialization, or the `with Pure` aspect to ensure
 that a package has no state and subprograms cannot have side effects.
 
-## The Core Tenet of Ada
+## Programs are readable from beginning to end
 
 Program text must be clear without having to read ahead, referred to as:
 **"Linear elaboration of declarations"**. A clear demarcation exists between
