@@ -11,10 +11,9 @@ import TabItem from '@theme/TabItem';
 
 ## Setting up your editor
 
+The command `alr edit` launches your editor on the current crate, with the appropriate enviroment variables and settings.
 You can adjust the editor that gets started by `alr edit` with Alire's
-`editor.cmd` setting. Launching your editor this way with `alr edit`
-causes Alire to start it with the appropriate environment variables and
-settings.
+`editor.cmd` setting.
 
 ### [Language server](https://github.com/AdaCore/ada_language_server)
 
@@ -24,8 +23,29 @@ not need to install this directly.
 
 ### GNAT Studio
 
+<Tabs groupId="operating-systems">
+  <TabItem value="linux" label="Linux">
+
 Alire is configured to work with GNAT Studio by default if you have it
 installed.
+
+  </TabItem>
+  <TabItem value="win" label="Windows">
+
+Alire is configured to work with GNAT Studio by default if you have it
+installed.
+
+  </TabItem>
+  <TabItem value="mac" label="macOS">
+
+Find a community-provided version of GNAT Studio for macOS [here](https://sourceforge.net/projects/gnuada/files/GNAT_GPL%20Mac%20OS%20X/2023-ventura/).
+
+```bash
+alr settings --set editor.cmd 'open -n -a gnatstudio -- ${GPR_FILE}'
+```
+
+  </TabItem>
+</Tabs>
 
 To edit your project, run this from your project directory:
 
@@ -59,21 +79,21 @@ trying to open.
   <TabItem value="win" label="Windows">
 
 ```bash
-alr config --set editor.cmd "code workspace.code-workspace"
+alr settings --set editor.cmd "code workspace.code-workspace"
 ```
 
   </TabItem>
  <TabItem value="linux" label="Linux">
 
 ```bash
-alr config --set editor.cmd "code workspace.code-workspace"
+alr settings --set editor.cmd "code workspace.code-workspace"
 ```
 
   </TabItem>
   <TabItem value="mac" label="macOS">
 
 ```bash
-alr config --set editor.cmd "/Applications/VisualStudioCode.app/Contents/Resources/app/bin/code workspace.code-workspace"
+alr settings --set editor.cmd "/Applications/VisualStudioCode.app/Contents/Resources/app/bin/code workspace.code-workspace"
 ```
 
   </TabItem>
@@ -100,14 +120,14 @@ Set Alire to use Emacs when invoking `alr edit`:
   <TabItem value="linux" label="Linux">
 
 ```bash
-alr config --set --global editor.cmd 'emacs --eval=(ada-build-prompt-select-prj-file"${GPR_FILE}") ${GPR_FILE}'
+alr settings --set --global editor.cmd 'emacs --eval=(ada-build-prompt-select-prj-file"${GPR_FILE}") ${GPR_FILE}'
 ```
 
   </TabItem>
   <TabItem value="mac" label="macOS">
 
 ```bash
-alr config --set editor.cmd 'open -n -a emacs ${GPR_FILE}'
+alr settings --set editor.cmd 'open -n -a emacs ${GPR_FILE}'
 ```
 
 Note, you still need to find one of the project's Ada source files and then select the relevant GPR file. Investigations continue.
