@@ -213,6 +213,11 @@ const config = {
                 className: "fa-icon footer__image footer-telegram-link"
               },
               {
+                label: "Discord",
+                href: "https://discord.gg/edM2czVKN4",
+                className: "fa-icon footer__image footer-discord-link"
+              },
+              {
                 label: "ARG Community Input",
                 href: "https://arg.adaic.org/community-input"
               }
