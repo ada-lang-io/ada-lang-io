@@ -33,7 +33,7 @@ Packages and protected objects are passive, whereas tasks and subprograms are
 active program behavior.
 
 Packages provide separation into compilation units and act as
-container for all entities. Subprograms, whether procedures functions provide
+container for all entities. Subprograms, both procedures and functions, provide
 reusable algorithms and behaviors.
 
 It is sometimes useful to write a package around unknown types and subprograms
@@ -42,7 +42,7 @@ Generics do not provide structure on their own, but expand the capabilities
 of packages and subprograms to apply behavior to arbitrarily defined types,
 subprograms and even packages.
 
-Two structures assist in and provide concurrency. Tasks do concurrent computation,
+Two structures provide and assist in concurrency. Tasks do concurrent computation,
 selection of operations from a blocked state, and conditional and timed waits.
 Coordination of shared resources is given by protected objects.
 Both one-off and instantiable versions of tasks and protected types can be created. These
