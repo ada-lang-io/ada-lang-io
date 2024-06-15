@@ -181,6 +181,10 @@ const config = {
               {
                 label: "Code Search",
                 href: "https://search.ada-lang.io"
+              },
+              {
+                label: "Reference Card / Cheatsheet",
+                href: "https://github.com/bracke/AdaReferenceCard/releases/tag/continuous"
               }
             ]
           },
