@@ -184,7 +184,7 @@ const config = {
               },
               {
                 label: "Reference Card / Cheatsheet",
-                href: "https://github.com/bracke/AdaReferenceCard/releases/tag/continuous"
+                href: "https://github.com/bracke/AdaReferenceCard/releases"
               }
             ]
           },
