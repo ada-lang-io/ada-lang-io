@@ -12,7 +12,7 @@ There's a Mac-special [Alire repository on Github](https://github.com/simonjwrig
 
 ## <a name="alire">Alire</a>
 
-At 2024-04-19, the official Alire site only supports an Intel (x86_64) build of Alire, which won't support native development on Apple silicon.
+At 2024-07-31, the official Alire site only supports an Intel (x86_64) build of Alire, which won't support native development on Apple silicon (there is an aarch64 version in the [nightly](https://github.com/alire-project/alire/releases/tag/nightly) builds).
 
 You can find an Apple (aarch64) build of Alire 2.0.1 [here](https://github.com/simonjwright/alire-index.mac/releases/tag/alr-2.0.1-bin-aarch64-macos).
 
@@ -25,12 +25,14 @@ _gprbuild_ can try to build static standalone libraries, where the 'standalone' 
 
 ## <a name="toolchain-items">Toolchain items</a>
 
-The crates in the [Mac-related index](#installing-the-mac-special-alire-index) are
+The toolchain crates in the [Mac-related index](#installing-the-mac-special-alire-index) are
 
-- `gnat_macos_aarch64=13.2.2`, native GNAT for Apple silicon.
+- `gnat_macos_aarch64=14.1.0-1`, native GNAT for Apple silicon.
 - `gprbuild=24.0.1-mac-aarch64`, matching gprbuild (avoids you having to say `--target=aarch64-apple-darwin` at every compilation!)
 
-Note that Alire's community index already (2024-04-19) provides `gnat_native=13.2.2` for macOS; no doubt an equivalent _gprbuild_ will be available shortly.
+However, you should not need to use them, because Alire's community index already (2024-07-31) provides `gnat_native=14.1.3` and `gprbuild=24.0.1` for macOS, in both x86_64 and aarch64 versions; if you have the appropriate version of `alr` it will select the appropriate versions of the tools.
+
+Note that the 14.1.3 compiler should more properly be identified as 14.1.0-3, since the base compiler is still FSF GCC 14.1.0, and this is the third released build.
 
 ## <a name="installing-the-mac-special-alire-index">Installing the Mac-special Alire index</a>
 
