@@ -7,6 +7,7 @@ import type { DocusaurusContext } from "@docusaurus/types"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
 import { usePluginData } from "@docusaurus/useGlobalData"
 import useIsBrowser from "@docusaurus/useIsBrowser"
+import CodeBlock from "@theme/CodeBlock"
 import Layout from "@theme/Layout"
 
 import {
@@ -21,7 +22,6 @@ import {
 } from "@mantine/core"
 import { useOs } from "@mantine/hooks"
 import type { OS } from "@mantine/hooks"
-import { Prism } from "@mantine/prism"
 
 import HomepageFeatures from "@site/src/components/HomepageFeatures"
 
@@ -76,19 +76,6 @@ export const gitHubReleasePage = `${gitHubProjectPage}/releases`
 
 export function getInstallTarget(version: string, suffix: string): string {
   return `${gitHubProjectPage}/releases/download/${version}/alr-${version.slice(1)}-${suffix}`
-}
-
-interface CodeBlockProps {
-  readonly showLineNumbers: boolean
-  readonly children: string
-}
-
-function CodeBlock({ showLineNumbers, children }: CodeBlockProps): JSX.Element {
-  return (
-    <Prism withLineNumbers={showLineNumbers} language={"ada" as Language}>
-      {children}
-    </Prism>
-  )
 }
 
 interface HomepageHeaderProps {
@@ -203,7 +190,13 @@ export function HomepageHeader({ title, description }: HomepageHeaderProps): JSX
                 <div className={styles.codeTabPanels}>
                   {samples.map(({ key, code }) => (
                     <Tabs.Panel key={key} value={key} pt="xs" className={styles.codeTabPanel}>
-                      <CodeBlock showLineNumbers={true}>{code}</CodeBlock>
+                      <CodeBlock
+                        showLineNumbers={true}
+                        language="ada"
+                        className={styles.codeBlockDocusaurus}
+                      >
+                        {code}
+                      </CodeBlock>
                     </Tabs.Panel>
                   ))}
                 </div>
