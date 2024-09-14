@@ -143,3 +143,6 @@ alr settings --set editor.cmd 'open -n -a emacs ${GPR_FILE}'
 Note, you still need to find one of the project's Ada source files and then select the relevant GPR file. Investigations continue.
 </TabItem>
 </Tabs>
+
+### [Zed]("https://zed.dev")
+from Zed extensions interface, search for an extension called [Ada]("https://github.com/wisn/zed-ada-language") and click install, make sure that you have the LSP installed, you may need to restart your IDE.
