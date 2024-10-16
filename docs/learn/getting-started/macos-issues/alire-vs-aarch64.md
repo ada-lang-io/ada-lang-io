@@ -4,7 +4,9 @@ sidebar_position: 030
 
 # Alire vs Apple silicon
 
-Alire releases available from the [Alire website](https://github.com/alire-project/alire/releases) are all built for Intel silicon. For pure Ada work, this has no effect, whether or not you're working on Apple silicon.
+Alire releases available from the [Alire website](https://github.com/alire-project/alire/releases) are available for either Intel or Apple silicon, but at the time of writing the download links on the landing page refer only to the Intel version.
+
+For pure Ada work, this has no effect, whether or not you're working on Apple silicon.
 
 One area where there's a considerable impact is when your work involves "[external releases](https://alire.ada.dev/docs/#external-releases)". These are external libraries which Alire manages as required using your system's "package manager". An example is the crate `sdlada`, which depends on `libsdl2` amongst others. On a Debian system, Alire will load the package `libsdl2-dev`; on macOS with Homebrew, `sdl2`.
 
