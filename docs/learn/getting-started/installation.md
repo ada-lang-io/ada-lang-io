@@ -10,12 +10,12 @@ By far the easiest way to get hold of an Ada toolchain is to use the Ada package
 
 ## Alire
 
-The Alire website's [Releases page](https://github.com/alire-project/alire/releases) provides Intel builds:
+The Alire website's [Releases page](https://github.com/alire-project/alire/releases) provides builds:
 
-- the current stable build, [v2.0.0](https://github.com/alire-project/alire/releases/tag/v2.0.0),
+- the current stable build, [v2.0.2](https://github.com/alire-project/alire/releases/tag/v2.0.2),
 - a [nightly build](https://github.com/alire-project/alire/releases/tag/nightly).
 
-Any of these can be installed as described [here](https://alire.ada.dev/docs/#alr-on-macos); follow up with these [first steps](https://alire.ada.dev/docs/#first-steps) (this will have the added effect of installing a toolchain for you!)
+Any of these can be installed as described [here](https://alire.ada.dev/docs/#installation); follow up with these [first steps](https://alire.ada.dev/docs/#first-steps) (this will have the added effect of installing a toolchain for you!)
 
 ## Toolchain
 
