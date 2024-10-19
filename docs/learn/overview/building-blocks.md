@@ -213,7 +213,7 @@ procedure Move(Box : in out AABB2; Direction : Float2) is
 begin
     Box.Min := Box.Min + Direction;
     Box.Max := Box.Max + Direction;
-end Scale;
+end Move;
 ```
 
 ```ada
@@ -221,5 +221,5 @@ end Scale;
 function Midpoint(Box : in AABB2) return Float is
 begin
     return (Box.Min + Box.Max) / 2.0;
-end Scale;
+end Midpoint;
 ```
