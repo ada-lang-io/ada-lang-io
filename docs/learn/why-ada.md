@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Why Ada?
 
-## Ada is easy to set up and get started
+## Get started quick
 
 The [Alire][alire] tool can [install an Ada toolchain][alire-toolchains] and
 acts as a build and dependency management tool.
@@ -22,11 +22,11 @@ language.
 While there are also commercial compilers, Ada has a front-end for GCC called [GNAT][gnat].
 The version from the Free Software Foundation (FSF) is often referred to as "FSF GNAT".
 
-## Ada continues to be developed
+## Continued development
 
-Ada has multiple released standards Ada 83, Ada 95, Ada 2005, Ada 2012, and Ada 2022.
+Ada continues to be developed with multiple released standards: Ada 83, Ada 95, Ada 2005, Ada 2012, and Ada 2022.
 
-## Ada runs on more than embedded systems
+## Safer low level programming
 
 Ada provides low-level control and interfacing to C to develop programs which
 can run on embedded or on consumer computers. This includes specifying binary
