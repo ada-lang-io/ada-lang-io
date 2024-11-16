@@ -70,8 +70,7 @@ documentation:
 - **Ada-Lang.io:** you can help grow the documentation, guides, experience of
   this webpage, which tends to be one of the first resources that new people to
   the language take. The [Learn section](./learn/why-ada/) could use some extra
-  hands, specially with the addition completion of [How-Tos](./category/how-tos)
-  and [Tips and Tricks](./category/tips-and-tricks). The addition of SPARK
+  hands. The addition of SPARK
   documentation would also be greatly welcomed.
 - **Ada Wikibook:** the [Ada
   Wikibook](https://en.wikibooks.org/wiki/Ada_Programming) has been a great
