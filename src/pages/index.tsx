@@ -61,7 +61,7 @@ export type Target = {
 
 export const installTargets: Map<string, Target> = new Map([
   ["windows", { label: "Windows", urlSuffix: "installer-x86_64-windows.exe" }],
-  ["macos", { label: "macOS", urlSuffix: "bin-x86_64-macos.zip" }],
+  ["macos", { label: "macOS", urlSuffix: "bin-aarch64-macos.zip" }],
   ["linux", { label: "Linux", urlSuffix: "bin-x86_64-linux.zip" }],
   ["appimage", { label: "AppImage", urlSuffix: "x86_64.AppImage" }]
 ])
