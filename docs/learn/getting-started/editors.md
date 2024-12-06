@@ -38,10 +38,20 @@ installed.
   </TabItem>
   <TabItem value="mac" label="macOS">
 
-Find a community-provided version of GNAT Studio for macOS [here](https://sourceforge.net/projects/gnuada/files/GNAT_GPL%20Mac%20OS%20X/2023-ventura/).
+Find a community-provided version of GNAT Studio for macOS [here](https://sourceforge.net/projects/gnuada/files/GNAT_GPL%20Mac%20OS%20X/2024-ventura/).
+
+There's a slight problem with macOS Sequoia.
+
+For earlier versions of macOS, use this:
 
 ```bash
 alr settings --set editor.cmd 'open -n -a gnatstudio -- ${GPR_FILE}'
+```
+
+For later versions, use this workround (you'll need to change the `/Applications` part if you've installed GNATStudio somewhere else):
+
+```bash
+alr settings --set editor.cmd '/Applications/GNATStudio.app/Contents/MacOS/gnatstudio_launcher ${GPR_FILE}'
 ```
 
   </TabItem>
