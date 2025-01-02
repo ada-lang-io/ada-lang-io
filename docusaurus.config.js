@@ -271,25 +271,6 @@ const config = {
         darkTheme: themes.okaidia,
         defaultLanguage: "ada",
         additionalLanguages: ["ada"]
-      },
-      algolia: {
-        // The application ID provided by Algolia
-        appId: "L84ZBWQFIW",
-
-        // Public API key: it is safe to commit it
-        apiKey: "3ef66437cc70666c01852b9d2f4fde7b",
-
-        indexName: "ada-lang",
-
-        // Optional: see doc section below
-        contextualSearch: true,
-
-        // Optional: Algolia search parameters
-        // See https://www.algolia.com/doc/api-reference/search-api-parameters/
-        searchParameters: {},
-
-        // Optional: path for search page that enabled by default (`false` to disable it)
-        searchPagePath: "search"
       }
     }
 }
