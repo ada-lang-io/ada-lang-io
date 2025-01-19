@@ -11,7 +11,7 @@ const alireGitHubLatestRelease = "https://api.github.com/repos/alire-project/ali
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "ada-lang.io",
+  "title": "ada-lang.io, an Ada community site",
   tagline: "Readable, correct, performant",
   url: "https://ada-lang.io",
   baseUrl: "/",
