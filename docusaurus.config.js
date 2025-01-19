@@ -126,6 +126,11 @@ const config = {
             label: "comp.lang.ada"
           },
           {
+            to: "https://ada-rapporteur-group.github.io/",
+            position: "right",
+            label: "Ada Rapporteur Group"
+          },
+          {
             to: "https://search.ada-lang.io",
             position: "right",
             label: "Code Search"
