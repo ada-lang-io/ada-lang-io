@@ -2,7 +2,7 @@
 sidebar_position:  165
 ---
 
-# D.11 Asynchronous Task Control
+# D.11. Asynchronous Task Control
 
 :::danger
 This Reference Manual output has not been verified,
@@ -18,7 +18,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 
 <MarginText>1/3</MarginText>
 <MarginInfo items={["AI05-0299-1"]} />
-<p>[This subclause introduces a language-defined package to do asynchronous suspend/resume on tasks. It uses a conceptual <em>held priority</em> value to represent the task's <em>held</em> state.] <br /></p>
+<p>[This subclause introduces a language-defined package to do asynchronous suspend/resume on tasks. It uses a conceptual <i>held priority</i> value to represent the task's <i>held</i> state.] <br /></p>
 
 
 #### Static Semantics
@@ -37,12 +37,12 @@ with Ada.Task{"_"}Identification;{"\n"}package Ada.Asynchronous{"_"}Task{"_"}Con
 
 <MarginText>4/2</MarginText>
 <MarginInfo items={["AI95-00357-01"]} />
-<p>After the Hold operation has been applied to a task, the task becomes <em>held</em>. For each processor there is a conceptual <em>idle task</em>, which is always ready. The base priority of the idle task is below System.Any{"_"}Priority'First. The <em>held priority</em> is a constant of the type Integer whose value is below the base priority of the idle task. <br /></p>
+<p>After the Hold operation has been applied to a task, the task becomes <i>held</i>. For each processor there is a conceptual <i>idle task</i>, which is always ready. The base priority of the idle task is below System.Any{"_"}Priority'First. The <i>held priority</i> is a constant of the type Integer whose value is below the base priority of the idle task. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>4.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The held state should not be confused with the blocked state as defined in <a href="/docs/arm/AA-9/AA-9.2">9.2</a>; the task is still ready. <br />
+<b></b>The held state should not be confused with the blocked state as defined in <a href="/docs/arm/AA-9/AA-9.2">9.2</a>; the task is still ready. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -53,14 +53,14 @@ with Ada.Task{"_"}Identification;{"\n"}package Ada.Asynchronous{"_"}Task{"_"}Con
 <AnnotatedOnly>
 <MarginText>4.b/2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>To be honest: </strong>This applies even if a Task{"_"}Dispatching{"_"}Policy specifies the policy for all of the priorities of the partition. <br />
+<b>To be honest: </b>This applies even if a Task{"_"}Dispatching{"_"}Policy specifies the policy for all of the priorities of the partition. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>4.c/2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>A task at the held priority never runs, so it is not necessary to implement FIFO{"_"}Within{"_"}Priorities for systems that have only one policy (such as EDF{"_"}Across{"_"}Priorities). <br />
+<b></b>A task at the held priority never runs, so it is not necessary to implement FIFO{"_"}Within{"_"}Priorities for systems that have only one policy (such as EDF{"_"}Across{"_"}Priorities). <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -71,7 +71,7 @@ with Ada.Task{"_"}Identification;{"\n"}package Ada.Asynchronous{"_"}Task{"_"}Con
 <AnnotatedOnly>
 <MarginText>5.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>For example, if T is currently inheriting priorities from other sources (e.g. it is executing in a protected action), its active priority does not change, and it continues to execute until it leaves the protected action. <br />
+<b></b>For example, if T is currently inheriting priorities from other sources (e.g. it is executing in a protected action), its active priority does not change, and it continues to execute until it leaves the protected action. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -85,7 +85,7 @@ with Ada.Task{"_"}Identification;{"\n"}package Ada.Asynchronous{"_"}Task{"_"}Con
 <AnnotatedOnly>
 <MarginText>7.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Note that the state of T can be changed immediately after Is{"_"}Held returns. <br />
+<b></b>Note that the state of T can be changed immediately after Is{"_"}Held returns. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -108,7 +108,7 @@ with Ada.Task{"_"}Identification;{"\n"}package Ada.Asynchronous{"_"}Task{"_"}Con
 <AnnotatedOnly>
 <MarginText>10.a</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>A direct implementation of the Asynchronous{"_"}Task{"_"}Control semantics using priorities is not necessarily efficient enough. Thus, we envision implementations that use some other mechanism to set the &ldquo;held&rdquo; state. If there is no other such mechanism, support for Asynchronous{"_"}Task{"_"}Control might be infeasible, because an implementation in terms of priority would require one idle task per processor. On some systems, programs are not supposed to know how many processors are available, so creating enough idle tasks would be problematic. <br />
+<b></b>A direct implementation of the Asynchronous{"_"}Task{"_"}Control semantics using priorities is not necessarily efficient enough. Thus, we envision implementations that use some other mechanism to set the &ldquo;held&rdquo; state. If there is no other such mechanism, support for Asynchronous{"_"}Task{"_"}Control might be infeasible, because an implementation in terms of priority would require one idle task per processor. On some systems, programs are not supposed to know how many processors are available, so creating enough idle tasks would be problematic. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -150,7 +150,7 @@ NOTE 4   The rules affecting queuing are derived from the above rules, in additi
 <li>If a task becomes held while waiting (as a caller) for a rendezvous to complete, the active priority of the accepting task is not affected.<br /></li>
 <MarginText>18/1</MarginText>
 <MarginInfo items={["AI95-00111-01"]} />
-<li>{"{"}<em>8652/0077</em>{"}"} If a task becomes held while waiting in a <code><a href="/docs/arm/AA-9/AA-9.7#S0270">selective_accept</a></code>, and an entry call is issued to one of the open entries, the corresponding <code><a href="/docs/arm/AA-9/AA-9.7#S0273">accept{"_"}alternative</a></code> executes. When the rendezvous completes, the active priority of the accepting task is lowered to the held priority (unless it is still inheriting from other sources), and the task does not execute until another Continue.<br /></li>
+<li>{"{"}<i>8652/0077</i>{"}"} If a task becomes held while waiting in a <code><a href="/docs/arm/AA-9/AA-9.7#S0270">selective_accept</a></code>, and an entry call is issued to one of the open entries, the corresponding <code><a href="/docs/arm/AA-9/AA-9.7#S0273">accept{"_"}alternative</a></code> executes. When the rendezvous completes, the active priority of the accepting task is lowered to the held priority (unless it is still inheriting from other sources), and the task does not execute until another Continue.<br /></li>
 <MarginText>19</MarginText>
 <li>The same holds if the held task is the only task on a protected entry queue whose barrier becomes open. The corresponding entry body executes.<br /></li>
 </ul>
@@ -177,7 +177,7 @@ Asynchronous{"_"}Task{"_"}Control is now Preelaborated, so it can be used in pre
 <MarginText>19.b/2</MarginText>
 <MarginInfo items={["AI95-00111-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0077</em>{"}"} <strong>Corrigendum:</strong> Corrected to eliminate the use of the undefined term &ldquo;accept body&rdquo;.<br />
+{"{"}<i>8652/0077</i>{"}"} <b>Corrigendum:</b> Corrected to eliminate the use of the undefined term &ldquo;accept body&rdquo;.<br />
 </Admonition>
 </AnnotatedOnly>
 

@@ -2,7 +2,7 @@
 sidebar_position:  75
 ---
 
-# 9.2 Task Execution - Task Activation
+# 9.2. Task Execution - Task Activation
 
 :::danger
 This Reference Manual output has not been verified,
@@ -20,16 +20,16 @@ import MarginInfo from "@site/src/components/MarginInfo";
 #### Dynamic Semantics
 
 <MarginText>1</MarginText>
-<p>The execution of a task of a given task type consists of the execution of the corresponding <code><a href="/docs/arm/AA-9/AA-9.1#S0248">task_body</a></code>. The initial part of this execution is called the <em>activation</em> of the task; it consists of the elaboration of the <code><a href="/docs/arm/AA-3/AA-3.11#S0086">declarative_part</a></code> of the <code><a href="/docs/arm/AA-9/AA-9.1#S0248">task_body</a></code>. Should an exception be propagated by the elaboration of its <code><a href="/docs/arm/AA-3/AA-3.11#S0086">declarative_part</a></code>, the activation of the task is defined to have <em>failed</em>, and it becomes a completed task.<br /></p>
+<p>The execution of a task of a given task type consists of the execution of the corresponding <code><a href="/docs/arm/AA-9/AA-9.1#S0248">task_body</a></code>. The initial part of this execution is called the <i>activation</i> of the task; it consists of the elaboration of the <code><a href="/docs/arm/AA-3/AA-3.11#S0086">declarative_part</a></code> of the <code><a href="/docs/arm/AA-9/AA-9.1#S0248">task_body</a></code>. Should an exception be propagated by the elaboration of its <code><a href="/docs/arm/AA-3/AA-3.11#S0086">declarative_part</a></code>, the activation of the task is defined to have <i>failed</i>, and it becomes a completed task.<br /></p>
 
 <MarginText>2/2</MarginText>
 <MarginInfo items={["AI95-00416-01"]} />
-<p>A task object (which represents one task) can be a part of a stand-alone object, of an object created by an <code><a href="/docs/arm/AA-4/AA-4.8#S0164">allocator</a></code>, or of an anonymous object of a limited type, or a coextension of one of these. All tasks that are part or coextensions of any of the stand-alone objects created by the elaboration of <code><a href="/docs/arm/AA-3/AA-3.3#S0032">object{"_"}declaration</a></code>s (or <code><a href="/docs/arm/AA-12/AA-12.3#S0317">generic_association</a></code>s of formal objects of mode <strong>in</strong>) of a single declarative region are activated together. All tasks that are part or coextensions of a single object that is not a stand-alone object are activated together. <br /></p>
+<p>A task object (which represents one task) can be a part of a stand-alone object, of an object created by an <code><a href="/docs/arm/AA-4/AA-4.8#S0164">allocator</a></code>, or of an anonymous object of a limited type, or a coextension of one of these. All tasks that are part or coextensions of any of the stand-alone objects created by the elaboration of <code><a href="/docs/arm/AA-3/AA-3.3#S0032">object{"_"}declaration</a></code>s (or <code><a href="/docs/arm/AA-12/AA-12.3#S0317">generic_association</a></code>s of formal objects of mode <b>in</b>) of a single declarative region are activated together. All tasks that are part or coextensions of a single object that is not a stand-alone object are activated together. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>2.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The initialization of an <code><a href="/docs/arm/AA-3/AA-3.3#S0032">object_declaration</a></code> or <code><a href="/docs/arm/AA-4/AA-4.8#S0164">allocator</a></code> can indirectly include the creation of other objects that contain tasks. For example, the default expression for a subcomponent of an object created by an <code><a href="/docs/arm/AA-4/AA-4.8#S0164">allocator</a></code> might call a function that evaluates a completely different <code><a href="/docs/arm/AA-4/AA-4.8#S0164">allocator</a></code>. Tasks created by the two allocators are <em>not</em> activated together. <br />
+<b></b>The initialization of an <code><a href="/docs/arm/AA-3/AA-3.3#S0032">object_declaration</a></code> or <code><a href="/docs/arm/AA-4/AA-4.8#S0164">allocator</a></code> can indirectly include the creation of other objects that contain tasks. For example, the default expression for a subcomponent of an object created by an <code><a href="/docs/arm/AA-4/AA-4.8#S0164">allocator</a></code> might call a function that evaluates a completely different <code><a href="/docs/arm/AA-4/AA-4.8#S0164">allocator</a></code>. Tasks created by the two allocators are <i>not</i> activated together. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -40,7 +40,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <AnnotatedOnly>
 <MarginText>3.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>If Tasking{"_"}Error is raised, it can be handled by handlers of the <code><a href="/docs/arm/AA-11/AA-11.2#S0304">handled{"_"}sequence{"_"}of{"_"}statements</a></code>. <br />
+<b></b>If Tasking{"_"}Error is raised, it can be handled by handlers of the <code><a href="/docs/arm/AA-11/AA-11.2#S0304">handled{"_"}sequence{"_"}of{"_"}statements</a></code>. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -52,24 +52,24 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>4.a/2</MarginText>
 <MarginInfo items={["AI95-00416-01"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The intent is that &ldquo;temporary&rdquo; objects with task parts (or coextensions) are treated similarly to an object created by an allocator. The &ldquo;whole&rdquo; object is initialized, and then all of the task parts (including the coextensions) are activated together. Each such &ldquo;whole&rdquo; object has its own task activation sequence, involving the activating task being suspended until all the new tasks complete their activation. <br />
+<b></b>The intent is that &ldquo;temporary&rdquo; objects with task parts (or coextensions) are treated similarly to an object created by an allocator. The &ldquo;whole&rdquo; object is initialized, and then all of the task parts (including the coextensions) are activated together. Each such &ldquo;whole&rdquo; object has its own task activation sequence, involving the activating task being suspended until all the new tasks complete their activation. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>5</MarginText>
-<p>The task that created the new tasks and initiated their activations (the <em>activator</em>) is blocked until all of these activations complete (successfully or not). Once all of these activations are complete, if the activation of any of the tasks has failed [(due to the propagation of an exception)], Tasking{"_"}Error is raised in the activator, at the place at which it initiated the activations. Otherwise, the activator proceeds with its execution normally. Any tasks that are aborted prior to completing their activation are ignored when determining whether to raise Tasking{"_"}Error. <br /></p>
+<p>The task that created the new tasks and initiated their activations (the <i>activator</i>) is blocked until all of these activations complete (successfully or not). Once all of these activations are complete, if the activation of any of the tasks has failed [(due to the propagation of an exception)], Tasking{"_"}Error is raised in the activator, at the place at which it initiated the activations. Otherwise, the activator proceeds with its execution normally. Any tasks that are aborted prior to completing their activation are ignored when determining whether to raise Tasking{"_"}Error. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>5.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Note that a task created by an <code><a href="/docs/arm/AA-4/AA-4.8#S0164">allocator</a></code> does not necessarily depend on its activator; in such a case the activator's termination can precede the termination of the newly created task. <br />
+<b></b>Note that a task created by an <code><a href="/docs/arm/AA-4/AA-4.8#S0164">allocator</a></code> does not necessarily depend on its activator; in such a case the activator's termination can precede the termination of the newly created task. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>5.b</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Tasking{"_"}Error is raised only once, even if two or more of the tasks being activated fail their activation. <br />
+<b></b>Tasking{"_"}Error is raised only once, even if two or more of the tasks being activated fail their activation. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -77,19 +77,19 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>5.c/2</MarginText>
 <MarginInfo items={["AI95-00265-01"]} />
 <Admonition type="aarm" aarm="note">
-<strong>To be honest: </strong>The pragma Partition{"_"}Elaboration{"_"}Policy (see <a href="/docs/arm/AA-H/AA-H.6">H.6</a>) can be used to defer task activation to a later point, thus changing many of these rules. <br />
+<b>To be honest: </b>The pragma Partition{"_"}Elaboration{"_"}Policy (see <a href="/docs/arm/AA-H/AA-H.6">H.6</a>) can be used to defer task activation to a later point, thus changing many of these rules. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>6/3</MarginText>
 <MarginInfo items={["AI05-0045-1"]} />
-<p>If the master that directly encloses the point where the activation of a task <em>T</em> would be initiated, completes before the activation of <em>T</em> is initiated, <em>T</em> becomes terminated and is never activated. Furthermore, if a return statement is left such that the return object is not returned to the caller, any task that was created as a part of the return object or one of its coextensions immediately becomes terminated and is never activated. <br /></p>
+<p>If the master that directly encloses the point where the activation of a task <i>T</i> would be initiated, completes before the activation of <i>T</i> is initiated, <i>T</i> becomes terminated and is never activated. Furthermore, if a return statement is left such that the return object is not returned to the caller, any task that was created as a part of the return object or one of its coextensions immediately becomes terminated and is never activated. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>6.a/3</MarginText>
 <MarginInfo items={["AI05-0045-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The first case can only happen if the activation point of T is not reached due to an exception being raised or a task or statement being aborted. Note that this is exclusive; if the master completes normally and starts finalization, we're already past the activation point.<br />
+<b></b>The first case can only happen if the activation point of T is not reached due to an exception being raised or a task or statement being aborted. Note that this is exclusive; if the master completes normally and starts finalization, we're already past the activation point.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -127,7 +127,7 @@ NOTE 3   A task can become completed during its activation either because of an 
 #### Examples
 
 <MarginText>10</MarginText>
-<p><em>Example of task activation:</em> <br /></p>
+<p><i>Example of task activation:</i> <br /></p>
 
 <MarginText>11</MarginText>
 <CodeBlock language="ada">
@@ -142,7 +142,7 @@ procedure P is{"\n"}   A, B : Server;    --  elaborate the task objects A, B{"\n
 <AnnotatedOnly>
 <MarginText>11.a</MarginText>
 <Admonition type="aarm" aarm="note">
-We have replaced the term <em>suspended</em> with <em>blocked</em>, since we didn't want to consider a task blocked when it was simply competing for execution resources. "Suspended" is sometimes used more generally to refer to tasks that are not actually running on some processor, due to the lack of resources.<br />
+We have replaced the term <i>suspended</i> with <i>blocked</i>, since we didn't want to consider a task blocked when it was simply competing for execution resources. "Suspended" is sometimes used more generally to refer to tasks that are not actually running on some processor, due to the lack of resources.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -176,7 +176,7 @@ Adjusted the wording for activating tasks to handle the case of anonymous functi
 <MarginText>11.d/3</MarginText>
 <MarginInfo items={["AI05-0045-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Corrected the wording that handles tasks that are never activated to ensure that no lookahead is implied and to make it clear that tasks created by return statements that never return are never activated. <br />
+<b></b> Corrected the wording that handles tasks that are never activated to ensure that no lookahead is implied and to make it clear that tasks created by return statements that never return are never activated. <br />
 </Admonition>
 </AnnotatedOnly>
 

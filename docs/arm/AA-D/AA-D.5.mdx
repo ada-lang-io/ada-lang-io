@@ -2,7 +2,7 @@
 sidebar_position:  159
 ---
 
-# D.5 Dynamic Priorities
+# D.5. Dynamic Priorities
 
 :::danger
 This Reference Manual output has not been verified,
@@ -71,7 +71,7 @@ end Ada.Dynamic{"_"}Priorities;{"\n"}
 <AnnotatedOnly>
 <MarginText>8.a_D.5.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>There is no harm in setting the priority of a terminated task. A previous version of Ada 9X made this a run-time error. However, there is little difference between setting the priority of a terminated task, and setting the priority of a task that is about to terminate very soon; neither case should be an error. Furthermore, the runtime check is not necessarily feasible to implement on all systems, since priority changes might be deferred due to inter-processor communication overhead, so the error might not be detected until after Set{"_"}Priority has returned.<br />
+<b></b>There is no harm in setting the priority of a terminated task. A previous version of Ada 9X made this a run-time error. However, there is little difference between setting the priority of a terminated task, and setting the priority of a task that is about to terminate very soon; neither case should be an error. Furthermore, the runtime check is not necessarily feasible to implement on all systems, since priority changes might be deferred due to inter-processor communication overhead, so the error might not be detected until after Set{"_"}Priority has returned.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -87,20 +87,20 @@ However, we wish to allow implementations to avoid storing &ldquo;extra&rdquo; i
 
 <MarginText>10/2_D.5.1</MarginText>
 <MarginInfo items={["AI95-00188-02"]} />
-<p>On a system with a single processor, the setting of the base priority of a task <em>T</em> to the new value occurs immediately at the first point when <em>T</em> is outside the execution of a protected action.<br /></p>
+<p>On a system with a single processor, the setting of the base priority of a task <i>T</i> to the new value occurs immediately at the first point when <i>T</i> is outside the execution of a protected action.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>10.a/2_D.5.1</MarginText>
 <MarginInfo items={["AI95-00188-02"]} />
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>The priority change is immediate if the target task is on a delay queue or a ready queue outside of a protected action. However, consider when Set{"_"}Priority is called by a task T1 to set the priority of T2, if T2 is blocked, waiting on an entry call queued on a protected object, the entry queue needs to be reordered. Since T1 might have a priority that is higher than the ceiling of the protected object, T1 cannot, in general, do the reordering. One way to implement this is to wake T2 up and have T2 do the work. This is similar to the disentangling of queues that needs to happen when a high-priority task aborts a lower-priority task, which might have a call queued on a protected object with a low ceiling. We have an Implementation Permission in <a href="/docs/arm/AA-D/AA-D.4">D.4</a> to allow this implementation. We could have required an immediate priority change if on a ready queue during a protected action, but that would have required extra checks for ceiling violations to meet Bounded (Run-Time) Error requirements of <a href="/docs/arm/AA-D/AA-D.3">D.3</a> and potentially could cause a protected action to be abandoned in the middle (by raising Program{"_"}Error). That seems bad. <br />
+<b></b>The priority change is immediate if the target task is on a delay queue or a ready queue outside of a protected action. However, consider when Set{"_"}Priority is called by a task T1 to set the priority of T2, if T2 is blocked, waiting on an entry call queued on a protected object, the entry queue needs to be reordered. Since T1 might have a priority that is higher than the ceiling of the protected object, T1 cannot, in general, do the reordering. One way to implement this is to wake T2 up and have T2 do the work. This is similar to the disentangling of queues that needs to happen when a high-priority task aborts a lower-priority task, which might have a call queued on a protected object with a low ceiling. We have an Implementation Permission in <a href="/docs/arm/AA-D/AA-D.4">D.4</a> to allow this implementation. We could have required an immediate priority change if on a ready queue during a protected action, but that would have required extra checks for ceiling violations to meet Bounded (Run-Time) Error requirements of <a href="/docs/arm/AA-D/AA-D.3">D.3</a> and potentially could cause a protected action to be abandoned in the middle (by raising Program{"_"}Error). That seems bad. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>10.b_D.5.1</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>A previous version of Ada 9X made it a run-time error for a high-priority task to set the priority of a lower-priority task that has a queued call on a protected object with a low ceiling. This was changed because: <br />
+<b></b>A previous version of Ada 9X made it a run-time error for a high-priority task to set the priority of a lower-priority task that has a queued call on a protected object with a low ceiling. This was changed because: <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -112,7 +112,7 @@ However, we wish to allow implementations to avoid storing &ldquo;extra&rdquo; i
 <li>The runtime check would tend to cause intermittent system failures &mdash; how is the caller supposed to know whether the other task happens to have a queued call at any given time? Consider for example an interrupt that needs to trigger a priority change in some task. The interrupt handler could not safely call Set{"_"}Priority without knowing exactly what the other task is doing, or without severely restricting the ceilings used in the system. If the interrupt handler wants to hand the job off to a third task whose job is to call Set{"_"}Priority, this won't help, because one would normally want the third task to have high priority. <br /></li>
 </ul>
 </AnnotatedOnly>
-<p><em>Paragraph 11 was deleted.</em> <br /></p>
+<p><i>Paragraph 11 was deleted.</i> <br /></p>
 
 
 #### Erroneous Execution
@@ -123,7 +123,7 @@ However, we wish to allow implementations to avoid storing &ldquo;extra&rdquo; i
 <AnnotatedOnly>
 <MarginText>12.a_D.5.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Note that this rule overrides the above rule saying that Program{"_"}Error is raised on Get{"_"}Priority of a terminated task. If the task object still exists, and the task is terminated, Get{"_"}Priority raises Program{"_"}Error. However, if the task object no longer exists, calling Get{"_"}Priority causes erroneous execution. <br />
+<b></b>Note that this rule overrides the above rule saying that Program{"_"}Error is raised on Get{"_"}Priority of a terminated task. If the task object still exists, and the task is terminated, Get{"_"}Priority raises Program{"_"}Error. However, if the task object no longer exists, calling Get{"_"}Priority causes erroneous execution. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -137,7 +137,7 @@ However, we wish to allow implementations to avoid storing &ldquo;extra&rdquo; i
 <AnnotatedOnly>
 <MarginText>12.a.1/2_D.5.1</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>Any conditions that cause the completion of the setting of the priority of a task to be delayed for a multiprocessor.<br />
+<b>Documentation Requirement: </b>Any conditions that cause the completion of the setting of the priority of a task to be delayed for a multiprocessor.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -154,7 +154,7 @@ However, we wish to allow implementations to avoid storing &ldquo;extra&rdquo; i
 <AnnotatedOnly>
 <MarginText>14.a/2_D.5.1</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>The metrics for Set{"_"}Priority.<br />
+<b>Documentation Requirement: </b>The metrics for Set{"_"}Priority.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -183,7 +183,7 @@ NOTE 3   The effect of two or more Set{"_"}Priority calls executed in parallel o
 <AnnotatedOnly>
 <MarginText>17.a_D.5.1</MarginText>
 <Admonition type="aarm" aarm="proof">
-<strong></strong>This follows from the general reentrancy requirements stated near the beginning of <a href="/docs/arm/AA-A/">Annex A</a>, &ldquo;<a href="/docs/arm/AA-A/">Predefined Language Environment</a>&rdquo;. <br />
+<b></b>This follows from the general reentrancy requirements stated near the beginning of <a href="/docs/arm/AA-A/">Annex A</a>, &ldquo;<a href="/docs/arm/AA-A/">Predefined Language Environment</a>&rdquo;. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -212,7 +212,7 @@ NOTE 5   Changing the priorities of a set of tasks can be performed by a series 
 <MarginText>19.a/2_D.5.1</MarginText>
 <MarginInfo items={["AI95-00188-02"]} />
 <Admonition type="aarm" aarm="correction">
-<strong>Amendment </strong> Priority changes are now required to be done immediately so long as the target task is not on an entry queue.<br />
+<b>Amendment </b> Priority changes are now required to be done immediately so long as the target task is not on an entry queue.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -287,11 +287,11 @@ The bounded error for the priority of a task being higher than the ceiling of an
 
 <MarginText>5/3_D.5.2</MarginText>
 <MarginInfo items={["AI95-00327-01", "AI05-0264-1"]} />
-<p>If the locking policy Ceiling{"_"}Locking (see <a href="/docs/arm/AA-D/AA-D.3">D.3</a>) is in effect, then the ceiling priority of a protected object <em>P</em> is set to the value of <em>P</em>'Priority at the end of each protected action of <em>P</em>.<br /></p>
+<p>If the locking policy Ceiling{"_"}Locking (see <a href="/docs/arm/AA-D/AA-D.3">D.3</a>) is in effect, then the ceiling priority of a protected object <i>P</i> is set to the value of <i>P</i>'Priority at the end of each protected action of <i>P</i>.<br /></p>
 
 <MarginText>6/3_D.5.2</MarginText>
 <MarginInfo items={["AI95-00445-01", "AI05-0229-1"]} />
-<p>If the locking policy Ceiling{"_"}Locking is in effect, then for a protected object <em>P</em> with either an Attach{"_"}Handler or Interrupt{"_"}Handler aspect specified for one of its procedures, a check is made that the value to be assigned to <em>P</em>'Priority is in the range System.Interrupt{"_"}Priority. If the check fails, Program{"_"}Error is raised. <br /></p>
+<p>If the locking policy Ceiling{"_"}Locking is in effect, then for a protected object <i>P</i> with either an Attach{"_"}Handler or Interrupt{"_"}Handler aspect specified for one of its procedures, a check is made that the value to be assigned to <i>P</i>'Priority is in the range System.Interrupt{"_"}Priority. If the check fails, Program{"_"}Error is raised. <br /></p>
 
 
 #### Metrics
@@ -314,7 +314,7 @@ protected body P is{"\n"}   procedure Do{"_"}Not{"_"}Set{"_"}Ceiling (Pr : Syste
 <AnnotatedOnly>
 <MarginText>10.a/2_D.5.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>The metrics for setting the priority of a protected object.<br />
+<b>Documentation Requirement: </b>The metrics for setting the priority of a protected object.<br />
 </Admonition>
 </AnnotatedOnly>
 

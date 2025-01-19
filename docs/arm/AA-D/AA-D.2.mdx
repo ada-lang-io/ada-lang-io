@@ -2,7 +2,7 @@
 sidebar_position:  156
 ---
 
-# D.2 Priority Scheduling
+# D.2. Priority Scheduling
 
 :::danger
 This Reference Manual output has not been verified,
@@ -75,7 +75,7 @@ package Ada.Dispatching{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in 
 <AnnotatedOnly>
 <MarginText>1.a/5_D.2.1</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Yield: </strong>Ensures that a callable entity includes a task dispatching point.<br />
+<b>Aspect Description for </b><b>Yield: </b>Ensures that a callable entity includes a task dispatching point.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -84,7 +84,7 @@ package Ada.Dispatching{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in 
 <dd>If directly specified, the <code><a href="/docs/arm/AA-13/AA-13.1#S0348">aspect_definition</a></code> shall be a static expression. If not specified (including by inheritance), the aspect is False.<br /></dd>
 <MarginText>1.9/5_D.2.1</MarginText>
 <MarginInfo items={["AI12-0279-1", "AI12-0294-1"]} />
-<dd>If a Yield aspect is specified True for a primitive subprogram <em>S</em> of a type <em>T</em>, then the aspect is inherited by the corresponding primitive subprogram of each descendant of <em>T</em>. <br /></dd>
+<dd>If a Yield aspect is specified True for a primitive subprogram <i>S</i> of a type <i>T</i>, then the aspect is inherited by the corresponding primitive subprogram of each descendant of <i>T</i>. <br /></dd>
 </dl>
 
 #### Legality Rules
@@ -101,7 +101,7 @@ package Ada.Dispatching{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in 
 <MarginText>1.b/5_D.2.1</MarginText>
 <MarginInfo items={["AI12-0294-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The second sentence here is an assume-the-worst rule. The only Nonblocking attributes that are nonstatic are those that depend, directly or indirectly, on the nonblocking aspect of a generic formal parameter. We have to assume these might in fact have the value True if given an appropriate actual entity. <br />
+<b></b>The second sentence here is an assume-the-worst rule. The only Nonblocking attributes that are nonstatic are those that depend, directly or indirectly, on the nonblocking aspect of a generic formal parameter. We have to assume these might in fact have the value True if given an appropriate actual entity. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -114,7 +114,7 @@ package Ada.Dispatching{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in 
 
 <MarginText>2/5_D.2.1</MarginText>
 <MarginInfo items={["AI95-00321-01", "AI12-0454-1"]} />
-<p>A task can become a <em>running task</em> only if it is ready (see Clause <a href="/docs/arm/AA-9/">9</a>) and the execution resources required by that task are available. Processors are allocated to tasks based on each task's active priority.<br /></p>
+<p>A task can become a <i>running task</i> only if it is ready (see Clause <a href="/docs/arm/AA-9/">9</a>) and the execution resources required by that task are available. Processors are allocated to tasks based on each task's active priority.<br /></p>
 
 <MarginText>3_D.2.1</MarginText>
 <p>It is implementation defined whether, on a multiprocessor, a task that is waiting for access to a protected object keeps its processor busy. <br /></p>
@@ -122,40 +122,40 @@ package Ada.Dispatching{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in 
 <AnnotatedOnly>
 <MarginText>3.a_D.2.1</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>Whether, on a multiprocessor, a task that is waiting for access to a protected object keeps its processor busy.<br />
+<b></b>Whether, on a multiprocessor, a task that is waiting for access to a protected object keeps its processor busy.<br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>4/5_D.2.1</MarginText>
 <MarginInfo items={["AI95-00321-01", "AI12-0119-1"]} />
-<p><em>Task dispatching</em> is the process by which a logical thread of control associated with a ready task is selected for execution on a processor. This selection is done during the execution of such a logical thread of control, at certain points called <em>task dispatching points</em>. Such a logical thread of control reaches a task dispatching point whenever it becomes blocked, and when its associated task terminates. [Other task dispatching points are defined throughout this Annex for specific policies.] Below we talk in terms of tasks, but in the context of a parallel construct, a single task can be represented by multiple logical threads of control, each of which can appear separately on a ready queue. <br /></p>
+<p><i>Task dispatching</i> is the process by which a logical thread of control associated with a ready task is selected for execution on a processor. This selection is done during the execution of such a logical thread of control, at certain points called <i>task dispatching points</i>. Such a logical thread of control reaches a task dispatching point whenever it becomes blocked, and when its associated task terminates. [Other task dispatching points are defined throughout this Annex for specific policies.] Below we talk in terms of tasks, but in the context of a parallel construct, a single task can be represented by multiple logical threads of control, each of which can appear separately on a ready queue. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>4.a_D.2.1</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>On multiprocessor systems, more than one task can be chosen, at the same time, for execution on more than one processor, as explained below. <br />
+<b></b>On multiprocessor systems, more than one task can be chosen, at the same time, for execution on more than one processor, as explained below. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>5/2_D.2.1</MarginText>
 <MarginInfo items={["AI95-00321-01"]} />
-<p><em>Task dispatching policies</em> are specified in terms of conceptual <em>ready queues</em> and task states. A ready queue is an ordered list of ready tasks. The first position in a queue is called the <em>head of the queue</em>, and the last position is called the <em>tail of the queue</em>. A task is <em>ready</em> if it is in a ready queue, or if it is running. Each processor has one ready queue for each priority value. At any instant, each ready queue of a processor contains exactly the set of tasks of that priority that are ready for execution on that processor, but are not running on any processor; that is, those tasks that are ready, are not running on any processor, and can be executed using that processor and other available resources. A task can be on the ready queues of more than one processor. <br /></p>
+<p><i>Task dispatching policies</i> are specified in terms of conceptual <i>ready queues</i> and task states. A ready queue is an ordered list of ready tasks. The first position in a queue is called the <i>head of the queue</i>, and the last position is called the <i>tail of the queue</i>. A task is <i>ready</i> if it is in a ready queue, or if it is running. Each processor has one ready queue for each priority value. At any instant, each ready queue of a processor contains exactly the set of tasks of that priority that are ready for execution on that processor, but are not running on any processor; that is, those tasks that are ready, are not running on any processor, and can be executed using that processor and other available resources. A task can be on the ready queues of more than one processor. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>5.a_D.2.1</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The core language defines a ready task as one that is not blocked. Here we refine this definition and talk about ready queues. <br />
+<b></b>The core language defines a ready task as one that is not blocked. Here we refine this definition and talk about ready queues. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>6/2_D.2.1</MarginText>
 <MarginInfo items={["AI95-00321-01"]} />
-<p>Each processor also has one <em>running task</em>, which is the task currently being executed by that processor. Whenever a task running on a processor reaches a task dispatching point it goes back to one or more ready queues; a task (possibly the same task) is then selected to run on that processor. The task selected is the one at the head of the highest priority nonempty ready queue; this task is then removed from all ready queues to which it belongs. <br /></p>
+<p>Each processor also has one <i>running task</i>, which is the task currently being executed by that processor. Whenever a task running on a processor reaches a task dispatching point it goes back to one or more ready queues; a task (possibly the same task) is then selected to run on that processor. The task selected is the one at the head of the highest priority nonempty ready queue; this task is then removed from all ready queues to which it belongs. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>6.a_D.2.1</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>There is always at least one task to run, if we count the idle task. <br />
+<b></b>There is always at least one task to run, if we count the idle task. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -166,7 +166,7 @@ package Ada.Dispatching{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in 
 <AnnotatedOnly>
 <MarginText>7.a/2_D.2.1</MarginText>
 <Admonition type="aarm" aarm="note">
-<em>This paragraph was deleted.</em><br />
+<i>This paragraph was deleted.</i><br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -177,7 +177,7 @@ package Ada.Dispatching{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in 
 <AnnotatedOnly>
 <MarginText>8.a/2_D.2.1</MarginText>
 <Admonition type="aarm" aarm="note">
-<em>This paragraph was deleted.</em><br />
+<i>This paragraph was deleted.</i><br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -191,7 +191,7 @@ package Ada.Dispatching{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in 
 <AnnotatedOnly>
 <MarginText>9.a/2_D.2.1</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The effect of implementation-defined execution resources on task dispatching.<br />
+<b></b>The effect of implementation-defined execution resources on task dispatching.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -202,7 +202,7 @@ package Ada.Dispatching{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in 
 <MarginText>10.a/3_D.2.1</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>For example, on some operating systems, it might be necessary to disallow them altogether. This permission applies to tasks whose priority is set to interrupt level for any reason: via an aspect, via a call to Dynamic{"_"}Priorities.Set{"_"}Priority, or via priority inheritance. <br />
+<b></b>For example, on some operating systems, it might be necessary to disallow them altogether. This permission applies to tasks whose priority is set to interrupt level for any reason: via an aspect, via a call to Dynamic{"_"}Priorities.Set{"_"}Priority, or via priority inheritance. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -214,7 +214,7 @@ package Ada.Dispatching{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in 
 <MarginText>10.b/5_D.2.1</MarginText>
 <MarginInfo items={["AI12-0299-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This permission is intended to allow the implementation of Ada tasks in terms of target system threads, which may have additional conditions that cause task dispatching. For instance, for Linux threads, page faults are task dispatching points. <br />
+<b></b>This permission is intended to allow the implementation of Ada tasks in terms of target system threads, which may have additional conditions that cause task dispatching. For instance, for Linux threads, page faults are task dispatching points. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -222,7 +222,7 @@ package Ada.Dispatching{"\n"}  with Preelaborate, Nonblocking, Global ={">"} in 
 <MarginText>10.c/5_D.2.1</MarginText>
 <MarginInfo items={["AI12-0299-1"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The Non{"_"}Preemptive{"_"}FIFO{"_"}Within{"_"}Priorities task dispatching policy (see <a href="/docs/arm/AA-D/AA-D.2#Subclause_D.2.4">D.2.4</a>) does not allow additional task dispatching points. <br />
+<b></b>The Non{"_"}Preemptive{"_"}FIFO{"_"}Within{"_"}Priorities task dispatching policy (see <a href="/docs/arm/AA-D/AA-D.2#Subclause_D.2.4">D.2.4</a>) does not allow additional task dispatching points. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -299,7 +299,7 @@ This description is simplified to describe only the parts of the dispatching mod
 <MarginText>17.b/3_D.2.1</MarginText>
 <MarginInfo items={["AI05-0166-1"]} />
 <Admonition type="aarm" aarm="note">
-Procedure Yield is added to Dispatching. If Dispatching is referenced in a <code><a href="/docs/arm/AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <em>E</em> with a <code><a href="/docs/arm/AA-3/AA-3.1#S0022">defining_identifier</a></code> of Yield is defined in a package that is also referenced in a <code><a href="/docs/arm/AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <em>E</em> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur.<br />
+Procedure Yield is added to Dispatching. If Dispatching is referenced in a <code><a href="/docs/arm/AA-8/AA-8.4#S0235">use_clause</a></code>, and an entity <i>E</i> with a <code><a href="/docs/arm/AA-3/AA-3.1#S0022">defining_identifier</a></code> of Yield is defined in a package that is also referenced in a <code><a href="/docs/arm/AA-8/AA-8.4#S0235">use_clause</a></code>, the entity <i>E</i> may no longer be use-visible, resulting in errors. This should be rare and is easily fixed if it does occur.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -320,7 +320,7 @@ Package Dispatching was a Pure package, but now is Preelaborated with the additi
 <MarginText>17.d/5_D.2.1</MarginText>
 <MarginInfo items={["AI12-0299-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Substantially reduced the Implementation Permission that used to allow &ldquo;altering&rdquo; task dispatching points to only allow adding task dispatching points. If an implementation was using this permission to remove task dispatching points, and a program depended on that behavior to work, it could fail when used with Ada 2022. We are not aware of any such implementations, and such behavior was never portable to other implementations, so we do not expect this to matter in practice. <br />
+<b></b> Substantially reduced the Implementation Permission that used to allow &ldquo;altering&rdquo; task dispatching points to only allow adding task dispatching points. If an implementation was using this permission to remove task dispatching points, and a program depended on that behavior to work, it could fail when used with Ada 2022. We are not aware of any such implementations, and such behavior was never portable to other implementations, so we do not expect this to matter in practice. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -365,43 +365,43 @@ Redid the description of task dispatching to include the separate threads of con
 <p class="Indented2">The form of a <code><a href="/docs/arm/AA-2/AA-2.8#S0019">pragma</a></code> Task{"_"}Dispatching{"_"}Policy is as follows: <br /></p>
 
 <MarginText>2_D.2.2</MarginText>
-<p class="Indented2">  <strong>pragma</strong> Task{"_"}Dispatching{"_"}Policy(<em>policy{"_"}</em><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code>);<br /></p>
+<p class="Indented2">  <b>pragma</b> Task{"_"}Dispatching{"_"}Policy(<i>policy{"_"}</i><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code>);<br /></p>
 
 <MarginText>2.1/2_D.2.2</MarginText>
 <MarginInfo items={["AI95-00355-01"]} />
 <p class="Indented2">The form of a <code><a href="/docs/arm/AA-2/AA-2.8#S0019">pragma</a></code> Priority{"_"}Specific{"_"}Dispatching is as follows: <br /></p>
 
 <MarginText>2.2/2_D.2.2</MarginText>
-<p class="Indented2">  <strong>pragma</strong> Priority{"_"}Specific{"_"}Dispatching (<br />     <em>policy{"_"}</em><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code>, <em>first{"_"}priority{"_"}</em><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code>, <em>last{"_"}priority{"_"}</em><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code>);<br /></p>
+<p class="Indented2">  <b>pragma</b> Priority{"_"}Specific{"_"}Dispatching (<br />     <i>policy{"_"}</i><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code>, <i>first{"_"}priority{"_"}</i><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code>, <i>last{"_"}priority{"_"}</i><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code>);<br /></p>
 
 
 #### Name Resolution Rules
 
 <MarginText>2.3/2_D.2.2</MarginText>
 <MarginInfo items={["AI95-00355-01"]} />
-<p>The expected type for <em>first{"_"}priority{"_"}</em><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code> and <em>last{"_"}priority{"_"}</em><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code> is Integer. <br /></p>
+<p>The expected type for <i>first{"_"}priority{"_"}</i><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code> and <i>last{"_"}priority{"_"}</i><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code> is Integer. <br /></p>
 
 
 #### Legality Rules
 
 <MarginText>3/2_D.2.2</MarginText>
 <MarginInfo items={["AI95-00321-01", "AI95-00355-01"]} />
-<p>The <em>policy{"_"}</em><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> used in a <code><a href="/docs/arm/AA-2/AA-2.8#S0019">pragma</a></code> Task{"_"}Dispatching{"_"}Policy shall be the name of a task dispatching policy. <br /></p>
+<p>The <i>policy{"_"}</i><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> used in a <code><a href="/docs/arm/AA-2/AA-2.8#S0019">pragma</a></code> Task{"_"}Dispatching{"_"}Policy shall be the name of a task dispatching policy. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>3.a/2_D.2.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<em>This paragraph was deleted.</em><br />
+<i>This paragraph was deleted.</i><br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>3.1/2_D.2.2</MarginText>
 <MarginInfo items={["AI95-00355-01"]} />
-<p>The <em>policy{"_"}</em><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> used in a <code><a href="/docs/arm/AA-2/AA-2.8#S0019">pragma</a></code> Priority{"_"}Specific{"_"}Dispatching shall be the name of a task dispatching policy.<br /></p>
+<p>The <i>policy{"_"}</i><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> used in a <code><a href="/docs/arm/AA-2/AA-2.8#S0019">pragma</a></code> Priority{"_"}Specific{"_"}Dispatching shall be the name of a task dispatching policy.<br /></p>
 
 <MarginText>3.2/2_D.2.2</MarginText>
 <MarginInfo items={["AI95-00355-01"]} />
-<p>Both <em>first{"_"}priority{"_"}</em><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code> and <em>last{"_"}priority{"_"}</em><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code> shall be static expressions in the range of System.Any{"_"}Priority; <em>last{"_"}priority{"_"}</em><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code> shall have a value greater than or equal to <em>first{"_"}priority{"_"}</em><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code>.<br /></p>
+<p>Both <i>first{"_"}priority{"_"}</i><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code> and <i>last{"_"}priority{"_"}</i><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code> shall be static expressions in the range of System.Any{"_"}Priority; <i>last{"_"}priority{"_"}</i><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code> shall have a value greater than or equal to <i>first{"_"}priority{"_"}</i><code><a href="/docs/arm/AA-4/AA-4.4#S0132">expression</a></code>.<br /></p>
 
 
 #### Static Semantics
@@ -418,7 +418,7 @@ Redid the description of task dispatching to include the separate threads of con
 <MarginText>3.b/2_D.2.2</MarginText>
 <MarginInfo items={["AI95-00355-01"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>Each ready queue is managed by exactly one policy. Anything else would be chaos. The ready queue is determined by the active priority. However, how the active priority is calculated is determined by the policy; in order to break out of this circle, we have to say that the active priority is calculated by the method determined by the policy of the base priority. <br />
+<b></b>Each ready queue is managed by exactly one policy. Anything else would be chaos. The ready queue is determined by the active priority. However, how the active priority is calculated is determined by the policy; in order to break out of this circle, we have to say that the active priority is calculated by the method determined by the policy of the base priority. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -443,14 +443,14 @@ Redid the description of task dispatching to include the separate threads of con
 
 <MarginText>5/2_D.2.2</MarginText>
 <MarginInfo items={["AI95-00333-01"]} />
-<p><em>This paragraph was deleted.</em><br /></p>
+<p><i>This paragraph was deleted.</i><br /></p>
 
 
 #### Dynamic Semantics
 
 <MarginText>6/2_D.2.2</MarginText>
 <MarginInfo items={["AI95-00355-01"]} />
-<p>[A <em>task dispatching policy</em> specifies the details of task dispatching that are not covered by the basic task dispatching model. These rules govern when tasks are inserted into and deleted from the ready queues.] A single task dispatching policy is specified by a Task{"_"}Dispatching{"_"}Policy pragma. Pragma Priority{"_"}Specific{"_"}Dispatching assigns distinct dispatching policies to subranges of System.Any{"_"}Priority.<br /></p>
+<p>[A <i>task dispatching policy</i> specifies the details of task dispatching that are not covered by the basic task dispatching model. These rules govern when tasks are inserted into and deleted from the ready queues.] A single task dispatching policy is specified by a Task{"_"}Dispatching{"_"}Policy pragma. Pragma Priority{"_"}Specific{"_"}Dispatching assigns distinct dispatching policies to subranges of System.Any{"_"}Priority.<br /></p>
 
 <MarginText>6.1/2_D.2.2</MarginText>
 <MarginInfo items={["AI95-00355-01"]} />
@@ -464,7 +464,7 @@ Redid the description of task dispatching to include the separate threads of con
 <MarginText>6.a/3_D.2.2</MarginText>
 <MarginInfo items={["AI05-0005-1"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>If we have priority specific dispatching then we want preemption across the entire range of priorities. That prevents higher priority tasks from being blocked by lower priority tasks that have a different policy. On the other hand, if we have a single policy for the entire partition, we want the characteristics of that policy to apply for preemption; specifically, we might not require any preemption. Note that policy Non{"_"}Preemptive{"_"}FIFO{"_"}Within{"_"}Priorities is not allowed in a priority specific dispatching pragma. <br />
+<b></b>If we have priority specific dispatching then we want preemption across the entire range of priorities. That prevents higher priority tasks from being blocked by lower priority tasks that have a different policy. On the other hand, if we have a single policy for the entire partition, we want the characteristics of that policy to apply for preemption; specifically, we might not require any preemption. Note that policy Non{"_"}Preemptive{"_"}FIFO{"_"}Within{"_"}Priorities is not allowed in a priority specific dispatching pragma. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -475,11 +475,11 @@ Redid the description of task dispatching to include the separate threads of con
 <AnnotatedOnly>
 <MarginText>6.b/2_D.2.2</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Once subject to the new dispatching policy, it may be immediately preempted or dispatched, according the rules of the new policy. <br />
+<b></b>Once subject to the new dispatching policy, it may be immediately preempted or dispatched, according the rules of the new policy. <br />
 </Admonition>
 </AnnotatedOnly>
 
-<p><em>Paragraphs 7 through 13 were moved to D.2.3.</em> <br /></p>
+<p><i>Paragraphs 7 through 13 were moved to D.2.3.</i> <br /></p>
 
 
 #### Implementation Requirements
@@ -491,12 +491,12 @@ Redid the description of task dispatching to include the separate threads of con
 
 #### Documentation Requirements
 
-<p><em>Paragraphs 14 through 16 were moved to D.2.3.</em> <br /></p>
+<p><i>Paragraphs 14 through 16 were moved to D.2.3.</i> <br /></p>
 
 <AnnotatedOnly>
 <MarginText>16.a/2_D.2.2</MarginText>
 <Admonition type="aarm" aarm="note">
-<em>This paragraph was deleted.</em><br />
+<i>This paragraph was deleted.</i><br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -514,13 +514,13 @@ Redid the description of task dispatching to include the separate threads of con
 <AnnotatedOnly>
 <MarginText>18.a/2_D.2.2</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>Implementation defined task dispatching policies.<br />
+<b></b>Implementation defined task dispatching policies.<br />
 </Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <Admonition type="aarm" aarm="note">
-<em>Paragraphs 19 through 21 were deleted.</em> <br />
+<i>Paragraphs 19 through 21 were deleted.</i> <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -533,7 +533,7 @@ Redid the description of task dispatching to include the separate threads of con
 <MarginText>21.a/2_D.2.2</MarginText>
 <MarginInfo items={["AI95-00333-01"]} />
 <Admonition type="aarm" aarm="correction">
-<strong>Amendment </strong> It is no longer required to specify Ceiling{"_"}Locking with the language-defined task dispatching policies; we only require that implementations <em>allow</em> them to be used together.<br />
+<b>Amendment </b> It is no longer required to specify Ceiling{"_"}Locking with the language-defined task dispatching policies; we only require that implementations <i>allow</i> them to be used together.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -541,7 +541,7 @@ Redid the description of task dispatching to include the separate threads of con
 <MarginText>21.b/3_D.2.2</MarginText>
 <MarginInfo items={["AI95-00355-01", "AI05-0005-1"]} />
 <Admonition type="aarm" aarm="note">
-<strong>Pragma</strong> Priority{"_"}Specific{"_"}Dispatching is new; it allows the specification of different policies for different priorities. <br />
+<b>Pragma</b> Priority{"_"}Specific{"_"}Dispatching is new; it allows the specification of different policies for different priorities. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -579,7 +579,7 @@ This description is simplified to describe only the rules for the Task{"_"}Dispa
 
 <MarginText>2/2_D.2.3</MarginText>
 <MarginInfo items={["AI95-00355-01"]} />
-<p>The <em>policy{"_"}</em><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> FIFO{"_"}Within{"_"}Priorities is a task dispatching policy.<br /></p>
+<p>The <i>policy{"_"}</i><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> FIFO{"_"}Within{"_"}Priorities is a task dispatching policy.<br /></p>
 
 
 #### Dynamic Semantics
@@ -602,7 +602,7 @@ This description is simplified to describe only the rules for the Task{"_"}Dispa
 <AnnotatedOnly>
 <MarginText>7.a/2_D.2.3</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>If the delay does result in blocking, the task moves to the &ldquo;delay queue&rdquo;, not to the ready queue. <br />
+<b></b>If the delay does result in blocking, the task moves to the &ldquo;delay queue&rdquo;, not to the ready queue. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -612,7 +612,7 @@ This description is simplified to describe only the rules for the Task{"_"}Dispa
 
 <MarginText>9/2_D.2.3</MarginText>
 <MarginInfo items={["AI95-00321-01"]} />
-<p>A task dispatching point occurs for the currently running task of a processor whenever there is a nonempty ready queue for that processor with a higher priority than the priority of the running task. The currently running task is said to be <em>preempted</em> and it is added at the head of the ready queue for its active priority.<br /></p>
+<p>A task dispatching point occurs for the currently running task of a processor whenever there is a nonempty ready queue for that processor with a higher priority than the priority of the running task. The currently running task is said to be <i>preempted</i> and it is added at the head of the ready queue for its active priority.<br /></p>
 
 
 #### Implementation Requirements
@@ -624,7 +624,7 @@ This description is simplified to describe only the rules for the Task{"_"}Dispa
 <AnnotatedOnly>
 <MarginText>10.a/2_D.2.3</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This is the preferred combination of the FIFO{"_"}Within{"_"}Priorities policy with a locking policy, and we want that combination to be portable. <br />
+<b></b>This is the preferred combination of the FIFO{"_"}Within{"_"}Priorities policy with a locking policy, and we want that combination to be portable. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -633,7 +633,7 @@ This description is simplified to describe only the rules for the Task{"_"}Dispa
 
 <MarginText>11/2_D.2.3</MarginText>
 <MarginInfo items={["AI95-00321-01"]} />
-<p><em>Priority inversion</em> is the duration for which a task remains at the head of the highest priority nonempty ready queue while the processor executes a lower priority task. The implementation shall document:<br /></p>
+<p><i>Priority inversion</i> is the duration for which a task remains at the head of the highest priority nonempty ready queue while the processor executes a lower priority task. The implementation shall document:<br /></p>
 
 <MarginText>12/2_D.2.3</MarginText>
 <ul>
@@ -642,7 +642,7 @@ This description is simplified to describe only the rules for the Task{"_"}Dispa
 <AnnotatedOnly>
 <MarginText>12.a/2_D.2.3</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>The maximum priority inversion a user task can experience from the implementation.<br />
+<b>Documentation Requirement: </b>The maximum priority inversion a user task can experience from the implementation.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -653,7 +653,7 @@ This description is simplified to describe only the rules for the Task{"_"}Dispa
 <AnnotatedOnly>
 <MarginText>13.a/2_D.2.3</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>The amount of time that a task can be preempted for processing on behalf of lower-priority tasks.<br />
+<b>Documentation Requirement: </b>The amount of time that a task can be preempted for processing on behalf of lower-priority tasks.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -715,7 +715,7 @@ We explicitly defined FIFO{"_"}Within{"_"}Priorities to be a task dispatching po
 
 <MarginText>2/2_D.2.4</MarginText>
 <MarginInfo items={["AI95-00298-01", "AI95-00355-01"]} />
-<p>The <em>policy{"_"}</em><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> Non{"_"}Preemptive{"_"}FIFO{"_"}Within{"_"}Priorities is a task dispatching policy.<br /></p>
+<p>The <i>policy{"_"}</i><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> Non{"_"}Preemptive{"_"}FIFO{"_"}Within{"_"}Priorities is a task dispatching policy.<br /></p>
 
 <MarginText>2.1/3_D.2.4</MarginText>
 <MarginInfo items={["AI05-0166-1"]} />
@@ -734,14 +734,14 @@ package Ada.Dispatching.Non{"_"}Preemptive{"\n"}  with Preelaborate, Nonblocking
 <AnnotatedOnly>
 <MarginText>2.a/3_D.2.4</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>For language-defined policies other than Non{"_"}Preemptive{"_"}FIFO{"_"}Within{"_"}Priorities, a higher priority task should never be on a ready queue while a lower priority task is executed. Thus, for such policies, Yield{"_"}To{"_"}Higher does nothing.<br />
+<b></b>For language-defined policies other than Non{"_"}Preemptive{"_"}FIFO{"_"}Within{"_"}Priorities, a higher priority task should never be on a ready queue while a lower priority task is executed. Thus, for such policies, Yield{"_"}To{"_"}Higher does nothing.<br />
 </Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>2.b/3_D.2.4</MarginText>
 <Admonition type="aarm" aarm="note">
-Yield{"_"}To{"_"}Higher is <em>not</em> a potentially blocking operation; it can be used during a protected operation. That is allowed, as under the predefined Ceiling{"_"}Locking policy any task with a higher priority than the protected operation cannot call the operation (that would violate the locking policy). An implementation-defined locking policy may need to define the semantics of Yield{"_"}To{"_"}Higher differently. <br />
+Yield{"_"}To{"_"}Higher is <i>not</i> a potentially blocking operation; it can be used during a protected operation. That is allowed, as under the predefined Ceiling{"_"}Locking policy any task with a higher priority than the protected operation cannot call the operation (that would violate the locking policy). An implementation-defined locking policy may need to define the semantics of Yield{"_"}To{"_"}Higher differently. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -750,12 +750,12 @@ Yield{"_"}To{"_"}Higher is <em>not</em> a potentially blocking operation; it can
 
 <MarginText>3/2_D.2.4</MarginText>
 <MarginInfo items={["AI95-00355-01"]} />
-<p>Non{"_"}Preemptive{"_"}FIFO{"_"}Within{"_"}Priorities shall not be specified as the <em>policy{"_"}</em><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> of <code><a href="/docs/arm/AA-2/AA-2.8#S0019">pragma</a></code> Priority{"_"}Specific{"_"}Dispatching (see <a href="/docs/arm/AA-D/AA-D.2#Subclause_D.2.2">D.2.2</a>).<br /></p>
+<p>Non{"_"}Preemptive{"_"}FIFO{"_"}Within{"_"}Priorities shall not be specified as the <i>policy{"_"}</i><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> of <code><a href="/docs/arm/AA-2/AA-2.8#S0019">pragma</a></code> Priority{"_"}Specific{"_"}Dispatching (see <a href="/docs/arm/AA-D/AA-D.2#Subclause_D.2.2">D.2.2</a>).<br /></p>
 
 <AnnotatedOnly>
 <MarginText>3.a/2_D.2.4</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The non-preemptive nature of this policy could cause the policies of higher priority tasks to malfunction, missing deadlines and having unlimited priority inversion. That would render the use of such policies impotent and misleading. As such, this policy only makes sense for a complete system. <br />
+<b></b>The non-preemptive nature of this policy could cause the policies of higher priority tasks to malfunction, missing deadlines and having unlimited priority inversion. That would render the use of such policies impotent and misleading. As such, this policy only makes sense for a complete system. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -780,7 +780,7 @@ Yield{"_"}To{"_"}Higher is <em>not</em> a potentially blocking operation; it can
 <AnnotatedOnly>
 <MarginText>8.a/2_D.2.4</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>If the delay does result in blocking, the task moves to the &ldquo;delay queue&rdquo;, not to the ready queue. <br />
+<b></b>If the delay does result in blocking, the task moves to the &ldquo;delay queue&rdquo;, not to the ready queue. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -792,7 +792,7 @@ Yield{"_"}To{"_"}Higher is <em>not</em> a potentially blocking operation; it can
 <MarginText>9.a/3_D.2.4</MarginText>
 <MarginInfo items={["AI05-0166-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>A <code><a href="/docs/arm/AA-9/AA-9.6#S0266">delay_statement</a></code> is always a task dispatching point even if it is not blocking. Similarly, a call to Yield{"_"}To{"_"}Higher is never blocking, but it is a task dispatching point In each of these cases, they can cause the current task to stop running (it is still ready). Otherwise, the running task continues to run until it is blocked.<br />
+<b></b>A <code><a href="/docs/arm/AA-9/AA-9.6#S0266">delay_statement</a></code> is always a task dispatching point even if it is not blocking. Similarly, a call to Yield{"_"}To{"_"}Higher is never blocking, but it is a task dispatching point In each of these cases, they can cause the current task to stop running (it is still ready). Otherwise, the running task continues to run until it is blocked.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -814,7 +814,7 @@ This rule supersedes the Implementation Permission of <a href="/docs/arm/AA-D/AA
 <AnnotatedOnly>
 <MarginText>10.a/2_D.2.4</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This is the preferred combination of the Non{"_"}Preemptive{"_"}FIFO{"_"}Within{"_"}Priorities policy with a locking policy, and we want that combination to be portable. <br />
+<b></b>This is the preferred combination of the Non{"_"}Preemptive{"_"}FIFO{"_"}Within{"_"}Priorities policy with a locking policy, and we want that combination to be portable. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -829,7 +829,7 @@ This rule supersedes the Implementation Permission of <a href="/docs/arm/AA-D/AA
 <MarginText>11.a.1/3_D.2.4</MarginText>
 <MarginInfo items={["AI05-0269-1"]} />
 <Admonition type="aarm" aarm="reason">
-<strong></strong>We explicitly require that the ceiling priority be used in calls to Yield{"_"}to{"_"}Higher in order to prevent a risk of priority inversion and consequent loss of mutual exclusion when Yield{"_"}to{"_"}Higher is used in a protected object. This requirement might lessen the value of the permission (as the current Ceiling{"_"}Priority will have to be maintained in the TCB), but loss of mutual exclusion cannot be tolerated. The primary benefit of the permission (eliminating the need for preemption at the end of a protected action) is still available. As noted above, an implementation-defined locking policy will need to specify the semantics of Yield{"_"}to{"_"}Higher, including this case. <br />
+<b></b>We explicitly require that the ceiling priority be used in calls to Yield{"_"}to{"_"}Higher in order to prevent a risk of priority inversion and consequent loss of mutual exclusion when Yield{"_"}to{"_"}Higher is used in a protected object. This requirement might lessen the value of the permission (as the current Ceiling{"_"}Priority will have to be maintained in the TCB), but loss of mutual exclusion cannot be tolerated. The primary benefit of the permission (eliminating the need for preemption at the end of a protected action) is still available. As noted above, an implementation-defined locking policy will need to specify the semantics of Yield{"_"}to{"_"}Higher, including this case. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -872,7 +872,7 @@ Package Dispatching.Non{"_"}Preemptive is new. <br />
 
 <MarginText>2/2_D.2.5</MarginText>
 <MarginInfo items={["AI95-00355-01"]} />
-<p>The <em>policy</em>{"_"}<code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> Round{"_"}Robin{"_"}Within{"_"}Priorities is a task dispatching policy.<br /></p>
+<p>The <i>policy</i>{"_"}<code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> Round{"_"}Robin{"_"}Within{"_"}Priorities is a task dispatching policy.<br /></p>
 
 <MarginText>3/2_D.2.5</MarginText>
 <MarginInfo items={["AI95-00355-01"]} />
@@ -887,7 +887,7 @@ with System;{"\n"}with Ada.Real{"_"}Time;{"\n"}package Ada.Dispatching.Round{"_"
 <AnnotatedOnly>
 <MarginText>4.a.1/2_D.2.5</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>The value of Default{"_"}Quantum in Dispatching.Round{"_"}Robin.<br />
+<b></b>The value of Default{"_"}Quantum in Dispatching.Round{"_"}Robin.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -929,7 +929,7 @@ with System;{"\n"}with Ada.Real{"_"}Time;{"\n"}package Ada.Dispatching.Round{"_"
 <AnnotatedOnly>
 <MarginText>13.a/2_D.2.5</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Note that this happens even when the task is executing at a higher, inherited priority, and even if that higher priority is dispatched by a different policy than round robin. <br />
+<b></b>Note that this happens even when the task is executing at a higher, inherited priority, and even if that higher priority is dispatched by a different policy than round robin. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -940,7 +940,7 @@ with System;{"\n"}with Ada.Real{"_"}Time;{"\n"}package Ada.Dispatching.Round{"_"
 <AnnotatedOnly>
 <MarginText>14.a/2_D.2.5</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>In this case, it will be given a budget as described in the first bullet.<br />
+<b></b>In this case, it will be given a budget as described in the first bullet.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -961,7 +961,7 @@ The rules for FIFO{"_"}Within{"_"}Priority (to which these bullets are added) sa
 <AnnotatedOnly>
 <MarginText>15.a/2_D.2.5</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This is the preferred combination of the Round{"_"}Robin{"_"}Within{"_"}Priorities policy with a locking policy, and we want that combination to be portable. <br />
+<b></b>This is the preferred combination of the Round{"_"}Robin{"_"}Within{"_"}Priorities policy with a locking policy, and we want that combination to be portable. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -975,7 +975,7 @@ The rules for FIFO{"_"}Within{"_"}Priority (to which these bullets are added) sa
 <AnnotatedOnly>
 <MarginText>16.a.1/2_D.2.5</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>The quantum values supported for round robin dispatching.<br />
+<b>Documentation Requirement: </b>The quantum values supported for round robin dispatching.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -986,7 +986,7 @@ The rules for FIFO{"_"}Within{"_"}Priority (to which these bullets are added) sa
 <AnnotatedOnly>
 <MarginText>17.a.1/2_D.2.5</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>The accuracy of the detection of the exhaustion of the budget of a task for round robin dispatching.<br />
+<b>Documentation Requirement: </b>The accuracy of the detection of the exhaustion of the budget of a task for round robin dispatching.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -1035,7 +1035,7 @@ Policy Round{"_"}Robin{"_"}Within{"_"}Priorities and package Dispatching.Round{"
 <MarginText>2.a/5_D.2.6</MarginText>
 <MarginInfo items={["AI05-0229-1", "AI12-0230-1"]} />
 <Admonition type="aarm" aarm="note">
-<em>This paragraph was deleted.</em><br />
+<i>This paragraph was deleted.</i><br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -1046,18 +1046,18 @@ Policy Round{"_"}Robin{"_"}Within{"_"}Priorities and package Dispatching.Round{"
 <MarginText>2.b/5_D.2.6</MarginText>
 <MarginInfo items={["AI95-00357-01", "AI05-0299-1", "AI12-0230-1"]} />
 <Admonition type="aarm" aarm="note">
-<em>This paragraph was deleted.</em><br />
+<i>This paragraph was deleted.</i><br />
 </Admonition>
 </AnnotatedOnly>
 
-<p><em>Paragraphs 3 through 6 were moved to <a href="/docs/arm/AA-J/">Annex J</a>, &ldquo;<a href="/docs/arm/AA-J/">Obsolescent Features</a>&rdquo;.</em> <br /></p>
+<p><i>Paragraphs 3 through 6 were moved to <a href="/docs/arm/AA-J/">Annex J</a>, &ldquo;<a href="/docs/arm/AA-J/">Obsolescent Features</a>&rdquo;.</i> <br /></p>
 
 
 #### Static Semantics
 
 <MarginText>7/5_D.2.6</MarginText>
 <MarginInfo items={["AI95-00357-01", "AI12-0230-1"]} />
-<p>The <em>policy{"_"}</em><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> EDF{"_"}Within{"_"}Priorities is a task dispatching policy.<br /></p>
+<p>The <i>policy{"_"}</i><code><a href="/docs/arm/AA-2/AA-2.3#S0002">identifier</a></code> EDF{"_"}Within{"_"}Priorities is a task dispatching policy.<br /></p>
 
 <MarginText>8/2_D.2.6</MarginText>
 <MarginInfo items={["AI95-00357-01"]} />
@@ -1081,7 +1081,7 @@ with Ada.Real{"_"}Time;{"\n"}with Ada.Task{"_"}Identification;{"\n"}package Ada.
 <AnnotatedOnly>
 <MarginText>9.a/5_D.2.6</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Relative{"_"}Deadline: </strong>Task or protected type parameter used in Earliest Deadline First Dispatching.<br />
+<b>Aspect Description for </b><b>Relative{"_"}Deadline: </b>Task or protected type parameter used in Earliest Deadline First Dispatching.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -1090,7 +1090,7 @@ with Ada.Real{"_"}Time;{"\n"}with Ada.Task{"_"}Identification;{"\n"}package Ada.
 <p>The form of <code><a href="/docs/arm/AA-2/AA-2.8#S0019">pragma</a></code> Generate{"_"}Deadlines is as follows:<br /></p>
 
 <MarginText>9.4/5_D.2.6</MarginText>
-<p>  <strong>pragma</strong> Generate{"_"}Deadlines;<br /></p>
+<p>  <b>pragma</b> Generate{"_"}Deadlines;<br /></p>
 
 <MarginText>9.5/5_D.2.6</MarginText>
 <MarginInfo items={["AI12-0230-1"]} />
@@ -1117,7 +1117,7 @@ with Ada.Real{"_"}Time;{"\n"}with Ada.Task{"_"}Identification;{"\n"}package Ada.
 <AnnotatedOnly>
 <MarginText>11.a/5_D.2.6</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>Unlike the other language-defined dispatching policies, the semantic description of EDF{"_"}Within{"_"}Priorities assumes Ceiling{"_"}Locking (and a ceiling priority) in order to make the mapping between deadlines and priorities work. Thus, we require both policies to be specified if EDF is used in the partition. <br />
+<b></b>Unlike the other language-defined dispatching policies, the semantic description of EDF{"_"}Within{"_"}Priorities assumes Ceiling{"_"}Locking (and a ceiling priority) in order to make the mapping between deadlines and priorities work. Thus, we require both policies to be specified if EDF is used in the partition. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -1139,7 +1139,7 @@ with Ada.Real{"_"}Time;{"\n"}with Ada.Task{"_"}Identification;{"\n"}package Ada.
 <AnnotatedOnly>
 <MarginText>13.a/2_D.2.6</MarginText>
 <Admonition type="aarm" aarm="proof">
-<strong></strong>The environment task is a normal task by <a href="/docs/arm/AA-10/AA-10.2">10.2</a>, so of course this rule applies to it. <br />
+<b></b>The environment task is a normal task by <a href="/docs/arm/AA-10/AA-10.2">10.2</a>, so of course this rule applies to it. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -1149,7 +1149,7 @@ with Ada.Real{"_"}Time;{"\n"}with Ada.Task{"_"}Identification;{"\n"}package Ada.
 
 <MarginText>14/5_D.2.6</MarginText>
 <MarginInfo items={["AI95-00357-01", "AI12-0230-1"]} />
-<p>A task has both an <em>active</em> and a <em>base</em> absolute deadline. These are the same except when the task is inheriting a relative deadline during activation or a rendezvous (see below) or within a protected action (see <a href="/docs/arm/AA-D/AA-D.3">D.3</a>). The procedure Set{"_"}Deadline changes the (base) absolute deadline of the task to D. The function Get{"_"}Deadline returns the (base) absolute deadline of the task.<br /></p>
+<p>A task has both an <i>active</i> and a <i>base</i> absolute deadline. These are the same except when the task is inheriting a relative deadline during activation or a rendezvous (see below) or within a protected action (see <a href="/docs/arm/AA-D/AA-D.3">D.3</a>). The procedure Set{"_"}Deadline changes the (base) absolute deadline of the task to D. The function Get{"_"}Deadline returns the (base) absolute deadline of the task.<br /></p>
 
 <MarginText>14.1/5_D.2.6</MarginText>
 <MarginInfo items={["AI12-0230-1"]} />
@@ -1173,27 +1173,27 @@ with Ada.Real{"_"}Time;{"\n"}with Ada.Task{"_"}Identification;{"\n"}package Ada.
 
 <MarginText>18/5_D.2.6</MarginText>
 <MarginInfo items={["AI95-00357-01", "AI12-0230-1"]} />
-<p>A task dispatching point occurs for the currently running task <em>T</em> to which policy EDF{"_"}Within{"_"}Priorities applies:<br /></p>
+<p>A task dispatching point occurs for the currently running task <i>T</i> to which policy EDF{"_"}Within{"_"}Priorities applies:<br /></p>
 
 <MarginText>19/5_D.2.6</MarginText>
 <MarginInfo items={["AI12-0230-1"]} />
 <ul>
-<li>when a change to the base (absolute) deadline of <em>T</em> occurs;<br /></li>
+<li>when a change to the base (absolute) deadline of <i>T</i> occurs;<br /></li>
 <MarginText>20/5_D.2.6</MarginText>
 <MarginInfo items={["AI12-0230-1"]} />
-<li><em>This paragraph was deleted.</em><br /></li>
+<li><i>This paragraph was deleted.</i><br /></li>
 <MarginText>21/5_D.2.6</MarginText>
 <MarginInfo items={["AI12-0230-1"]} />
 <li>there is a nonempty ready queue for that processor with a higher priority than the active priority of the running task;<br /></li>
 <MarginText>21.1/5_D.2.6</MarginText>
 <MarginInfo items={["AI12-0230-1"]} />
-<li>there is a ready task with the same priority as <em>T</em> but with an earlier absolute deadline.<br /></li>
+<li>there is a ready task with the same priority as <i>T</i> but with an earlier absolute deadline.<br /></li>
 </ul>
 <MarginText>22/5_D.2.6</MarginText>
 <MarginInfo items={["AI12-0230-1"]} />
 <p>In these cases, the currently running task is said to be preempted and is returned to the ready queue for its active priority, at a position determined by its active (absolute) deadline.<br /></p>
 
-<p><em>Paragraphs 23 through 27 were deleted.</em> <br /></p>
+<p><i>Paragraphs 23 through 27 were deleted.</i> <br /></p>
 
 <MarginText>28/5_D.2.6</MarginText>
 <MarginInfo items={["AI95-00357-01", "AI12-0230-1"]} />
@@ -1211,7 +1211,7 @@ with Ada.Real{"_"}Time;{"\n"}with Ada.Task{"_"}Identification;{"\n"}package Ada.
 <MarginInfo items={["AI12-0230-1"]} />
 <p>During activation, a task being activated inherits the deadline that its activator (see <a href="/docs/arm/AA-9/AA-9.2">9.2</a>) had at the time the activation was initiated.<br /></p>
 
-<p><em>Paragraph 30 was deleted.</em> <br /></p>
+<p><i>Paragraph 30 was deleted.</i> <br /></p>
 
 
 #### Erroneous Execution
@@ -1230,7 +1230,7 @@ with Ada.Real{"_"}Time;{"\n"}with Ada.Task{"_"}Identification;{"\n"}package Ada.
 <AnnotatedOnly>
 <MarginText>32.a.1/2_D.2.6</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>Any conditions that cause the completion of the setting of the deadline of a task to be delayed for a multiprocessor.<br />
+<b>Documentation Requirement: </b>Any conditions that cause the completion of the setting of the deadline of a task to be delayed for a multiprocessor.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -1246,7 +1246,7 @@ NOTE   If two distinct priorities are specified to have policy EDF{"_"}Within{"_
 <MarginText>34/5_D.2.6</MarginText>
 <MarginInfo items={["AI95-00357-01", "AI12-0230-1"]} />
 <Admonition type="aarm" aarm="note">
-<em>This paragraph was deleted.</em><br />
+<i>This paragraph was deleted.</i><br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -1254,7 +1254,7 @@ NOTE   If two distinct priorities are specified to have policy EDF{"_"}Within{"_
 <MarginText>34.a/2_D.2.6</MarginText>
 <MarginInfo items={["AI95-00357-01"]} />
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>An implementation may support additional dispatching policies by replacing absolute deadline with an alternative measure of urgency. <br />
+<b></b>An implementation may support additional dispatching policies by replacing absolute deadline with an alternative measure of urgency. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -1293,7 +1293,7 @@ Aspect Relative{"_"}Deadline is new; <code><a href="/docs/arm/AA-2/AA-2.8#S0019"
 <MarginText>34.d/3_D.2.6</MarginText>
 <MarginInfo items={["AI05-0055-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Corrected definition of active priority to avoid deadline inversion in an unusual case. <br />
+<b></b> Corrected definition of active priority to avoid deadline inversion in an unusual case. <br />
 </Admonition>
 </AnnotatedOnly>
 

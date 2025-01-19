@@ -2,7 +2,7 @@
 sidebar_position:  81
 ---
 
-# 9.8 Abort of a Task - Abort of a Sequence of Statements
+# 9.8. Abort of a Task - Abort of a Sequence of Statements
 
 :::danger
 This Reference Manual output has not been verified,
@@ -25,7 +25,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <MarginText>2</MarginText>
 
 <CodeBlock>
-<code>abort{"_"}statement</code><a id="S0284"></a><code> ::= </code><strong>abort</strong> <em>task{"_"}</em><code><a href="/docs/arm/AA-4/AA-4.1#S0091">name</a></code> {"{"}, <em>task{"_"}</em><code><a href="/docs/arm/AA-4/AA-4.1#S0091">name</a></code>{"}"};<br />
+<code>abort{"_"}statement</code><a id="S0284"></a><code> ::= </code><b>abort</b> <i>task{"_"}</i><code><a href="/docs/arm/AA-4/AA-4.1#S0091">name</a></code> {"{"}, <i>task{"_"}</i><code><a href="/docs/arm/AA-4/AA-4.1#S0091">name</a></code>{"}"};<br />
 
 </CodeBlock>
 
@@ -33,24 +33,24 @@ import MarginInfo from "@site/src/components/MarginInfo";
 
 <MarginText>3/5</MarginText>
 <MarginInfo items={["AI12-0444-1"]} />
-<p>Each <em>task{"_"}</em><code><a href="/docs/arm/AA-4/AA-4.1#S0091">name</a></code> is expected to be of any task type[; each can be of a different task type.]<br /></p>
+<p>Each <i>task{"_"}</i><code><a href="/docs/arm/AA-4/AA-4.1#S0091">name</a></code> is expected to be of any task type[; each can be of a different task type.]<br /></p>
 
 
 #### Dynamic Semantics
 
 <MarginText>4</MarginText>
-<p>For the execution of an <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code>, the given <em>task{"_"}</em><code><a href="/docs/arm/AA-4/AA-4.1#S0091">name</a></code>s are evaluated in an arbitrary order. Each named task is then <em>aborted</em>, which consists of making the task <em>abnormal</em> and aborting the execution of the corresponding <code><a href="/docs/arm/AA-9/AA-9.1#S0248">task_body</a></code>, unless it is already completed. <br /></p>
+<p>For the execution of an <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code>, the given <i>task{"_"}</i><code><a href="/docs/arm/AA-4/AA-4.1#S0091">name</a></code>s are evaluated in an arbitrary order. Each named task is then <i>aborted</i>, which consists of making the task <i>abnormal</i> and aborting the execution of the corresponding <code><a href="/docs/arm/AA-9/AA-9.1#S0248">task_body</a></code>, unless it is already completed. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>4.a/2</MarginText>
 <MarginInfo items={["AI95-00114-01"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Note that aborting those tasks is not defined to be an abort-deferred operation. Therefore, if one of the named tasks is the task executing the <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code>, or if the task executing the <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code> depends on one of the named tasks, then it is possible for the execution of the <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code> to be aborted, thus leaving some of the tasks unaborted. This allows the implementation to use either a sequence of calls to an &ldquo;abort task&rdquo; run-time system primitive, or a single call to an &ldquo;abort list of tasks&rdquo; run-time system primitive. <br />
+<b></b>Note that aborting those tasks is not defined to be an abort-deferred operation. Therefore, if one of the named tasks is the task executing the <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code>, or if the task executing the <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code> depends on one of the named tasks, then it is possible for the execution of the <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code> to be aborted, thus leaving some of the tasks unaborted. This allows the implementation to use either a sequence of calls to an &ldquo;abort task&rdquo; run-time system primitive, or a single call to an &ldquo;abort list of tasks&rdquo; run-time system primitive. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>5</MarginText>
-<p>When the execution of a construct is <em>aborted</em> (including that of a <code><a href="/docs/arm/AA-9/AA-9.1#S0248">task{"_"}body</a></code> or of a <code><a href="/docs/arm/AA-5/AA-5.1#S0166">sequence{"_"}of{"_"}statements</a></code>), the execution of every construct included within the aborted execution is also aborted, except for executions included within the execution of an <em>abort-deferred</em> operation; the execution of an abort-deferred operation continues to completion without being affected by the abort; the following are the abort-deferred operations: <br /></p>
+<p>When the execution of a construct is <i>aborted</i> (including that of a <code><a href="/docs/arm/AA-9/AA-9.1#S0248">task{"_"}body</a></code> or of a <code><a href="/docs/arm/AA-5/AA-5.1#S0166">sequence{"_"}of{"_"}statements</a></code>), the execution of every construct included within the aborted execution is also aborted, except for executions included within the execution of an <i>abort-deferred</i> operation; the execution of an abort-deferred operation continues to completion without being affected by the abort; the following are the abort-deferred operations: <br /></p>
 
 <MarginText>6</MarginText>
 <ul>
@@ -72,14 +72,14 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <AnnotatedOnly>
 <MarginText>12.a</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>Deferring abort during Initialize and finalization allows, for example, the result of an allocator performed in an Initialize operation to be assigned into an access object without being interrupted in the middle, which would cause storage leaks. For an object with several controlled parts, each individual Initialize is abort-deferred. Note that there is generally no semantic difference between making each Finalize abort-deferred, versus making a group of them abort-deferred, because if the task gets aborted, the first thing it will do is complete any remaining finalizations. Individual objects are finalized prior to an assignment operation (if nonlimited controlled) and as part of Unchecked{"_"}Deallocation. <br />
+<b></b>Deferring abort during Initialize and finalization allows, for example, the result of an allocator performed in an Initialize operation to be assigned into an access object without being interrupted in the middle, which would cause storage leaks. For an object with several controlled parts, each individual Initialize is abort-deferred. Note that there is generally no semantic difference between making each Finalize abort-deferred, versus making a group of them abort-deferred, because if the task gets aborted, the first thing it will do is complete any remaining finalizations. Individual objects are finalized prior to an assignment operation (if nonlimited controlled) and as part of Unchecked{"_"}Deallocation. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>12.b</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Abort is deferred during the entire assignment operation to an object with a controlled part, even if only some subcomponents are controlled. Note that this says "assignment operation", not "<code><a href="/docs/arm/AA-5/AA-5.2#S0173">assignment_statement</a></code>". Explicit calls to Initialize, Finalize, or Adjust are not abort-deferred. <br />
+<b></b>Abort is deferred during the entire assignment operation to an object with a controlled part, even if only some subcomponents are controlled. Note that this says "assignment operation", not "<code><a href="/docs/arm/AA-5/AA-5.2#S0173">assignment_statement</a></code>". Explicit calls to Initialize, Finalize, or Adjust are not abort-deferred. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -90,7 +90,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <p>The order in which tasks become abnormal as the result of an <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code> or the abort of a <code><a href="/docs/arm/AA-5/AA-5.1#S0166">sequence{"_"}of{"_"}statements</a></code> is not specified by the language.<br /></p>
 
 <MarginText>15</MarginText>
-<p>If the execution of an entry call is aborted, an immediate attempt is made to cancel the entry call (see <a href="/docs/arm/AA-9/AA-9.5#Subclause_9.5.3">9.5.3</a>). If the execution of a construct is aborted at a time when the execution is blocked, other than for an entry call, at a point that is outside the execution of an abort-deferred operation, then the execution of the construct completes immediately. For an abort due to an <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code>, these immediate effects occur before the execution of the <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code> completes. Other than for these immediate cases, the execution of a construct that is aborted does not necessarily complete before the <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code> completes. However, the execution of the aborted construct completes no later than its next <em>abort completion point</em> (if any) that occurs outside of an abort-deferred operation; the following are abort completion points for an execution: <br /></p>
+<p>If the execution of an entry call is aborted, an immediate attempt is made to cancel the entry call (see <a href="/docs/arm/AA-9/AA-9.5#Subclause_9.5.3">9.5.3</a>). If the execution of a construct is aborted at a time when the execution is blocked, other than for an entry call, at a point that is outside the execution of an abort-deferred operation, then the execution of the construct completes immediately. For an abort due to an <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code>, these immediate effects occur before the execution of the <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code> completes. Other than for these immediate cases, the execution of a construct that is aborted does not necessarily complete before the <code><a href="/docs/arm/AA-9/AA-9.8#S0284">abort_statement</a></code> completes. However, the execution of the aborted construct completes no later than its next <i>abort completion point</i> (if any) that occurs outside of an abort-deferred operation; the following are abort completion points for an execution: <br /></p>
 
 <MarginText>16</MarginText>
 <ul>
@@ -109,7 +109,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <AnnotatedOnly>
 <MarginText>18.a</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>Although the abort completion point doesn't occur until the end of the entry call or <code><a href="/docs/arm/AA-9/AA-9.6#S0266">delay_statement</a></code>, these operations might be cut short because an abort attempts to cancel them. <br />
+<b></b>Although the abort completion point doesn't occur until the end of the entry call or <code><a href="/docs/arm/AA-9/AA-9.6#S0266">delay_statement</a></code>, these operations might be cut short because an abort attempts to cancel them. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -120,14 +120,14 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <AnnotatedOnly>
 <MarginText>19.a</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The start of an <code><a href="/docs/arm/AA-11/AA-11.2#S0305">exception_handler</a></code> is considered an abort completion point simply because it is easy for an implementation to check at such points. <br />
+<b></b>The start of an <code><a href="/docs/arm/AA-11/AA-11.2#S0305">exception_handler</a></code> is considered an abort completion point simply because it is easy for an implementation to check at such points. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>19.b</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>Implementations may of course check for abort more often than at each abort completion point; ideally, a fully preemptive implementation of abort will be provided. If preemptive abort is not supported in a given environment, then supporting the checking for abort as part of subprogram calls and loop iterations might be a useful option. <br />
+<b></b>Implementations may of course check for abort more often than at each abort completion point; ideally, a fully preemptive implementation of abort will be provided. If preemptive abort is not supported in a given environment, then supporting the checking for abort as part of subprogram calls and loop iterations might be a useful option. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -141,7 +141,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <AnnotatedOnly>
 <MarginText>20.a</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>An <code><a href="/docs/arm/AA-9/AA-9.7#S0280">asynchronous_select</a></code> relies on an abort of the <code><a href="/docs/arm/AA-9/AA-9.7#S0283">abortable_part</a></code> to effect the asynchronous transfer of control. For an <code><a href="/docs/arm/AA-9/AA-9.7#S0280">asynchronous_select</a></code> within an abort-deferred operation, the abort might have no effect.<br />
+<b></b>An <code><a href="/docs/arm/AA-9/AA-9.7#S0280">asynchronous_select</a></code> relies on an abort of the <code><a href="/docs/arm/AA-9/AA-9.7#S0283">abortable_part</a></code> to effect the asynchronous transfer of control. For an <code><a href="/docs/arm/AA-9/AA-9.7#S0280">asynchronous_select</a></code> within an abort-deferred operation, the abort might have no effect.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -156,7 +156,7 @@ Creating a task dependent on a master included within an abort-deferred operatio
 #### Erroneous Execution
 
 <MarginText>21</MarginText>
-<p>If an assignment operation completes prematurely due to an abort, the assignment is said to be <em>disrupted</em>; the target of the assignment or its parts can become abnormal, and certain subsequent uses of the object can be erroneous, as explained in <a href="/docs/arm/AA-13/AA-13.9#Subclause_13.9.1">13.9.1</a>. <br /></p>
+<p>If an assignment operation completes prematurely due to an abort, the assignment is said to be <i>disrupted</i>; the target of the assignment or its parts can become abnormal, and certain subsequent uses of the object can be erroneous, as explained in <a href="/docs/arm/AA-13/AA-13.9#Subclause_13.9.1">13.9.1</a>. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>22/5</MarginText>

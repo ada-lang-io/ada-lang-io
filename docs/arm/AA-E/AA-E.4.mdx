@@ -2,7 +2,7 @@
 sidebar_position:  175
 ---
 
-# E.4 Remote Subprogram Calls
+# E.4. Remote Subprogram Calls
 
 :::danger
 This Reference Manual output has not been verified,
@@ -18,13 +18,13 @@ import MarginInfo from "@site/src/components/MarginInfo";
 
 <MarginText>1/5</MarginText>
 <MarginInfo items={["AI12-0359-1"]} />
-<p>A <em>remote subprogram call</em> is a subprogram call that invokes the execution of a subprogram in another (active) partition. The partition that originates the remote subprogram call is the <em>calling partition</em>, and the partition that executes the corresponding subprogram body is the <em>called partition</em>. Some remote procedure calls are allowed to return prior to the completion of subprogram execution. These are called <em>asynchronous remote procedure calls</em>.<br /></p>
+<p>A <i>remote subprogram call</i> is a subprogram call that invokes the execution of a subprogram in another (active) partition. The partition that originates the remote subprogram call is the <i>calling partition</i>, and the partition that executes the corresponding subprogram body is the <i>called partition</i>. Some remote procedure calls are allowed to return prior to the completion of subprogram execution. These are called <i>asynchronous remote procedure calls</i>.<br /></p>
 
 <AnnotatedOnly>
 <MarginText>1.a/5</MarginText>
 <MarginInfo items={["AI12-0359-1"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Remote subprogram calls are always between active partitions; a passive partition has no execution resources of its own and thus cannot execute anything, while a remote subprogram call is always executed by the called partition. <br />
+<b></b>Remote subprogram calls are always between active partitions; a passive partition has no execution resources of its own and thus cannot execute anything, while a remote subprogram call is always executed by the called partition. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -40,7 +40,7 @@ import MarginInfo from "@site/src/components/MarginInfo";
 <li>As a dispatching call with a controlling operand designated by a value of a remote access-to-class-wide type. <br /></li>
 </ul>
 <MarginText>6</MarginText>
-<p>The first way of calling corresponds to a <em>static</em> binding between the calling and the called partition. The latter two ways correspond to a <em>dynamic</em> binding between the calling and the called partition.<br /></p>
+<p>The first way of calling corresponds to a <i>static</i> binding between the calling and the called partition. The latter two ways correspond to a <i>dynamic</i> binding between the calling and the called partition.<br /></p>
 
 <MarginText>7/3</MarginText>
 <MarginInfo items={["AI05-0101-1"]} />
@@ -69,14 +69,14 @@ Remote subprogram calls are standardized since the RPC paradigm is widely-used, 
 <AnnotatedOnly>
 <MarginText>8.a/5</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>Such a dispatching call is a potentially blocking call (see below) even if the called subprogram is nonblocking, so we must not assert that no blocking is possible. <br />
+<b></b>Such a dispatching call is a potentially blocking call (see below) even if the called subprogram is nonblocking, so we must not assert that no blocking is possible. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>8.b/5</MarginText>
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The calls is illegal if the Nonblocking aspect of the containing unit is True, either implicitly by inheritance or by explicit specification. <br />
+<b></b>The calls is illegal if the Nonblocking aspect of the containing unit is True, either implicitly by inheritance or by explicit specification. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -84,15 +84,15 @@ Remote subprogram calls are standardized since the RPC paradigm is widely-used, 
 #### Dynamic Semantics
 
 <MarginText>9</MarginText>
-<p>For the execution of a remote subprogram call, subprogram parameters (and later the results, if any) are passed using a stream-oriented representation (see <a href="/docs/arm/AA-13/AA-13.13#Subclause_13.13.1">13.13.1</a>) [which is suitable for transmission between partitions]. This action is called <em>marshalling</em>. <em>Unmarshalling</em> is the reverse action of reconstructing the parameters or results from the stream-oriented representation. [Marshalling is performed initially as part of the remote subprogram call in the calling partition; unmarshalling is done in the called partition. After the remote subprogram completes, marshalling is performed in the called partition, and finally unmarshalling is done in the calling partition.]<br /></p>
+<p>For the execution of a remote subprogram call, subprogram parameters (and later the results, if any) are passed using a stream-oriented representation (see <a href="/docs/arm/AA-13/AA-13.13#Subclause_13.13.1">13.13.1</a>) [which is suitable for transmission between partitions]. This action is called <i>marshalling</i>. <i>Unmarshalling</i> is the reverse action of reconstructing the parameters or results from the stream-oriented representation. [Marshalling is performed initially as part of the remote subprogram call in the calling partition; unmarshalling is done in the called partition. After the remote subprogram completes, marshalling is performed in the called partition, and finally unmarshalling is done in the calling partition.]<br /></p>
 
 <MarginText>10</MarginText>
-<p>A <em>calling stub</em> is the sequence of code that replaces the subprogram body of a remotely called subprogram in the calling partition. A <em>receiving stub</em> is the sequence of code (the &ldquo;wrapper&rdquo;) that receives a remote subprogram call on the called partition and invokes the appropriate subprogram body. <br /></p>
+<p>A <i>calling stub</i> is the sequence of code that replaces the subprogram body of a remotely called subprogram in the calling partition. A <i>receiving stub</i> is the sequence of code (the &ldquo;wrapper&rdquo;) that receives a remote subprogram call on the called partition and invokes the appropriate subprogram body. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>10.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The use of the term <em>stub</em> in this annex should not be confused with <code><a href="/docs/arm/AA-10/AA-10.1#S0297">body_stub</a></code> as defined in <a href="/docs/arm/AA-10/AA-10.1#Subclause_10.1.3">10.1.3</a>. The term <em>stub</em> is used here because it is a commonly understood term when talking about the RPC paradigm. <br />
+<b></b>The use of the term <i>stub</i> in this annex should not be confused with <code><a href="/docs/arm/AA-10/AA-10.1#S0297">body_stub</a></code> as defined in <a href="/docs/arm/AA-10/AA-10.1#Subclause_10.1.3">10.1.3</a>. The term <i>stub</i> is used here because it is a commonly understood term when talking about the RPC paradigm. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -103,12 +103,12 @@ Remote subprogram calls are standardized since the RPC paradigm is widely-used, 
 <p>The task executing a remote subprogram call blocks until the subprogram in the called partition returns, unless the call is asynchronous. For an asynchronous remote procedure call, the calling task can become ready before the procedure in the called partition returns.<br /></p>
 
 <MarginText>13</MarginText>
-<p>If a construct containing a remote call is aborted, the remote subprogram call is <em>cancelled</em>. Whether the execution of the remote subprogram is immediately aborted as a result of the cancellation is implementation defined. <br /></p>
+<p>If a construct containing a remote call is aborted, the remote subprogram call is <i>cancelled</i>. Whether the execution of the remote subprogram is immediately aborted as a result of the cancellation is implementation defined. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>13.a</MarginText>
 <Admonition type="aarm" aarm="implementation-defined">
-<strong></strong>Whether the execution of the remote subprogram is immediately aborted as a result of cancellation.<br />
+<b></b>Whether the execution of the remote subprogram is immediately aborted as a result of cancellation.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -128,19 +128,19 @@ Remote subprogram calls are standardized since the RPC paradigm is widely-used, 
 <AnnotatedOnly>
 <MarginText>17.a</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>Asynchronous remote procedure calls are potentially blocking since the implementation may require waiting for the availability of shared resources to initiate the remote call. <br />
+<b></b>Asynchronous remote procedure calls are potentially blocking since the implementation may require waiting for the availability of shared resources to initiate the remote call. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>18/1</MarginText>
 <MarginInfo items={["AI95-00215-01"]} />
-<p>{"{"}<em>8652/0085</em>{"}"} In a remote subprogram call with a formal parameter of a class-wide type, a check is made that the tag of the actual parameter identifies a tagged type declared in a declared-pure or shared passive library unit, or in the visible part of a remote types or remote call interface library unit. Program{"_"}Error is raised if this check fails. In a remote function call which returns a class-wide type, the same check is made on the function result. <br /></p>
+<p>{"{"}<i>8652/0085</i>{"}"} In a remote subprogram call with a formal parameter of a class-wide type, a check is made that the tag of the actual parameter identifies a tagged type declared in a declared-pure or shared passive library unit, or in the visible part of a remote types or remote call interface library unit. Program{"_"}Error is raised if this check fails. In a remote function call which returns a class-wide type, the same check is made on the function result. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>18.a/1</MarginText>
 <MarginInfo items={["AI95-00215-01"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>{"{"}<em>8652/0085</em>{"}"} This check makes certain that the specific type passed or returned in an RPC satisfies the rules for a "communicable" type. Normally this is guaranteed by the compile-time restrictions on remote call interfaces. However, with class-wide types, it is possible to pass an object whose tag identifies a type declared outside the "safe" packages.<br />
+<b></b>{"{"}<i>8652/0085</i>{"}"} This check makes certain that the specific type passed or returned in an RPC satisfies the rules for a "communicable" type. Normally this is guaranteed by the compile-time restrictions on remote call interfaces. However, with class-wide types, it is possible to pass an object whose tag identifies a type declared outside the "safe" packages.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -164,7 +164,7 @@ This rule replaces a rule from an early version of Ada 9X which was given in the
 <AnnotatedOnly>
 <MarginText>19.a</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>When a remote access-to-class-wide value is created by an Access <code><a href="/docs/arm/AA-4/AA-4.1#S0100">attribute_reference</a></code>, the identity of the active partition that evaluated the <code><a href="/docs/arm/AA-4/AA-4.1#S0100">attribute_reference</a></code> should be recorded in the representation of the remote access value. <br />
+<b></b>When a remote access-to-class-wide value is created by an Access <code><a href="/docs/arm/AA-4/AA-4.1#S0100">attribute_reference</a></code>, the identity of the active partition that evaluated the <code><a href="/docs/arm/AA-4/AA-4.1#S0100">attribute_reference</a></code> should be recorded in the representation of the remote access value. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -177,7 +177,7 @@ This rule replaces a rule from an early version of Ada 9X which was given in the
 <AnnotatedOnly>
 <MarginText>20.a</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>One possible implementation model is as follows:<br />
+<b></b>One possible implementation model is as follows:<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -212,7 +212,7 @@ The calling stub operates as follows: <br />
 <AnnotatedOnly>
 <MarginText>20.f</MarginText>
 <ul>
-<li>It allocates (or reuses) a stream of Params{"_"}Stream{"_"}Type of Initial{"_"}Size, and initializes it by repeatedly calling Write operations, first to identify which remote subprogram in the receiving partition is being called, and then to pass the incoming value of each of the <strong>in</strong> and <strong>in out</strong> parameters of the call.<br /></li>
+<li>It allocates (or reuses) a stream of Params{"_"}Stream{"_"}Type of Initial{"_"}Size, and initializes it by repeatedly calling Write operations, first to identify which remote subprogram in the receiving partition is being called, and then to pass the incoming value of each of the <b>in</b> and <b>in out</b> parameters of the call.<br /></li>
 <MarginText>20.g/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
 <li>It allocates (or reuses) a stream for the Result, unless an aspect Asynchronous is specified as True for the procedure.<br /></li>
@@ -221,7 +221,7 @@ The calling stub operates as follows: <br />
 <li>It calls Do{"_"}RPC unless an aspect Asynchronous is specified as True for the procedure in which case it calls Do{"_"}APC. An access value designating the message stream allocated and initialized above is passed as the Params parameter. An access value designating the Result stream is passed as the Result parameter.<br /></li>
 <MarginText>20.i/3</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<li>If the aspect Asynchronous is not specified for the procedure, Do{"_"}RPC blocks until a reply message arrives, and then returns to the calling stub. The stub returns after extracting from the Result stream, using Read operations, the <strong>in out</strong> and <strong>out</strong> parameters or the function result. If the reply message indicates that the execution of the remote subprogram propagated an exception, the exception is propagated from Do{"_"}RPC to the calling stub, and thence to the point of the original remote subprogram call. If Do{"_"}RPC detects that communication with the remote partition has failed, it propagates Communication{"_"}Error.<br /></li>
+<li>If the aspect Asynchronous is not specified for the procedure, Do{"_"}RPC blocks until a reply message arrives, and then returns to the calling stub. The stub returns after extracting from the Result stream, using Read operations, the <b>in out</b> and <b>out</b> parameters or the function result. If the reply message indicates that the execution of the remote subprogram propagated an exception, the exception is propagated from Do{"_"}RPC to the calling stub, and thence to the point of the original remote subprogram call. If Do{"_"}RPC detects that communication with the remote partition has failed, it propagates Communication{"_"}Error.<br /></li>
 </ul>
 </AnnotatedOnly>
 <AnnotatedOnly>
@@ -238,7 +238,7 @@ On the receiving side, the RPC-receiver procedure operates as follows: <br />
 <MarginText>20.l</MarginText>
 <li>It extracts information from the stream to identify the appropriate receiving stub.<br /></li>
 <MarginText>20.m</MarginText>
-<li>The receiving stub extracts the <strong>in</strong> and <strong>in out</strong> parameters using Read from the stream designated by the Params parameter.<br /></li>
+<li>The receiving stub extracts the <b>in</b> and <b>in out</b> parameters using Read from the stream designated by the Params parameter.<br /></li>
 <MarginText>20.n</MarginText>
 <li>The receiving stub calls the actual subprogram body and, upon completion of the subprogram, uses Write to insert the results into the stream pointed to by the Result parameter. The receiving stub returns to the RPC-receiver procedure which in turn returns to the PCS. If the actual subprogram body propagates an exception, it is propagated by the RPC-receiver to the PCS, which handles the exception, and indicates in the reply message that the execution of the subprogram body propagated an exception. The exception occurrence can be represented in the reply message using the Write attribute of Ada.Exceptions.Exception{"_"}Occurrence. <br /></li>
 </ul>
@@ -288,20 +288,20 @@ Alternatively, a remote access-to-class-wide value can be represented as a norma
 <AnnotatedOnly>
 <MarginText>20.u</MarginText>
 <Admonition type="aarm" aarm="note">
-For a call to Do{"_"}RPC or Do{"_"}APC: The partition ID of all controlling operands are checked for equality (a Constraint{"_"}Error is raised if this check fails). The partition ID value is used for the Partition parameter. An index into the <em>tagged-type-descriptor</em> is created. This index points to the receiving stub of the class-wide operation. This index and the index to the table (described above) are written to the stream. Then, the actual parameters are marshalled into the message stream. For a controlling operand, only the access value designating the remote object is required (the other two components are already present in the other parameters).<br />
+For a call to Do{"_"}RPC or Do{"_"}APC: The partition ID of all controlling operands are checked for equality (a Constraint{"_"}Error is raised if this check fails). The partition ID value is used for the Partition parameter. An index into the <i>tagged-type-descriptor</i> is created. This index points to the receiving stub of the class-wide operation. This index and the index to the table (described above) are written to the stream. Then, the actual parameters are marshalled into the message stream. For a controlling operand, only the access value designating the remote object is required (the other two components are already present in the other parameters).<br />
 </Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>20.v</MarginText>
 <Admonition type="aarm" aarm="note">
-On the called partition (after the RPC-receiver has transferred control to the appropriate receiving stub) the parameters are first unmarshalled. Then, the tags of the controlling operands (obtained by dereferencing the pointer to the object) are checked for equality. If the check fails Constraint{"_"}Error is raised and propagated back to the calling partition, unless it is a result of an asynchronous call. Finally, a dispatching call to the specific subprogram (based on the controlling object's tag) is made. Note that since this subprogram is not in an RCI package, no specific stub is generated for it, it is called normally from the <em>dispatching stub</em>.<br />
+On the called partition (after the RPC-receiver has transferred control to the appropriate receiving stub) the parameters are first unmarshalled. Then, the tags of the controlling operands (obtained by dereferencing the pointer to the object) are checked for equality. If the check fails Constraint{"_"}Error is raised and propagated back to the calling partition, unless it is a result of an asynchronous call. Finally, a dispatching call to the specific subprogram (based on the controlling object's tag) is made. Note that since this subprogram is not in an RCI package, no specific stub is generated for it, it is called normally from the <i>dispatching stub</i>.<br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>20.1/1</MarginText>
 <MarginInfo items={["AI95-00159-01"]} />
-<p>{"{"}<em>8652/0086</em>{"}"} With respect to shared variables in shared passive library units, the execution of the corresponding subprogram body of a synchronous remote procedure call is considered to be part of the execution of the calling task. The execution of the corresponding subprogram body of an asynchronous remote procedure call proceeds in parallel with the calling task and does not signal the next action of the calling task (see <a href="/docs/arm/AA-9/AA-9.10">9.10</a>). <br /></p>
+<p>{"{"}<i>8652/0086</i>{"}"} With respect to shared variables in shared passive library units, the execution of the corresponding subprogram body of a synchronous remote procedure call is considered to be part of the execution of the calling task. The execution of the corresponding subprogram body of an asynchronous remote procedure call proceeds in parallel with the calling task and does not signal the next action of the calling task (see <a href="/docs/arm/AA-9/AA-9.10">9.10</a>). <br /></p>
 
 <AnnotatedOnly>
 <MarginText>21</MarginText>
@@ -313,14 +313,14 @@ NOTE 1   A given active partition can both make and receive remote subprogram ca
 <AnnotatedOnly>
 <MarginText>22</MarginText>
 <Admonition type="aarm" aarm="note">
-NOTE 2   If a given exception is propagated by a remote subprogram call, but the exception does not exist in the calling partition, the exception can be handled by an <strong>others</strong> choice or be propagated to and handled by a third partition. <br />
+NOTE 2   If a given exception is propagated by a remote subprogram call, but the exception does not exist in the calling partition, the exception can be handled by an <b>others</b> choice or be propagated to and handled by a third partition. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <AnnotatedOnly>
 <MarginText>22.a</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>This situation can happen in a case of dynamically nested remote subprogram calls, where an intermediate call executes in a partition that does not include the library unit that defines the exception. <br />
+<b></b>This situation can happen in a case of dynamically nested remote subprogram calls, where an intermediate call executes in a partition that does not include the library unit that defines the exception. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -333,7 +333,7 @@ NOTE 2   If a given exception is propagated by a remote subprogram call, but the
 <MarginText>22.b/2</MarginText>
 <MarginInfo items={["AI95-00159-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0086</em>{"}"} <strong>Corrigendum:</strong> Added rules so that tasks can safely access shared passive objects.<br />
+{"{"}<i>8652/0086</i>{"}"} <b>Corrigendum:</b> Added rules so that tasks can safely access shared passive objects.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -341,7 +341,7 @@ NOTE 2   If a given exception is propagated by a remote subprogram call, but the
 <MarginText>22.c/2</MarginText>
 <MarginInfo items={["AI95-00215-01"]} />
 <Admonition type="aarm" aarm="note">
-{"{"}<em>8652/0085</em>{"}"} <strong>Corrigendum:</strong> Clarified that the check on class-wide types also applies to values returned from remote subprogram call functions. <br />
+{"{"}<i>8652/0085</i>{"}"} <b>Corrigendum:</b> Clarified that the check on class-wide types also applies to values returned from remote subprogram call functions. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -354,7 +354,7 @@ NOTE 2   If a given exception is propagated by a remote subprogram call, but the
 <MarginText>22.d/3</MarginText>
 <MarginInfo items={["AI05-0101-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Corrected the text to note that remote access types can be defined in remote types units. <br />
+<b></b> Corrected the text to note that remote access types can be defined in remote types units. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -387,7 +387,7 @@ Clarified that remote subprogram calls are always to active partitions. <br />
 <MarginInfo items={["AI05-0229-1"]} />
 <p>[This subclause introduces the aspect Asynchronous which can be specified to allow a remote subprogram call to return prior to completion of the execution of the corresponding remote subprogram body.] <br /></p>
 
-<p><em>Paragraphs 2 through 7 were deleted.</em> <br /></p>
+<p><i>Paragraphs 2 through 7 were deleted.</i> <br /></p>
 
 
 #### Static Semantics
@@ -404,7 +404,7 @@ Clarified that remote subprogram calls are always to active partitions. <br />
 <AnnotatedOnly>
 <MarginText>8.a/3_E.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Aspect Description for </strong><strong>Asynchronous: </strong>Remote procedure calls are asynchronous; the caller continues without waiting for the call to return.<br />
+<b>Aspect Description for </b><b>Asynchronous: </b>Remote procedure calls are asynchronous; the caller continues without waiting for the call to return.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -422,18 +422,18 @@ Clarified that remote subprogram calls are always to active partitions. <br />
 
 <MarginText>8.4/3_E.4.1</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<p>If aspect Asynchronous is specified for a remote procedure, the formal parameters of the procedure shall all be of mode <strong>in</strong>.<br /></p>
+<p>If aspect Asynchronous is specified for a remote procedure, the formal parameters of the procedure shall all be of mode <b>in</b>.<br /></p>
 
 <MarginText>8.5/3_E.4.1</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<p>If aspect Asynchronous is specified for a remote access type, the type shall be a remote access-to-class-wide type, or the type shall be a remote access-to-procedure type with the formal parameters of the designated profile of the type all of mode <strong>in</strong>. <br /></p>
+<p>If aspect Asynchronous is specified for a remote access type, the type shall be a remote access-to-class-wide type, or the type shall be a remote access-to-procedure type with the formal parameters of the designated profile of the type all of mode <b>in</b>. <br /></p>
 
 
 #### Dynamic Semantics
 
 <MarginText>9/3_E.4.1</MarginText>
 <MarginInfo items={["AI05-0229-1"]} />
-<p>A remote call is <em>asynchronous</em> if it is a call to a procedure, or a call through a value of an access-to-procedure type, for which aspect Asynchronous is True. In addition, if aspect Asynchronous is True for a remote access-to-class-wide type, then a dispatching call on a procedure with a controlling operand designated by a value of the type is asynchronous if the formal parameters of the procedure are all of mode <strong>in</strong>. <br /></p>
+<p>A remote call is <i>asynchronous</i> if it is a call to a procedure, or a call through a value of an access-to-procedure type, for which aspect Asynchronous is True. In addition, if aspect Asynchronous is True for a remote access-to-class-wide type, then a dispatching call on a procedure with a controlling operand designated by a value of the type is asynchronous if the formal parameters of the procedure are all of mode <b>in</b>. <br /></p>
 
 
 #### Implementation Requirements
@@ -444,7 +444,7 @@ Clarified that remote subprogram calls are always to active partitions. <br />
 <AnnotatedOnly>
 <MarginText>10.a_E.4.1</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>To be honest: </strong>It is not clear that this rule can be tested or even defined formally. <br />
+<b>To be honest: </b>It is not clear that this rule can be tested or even defined formally. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -469,7 +469,7 @@ Aspect Asynchronous is new; <code><a href="/docs/arm/AA-2/AA-2.8#S0019">pragma</
 #### Examples
 
 <MarginText>1_E.4.2</MarginText>
-<p><em>Example of using a remote access-to-class-wide type to achieve dynamic binding across active partitions:</em> <br /></p>
+<p><i>Example of using a remote access-to-class-wide type to achieve dynamic binding across active partitions:</i> <br /></p>
 
 <MarginText>2/5_E.4.2</MarginText>
 <MarginInfo items={["AI12-0414-1"]} />
@@ -489,17 +489,17 @@ with Tapes, Name{"_"}Server;{"\n"}-- Tape{"_"}Driver is not needed and thus not 
 </CodeBlock>
 <MarginText>7/5_E.4.2</MarginText>
 <MarginInfo items={["AI12-0452-1"]} />
-<p><em>Discussion of the example</em>: <br /></p>
+<p><i>Discussion of the example</i>: <br /></p>
 
 <AnnotatedOnly>
 <MarginText>7.a_E.4.2</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>The example does not show the case where tapes are removed from or added to the system. In the former case, an appropriate exception needs to be defined to instruct the client to use another tape. In the latter, the Name{"_"}Server should have a query function visible to the clients to inform them about the availability of the tapes in the system. <br />
+<b></b>The example does not show the case where tapes are removed from or added to the system. In the former case, an appropriate exception needs to be defined to instruct the client to use another tape. In the latter, the Name{"_"}Server should have a query function visible to the clients to inform them about the availability of the tapes in the system. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>8/1_E.4.2</MarginText>
-<p><em>This paragraph was deleted.</em><br /></p>
+<p><i>This paragraph was deleted.</i><br /></p>
 
 <MarginText>9_E.4.2</MarginText>
 <ul>

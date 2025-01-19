@@ -2,7 +2,7 @@
 sidebar_position:  169
 ---
 
-# D.15 Timing Events
+# D.15. Timing Events
 
 :::danger
 This Reference Manual output has not been verified,
@@ -48,16 +48,16 @@ private{"\n"}  ... -- not specified by the language{"\n"}end Ada.Real{"_"}Time.T
 
 <MarginText>9/2</MarginText>
 <MarginInfo items={["AI95-00297-01"]} />
-<p>An object of type Timing{"_"}Event is said to be <em>set</em> if it is associated with a nonnull value of type Timing{"_"}Event{"_"}Handler and <em>cleared</em> otherwise. All Timing{"_"}Event objects are initially cleared. <br /></p>
+<p>An object of type Timing{"_"}Event is said to be <i>set</i> if it is associated with a nonnull value of type Timing{"_"}Event{"_"}Handler and <i>cleared</i> otherwise. All Timing{"_"}Event objects are initially cleared. <br /></p>
 
 <MarginText>10/2</MarginText>
 <MarginInfo items={["AI95-00297-01"]} />
-<p>The type Timing{"_"}Event{"_"}Handler identifies a protected procedure to be executed by the implementation when the timing event occurs. Such a protected procedure is called a <em>handler</em>. <br /></p>
+<p>The type Timing{"_"}Event{"_"}Handler identifies a protected procedure to be executed by the implementation when the timing event occurs. Such a protected procedure is called a <i>handler</i>. <br /></p>
 
 <AnnotatedOnly>
 <MarginText>10.a/2</MarginText>
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>Type Timing{"_"}Event is tagged. This makes it possible to share a handler between several events. In simple cases, 'Access can be used to compare the parameter with a specific timing event object (this works because a tagged type is a by-reference type). In more complex cases, a type extension of type Timing{"_"}Event can be declared; a double type conversion can be used to access the extension data. For example:<br />
+<b></b>Type Timing{"_"}Event is tagged. This makes it possible to share a handler between several events. In simple cases, 'Access can be used to compare the parameter with a specific timing event object (this works because a tagged type is a by-reference type). In more complex cases, a type extension of type Timing{"_"}Event can be declared; a double type conversion can be used to access the extension data. For example:<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -88,11 +88,11 @@ The extra conversion to the class-wide type is necessary to make the conversions
 
 <MarginText>11/3</MarginText>
 <MarginInfo items={["AI95-00297-01", "AI05-0264-1"]} />
-<p>The procedures Set{"_"}Handler associate the handler Handler with the event Event: if Handler is <strong>null</strong>, the event is cleared; otherwise, it is set. The first procedure Set{"_"}Handler sets the execution time for the event to be At{"_"}Time. The second procedure Set{"_"}Handler sets the execution time for the event to be Real{"_"}Time.Clock + In{"_"}Time.<br /></p>
+<p>The procedures Set{"_"}Handler associate the handler Handler with the event Event: if Handler is <b>null</b>, the event is cleared; otherwise, it is set. The first procedure Set{"_"}Handler sets the execution time for the event to be At{"_"}Time. The second procedure Set{"_"}Handler sets the execution time for the event to be Real{"_"}Time.Clock + In{"_"}Time.<br /></p>
 
 <MarginText>12/2</MarginText>
 <MarginInfo items={["AI95-00297-01"]} />
-<p>A call of a procedure Set{"_"}Handler for an event that is already set replaces the handler and the time of execution; if Handler is not <strong>null</strong>, the event remains set.<br /></p>
+<p>A call of a procedure Set{"_"}Handler for an event that is already set replaces the handler and the time of execution; if Handler is not <b>null</b>, the event remains set.<br /></p>
 
 <MarginText>13/2</MarginText>
 <MarginInfo items={["AI95-00297-01"]} />
@@ -101,13 +101,13 @@ The extra conversion to the class-wide type is necessary to make the conversions
 <AnnotatedOnly>
 <MarginText>13.a/2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>The second sentence of this paragraph is because of a potential race condition. The time might expire and yet before the handler is executed, some task could call Cancel{"_"}Handler (or equivalently call Set{"_"}Handler with a <strong>null</strong> parameter) and thus clear the handler. <br />
+<b></b>The second sentence of this paragraph is because of a potential race condition. The time might expire and yet before the handler is executed, some task could call Cancel{"_"}Handler (or equivalently call Set{"_"}Handler with a <b>null</b> parameter) and thus clear the handler. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>14/2</MarginText>
 <MarginInfo items={["AI95-00297-01"]} />
-<p>If the Ceiling{"_"}Locking policy (see <a href="/docs/arm/AA-D/AA-D.3">D.3</a>) is in effect when a procedure Set{"_"}Handler is called, a check is made that the ceiling priority of Handler.<strong>all</strong> is Interrupt{"_"}Priority'Last. If the check fails, Program{"_"}Error is raised.<br /></p>
+<p>If the Ceiling{"_"}Locking policy (see <a href="/docs/arm/AA-D/AA-D.3">D.3</a>) is in effect when a procedure Set{"_"}Handler is called, a check is made that the ceiling priority of Handler.<b>all</b> is Interrupt{"_"}Priority'Last. If the check fails, Program{"_"}Error is raised.<br /></p>
 
 <MarginText>15/3</MarginText>
 <MarginInfo items={["AI95-00297-01", "AI05-0094-1", "AI05-0264-1"]} />
@@ -117,7 +117,7 @@ The extra conversion to the class-wide type is necessary to make the conversions
 <MarginText>15.a/3</MarginText>
 <MarginInfo items={["AI05-0094-1"]} />
 <Admonition type="aarm" aarm="ramification">
-<strong></strong>The handler will still be executed. Under no circumstances is a scheduled call of a handler lost. <br />
+<b></b>The handler will still be executed. Under no circumstances is a scheduled call of a handler lost. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -125,13 +125,13 @@ The extra conversion to the class-wide type is necessary to make the conversions
 <MarginText>15.b/3</MarginText>
 <MarginInfo items={["AI05-0094-1"]} />
 <Admonition type="aarm" aarm="discussion">
-<strong></strong>We say &ldquo;as soon as possible&rdquo; so that we do not deadlock if we are executing the handler when Set{"_"}Handler is called. In that case, the current invocation of the handler must complete before the new handler can start executing. <br />
+<b></b>We say &ldquo;as soon as possible&rdquo; so that we do not deadlock if we are executing the handler when Set{"_"}Handler is called. In that case, the current invocation of the handler must complete before the new handler can start executing. <br />
 </Admonition>
 </AnnotatedOnly>
 
 <MarginText>16/3</MarginText>
 <MarginInfo items={["AI95-00297-01", "AI05-0264-1"]} />
-<p>The function Current{"_"}Handler returns the handler associated with the event Event if that event is set; otherwise, it returns <strong>null</strong>.<br /></p>
+<p>The function Current{"_"}Handler returns the handler associated with the event Event if that event is set; otherwise, it returns <b>null</b>.<br /></p>
 
 <MarginText>17/3</MarginText>
 <MarginInfo items={["AI95-00297-01", "AI05-0264-1"]} />
@@ -148,7 +148,7 @@ The extra conversion to the class-wide type is necessary to make the conversions
 <AnnotatedOnly>
 <MarginText>19.a/2</MarginText>
 <Admonition type="aarm" aarm="implementation-note">
-<strong></strong>This is the only finalization defined by the language that has a visible effect; but an implementation may have other finalization that it needs to perform. Implementations need to ensure that the event is cleared before anything else is finalized that would prevent a set event from being triggered. <br />
+<b></b>This is the only finalization defined by the language that has a visible effect; but an implementation may have other finalization that it needs to perform. Implementations need to ensure that the event is cleared before anything else is finalized that would prevent a set event from being triggered. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -170,7 +170,7 @@ The extra conversion to the class-wide type is necessary to make the conversions
 <AnnotatedOnly>
 <MarginText>22.a/2</MarginText>
 <Admonition type="aarm" aarm="reason">
-<strong></strong>This prevents various race conditions. In particular it ensures that if an event occurs when Set{"_"}Handler is changing the handler then either the new or old handler is executed in response to the appropriate event. It is never possible for a new handler to be executed in response to an old event. <br />
+<b></b>This prevents various race conditions. In particular it ensures that if an event occurs when Set{"_"}Handler is changing the handler then either the new or old handler is executed in response to the appropriate event. It is never possible for a new handler to be executed in response to an old event. <br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -189,7 +189,7 @@ The extra conversion to the class-wide type is necessary to make the conversions
 <AnnotatedOnly>
 <MarginText>24.a/2</MarginText>
 <Admonition type="aarm" aarm="note">
-<strong>Documentation Requirement: </strong>The metrics for timing events.<br />
+<b>Documentation Requirement: </b>The metrics for timing events.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -203,7 +203,7 @@ The extra conversion to the class-wide type is necessary to make the conversions
 <AnnotatedOnly>
 <MarginText>25.a/2</MarginText>
 <Admonition type="aarm" aarm="implementation-advice">
-<strong></strong>For a timing event, the handler should be executed directly by the real-time clock interrupt mechanism.<br />
+<b></b>For a timing event, the handler should be executed directly by the real-time clock interrupt mechanism.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -245,7 +245,7 @@ The package Real{"_"}Time.Timing{"_"}Events is new. <br />
 <MarginText>27.b/3</MarginText>
 <MarginInfo items={["AI05-0094-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Reworded to eliminate a deadlock condition if the event time is in the past and a handler is currently executing. This is technically an inconsistency, but only if a program is depending on deadlocking; since it is impossible to imagine how that could be useful, we have not documented this as an inconsistency.<br />
+<b></b> Reworded to eliminate a deadlock condition if the event time is in the past and a handler is currently executing. This is technically an inconsistency, but only if a program is depending on deadlocking; since it is impossible to imagine how that could be useful, we have not documented this as an inconsistency.<br />
 </Admonition>
 </AnnotatedOnly>
 
@@ -253,7 +253,7 @@ The package Real{"_"}Time.Timing{"_"}Events is new. <br />
 <MarginText>27.c/3</MarginText>
 <MarginInfo items={["AI05-0210-1"]} />
 <Admonition type="aarm" aarm="correction">
-<strong></strong> Clarified the metric for lateness of a timing event to exclude interference from other handlers and tasks. This change might change the documentation of an implementation, but not the implementation itself, so there is no inconsistency. <br />
+<b></b> Clarified the metric for lateness of a timing event to exclude interference from other handlers and tasks. This change might change the documentation of an implementation, but not the implementation itself, so there is no inconsistency. <br />
 </Admonition>
 </AnnotatedOnly>
 
