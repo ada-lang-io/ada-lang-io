@@ -15,11 +15,11 @@ The command `alr edit` launches your editor on the current crate, with the appro
 You can adjust the editor that gets started by `alr edit` with Alire's
 `editor.cmd` setting.
 
-### [Language server](https://github.com/AdaCore/ada_language_server)
+### Ada Language Server
 
-[Ada has a language server](https://github.com/AdaCore/ada_language_server).
+The [Ada Language Server](https://github.com/AdaCore/ada_language_server) is an implementation of Microsoft's Language Server Protocol customised for Ada.
 Some of the editors can be configured or have a plugin to use this so you might
-not need to install this directly.
+not need to install it directly.
 
 ### GNAT Studio
 
@@ -45,13 +45,13 @@ There's a slight problem with macOS Sequoia.
 For earlier versions of macOS, use this:
 
 ```bash
-alr settings --set editor.cmd 'open -n -a gnatstudio -- ${GPR_FILE}'
+alr settings --set --global editor.cmd 'open -n -a gnatstudio -- ${GPR_FILE}'
 ```
 
 For later versions, use this workround (you'll need to change the `/Applications` part if you've installed GNATStudio somewhere else):
 
 ```bash
-alr settings --set editor.cmd '/Applications/GNATStudio.app/Contents/MacOS/gnatstudio_launcher ${GPR_FILE}'
+alr settings --set --global editor.cmd '/Applications/GNATStudio.app/Contents/MacOS/gnatstudio_launcher ${GPR_FILE}'
 ```
 
   </TabItem>
@@ -63,53 +63,43 @@ To edit your project, run this from your project directory:
 alr edit
 ```
 
-### [Visual Studio Code](https://code.visualstudio.com)
+### Visual Studio Code
 
-- [Ada Language Server Plugin](https://marketplace.visualstudio.com/items?itemName=AdaCore.ada)
+See the main [Visual Studio Code](https://code.visualstudio.com) site.
 
-Make a `workspace.code-workspace` in your project folder with the name of your gpr file.
+You can get the [Ada Language Server Plugin](https://marketplace.visualstudio.com/items?itemName=AdaCore.ada) from the Visual Studio Marketplace.
 
-```json
-{
-  "folders": [
-    {
-      "path": "."
-    }
-  ],
-  "settings": {
-    "ada.projectFile": "my_project_name.gpr"
-  }
-}
-```
-
-Set Alire to look for a workspace.code-workspace in whatever directory you're
-trying to open.
+On the command line, the command to open VSCode in the current directory is `code .`, so that's what we tell `alr edit`.
 
 <Tabs groupId="operating-systems">
   <TabItem value="win" label="Windows">
 
 ```bash
-alr settings --set editor.cmd "code workspace.code-workspace"
+alr settings --set --global editor.cmd "code ."
 ```
 
   </TabItem>
  <TabItem value="linux" label="Linux">
 
 ```bash
-alr settings --set editor.cmd "code workspace.code-workspace"
+alr settings --set --global editor.cmd "code ."
 ```
 
-  </TabItem>
+   </TabItem>
   <TabItem value="mac" label="macOS">
 
+On macOS, VSCode installs to `/Applications/Visual Studio Code`, and those spaces mean that Alire can't use that location directly. Instead, see the guide for [launching VS Code from the command line](https://code.visualstudio.com/docs/setup/mac#_launch-vs-code-from-the-command-line), which create a command `code ` in `/usr/local/bin`, which should be on your PATH.
+
+Then,
+
 ```bash
-alr settings --set editor.cmd "/Applications/VisualStudioCode.app/Contents/Resources/app/bin/code workspace.code-workspace"
+alr settings --set --global editor.cmd "code ."
 ```
 
   </TabItem>
 </Tabs>
 
-As long as you make a workspace file, you can now edit your projects with:
+Now you can edit your project with:
 
 ```bash
 alr edit
@@ -122,26 +112,61 @@ alr edit
 
 ### Emacs
 
-Install the `ada-mode` extension from [GNU ELPA](https://elpa.gnu.org/packages/ada-mode.html).
+There are two Emacs extensions (modes) that support Ada. The older is Emacs Ada Mode, the newer is Ada TS Mode. Ada TS Mode uses the Ada Language Server.
+
+<Tabs>
+  <TabItem value="ada-ts-mode" label="Ada TS Mode" default>
+
+See [this note](https://forward-in-code.blogspot.com/2025/01/ada-ts-mode.html) for how to install the `ada-ts-mode` extension.
 
 Set Alire to use Emacs when invoking `alr edit`:
 
-<Tabs groupId="operating-systems">
-  <TabItem value="linux" label="Linux">
+  <Tabs groupId="operating-systems">
+    <TabItem value="linux" label="Linux">
 
 ```bash
 alr settings --set --global editor.cmd 'emacs --eval=(ada-build-prompt-select-prj-file"${GPR_FILE}") ${GPR_FILE}'
 ```
 
-  </TabItem>
-  <TabItem value="mac" label="macOS">
+    </TabItem>
+    <TabItem value="mac" label="macOS">
 
 ```bash
-alr settings --set editor.cmd 'open -n -a emacs ${GPR_FILE}'
+alr settings --set --global editor.cmd 'open -n -a emacs .'
+```
+
+    </TabItem>
+
+  </Tabs>
+
+  </TabItem>
+  
+  <TabItem value="emacs-ada-mode" label="Emacs Ada Mode">
+
+Install the `ada-mode` extension from [GNU ELPA](https://elpa.gnu.org/packages/ada-mode.html).
+
+Set Alire to use Emacs when invoking `alr edit`:
+
+  <Tabs groupId="operating-systems">
+    <TabItem value="linux" label="Linux">
+
+```bash
+alr settings --set --global editor.cmd 'emacs --eval=(ada-build-prompt-select-prj-file"${GPR_FILE}") ${GPR_FILE}'
+```
+
+    </TabItem>
+    <TabItem value="mac" label="macOS">
+
+```bash
+alr settings --set --global editor.cmd 'open -n -a emacs ${GPR_FILE}'
 ```
 
 Note, you still need to find one of the project's Ada source files and then select the relevant GPR file. Investigations continue.
 </TabItem>
+</Tabs>
+
+  </TabItem>
+
 </Tabs>
 
 ### Zed
