@@ -6,11 +6,15 @@ const { themes } = require("prism-react-renderer")
 const gitHubUserName = "ada-lang-io"
 const gitHubProjectName = "ada-lang-io"
 
-const alireDefaultVersion = "v1.2.1"
+const alireDefaultVersion = "v2.1.0"
 const alireGitHubLatestRelease = "https://api.github.com/repos/alire-project/alire/releases/latest"
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
+  future: {
+    v4: true,
+    experimental_faster: true,
+  },
   "title": "ada-lang.io, an Ada community site",
   tagline: "Readable, correct, performant",
   url: "https://ada-lang.io",
