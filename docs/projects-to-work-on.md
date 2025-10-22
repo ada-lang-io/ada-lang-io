@@ -444,3 +444,25 @@ people unfamiliar with the Ada language.
 - **[HAC](https://github.com/zertovitch/hac)** is a small and limited Ada
   compiler, but it could make use of some help for those interested in compilers
   and Ada.
+
+### Compiler-compilers
+
+These are tools for generating compilers and interpreters quicker than hand
+implementing then, which is useful for prototyping.
+
+There are versions of [YACC](https://github.com/Ada-France/ayacc) and
+[FLex](https://github.com/Ada-France/aflex) dating back to the 1980's which
+haven't been improved too much.
+
+There is also a unicode version of FLex within the
+[League](https://alire.ada.dev/crates/matreshka_league) string library.
+
+- There is a port of the [Lemon](https://github.com/Lucretia/Cherry) parser
+  generator which is dead, the original tree has been deleted and with it, it's
+  dependency which contains a string type, this could be resurrected.
+
+- [ANTLR4](https://www.antlr.org/) has a re-targetable back end based on
+  [StringTemplate](https://www.stringtemplate.org/)'s. There was a start of
+  an ANTLR v3 back end which was never completed.
+
+This is a particular area where Ada is lacking compared to other languages.
