@@ -202,7 +202,7 @@ For intermediate and seasoned Ada and SPARK users:
 
 ### Graphics and Games
 
-- **[SDLAda](https://github.com/Lucretia/sdlada):** the bindings to SDL still
+- **[SDLAda](https://github.com/ada-game-framework/sdlada):** the bindings to SDL still
   have some missing pieces/functions that need to be finalised, which can be
   found in the link's README page. This could be a great start for people
   wanting to get into game/graphics programming with Ada.
