@@ -444,6 +444,14 @@ people unfamiliar with the Ada language.
 - **[HAC](https://github.com/zertovitch/hac)** is a small and limited Ada
   compiler, but it could make use of some help for those interested in compilers
   and Ada.
+- **A component based Ada compiler** based upon LLVM which provides Ada with
+  the same kind of tooling that CLang provides to the C-likes, i.e.
+  - Construction of Ada AST's programmatically from other projects.
+  - JIT compiled Ada from a REPL or from within other projects.
+  - Importing of foreign libraries written in other languages by using the CLang
+    libraries for that import, adding a `pragma C[PP]_Header ("path/filename.h[pp]");`
+    after a `with` clause could help.
+  - The compiler-compilers below could aid in the creation of such tooling.
 
 ### Compiler-compilers
 
