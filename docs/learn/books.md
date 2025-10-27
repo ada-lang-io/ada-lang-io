@@ -6,7 +6,7 @@ sidebar_position: 90
 
 ## Books
 
-- [Programming in Ada 2012 with a Preview of Ada 2022 (2nd ed.)](https://www.cambridge.org/core/books/programming-in-ada-2012-with-a-preview-of-ada-2022/AD30275F35CCECB97EAB80ABC32B019C#)
+- [Programming in Ada 2022](https://www.cambridge.org/core/books/programming-in-ada-2022/144FA52E3F0C1F260CBF9DECD10A68C9)
 - [Beginning Ada Programming: From Novice to Professional](https://www.amazon.com/Beginning-Ada-Programming-Novice-Professional/dp/1484254279)
 - [Building High Integrity Applications with SPARK](https://www.cambridge.org/core/books/building-high-integrity-applications-with-spark/F213D9867D2E271F5FF3EDA765D48E95)
 
