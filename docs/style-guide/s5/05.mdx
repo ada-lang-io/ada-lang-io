@@ -15,7 +15,7 @@ program into a maintainer's nightmare.
 - Use `'Range` or the subtype name of the range instead of `'First .. 'Last`.
 
 #### example
-
+```ada
     type Temperature      is range All_Time_Low .. All_Time_High;
     type Weather_Stations is range            1 ..  Max_Stations;
     Current_Temperature : Temperature := 60;
@@ -25,11 +25,11 @@ program into a maintainer's nightmare.
        Offset := Current_Temperature - Temperature'First;
        ...
     end loop;
-
+```
 #### rationale
 
 In the example above, it is better to use `Weather_Stations` in the
-`for` loop than to use `Weather_Stations'First` `.. Weather_Stations'Last` or `1 .. Max_Stations` because it is clearer,
+`for` loop than to use `Weather_Stations'First .. Weather_Stations'Last` or `1 .. Max_Stations` because it is clearer,
 less error-prone, and less dependent on the definition of the type
 `Weather_Stations`. Similarly, it is better to use `Temperature'First`
 in the offset calculation than to use `All_Time_Low` because the code
@@ -41,20 +41,22 @@ changed. This enhances program reliability.
 When you implicitly specify ranges and attributes like this, be careful
 that you use the correct subtype name. It is easy to refer to a very
 large range without realizing it. For example, given the declarations:
-
+```ada
     type    Large_Range is new Integer;
     subtype Small_Range is Large_Range range 1 .. 10;
 
     type Large_Array is array (Large_Range) of Integer;
     type Small_Array is array (Small_Range) of Integer;
-
+```
 then the first declaration below works fine, but the second one is
 probably an accident and raises an exception on most machines because it
 is requesting a huge array (indexed from the smallest integer to the
 largest one):
 
+```ada
     Array_1 : Small_Array;
     Array_2 : Large_Array;
+```
 
 ### Array Attributes
 
@@ -67,14 +69,14 @@ largest one):
 - Use `'Range` instead of `'First .. 'Last` to express a range.
 
 #### example
-
+```ada
     subtype Name_String is String (1 .. Name_Length);
     File_Path : Name_String := (others => ' ');
     ...
     for I in File_Path'Range loop
        ...
     end loop;
-
+```
 #### rationale
 
 In the example above, it is better to use `Name_String'Range` in the
@@ -95,10 +97,10 @@ work correctly. This enhances program reliability.
   evaluation.
 
 #### example
-
+```ada
     (1.5 * X**2)/A - (6.5*X + 47.0)
     2*I + 4*Y + 8*Z + C
-
+```
 #### rationale
 
 The Ada rules of operator precedence are defined in the Ada Reference
@@ -107,13 +109,13 @@ algebraic operators. The strong typing facility in Ada combined with the
 common precedence rules make many parentheses unnecessary. However, when
 an uncommon combination of operators occurs, it may be helpful to add
 parentheses even when the precedence rules apply. The expression:
-
+```ada
     5 + ((Y ** 3) mod 10)
-
+```
 is clearer, and equivalent to:
-
+```ada
     5 + Y**3 mod 10
-
+```
 The rules of evaluation do specify left to right evaluation for
 operators with the same precedence level. However, it is the most
 commonly overlooked rule of evaluation when checking expressions for
@@ -130,17 +132,17 @@ correctness.
 #### example
 
 Use:
-
+```ada
     if Operator_Missing then
-
+```
 rather than either:
-
+```ada
     if not Operator_Found then
-
+```
 or:
-
+```ada
     if not Operator_Missing then
-
+```
 #### rationale
 
 Relational expressions can be more readable and understandable when
@@ -165,32 +167,32 @@ inverting the test to adhere to this guideline is not recommended.
 #### example
 
 Use:
-
+```ada
     if Y /= 0 or else (X/Y) /= 10 then
-
+```
 or:
-
+```ada
     if Y /= 0 then
        if (X/Y) /= 10 then
-
+```
 rather than either:
-
+```ada
     if Y /= 0 and (X/Y) /= 10 then
-
+```
 or:
-
+```ada
     if (X/Y) /= 10 then
-
+```
 to avoid `Constraint_Error.`
 
 Use:
-
+```ada
     if Target /= null and then Target.Distance < Threshold then
-
+```
 rather than:
-
+```ada
     if Target.Distance < Threshold then
-
+```
 to avoid referencing a field in a nonexistent object.
 
 #### rationale
@@ -220,7 +222,7 @@ limits side-effects in functions.
   instead of `=`.
 
 #### example
-
+```ada
     Current_Temperature   : Temperature :=       0.0;
     Temperature_Increment : Temperature := 1.0 / 3.0;
     Maximum_Temperature   : constant    :=     100.0;
@@ -233,7 +235,7 @@ limits side-effects in functions.
        exit when Current_Temperature >= Maximum_Temperature;
        ...
     end loop;
-
+```
 #### rationale
 
 Fixed- and floating-point values, even if derived from similar
