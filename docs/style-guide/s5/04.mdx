@@ -72,6 +72,7 @@ that there are at most 42 possible numbers in the list.
 
 #### example
 
+```ada
     type Propulsion_Method is (Sail, Diesel, Nuclear);
     type Craft is
        record
@@ -82,7 +83,7 @@ that there are at most 42 possible numbers in the list.
           Draft  : Feet;
        end record;
     type Fleet is array (1 .. Fleet_Size) of Craft;
-
+```
 #### rationale
 
 You help the maintainer find all of the related data by gathering it
@@ -222,7 +223,7 @@ adding a new variant.
 - Consider using type extension to organize large data structures.
 
 #### example
-
+```ada
     type Coordinate is
        record
           Row    : Local_Float;
@@ -233,7 +234,7 @@ adding a new variant.
           Top_Left     : Coordinate;
           Bottom_Right : Coordinate;
        end record;
-
+```
 #### rationale
 
 You can make complex data structures understandable and comprehensible
@@ -256,9 +257,9 @@ family. See also Guidelines 5.4.2 and 9.2.1 .
 
 A carefully chosen name for the component of the larger record that is
 used to select the smaller enhances readability, for example:
-
+```ada
     if Window1.Bottom_Right.Row > Window2.Top_Left.Row then . . .
-
+```
 ### Dynamic Data
 
 #### guideline
@@ -304,29 +305,29 @@ used to select the smaller enhances readability, for example:
 #### example
 
 These lines show how a dangling reference might be created:
-
+```ada
     P1 := new Object;
     P2 := P1;
     Unchecked_Object_Deallocation(P2);
-
+```
 This line can raise an exception due to referencing the deallocated
 object:
-
+```ada
     X := P1.all;
-
+```
 In the following three lines, if there is no intervening assignment of
 the value of `P1` to any other pointer, the object created on the first
 line is no longer accessible after the third line. The only pointer to
 the allocated object has been dropped:
-
+```ada
     P1 := new Object;
     ...
     P1 := P2;
-
+```
 The following code shows an example of using `Finalize` to make sure
 that when an object is finalized (i.e., goes out of scope), the
 dynamically allocated elements are chained on a free list:
-
+```ada
     with Ada.Finalization;
     package List is
        type Object is private;
@@ -354,7 +355,7 @@ dynamically allocated elements are chained on a free list:
           -- Chain L to Free_List
        end Finalize;
     end List;
-
+```
 #### rationale
 
 See also 6.3.2 for variations on these problems. A dynamically allocated
@@ -480,7 +481,7 @@ guidelines.
   hide the internal connections and bookkeeping information.
 
 #### example
-
+```ada
     package Message_Services is
        type Message_Code_Type is range 0 .. 100;
        subtype Message is String;
@@ -510,7 +511,7 @@ guidelines.
           return Message_Table (Message_Code).all;
        end Get_Message;
     end Message_Services;
-
+```
 The following code fragment shows a use of aliased objects, using the
 attribute `'Access` to implement a generic component that manages hashed
 collections of objects:
@@ -629,7 +630,7 @@ task type.
   structures that need bit-wise operations, such as `and` and `or`.
 
 #### example
-
+```ada
     with Interfaces;
     procedure Main is
        type Unsigned_Byte is mod 255;
@@ -647,7 +648,7 @@ task type.
           X1 := Interfaces.Shift_Left (Value => X1, Amount => 1);
        end loop;
     end Main;
-
+```
 #### rationale
 
 Modular types are preferred when the number of bits is known to be fewer
