@@ -216,29 +216,30 @@ the elements, consider using an anonymous array type.
 
 #### example
 ```ada
-    ------------------------------------------------------------------------
-    with Ada.Finalization;
-    package Packet_Telemetry is
-       type Frame_Header is new Ada.Finalization.Controlled with private;
-       type Frame_Data   is private;
-       type Frame_Codes  is (Main_Bus_Voltage, Transmitter_1_Power);
-       ...
-    private
-       type Frame_Header is new Ada.Finalization.Controlled with
-          record
-             ...
-          end record;
-       -- override adjustment and finalization to get correct assignment semantics
-       procedure Adjust (Object : in out Frame_Header);
-       procedure Finalize (Object : in out Frame_Header);
-       type Frame_Data is
-          record
-             ...
-          end record;
-       ...
-    end Packet_Telemetry;
-    ------------------------------------------------------------------------
+------------------------------------------------------------------------
+with Ada.Finalization;
+package Packet_Telemetry is
+   type Frame_Header is new Ada.Finalization.Controlled with private;
+   type Frame_Data   is private;
+   type Frame_Codes  is (Main_Bus_Voltage, Transmitter_1_Power);
+   ...
+private
+   type Frame_Header is new Ada.Finalization.Controlled with
+      record
+         ...
+      end record;
+   -- override adjustment and finalization to get correct assignment semantics
+   procedure Adjust (Object : in out Frame_Header);
+   procedure Finalize (Object : in out Frame_Header);
+   type Frame_Data is
+      record
+         ...
+      end record;
+   ...
+end Packet_Telemetry;
+------------------------------------------------------------------------
 ```
+    
 #### rationale
 
 Limited private types and private types support abstraction and
