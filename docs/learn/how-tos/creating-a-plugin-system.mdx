@@ -1,0 +1,253 @@
+---
+sidebar_position: 2
+description: How to create a plug-in system
+keywords:
+  - plugin
+  - runtime
+  - tagged
+---
+
+# How to create a plug-in system
+
+:::note
+This explanation was originally posted by Dimitry Kazakov in the Ada subreddit under the same name (minus the "system") on the 20th of January 2026. Section titles have been added for readability reasons.
+:::
+
+Ada is a statically typed language. Does that mean an Ada application must include everything in advance? Not at all. Ada tagged types provide an excellent support of late bindings. Here I show how to write dynamically linked plug-ins in Ada.
+
+The task is this. Let us have some base tagged type, possibly abstract.
+
+```ada
+--
+-- This type represents greetings used in different countries and regions.
+--
+   type Greeter is abstract tagged null record;
+--
+-- The operation that returns the greeting
+--
+   function Greet (Object : Greeter) return String is abstract;
+```
+
+An application should be able to create instances of types derived from the base.
+
+```ada
+   type Norddeutschland_Greeter is
+      new PlugIn_API.Greeter with null record;
+   overriding
+      function Greet (Object : Norddeutschland_Greeter) return String is
+         ("Moin!");
+```
+
+The traditional approach would be to write a series of packages containing types derived from Greeter and link them together statically or dynamically.
+
+# Creating an interface
+
+Now what if the designer of the application does not know anything of Norddeutschland_Greeter in advance. Moreover what if we want to deploy the application and add it later or never? This is where plug-ins come in question. The package implementing Norddeutschland_Greeter is placed in a dynamically linked library which is loaded on demand.
+
+The interface of the plug-in package is this:
+
+```ada
+package Plugin_API is
+
+   PlugIn_Error : exception;
+--
+-- The greeter abstract  base to  be extended by the plug-ins.  The type
+-- represents greetings used in different countries and regions.
+--
+   type Greeter is abstract tagged null record;
+--
+-- The operation that returns the greeting
+--
+   function Greet (Object : Greeter) return String is abstract;
+--
+-- This creates  a greeting object using  Name for  the region name.  It
+-- loads the corresponding plug-in if necessary.
+--
+   function Create (Name : String) return Greeter'Class;
+------------------------------------------------------------------------
+--
+-- The function of the plug-in that creates an instance
+--
+   type Factory is access function return Greeter'Class;
+--
+-- The name of the plug-in entry point to call once after loading
+--
+   PlugIn_Entry_Name : constant String := "plugin_init";
+--
+-- The type of the entry point
+--
+   type PlugIn_Entry_Ptr is access function return Factory
+      with Convention => C;
+
+end Plugin_API;
+```
+
+Here we added a constructing function Create that takes the plug-in name as the argument and returns an object derived from Greeter of the type declared inside the plug-in. The rest are things for the plug-in implementation. The name of the library entry point to initialize the library and the constructing function that actually does the job.
+
+# Creating the application
+
+Now the application is as simple as this:
+
+```ada
+with Ada.Text_IO;  use Ada.Text_IO;
+with PlugIn_API;   use PlugIn_API;
+
+procedure Plugin_Test is
+   Hello : constant Greeter'Class := Create ("norddeutschland");
+begin
+   Put_Line ("Norddeutschland says " & Hello.Greet);
+end Plugin_Test;
+```
+
+Note that it knows nothing about the implementation, just the name of. The project file too refers only to the plug-in interface:
+
+```ada
+with "plugin_api.gpr";
+project Plugin_Test is
+   for Main         use ("plugin_test.adb");
+   for Source_Files use ("plugin_test.adb");
+   for Object_Dir   use "obj";
+   for Exec_Dir     use "bin";
+end Plugin_Test;
+```
+
+The plug-in implementation is encapsulated into a package inside the dynamically loaded library.
+
+```ada
+with PlugIn_API;
+
+package Plugin_Norddeutschland is
+
+   type Norddeutschland_Greeter is
+      new PlugIn_API.Greeter with null record;
+   overriding
+      function Greet (Object : Norddeutschland_Greeter) return String is
+         ("Moin!");
+
+private
+   function Init return PlugIn_API.Factory with
+      Export => True, External_Name => "plugin_init";
+
+end Plugin_Norddeutschland;
+```
+
+The package body:
+
+```ada
+package body Plugin_Norddeutschland is
+
+   Initialized : Boolean := False;
+
+   function Constructor return PlugIn_API.Greeter'Class is
+   begin
+      return Norddeutschland_Greeter'(PlugIn_API.Greeter with null record);
+   end Constructor;
+
+   function Init return PlugIn_API.Factory is
+      procedure Do_Init;
+      pragma Import (C, Do_Init, "plugin_norddeutschlandinit");
+   begin
+      if not Initialized then -- Initialize library
+         Initialized := True;
+         Do_Init;
+      end if;
+      return Constructor'Access;
+   end Init;
+
+end Plugin_Norddeutschland;
+```
+
+The implementation is self-explanatory yet there are some less trivial parts. First, the library is initialized manually. It is necessary because if the library would use tasking automatic initialization might dead-lock. Here I show how to deal with manually initialized library. The project file is:
+
+```ada
+with "plugin_api.gpr";
+library project Plugin_Norddeutschland_Build is
+
+   for Library_Name      use "plugin_norddeutschland";
+   for Library_Kind      use "dynamic";
+   for Object_Dir        use "obj";
+   for Library_Dir       use "bin";
+   for Source_Files      use ("plugin_norddeutschland.ads", "plugin_norddeutschland.adb");
+   for Library_Auto_Init use "False";
+   for Library_Interface use ("Plugin_Norddeutschland");
+end Plugin_Norddeutschland_Build;
+```
+
+Take note of Library_Auto_Init and Library_Interface. The latter specifies the Ada package exposed by the library. Init from the package is the function called after the library is loaded. It checks if the library was already initialized and if not, it calls the library initialization code. The code is exposed by the builder as a C function with the name `<library-name>init`. Once initialized it returns the constructing function back.
+
+## Plug-in API side
+
+On the plug-in API side we have:
+
+```ada
+with Ada.Containers.Indefinite_Ordered_Maps;
+
+package body Plugin_API is
+--
+-- Map plugin name -> factory function
+--
+   package Plugin_Maps is
+      new Ada.Containers.Indefinite_Ordered_Maps (String, Factory);
+
+   Loaded : Plugin_Maps.Map;
+
+   function Load (Library_File : String) return Factory is separate;
+
+   function Create (Name : String) return Greeter'Class is
+   begin
+      if not Loaded.Contains (Name) then
+         Loaded.Insert (Name, Load (Name));
+      end if;
+      return Loaded.Element (Name).all;
+   end Create;
+
+end Plugin_API;
+```
+
+Ada.Containers.Indefinite_Ordered_Maps is used to create a map (Loaded) name to constructing function. When not in the map it tries to load the library. The function Load is placed into a separate body to be able to have implementation dependent on the operating system. I provide [here](https://github.com/dmitry-kazakov/How-to-create-an-Ada-plug-in) Windows and Linux implementations. The plug-in project file used to build the API library has the scenario variable Target_OS to select the OS:
+
+```ada
+library project Plugin_API_Build is
+   type OS_Type is ("Windows", "Linux");
+   Target_OS : OS_Type := external ("Target_OS", "Windows");
+
+   for Library_Name use "plugin_api";
+   for Library_Kind use "dynamic";
+   for Object_Dir   use "obj";
+   for Library_Dir  use "bin";
+   for Source_Files use ("plugin_api.ads", "plugin_api.adb", "plugin_api-load.adb");
+   case Target_OS is
+      when "Windows" =>
+         for Source_Dirs use (".", "windows");
+      when "Linux" =>
+         for Source_Dirs use (".", "linux");
+   end case;
+end Plugin_API_Build;
+```
+
+Finally, here is a sequence of building everything together (for Linux):
+
+```sh
+gprbuild -XTarget_OS=Linux plugin_api_build.gpr
+gprbuild -XTarget_OS=Linux plugin_test.gpr
+gprbuild -XTarget_OS=Linux plugin_norddeutschland_build.gpr
+```
+
+Now go to the bin subdirectory and run the test:
+
+```sh
+cd bin
+./plugin_test
+```
+
+You will see:
+
+```
+Norddeutschland says Moin!
+```
+
+That is all. The full source code can be downloaded [here](https://github.com/dmitry-kazakov/How-to-create-an-Ada-plug-in).
+
+# Sources
+
+- Repo: [How-to-create-an-Ada-plug-in](https://github.com/dmitry-kazakov/How-to-create-an-Ada-plug-in)
