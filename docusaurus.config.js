@@ -20,8 +20,14 @@ const config = {
   url: "https://ada-lang.io",
   baseUrl: "/",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  onDuplicateRoutes: 'warn',
   favicon: "img/favicon.ico",
+
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -32,8 +38,8 @@ const config = {
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: "en",
-    locales: ["en"]
+    defaultLocale: 'en',
+    locales: ['en']
   },
 
   customFields: {
