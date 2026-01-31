@@ -18,16 +18,16 @@ Guidelines on how to deal with portability issues are in Guideline 7.5.
   abstraction, provide a way to distinguish between the different
   internal errors.
 - Do not borrow an exception name from another context.
-- Export (declare visibly to the user) the names of all exceptions
-  that can be raised.
+- Export (declare visibly to the user) the names of all exceptions that
+  can be raised.
 - In a package, document which exceptions can be raised by each
   subprogram and task entry.
 - Do not raise exceptions for internal errors that can be avoided or
   corrected within the unit.
 - Do not raise the same exception to report different kinds of errors
   that are distinguishable by the user of the unit.
-- Provide interrogative functions that allow the user of a unit to
-  avoid causing exceptions to be raised.
+- Provide interrogative functions that allow the user of a unit to avoid
+  causing exceptions to be raised.
 - When possible, avoid changing state information in a unit before
   raising an exception.
 - Catch and convert or handle all predefined and compiler-defined
@@ -109,10 +109,10 @@ exceptions more distinguishable. Exporting the names of all exceptions
 that a unit can raise, rather than declaring them internally to the
 unit, makes it possible for users of the unit to refer to the names in
 exception handlers. Otherwise, the user would be able to handle the
-exception only with an others handler. Finally, use comments to document
-exactly which of the exceptions declared in a package can be raised by
-each subprogram or task entry making it possible for the user to know
-which exception handlers are appropriate in each situation.
+exception only with an `others` handler. Finally, use comments to
+document exactly which of the exceptions declared in a package can be
+raised by each subprogram or task entry making it possible for the user
+to know which exception handlers are appropriate in each situation.
 
 In situations where there are errors for which the abstraction user can
 take no intelligent action (e.g., there is no workaround or degraded
@@ -123,7 +123,7 @@ kinds of internal error in different ways. When you propagate the error
 to the user, however, you should use a special internal error exception,
 indicating that no user recovery is possible. You should also provide
 relevant information when you propagate the error, using the facilities
-provided in Ada.Exceptions. Thus, for any abstraction, you effectively
+provided in `Ada.Exceptions`. Thus, for any abstraction, you effectively
 provide N + 1 different exceptions: N different recoverable errors and
 one irrecoverable error for which there is no mapping to the
 abstraction. Both the application requirements and what the client
@@ -139,8 +139,8 @@ internal errors that a unit was able to correct invisibly to the user.
 To provide the user with maximum flexibility, it is a good idea to
 provide interrogative functions that the user can call to determine
 whether an exception would be raised if a subprogram or task entry were
-invoked. The function Stack_Empty in the above example is such a
-function. It indicates whether Underflow would be raised if Pop were
+invoked. The function `Stack_Empty` in the above example is such a
+function. It indicates whether `Underflow` would be raised if `Pop` were
 called. Providing such functions makes it possible for the user to avoid
 triggering exceptions.
 
@@ -149,12 +149,12 @@ changing state during an invocation that raises an exception. If a
 requested operation cannot be completely and correctly performed, then
 the unit should either detect this before changing any internal state
 information or should revert to the state at the time of the request.
-For example, after raising the exception Underflow, the stack package in
-the above example should remain in exactly the same state it was in when
-Pop was called. If it were to partially update its internal data
-structures for managing the stack, then future Push and Pop operations
-would not perform correctly. This is always desirable, but not always
-possible.
+For example, after raising the exception `Underflow`, the stack package
+in the above example should remain in exactly the same state it was in
+when `Pop` was called. If it were to partially update its internal data
+structures for managing the stack, then future `Push` and `Pop`
+operations would not perform correctly. This is always desirable, but
+not always possible.
 
 User-defined exceptions should be used instead of predefined or
 compiler-defined exceptions because they are more descriptive and more

@@ -18,9 +18,9 @@ ensure maximum portability.
   backward compatibility with Ada 83 (Ada Reference Manual 1983).
 - Document the use of any obsolescent features.
 - Avoid using the following features:
-  - The short renamings of the packages in the predefined
-    environment (e.g., Text_IO as opposed to Ada.Text_IO)
-  - The character replacements of \! for |, : for \#, and % for
+  - The short renamings of the packages in the predefined environment
+    (e.g., Text_IO as opposed to Ada.Text_IO)
+  - The character replacements of ! for \|, : for \#, and % for
     quotation marks
   - Reduced accuracy subtypes of floating-point types
   - The 'Constrained attribute as applied to private types
@@ -47,22 +47,22 @@ compatibility with Ada 83 forces their use.
 #### exceptions
 
 When you instantiate Ada.Text_IO.Float_IO, the values of the
-Default_Fore and Default_Aft fields are set from the values of the
-'Fore and 'Aft attributes of the actual floating-point type used in the
+Default_Fore and Default_Aft fields are set from the values of the 'Fore
+and 'Aft attributes of the actual floating-point type used in the
 instantiation. If you declare a reduced accuracy floating-point type
-that you then use to instantiate Ada.Text_IO.Float_IO, the output
-field widths are determined from the reduced accuracy type, although the
+that you then use to instantiate Ada.Text_IO.Float_IO, the output field
+widths are determined from the reduced accuracy type, although the
 implementation accuracy is unchanged (Rationale 1995, §3.3).
 
 ### Global Assumptions
 
 #### guideline
 
-- Make informed assumptions about the support provided for the
-  following on potential target platforms:
+- Make informed assumptions about the support provided for the following
+  on potential target platforms:
   - Number of bits available for type Integer (range constraints)
-  - Number of decimal digits of precision available for
-    floating-point types
+  - Number of decimal digits of precision available for floating-point
+    types
   - Number of bits available for fixed-point types (delta and range
     constraints)
   - Number of characters per line of source text
@@ -85,10 +85,10 @@ implementation accuracy is unchanged (Rationale 1995, §3.3).
   - 24 bits available for fixed-point types
   - 200 characters per line of source text
   - 16 bits for expressions
-  - \-86_400 .. 86_400 seconds (1 day) for the range of Duration
-    (as specified in Ada Reference Manual \[1995, §9.6\])
-  - 20 milliseconds for Duration'Small (as specified in Ada
-    Reference Manual \[1995, §9.6\])
+  - -86_400 .. 86_400 seconds (1 day) for the range of Duration (as
+    specified in [Ada Reference Manual, §9.6](../../arm/AA-9/AA-9.6.mdx))
+  - 20 milliseconds for Duration'Small (as specified in [Ada Reference
+    Manual, §9.6](../../arm/AA-9/AA-9.6.mdx))
 
 #### rationale
 
@@ -119,9 +119,9 @@ integers can be assumed if the application will only be considered for
 supporting compiler.)
 
 The values for the range and accuracy of values of the predefined type
-Duration are the limits expressed in the Ada Reference Manual (1995,
-§9.6). You should not expect an implementation to provide a wider range
-or a finer granularity.
+Duration are the limits expressed in the [Ada Reference Manual,
+§9.6](../../arm/AA-9/AA-9.6.mdx). You should not expect an implementation
+to provide a wider range or a finer granularity.
 
 A standard-mode Ada character set of Latin 1 can be assumed in most
 cases for the contents and internal behavior of type Character and
@@ -135,8 +135,8 @@ interface with a specific purpose.
 
 #### guideline
 
-- Use highlighting comments for each package, subprogram, and task
-  where any nonportable features are present.
+- Use highlighting comments for each package, subprogram, and task where
+  any nonportable features are present.
 - For each nonportable feature employed, describe the expectations for
   that feature.
 
@@ -188,8 +188,7 @@ person performing the porting process.
 
 #### guideline
 
-- Consider using only a parameterless procedure as the main
-  subprogram.
+- Consider using only a parameterless procedure as the main subprogram.
 - Consider using Ada.Command_Line for accessing values from the
   environment, but recognize that this package's behavior and even its
   specification are nonportable (see Guideline 7.1.6).
@@ -382,8 +381,8 @@ included in your program.
 - Use features defined in the Specialized Needs Annexes rather than
   vendor-defined features.
 - Document clearly the use of any features from the Specialized Needs
-  Annexes (systems programming, real-time systems, distributed
-  systems, information systems, numerics, and safety and security).
+  Annexes (systems programming, real-time systems, distributed systems,
+  information systems, numerics, and safety and security).
 
 #### rationale
 
@@ -411,12 +410,12 @@ programmers.
 #### guideline
 
 - Do not write code whose correct execution depends on the particular
-  parameter passing mechanism used by an implementation (Ada Reference
-  Manual 1995, §6.2; Cohen 1986).
-- If a subprogram has more than one formal parameter of a given
-  subtype, at least one of which is \[in\] out, make sure that the
-  subprogram can properly handle the case when both formal parameters
-  denote the same actual object.
+  parameter passing mechanism used by an implementation ([Ada Reference
+  Manual, §6.2](../../arm/AA-6/AA-6.2.mdx); Cohen 1986).
+- If a subprogram has more than one formal parameter of a given subtype,
+  at least one of which is \[in\] out, make sure that the subprogram can
+  properly handle the case when both formal parameters denote the same
+  actual object.
 
 #### example
 
@@ -476,12 +475,12 @@ begin
 end Test_Bounded_Error;
 ```
 
-In executing the procedure Test_Bounded_Error, both Parm_1 and
-Parm_2 denote the object Actual_Parm. After executing the first
-statement, the object Actual_Parm has the value 5. When the procedure
-Inner is called, its formal parameter Parm denotes Actual_Parm. It
-cannot be determined whether it denotes the old value of Parm_1, in
-this case 1, or the new value, in this case 5.
+In executing the procedure Test_Bounded_Error, both Parm_1 and Parm_2
+denote the object Actual_Parm. After executing the first statement, the
+object Actual_Parm has the value 5. When the procedure Inner is called,
+its formal parameter Parm denotes Actual_Parm. It cannot be determined
+whether it denotes the old value of Parm_1, in this case 1, or the new
+value, in this case 5.
 
 ```ada
 Actual_Parm : Integer := 1;
@@ -501,8 +500,9 @@ an object of this same type, you should document whether you assume that
 the formal parameter denotes a different object from the object named in
 the up-level reference. In these situations where an object can be
 accessed through distinct formal parameter paths, the exception
-Program_Error may be raised, the new value may be read, or the old
-value of the object may be used (Ada Reference Manual 1995, §6.2).
+Program_Error may be raised, the new value may be read, or the old value
+of the object may be used ([Ada Reference Manual,
+§6.2](../../arm/AA-6/AA-6.2.mdx)).
 
 See also Guideline 8.2.7.
 
@@ -524,8 +524,9 @@ parameter-passing mechanism.
 #### example
 
 The output of this program depends upon the order of evaluation of
-subprogram parameters, but the Ada Reference Manual (1995, §6.4)
-specifies that these evaluations are done in an arbitrary order:
+subprogram parameters, but the [Ada Reference Manual,
+§6.4](../../arm/AA-6/AA-6.4.mdx) specifies that these evaluations are done
+in an arbitrary order:
 
 ```ada
 package Utilities is
@@ -570,6 +571,7 @@ evaluation may not adversely affect the program on a certain
 implementation, the code might not execute correctly when it is ported.
 For example, if two actual parameters of a subprogram call have side
 effects, the effect of the program could depend on the order of
-evaluation (Ada Reference Manual 1995, §1.1.4). Avoid arbitrary order
+evaluation ([Ada Reference Manual,
+§1.1.4](../../arm/AA-1/AA-1.1.mdx#Subclause_1.1.4)). Avoid arbitrary order
 dependencies, but also recognize that even an unintentional error of
 this kind could prohibit portability.

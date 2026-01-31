@@ -23,13 +23,13 @@ hiding, it is easier to adapt in unforeseen ways.
 
 #### guideline
 
-- Provide core functionality in a reusable part or set of parts so
-  that the functionality in this abstraction can be meaningfully
-  extended by its reusers.
-- More specifically, provide initialization and finalization
-  procedures for every data structure that may contain dynamic data.
-- For data structures needing initialization and finalization,
-  consider deriving them, when possible, from the types
+- Provide core functionality in a reusable part or set of parts so that
+  the functionality in this abstraction can be meaningfully extended by
+  its reusers.
+- More specifically, provide initialization and finalization procedures
+  for every data structure that may contain dynamic data.
+- For data structures needing initialization and finalization, consider
+  deriving them, when possible, from the types
   Ada.Finalization.Controlled or Ada.Finalization.Limited_Controlled.
 
 #### example
@@ -89,9 +89,9 @@ When that is not possible, it should be supplied with initialization
 operations. In any case, it needs finalization operations. One way to
 supply the initialization and finalization operations is to derive the
 abstraction from the predefined types Ada.Finalization.Controlled or
-Ada.Finalization.Limited_Controlled. Wherever possible, query
-operations should be provided to determine when limits are about to be
-exceeded, so that the user can avoid causing exceptions to be raised.
+Ada.Finalization.Limited_Controlled. Wherever possible, query operations
+should be provided to determine when limits are about to be exceeded, so
+that the user can avoid causing exceptions to be raised.
 
 It is also useful to provide reset operations for many objects. To see
 that a reset and an initiation can be different, consider the analogous
@@ -176,14 +176,14 @@ See also Guideline 9.3.5.
   you do not need assignment on objects of the type inside the generic
   body.
 - Consider using a nonlimited private type for a generic formal type
-  when you need normal assignment on objects of the type inside the
-  body of the generic.
+  when you need normal assignment on objects of the type inside the body
+  of the generic.
 - Consider using a formal tagged type derived from
   Ada.Finalization.Controlled when you need to enforce special
   assignment semantics on objects of the type in the body of the
   generic.
-- Export the least restrictive type that maintains the integrity of
-  the data and abstraction while allowing alternate implementations.
+- Export the least restrictive type that maintains the integrity of the
+  data and abstraction while allowing alternate implementations.
 - Consider using a limited private abstract type for generic formal
   types of a generic that extends a formal private tagged type.
 
@@ -613,81 +613,73 @@ nearly identical.
 
 Compare the body for the simplest version, the ADO:
 
----
-
+```ada
 package body Bounded_Stack is
-
-` type Stack_Slots is array (Natural range <>) of Element;`  
-` type Stack_Information is`  
-` record`  
-` Slots : Stack_Slots (1 .. Maximum_Stack_Size);`  
-` Index : Natural := 0;`  
-` end record;`  
-` Stack : Stack_Information;`  
-` ---------------------------------------------------------------------`  
-` procedure Push (New_Element : in Element) is`  
-` begin`  
-` if Stack.Index >= Maximum_Stack_Size then`  
-` raise Overflow;`  
-` end if;`  
-` Stack.Index := Stack.Index + 1;`  
-` Stack.Slots(Stack.Index) := New_Element;`  
-` end Push;`  
-` ---------------------------------------------------------------------`  
-` procedure Pop (Top_Element : out Element) is`  
-` begin`  
-` if Stack.Index <= 0 then`  
-` raise Underflow;`  
-` end if;`  
-` Top_Element := Stack.Slots(Stack.Index);`  
-` Stack.Index := Stack.Index - 1;`  
-` end Pop;`  
-` ---------------------------------------------------------------------`  
-` ...`
-
+   type Stack_Slots is array (Natural range <>) of Element;
+   type Stack_Information is
+      record
+         Slots : Stack_Slots (1 .. Maximum_Stack_Size);
+         Index : Natural := 0;
+      end record;
+   Stack : Stack_Information;
+   ---------------------------------------------------------------------
+   procedure Push (New_Element : in     Element) is
+   begin
+      if Stack.Index >= Maximum_Stack_Size then
+         raise Overflow;
+      end if;
+      Stack.Index := Stack.Index + 1;
+      Stack.Slots(Stack.Index) := New_Element;
+   end Push;
+   ---------------------------------------------------------------------
+   procedure Pop (Top_Element :    out Element) is
+   begin
+      if Stack.Index <= 0 then
+         raise Underflow;
+      end if;
+      Top_Element := Stack.Slots(Stack.Index);
+      Stack.Index := Stack.Index - 1;
+   end Pop;
+   ---------------------------------------------------------------------
+   ...
 end Bounded_Stack;
-
----
+```
 
 with the body for the most powerful and flexible version, the GADT:
 
----
-
+```ada
 package body Bounded_Stack is
+   type Stack_Slots is array (Natural range <>) of Element;
+   type Stack_Information is
+      record
+         Slots : Stack_Slots (1 .. Maximum_Stack_Size);
+         Index : Natural := 0;
+      end record;
+   ---------------------------------------------------------------------
+   procedure Push (On_Top      : in out Stack;
+                   New_Element : in     Element) is
+   begin
+      if On_Top.Index >= Maximum_Stack_Size then
+         raise Overflow;
+      end if;
+      On_Top.Index := On_Top.Index + 1;
+      On_Top.Slots(On_Top.Index) := New_Element;
+   end Push;
+   ---------------------------------------------------------------------
+   procedure Pop (From_Top    : in out Stack;
+                  Top_Element :    out Element) is
+   begin
+      if From_Top.Index <= 0 then
+         raise Underflow;
+      end if;
+      Top_Element := From_Top.Slots(From_Top.Index);
 
-` type Stack_Slots is array (Natural range <>) of Element;`  
-` type Stack_Information is`  
-` record`  
-` Slots : Stack_Slots (1 .. Maximum_Stack_Size);`  
-` Index : Natural := 0;`  
-` end record;`  
-` ---------------------------------------------------------------------`  
-` procedure Push (On_Top : in out Stack;`  
-` New_Element : in Element) is`  
-` begin`  
-` if On_Top.Index >= Maximum_Stack_Size then`  
-` raise Overflow;`  
-` end if;`  
-` On_Top.Index := On_Top.Index + 1;`  
-` On_Top.Slots(On_Top.Index) := New_Element;`  
-` end Push;`  
-` ---------------------------------------------------------------------`  
-` procedure Pop (From_Top : in out Stack;`  
-` Top_Element : out Element) is`  
-` begin`  
-` if From_Top.Index <= 0 then`  
-` raise Underflow;`  
-` end if;`  
-` Top_Element := From_Top.Slots(From_Top.Index);`
-
-` From_Top.Index := From_Top.Index - 1;`  
-` end Pop;`  
-` ---------------------------------------------------------------------`  
-` ...`
-
+      From_Top.Index := From_Top.Index - 1;
+   end Pop;
+   ---------------------------------------------------------------------
+   ...
 end Bounded_Stack;
-
----
+```
 
 There is only one difference. The ADO declares a local object called
 Stack, while the GADT has one additional parameter (called Stack) on
@@ -1030,9 +1022,9 @@ Rationale (1995, §3.7.1 and §4.4.4), Ross (1989), and Booch (1987).
 
 - Localize the currency symbol, digits separator, radix mark, and fill
   character in picture output.
-- Consider using the \# character in picture layouts so that the
-  edited numeric output lengths are invariant across currency symbols
-  of different lengths.
+- Consider using the \# character in picture layouts so that the edited
+  numeric output lengths are invariant across currency symbols of
+  different lengths.
 
 #### example
 
@@ -1060,6 +1052,9 @@ package Currency is
               Default_Radix_Mark => ',');
 
 end Currency;
+```
+
+```ada
 with Ada.Text_IO.Editing;
 with Currency;  use Currency;
 procedure Test_Picture_Editing is
@@ -1087,15 +1082,15 @@ end Test_Picture_Editing;
 #### rationale
 
 Currencies differ in how they are displayed in a report. Currencies use
-different symbols of different lengths (e.g., the American $, the German
-DM, and the Austrian ÖS). They use different symbols to separate digits.
-The United States and the United Kingdom use the comma to separate
-groups of thousands, whereas Continental Europe uses the period. The
-United States and the United Kingdom use a period as a decimal point;
-Continental Europe uses the comma. For a program involving financial
-calculations that is to be reused across countries, you need to take
-these differences into account. By encapsulating them, you limit the
-impact of change in adapting the financial package.
+different symbols of different lengths (e.g., the American \$, the
+German DM, and the Austrian ÖS). They use different symbols to separate
+digits. The United States and the United Kingdom use the comma to
+separate groups of thousands, whereas Continental Europe uses the
+period. The United States and the United Kingdom use a period as a
+decimal point; Continental Europe uses the comma. For a program
+involving financial calculations that is to be reused across countries,
+you need to take these differences into account. By encapsulating them,
+you limit the impact of change in adapting the financial package.
 
 ### Implementing Mixins
 

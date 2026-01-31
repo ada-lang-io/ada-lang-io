@@ -29,25 +29,29 @@ with improved reliability and maintainability.
 
 The following section of code:
 
-    if not Condition_1 then
-       if Condition_2 then
-          Action_A;
-       else  -- not Condition_2
-          Action_B;
-       end if;
-    else  -- Condition_1
-       Action_C;
-    end if;
+```ada
+if not Condition_1 then
+   if Condition_2 then
+      Action_A;
+   else  -- not Condition_2
+      Action_B;
+   end if;
+else  -- Condition_1
+   Action_C;
+end if;
+```
 
 can be rewritten more clearly and with less nesting as:
 
-    if Condition_1 then
-       Action_C;
-    elsif Condition_2 then
-       Action_A;
-    else  -- not (Condition_1 or Condition_2)
-       Action_B;
-    end if;
+```ada
+if Condition_1 then
+   Action_C;
+elsif Condition_2 then
+   Action_A;
+else  -- not (Condition_1 or Condition_2)
+   Action_B;
+end if;
+```
 
 #### rationale
 
@@ -71,8 +75,8 @@ Ask yourself the following questions to help you simplify the code:
 
 - Can some part of the expression be put into a constant or variable?
 - Does some part of the lower nested control structures represent a
-  significant and, perhaps, reusable computation that I can factor
-  into a subprogram ?
+  significant and, perhaps, reusable computation that I can factor into
+  a subprogram ?
 - Can I convert these nested `if` statements into a `case` statement?
 - Am I using `else if` where I could be using `elsif`?
 - Can I reorder the conditional expressions controlling this nested
@@ -98,29 +102,29 @@ names.
 #### example
 
 ```ada
-    First  : constant Index := Index'First;
-    Second : constant Index := Index'Succ(First);
-    Third  : constant Index := Index'Succ(Second);
-    type Vector is array (Index range <>) of Element;
-    subtype Column_Vector is Vector (Index);
-    type    Square_Matrix is array  (Index) of Column_Vector;
-    subtype Small_Range  is Index range First .. Third;
-    subtype Diagonals    is Vector (Small_Range);
-    type    Tri_Diagonal is array  (Index) of Diagonals;
-    Markov_Probabilities : Square_Matrix;
-    Diagonal_Data        : Tri_Diagonal;
-    ...
-    -- Remove diagonal and off diagonal elements.
-    Diagonal_Data(Index'First)(First) := Null_Value;
-    Diagonal_Data(Index'First)(Second .. Third) :=
-          Markov_Probabilities(Index'First)(First .. Second);
-    for I in Second .. Index'Pred(Index'Last) loop
-       Diagonal_Data(I) :=
-             Markov_Probabilities(I)(Index'Pred(I) .. Index'Succ(I));
-    end loop;
-    Diagonal_Data(Index'Last)(First .. Second) :=
-          Markov_Probabilities(Index'Last)(Index'Pred(Index'Last) .. Index'Last);
-    Diagonal_Data(Index'Last)(Third) := Null_Value;
+First  : constant Index := Index'First;
+Second : constant Index := Index'Succ(First);
+Third  : constant Index := Index'Succ(Second);
+type Vector is array (Index range <>) of Element;
+subtype Column_Vector is Vector (Index);
+type    Square_Matrix is array  (Index) of Column_Vector;
+subtype Small_Range  is Index range First .. Third;
+subtype Diagonals    is Vector (Small_Range);
+type    Tri_Diagonal is array  (Index) of Diagonals;
+Markov_Probabilities : Square_Matrix;
+Diagonal_Data        : Tri_Diagonal;
+...
+-- Remove diagonal and off diagonal elements.
+Diagonal_Data(Index'First)(First) := Null_Value;
+Diagonal_Data(Index'First)(Second .. Third) :=
+      Markov_Probabilities(Index'First)(First .. Second);
+for I in Second .. Index'Pred(Index'Last) loop
+   Diagonal_Data(I) :=
+         Markov_Probabilities(I)(Index'Pred(I) .. Index'Succ(I));
+end loop;
+Diagonal_Data(Index'Last)(First .. Second) :=
+      Markov_Probabilities(Index'Last)(Index'Pred(Index'Last) .. Index'Last);
+Diagonal_Data(Index'Last)(Third) := Null_Value;
 ```
 
 #### rationale
@@ -142,22 +146,28 @@ regarding possible performance issues of slice assignments versus loops.
 
 #### example
 
-    type Color is (Red, Green, Blue, Purple);
-    Car_Color : Color := Red;
-    ...
-    case Car_Color is
-       when Red .. Blue => ...
-       when Purple      => ...
-    end case;  -- Car_Color
+```ada
+type Color is (Red, Green, Blue, Purple);
+Car_Color : Color := Red;
+...
+case Car_Color is
+   when Red .. Blue => ...
+   when Purple      => ...
+end case;  -- Car_Color
+```
 
 Now consider a change in the type:
 
-    type Color is (Red, Yellow, Green, Blue, Purple);
+```ada
+type Color is (Red, Yellow, Green, Blue, Purple);
+```
 
 This change may have an unnoticed and undesired effect in the `case`
-statement. If the choices had been enumerated explicitly, as `when Red | Green | Blue =>` instead of `when` `Red .. Blue =>`, then the `case`
-statement would not have compiled. This would have forced the maintainer
-to make a conscious decision about what to do in the case of `Yellow`.
+statement. If the choices had been enumerated explicitly, as
+`when Red | Green | Blue =>` instead of `when Red .. Blue =>`, then the
+`case` statement would not have compiled. This would have forced the
+maintainer to make a conscious decision about what to do in the case of
+`Yellow`.
 
 In the following example, assume that a menu has been posted, and the
 user is expected to enter one of the four choices. Assume that
@@ -165,39 +175,41 @@ user is expected to enter one of the four choices. Assume that
 handles errors in user input. The less readable alternative with the
 `if/elsif` statement is shown after the `case` statement:
 
-    Do_Menu_Choices_1:
-       loop
-          ...
+```ada
+Do_Menu_Choices_1:
+   loop
+      ...
 
-          case User_Choice is
-             when 'A'    => Item := Terminal_IO.Get (&quot;Item to add&quot;);
-             when 'D'    => Item := Terminal_IO.Get (&quot;Item to delete&quot;);
-             when 'M'    => Item := Terminal_IO.Get (&quot;Item to modify&quot;);
-             when 'Q'    => exit Do_Menu_Choices_1;
+      case User_Choice is
+         when 'A'    => Item := Terminal_IO.Get ("Item to add");
+         when 'D'    => Item := Terminal_IO.Get ("Item to delete");
+         when 'M'    => Item := Terminal_IO.Get ("Item to modify");
+         when 'Q'    => exit Do_Menu_Choices_1;
 
-             when others => -- error has already been signaled to user
-                null;
-          end case;
-       end loop Do_Menu_Choices_1;
+         when others => -- error has already been signaled to user
+            null;
+      end case;
+   end loop Do_Menu_Choices_1;
 
-    Do_Menu_Choices_2:
-       loop
-          ...
+Do_Menu_Choices_2:
+   loop
+      ...
 
-          if User_Choice = 'A' then
-             Item := Terminal_IO.Get (&quot;Item to add&quot;);
+      if User_Choice = 'A' then
+         Item := Terminal_IO.Get ("Item to add");
 
-          elsif User_Choice = 'D' then
-             Item := Terminal_IO.Get (&quot;Item to delete&quot;);
+      elsif User_Choice = 'D' then
+         Item := Terminal_IO.Get ("Item to delete");
 
-          elsif User_Choice = 'M' then
-             Item := Terminal_IO.Get (&quot;Item to modify&quot;);
+      elsif User_Choice = 'M' then
+         Item := Terminal_IO.Get ("Item to modify");
 
-          elsif User_Choice = 'Q' then
-             exit Do_Menu_Choices_2;
+      elsif User_Choice = 'Q' then
+         exit Do_Menu_Choices_2;
 
-          end if;
-       end loop Do_Menu_Choices_2;
+      end if;
+   end loop Do_Menu_Choices_2;
+```
 
 #### rationale
 
@@ -234,19 +246,21 @@ to enhance maintainability. It is easier to maintain because the
 declaration of the range can be placed where it is logically part of the
 abstraction, not buried in a `case` statement in the executable code:
 
-    subtype Lower_Case is Character range 'a' .. 'z';
-    subtype Upper_Case is Character range 'A' .. 'Z';
-    subtype Control    is Character range Ada.Characters.Latin_1.NUL ..
-                                          Ada.Characters.Latin_1.US;
-    subtype Numbers    is Character range '0' .. '9';
-    ...
-    case Input_Char is
-       when Lower_Case => Capitalize(Input_Char);
-       when Upper_Case => null;
-       when Control    => raise Invalid_Input;
-       when Numbers    => null;
-       ...
-    end case;
+```ada
+subtype Lower_Case is Character range 'a' .. 'z';
+subtype Upper_Case is Character range 'A' .. 'Z';
+subtype Control    is Character range Ada.Characters.Latin_1.NUL ..
+                                      Ada.Characters.Latin_1.US;
+subtype Numbers    is Character range '0' .. '9';
+...
+case Input_Char is
+   when Lower_Case => Capitalize(Input_Char);
+   when Upper_Case => null;
+   when Control    => raise Invalid_Input;
+   when Numbers    => null;
+   ...
+end case;
+```
 
 #### exceptions
 
@@ -311,7 +325,7 @@ end loop;
 
 A `for` loop is bounded, so it cannot be an "infinite loop." This is
 enforced by the Ada language, which requires a finite range in the loop
-specification and does not allow the loop counter of a `for`loop to be
+specification and does not allow the loop counter of a `for` loop to be
 modified by a statement executed within the loop. This yields a
 certainty of understanding for the reader and the writer not associated
 with other forms of loops. A `for` loop is also easier to maintain
@@ -363,7 +377,7 @@ statements for all of them, rather than adding an `exit` statement to a
 
 - Use `exit` statements to enhance the readability of loop termination
   code (NASA 1987).
-- Use `exit when ...` rather than`if ... then exit`whenever possible
+- Use `exit when ...` rather than `if ... then exit` whenever possible
   (NASA 1987).
 - Review `exit` statement placement.
 
@@ -414,8 +428,8 @@ See also Guidelines 5.1.3 and 5.6.4.
 
 #### guideline
 
-- Consider specifying bounds on loops .
-- Consider specifying bounds on recursion .
+- Consider specifying bounds on loops.
+- Consider specifying bounds on recursion.
 
 #### example
 
@@ -498,7 +512,7 @@ this guideline.
 Embedded control applications have loops that are intended to be
 infinite. Only a few loops within such applications should qualify as
 exceptions to this guideline. The exceptions should be deliberate (and
-documented ) policy decisions.
+documented) policy decisions.
 
 This guideline is most important to safety critical systems. For other
 systems, it may be overkill.
@@ -530,9 +544,9 @@ label with blank space. Indicate at the label where the corresponding
 
 #### guideline
 
-- Minimize the number of `return`statementsfrom a subprogram (NASA
+- Minimize the number of `return` statements from a subprogram (NASA
   1987).
-- Highlight `return`statements with comments or white space to keep
+- Highlight `return` statements with comments or white space to keep
   them from being lost in other code.
 
 #### example
@@ -666,12 +680,12 @@ origin and allow them to be either handled, propagated, or converted.
 
 #### guideline
 
-- Use an aggregate instead of a sequence of assignments to assign
-  values to all components of a record.
+- Use an aggregate instead of a sequence of assignments to assign values
+  to all components of a record.
 - Use an aggregate instead of a temporary variable when building a
   record to pass as an actual parameter.
-- Use positional association only when there is a conventional
-  ordering of the arguments.
+- Use positional association only when there is a conventional ordering
+  of the arguments.
 
 #### example
 
