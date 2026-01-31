@@ -79,10 +79,10 @@ the entry call (see Guideline 6.2.3).
 - Explicitly shut down tasks that depend on library packages.
 - Confirm that a task is terminated before freeing it with
   Ada.Unchecked_Deallocation.
-- Consider using a select statement with a terminate alternative
-  rather than an accept statement alone.
-- Consider providing a terminate alternative for every selective
-  accept that does not require an else part or a delay .
+- Consider using a select statement with a terminate alternative rather
+  than an accept statement alone.
+- Consider providing a terminate alternative for every selective accept
+  that does not require an else part or a delay .
 - Do not declare or create a task within a user-defined Finalize
   procedure after the environment task has finished waiting for other
   tasks.
@@ -140,11 +140,12 @@ shut down tasks that depend on library packages is to provide them with
 exit entries and have the main subprogram call the exit entry just
 before it terminates.
 
-The Ada Reference Manual (1995, §13.11.2) states that a bounded error
-results from freeing a discriminated, unterminated task object. The
-danger lies in deallocating the discriminants as a result of freeing the
-task object. The effect of unterminated tasks containing bounded errors
-at the end of program execution is undefined.
+The [Ada Reference Manual,
+§13.1.2](../../arm/AA-13/AA-13.1.mdx#Subclause_13.1.2) states that a
+bounded error results from freeing a discriminated, unterminated task
+object. The danger lies in deallocating the discriminants as a result of
+freeing the task object. The effect of unterminated tasks containing
+bounded errors at the end of program execution is undefined.
 
 Execution of an accept statement or of a selective accept statement
 without an else part, a delay, or a terminate alternative cannot proceed
@@ -161,9 +162,9 @@ abnormally, the language does not specify whether to await a task
 activated during finalization of the controlled objects in a partition.
 While the environment task is waiting for all other tasks in the
 partition to complete, starting up a new task during finalization
-results in a bounded error (Ada Reference Manual 1995, §10.2). The
-exception Program_Error can be raised during creation or activation of
-such a task.
+results in a bounded error ([Ada Reference Manual,
+§10.2](../../arm/AA-10/AA-10.2.mdx)). The exception Program_Error can be
+raised during creation or activation of such a task.
 
 #### exceptions
 
@@ -178,16 +179,17 @@ task's caller(s) will ever expect to return. Because entire programs can
 be candidates for reuse (see Chapter 8), note that the task (and
 whatever it depends upon) will not terminate. Also be certain that for
 any other task that you do wish to terminate, its termination does not
-await this task's termination. Reread and fully understand the Ada
-Reference Manual (1995, §9.3) on "Task Dependence-Termination of Tasks."
+await this task's termination. Reread and fully understand the [Ada
+Reference Manual, §9.3](../../arm/AA-9/AA-9.3.mdx) on "Task
+Dependence-Termination of Tasks."
 
 ### The Abort Statement
 
 #### guideline
 
 - Avoid using the abort statement.
-- Consider using the asynchronous select statement rather than the
-  abort statement.
+- Consider using the asynchronous select statement rather than the abort
+  statement.
 - Minimize uses of the asynchronous select statement.
 - Avoid assigning nonatomic global objects from a task or from the
   abortable part of an asynchronous select statement.
@@ -292,12 +294,12 @@ should avoid assigning to nonatomic global objects, primarily because of
 the risk of an abort occurring before the nonatomic assignment
 completes. If you have one or more abort statements in your application
 and the assignment is disrupted, the target object can become abnormal,
-and subsequent uses of the object lead to erroneous execution (Ada
-Reference Manual 1995, §9.8). In the case of scalar objects, you can use
-the attribute 'Valid, but there is no equivalent attribute for nonscalar
-objects. (See Guideline 5.9.1 for a discussion of the 'Valid attribute.)
-You also can still safely assign to local objects and call operations of
-global protected objects.
+and subsequent uses of the object lead to erroneous execution ([Ada
+Reference Manual, §9.8](../../arm/AA-9/AA-9.8.mdx)). In the case of scalar
+objects, you can use the attribute 'Valid, but there is no equivalent
+attribute for nonscalar objects. (See Guideline 5.9.1 for a discussion
+of the 'Valid attribute.) You also can still safely assign to local
+objects and call operations of global protected objects.
 
 ### Abnormal Termination
 
@@ -365,8 +367,8 @@ task (see Guideline 6.3.1).
 
 #### guideline
 
-- Do not call a task entry that directly or indirectly results in a
-  call to an entry of the original calling task.
+- Do not call a task entry that directly or indirectly results in a call
+  to an entry of the original calling task.
 
 #### rationale
 
@@ -378,8 +380,7 @@ of its own entries directly or indirectly via a circular chain of calls.
 #### guideline
 
 - Avoid race conditions in setting an exit status code from the main
-  program when using the procedure
-  Ada.Command_Line.Set_Exit_Status.
+  program when using the procedure Ada.Command_Line.Set_Exit_Status.
 - In a program with multiple tasks, encapsulate, serialize, and check
   calls to the procedure Ada.Command_Line.Set_Exit_Status.
 

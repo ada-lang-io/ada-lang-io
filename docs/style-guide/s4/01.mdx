@@ -14,8 +14,8 @@ listed below are often given as general program design guidelines.
 - Place the specification of each library unit package in a separate
   file from its body.
 - Avoid defining library unit subprograms that are not intended to be
-  used as main programs. If such subprograms are defined, then create
-  an explicit specification, in a separate file, for each library unit
+  used as main programs. If such subprograms are defined, then create an
+  explicit specification, in a separate file, for each library unit
   subprogram.
 - Minimize the use of subunits.
 - In preference to subunits, use child library units to structure a
@@ -23,7 +23,7 @@ listed below are often given as general program design guidelines.
 - Place each subunit in a separate file.
 - Use a consistent file naming convention.
 - In preference to nesting in a package body, use a private child and
-  with it to the parent body.
+  `with` it to the parent body.
 - Use private child unit specifications for data and subprograms that
   are required by (other) child units that extend a parent unit's
   abstraction or services.
@@ -32,29 +32,29 @@ listed below are often given as general program design guidelines.
 
 The file names below illustrate one possible file organization and
 associated consistent naming convention. The library unit name uses the
-adb suffix for the body. The suffix ads indicates the specification, and
-any files containing subunits use names constructed by separating the
-body name from the subunit name with an underscore:
+`adb` suffix for the body. The suffix `ads` indicates the specification,
+and any files containing subunits use names constructed by separating
+the body name from the subunit name with an underscore:
 
-`text_io.ads — the specification`  
-`text_io.adb — the body`  
-`text_io_integer_io.adb — a subunit`  
-`text_io_fixed_io.adb — a subunit`  
-`text_io_float_io.adb — a subunit`  
-`text_io_enumeration_io.adb — a subunit`
+`text_io.ads                — the specification`  
+`text_io.adb                — the body`  
+`text_io_integer_io.adb     — a subunit`  
+`text_io_fixed_io.adb       — a subunit`  
+`text_io_float_io.adb       — a subunit`  
+`text_io_enumeration_io.adb — a subunit`
 
 Depending on what characters your file system allows you to use in file
 names, you could show the distinction between parent and subunit name
-more clearly in the file name. If your file system allows the "\#"
+more clearly in the file name. If your file system allows the "#"
 character, for example, you could separate the body name from the
 subunit name with a \#:
 
-`text_io.ads — the specification`  
-`text_io.adb — the body`  
-`text_io#integer_io.adb — a subunit`  
-`text_io#fixed_io.adb — a subunit`  
-`text_io#float_io.adb — a subunit`  
-`text_io#enumeration_io.adb — a subunit`
+`text_io.ads                — the specification`  
+`text_io.adb                — the body`  
+`text_io#integer_io.adb     — a subunit`  
+`text_io#fixed_io.adb       — a subunit`  
+`text_io#float_io.adb       — a subunit`  
+`text_io#enumeration_io.adb — a subunit`
 
 Some operating systems are case-sensitive, although Ada itself is not a
 case-sensitive language. For example, you could choose a convention of
@@ -87,8 +87,9 @@ subprogram. Moreover, it cuts down on the number of separate modules in
 the system.
 
 In general, you should use a separate specification for any library
-subprogram that is mentioned in a with clause. This makes the with'ing
-unit dependent on the library subprogram specification, not its body.
+subprogram that is mentioned in a `with` clause. This makes the
+`with`'ing unit dependent on the library subprogram specification, not
+its body.
 
 You should minimize the use of subunits because they create maintenance
 problems. Declarations appearing in the parent body are visible in the
@@ -170,9 +171,8 @@ child package of supporting subprograms.
 
 #### guideline
 
-- When possible, express configuration pragmas through compiler
-  options or other means that do not require modifications to the
-  source code.
+- When possible, express configuration pragmas through compiler options
+  or other means that do not require modifications to the source code.
 - When configuration pragmas must be placed in source code, consider
   isolating them to one compilation unit per partition; if specified,
   the main subprogram for the partition is recommended.
@@ -181,7 +181,7 @@ child package of supporting subprograms.
 
 Configuration pragmas are generally used to select a partition-wide or
 system-wide option. Usually, they reflect either high-level software
-architecture decisions (e.g., pragma Task_Dispatching_Policy) or the
+architecture decisions (e.g., pragma `Task_Dispatching_Policy`) or the
 use of the software in a particular application domain (e.g.,
 safety-critical software). If a configuration pragma is embedded within
 a software component and that component is reused in a different context
@@ -205,7 +205,7 @@ to occur.
 
 #### exceptions
 
-Certain pragmas (e.g., pragma Suppress) can be used in several forms,
+Certain pragmas (e.g., pragma `Suppress`) can be used in several forms,
 including as a configuration pragma. This guideline does not apply to
 such pragmas when they are not used as a configuration pragma.
 
@@ -274,8 +274,7 @@ calls.
   to be static.
 - Use a parameterless function (instead of a constant) if the value
   should be inherited by types derived from the type.
-- Use a parameterless function if the value itself is subject to
-  change.
+- Use a parameterless function if the value itself is subject to change.
 
 #### example
 
@@ -290,10 +289,10 @@ function Next_Character return Character is separate;
 However, the use of a function like this could lead to a subtle problem.
 Any time the order of evaluation is undefined, the order of the values
 returned by the function will effectively be undefined. In this example,
-the order of the characters placed in Word and the order that the
-following two characters are given to the Suffix parameters are unknown.
-No implementation of the Next_Character function can guarantee which
-character will go where:
+the order of the characters placed in `Word` and the order that the
+following two characters are given to the `Suffix` parameters are
+unknown. No implementation of the `Next_Character` function can
+guarantee which character will go where:
 
 ```ada
    Word : constant String := String'(1 .. 5 => Next_Character);
@@ -351,15 +350,15 @@ occur is erroneous. Avoid using side effects anywhere.
 - Encapsulate machine dependencies in packages. Place a software
   interface to a particular device in a package to facilitate a change
   to a different device.
-- Place low-level implementation decisions or interfaces in
-  subprograms within packages.
+- Place low-level implementation decisions or interfaces in subprograms
+  within packages.
 - Use packages and subprograms to encapsulate and hide program details
   that may change (Nissen and Wallis 1984).
 
 #### example
 
 Reading the names and other attributes of external files is highly
-machine dependent. A package called Directory could contain type and
+machine dependent. A package called `Directory` could contain type and
 subprogram declarations to support a generalized view of an external
 directory that contains external files. Its internals may, in turn,
 depend on other packages more specific to the hardware or operating
@@ -437,8 +436,8 @@ subprogram overhead.
 - Use child packages to implement a subsystem.
 - Use public child units for those parts of a subsystem that should be
   visible to clients of the subsystem.
-- Use private child units for those parts of a subsystem that should
-  not be visible to clients of the subsystem.
+- Use private child units for those parts of a subsystem that should not
+  be visible to clients of the subsystem.
 - Use private child units for local declarations used only in
   implementing the package specification.
 - Use child packages to implement constructors, even when they return
@@ -538,20 +537,20 @@ units in creating a tagged type hierarchy.
 - Use packages to group related data, types, and subprograms.
 - Avoid collections of unrelated objects and subprograms (NASA 1987;
   Nissen and Wallis 1984).
-- Consider restructuring a system to move two highly related units
-  into the same package (or package hierarchy) or to move relatively
+- Consider restructuring a system to move two highly related units into
+  the same package (or package hierarchy) or to move relatively
   independent units into separate packages.
 
 #### example
 
-As a bad example, a package named Project_Definitions is obviously a
+As a bad example, a package named `Project_Definitions` is obviously a
 "catch all" for a particular project and is likely to be a jumbled mess.
 It probably has this form to permit project members to incorporate a
 single with clause into their software.
 
-Better examples are packages called Display_Format_Definitions,
+Better examples are packages called `Display_Format_Definitions`,
 containing all the types and constants needed by some specific display
-in a specific format, and Cartridge_Tape_Handler, containing all the
+in a specific format, and `Cartridge_Tape_Handler`, containing all the
 types, constants, and subprograms that provide an interface to a
 special-purpose device.
 
@@ -632,8 +631,8 @@ Guideline 10.7.1 for a discussion about subprogram overhead.
 
 #### guideline
 
-- Use tasks to model abstract, asynchronous entities within the
-  problem domain.
+- Use tasks to model abstract, asynchronous entities within the problem
+  domain.
 - Use tasks to define concurrent algorithms for multiprocessor
   architectures.
 - Use tasks to perform concurrent, cyclic, or prioritized activities

@@ -5,15 +5,11 @@ title: 5.3 Types
 In addition to determining the possible values for variables and subtype
 names, type distinctions can be very valuable aids in developing safe,
 readable, and understandable code. Types clarify the structure of your
-data and can limit or restrict the operations performed on that data.
-
-<i>
-  "Keeping types distinct has been found to be a very powerful means of detecting logical mistakes
-  when a program is written and to give valuable assistance whenever the program is being
-  subsequently maintained" (Pyle 1985 )
-</i>
-
-Take advantage of Ada's strong typing capability in the form of subtypes, derived
+data and can limit or restrict the operations performed on that data.<i>
+"Keeping types distinct has been found to be a very powerful means of detecting logical mistakes
+when a program is written and to give valuable assistance whenever the program is being
+subsequently maintained"</i>
+(Pyle 1985 ). Take advantage of Ada's strong typing capability in the form of subtypes, derived
 types, task types, protected types, private types, and limited private types.
 
 The guidelines encourage much code to be written to ensure strong
@@ -32,11 +28,10 @@ see 9.2.1 , respectively.
 
 #### guideline
 
-- Use existing types as building blocks by deriving new types from
-  them.
+- Use existing types as building blocks by deriving new types from them.
 - Use range constraints on subtypes.
-- Define new types, especially derived types, to include the largest
-  set of possible values, including boundary values.
+- Define new types, especially derived types, to include the largest set
+  of possible values, including boundary values.
 - Constrain the ranges of derived types with subtypes, excluding
   boundary values.
 - Use type derivation rather than type extension when there are no
@@ -45,39 +40,43 @@ see 9.2.1 , respectively.
 #### example
 
 Type `Table` is a building block for the creation of new types:
+
 ```ada
-    type Table is
-       record
-          Count : List_Size  := Empty;
-          List  : Entry_List := Empty_List;
-       end record;
-    type Telephone_Directory  is new Table;
-    type Department_Inventory is new Table;
+type Table is
+   record
+      Count : List_Size  := Empty;
+      List  : Entry_List := Empty_List;
+   end record;
+type Telephone_Directory  is new Table;
+type Department_Inventory is new Table;
 ```
+
 The following are distinct types that cannot be intermixed in operations
 that are not programmed explicitly to use them both:
+
 ```ada
-    type Dollars is new Number;
-    type Cents   is new Number;
+type Dollars is new Number;
+type Cents   is new Number;
 ```
+
 Below, `Source_Tail` has a value outside the range of `Listing_Paper`
 when the line is empty. All the indices can be mixed in expressions, as
 long as the results fall within the correct subtypes:
 
 ```ada
-    type Columns          is range First_Column - 1 .. Listing_Width + 1;
+type Columns          is range First_Column - 1 .. Listing_Width + 1;
 
-    subtype Listing_Paper is Columns range First_Column .. Listing_Width;
-    subtype Dumb_Terminal is Columns range First_Column .. Dumb_Terminal_Width;
-    type Line             is array (Columns range <>) of Bytes;
-    subtype Listing_Line  is Line (Listing_Paper);
-    subtype Terminal_Line is Line (Dumb_Terminal);
-    Source_Tail : Columns       := Columns'First;
-    Source      : Listing_Line;
-    Destination : Terminal_Line;
-    ...
-    Destination(Destination'First .. Source_Tail - Destination'Last) :=
-          Source(Columns'Succ(Destination'Last) .. Source_Tail);
+subtype Listing_Paper is Columns range First_Column .. Listing_Width;
+subtype Dumb_Terminal is Columns range First_Column .. Dumb_Terminal_Width;
+type Line             is array (Columns range <>) of Bytes;
+subtype Listing_Line  is Line (Listing_Paper);
+subtype Terminal_Line is Line (Dumb_Terminal);
+Source_Tail : Columns       := Columns'First;
+Source      : Listing_Line;
+Destination : Terminal_Line;
+...
+Destination(Destination'First .. Source_Tail - Destination'Last) :=
+      Source(Columns'Succ(Destination'Last) .. Source_Tail);
 ```
 
 #### rationale
@@ -147,23 +146,27 @@ and sometimes a curse. However, usually it is intended and beneficial.
 
 - Avoid anonymous array types.
 - Use anonymous array types for array variables only when no suitable
-  type exists or can be created and the array will not be referenced
-  as a whole (e.g., used as a subprogram parameter).
+  type exists or can be created and the array will not be referenced as
+  a whole (e.g., used as a subprogram parameter).
 - Use access parameters and access discriminants to guarantee that the
   parameter or discriminant is treated as a constant.
 
 #### example
 
 Use:
+
 ```ada
-    type Buffer_Index is range 1 .. 80;
-    type Buffer       is array (Buffer_Index) of Character;
-    Input_Line : Buffer;
+type Buffer_Index is range 1 .. 80;
+type Buffer       is array (Buffer_Index) of Character;
+Input_Line : Buffer;
 ```
+
 rather than:
+
 ```ada
-    Input_Line : array (Buffer_Index) of Character;
+Input_Line : array (Buffer_Index) of Character;
 ```
+
 #### rationale
 
 Although Ada allows anonymous types, they have limited usefulness and
@@ -191,9 +194,9 @@ When you use an access parameter or access discriminant, the anonymous
 type is essentially declared inside the subprogram or object itself
 (Rationale 1995, §3.7.1 ). Thus, you have no way of declaring another
 object of the same type, and the object is treated as a constant. In the
-case of a self-referential data structure (see Guideline 5.4.6 ),
-you need the access parameter to be able to`
-manipulate the data the discriminant accesses (Rationale 1995, §3.7.1 ).
+case of a self-referential data structure (see Guideline 5.4.6 ), you
+need the access parameter to be able to manipulate the data the
+discriminant accesses (Rationale 1995, §3.7.1 ).
 
 #### notes
 
@@ -215,6 +218,7 @@ the elements, consider using an anonymous array type.
 - Explicitly export needed operations rather than easing restrictions.
 
 #### example
+
 ```ada
 ------------------------------------------------------------------------
 with Ada.Finalization;
@@ -239,7 +243,7 @@ private
 end Packet_Telemetry;
 ------------------------------------------------------------------------
 ```
-    
+
 #### rationale
 
 Limited private types and private types support abstraction and
@@ -275,7 +279,7 @@ depends on the structure of the type.
 
 #### notes
 
-The predefined packages `Direct_IO` and `Sequential_IO`do not accept
+The predefined packages `Direct_IO` and `Sequential_IO` do not accept
 limited private types as generic parameters. This restriction should be
 considered when I/O operations are needed for a type.
 
@@ -296,38 +300,38 @@ private types in generic units.
 The following example is taken from the Rationale (1995, §3.7.2) :
 
 ```ada
-    generic
-       type Float_Type is digits <>;
-    package Generic_Integration is
-       type Integrand is access function (X : Float_Type) return Float_Type;
-       function Integrate (F        : Integrand;
-                           From     : Float_Type;
-                           To       : Float_Type;
-                           Accuracy : Float_Type := 10.0*Float_Type'Model_Epsilon)
-         return Float_Type;
-    end Generic_Integration;
-    with Generic_Integration;
-    procedure Try_Estimate (External_Data : in     Data_Type;
-                            Lower         : in     Float;
-                            Upper         : in     Float;
-                            Answer        :    out Float) is
-       -- external data set by other means
-       function Residue (X : Float) return Float is
-          Result : Float;
-       begin  -- Residue
-          -- compute function value dependent upon external data
-          return Result;
-       end Residue;
-       package Float_Integration is
-          new Generic_Integration (Float_Type => Float);
+generic
+   type Float_Type is digits <>;
+package Generic_Integration is
+   type Integrand is access function (X : Float_Type) return Float_Type;
+   function Integrate (F        : Integrand;
+                       From     : Float_Type;
+                       To       : Float_Type;
+                       Accuracy : Float_Type := 10.0*Float_Type'Model_Epsilon)
+     return Float_Type;
+end Generic_Integration;
+with Generic_Integration;
+procedure Try_Estimate (External_Data : in     Data_Type;
+                        Lower         : in     Float;
+                        Upper         : in     Float;
+                        Answer        :    out Float) is
+   -- external data set by other means
+   function Residue (X : Float) return Float is
+      Result : Float;
+   begin  -- Residue
+      -- compute function value dependent upon external data
+      return Result;
+   end Residue;
+   package Float_Integration is
+      new Generic_Integration (Float_Type => Float);
 
-       use Float_Integration;
-    begin -- Try_Estimate
-       ...
-       Answer := Integrate (F    => Residue'Access,
-                            From => Lower,
-                            To   => Upper);
-    end Try_Estimate;
+   use Float_Integration;
+begin -- Try_Estimate
+   ...
+   Answer := Integrate (F    => Residue'Access,
+                        From => Lower,
+                        To   => Upper);
+end Try_Estimate;
 ```
 
 #### rationale
@@ -344,7 +348,8 @@ dynamic selection by using abstract tagged types. You declare an
 abstract type with one abstract operation and then use an
 access-to-class-wide type to get the dispatching effect. This technique
 provides greater flexibility and type safety than access-to-subprogram
-types (Ada Reference Manual 1995, §3.10.2 ).
+types ([Ada Reference Manual,
+§3.10.2](../../arm/AA-3/AA-3.10.mdx#Subclause_3.10.2)).
 
 Access-to-subprogram types are useful in implementing dynamic selection.
 References to the subprograms can be stored directly in the data

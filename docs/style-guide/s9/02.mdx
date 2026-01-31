@@ -141,8 +141,8 @@ nonabstract operations on members of the hierarchy.
 
 - The implementation of the dispatching operations of each type in a
   derivation class rooted in a tagged type T should conform to the
-  expected semantics of the corresponding dispatching operations of
-  the class-wide type T'Class.
+  expected semantics of the corresponding dispatching operations of the
+  class-wide type T'Class.
 
 #### example
 
@@ -345,18 +345,17 @@ clients of the type.
 - Consider using a controlled type whenever a type allocates resources
   that must be deallocated or otherwise "cleaned up" on destruction or
   overwriting.
-- Use a derivation from a controlled type in preference to providing
-  an explicit "cleanup" operation that must be called by clients of
-  the type.
+- Use a derivation from a controlled type in preference to providing an
+  explicit "cleanup" operation that must be called by clients of the
+  type.
 - When overriding the adjustment and finalization procedures derived
   from controlled types, define the finalization procedure to undo the
   effects of the adjustment procedure.
-- Derived type initialization procedures should call the
-  initialization procedure of their parent as part of their
-  type-specific initialization.
-- Derived type finalization procedures should call the finalization
+- Derived type initialization procedures should call the initialization
   procedure of their parent as part of their type-specific
-  finalization.
+  initialization.
+- Derived type finalization procedures should call the finalization
+  procedure of their parent as part of their type-specific finalization.
 - Consider deriving a data structure's components rather than the
   enclosing data structure from a controlled type.
 
@@ -365,8 +364,8 @@ clients of the type.
 The following example demonstrates the use of controlled types in the
 implementation of a simple linked list. Because the Linked_List type is
 derived from Ada.Finalization.Controlled, the Finalize procedure will be
-called automatically when objects of the Linked_List type complete
-their scope of execution:
+called automatically when objects of the Linked_List type complete their
+scope of execution:
 
 ```ada
 with Ada.Finalization;
@@ -435,12 +434,13 @@ end Linked_List_Package;
 
 The three controlling operations, Initialize, Adjust, and Finalize,
 serve as automatically called procedures that control three primitive
-activities in the life of an object (Ada Reference Manual 1995, §7.6).
-When an assignment to an object of a type derived from Controlled
-occurs, adjustment and finalization work in tandem. Finalization cleans
-up the object being overwritten (e.g., reclaims heap space), then
-adjustment finishes the assignment work once the value being assigned
-has been copied (e.g., to implement a deep copy).
+activities in the life of an object ([Ada Reference Manual,
+§7.6](../../arm/AA-7/AA-7.6.mdx)). When an assignment to an object of a
+type derived from Controlled occurs, adjustment and finalization work in
+tandem. Finalization cleans up the object being overwritten (e.g.,
+reclaims heap space), then adjustment finishes the assignment work once
+the value being assigned has been copied (e.g., to implement a deep
+copy).
 
 You can ensure that the derived type's initialization is consistent with
 that of the parent by calling the parent type's initialization from the
@@ -466,8 +466,8 @@ the procedure.)
 - Consider declaring root types and internal nodes in a type tree as
   abstract.
 - Consider using abstract types for generic formal derived types.
-- Consider using abstract types to develop different implementations
-  of a single abstraction.
+- Consider using abstract types to develop different implementations of
+  a single abstraction.
 
 #### example
 

@@ -180,8 +180,7 @@ Because an else part cannot have a guard, it can never be closed off as
 an alternative action; thus, its presence prevents Program_Error.
 However, an else part, a delay alternative, and a terminate alternative
 are all mutually exclusive, so you will not always be able to provide an
-else part. In these cases, you must be prepared to handle
-Program_Error.
+else part. In these cases, you must be prepared to handle Program_Error.
 
 The exception Tasking_Error can be raised in the calling task whenever
 it attempts to communicate. There are many situations permitting this.
@@ -211,8 +210,7 @@ this, so you should prepare to handle the inevitable exception.
 
 - Do not depend on the values of the task attributes 'Callable or
   'Terminated ( Nissen and Wallis 1984).
-- Do not depend on attributes to avoid Tasking_Error on an entry
-  call.
+- Do not depend on attributes to avoid Tasking_Error on an entry call.
 - For tasks, do not depend on the value of the entry attribute 'Count.
 - Using the 'Count attribute with protected entries is more reliable
   than using the 'Count attribute with task entries.
@@ -221,10 +219,10 @@ this, so you should prepare to handle the inevitable exception.
 
 In the following examples, Dispatch'Callable is a Boolean expression,
 indicating whether a call can be made to the task Intercept without
-raising the exception Tasking_Error. Dispatch'Count indicates the
-number of callers currently waiting at entry Transmit.
-Dispatch'Terminated is a Boolean expression, indicating whether the task
-Dispatch is in a terminated state.
+raising the exception Tasking_Error. Dispatch'Count indicates the number
+of callers currently waiting at entry Transmit. Dispatch'Terminated is a
+Boolean expression, indicating whether the task Dispatch is in a
+terminated state.
 
 This task is badly programmed because it relies upon the values of the
 'Count attributes not changing between evaluating and acting upon them:
@@ -270,12 +268,13 @@ expect the task to remain terminated. Otherwise, 'Terminated and
 'Callable can change between the time your code tests them and the time
 it responds to the result.
 
-The Ada Reference Manual (1995, §9.9) itself warns about the
-asynchronous increase and decrease of the value of 'Count. A task can be
-removed from an entry queue due to execution of an abort statement as
-well as expiration of a timed entry call. The use of this attribute in
-guards of a selective accept statement might result in the opening of
-alternatives that should not be opened under a changed value of 'Count.
+The [Ada Reference Manual, §9.9](../../arm/AA-9/AA-9.9.mdx) itself warns
+about the asynchronous increase and decrease of the value of 'Count. A
+task can be removed from an entry queue due to execution of an abort
+statement as well as expiration of a timed entry call. The use of this
+attribute in guards of a selective accept statement might result in the
+opening of alternatives that should not be opened under a changed value
+of 'Count.
 
 The value of the attribute 'Count is stable for protected units because
 any change to an entry queue is itself a protected action, which will
@@ -368,15 +367,15 @@ R1 : Request_Manager (Personal_Limit => 10);
 R2 : Request_Manager (Personal_Limit => 2);
 ```
 
-The interleaving of the execution of R1 and R2 can lead to
-Num_Requested being changed before the entry call to Dispense is
-accepted. Thus, R1 might receive fewer items than requested or R2's
-request might be bounced because the request manager thinks that what R2
-is requesting exceeds R2's personal limit. By using the local variable,
-you will dispense the correct amount. Furthermore, by using the pragma
-Volatile (Ada Reference Manual 1995, §C.6), you ensure that the
-Item_Count is reevaluated when the guards are evaluated. Given that the
-variable Item_Count is not updated in this task body, the compiler
+The interleaving of the execution of R1 and R2 can lead to Num_Requested
+being changed before the entry call to Dispense is accepted. Thus, R1
+might receive fewer items than requested or R2's request might be
+bounced because the request manager thinks that what R2 is requesting
+exceeds R2's personal limit. By using the local variable, you will
+dispense the correct amount. Furthermore, by using the pragma Volatile
+([Ada Reference Manual, §C.6](../../arm/AA-C/AA-C.6.mdx)), you ensure that
+the Item_Count is reevaluated when the guards are evaluated. Given that
+the variable Item_Count is not updated in this task body, the compiler
 might otherwise have optimized the code and not generated code to
 reevaluate Item_Count every time it is read:
 
@@ -421,14 +420,14 @@ data. The use of unprotected shared variables is more error-prone than
 the protected objects or rendezvous because the programmer must ensure
 that the unprotected shared variables are independently addressable and
 that the actions of reading or updating the same unprotected shared
-variable are sequential (Ada Reference Manual 1995, §9.10; Rationale
-1995, §II.9).
+variable are sequential ([Ada Reference Manual,
+§9](../../arm/AA-9/AA-9.mdx); Rationale 1995, §II.9).
 
 The first example above has a race condition requiring perfect
 interleaving of execution. This code can be made more reliable by
 introducing a flag that is set by Spool_Server and reset by
-Line_Printer_Driver. An if (condition flag) then delay ... else would
-be added to each task loop in order to ensure that the interleaving is
+Line_Printer_Driver. An if (condition flag) then delay ... else would be
+added to each task loop in order to ensure that the interleaving is
 satisfied. However, notice that this approach requires a delay and the
 associated rescheduling. Presumably, this rescheduling overhead is what
 is being avoided by not using the rendezvous.
@@ -446,11 +445,11 @@ stores to the shared object must be indivisible. If you specify the
 pragma Atomic, make sure that the object meets the underlying hardware
 requirements for size and alignment. Multiple tasks sharing the
 predefined random number generator and certain input/output subprograms
-can lead to problems with unprotected updates to shared state. The Ada
-Reference Manual (1995, §A.5.2) points out the need for tasks to
-synchronize their access to the random number generators (packages
-Ada.Numerics.Float_Random and Ada.Numerics.Discrete_Random). See
-Guideline 7.7.5 for the I/O issue.
+can lead to problems with unprotected updates to shared state. The [Ada
+Reference Manual, §A.5.2](../../arm/AA-A/AA-A.5.mdx#Subclause_A.5.2) points
+out the need for tasks to synchronize their access to the random number
+generators (packages Ada.Numerics.Float_Random and
+Ada.Numerics.Discrete_Random). See Guideline 7.7.5 for the I/O issue.
 
 ### Selective Accepts and Entry Calls
 
@@ -460,8 +459,8 @@ Guideline 7.7.5 for the I/O issue.
 - Use caution with selective accept with else parts.
 - Do not depend upon a particular delay in timed entry calls to task
   entries.
-- Do not depend upon a particular delay in selective accepts with
-  delay alternatives.
+- Do not depend upon a particular delay in selective accepts with delay
+  alternatives.
 - Consider using protected objects instead of the rendezvous for
   data-oriented synchronization.
 
@@ -496,8 +495,8 @@ begin
 end Calculate_Flightpath;
 ```
 
-The addition of a delay, as shown, may allow Current_Position to
-execute until it reaches an accept for Request_New_Coordinates:
+The addition of a delay, as shown, may allow Current_Position to execute
+until it reaches an accept for Request_New_Coordinates:
 
 ```ada
 task body Calculate_Flightpath is
@@ -621,12 +620,13 @@ them in loops, particularly with poorly chosen task priorities , can
 have the effect of busy waiting.
 
 These constructs are very much implementation dependent. For conditional
-entry calls and selective accepts with else parts, the Ada Reference
-Manual (1995, §9.7) does not define "immediately." For timed entry calls
-and selective accepts with delay alternatives, implementors might have
-ideas of time that differ from each other and from your own. Like the
-delay statement, the delay alternative on the select construct might
-wait longer than the time required (see Guideline 6.1.7).
+entry calls and selective accepts with else parts, the [Ada Reference
+Manual, §9.7](../../arm/AA-9/AA-9.7.mdx) does not define "immediately." For
+timed entry calls and selective accepts with delay alternatives,
+implementors might have ideas of time that differ from each other and
+from your own. Like the delay statement, the delay alternative on the
+select construct might wait longer than the time required (see Guideline
+6.1.7).
 
 Protected objects offer an efficient means for providing data-oriented
 synchronization. Operations on protected objects incur less execution

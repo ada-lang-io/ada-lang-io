@@ -7,7 +7,7 @@ cases where the behavior is not deterministic but falls within
 well-defined bounds (Rationale 1995, §1.4). The consequence of a bounded
 error is to limit the behavior of compilers so that an Ada environment
 is not free to do whatever it wants in the presence of errors. The [Ada
-Reference Manual (1995)](http://www.adahome.com/rm95/rm9x-01-01-05.html)
+Reference Manual, §1.1.5](../../arm/AA-1/AA-1.1.mdx#Subclause_1.1.5)
 defines a set of possible outcomes for the consequences of undefined
 behavior, as in an uninitialized value or a value outside the range of
 its subtype. For example, the executing program may raise the predefined
@@ -15,31 +15,30 @@ exception `Program_Error`, `Constraint_Error`, or it may do nothing.
 
 An Ada program is _erroneous_ when it generates an error that is not
 required to be detected by the compiler or run-time environments. As
-stated in the [Ada Reference Manual (1995,
-§1.1.5)](http://www.adahome.com/rm95/rm9x-01-01-05.html), "The effects
-of erroneous execution are unpredictable." If the compiler does detect
-an instance of an erroneous program, its options are to indicate a
-compile time error; to insert the code to raise `Program_Error`,
-possibly to write a message to that effect; or to do nothing at all.
+stated in the [Ada Reference Manual,
+§1.1.5](../../arm/AA-1/AA-1.1.mdx#Subclause_1.1.5), "The effects of
+erroneous execution are unpredictable." If the compiler does detect an
+instance of an erroneous program, its options are to indicate a compile
+time error; to insert the code to raise `Program_Error`, possibly to
+write a message to that effect; or to do nothing at all.
 
 Erroneousness is not a concept unique to Ada. The guidelines below
 describe or explain some specific instances of erroneousness defined in
-the [Ada Reference Manual
-(1995)](http://www.adahome.com/rm95/rm9x-01-01-05.html). These
-guidelines are not intended to be all-inclusive but rather emphasize
-some commonly overlooked problem areas. Arbitrary order dependencies are
-not, strictly speaking, a case of erroneous execution; thus, they are
-discussed in Guideline 7.1.9 as a portability issue.
+the [Ada Reference Manual,
+§1.1.5](../../arm/AA-1/AA-1.1.mdx#Subclause_1.1.5). These guidelines are
+not intended to be all-inclusive but rather emphasize some commonly
+overlooked problem areas. Arbitrary order dependencies are not, strictly
+speaking, a case of erroneous execution; thus, they are discussed in
+Guideline 7.1.9 as a portability issue.
 
 ### Unchecked Conversion
 
 #### guideline
 
 - Use `Ada.Unchecked_Conversion` only with the utmost care ([Ada
-  Reference Manual 1995,
-  §13.9](http://www.adahome.com/rm95/rm9x-13-09.html)).
-- Consider using the `'Valid` attribute to check the validity of
-  scalar data.
+  Reference Manual, §13.9](../../arm/AA-13/AA-13.9.mdx)).
+- Consider using the `'Valid` attribute to check the validity of scalar
+  data.
 - Ensure that the value resulting from `Ada.Unchecked_Conversion`
   properly represents a value of the parameter's subtype.
 - Isolate the use of `Ada.Unchecked_Conversion` in package bodies.
@@ -97,14 +96,13 @@ it is in range without raising an exception if it is out of range. There
 are several cases where such a validity check enhances the readability
 and maintainability of the code:
 
-  - Data produced through an unchecked conversion
-  - Input data
-  - Parameter values returned from a foreign language interface
-  - Aborted assignment (during asynchronous transfer of control or
-    execution of an `abort` statement)
-  - Disrupted assignment from failure of a language-defined check
-  - Data whose address has been specified with the `'Address`
-    attribute
+- Data produced through an unchecked conversion
+- Input data
+- Parameter values returned from a foreign language interface
+- Aborted assignment (during asynchronous transfer of control or
+  execution of an `abort` statement)
+- Disrupted assignment from failure of a language-defined check
+- Data whose address has been specified with the `'Address` attribute
 
 An access value should not be assumed to be correct when obtained
 without compiler or run-time checks. When dealing with access values,
@@ -117,9 +115,9 @@ unchecked conversion, you should ensure that its value on return from
 the procedure properly represents a value in the subtype. This case
 occurs when the parameter is of mode `out` or `in out`. It is important
 to check the value when interfacing to foreign languages or using a
-language-defined input procedure. The [Ada Reference Manual (1995,
-§13.9.1)](http://www.adahome.com/rm95/rm9x-13-09-01.html) lists the
-full rules concerning data validity.
+language-defined input procedure. The [Ada Reference Manual,
+§13.9.1](../../arm/AA-13/AA-13.9.mdx#Subclause_13.9.1) lists the full rules
+concerning data validity.
 
 ### Unchecked Deallocation
 
@@ -148,8 +146,8 @@ use `Ada.Unchecked_Deallocation`.
 
 - Minimize the use of the attribute `Unchecked_Access`, preferably
   isolating it to package bodies.
-- Use the attribute `Unchecked_Access` only on data whose
-  lifetime/scope is "library level."
+- Use the attribute `Unchecked_Access` only on data whose lifetime/scope
+  is "library level."
 
 #### rationale
 
@@ -166,18 +164,17 @@ clients.
 
 When you use the attribute `Unchecked_Access`, you are creating access
 values in an unsafe manner. You run the risk of dangling references,
-which in turn lead to erroneous execution ([Ada Reference Manual 1995,
-§13.9.1](http://www.adahome.com/rm95/rm9x-13-09-01.html)).
+which in turn lead to erroneous execution ([Ada Reference Manual,
+§13.9.1](../../arm/AA-13/AA-13.9.mdx#Subclause_13.9.1)).
 
 #### exceptions
 
-The [Ada Reference Manual (1995,
-§13.10](http://www.adahome.com/rm95/rm9x-13-10.html)) defines the
-following potential use for this otherwise dangerous attribute. _"This
-attribute is provided to support the situation where a local object is
-to be inserted into a global linked data structure, when the programmer
-knows that it will always be removed from the data structure prior to
-exiting the object's scope."_
+The [Ada Reference Manual, §13.10](../../arm/AA-13/AA-13.10.mdx)) defines
+the following potential use for this otherwise dangerous attribute.
+_"This attribute is provided to support the situation where a local
+object is to be inserted into a global linked data structure, when the
+programmer knows that it will always be removed from the data structure
+prior to exiting the object's scope."_
 
 ### Address Clauses
 
@@ -185,10 +182,10 @@ exiting the object's scope."_
 
 - Use address clauses to map variables and entries to the hardware
   device or memory, not to model the FORTRAN "equivalence" feature.
-- Ensure that the address specified in an attribute definition clause
-  is valid and does not conflict with the alignment.
-- If available in your Ada environment, use the package
-  `Ada.Interrupts` to associate handlers with interrupts.
+- Ensure that the address specified in an attribute definition clause is
+  valid and does not conflict with the alignment.
+- If available in your Ada environment, use the package `Ada.Interrupts`
+  to associate handlers with interrupts.
 - Avoid using the address clause for nonimported program units.
 
 #### example
@@ -251,8 +248,8 @@ and leave the surrounding code with exception checking in effect.
 - Use caution when initializing access values.
 - Do not depend on default initialization that is not part of the
   language.
-- Derive from a controlled type and override the primitive procedure
-  to ensure automatic initialization.
+- Derive from a controlled type and override the primitive procedure to
+  ensure automatic initialization.
 - Ensure elaboration of an entity before using it.
 - Use function calls in declarations cautiously.
 
@@ -361,13 +358,13 @@ immediately after its declaration.
 
 The exception `Data_Error` can be propagated by the `Read` procedures
 found in these packages if the element read cannot be interpreted as a
-value of the required subtype ([Ada Reference Manual 1995,
-§A.13](http://www.adahome.com/rm95/rm9x-A-13.html)). However, if the
-associated check is too complex, an implementation need not propagate
-`Data_Error`. In cases where the element read cannot be interpreted as a
-value of the required subtype but `Data_Error` is not propagated, the
-resulting value can be abnormal, and subsequent references to the value
-can lead to erroneous execution.
+value of the required subtype ([Ada Reference Manual,
+§A.13](../../arm/AA-A/AA-A.13.mdx)). However, if the associated check is
+too complex, an implementation need not propagate `Data_Error`. In cases
+where the element read cannot be interpreted as a value of the required
+subtype but `Data_Error` is not propagated, the resulting value can be
+abnormal, and subsequent references to the value can lead to erroneous
+execution.
 
 #### notes
 
@@ -387,9 +384,9 @@ user-defined exceptions at the end of each procedure.
 #### rationale
 
 Using `Finalize` or `Adjust` to propagate an exception results in a
-bounded error ([Ada Reference Manual 1995,
-§7.6.1](http://www.adahome.com/rm95/rm9x-07-06-01.html)). Either the
-exception will be ignored or a `Program_Error` exception will be raised.
+bounded error ([Ada Reference Manual,
+§7.6.1](../../arm/AA-7/AA-7.6.mdx#Subclause_7.6.1)). Either the exception
+will be ignored or a `Program_Error` exception will be raised.
 
 ### Protected Objects
 
@@ -400,11 +397,11 @@ a protected procedure, or a protected function.
 
 #### rationale
 
-The [Ada Reference Manual (1995,
-§9.5.1)](http://www.adahome.com/rm95/rm9x-09-05-01.html) lists the
-potentially blocking operations:
+The [Ada Reference Manual,
+§9.5.1](../../arm/AA-9/AA-9.5.mdx#Subclause_9.5.1) lists the potentially
+blocking operations:
 
-  - `Select`statement
+- - `Select` statement
   - `Accept` statement
   - Entry-call statement
   - `Delay` statement
@@ -427,7 +424,7 @@ visible to the Ada run-time system.
 
 #### guideline
 
-- Do not use an asynchronous `select`statement within abort-deferred
+- Do not use an asynchronous `select` statement within abort-deferred
   operations.
 - Do not create a task that depends on a master that is included
   entirely within the execution of an abort-deferred operation.
@@ -436,16 +433,15 @@ visible to the Ada run-time system.
 
 An abort-deferred operation is one of the following:
 
-  - Protected entry, protected procedure, or protected function
+- - Protected entry, protected procedure, or protected function
   - User-defined `Initialize` procedure used as the last step of a
     default initialization of a controlled object
   - User-defined `Finalize` procedure used in finalization of a
     controlled object
-  - User-defined `Adjust` procedure used in assignment of a
-    controlled object
+  - User-defined `Adjust` procedure used in assignment of a controlled
+    object
 
-The [Ada Reference Manual (1995,
-§9.8)](http://www.adahome.com/rm95/rm9x-09-08.html) states that the
+The [Ada Reference Manual, §9.8](../../arm/AA-9/AA-9.8.mdx) states that the
 practices discouraged in the guidelines result in bounded error. The
 exception `Program_Error` is raised if the implementation detects the
 error. If the implementation does not detect the error, the operations
