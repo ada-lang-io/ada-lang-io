@@ -19,7 +19,7 @@ For a complete list of books, see the [Awesome Ada](https://github.com/ohenley/a
 ## Online books
 
 - [Learn Ada](https://learn.adacore.com) (interactive learning platform for Ada/SPARK, including courses for C/C++/Java developers)
-- [Safe and Secure Software. An invitation to Ada 2012](https://www.adacore.com/uploads/technical-papers/SafeSecureAdav2015.pdf)
+- [Safe and Secure Software. An invitation to Ada 2012](https://www.adacore.com/uploads/books/SafeSecureAdav2015-covered.pdf)
 - [Implementation Guidance for the Adoption of SPARK](https://www.adacore.com/books/implementation-guidance-spark)
 - [Ada Programming at Wikibooks](https://en.wikibooks.org/wiki/Ada_Programming)
 - [Ada Distilled for Ada 2005](http://www.adaic.org/wp-content/uploads/2010/05/Ada-Distilled-24-January-2011-Ada-2005-Version.pdf)
