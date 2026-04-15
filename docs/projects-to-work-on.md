@@ -257,11 +257,11 @@ much easier to understand them, use them and even contribute to an OS. Here is a
 list of kernels/OSes written in pure Ada/SPARK that may greatly benefit from the
 community:
 
-- **[Ironclad](https://ironclad.cx/)** is a fairly new kernel that strives to be
+- **[Ironclad](https://ironclad-os.org/)** is a fairly new kernel that strives to be
   POSIX compatible. It partially written in SPARK, making it much more robust
   and safe by default. It aims to support x86, ARM and RISC-V architectures. You
   can contribute to it or you can help grow the
-  [Gloire](https://github.com/streaksu/Gloire) OS distribution, which uses
+  [Gloire](https://codeberg.org/Ironclad/Gloire) OS distribution, which uses
   Ironclad as its kernel.
 - **[HiRTOS](https://github.com/jgrivera67/HiRTOS)** is a high integrity RTOS
   kernel as well as a separation kernel written in SPARK. Go and give it a try!
