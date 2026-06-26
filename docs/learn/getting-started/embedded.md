@@ -199,7 +199,7 @@ While the command line is powerful, many developers prefer an Integrated Develop
 
 2. **Configure the Project for the IDE:** Add an `Ide` package to your `blinky_demo.gpr` file to tell GNAT Studio how to connect to the debugger.
 
-   For **OpenOCD**:
+   For **ST-Link tools**:
 
    ```gpr
    package Ide is
